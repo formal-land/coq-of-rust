@@ -2,11 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module codegen.
-  Definition BUILD_ONCE : std.sync.once.Once :=
-    run (std.sync.once.Once::["new"] ).
+  Definition BUILD_ONCE `{H : State.Trait} : std.sync.once.Once :=
+    run (std.sync.once.Once::["new"]).
   
   Definition
-      ALREADY_BUILT_CONTRACTS :
+      ALREADY_BUILT_CONTRACTS
+      `{H : State.Trait} :
       std.thread.local.LocalKey
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
@@ -16,31 +17,17 @@ Module codegen.
       (std.thread.local.LocalKey::["new"]
         ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
   
-  Definition already_built_contracts
-      
-      :
-        M
+  Parameter already_built_contracts : forall `{H : State.Trait}, unit
+      ->
+        M (H := H)
           (std.collections.hash.map.HashMap
             alloc.string.String
-            alloc.string.String) :=
-    ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.["with"]
-      (fun already_built =>
-        let* α0 := already_built.["borrow"] in
-        α0.["clone"]).
+            alloc.string.String).
   
-  Definition set_already_built_contracts
-      (hash_map
-        :
-        std.collections.hash.map.HashMap
-          alloc.string.String
-          alloc.string.String)
-      : M unit :=
-    let* _ :=
-      ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.["with"]
-        (fun metadata_paths =>
-          let* _ := assign metadata_paths.["borrow_mut"].["deref"] hash_map in
-          Pure tt) in
-    Pure tt.
+  Parameter set_already_built_contracts : forall
+        `{H : State.Trait},
+        std.collections.hash.map.HashMap alloc.string.String alloc.string.String
+      -> M (H := H) unit.
   
   Module InkE2ETest.
     Record t : Set := {
@@ -56,657 +43,28 @@ Module codegen.
   Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
     Definition Self := ink_e2e_macro.codegen.InkE2ETest.
     
-    Definition from
-        (original : ink_e2e_macro.ir.InkE2ETest)
-        : M ink_e2e_macro.codegen.InkE2ETest :=
-      Pure {| ink_e2e_macro.codegen.InkE2ETest.test := original; |}.
+    Parameter from : forall `{H : State.Trait}, ink_e2e_macro.ir.InkE2ETest
+        -> M (H := H) ink_e2e_macro.codegen.InkE2ETest.
     
-    Global Instance AssociatedFunction_from :
+    Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
     Global Instance I :
         core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
-      core.convert.From.from := from;
+      core.convert.From.from `{H : State.Trait} := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   
   Module Impl_ink_e2e_macro_codegen_InkE2ETest.
     Definition Self := ink_e2e_macro.codegen.InkE2ETest.
     
-    Definition generate_code (self : ref Self) : M proc_macro2.TokenStream :=
-      let item_fn := addr_of self.["test"].["item_fn"].["item_fn"] in
-      let fn_name := addr_of item_fn.["sig"].["ident"] in
-      let block := addr_of item_fn.["block"] in
-      let fn_return_type := addr_of item_fn.["sig"].["output"] in
-      let vis := addr_of item_fn.["vis"] in
-      let attrs := addr_of item_fn.["attrs"] in
-      let* ret :=
-        match fn_return_type with
-        | syn.ty.ReturnType.Default => proc_macro2.TokenStream::["new"] 
-        | syn.ty.ReturnType.Type rarrow ret_type =>
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ :=
-            quote.to_tokens.ToTokens.to_tokens (addr_of rarrow) (addr_of _s) in
-          let* _ :=
-            quote.to_tokens.ToTokens.to_tokens
-              (addr_of ret_type)
-              (addr_of _s) in
-          Pure _s
-        end in
-      let* environment :=
-        let* α0 := self.["test"].["config"].["environment"] in
-        α0.["unwrap_or_else"]
-          (fun  =>
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "ink" in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "env" in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ :=
-              quote.__private.push_ident (addr_of _s) "DefaultEnvironment" in
-            syn.parse_quote.parse _s) in
-      let* contract_manifests :=
-        ink_e2e_macro.codegen.ContractManifests::["from_cargo_metadata"]  in
-      let* contracts_to_build_and_import :=
-        let* α0 := self.["test"].["config"].["additional_contracts"] in
-        let* α1 := α0.["is_empty"] in
-        if (α1 : bool) then
-          contract_manifests.["all_contracts_to_build"]
-        else
-          let* additional_contracts :=
-            self.["test"].["config"].["additional_contracts"] in
-          let* contracts_to_build_and_import :=
-            let* α0 := contract_manifests.["root_package"].["iter"] in
-            let* α1 := α0.["cloned"] in
-            α1.["collect"] in
-          let* _ :=
-            contracts_to_build_and_import.["append"]
-              (addr_of additional_contracts) in
-          Pure contracts_to_build_and_import in
-      let* already_built_contracts :=
-        ink_e2e_macro.codegen.already_built_contracts  in
-      let* _ :=
-        let* α0 := already_built_contracts.["is_empty"] in
-        if (α0 : bool) then
-          let* _ :=
-            ink_e2e_macro.codegen.BUILD_ONCE.["call_once"]
-              (fun  =>
-                let* _ := tracing_subscriber.fmt.init  in
-                let* _ :=
-                  let* α0 := LangItem contracts_to_build_and_import in
-                  match α0 with
-                  | iter =>
-                    loop
-                      let* _ :=
-                        let* α0 := LangItem (addr_of iter) in
-                        match α0 with
-                        | None => Pure Break
-                        | Some {| Some.0 := manifest_path; |} =>
-                          let* dest_wasm :=
-                            ink_e2e_macro.codegen.build_contract
-                              (addr_of manifest_path) in
-                          let* _ :=
-                            already_built_contracts.["insert"]
-                              manifest_path
-                              dest_wasm in
-                          Pure tt
-                        end in
-                      Pure tt
-                      from
-                      for
-                  end in
-                let* _ :=
-                  let* α0 := already_built_contracts.["clone"] in
-                  ink_e2e_macro.codegen.set_already_built_contracts α0 in
-                Pure tt) in
-          Pure tt
-        else
-          let* α0 := already_built_contracts.["is_empty"] in
-          let* α1 := α0.["not"] in
-          if (α1 : bool) then
-            let* _ :=
-              let* α0 := LangItem contracts_to_build_and_import in
-              match α0 with
-              | iter =>
-                loop
-                  let* _ :=
-                    let* α0 := LangItem (addr_of iter) in
-                    match α0 with
-                    | None => Pure Break
-                    | Some {| Some.0 := manifest_path; |} =>
-                      let* α0 :=
-                        already_built_contracts.["get"]
-                          (addr_of manifest_path) in
-                      let* α1 := α0.["is_none"] in
-                      if (α1 : bool) then
-                        let* dest_wasm :=
-                          ink_e2e_macro.codegen.build_contract
-                            (addr_of manifest_path) in
-                        let* _ :=
-                          already_built_contracts.["insert"]
-                            manifest_path
-                            dest_wasm in
-                        Pure tt
-                      else
-                        Pure tt
-                    end in
-                  Pure tt
-                  from
-                  for
-              end in
-            let* _ :=
-              let* α0 := already_built_contracts.["clone"] in
-              ink_e2e_macro.codegen.set_already_built_contracts α0 in
-            Pure tt
-          else
-            Pure tt in
-      let* _ :=
-        let* α0 := already_built_contracts.["is_empty"] in
-        let* α1 := α0.["not"] in
-        let* α2 := α1.["not"] in
-        if (α2 : bool) then
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "built contract artifacts must exist here" ]) in
-          core.panicking.panic_fmt α0
-        else
-          Pure tt in
-      let* contracts :=
-        let* α0 := already_built_contracts.["values"] in
-        α0.["map"]
-          (fun wasm_path =>
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ :=
-              quote.to_tokens.ToTokens.to_tokens
-                (addr_of wasm_path)
-                (addr_of _s) in
-            Pure _s) in
-      let* contracts_node :=
-        core.option.Option.None.["unwrap_or"]
-          ink_e2e_macro.codegen.generate_code.DEFAULT_CONTRACTS_NODE in
-      let* _ :=
-        let* α0 := which.which contracts_node in
-        let* α1 := α0.["is_err"] in
-        if (α1 : bool) then
-          let* α0 :=
-            contracts_node.["eq"]
-              ink_e2e_macro.codegen.generate_code.DEFAULT_CONTRACTS_NODE in
-          if (α0 : bool) then
-            let* α0 :=
-              format_argument::["new_display"]
-                (addr_of
-                  ink_e2e_macro.codegen.generate_code.DEFAULT_CONTRACTS_NODE) in
-            let* α1 :=
-              format_placeholder::["new"]
-                0
-                " "%char
-                format_alignment::["Unknown"]
-                0
-                format_count::["Implied"]
-                format_count::["Implied"] in
-            let* α2 :=
-              format_placeholder::["new"]
-                0
-                " "%char
-                format_alignment::["Unknown"]
-                0
-                format_count::["Implied"]
-                format_count::["Implied"] in
-            let* α3 := format_unsafe_arg::["new"]  in
-            let* α4 :=
-              format_arguments::["new_v1_formatted"]
-                (addr_of
-                  [
-                    "The '";
-                    "' executable was not found. Install '";
-                    "' on the PATH, or specify the `CONTRACTS_NODE` environment variable."
-                  ])
-                (addr_of [ α0 ])
-                (addr_of [ α1; α2 ])
-                α3 in
-            core.panicking.panic_fmt α4
-          else
-            let* α0 :=
-              format_argument::["new_display"] (addr_of contracts_node) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of
-                  [ "The contracts node executable '"; "' was not found." ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1
-        else
-          Pure tt in
-      let* _s := proc_macro2.TokenStream::["new"]  in
-      let* _ :=
-        let has_iter := quote.__private.ThereIsNoIteratorInRepetition.Build in
-        let* '(attrs, i) := attrs.["quote_into_iter"] in
-        let* has_iter := has_iter.["bitor"] i in
-        let _ := has_iter in
-        loop
-          if (true : bool) then
-            let* attrs :=
-              let* α0 := attrs.["next"] in
-              match α0 with
-              | core.option.Option.Some _x =>
-                Pure (quote.__private.RepInterp.Build_t _x)
-              | core.option.Option.None => Pure Break
-              end in
-            let* _ :=
-              quote.to_tokens.ToTokens.to_tokens (addr_of attrs) (addr_of _s) in
-            Pure tt
-          else
-            let _ := Break in
-            Pure tt
-          from
-          while in
-      let* _ := quote.__private.push_pound (addr_of _s) in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.push_ident (addr_of _s) "test" in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Bracket
-          _s in
-      let* _ := quote.to_tokens.ToTokens.to_tokens (addr_of vis) (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "fn" in
-      let* _ :=
-        quote.to_tokens.ToTokens.to_tokens (addr_of fn_name) (addr_of _s) in
-      let* _ :=
-        let* α0 := proc_macro2.TokenStream::["new"]  in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Parenthesis
-          α0 in
-      let* _ := quote.to_tokens.ToTokens.to_tokens (addr_of ret) (addr_of _s) in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.push_ident (addr_of _s) "use" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "log_info" in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "LOG_PREFIX" in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "with" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_or (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "log_prefix" in
-          let* _ := quote.__private.push_or (addr_of _s) in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_ident (addr_of _s) "let" in
-            let* _ := quote.__private.push_ident (addr_of _s) "str" in
-            let* _ := quote.__private.push_eq (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "format" in
-            let* _ := quote.__private.push_bang (addr_of _s) in
-            let* _ :=
-              let* _s := proc_macro2.TokenStream::["new"]  in
-              let* _ := quote.__private.parse (addr_of _s) ""test: {}"" in
-              let* _ := quote.__private.push_comma (addr_of _s) in
-              let* _ := quote.__private.push_ident (addr_of _s) "stringify" in
-              let* _ := quote.__private.push_bang (addr_of _s) in
-              let* _ :=
-                let* _s := proc_macro2.TokenStream::["new"]  in
-                let* _ :=
-                  quote.to_tokens.ToTokens.to_tokens
-                    (addr_of fn_name)
-                    (addr_of _s) in
-                quote.__private.push_group
-                  (addr_of _s)
-                  proc_macro2.Delimiter.Parenthesis
-                  _s in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                _s in
-            let* _ := quote.__private.push_semi (addr_of _s) in
-            let* _ := quote.__private.push_star (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "log_prefix" in
-            let* _ := quote.__private.push_dot (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "borrow_mut" in
-            let* _ :=
-              let* α0 := proc_macro2.TokenStream::["new"]  in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                α0 in
-            let* _ := quote.__private.push_eq (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "String" in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "from" in
-            let* _ :=
-              let* _s := proc_macro2.TokenStream::["new"]  in
-              let* _ := quote.__private.push_ident (addr_of _s) "str" in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                _s in
-            let* _ := quote.__private.push_semi (addr_of _s) in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Brace
-              _s in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "log_info" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ :=
-            quote.__private.parse (addr_of _s) ""setting up e2e test"" in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "INIT" in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "call_once" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_or_or (addr_of _s) in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ :=
-              quote.__private.push_ident (addr_of _s) "tracing_subscriber" in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "fmt" in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "init" in
-            let* _ :=
-              let* α0 := proc_macro2.TokenStream::["new"]  in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                α0 in
-            let* _ := quote.__private.push_semi (addr_of _s) in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Brace
-              _s in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "log_info" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ :=
-            quote.__private.parse (addr_of _s) ""creating new client"" in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "let" in
-        let* _ := quote.__private.push_ident (addr_of _s) "run" in
-        let* _ := quote.__private.push_eq (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "async" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_ident (addr_of _s) "let" in
-          let* _ := quote.__private.push_ident (addr_of _s) "node_proc" in
-          let* _ := quote.__private.push_eq (addr_of _s) in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "TestNodeProcess" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_lt (addr_of _s) in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "PolkadotConfig" in
-          let* _ := quote.__private.push_gt (addr_of _s) in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "build" in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ :=
-              quote.to_tokens.ToTokens.to_tokens
-                (addr_of contracts_node)
-                (addr_of _s) in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "spawn" in
-          let* _ :=
-            let* α0 := proc_macro2.TokenStream::["new"]  in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              α0 in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "await" in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "unwrap_or_else" in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_or (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "err" in
-            let* _ := quote.__private.push_or (addr_of _s) in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "core" in
-            let* _ := quote.__private.push_colon2 (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "panic" in
-            let* _ := quote.__private.push_bang (addr_of _s) in
-            let* _ :=
-              let* _s := proc_macro2.TokenStream::["new"]  in
-              let* _ :=
-                quote.__private.parse
-                  (addr_of _s)
-                  ""Error spawning substrate-contracts-node: {:?}"" in
-              let* _ := quote.__private.push_comma (addr_of _s) in
-              let* _ := quote.__private.push_ident (addr_of _s) "err" in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                _s in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          let* _ := quote.__private.push_semi (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "let" in
-          let* _ := quote.__private.push_ident (addr_of _s) "mut" in
-          let* _ := quote.__private.push_ident (addr_of _s) "client" in
-          let* _ := quote.__private.push_eq (addr_of _s) in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "Client" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_lt (addr_of _s) in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "PolkadotConfig" in
-          let* _ := quote.__private.push_comma (addr_of _s) in
-          let* _ :=
-            quote.to_tokens.ToTokens.to_tokens
-              (addr_of environment)
-              (addr_of _s) in
-          let* _ := quote.__private.push_gt (addr_of _s) in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "new" in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_ident (addr_of _s) "node_proc" in
-            let* _ := quote.__private.push_dot (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "client" in
-            let* _ :=
-              let* α0 := proc_macro2.TokenStream::["new"]  in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                α0 in
-            let* _ := quote.__private.push_comma (addr_of _s) in
-            let* _ :=
-              let* _s := proc_macro2.TokenStream::["new"]  in
-              let* _ :=
-                let _i := 0 in
-                let has_iter :=
-                  quote.__private.ThereIsNoIteratorInRepetition.Build in
-                let* '(contracts, i) := contracts.["quote_into_iter"] in
-                let* has_iter := has_iter.["bitor"] i in
-                let _ := has_iter in
-                loop
-                  if (true : bool) then
-                    let* contracts :=
-                      let* α0 := contracts.["next"] in
-                      match α0 with
-                      | core.option.Option.Some _x =>
-                        Pure (quote.__private.RepInterp.Build_t _x)
-                      | core.option.Option.None => Pure Break
-                      end in
-                    let* _ :=
-                      let* α0 := _i.["gt"] 0 in
-                      if (α0 : bool) then
-                        let* _ := quote.__private.push_comma (addr_of _s) in
-                        Pure tt
-                      else
-                        Pure tt in
-                    let* _ := _i.["add_assign"] 1 in
-                    let* _ :=
-                      quote.to_tokens.ToTokens.to_tokens
-                        (addr_of contracts)
-                        (addr_of _s) in
-                    Pure tt
-                  else
-                    let _ := Break in
-                    Pure tt
-                  from
-                  while in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Bracket
-                _s in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "await" in
-          let* _ := quote.__private.push_semi (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "let" in
-          let* _ := quote.__private.push_ident (addr_of _s) "__ret" in
-          let* _ := quote.__private.push_eq (addr_of _s) in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ :=
-              quote.to_tokens.ToTokens.to_tokens (addr_of block) (addr_of _s) in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Brace
-              _s in
-          let* _ := quote.__private.push_semi (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "__ret" in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Brace
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_ident (addr_of _s) "return" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "tokio" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "runtime" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "Builder" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ :=
-            quote.__private.push_ident (addr_of _s) "new_current_thread" in
-          let* _ :=
-            let* α0 := proc_macro2.TokenStream::["new"]  in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              α0 in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "enable_all" in
-          let* _ :=
-            let* α0 := proc_macro2.TokenStream::["new"]  in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              α0 in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "build" in
-          let* _ :=
-            let* α0 := proc_macro2.TokenStream::["new"]  in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              α0 in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "unwrap_or_else" in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_or (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "err" in
-            let* _ := quote.__private.push_or (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "panic" in
-            let* _ := quote.__private.push_bang (addr_of _s) in
-            let* _ :=
-              let* _s := proc_macro2.TokenStream::["new"]  in
-              let* _ :=
-                quote.__private.parse
-                  (addr_of _s)
-                  ""Failed building the Runtime: {}"" in
-              let* _ := quote.__private.push_comma (addr_of _s) in
-              let* _ := quote.__private.push_ident (addr_of _s) "err" in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                _s in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "block_on" in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_ident (addr_of _s) "run" in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          let* _ := quote.__private.push_semi (addr_of _s) in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Brace
-            _s in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Brace
-          _s in
-      Pure _s.
+    Parameter generate_code : forall `{H : State.Trait}, ref Self
+        -> M (H := H) proc_macro2.TokenStream.
     
-    Global Instance Method_generate_code : Notation.Dot "generate_code" := {
+    Global Instance Method_generate_code `{H : State.Trait} :
+      Notation.Dot "generate_code" := {
       Notation.dot := generate_code;
     }.
   End Impl_ink_e2e_macro_codegen_InkE2ETest.
@@ -730,160 +88,58 @@ Module codegen.
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
     
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field2_finish"]
-        f
-        "ContractManifests"
-        "root_package"
-        (addr_of self.["root_package"])
-        "contract_dependencies"
-        (addr_of (addr_of self.["contract_dependencies"])).
+    Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+      string -> core_option_Option_alloc_string_String -> 
+      string -> alloc_vec_Vec_alloc_string_String -> 
+      M (H := H) core.fmt.Result.
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field2_finish" := {
+      Notation.double_colon := debug_struct_field2_finish; }.
+    
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
+    
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   
   Module Impl_ink_e2e_macro_codegen_ContractManifests.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
     
-    Definition from_cargo_metadata  : M Self :=
-      let* cmd := cargo_metadata.MetadataCommand::["new"]  in
-      let* metadata :=
-        let* α0 := cmd.["exec"] in
-        α0.["unwrap_or_else"]
-          (fun err =>
-            let* α0 := format_argument::["new_display"] (addr_of err) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "Error invoking `cargo metadata`: " ])
-                (addr_of [ α0 ]) in
-            core.panicking.panic_fmt α1) in
-      let* root_package :=
-        let* α0 := metadata.["resolve"].["as_ref"] in
-        let* α1 :=
-          α0.["and_then"] (fun resolve => resolve.["root"].["as_ref"]) in
-        let* α2 :=
-          α1.["and_then"]
-            (fun root_package_id =>
-              let* α0 := metadata.["packages"].["iter"] in
-              α0.["find"]
-                (fun package =>
-                  (addr_of package.["id"]).["eq"] root_package_id)) in
-        α2.["and_then"]
-          ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
-      let* contract_dependencies :=
-        let* α0 := metadata.["packages"].["iter"] in
-        let* α1 :=
-          α0.["filter_map"]
-            ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
-        α1.["collect"] in
-      Pure
-        {|
-          Self.root_package := root_package;
-          Self.contract_dependencies := contract_dependencies;
-        |}.
+    Parameter from_cargo_metadata : forall `{H : State.Trait}, unit
+        -> M (H := H) Self.
     
-    Global Instance AssociatedFunction_from_cargo_metadata :
+    Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
       Notation.DoubleColon Self "from_cargo_metadata" := {
       Notation.double_colon := from_cargo_metadata;
     }.
     
-    Definition all_contracts_to_build
-        (self : ref Self)
-        : M (alloc.vec.Vec alloc.string.String) :=
-      let* all_manifests :=
-        let* α0 := self.["root_package"].["iter"] in
-        let* α1 := α0.["cloned"] in
-        α1.["collect"] in
-      let* _ :=
-        let* α0 := self.["contract_dependencies"].["clone"] in
-        all_manifests.["append"] (addr_of α0) in
-      Pure all_manifests.
+    Parameter all_contracts_to_build : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (alloc.vec.Vec alloc.string.String).
     
-    Global Instance Method_all_contracts_to_build :
+    Global Instance Method_all_contracts_to_build `{H : State.Trait} :
       Notation.Dot "all_contracts_to_build" := {
       Notation.dot := all_contracts_to_build;
     }.
   End Impl_ink_e2e_macro_codegen_ContractManifests.
   
-  Definition build_contract
-      (path_to_cargo_toml : ref str)
-      : M alloc.string.String :=
-    let* manifest_path :=
-      let* α0 :=
-        contract_build.workspace.manifest.ManifestPath::["new"]
-          path_to_cargo_toml in
-      α0.["unwrap_or_else"]
-        (fun err =>
-          let* α0 :=
-            format_argument::["new_display"] (addr_of path_to_cargo_toml) in
-          let* α1 := format_argument::["new_display"] (addr_of err) in
-          let* α2 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Invalid manifest path "; ": " ])
-              (addr_of [ α0; α1 ]) in
-          core.panicking.panic_fmt α2) in
-    let* args :=
-      let* α0 := contract_build.args.Features::["default"]  in
-      let* α1 := contract_build.args.UnstableFlags::["default"]  in
-      let* α2 := contract_build.wasm_opt.OptimizationPasses::["default"]  in
-      Pure
-        {|
-          contract_build.ExecuteArgs.manifest_path := manifest_path;
-          contract_build.ExecuteArgs.verbosity :=
-            contract_build.args.Verbosity.Default;
-          contract_build.ExecuteArgs.build_mode :=
-            contract_build.args.BuildMode.Debug;
-          contract_build.ExecuteArgs.features := α0;
-          contract_build.ExecuteArgs.network :=
-            contract_build.args.Network.Online;
-          contract_build.ExecuteArgs.build_artifact :=
-            contract_build.args.BuildArtifacts.CodeOnly;
-          contract_build.ExecuteArgs.unstable_flags := α1;
-          contract_build.ExecuteArgs.optimization_passes :=
-            core.option.Option.Some α2;
-          contract_build.ExecuteArgs.keep_debug_symbols := false;
-          contract_build.ExecuteArgs.lint := false;
-          contract_build.ExecuteArgs.output_type :=
-            contract_build.args.OutputType.HumanReadable;
-          contract_build.ExecuteArgs.skip_wasm_validation := false;
-          contract_build.ExecuteArgs.target := contract_build.args.Target.Wasm;
-        |} in
-    let* α0 := contract_build.execute args in
-    match α0 with
-    | core.result.Result.Ok build_result =>
-      let* α0 :=
-        build_result.["dest_wasm"].["expect"]
-          "Wasm code artifact not generated" in
-      let* α1 := α0.["canonicalize"] in
-      let* α2 := α1.["expect"] "Invalid dest bundle path" in
-      let* α3 := α2.["to_string_lossy"] in
-      α3.["into"]
-    | core.result.Result.Err err =>
-      let* α0 :=
-        format_argument::["new_display"] (addr_of path_to_cargo_toml) in
-      let* α1 := format_argument::["new_display"] (addr_of err) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "contract build for "; " failed: " ])
-          (addr_of [ α0; α1 ]) in
-      core.panicking.panic_fmt α2
-    end.
+  Parameter build_contract : forall `{H : State.Trait}, ref str
+      -> M (H := H) alloc.string.String.
 End codegen.
 
-Definition BUILD_ONCE : std.sync.once.Once :=
-  run (std.sync.once.Once::["new"] ).
+Definition BUILD_ONCE `{H : State.Trait} : std.sync.once.Once :=
+  run (std.sync.once.Once::["new"]).
 
 Definition
-    ALREADY_BUILT_CONTRACTS :
+    ALREADY_BUILT_CONTRACTS
+    `{H : State.Trait} :
     std.thread.local.LocalKey
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -893,65 +149,33 @@ Definition
     (std.thread.local.LocalKey::["new"]
       ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
 
-Definition __init
-    
-    :
-      M
+Parameter __init : forall `{H : State.Trait}, unit
+    ->
+      M (H := H)
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
             alloc.string.String
-            alloc.string.String)) :=
-  let* α0 := std.collections.hash.map.HashMap::["new"]  in
-  core.cell.RefCell::["new"] α0.
+            alloc.string.String)).
 
-Definition __getit
-    (init
-      :
-      core.option.Option
+Parameter __getit : forall `{H : State.Trait}, core.option.Option
         (mut_ref
           (core.option.Option
             (core.cell.RefCell
               (std.collections.hash.map.HashMap
                 alloc.string.String
-                alloc.string.String)))))
-    :
-      M
+                alloc.string.String))))
+    ->
+      M (H := H)
         (core.option.Option
           (ref
             (core.cell.RefCell
               (std.collections.hash.map.HashMap
                 alloc.string.String
-                alloc.string.String)))) :=
-  ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit.__KEY.["get"]
-    (fun  =>
-      let* _ :=
-        let* α0 := let_if core.option.Option.Some init := init in
-        if (α0 : bool) then
-          let* α0 := init.["take"] in
-          let* α1 := let_if core.option.Option.Some value := α0 in
-          if (α1 : bool) then
-            let* _ := Return value in
-            Pure tt
-          else
-            if (true : bool) then
-              let* _ :=
-                let* α0 :=
-                  format_arguments::["new_v1"]
-                    (addr_of
-                      [
-                        "internal error: entered unreachable code: missing default value"
-                      ])
-                    (addr_of [ ]) in
-                core.panicking.panic_fmt α0 in
-              Pure tt
-            else
-              Pure tt
-        else
-          Pure tt in
-      ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__init ).
+                alloc.string.String)))).
 
 Definition
-    __KEY :
+    __KEY
+    `{H : State.Trait} :
     std.sys.common.thread_local.fast_local.Key
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
@@ -962,32 +186,19 @@ Definition
           (core.cell.RefCell
             (std.collections.hash.map.HashMap
               alloc.string.String
-              alloc.string.String)))::["new"]
-      ).
+              alloc.string.String)))::["new"]).
 
-Definition already_built_contracts
-    
-    :
-      M
+Parameter already_built_contracts : forall `{H : State.Trait}, unit
+    ->
+      M (H := H)
         (std.collections.hash.map.HashMap
           alloc.string.String
-          alloc.string.String) :=
-  ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.["with"]
-    (fun already_built =>
-      let* α0 := already_built.["borrow"] in
-      α0.["clone"]).
+          alloc.string.String).
 
-Definition set_already_built_contracts
-    (hash_map
-      :
-      std.collections.hash.map.HashMap alloc.string.String alloc.string.String)
-    : M unit :=
-  let* _ :=
-    ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.["with"]
-      (fun metadata_paths =>
-        let* _ := assign metadata_paths.["borrow_mut"].["deref"] hash_map in
-        Pure tt) in
-  Pure tt.
+Parameter set_already_built_contracts : forall
+      `{H : State.Trait},
+      std.collections.hash.map.HashMap alloc.string.String alloc.string.String
+    -> M (H := H) unit.
 
 Module InkE2ETest.
   Record t : Set := {
@@ -1003,654 +214,33 @@ Definition InkE2ETest : Set := InkE2ETest.t.
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   Definition Self := ink_e2e_macro.codegen.InkE2ETest.
   
-  Definition from
-      (original : ink_e2e_macro.ir.InkE2ETest)
-      : M ink_e2e_macro.codegen.InkE2ETest :=
-    Pure {| ink_e2e_macro.codegen.InkE2ETest.test := original; |}.
+  Parameter from : forall `{H : State.Trait}, ink_e2e_macro.ir.InkE2ETest
+      -> M (H := H) ink_e2e_macro.codegen.InkE2ETest.
   
-  Global Instance AssociatedFunction_from :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I :
       core.convert.From.Trait Self (T := ink_e2e_macro.ir.InkE2ETest) := {
-    core.convert.From.from := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
 
 Module Impl_ink_e2e_macro_codegen_InkE2ETest_2.
   Definition Self := ink_e2e_macro.codegen.InkE2ETest.
   
-  Definition generate_code (self : ref Self) : M proc_macro2.TokenStream :=
-    let item_fn := addr_of self.["test"].["item_fn"].["item_fn"] in
-    let fn_name := addr_of item_fn.["sig"].["ident"] in
-    let block := addr_of item_fn.["block"] in
-    let fn_return_type := addr_of item_fn.["sig"].["output"] in
-    let vis := addr_of item_fn.["vis"] in
-    let attrs := addr_of item_fn.["attrs"] in
-    let* ret :=
-      match fn_return_type with
-      | syn.ty.ReturnType.Default => proc_macro2.TokenStream::["new"] 
-      | syn.ty.ReturnType.Type rarrow ret_type =>
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ :=
-          quote.to_tokens.ToTokens.to_tokens (addr_of rarrow) (addr_of _s) in
-        let* _ :=
-          quote.to_tokens.ToTokens.to_tokens (addr_of ret_type) (addr_of _s) in
-        Pure _s
-      end in
-    let* environment :=
-      let* α0 := self.["test"].["config"].["environment"] in
-      α0.["unwrap_or_else"]
-        (fun  =>
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "ink" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "env" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ :=
-            quote.__private.push_ident (addr_of _s) "DefaultEnvironment" in
-          syn.parse_quote.parse _s) in
-    let* contract_manifests :=
-      ink_e2e_macro.codegen.ContractManifests::["from_cargo_metadata"]  in
-    let* contracts_to_build_and_import :=
-      let* α0 := self.["test"].["config"].["additional_contracts"] in
-      let* α1 := α0.["is_empty"] in
-      if (α1 : bool) then
-        contract_manifests.["all_contracts_to_build"]
-      else
-        let* additional_contracts :=
-          self.["test"].["config"].["additional_contracts"] in
-        let* contracts_to_build_and_import :=
-          let* α0 := contract_manifests.["root_package"].["iter"] in
-          let* α1 := α0.["cloned"] in
-          α1.["collect"] in
-        let* _ :=
-          contracts_to_build_and_import.["append"]
-            (addr_of additional_contracts) in
-        Pure contracts_to_build_and_import in
-    let* already_built_contracts :=
-      ink_e2e_macro.codegen.already_built_contracts  in
-    let* _ :=
-      let* α0 := already_built_contracts.["is_empty"] in
-      if (α0 : bool) then
-        let* _ :=
-          ink_e2e_macro.codegen.BUILD_ONCE.["call_once"]
-            (fun  =>
-              let* _ := tracing_subscriber.fmt.init  in
-              let* _ :=
-                let* α0 := LangItem contracts_to_build_and_import in
-                match α0 with
-                | iter =>
-                  loop
-                    let* _ :=
-                      let* α0 := LangItem (addr_of iter) in
-                      match α0 with
-                      | None => Pure Break
-                      | Some {| Some.0 := manifest_path; |} =>
-                        let* dest_wasm :=
-                          ink_e2e_macro.codegen.build_contract
-                            (addr_of manifest_path) in
-                        let* _ :=
-                          already_built_contracts.["insert"]
-                            manifest_path
-                            dest_wasm in
-                        Pure tt
-                      end in
-                    Pure tt
-                    from
-                    for
-                end in
-              let* _ :=
-                let* α0 := already_built_contracts.["clone"] in
-                ink_e2e_macro.codegen.set_already_built_contracts α0 in
-              Pure tt) in
-        Pure tt
-      else
-        let* α0 := already_built_contracts.["is_empty"] in
-        let* α1 := α0.["not"] in
-        if (α1 : bool) then
-          let* _ :=
-            let* α0 := LangItem contracts_to_build_and_import in
-            match α0 with
-            | iter =>
-              loop
-                let* _ :=
-                  let* α0 := LangItem (addr_of iter) in
-                  match α0 with
-                  | None => Pure Break
-                  | Some {| Some.0 := manifest_path; |} =>
-                    let* α0 :=
-                      already_built_contracts.["get"] (addr_of manifest_path) in
-                    let* α1 := α0.["is_none"] in
-                    if (α1 : bool) then
-                      let* dest_wasm :=
-                        ink_e2e_macro.codegen.build_contract
-                          (addr_of manifest_path) in
-                      let* _ :=
-                        already_built_contracts.["insert"]
-                          manifest_path
-                          dest_wasm in
-                      Pure tt
-                    else
-                      Pure tt
-                  end in
-                Pure tt
-                from
-                for
-            end in
-          let* _ :=
-            let* α0 := already_built_contracts.["clone"] in
-            ink_e2e_macro.codegen.set_already_built_contracts α0 in
-          Pure tt
-        else
-          Pure tt in
-    let* _ :=
-      let* α0 := already_built_contracts.["is_empty"] in
-      let* α1 := α0.["not"] in
-      let* α2 := α1.["not"] in
-      if (α2 : bool) then
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "built contract artifacts must exist here" ]) in
-        core.panicking.panic_fmt α0
-      else
-        Pure tt in
-    let* contracts :=
-      let* α0 := already_built_contracts.["values"] in
-      α0.["map"]
-        (fun wasm_path =>
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ :=
-            quote.to_tokens.ToTokens.to_tokens
-              (addr_of wasm_path)
-              (addr_of _s) in
-          Pure _s) in
-    let* contracts_node :=
-      core.option.Option.None.["unwrap_or"]
-        ink_e2e_macro.codegen.generate_code.DEFAULT_CONTRACTS_NODE in
-    let* _ :=
-      let* α0 := which.which contracts_node in
-      let* α1 := α0.["is_err"] in
-      if (α1 : bool) then
-        let* α0 :=
-          contracts_node.["eq"]
-            ink_e2e_macro.codegen.generate_code.DEFAULT_CONTRACTS_NODE in
-        if (α0 : bool) then
-          let* α0 :=
-            format_argument::["new_display"]
-              (addr_of
-                ink_e2e_macro.codegen.generate_code.DEFAULT_CONTRACTS_NODE) in
-          let* α1 :=
-            format_placeholder::["new"]
-              0
-              " "%char
-              format_alignment::["Unknown"]
-              0
-              format_count::["Implied"]
-              format_count::["Implied"] in
-          let* α2 :=
-            format_placeholder::["new"]
-              0
-              " "%char
-              format_alignment::["Unknown"]
-              0
-              format_count::["Implied"]
-              format_count::["Implied"] in
-          let* α3 := format_unsafe_arg::["new"]  in
-          let* α4 :=
-            format_arguments::["new_v1_formatted"]
-              (addr_of
-                [
-                  "The '";
-                  "' executable was not found. Install '";
-                  "' on the PATH, or specify the `CONTRACTS_NODE` environment variable."
-                ])
-              (addr_of [ α0 ])
-              (addr_of [ α1; α2 ])
-              α3 in
-          core.panicking.panic_fmt α4
-        else
-          let* α0 :=
-            format_argument::["new_display"] (addr_of contracts_node) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of
-                [ "The contracts node executable '"; "' was not found." ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1
-      else
-        Pure tt in
-    let* _s := proc_macro2.TokenStream::["new"]  in
-    let* _ :=
-      let has_iter := quote.__private.ThereIsNoIteratorInRepetition.Build in
-      let* '(attrs, i) := attrs.["quote_into_iter"] in
-      let* has_iter := has_iter.["bitor"] i in
-      let _ := has_iter in
-      loop
-        if (true : bool) then
-          let* attrs :=
-            let* α0 := attrs.["next"] in
-            match α0 with
-            | core.option.Option.Some _x =>
-              Pure (quote.__private.RepInterp.Build_t _x)
-            | core.option.Option.None => Pure Break
-            end in
-          let* _ :=
-            quote.to_tokens.ToTokens.to_tokens (addr_of attrs) (addr_of _s) in
-          Pure tt
-        else
-          let _ := Break in
-          Pure tt
-        from
-        while in
-    let* _ := quote.__private.push_pound (addr_of _s) in
-    let* _ :=
-      let* _s := proc_macro2.TokenStream::["new"]  in
-      let* _ := quote.__private.push_ident (addr_of _s) "test" in
-      quote.__private.push_group
-        (addr_of _s)
-        proc_macro2.Delimiter.Bracket
-        _s in
-    let* _ := quote.to_tokens.ToTokens.to_tokens (addr_of vis) (addr_of _s) in
-    let* _ := quote.__private.push_ident (addr_of _s) "fn" in
-    let* _ :=
-      quote.to_tokens.ToTokens.to_tokens (addr_of fn_name) (addr_of _s) in
-    let* _ :=
-      let* α0 := proc_macro2.TokenStream::["new"]  in
-      quote.__private.push_group
-        (addr_of _s)
-        proc_macro2.Delimiter.Parenthesis
-        α0 in
-    let* _ := quote.to_tokens.ToTokens.to_tokens (addr_of ret) (addr_of _s) in
-    let* _ :=
-      let* _s := proc_macro2.TokenStream::["new"]  in
-      let* _ := quote.__private.push_ident (addr_of _s) "use" in
-      let* _ := quote.__private.push_colon2 (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-      let* _ := quote.__private.push_colon2 (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "log_info" in
-      let* _ := quote.__private.push_semi (addr_of _s) in
-      let* _ := quote.__private.push_colon2 (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-      let* _ := quote.__private.push_colon2 (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "LOG_PREFIX" in
-      let* _ := quote.__private.push_dot (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "with" in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.push_or (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "log_prefix" in
-        let* _ := quote.__private.push_or (addr_of _s) in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_ident (addr_of _s) "let" in
-          let* _ := quote.__private.push_ident (addr_of _s) "str" in
-          let* _ := quote.__private.push_eq (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "format" in
-          let* _ := quote.__private.push_bang (addr_of _s) in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.parse (addr_of _s) ""test: {}"" in
-            let* _ := quote.__private.push_comma (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "stringify" in
-            let* _ := quote.__private.push_bang (addr_of _s) in
-            let* _ :=
-              let* _s := proc_macro2.TokenStream::["new"]  in
-              let* _ :=
-                quote.to_tokens.ToTokens.to_tokens
-                  (addr_of fn_name)
-                  (addr_of _s) in
-              quote.__private.push_group
-                (addr_of _s)
-                proc_macro2.Delimiter.Parenthesis
-                _s in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          let* _ := quote.__private.push_semi (addr_of _s) in
-          let* _ := quote.__private.push_star (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "log_prefix" in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "borrow_mut" in
-          let* _ :=
-            let* α0 := proc_macro2.TokenStream::["new"]  in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              α0 in
-          let* _ := quote.__private.push_eq (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "String" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "from" in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ := quote.__private.push_ident (addr_of _s) "str" in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          let* _ := quote.__private.push_semi (addr_of _s) in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Brace
-            _s in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Parenthesis
-          _s in
-      let* _ := quote.__private.push_semi (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "log_info" in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.parse (addr_of _s) ""setting up e2e test"" in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Parenthesis
-          _s in
-      let* _ := quote.__private.push_semi (addr_of _s) in
-      let* _ := quote.__private.push_colon2 (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-      let* _ := quote.__private.push_colon2 (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "INIT" in
-      let* _ := quote.__private.push_dot (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "call_once" in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.push_or_or (addr_of _s) in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ :=
-            quote.__private.push_ident (addr_of _s) "tracing_subscriber" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "fmt" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "init" in
-          let* _ :=
-            let* α0 := proc_macro2.TokenStream::["new"]  in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              α0 in
-          let* _ := quote.__private.push_semi (addr_of _s) in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Brace
-            _s in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Parenthesis
-          _s in
-      let* _ := quote.__private.push_semi (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "log_info" in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.parse (addr_of _s) ""creating new client"" in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Parenthesis
-          _s in
-      let* _ := quote.__private.push_semi (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "let" in
-      let* _ := quote.__private.push_ident (addr_of _s) "run" in
-      let* _ := quote.__private.push_eq (addr_of _s) in
-      let* _ := quote.__private.push_ident (addr_of _s) "async" in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.push_ident (addr_of _s) "let" in
-        let* _ := quote.__private.push_ident (addr_of _s) "node_proc" in
-        let* _ := quote.__private.push_eq (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "TestNodeProcess" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_lt (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "PolkadotConfig" in
-        let* _ := quote.__private.push_gt (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "build" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ :=
-            quote.to_tokens.ToTokens.to_tokens
-              (addr_of contracts_node)
-              (addr_of _s) in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "spawn" in
-        let* _ :=
-          let* α0 := proc_macro2.TokenStream::["new"]  in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            α0 in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "await" in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "unwrap_or_else" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_or (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "err" in
-          let* _ := quote.__private.push_or (addr_of _s) in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "core" in
-          let* _ := quote.__private.push_colon2 (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "panic" in
-          let* _ := quote.__private.push_bang (addr_of _s) in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ :=
-              quote.__private.parse
-                (addr_of _s)
-                ""Error spawning substrate-contracts-node: {:?}"" in
-            let* _ := quote.__private.push_comma (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "err" in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "let" in
-        let* _ := quote.__private.push_ident (addr_of _s) "mut" in
-        let* _ := quote.__private.push_ident (addr_of _s) "client" in
-        let* _ := quote.__private.push_eq (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "Client" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_lt (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "PolkadotConfig" in
-        let* _ := quote.__private.push_comma (addr_of _s) in
-        let* _ :=
-          quote.to_tokens.ToTokens.to_tokens
-            (addr_of environment)
-            (addr_of _s) in
-        let* _ := quote.__private.push_gt (addr_of _s) in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "new" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_ident (addr_of _s) "node_proc" in
-          let* _ := quote.__private.push_dot (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "client" in
-          let* _ :=
-            let* α0 := proc_macro2.TokenStream::["new"]  in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              α0 in
-          let* _ := quote.__private.push_comma (addr_of _s) in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ :=
-              let _i := 0 in
-              let has_iter :=
-                quote.__private.ThereIsNoIteratorInRepetition.Build in
-              let* '(contracts, i) := contracts.["quote_into_iter"] in
-              let* has_iter := has_iter.["bitor"] i in
-              let _ := has_iter in
-              loop
-                if (true : bool) then
-                  let* contracts :=
-                    let* α0 := contracts.["next"] in
-                    match α0 with
-                    | core.option.Option.Some _x =>
-                      Pure (quote.__private.RepInterp.Build_t _x)
-                    | core.option.Option.None => Pure Break
-                    end in
-                  let* _ :=
-                    let* α0 := _i.["gt"] 0 in
-                    if (α0 : bool) then
-                      let* _ := quote.__private.push_comma (addr_of _s) in
-                      Pure tt
-                    else
-                      Pure tt in
-                  let* _ := _i.["add_assign"] 1 in
-                  let* _ :=
-                    quote.to_tokens.ToTokens.to_tokens
-                      (addr_of contracts)
-                      (addr_of _s) in
-                  Pure tt
-                else
-                  let _ := Break in
-                  Pure tt
-                from
-                while in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Bracket
-              _s in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "await" in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "let" in
-        let* _ := quote.__private.push_ident (addr_of _s) "__ret" in
-        let* _ := quote.__private.push_eq (addr_of _s) in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ :=
-            quote.to_tokens.ToTokens.to_tokens (addr_of block) (addr_of _s) in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Brace
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "__ret" in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Brace
-          _s in
-      let* _ := quote.__private.push_semi (addr_of _s) in
-      let* _ :=
-        let* _s := proc_macro2.TokenStream::["new"]  in
-        let* _ := quote.__private.push_ident (addr_of _s) "return" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "ink_e2e" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "tokio" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "runtime" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "Builder" in
-        let* _ := quote.__private.push_colon2 (addr_of _s) in
-        let* _ :=
-          quote.__private.push_ident (addr_of _s) "new_current_thread" in
-        let* _ :=
-          let* α0 := proc_macro2.TokenStream::["new"]  in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            α0 in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "enable_all" in
-        let* _ :=
-          let* α0 := proc_macro2.TokenStream::["new"]  in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            α0 in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "build" in
-        let* _ :=
-          let* α0 := proc_macro2.TokenStream::["new"]  in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            α0 in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "unwrap_or_else" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_or (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "err" in
-          let* _ := quote.__private.push_or (addr_of _s) in
-          let* _ := quote.__private.push_ident (addr_of _s) "panic" in
-          let* _ := quote.__private.push_bang (addr_of _s) in
-          let* _ :=
-            let* _s := proc_macro2.TokenStream::["new"]  in
-            let* _ :=
-              quote.__private.parse
-                (addr_of _s)
-                ""Failed building the Runtime: {}"" in
-            let* _ := quote.__private.push_comma (addr_of _s) in
-            let* _ := quote.__private.push_ident (addr_of _s) "err" in
-            quote.__private.push_group
-              (addr_of _s)
-              proc_macro2.Delimiter.Parenthesis
-              _s in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_dot (addr_of _s) in
-        let* _ := quote.__private.push_ident (addr_of _s) "block_on" in
-        let* _ :=
-          let* _s := proc_macro2.TokenStream::["new"]  in
-          let* _ := quote.__private.push_ident (addr_of _s) "run" in
-          quote.__private.push_group
-            (addr_of _s)
-            proc_macro2.Delimiter.Parenthesis
-            _s in
-        let* _ := quote.__private.push_semi (addr_of _s) in
-        quote.__private.push_group
-          (addr_of _s)
-          proc_macro2.Delimiter.Brace
-          _s in
-      quote.__private.push_group (addr_of _s) proc_macro2.Delimiter.Brace _s in
-    Pure _s.
+  Parameter generate_code : forall `{H : State.Trait}, ref Self
+      -> M (H := H) proc_macro2.TokenStream.
   
-  Global Instance Method_generate_code : Notation.Dot "generate_code" := {
+  Global Instance Method_generate_code `{H : State.Trait} :
+    Notation.Dot "generate_code" := {
     Notation.dot := generate_code;
   }.
 End Impl_ink_e2e_macro_codegen_InkE2ETest_2.
 
-Definition DEFAULT_CONTRACTS_NODE : ref str :=
+Definition DEFAULT_CONTRACTS_NODE `{H : State.Trait} : ref str :=
   run (Pure "substrate-contracts-node").
 
 Module ContractManifests.
@@ -1672,158 +262,54 @@ Definition ContractManifests : Set := ContractManifests.t.
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "ContractManifests"
-      "root_package"
-      (addr_of self.["root_package"])
-      "contract_dependencies"
-      (addr_of (addr_of self.["contract_dependencies"])).
+  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+    string -> core_option_Option_alloc_string_String -> 
+    string -> alloc_vec_Vec_alloc_string_String -> 
+    M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field2_finish" := {
+    Notation.double_colon := debug_struct_field2_finish; }.
+  
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
+  
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
 
 Module Impl_ink_e2e_macro_codegen_ContractManifests_2.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
   
-  Definition from_cargo_metadata  : M Self :=
-    let* cmd := cargo_metadata.MetadataCommand::["new"]  in
-    let* metadata :=
-      let* α0 := cmd.["exec"] in
-      α0.["unwrap_or_else"]
-        (fun err =>
-          let* α0 := format_argument::["new_display"] (addr_of err) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Error invoking `cargo metadata`: " ])
-              (addr_of [ α0 ]) in
-          core.panicking.panic_fmt α1) in
-    let* root_package :=
-      let* α0 := metadata.["resolve"].["as_ref"] in
-      let* α1 := α0.["and_then"] (fun resolve => resolve.["root"].["as_ref"]) in
-      let* α2 :=
-        α1.["and_then"]
-          (fun root_package_id =>
-            let* α0 := metadata.["packages"].["iter"] in
-            α0.["find"]
-              (fun package =>
-                (addr_of package.["id"]).["eq"] root_package_id)) in
-      α2.["and_then"]
-        ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
-    let* contract_dependencies :=
-      let* α0 := metadata.["packages"].["iter"] in
-      let* α1 :=
-        α0.["filter_map"]
-          ink_e2e_macro.codegen.from_cargo_metadata.maybe_contract_package in
-      α1.["collect"] in
-    Pure
-      {|
-        Self.root_package := root_package;
-        Self.contract_dependencies := contract_dependencies;
-      |}.
+  Parameter from_cargo_metadata : forall `{H : State.Trait}, unit
+      -> M (H := H) Self.
   
-  Global Instance AssociatedFunction_from_cargo_metadata :
+  Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
     Notation.DoubleColon Self "from_cargo_metadata" := {
     Notation.double_colon := from_cargo_metadata;
   }.
   
-  Definition all_contracts_to_build
-      (self : ref Self)
-      : M (alloc.vec.Vec alloc.string.String) :=
-    let* all_manifests :=
-      let* α0 := self.["root_package"].["iter"] in
-      let* α1 := α0.["cloned"] in
-      α1.["collect"] in
-    let* _ :=
-      let* α0 := self.["contract_dependencies"].["clone"] in
-      all_manifests.["append"] (addr_of α0) in
-    Pure all_manifests.
+  Parameter all_contracts_to_build : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (alloc.vec.Vec alloc.string.String).
   
-  Global Instance Method_all_contracts_to_build :
+  Global Instance Method_all_contracts_to_build `{H : State.Trait} :
     Notation.Dot "all_contracts_to_build" := {
     Notation.dot := all_contracts_to_build;
   }.
 End Impl_ink_e2e_macro_codegen_ContractManifests_2.
 
-Definition maybe_contract_package
-    (package : ref cargo_metadata.Package)
-    : M (core.option.Option alloc.string.String) :=
-  let* α0 := package.["features"].["iter"] in
-  let* α1 := α0.["any"] (fun (feat, _) => feat.["eq"] "ink-as-dependency") in
-  α1.["then"] (fun  => package.["manifest_path"].["to_string"]).
+Parameter maybe_contract_package : forall `{H : State.Trait}, ref
+        cargo_metadata.Package
+    -> M (H := H) (core.option.Option alloc.string.String).
 
-Definition build_contract
-    (path_to_cargo_toml : ref str)
-    : M alloc.string.String :=
-  let* manifest_path :=
-    let* α0 :=
-      contract_build.workspace.manifest.ManifestPath::["new"]
-        path_to_cargo_toml in
-    α0.["unwrap_or_else"]
-      (fun err =>
-        let* α0 :=
-          format_argument::["new_display"] (addr_of path_to_cargo_toml) in
-        let* α1 := format_argument::["new_display"] (addr_of err) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Invalid manifest path "; ": " ])
-            (addr_of [ α0; α1 ]) in
-        core.panicking.panic_fmt α2) in
-  let* args :=
-    let* α0 := contract_build.args.Features::["default"]  in
-    let* α1 := contract_build.args.UnstableFlags::["default"]  in
-    let* α2 := contract_build.wasm_opt.OptimizationPasses::["default"]  in
-    Pure
-      {|
-        contract_build.ExecuteArgs.manifest_path := manifest_path;
-        contract_build.ExecuteArgs.verbosity :=
-          contract_build.args.Verbosity.Default;
-        contract_build.ExecuteArgs.build_mode :=
-          contract_build.args.BuildMode.Debug;
-        contract_build.ExecuteArgs.features := α0;
-        contract_build.ExecuteArgs.network :=
-          contract_build.args.Network.Online;
-        contract_build.ExecuteArgs.build_artifact :=
-          contract_build.args.BuildArtifacts.CodeOnly;
-        contract_build.ExecuteArgs.unstable_flags := α1;
-        contract_build.ExecuteArgs.optimization_passes :=
-          core.option.Option.Some α2;
-        contract_build.ExecuteArgs.keep_debug_symbols := false;
-        contract_build.ExecuteArgs.lint := false;
-        contract_build.ExecuteArgs.output_type :=
-          contract_build.args.OutputType.HumanReadable;
-        contract_build.ExecuteArgs.skip_wasm_validation := false;
-        contract_build.ExecuteArgs.target := contract_build.args.Target.Wasm;
-      |} in
-  let* α0 := contract_build.execute args in
-  match α0 with
-  | core.result.Result.Ok build_result =>
-    let* α0 :=
-      build_result.["dest_wasm"].["expect"]
-        "Wasm code artifact not generated" in
-    let* α1 := α0.["canonicalize"] in
-    let* α2 := α1.["expect"] "Invalid dest bundle path" in
-    let* α3 := α2.["to_string_lossy"] in
-    α3.["into"]
-  | core.result.Result.Err err =>
-    let* α0 := format_argument::["new_display"] (addr_of path_to_cargo_toml) in
-    let* α1 := format_argument::["new_display"] (addr_of err) in
-    let* α2 :=
-      format_arguments::["new_v1"]
-        (addr_of [ "contract build for "; " failed: " ])
-        (addr_of [ α0; α1 ]) in
-    core.panicking.panic_fmt α2
-  end.
+Parameter build_contract : forall `{H : State.Trait}, ref str
+    -> M (H := H) alloc.string.String.
 
 Module config.
   Module E2EConfig.
@@ -1850,50 +336,42 @@ Module config.
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
-    Definition fmt
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field3_finish"]
-        f
-        "E2EConfig"
-        "whitelisted_attributes"
-        (addr_of self.["whitelisted_attributes"])
-        "additional_contracts"
-        (addr_of self.["additional_contracts"])
-        "environment"
-        (addr_of (addr_of self.["environment"])).
+    Parameter debug_struct_field3_finish : core.fmt.Formatter -> string -> 
+      string -> ink_ir_ir_utils_WhitelistedAttributes -> 
+      string -> alloc_vec_Vec_alloc_string_String -> 
+      string -> core_option_Option_syn_path_Path -> 
+      M (H := H) core.fmt.Result.
     
-    Global Instance Method_fmt : Notation.Dot "fmt" := {
+    Global Instance Deb_debug_struct_field3_finish : Notation.DoubleColon
+      core.fmt.Formatter "debug_struct_field3_finish" := {
+      Notation.double_colon := debug_struct_field3_finish; }.
+    
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
+    
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
     }.
   End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
-    Definition default  : M ink_e2e_macro.config.E2EConfig :=
-      let* α0 := core.default.Default.default  in
-      let* α1 := core.default.Default.default  in
-      let* α2 := core.default.Default.default  in
-      Pure
-        {|
-          ink_e2e_macro.config.E2EConfig.whitelisted_attributes := α0;
-          ink_e2e_macro.config.E2EConfig.additional_contracts := α1;
-          ink_e2e_macro.config.E2EConfig.environment := α2;
-        |}.
+    Parameter default : forall `{H : State.Trait}, unit
+        -> M (H := H) ink_e2e_macro.config.E2EConfig.
     
-    Global Instance AssociatedFunction_default :
+    Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
     Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default := default;
+      core.default.Default.default `{H : State.Trait} := default;
     }.
   End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   
@@ -1908,25 +386,16 @@ Module config.
   Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
-    Definition eq
-        (self : ref Self)
-        (other : ref ink_e2e_macro.config.E2EConfig)
-        : M bool :=
-      let* α0 :=
-        self.["whitelisted_attributes"].["eq"]
-          other.["whitelisted_attributes"] in
-      let* α1 :=
-        self.["additional_contracts"].["eq"] other.["additional_contracts"] in
-      let* α2 := α0.["andb"] α1 in
-      let* α3 := self.["environment"].["eq"] other.["environment"] in
-      α2.["andb"] α3.
+    Parameter eq : forall `{H : State.Trait}, ref Self->
+        ref ink_e2e_macro.config.E2EConfig
+        -> M (H := H) bool.
     
-    Global Instance Method_eq : Notation.Dot "eq" := {
+    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
     Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq := eq;
+      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
   
@@ -1940,13 +409,10 @@ Module config.
   Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
-    Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-      let _ := tt in
-      let _ := tt in
-      let _ := tt in
-      Pure tt.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+        -> M (H := H) unit.
     
-    Global Instance Method_assert_receiver_is_total_eq :
+    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
@@ -1960,150 +426,12 @@ Module config.
     
     Definition Error : Set := syn.error.Error.
     
-    Definition try_from
-        (args : ink_ir.ast.attr_args.AttributeArgs)
-        : M (core.result.Result Self ImplSelf.Error) :=
-      let* whitelisted_attributes :=
-        ink_ir.ir.utils.WhitelistedAttributes::["default"]  in
-      let additional_contracts := core.option.Option.None in
-      let environment := core.option.Option.None in
-      let* _ :=
-        let* α0 := args.["into_iter"] in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | iter =>
-          loop
-            let* _ :=
-              let* α0 := LangItem (addr_of iter) in
-              match α0 with
-              | None => Pure Break
-              | Some {| Some.0 := arg; |} =>
-                let* α0 := arg.["name"].["is_ident"] "keep_attr" in
-                if (α0 : bool) then
-                  let* _ :=
-                    let* α0 :=
-                      whitelisted_attributes.["parse_arg_value"]
-                        (addr_of arg) in
-                    let* α1 := LangItem α0 in
-                    match α1 with
-                    | Break {| Break.0 := residual; |} =>
-                      let* α0 := LangItem residual in
-                      Return α0
-                    | Continue {| Continue.0 := val; |} => Pure val
-                    end in
-                  Pure tt
-                else
-                  let* α0 := arg.["name"].["is_ident"] "additional_contracts" in
-                  if (α0 : bool) then
-                    let* _ :=
-                      let* α0 :=
-                        let_if
-                        core.option.Option.Some (_, ast)
-                        :=
-                        additional_contracts in
-                      if (α0 : bool) then
-                        let* α0 :=
-                          ink_ir.ir.utils.duplicate_config_err
-                            ast
-                            arg
-                            "additional_contracts"
-                            "E2E test" in
-                        Return (core.result.Result.Err α0)
-                      else
-                        Pure tt in
-                    let* α0 :=
-                      let_if
-                      ink_ir.ast.meta.MetaValue.Lit syn.lit.Lit.Str lit_str
-                      :=
-                      addr_of arg.["value"] in
-                    if (α0 : bool) then
-                      let* α0 := lit_str.["clone"] in
-                      assign
-                        additional_contracts
-                        (core.option.Option.Some (α0, arg))
-                    else
-                      let* α0 :=
-                        format_arguments::["new_const"]
-                          (addr_of
-                            [
-                              "expected a string literal for `additional_contracts` ink! E2E test configuration argument"
-                            ]) in
-                      let* α1 :=
-                        syn.error.Error::["new_spanned"] (addr_of arg) α0 in
-                      Return (core.result.Result.Err α1)
-                  else
-                    let* α0 := arg.["name"].["is_ident"] "environment" in
-                    if (α0 : bool) then
-                      let* _ :=
-                        let* α0 :=
-                          let_if
-                          core.option.Option.Some (_, ast)
-                          :=
-                          environment in
-                        if (α0 : bool) then
-                          let* α0 :=
-                            ink_ir.ir.utils.duplicate_config_err
-                              ast
-                              arg
-                              "environment"
-                              "E2E test" in
-                          Return (core.result.Result.Err α0)
-                        else
-                          Pure tt in
-                      let* α0 :=
-                        let_if
-                        ink_ir.ast.meta.MetaValue.Path path
-                        :=
-                        addr_of arg.["value"] in
-                      if (α0 : bool) then
-                        let* α0 := path.["clone"] in
-                        assign environment (core.option.Option.Some (α0, arg))
-                      else
-                        let* α0 :=
-                          format_arguments::["new_const"]
-                            (addr_of
-                              [
-                                "expected a path for `environment` ink! E2E test configuration argument"
-                              ]) in
-                        let* α1 :=
-                          syn.error.Error::["new_spanned"] (addr_of arg) α0 in
-                        Return (core.result.Result.Err α1)
-                    else
-                      let* α0 :=
-                        format_arguments::["new_const"]
-                          (addr_of
-                            [
-                              "encountered unknown or unsupported ink! configuration argument"
-                            ]) in
-                      let* α1 :=
-                        syn.error.Error::["new_spanned"] (addr_of arg) α0 in
-                      Return (core.result.Result.Err α1)
-              end in
-            Pure tt
-            from
-            for
-        end in
-      let* additional_contracts :=
-        let* α0 :=
-          additional_contracts.["map"]
-            (fun (value, _) =>
-              let* α0 := value.["value"] in
-              let* α1 := α0.["split"] " "%char in
-              let* α2 := α1.["map"] alloc.string.String::["from"] in
-              α2.["collect"]) in
-        α0.["unwrap_or_else"] alloc.vec.Vec::["new"] in
-      let* environment := environment.["map"] (fun (path, _) => Pure path) in
-      Pure
-        (core.result.Result.Ok
-          {|
-            ink_e2e_macro.config.E2EConfig.additional_contracts :=
-              additional_contracts;
-            ink_e2e_macro.config.E2EConfig.whitelisted_attributes :=
-              whitelisted_attributes;
-            ink_e2e_macro.config.E2EConfig.environment := environment;
-          |}).
+    Parameter try_from : forall
+          `{H : State.Trait},
+          ink_ir.ast.attr_args.AttributeArgs
+        -> M (H := H) (core.result.Result Self ImplSelf.Error).
     
-    Global Instance AssociatedFunction_try_from :
+    Global Instance AssociatedFunction_try_from `{H : State.Trait} :
       Notation.DoubleColon Self "try_from" := {
       Notation.double_colon := try_from;
     }.
@@ -2112,29 +440,26 @@ Module config.
         core.convert.TryFrom.Trait
           Self
           (T := ink_ir.ast.attr_args.AttributeArgs) := {
-      core.convert.TryFrom.try_from := try_from;
+      core.convert.TryFrom.try_from `{H : State.Trait} := try_from;
     }.
   End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
   
   Module Impl_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
-    Definition additional_contracts
-        (self : ref Self)
-        : M (alloc.vec.Vec alloc.string.String) :=
-      self.["additional_contracts"].["clone"].
+    Parameter additional_contracts : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (alloc.vec.Vec alloc.string.String).
     
-    Global Instance Method_additional_contracts :
+    Global Instance Method_additional_contracts `{H : State.Trait} :
       Notation.Dot "additional_contracts" := {
       Notation.dot := additional_contracts;
     }.
     
-    Definition environment
-        (self : ref Self)
-        : M (core.option.Option syn.path.Path) :=
-      self.["environment"].["clone"].
+    Parameter environment : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (core.option.Option syn.path.Path).
     
-    Global Instance Method_environment : Notation.Dot "environment" := {
+    Global Instance Method_environment `{H : State.Trait} :
+      Notation.Dot "environment" := {
       Notation.dot := environment;
     }.
   End Impl_ink_e2e_macro_config_E2EConfig.
@@ -2164,50 +489,42 @@ Definition E2EConfig : Set := E2EConfig.t.
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field3_finish"]
-      f
-      "E2EConfig"
-      "whitelisted_attributes"
-      (addr_of self.["whitelisted_attributes"])
-      "additional_contracts"
-      (addr_of self.["additional_contracts"])
-      "environment"
-      (addr_of (addr_of self.["environment"])).
+  Parameter debug_struct_field3_finish : core.fmt.Formatter -> string -> 
+    string -> ink_ir_ir_utils_WhitelistedAttributes -> 
+    string -> alloc_vec_Vec_alloc_string_String -> 
+    string -> core_option_Option_syn_path_Path -> 
+    M (H := H) core.fmt.Result.
   
-  Global Instance Method_fmt : Notation.Dot "fmt" := {
+  Global Instance Deb_debug_struct_field3_finish : Notation.DoubleColon
+    core.fmt.Formatter "debug_struct_field3_finish" := {
+    Notation.double_colon := debug_struct_field3_finish; }.
+  
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
+  
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
-  Definition default  : M ink_e2e_macro.config.E2EConfig :=
-    let* α0 := core.default.Default.default  in
-    let* α1 := core.default.Default.default  in
-    let* α2 := core.default.Default.default  in
-    Pure
-      {|
-        ink_e2e_macro.config.E2EConfig.whitelisted_attributes := α0;
-        ink_e2e_macro.config.E2EConfig.additional_contracts := α1;
-        ink_e2e_macro.config.E2EConfig.environment := α2;
-      |}.
+  Parameter default : forall `{H : State.Trait}, unit
+      -> M (H := H) ink_e2e_macro.config.E2EConfig.
   
-  Global Instance AssociatedFunction_default :
+  Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
   Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
+    core.default.Default.default `{H : State.Trait} := default;
   }.
 End Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
 
@@ -2221,24 +538,16 @@ End Impl_core_marker_StructuralPartialEq_for_ink_e2e_macro_config_E2EConfig.
 Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
-  Definition eq
-      (self : ref Self)
-      (other : ref ink_e2e_macro.config.E2EConfig)
-      : M bool :=
-    let* α0 :=
-      self.["whitelisted_attributes"].["eq"] other.["whitelisted_attributes"] in
-    let* α1 :=
-      self.["additional_contracts"].["eq"] other.["additional_contracts"] in
-    let* α2 := α0.["andb"] α1 in
-    let* α3 := self.["environment"].["eq"] other.["environment"] in
-    α2.["andb"] α3.
+  Parameter eq : forall `{H : State.Trait}, ref Self->
+      ref ink_e2e_macro.config.E2EConfig
+      -> M (H := H) bool.
   
-  Global Instance Method_eq : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
 
@@ -2252,13 +561,10 @@ End Impl_core_marker_StructuralEq_for_ink_e2e_macro_config_E2EConfig.
 Module Impl_core_cmp_Eq_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
-  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let _ := tt in
-    let _ := tt in
-    let _ := tt in
-    Pure tt.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+      -> M (H := H) unit.
   
-  Global Instance Method_assert_receiver_is_total_eq :
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
@@ -2272,149 +578,12 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
   
   Definition Error : Set := syn.error.Error.
   
-  Definition try_from
-      (args : ink_ir.ast.attr_args.AttributeArgs)
-      : M (core.result.Result Self ImplSelf.Error) :=
-    let* whitelisted_attributes :=
-      ink_ir.ir.utils.WhitelistedAttributes::["default"]  in
-    let additional_contracts := core.option.Option.None in
-    let environment := core.option.Option.None in
-    let* _ :=
-      let* α0 := args.["into_iter"] in
-      let* α1 := LangItem α0 in
-      match α1 with
-      | iter =>
-        loop
-          let* _ :=
-            let* α0 := LangItem (addr_of iter) in
-            match α0 with
-            | None => Pure Break
-            | Some {| Some.0 := arg; |} =>
-              let* α0 := arg.["name"].["is_ident"] "keep_attr" in
-              if (α0 : bool) then
-                let* _ :=
-                  let* α0 :=
-                    whitelisted_attributes.["parse_arg_value"] (addr_of arg) in
-                  let* α1 := LangItem α0 in
-                  match α1 with
-                  | Break {| Break.0 := residual; |} =>
-                    let* α0 := LangItem residual in
-                    Return α0
-                  | Continue {| Continue.0 := val; |} => Pure val
-                  end in
-                Pure tt
-              else
-                let* α0 := arg.["name"].["is_ident"] "additional_contracts" in
-                if (α0 : bool) then
-                  let* _ :=
-                    let* α0 :=
-                      let_if
-                      core.option.Option.Some (_, ast)
-                      :=
-                      additional_contracts in
-                    if (α0 : bool) then
-                      let* α0 :=
-                        ink_ir.ir.utils.duplicate_config_err
-                          ast
-                          arg
-                          "additional_contracts"
-                          "E2E test" in
-                      Return (core.result.Result.Err α0)
-                    else
-                      Pure tt in
-                  let* α0 :=
-                    let_if
-                    ink_ir.ast.meta.MetaValue.Lit syn.lit.Lit.Str lit_str
-                    :=
-                    addr_of arg.["value"] in
-                  if (α0 : bool) then
-                    let* α0 := lit_str.["clone"] in
-                    assign
-                      additional_contracts
-                      (core.option.Option.Some (α0, arg))
-                  else
-                    let* α0 :=
-                      format_arguments::["new_const"]
-                        (addr_of
-                          [
-                            "expected a string literal for `additional_contracts` ink! E2E test configuration argument"
-                          ]) in
-                    let* α1 :=
-                      syn.error.Error::["new_spanned"] (addr_of arg) α0 in
-                    Return (core.result.Result.Err α1)
-                else
-                  let* α0 := arg.["name"].["is_ident"] "environment" in
-                  if (α0 : bool) then
-                    let* _ :=
-                      let* α0 :=
-                        let_if
-                        core.option.Option.Some (_, ast)
-                        :=
-                        environment in
-                      if (α0 : bool) then
-                        let* α0 :=
-                          ink_ir.ir.utils.duplicate_config_err
-                            ast
-                            arg
-                            "environment"
-                            "E2E test" in
-                        Return (core.result.Result.Err α0)
-                      else
-                        Pure tt in
-                    let* α0 :=
-                      let_if
-                      ink_ir.ast.meta.MetaValue.Path path
-                      :=
-                      addr_of arg.["value"] in
-                    if (α0 : bool) then
-                      let* α0 := path.["clone"] in
-                      assign environment (core.option.Option.Some (α0, arg))
-                    else
-                      let* α0 :=
-                        format_arguments::["new_const"]
-                          (addr_of
-                            [
-                              "expected a path for `environment` ink! E2E test configuration argument"
-                            ]) in
-                      let* α1 :=
-                        syn.error.Error::["new_spanned"] (addr_of arg) α0 in
-                      Return (core.result.Result.Err α1)
-                  else
-                    let* α0 :=
-                      format_arguments::["new_const"]
-                        (addr_of
-                          [
-                            "encountered unknown or unsupported ink! configuration argument"
-                          ]) in
-                    let* α1 :=
-                      syn.error.Error::["new_spanned"] (addr_of arg) α0 in
-                    Return (core.result.Result.Err α1)
-            end in
-          Pure tt
-          from
-          for
-      end in
-    let* additional_contracts :=
-      let* α0 :=
-        additional_contracts.["map"]
-          (fun (value, _) =>
-            let* α0 := value.["value"] in
-            let* α1 := α0.["split"] " "%char in
-            let* α2 := α1.["map"] alloc.string.String::["from"] in
-            α2.["collect"]) in
-      α0.["unwrap_or_else"] alloc.vec.Vec::["new"] in
-    let* environment := environment.["map"] (fun (path, _) => Pure path) in
-    Pure
-      (core.result.Result.Ok
-        {|
-          ink_e2e_macro.config.E2EConfig.additional_contracts :=
-            additional_contracts;
-          ink_e2e_macro.config.E2EConfig.whitelisted_attributes :=
-            whitelisted_attributes;
-          ink_e2e_macro.config.E2EConfig.environment := environment;
-        |}).
+  Parameter try_from : forall
+        `{H : State.Trait},
+        ink_ir.ast.attr_args.AttributeArgs
+      -> M (H := H) (core.result.Result Self ImplSelf.Error).
   
-  Global Instance AssociatedFunction_try_from :
+  Global Instance AssociatedFunction_try_from `{H : State.Trait} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
   }.
@@ -2423,29 +592,26 @@ Module Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
       core.convert.TryFrom.Trait
         Self
         (T := ink_ir.ast.attr_args.AttributeArgs) := {
-    core.convert.TryFrom.try_from := try_from;
+    core.convert.TryFrom.try_from `{H : State.Trait} := try_from;
   }.
 End Impl_core_convert_TryFrom_for_ink_e2e_macro_config_E2EConfig.
 
 Module Impl_ink_e2e_macro_config_E2EConfig_2.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
-  Definition additional_contracts
-      (self : ref Self)
-      : M (alloc.vec.Vec alloc.string.String) :=
-    self.["additional_contracts"].["clone"].
+  Parameter additional_contracts : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (alloc.vec.Vec alloc.string.String).
   
-  Global Instance Method_additional_contracts :
+  Global Instance Method_additional_contracts `{H : State.Trait} :
     Notation.Dot "additional_contracts" := {
     Notation.dot := additional_contracts;
   }.
   
-  Definition environment
-      (self : ref Self)
-      : M (core.option.Option syn.path.Path) :=
-    self.["environment"].["clone"].
+  Parameter environment : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (core.option.Option syn.path.Path).
   
-  Global Instance Method_environment : Notation.Dot "environment" := {
+  Global Instance Method_environment `{H : State.Trait} :
+    Notation.Dot "environment" := {
     Notation.dot := environment;
   }.
 End Impl_ink_e2e_macro_config_E2EConfig_2.
@@ -2480,59 +646,27 @@ Module ir.
   Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
     Definition Self := ink_e2e_macro.ir.E2EFn.
     
-    Definition from (original : syn.item.ItemFn) : M ink_e2e_macro.ir.E2EFn :=
-      Pure {| ink_e2e_macro.ir.E2EFn.item_fn := original; |}.
+    Parameter from : forall `{H : State.Trait}, syn.item.ItemFn
+        -> M (H := H) ink_e2e_macro.ir.E2EFn.
     
-    Global Instance AssociatedFunction_from :
+    Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
     Global Instance I : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
-      core.convert.From.from := from;
+      core.convert.From.from `{H : State.Trait} := from;
     }.
   End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
   
   Module Impl_ink_e2e_macro_ir_InkE2ETest.
     Definition Self := ink_e2e_macro.ir.InkE2ETest.
     
-    Definition new
-        (attrs : proc_macro2.TokenStream)
-        (input : proc_macro2.TokenStream)
-        : M (core.result.Result Self syn.error.Error) :=
-      let* config :=
-        let* α0 := syn.parse2 attrs in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
-          Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
-        end in
-      let* e2e_config :=
-        let* α0 := ink_e2e_macro.config.E2EConfig::["try_from"] config in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
-          Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
-        end in
-      let* item_fn :=
-        let* α0 := syn.parse2 input in
-        let* α1 := LangItem α0 in
-        match α1 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
-          Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
-        end in
-      let* e2e_fn := ink_e2e_macro.ir.E2EFn::["from"] item_fn in
-      Pure
-        (core.result.Result.Ok
-          {| Self.item_fn := e2e_fn; Self.config := e2e_config; |}).
+    Parameter new : forall `{H : State.Trait}, proc_macro2.TokenStream->
+        proc_macro2.TokenStream
+        -> M (H := H) (core.result.Result Self syn.error.Error).
     
-    Global Instance AssociatedFunction_new :
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
@@ -2568,100 +702,45 @@ Definition E2EFn : Set := E2EFn.t.
 Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
   Definition Self := ink_e2e_macro.ir.E2EFn.
   
-  Definition from (original : syn.item.ItemFn) : M ink_e2e_macro.ir.E2EFn :=
-    Pure {| ink_e2e_macro.ir.E2EFn.item_fn := original; |}.
+  Parameter from : forall `{H : State.Trait}, syn.item.ItemFn
+      -> M (H := H) ink_e2e_macro.ir.E2EFn.
   
-  Global Instance AssociatedFunction_from :
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I : core.convert.From.Trait Self (T := syn.item.ItemFn) := {
-    core.convert.From.from := from;
+    core.convert.From.from `{H : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
 
 Module Impl_ink_e2e_macro_ir_InkE2ETest_2.
   Definition Self := ink_e2e_macro.ir.InkE2ETest.
   
-  Definition new
-      (attrs : proc_macro2.TokenStream)
-      (input : proc_macro2.TokenStream)
-      : M (core.result.Result Self syn.error.Error) :=
-    let* config :=
-      let* α0 := syn.parse2 attrs in
-      let* α1 := LangItem α0 in
-      match α1 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* e2e_config :=
-      let* α0 := ink_e2e_macro.config.E2EConfig::["try_from"] config in
-      let* α1 := LangItem α0 in
-      match α1 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* item_fn :=
-      let* α0 := syn.parse2 input in
-      let* α1 := LangItem α0 in
-      match α1 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
-        Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
-      end in
-    let* e2e_fn := ink_e2e_macro.ir.E2EFn::["from"] item_fn in
-    Pure
-      (core.result.Result.Ok
-        {| Self.item_fn := e2e_fn; Self.config := e2e_config; |}).
+  Parameter new : forall `{H : State.Trait}, proc_macro2.TokenStream->
+      proc_macro2.TokenStream
+      -> M (H := H) (core.result.Result Self syn.error.Error).
   
-  Global Instance AssociatedFunction_new : Notation.DoubleColon Self "new" := {
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
 End Impl_ink_e2e_macro_ir_InkE2ETest_2.
 
-Definition test
-    (attr : proc_macro.TokenStream)
-    (item : proc_macro.TokenStream)
-    : M proc_macro.TokenStream :=
-  let* α0 := attr.["into"] in
-  let* α1 := item.["into"] in
-  let* α2 := ink_e2e_macro.generate α0 α1 in
-  α2.["into"].
+Parameter test : forall `{H : State.Trait}, proc_macro.TokenStream->
+    proc_macro.TokenStream
+    -> M (H := H) proc_macro.TokenStream.
 
-Definition generate
-    (attr : proc_macro2.TokenStream)
-    (input : proc_macro2.TokenStream)
-    : M proc_macro2.TokenStream :=
-  let* α0 := ink_e2e_macro.generate_or_err attr input in
-  match α0 with
-  | core.result.Result.Ok tokens => Pure tokens
-  | core.result.Result.Err err => err.["to_compile_error"]
-  end.
+Parameter generate : forall `{H : State.Trait}, proc_macro2.TokenStream->
+    proc_macro2.TokenStream
+    -> M (H := H) proc_macro2.TokenStream.
 
-Definition generate_or_err
-    (attr : proc_macro2.TokenStream)
-    (input : proc_macro2.TokenStream)
-    : M (syn.error.Result proc_macro2.TokenStream) :=
-  let* test_definition :=
-    let* α0 := ink_e2e_macro.ir.InkE2ETest::["new"] attr input in
-    let* α1 := LangItem α0 in
-    match α1 with
-    | Break {| Break.0 := residual; |} =>
-      let* α0 := LangItem residual in
-      Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
-    end in
-  let* codegen := ink_e2e_macro.codegen.InkE2ETest::["from"] test_definition in
-  let* α0 := codegen.["generate_code"] in
-  Pure (core.result.Result.Ok α0).
+Parameter generate_or_err : forall `{H : State.Trait}, proc_macro2.TokenStream->
+    proc_macro2.TokenStream
+    -> M (H := H) (syn.error.Result proc_macro2.TokenStream).
 
-Definition _DECLS : ref Slice :=
+Definition _DECLS `{H : State.Trait} : ref Slice :=
   run
     (let* α0 :=
       proc_macro.bridge.client.ProcMacro::["attr"] "test" ink_e2e_macro.test in
