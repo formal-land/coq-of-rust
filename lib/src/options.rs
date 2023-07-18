@@ -6,6 +6,9 @@ pub struct CoqOfRustArgs {
     /// Axiomatize the definitions
     #[arg(long)]
     axiomatize: bool,
+    /// Reorder the definitions
+    #[arg(long)]
+    reorder: Vec<String>,
 }
 
 #[derive(Parser)]
@@ -20,6 +23,7 @@ pub struct Args {
 pub struct Options {
     pub(crate) in_cargo: bool,
     pub(crate) axiomatize: bool,
+    pub(crate) reorder: Vec<String>,
 }
 
 impl Options {
@@ -29,6 +33,7 @@ impl Options {
         Options {
             in_cargo: cargo_coq_of_rust,
             axiomatize: coq_of_rust.axiomatize,
+	    reorder: coq_of_rust.reorder,
         }
     }
 }

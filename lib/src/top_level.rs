@@ -18,7 +18,8 @@ use std::iter::repeat;
 use std::string::ToString;
 
 pub(crate) struct TopLevelOptions {
-    pub axiomatize: bool,
+    pub(crate) axiomatize: bool,
+    pub(crate) reorder: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -798,7 +799,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
             })
             .collect();
 
-    let order = vec!["foo", "main"];
+    let order = opts.reorder;
 
     results.sort_by(|a, b| {
         if !(matches!(a, TopLevelItem::Definition { .. }) &&

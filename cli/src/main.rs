@@ -13,6 +13,9 @@ struct Translate {
     /// Axiomatize the definitions
     #[arg(long, value_name = "axiomatize", default_value_t = false)]
     axiomatize: bool,
+    /// Reorder the definitions
+    #[arg(long, value_name = "reorder", value_name = "LIST_OF_DEFS_SEP_BY_COMMA", default_value_t = String::from(""))]
+    reorder: String,
     /// Output path where to place the translation
     #[arg(long, value_name = "output_path", value_parser = is_valid_path, default_value = "coq_translation")]
     output_path: PathBuf,
@@ -50,12 +53,13 @@ fn main() {
 
     match cli.command {
         Commands::Translate(t) => {
+            let reorder: Vec<String> = t.reorder.split(",").map(String::from).collect();
             println!("Translating: {}", &t.path.display());
             core::run(core::CliOptions {
                 path: t.path,
                 output: t.output_path,
                 axiomatize: t.axiomatize,
-		defsorder: vec![],
+                reorder,
             });
             println!("Finished.");
         }
