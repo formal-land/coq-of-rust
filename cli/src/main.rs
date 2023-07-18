@@ -13,9 +13,15 @@ struct Translate {
     /// Axiomatize the definitions
     #[arg(long, value_name = "axiomatize", default_value_t = false)]
     axiomatize: bool,
+    /// Generate the "reorder" section of the configuration file
+    #[arg(long, value_name = "generate_reorder", default_value_t = false)]
+    generate_reorder: bool,
     /// Output path where to place the translation
     #[arg(long, value_name = "output_path", value_parser = is_valid_path, default_value = "coq_translation")]
     output_path: PathBuf,
+    /// Configuration file path
+    #[arg(long, value_name = "config", default_value = "coq-of-rust-config.json")]
+    configuration_file: String,
 }
 
 fn is_valid_path(path: &str) -> Result<PathBuf, String> {
@@ -55,6 +61,8 @@ fn main() {
                 path: t.path,
                 output: t.output_path,
                 axiomatize: t.axiomatize,
+                generate_reorder: t.generate_reorder,
+                configuration_file: t.configuration_file,
             });
             println!("Finished.");
         }
