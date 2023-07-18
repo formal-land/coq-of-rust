@@ -92,7 +92,10 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
             }
         }
         QPath::LangItem(lang_item, _, _) => Path {
-            segments: vec![to_valid_coq_name(lang_item.name().to_string())],
+            segments: vec![
+                "LanguageItem".to_string(),
+                to_valid_coq_name(lang_item.name().to_string()),
+            ],
         },
     }
 }
@@ -145,7 +148,7 @@ impl StructOrVariant {
                 LangItem::RangeFull => StructOrVariant::Variant,
                 LangItem::RangeInclusiveStruct => StructOrVariant::Variant,
                 LangItem::RangeInclusiveNew => StructOrVariant::Variant,
-                LangItem::Range => StructOrVariant::Variant,
+                LangItem::Range => StructOrVariant::Struct,
                 LangItem::RangeToInclusive => StructOrVariant::Variant,
                 LangItem::RangeTo => StructOrVariant::Variant,
                 _ => {
