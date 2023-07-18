@@ -82,7 +82,7 @@ Definition inspect
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let pressed := enums.WebEvent.KeyPress "x"%char in
   let* pasted :=
     let* α0 := "my text".["to_owned"] in

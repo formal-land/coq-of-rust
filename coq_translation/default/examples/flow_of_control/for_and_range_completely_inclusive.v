@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* α0 := LangItem 1 100 in
   let* α1 := LangItem α0 in
   match α1 with

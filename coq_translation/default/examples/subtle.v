@@ -597,7 +597,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
     let* y :=
       let* α0 := x.["wrapping_neg"] in
       let* α1 := x.["bitor"] α0 in
-      let* α2 := core.mem.size_of tt in
+      let* α2 := core.mem.size_of in
       let* α3 := α2.["mul"] 8 in
       let* α4 := α3.["sub"] 1 in
       α1.["shr"] α4 in
@@ -1606,7 +1606,7 @@ Module Impl_subtle_CtOption_T.
       (self : Self)
       (f : F)
       : M (H := H) T :=
-    let* α0 := f tt in
+    let* α0 := f in
     T::["conditional_select"]
       (addr_of α0)
       (addr_of self.["value"])
@@ -1644,7 +1644,7 @@ Module Impl_subtle_CtOption_T.
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
-    let* α0 := T::["default"] tt in
+    let* α0 := T::["default"] in
     let* α1 :=
       T::["conditional_select"]
         (addr_of α0)
@@ -1663,7 +1663,7 @@ Module Impl_subtle_CtOption_T.
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
     let* tmp :=
-      let* α0 := T::["default"] tt in
+      let* α0 := T::["default"] in
       let* α1 :=
         T::["conditional_select"]
           (addr_of α0)
@@ -1684,7 +1684,7 @@ Module Impl_subtle_CtOption_T.
       (f : F)
       : M (H := H) (subtle.CtOption T) :=
     let* is_none := self.["is_none"] in
-    let* f := f tt in
+    let* f := f in
     Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
   
   Global Instance Method_or_else `{H : State.Trait} :

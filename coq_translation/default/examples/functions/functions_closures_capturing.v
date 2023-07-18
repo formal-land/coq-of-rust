@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* color := alloc.string.String::["from"] "green" in
   let print :=
     fun  =>
@@ -15,9 +15,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             (addr_of [ α0 ]) in
         std.io.stdio._print α1 in
       Pure tt in
-  let* _ := print tt in
+  let* _ := print in
   let _reborrow := addr_of color in
-  let* _ := print tt in
+  let* _ := print in
   let _color_moved := color in
   let count := 0 in
   let inc :=
@@ -34,8 +34,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt in
-  let* _ := inc tt in
-  let* _ := inc tt in
+  let* _ := inc in
+  let* _ := inc in
   let _count_reborrowed := addr_of count in
   let* movable := alloc.boxed.Box::["new"] 3 in
   let consume :=
@@ -52,5 +52,5 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt in
       let* _ := core.mem.drop movable in
       Pure tt in
-  let* _ := consume tt in
+  let* _ := consume in
   Pure tt.

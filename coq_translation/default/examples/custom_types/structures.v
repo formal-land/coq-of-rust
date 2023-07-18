@@ -98,7 +98,7 @@ End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* name := alloc.string.String::["from"] "Peter" in
   let age := 27 in
   let peter :=

@@ -6,7 +6,7 @@ Definition is_odd `{H : State.Trait} (n : u32) : M (H := H) bool :=
   α0.["eq"] 1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 :=

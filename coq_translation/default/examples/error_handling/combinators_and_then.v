@@ -138,7 +138,7 @@ Definition eat
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let '(cordon_bleu, steak, sushi) :=
     (combinators_and_then.Food.CordonBleu,
       combinators_and_then.Food.Steak,

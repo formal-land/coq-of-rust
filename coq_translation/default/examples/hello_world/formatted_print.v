@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -89,7 +89,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           0
           format_count::["Implied"]
           α1 in
-      let* α3 := format_unsafe_arg::["new"] tt in
+      let* α3 := format_unsafe_arg::["new"] in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "
@@ -111,7 +111,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           0
           format_count::["Implied"]
           α1 in
-      let* α3 := format_unsafe_arg::["new"] tt in
+      let* α3 := format_unsafe_arg::["new"] in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "
@@ -134,7 +134,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           0
           format_count::["Implied"]
           α2 in
-      let* α4 := format_unsafe_arg::["new"] tt in
+      let* α4 := format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "
@@ -168,7 +168,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           0
           format_count::["Implied"]
           α2 in
-      let* α4 := format_unsafe_arg::["new"] tt in
+      let* α4 := format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "

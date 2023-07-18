@@ -39,7 +39,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let apple :=
     core.option.Option.Some unpacking_options_and_defaults_via_or.Fruit.Apple in
   let orange :=

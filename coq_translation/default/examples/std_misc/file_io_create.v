@@ -13,7 +13,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* path := std.path.Path::["new"] "lorem_ipsum.txt" in
   let* display := path.["display"] in
   let* file :=

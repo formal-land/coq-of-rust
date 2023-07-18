@@ -114,7 +114,7 @@ End Seconds.
 Definition Seconds := Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let _one_second := derive.Seconds.Build_t 1 in
   let foot := derive.Inches.Build_t 12 in
   let* _ :=

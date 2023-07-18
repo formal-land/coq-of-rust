@@ -44,7 +44,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let owner := scoping_rules_lifetimes_methods.Owner.Build_t 18 in
   let* _ := owner.["add_one"] in
   let* _ := owner.["print"] in

@@ -65,7 +65,7 @@ Definition blue
   Pure "blue".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
   let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
   let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in

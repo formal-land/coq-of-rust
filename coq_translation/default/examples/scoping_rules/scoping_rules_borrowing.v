@@ -34,7 +34,7 @@ Definition borrow_i32
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* boxed_i32 := alloc.boxed.Box::["new"] 5 in
   let stacked_i32 := 6 in
   let* _ := scoping_rules_borrowing.borrow_i32 (addr_of boxed_i32) in

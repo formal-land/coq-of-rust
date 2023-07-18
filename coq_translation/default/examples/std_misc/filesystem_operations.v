@@ -14,7 +14,7 @@ Definition cat
       Return α0
     | Continue {| Continue.0 := val; |} => Pure val
     end in
-  let* s := alloc.string.String::["new"] tt in
+  let* s := alloc.string.String::["new"] in
   let* α0 := f.["read_to_string"] (addr_of s) in
   match α0 with
   | core.result.Result.Ok _ => Pure (core.result.Result.Ok s)
@@ -42,7 +42,7 @@ Definition touch
     `{H : State.Trait}
     (path : ref std.path.Path)
     : M (H := H) (std.io.error.Result unit) :=
-  let* α0 := std.fs.OpenOptions::["new"] tt in
+  let* α0 := std.fs.OpenOptions::["new"] in
   let* α1 := α0.["create"] true in
   let* α2 := α1.["write"] true in
   let* α3 := α2.["open"] path in
@@ -52,7 +52,7 @@ Definition touch
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`

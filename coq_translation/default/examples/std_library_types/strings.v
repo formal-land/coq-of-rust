@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let pangram := "the quick brown fox jumps over the lazy dog" in
   let* _ :=
     let* _ :=
@@ -54,7 +54,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     α0.["collect"] in
   let* _ := chars.["sort"] in
   let* _ := chars.["dedup"] in
-  let* string := alloc.string.String::["new"] tt in
+  let* string := alloc.string.String::["new"] in
   let* _ :=
     let* α0 := LangItem chars in
     match α0 with

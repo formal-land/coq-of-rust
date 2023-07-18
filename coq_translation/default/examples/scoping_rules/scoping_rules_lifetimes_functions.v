@@ -46,7 +46,7 @@ Definition pass_x
   Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let x := 7 in
   let y := 9 in
   let* _ := scoping_rules_lifetimes_functions.print_one (addr_of x) in

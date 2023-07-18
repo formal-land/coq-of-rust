@@ -41,14 +41,11 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Definition fibonacci
-    `{H : State.Trait}
-    (_ : unit)
-    : M (H := H) iterators.Fibonacci :=
+Definition fibonacci `{H : State.Trait} : M (H := H) iterators.Fibonacci :=
   Pure {| iterators.Fibonacci.curr := 0; iterators.Fibonacci.next := 1; |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let sequence := Range {| Range.start := 0; Range.end := 3; |} in
   let* _ :=
     let* _ :=
@@ -138,7 +135,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := iterators.fibonacci tt in
+    let* α0 := iterators.fibonacci in
     let* α1 := α0.["take"] 4 in
     let* α2 := LangItem α1 in
     match α2 with
@@ -175,7 +172,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := iterators.fibonacci tt in
+    let* α0 := iterators.fibonacci in
     let* α1 := α0.["skip"] 4 in
     let* α2 := α1.["take"] 4 in
     let* α3 := LangItem α2 in
