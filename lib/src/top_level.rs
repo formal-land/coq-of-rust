@@ -901,24 +901,26 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                         )),
                     },
                     if strct_args.args.is_empty() {
-                        text("(_ : unit)")
+                        nil()
                     } else {
-                        intersperse(
-                            strct_args.args.iter().map(|(name, ty)| {
-                                nest([
-                                    text("("),
-                                    text(name),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    ty.to_doc(false),
-                                    text(")"),
-                                ])
-                            }),
-                            [line()],
-                        )
+                        concat([
+                            intersperse(
+                                strct_args.args.iter().map(|(name, ty)| {
+                                    nest([
+                                        text("("),
+                                        text(name),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        ty.to_doc(false),
+                                        text(")"),
+                                    ])
+                                }),
+                                [line()],
+                            ),
+                            line(),
+                        ])
                     },
-                    line(),
                     nest([
                         text(":"),
                         line(),
