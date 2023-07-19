@@ -73,7 +73,7 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
 }
 
 /// compilation of [QPath] in [LangItem] variant
-pub(crate) fn compile_lang_item(lang_item: &LangItem) -> Path {
+fn compile_lang_item(lang_item: &LangItem) -> Path {
     Path {
         segments: match lang_item {
             LangItem::FormatArgument => vec!["format_argument".to_string()],

@@ -193,10 +193,7 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
             let func = segment.ident.to_string();
             Expr::AssociatedFunction { ty, func }
         }
-        QPath::LangItem(..) => {
-            // QPath::LangItem(lang_item, _, _) => {
-            Expr::LocalVar("LocalVar".to_string()) // to_valid_coq_name(lang_item.name().to_string()))
-        }
+        QPath::LangItem(_, _, _) => Expr::LocalVar("LangItem".to_string()),
     }
 }
 
@@ -603,6 +600,21 @@ fn to_valid_coq_identifier(ident: String) -> String {
     }
 }
 
+fn compile_lang_item_in_call(lang_item: rustc_hir::LangItem, args: &Vec<Expr>) -> Expr {
+    match lang_item {
+        _ => {
+            let object = Box::new(args[0].clone());
+            let func = lang_item.name().to_string();
+            let args = args
+                .get(1..)
+                .expect("Expected at least one argument of a function call, \
+                    while compiling rustc_hir::QPath::LangItem in ExprKind::Path in ExprKind::Call")
+                .to_vec();
+            Expr::MethodCall { object, func, args }
+        }
+    }
+}
+
 pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -640,14 +652,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 },
                 // TODO: comment
                 ExprKind::Path(rustc_hir::QPath::LangItem(lang_item, _, _)) => {
-                    let object = Box::new(args[0].clone());
-                    let func = lang_item.name().to_string();
-                    let args = args
-                        .get(1..)
-                        .expect("Expected at least one argument of a function call, \
-                            while compiling rustc_hir::QPath::LangItem in ExprKind::Path in ExprKind::Call")
-                        .to_vec();
-                    Expr::MethodCall { object, func, args }
+                    compile_lang_item_in_call(lang_item, &args)
                 }
                 _ => {
                     let func = Box::new(compile_expr(env, func));
