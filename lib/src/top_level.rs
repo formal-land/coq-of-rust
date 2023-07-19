@@ -831,23 +831,20 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                 if strct_args.args.is_empty() {
                     nil()
                 } else {
-                  concat([
-                    intersperse(
-                        strct_args
-                            .args
-                            .iter()
-                            .map(|(_, ty)| nest([ty.to_doc(false)])),
-                        [text("->"), line()],
-                    ),
-                    text("->"),
-                  ])
+                    concat([
+                        intersperse(
+                            strct_args
+                                .args
+                                .iter()
+                                .map(|(_, ty)| nest([ty.to_doc(false)])),
+                            [text("->"), line()],
+                        ),
+                        text("->"),
+                    ])
                 },
                 line(),
                 // return type
-                nest([
-                    strct_args.ret_ty.to_doc(false),
-                    text("."),
-                ]),
+                nest([strct_args.ret_ty.to_doc(false), text(".")]),
             ])])
         } else {
             nest([
