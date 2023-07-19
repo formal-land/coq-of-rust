@@ -1457,7 +1457,7 @@ Module Impl_IntoIter_for_Vec.
 End Impl_IntoIter_for_Vec.
 
 (* TODO: this is only a temporary implementation,
-         it needs to be rewritten properly when all std files will be fixed *)
+         it needs to be rewritten when all std files will be fixed *)
 Module Impl_Iterator_for_Vec_IntoIter.
   Section Impl_Iterator_for_Vec_IntoIter.
   Context {T (* A *) : Set}.
@@ -1475,7 +1475,7 @@ Module Impl_Iterator_for_Vec_IntoIter.
 End Impl_Iterator_for_Vec_IntoIter.
 
 (* TODO: this is only a temporary implementation,
-         it needs to be rewritten properly when all std files will be fixed *)
+         it needs to be rewritten when all std files will be fixed *)
 Module Impl_IntoIter_for_Vec_IntoIter.
   Section Impl_IntoIter_for_Vec_IntoIter.
   Context {T (* A *) : Set}.
@@ -1493,6 +1493,48 @@ Module Impl_IntoIter_for_Vec_IntoIter.
   }.
   End Impl_IntoIter_for_Vec_IntoIter.
 End Impl_IntoIter_for_Vec_IntoIter.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+Module Impl_Iterator_for_Range.
+  Section Impl_Iterator_for_Range.
+  Context {A : Set}.
+(*   Context `{std.iter_type.Step.Trait A}. *)
+
+  Definition Self := Range A.
+
+  Definition Item := A.
+
+  Parameter next : forall `{State.Trait}, mut_ref Self -> M (Option A).
+
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+    Notation.dot := next;
+  }.
+  End Impl_Iterator_for_Range.
+End Impl_Iterator_for_Range.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+(* this should be replaced with a generic instance of IntoIterator for Iterator *)
+Module Impl_IntoIterator_for_Range.
+  Section Impl_IntoIterator_for_Range.
+  Context {A : Set}.
+  Definition I := Range A.
+
+  Definition Self := I.
+
+  Definition Item := A.
+  Definition IntoIter := I.
+
+  Parameter into_iter :
+    forall `{State.Trait}, Self -> M IntoIter.
+
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" := {
+    Notation.dot := into_iter;
+  }.
+  End Impl_IntoIterator_for_Range.
+End Impl_IntoIterator_for_Range.
 
 (* temporary argument specifications
  * it would probably be better if they were defined in the _std files
