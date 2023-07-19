@@ -601,15 +601,20 @@ fn to_valid_coq_identifier(ident: String) -> String {
 }
 /// decides how to compile an object of type LangItem, when it acts like a function
 /// in a function call
-fn compile_lang_item_in_call(lang_item: rustc_hir::LangItem, args: &Vec<Expr>) -> Expr {
+fn compile_lang_item_in_a_call(lang_item: rustc_hir::LangItem, args: &[Expr]) -> Expr {
     match lang_item {
+        rustc_hir::LangItem::RangeInclusiveNew => {
+            Expr::LocalVar("RangeInclusive::[new]".to_string())
+        }
         _ => {
             let object = Box::new(args[0].clone());
             let func = lang_item.name().to_string();
             let args = args
                 .get(1..)
-                .expect("Expected at least one argument of a function call, \
-                    while compiling rustc_hir::QPath::LangItem in ExprKind::Path in ExprKind::Call")
+                .expect(
+                    "Expected at least one argument of a function call, \
+                    while compiling rustc_hir::QPath::LangItem in ExprKind::Path in ExprKind::Call",
+                )
                 .to_vec();
             Expr::MethodCall { object, func, args }
         }
@@ -652,7 +657,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     struct_or_variant: StructOrVariant::of_qpath(env, &qpath),
                 },
                 ExprKind::Path(rustc_hir::QPath::LangItem(lang_item, _, _)) => {
-                    compile_lang_item_in_call(lang_item, &args)
+                    compile_lang_item_in_a_call(lang_item, &args)
                 }
                 _ => {
                     let func = Box::new(compile_expr(env, func));
