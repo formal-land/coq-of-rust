@@ -599,7 +599,7 @@ fn mt_stmt(stmt: Stmt) -> Stmt {
 fn to_valid_coq_identifier(ident: String) -> String {
     match ident.as_str() {
         "end" => "_end".to_string(),
-        _ => ident
+        _ => ident,
     }
 }
 
