@@ -595,6 +595,14 @@ fn mt_stmt(stmt: Stmt) -> Stmt {
     }
 }
 
+/// modifies the name of the identifier to avoid a collision with Coq keywords
+fn to_valid_coq_identifier(ident: String) -> String {
+    match ident.as_str() {
+        "end" => "_end".to_string(),
+        _ => ident
+    }
+}
+
 pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -827,7 +835,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             let fields = fields
                 .iter()
                 .map(|rustc_hir::ExprField { ident, expr, .. }| {
-                    let field = ident.name.to_string();
+                    let field = to_valid_coq_identifier(ident.name.to_string());
                     let expr = compile_expr(env, expr);
                     (field, expr)
                 })
