@@ -599,7 +599,8 @@ fn to_valid_coq_identifier(ident: String) -> String {
         _ => ident,
     }
 }
-
+/// decides how to compile an object of type LangItem, when it acts like a function
+/// in a function call
 fn compile_lang_item_in_call(lang_item: rustc_hir::LangItem, args: &Vec<Expr>) -> Expr {
     match lang_item {
         _ => {
@@ -650,7 +651,6 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     fields: args,
                     struct_or_variant: StructOrVariant::of_qpath(env, &qpath),
                 },
-                // TODO: comment
                 ExprKind::Path(rustc_hir::QPath::LangItem(lang_item, _, _)) => {
                     compile_lang_item_in_call(lang_item, &args)
                 }
