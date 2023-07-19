@@ -1536,6 +1536,18 @@ Module Impl_IntoIterator_for_Range.
   End Impl_IntoIterator_for_Range.
 End Impl_IntoIterator_for_Range.
 
+Module Impl_Iterator_for_Range_Z.
+  Global Instance Method_next `{State.Trait} :
+    Notation.Dot "next" :=
+  Impl_Iterator_for_Range.Method_next (A := Z).
+End Impl_Iterator_for_Range_Z.
+
+Module Impl_IntoIterator_for_Range_Z.
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" :=
+  Impl_IntoIterator_for_Range.Method_into_iter (A := Z).
+End Impl_IntoIterator_for_Range_Z.
+
 (* temporary argument specifications
  * it would probably be better if they were defined in the _std files
  *)
