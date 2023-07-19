@@ -604,7 +604,9 @@ fn to_valid_coq_identifier(ident: String) -> String {
 fn compile_lang_item_in_a_call(lang_item: rustc_hir::LangItem, args: &[Expr]) -> Expr {
     match lang_item {
         rustc_hir::LangItem::RangeInclusiveNew => {
-            Expr::LocalVar("RangeInclusive::[new]".to_string())
+            let func = Box::new(Expr::LocalVar("RangeInclusive::[new]".to_string()));
+            let args = args.to_vec();
+            Expr::Call { func, args }
         }
         _ => {
             let object = Box::new(args[0].clone());
