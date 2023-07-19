@@ -12,7 +12,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* _box3 := alloc.boxed.Box::["new"] 4 in
     Pure tt in
   let* α0 :=
-    {| std.ops.Range.start := 0; std.ops.Range.end := 1000; |}.["into_iter"] in
+    {| std.ops.Range.start := 0; std.ops.Range._end := 1000; |}.["into_iter"] in
   match α0 with
   | iter =>
     loop

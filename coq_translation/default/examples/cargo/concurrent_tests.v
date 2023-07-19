@@ -30,7 +30,7 @@ Module tests.
       let* α3 := α2.["open"] "ferris.txt" in
       α3.["expect"] "Failed to open ferris.txt" in
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := 5; |}.["into_iter"] in
+      {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
@@ -57,7 +57,7 @@ Module tests.
       let* α3 := α2.["open"] "ferris.txt" in
       α3.["expect"] "Failed to open ferris.txt" in
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := 5; |}.["into_iter"] in
+      {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
@@ -85,7 +85,7 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α3 := α2.["open"] "ferris.txt" in
     α3.["expect"] "Failed to open ferris.txt" in
   let* α0 :=
-    {| std.ops.Range.start := 0; std.ops.Range.end := 5; |}.["into_iter"] in
+    {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
   match α0 with
   | iter =>
     loop
@@ -112,7 +112,7 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α3 := α2.["open"] "ferris.txt" in
     α3.["expect"] "Failed to open ferris.txt" in
   let* α0 :=
-    {| std.ops.Range.start := 0; std.ops.Range.end := 5; |}.["into_iter"] in
+    {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
   match α0 with
   | iter =>
     loop

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* collected_iterator :=
-    {| std.ops.Range.start := 0; std.ops.Range.end := 10; |}.["collect"] in
+    {| std.ops.Range.start := 0; std.ops.Range._end := 10; |}.["collect"] in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of collected_iterator) in

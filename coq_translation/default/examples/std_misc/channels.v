@@ -9,7 +9,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] tt in
   let* _ :=
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := channels.NTHREADS;
+      {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;
         |}.["into_iter"] in
     match α0 with
     | iter =>
@@ -46,7 +46,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* ids := alloc.vec.Vec::["with_capacity"] (cast channels.NTHREADS usize) in
   let* _ :=
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := channels.NTHREADS;
+      {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;
         |}.["into_iter"] in
     match α0 with
     | iter =>

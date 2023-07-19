@@ -8,7 +8,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] tt in
   let* _ :=
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := threads.NTHREADS;
+      {| std.ops.Range.start := 0; std.ops.Range._end := threads.NTHREADS;
         |}.["into_iter"] in
     match α0 with
     | iter =>

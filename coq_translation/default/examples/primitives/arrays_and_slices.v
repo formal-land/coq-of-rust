@@ -93,7 +93,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     Pure tt in
   let* _ :=
     arrays_and_slices.analyze_slice
-      (addr_of ys[{| std.ops.Range.start := 1; std.ops.Range.end := 4; |}]) in
+      (addr_of ys[{| std.ops.Range.start := 1; std.ops.Range._end := 4; |}]) in
   let empty_array := [ ] in
   let* _ :=
     match (addr_of (addr_of empty_array), addr_of (addr_of [ ])) with
@@ -143,7 +143,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 := xs.["len"] in
   let* α1 := α0.["add"] 1 in
   let* α2 :=
-    {| std.ops.Range.start := 0; std.ops.Range.end := α1; |}.["into_iter"] in
+    {| std.ops.Range.start := 0; std.ops.Range._end := α1; |}.["into_iter"] in
   match α2 with
   | iter =>
     loop

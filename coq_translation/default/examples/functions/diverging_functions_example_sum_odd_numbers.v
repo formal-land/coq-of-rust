@@ -21,7 +21,7 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
   let acc := 0 in
   let* _ :=
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := up_to;
+      {| std.ops.Range.start := 0; std.ops.Range._end := up_to;
         |}.["into_iter"] in
     match α0 with
     | iter =>

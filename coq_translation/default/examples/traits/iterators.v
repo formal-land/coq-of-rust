@@ -49,7 +49,7 @@ Definition fibonacci
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let sequence := {| std.ops.Range.start := 0; std.ops.Range.end := 3; |} in
+  let sequence := {| std.ops.Range.start := 0; std.ops.Range._end := 3; |} in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -104,7 +104,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     Pure tt in
   let* _ :=
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := 3; |}.["into_iter"] in
+      {| std.ops.Range.start := 0; std.ops.Range._end := 3; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop

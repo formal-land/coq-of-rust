@@ -6,7 +6,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
     let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range.end := 10; |}.["into_iter"] in
+      {| std.ops.Range.start := 0; std.ops.Range._end := 10; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
