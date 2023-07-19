@@ -1381,7 +1381,7 @@ Module Impl_RangeInclusive.
 
   Definition Self := RangeInclusive Idx.
 
-  Parameter new : forall `{State.Trait}, Idx -> Idx -> Self.
+  Parameter new : forall `{State.Trait}, Idx -> Idx -> M Self.
 
   Global Instance RangeInclusive_new `{State.Trait} :
     Notation.DoubleColon RangeInclusive "new" := {
