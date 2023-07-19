@@ -1535,9 +1535,10 @@ Module Impl_IntoIterator_for_Range.
   End Impl_IntoIterator_for_Range.
 End Impl_IntoIterator_for_Range.
 
+(* TODO: remove - it is a temporary definition *)
 Module Impl_Iterator_for_Range_Z.
   Global Instance Method_next {A : Set} `{State.Trait} :
-    Notation.Dot "next" (T := std.ops.Range A -> M (std.option.Option A)).
+    Notation.Dot "next" (T := std.ops.Range A -> M (std.option.Option Z)).
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_Range_Z.
