@@ -16,8 +16,8 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Definition Self := converting_to_string.Circle.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -29,4 +29,4 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

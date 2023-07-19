@@ -28,7 +28,7 @@ Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Definition Self := returning_traits_with_dyn.Sheep.
   
-  Parameter noise : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
+  Parameter noise : forall `{H : State.Trait}, ref Self-> M (H := H) (ref str).
   
   Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -42,7 +42,7 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Definition Self := returning_traits_with_dyn.Cow.
   
-  Parameter noise : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
+  Parameter noise : forall `{H : State.Trait}, ref Self-> M (H := H) (ref str).
   
   Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
@@ -53,8 +53,8 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
-Parameter random_animal : forall `{H : State.Trait}, f64
-    -> M (H := H) (alloc.boxed.Box TraitObject).
+Parameter random_animal : forall `{H : State.Trait}, f64->
+    M (H := H) (alloc.boxed.Box TraitObject).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

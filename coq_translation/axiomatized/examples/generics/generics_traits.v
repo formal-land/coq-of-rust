@@ -28,9 +28,7 @@ Section Impl_generics_traits_DoubleDrop_for_U.
   
   Definition Self := U.
   
-  Parameter double_drop : forall `{H : State.Trait}, Self->
-      T
-      -> M (H := H) unit.
+  Parameter double_drop : forall `{H : State.Trait}, Self-> T-> M (H := H) unit.
   
   Global Instance Method_double_drop `{H : State.Trait} :
     Notation.Dot "double_drop" := {
@@ -44,4 +42,4 @@ End Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

@@ -17,8 +17,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Definition Self := scoping_rules_lifetimes_bounds.Ref T.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -33,14 +33,14 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 Parameter print : forall `{H : State.Trait}, forall
     {T : Set},
     `{core.fmt.Debug.Trait T}
-    T
-    -> M (H := H) unit.
+    T->
+    M (H := H) unit.
 
 Parameter print_ref : forall `{H : State.Trait}, forall
     {T : Set},
     `{core.fmt.Debug.Trait T}
-    ref T
-    -> M (H := H) unit.
+    ref T->
+    M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

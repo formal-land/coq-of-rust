@@ -19,8 +19,8 @@ Module
     unpacking_options_and_defaults_via_get_or_insert_with.Fruit.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -33,4 +33,4 @@ End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

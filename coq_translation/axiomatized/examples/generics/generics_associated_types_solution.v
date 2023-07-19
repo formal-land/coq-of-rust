@@ -57,21 +57,21 @@ Module
   
   Parameter contains : forall `{H : State.Trait}, ref Self->
       ref i32->
-      ref i32
-      -> M (H := H) bool.
+      ref i32->
+      M (H := H) bool.
   
   Global Instance Method_contains `{H : State.Trait} :
     Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Parameter first : forall `{H : State.Trait}, ref Self -> M (H := H) i32.
+  Parameter first : forall `{H : State.Trait}, ref Self-> M (H := H) i32.
   
   Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Parameter last : forall `{H : State.Trait}, ref Self -> M (H := H) i32.
+  Parameter last : forall `{H : State.Trait}, ref Self-> M (H := H) i32.
   
   Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
@@ -95,8 +95,8 @@ End
 Parameter difference : forall `{H : State.Trait}, forall
     {C : Set},
     `{generics_associated_types_solution.Contains.Trait C}
-    ref C
-    -> M (H := H) i32.
+    ref C->
+    M (H := H) i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

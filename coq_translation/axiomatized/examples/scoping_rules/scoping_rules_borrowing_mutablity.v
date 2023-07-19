@@ -25,8 +25,8 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self := scoping_rules_borrowing_mutablity.Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) scoping_rules_borrowing_mutablity.Book.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) scoping_rules_borrowing_mutablity.Book.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -45,12 +45,12 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book : forall `{H : State.Trait}, ref
-        scoping_rules_borrowing_mutablity.Book
-    -> M (H := H) unit.
+        scoping_rules_borrowing_mutablity.Book->
+    M (H := H) unit.
 
 Parameter new_edition : forall `{H : State.Trait}, mut_ref
-        scoping_rules_borrowing_mutablity.Book
-    -> M (H := H) unit.
+        scoping_rules_borrowing_mutablity.Book->
+    M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

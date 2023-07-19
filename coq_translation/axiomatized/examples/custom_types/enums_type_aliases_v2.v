@@ -19,8 +19,8 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   
   Parameter run : forall `{H : State.Trait}, ref Self->
       i32->
-      i32
-      -> M (H := H) i32.
+      i32->
+      M (H := H) i32.
   
   Global Instance Method_run `{H : State.Trait} : Notation.Dot "run" := {
     Notation.dot := run;

@@ -19,8 +19,8 @@ Definition Point : Set := Point.t.
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
   
-  Parameter origin : forall `{H : State.Trait}, unit
-      -> M (H := H) associated_functions_and_methods.Point.
+  Parameter origin : forall `{H : State.Trait}, 
+      M (H := H) associated_functions_and_methods.Point.
   
   Global Instance AssociatedFunction_origin `{H : State.Trait} :
     Notation.DoubleColon Self "origin" := {
@@ -28,8 +28,8 @@ Module Impl_associated_functions_and_methods_Point.
   }.
   
   Parameter new : forall `{H : State.Trait}, f64->
-      f64
-      -> M (H := H) associated_functions_and_methods.Point.
+      f64->
+      M (H := H) associated_functions_and_methods.Point.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -55,20 +55,20 @@ Definition Rectangle : Set := Rectangle.t.
 Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self := associated_functions_and_methods.Rectangle.
   
-  Parameter get_p1 : forall `{H : State.Trait}, ref Self
-      -> M (H := H) associated_functions_and_methods.Point.
+  Parameter get_p1 : forall `{H : State.Trait}, ref Self->
+      M (H := H) associated_functions_and_methods.Point.
   
   Global Instance Method_get_p1 `{H : State.Trait} : Notation.Dot "get_p1" := {
     Notation.dot := get_p1;
   }.
   
-  Parameter area : forall `{H : State.Trait}, ref Self -> M (H := H) f64.
+  Parameter area : forall `{H : State.Trait}, ref Self-> M (H := H) f64.
   
   Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
   }.
   
-  Parameter perimeter : forall `{H : State.Trait}, ref Self -> M (H := H) f64.
+  Parameter perimeter : forall `{H : State.Trait}, ref Self-> M (H := H) f64.
   
   Global Instance Method_perimeter `{H : State.Trait} :
     Notation.Dot "perimeter" := {
@@ -77,8 +77,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Parameter translate : forall `{H : State.Trait}, mut_ref Self->
       f64->
-      f64
-      -> M (H := H) unit.
+      f64->
+      M (H := H) unit.
   
   Global Instance Method_translate `{H : State.Trait} :
     Notation.Dot "translate" := {
@@ -101,7 +101,7 @@ Definition Pair := Pair.t.
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self := associated_functions_and_methods.Pair.
   
-  Parameter destroy : forall `{H : State.Trait}, Self -> M (H := H) unit.
+  Parameter destroy : forall `{H : State.Trait}, Self-> M (H := H) unit.
   
   Global Instance Method_destroy `{H : State.Trait} :
     Notation.Dot "destroy" := {
@@ -110,4 +110,4 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

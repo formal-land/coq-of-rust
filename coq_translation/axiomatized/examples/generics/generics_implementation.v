@@ -26,7 +26,7 @@ Definition GenVal : Set := GenVal.t.
 Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.
   
-  Parameter value : forall `{H : State.Trait}, ref Self -> M (H := H) (ref f64).
+  Parameter value : forall `{H : State.Trait}, ref Self-> M (H := H) (ref f64).
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -36,7 +36,7 @@ End Impl_generics_implementation_Val.
 Module Impl_generics_implementation_GenVal_T.
   Definition Self := generics_implementation.GenVal T.
   
-  Parameter value : forall `{H : State.Trait}, ref Self -> M (H := H) (ref T).
+  Parameter value : forall `{H : State.Trait}, ref Self-> M (H := H) (ref T).
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -44,4 +44,4 @@ Module Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

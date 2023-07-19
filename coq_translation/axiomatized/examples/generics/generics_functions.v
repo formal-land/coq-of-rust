@@ -24,20 +24,21 @@ Module SGen.
 End SGen.
 Definition SGen := SGen.t.
 
-Parameter reg_fn : forall `{H : State.Trait}, generics_functions.S
-    -> M (H := H) unit.
+Parameter reg_fn : forall `{H : State.Trait}, generics_functions.S->
+    M (H := H) unit.
 
 Parameter gen_spec_t : forall `{H : State.Trait}, generics_functions.SGen
-        generics_functions.A
-    -> M (H := H) unit.
+        generics_functions.A->
+    M (H := H) unit.
 
-Parameter gen_spec_i32 : forall `{H : State.Trait}, generics_functions.SGen i32
-    -> M (H := H) unit.
+Parameter gen_spec_i32 : forall `{H : State.Trait}, generics_functions.SGen
+        i32->
+    M (H := H) unit.
 
 Parameter generic : forall `{H : State.Trait}, forall
     {T : Set},
-    generics_functions.SGen T
-    -> M (H := H) unit.
+    generics_functions.SGen T->
+    M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

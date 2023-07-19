@@ -22,8 +22,8 @@ Definition Days := Days.t.
 Module Impl_generics_new_type_idiom_Years.
   Definition Self := generics_new_type_idiom.Years.
   
-  Parameter to_days : forall `{H : State.Trait}, ref Self
-      -> M (H := H) generics_new_type_idiom.Days.
+  Parameter to_days : forall `{H : State.Trait}, ref Self->
+      M (H := H) generics_new_type_idiom.Days.
   
   Global Instance Method_to_days `{H : State.Trait} :
     Notation.Dot "to_days" := {
@@ -34,8 +34,8 @@ End Impl_generics_new_type_idiom_Years.
 Module Impl_generics_new_type_idiom_Days.
   Definition Self := generics_new_type_idiom.Days.
   
-  Parameter to_years : forall `{H : State.Trait}, ref Self
-      -> M (H := H) generics_new_type_idiom.Years.
+  Parameter to_years : forall `{H : State.Trait}, ref Self->
+      M (H := H) generics_new_type_idiom.Years.
   
   Global Instance Method_to_years `{H : State.Trait} :
     Notation.Dot "to_years" := {
@@ -44,8 +44,8 @@ Module Impl_generics_new_type_idiom_Days.
 End Impl_generics_new_type_idiom_Days.
 
 Parameter old_enough : forall `{H : State.Trait}, ref
-        generics_new_type_idiom.Years
-    -> M (H := H) bool.
+        generics_new_type_idiom.Years->
+    M (H := H) bool.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

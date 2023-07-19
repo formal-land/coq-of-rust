@@ -15,7 +15,7 @@ End HasArea.
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Parameter area : forall `{H : State.Trait}, ref Self -> M (H := H) f64.
+  Parameter area : forall `{H : State.Trait}, ref Self-> M (H := H) f64.
   
   Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
@@ -54,8 +54,8 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
     Notation.double_colon := debug_struct_field2_finish; }.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -85,14 +85,14 @@ Definition Triangle : Set := Triangle.t.
 Parameter print_debug : forall `{H : State.Trait}, forall
     {T : Set},
     `{core.fmt.Debug.Trait T}
-    ref T
-    -> M (H := H) unit.
+    ref T->
+    M (H := H) unit.
 
 Parameter area : forall `{H : State.Trait}, forall
     {T : Set},
     `{generics_bounds.HasArea.Trait T}
-    ref T
-    -> M (H := H) f64.
+    ref T->
+    M (H := H) f64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

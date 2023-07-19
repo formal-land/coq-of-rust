@@ -11,8 +11,8 @@ Definition List := List.t.
 Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
   
-  Parameter new : forall `{H : State.Trait}, unit
-      -> M (H := H) enums_testcase_linked_list.List.
+  Parameter new : forall `{H : State.Trait}, 
+      M (H := H) enums_testcase_linked_list.List.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -20,22 +20,22 @@ Module Impl_enums_testcase_linked_list_List.
   }.
   
   Parameter prepend : forall `{H : State.Trait}, Self->
-      u32
-      -> M (H := H) enums_testcase_linked_list.List.
+      u32->
+      M (H := H) enums_testcase_linked_list.List.
   
   Global Instance Method_prepend `{H : State.Trait} :
     Notation.Dot "prepend" := {
     Notation.dot := prepend;
   }.
   
-  Parameter len : forall `{H : State.Trait}, ref Self -> M (H := H) u32.
+  Parameter len : forall `{H : State.Trait}, ref Self-> M (H := H) u32.
   
   Global Instance Method_len `{H : State.Trait} : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
-  Parameter stringify : forall `{H : State.Trait}, ref Self
-      -> M (H := H) alloc.string.String.
+  Parameter stringify : forall `{H : State.Trait}, ref Self->
+      M (H := H) alloc.string.String.
   
   Global Instance Method_stringify `{H : State.Trait} :
     Notation.Dot "stringify" := {
@@ -44,4 +44,4 @@ Module Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

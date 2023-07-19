@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply : forall `{H : State.Trait}, ref i32->
-    ref i32
-    -> M (H := H) i32.
+    ref i32->
+    M (H := H) i32.
 
 Parameter choose_first : forall `{H : State.Trait}, ref i32->
-    ref i32
-    -> M (H := H) (ref i32).
+    ref i32->
+    M (H := H) (ref i32).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

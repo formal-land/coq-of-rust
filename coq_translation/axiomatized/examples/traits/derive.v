@@ -21,8 +21,8 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref derive.Centimeters
-      -> M (H := H) bool.
+      ref derive.Centimeters->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -37,8 +37,8 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
   Parameter partial_cmp : forall `{H : State.Trait}, ref Self->
-      ref derive.Centimeters
-      -> M (H := H) (core.option.Option core.cmp.Ordering).
+      ref derive.Centimeters->
+      M (H := H) (core.option.Option core.cmp.Ordering).
   
   Global Instance Method_partial_cmp `{H : State.Trait} :
     Notation.Dot "partial_cmp" := {
@@ -63,8 +63,8 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self := derive.Inches.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -78,8 +78,8 @@ End Impl_core_fmt_Debug_for_derive_Inches.
 Module Impl_derive_Inches.
   Definition Self := derive.Inches.
   
-  Parameter to_centimeters : forall `{H : State.Trait}, ref Self
-      -> M (H := H) derive.Centimeters.
+  Parameter to_centimeters : forall `{H : State.Trait}, ref Self->
+      M (H := H) derive.Centimeters.
   
   Global Instance Method_to_centimeters `{H : State.Trait} :
     Notation.Dot "to_centimeters" := {
@@ -97,4 +97,4 @@ End Seconds.
 Definition Seconds := Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

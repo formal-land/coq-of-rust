@@ -15,7 +15,7 @@ Definition Droppable : Set := Droppable.t.
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.
   
-  Parameter drop : forall `{H : State.Trait}, mut_ref Self -> M (H := H) unit.
+  Parameter drop : forall `{H : State.Trait}, mut_ref Self-> M (H := H) unit.
   
   Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
@@ -27,4 +27,4 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.

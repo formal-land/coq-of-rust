@@ -59,7 +59,7 @@ End Animal.
 Module Impl_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Parameter is_naked : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
+  Parameter is_naked : forall `{H : State.Trait}, ref Self-> M (H := H) bool.
   
   Global Instance Method_is_naked `{H : State.Trait} :
     Notation.Dot "is_naked" := {
@@ -70,26 +70,26 @@ End Impl_traits_Sheep.
 Module Impl_traits_Animal_for_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Parameter new : forall `{H : State.Trait}, ref str -> M (H := H) traits.Sheep.
+  Parameter new : forall `{H : State.Trait}, ref str-> M (H := H) traits.Sheep.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter name : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
+  Parameter name : forall `{H : State.Trait}, ref Self-> M (H := H) (ref str).
   
   Global Instance Method_name `{H : State.Trait} : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
-  Parameter noise : forall `{H : State.Trait}, ref Self -> M (H := H) (ref str).
+  Parameter noise : forall `{H : State.Trait}, ref Self-> M (H := H) (ref str).
   
   Global Instance Method_noise `{H : State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
-  Parameter talk : forall `{H : State.Trait}, ref Self -> M (H := H) unit.
+  Parameter talk : forall `{H : State.Trait}, ref Self-> M (H := H) unit.
   
   Global Instance Method_talk `{H : State.Trait} : Notation.Dot "talk" := {
     Notation.dot := talk;
@@ -105,7 +105,7 @@ End Impl_traits_Animal_for_traits_Sheep.
 Module Impl_traits_Sheep_2.
   Definition Self := traits.Sheep.
   
-  Parameter shear : forall `{H : State.Trait}, mut_ref Self -> M (H := H) unit.
+  Parameter shear : forall `{H : State.Trait}, mut_ref Self-> M (H := H) unit.
   
   Global Instance Method_shear `{H : State.Trait} : Notation.Dot "shear" := {
     Notation.dot := shear;
@@ -113,4 +113,4 @@ Module Impl_traits_Sheep_2.
 End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait},  M (H := H) unit.
