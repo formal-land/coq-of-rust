@@ -17,7 +17,7 @@ Module codegen.
       (std.thread.local.LocalKey::["new"]
         ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
   
-  Parameter already_built_contracts : forall `{H : State.Trait}, unit
+  Parameter already_built_contracts : forall `{H : State.Trait}, 
       ->
         M (H := H)
           (std.collections.hash.map.HashMap
@@ -113,7 +113,7 @@ Module codegen.
   Module Impl_ink_e2e_macro_codegen_ContractManifests.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
     
-    Parameter from_cargo_metadata : forall `{H : State.Trait}, unit
+    Parameter from_cargo_metadata : forall `{H : State.Trait}, 
         -> M (H := H) Self.
     
     Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
@@ -149,7 +149,7 @@ Definition
     (std.thread.local.LocalKey::["new"]
       ink_e2e_macro.codegen.ALREADY_BUILT_CONTRACTS.__getit).
 
-Parameter __init : forall `{H : State.Trait}, unit
+Parameter __init : forall `{H : State.Trait}, 
     ->
       M (H := H)
         (core.cell.RefCell
@@ -188,7 +188,7 @@ Definition
               alloc.string.String
               alloc.string.String)))::["new"]).
 
-Parameter already_built_contracts : forall `{H : State.Trait}, unit
+Parameter already_built_contracts : forall `{H : State.Trait}, 
     ->
       M (H := H)
         (std.collections.hash.map.HashMap
@@ -287,7 +287,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
 Module Impl_ink_e2e_macro_codegen_ContractManifests_2.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
   
-  Parameter from_cargo_metadata : forall `{H : State.Trait}, unit
+  Parameter from_cargo_metadata : forall `{H : State.Trait}, 
       -> M (H := H) Self.
   
   Global Instance AssociatedFunction_from_cargo_metadata `{H : State.Trait} :
@@ -362,7 +362,7 @@ Module config.
   Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_e2e_macro.config.E2EConfig.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -515,7 +515,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
 Module Impl_core_default_Default_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_e2e_macro.config.E2EConfig.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :

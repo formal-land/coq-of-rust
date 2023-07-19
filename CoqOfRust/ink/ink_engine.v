@@ -125,7 +125,7 @@ Module ext.
   Module Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
     Definition Self := ink_engine.ext.ChainSpec.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -140,7 +140,7 @@ Module ext.
   Module Impl_ink_engine_ext_Engine.
     Definition Self := ink_engine.ext.Engine.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -151,7 +151,7 @@ Module ext.
   Module Impl_core_default_Default_for_ink_engine_ext_Engine.
     Definition Self := ink_engine.ext.Engine.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -546,7 +546,7 @@ Definition ChainSpec : Set := ChainSpec.t.
 Module Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
   Definition Self := ink_engine.ext.ChainSpec.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -561,7 +561,7 @@ End Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
 Module Impl_ink_engine_ext_Engine_3.
   Definition Self := ink_engine.ext.Engine.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -572,7 +572,7 @@ End Impl_ink_engine_ext_Engine_3.
 Module Impl_core_default_Default_for_ink_engine_ext_Engine.
   Definition Self := ink_engine.ext.Engine.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -929,7 +929,7 @@ Module test_api.
   Module Impl_ink_engine_test_api_RecordedDebugMessages.
     Definition Self := ink_engine.test_api.RecordedDebugMessages.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -957,7 +957,7 @@ Module test_api.
     Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
     Definition Self := ink_engine.test_api.RecordedDebugMessages.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1034,7 +1034,7 @@ Module test_api.
   Module Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
     Definition Self := ink_engine.test_api.DebugInfo.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1049,7 +1049,7 @@ Module test_api.
   Module Impl_ink_engine_test_api_DebugInfo.
     Definition Self := ink_engine.test_api.DebugInfo.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -1369,7 +1369,7 @@ End Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
 Module Impl_ink_engine_test_api_RecordedDebugMessages_2.
   Definition Self := ink_engine.test_api.RecordedDebugMessages.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -1394,7 +1394,7 @@ End Impl_ink_engine_test_api_RecordedDebugMessages_2.
 Module Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
   Definition Self := ink_engine.test_api.RecordedDebugMessages.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -1470,7 +1470,7 @@ Definition DebugInfo : Set := DebugInfo.t.
 Module Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
   Definition Self := ink_engine.test_api.DebugInfo.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -1485,7 +1485,7 @@ End Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
 Module Impl_ink_engine_test_api_DebugInfo_2.
   Definition Self := ink_engine.test_api.DebugInfo.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -1903,7 +1903,7 @@ Module chain_extension.
     Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
     Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1919,7 +1919,7 @@ Module chain_extension.
   Module Impl_ink_engine_chain_extension_ChainExtensionHandler.
     Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -2196,7 +2196,7 @@ Module
   Impl_core_default_Default_for_ink_engine_chain_extension_ChainExtensionHandler.
   Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -2212,7 +2212,7 @@ End
 Module Impl_ink_engine_chain_extension_ChainExtensionHandler_2.
   Definition Self := ink_engine.chain_extension.ChainExtensionHandler.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -2276,7 +2276,7 @@ Module database.
   Module Impl_core_default_Default_for_ink_engine_database_Database.
     Definition Self := ink_engine.database.Database.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_engine.database.Database.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -2292,7 +2292,7 @@ Module database.
   Module Impl_ink_engine_database_Database.
     Definition Self := ink_engine.database.Database.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -2418,7 +2418,7 @@ Definition Database : Set := Database.t.
 Module Impl_core_default_Default_for_ink_engine_database_Database.
   Definition Self := ink_engine.database.Database.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_engine.database.Database.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -2434,7 +2434,7 @@ End Impl_core_default_Default_for_ink_engine_database_Database.
 Module Impl_ink_engine_database_Database_2.
   Definition Self := ink_engine.database.Database.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -2560,7 +2560,7 @@ Module exec_context.
   Module Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
     Definition Self := ink_engine.exec_context.ExecContext.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_engine.exec_context.ExecContext.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -2576,7 +2576,7 @@ Module exec_context.
   Module Impl_ink_engine_exec_context_ExecContext.
     Definition Self := ink_engine.exec_context.ExecContext.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -2652,7 +2652,7 @@ Definition ExecContext : Set := ExecContext.t.
 Module Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
   Definition Self := ink_engine.exec_context.ExecContext.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_engine.exec_context.ExecContext.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -2668,7 +2668,7 @@ End Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
 Module Impl_ink_engine_exec_context_ExecContext_2.
   Definition Self := ink_engine.exec_context.ExecContext.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -2935,7 +2935,7 @@ Module types.
   Module Impl_core_default_Default_for_ink_engine_types_Key.
     Definition Self := ink_engine.types.Key.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_engine.types.Key.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -3376,7 +3376,7 @@ Definition Key := Key.t.
 Module Impl_core_default_Default_for_ink_engine_types_Key.
   Definition Self := ink_engine.types.Key.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_engine.types.Key.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :

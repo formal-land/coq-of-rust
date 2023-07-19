@@ -684,7 +684,7 @@ Module client.
       Notation.dot := exec_instantiate;
     }.
     
-    Parameter salt : forall `{H : State.Trait}, unit
+    Parameter salt : forall `{H : State.Trait}, 
         -> M (H := H) (alloc.vec.Vec u8).
     
     Global Instance AssociatedFunction_salt `{H : State.Trait} :
@@ -1204,7 +1204,7 @@ Section
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
-  Parameter into_visitor : forall `{H : State.Trait}, unit
+  Parameter into_visitor : forall `{H : State.Trait}, 
       -> M (H := H) ImplSelf.Visitor.
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
@@ -1498,7 +1498,7 @@ Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
   
   Definition Visitor : Set := ink_e2e.client._.Visitor E.
   
-  Parameter into_visitor : forall `{H : State.Trait}, unit
+  Parameter into_visitor : forall `{H : State.Trait}, 
       -> M (H := H) ImplSelf.Visitor.
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
@@ -1740,8 +1740,7 @@ Module Impl_ink_e2e_client_Client_C_E_2.
     Notation.dot := exec_instantiate;
   }.
   
-  Parameter salt : forall `{H : State.Trait}, unit
-      -> M (H := H) (alloc.vec.Vec u8).
+  Parameter salt : forall `{H : State.Trait},  -> M (H := H) (alloc.vec.Vec u8).
   
   Global Instance AssociatedFunction_salt `{H : State.Trait} :
     Notation.DoubleColon Self "salt" := {
@@ -1859,7 +1858,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1869,7 +1868,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1879,7 +1878,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1889,7 +1888,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1899,7 +1898,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1909,7 +1908,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1919,7 +1918,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1929,7 +1928,7 @@ Module default_accounts.
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
       `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-      unit
+      
       ->
         M (H := H)
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1940,7 +1939,7 @@ Parameter alice : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1950,7 +1949,7 @@ Parameter bob : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1960,7 +1959,7 @@ Parameter charlie : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1970,7 +1969,7 @@ Parameter dave : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1980,7 +1979,7 @@ Parameter eve : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -1990,7 +1989,7 @@ Parameter ferdie : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -2000,7 +1999,7 @@ Parameter one : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -2010,7 +2009,7 @@ Parameter two : forall `{H : State.Trait}, forall
     `{subxt.config.Config.Trait C}
     `{core.convert.From.Trait sp_core.sr25519.Signature ImplC.Signature}
     `{core.convert.From.Trait sp_core.crypto.AccountId32 ImplC.AccountId}
-    unit
+    
     ->
       M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -2451,7 +2450,7 @@ Module xts.
   Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_e2e.xts.Weight.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -3388,7 +3387,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
 Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_e2e.xts.Weight.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -3444,7 +3443,7 @@ Module
   Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Parameter max_encoded_len : forall `{H : State.Trait}, unit
+  Parameter max_encoded_len : forall `{H : State.Trait}, 
       -> M (H := H) Root.core.primitive.usize.
   
   Global Instance AssociatedFunction_max_encoded_len `{H : State.Trait} :
@@ -4996,7 +4995,7 @@ Definition
     std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
   run (std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
 
-Parameter __init : forall `{H : State.Trait}, unit
+Parameter __init : forall `{H : State.Trait}, 
     -> M (H := H) (core.cell.RefCell alloc.string.String).
 
 Parameter __getit : forall `{H : State.Trait}, core.option.Option
@@ -5014,7 +5013,7 @@ Definition
     ((std.sys.common.thread_local.fast_local.Key
           (core.cell.RefCell alloc.string.String))::["new"]).
 
-Parameter log_prefix : forall `{H : State.Trait}, unit
+Parameter log_prefix : forall `{H : State.Trait}, 
     -> M (H := H) alloc.string.String.
 
 Parameter log_info : forall `{H : State.Trait}, ref str -> M (H := H) unit.

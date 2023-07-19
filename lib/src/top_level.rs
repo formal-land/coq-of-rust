@@ -829,7 +829,8 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                 },
                 // argument types
                 if strct_args.args.is_empty() {
-                    text("unit")
+                    // text("unit")
+                    nil()
                 } else {
                     intersperse(
                         strct_args

@@ -730,7 +730,7 @@ Module types.
   Module Impl_core_default_Default_for_ink_primitives_types_Hash.
     Definition Self := ink_primitives.types.Hash.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_primitives.types.Hash.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -887,7 +887,7 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -914,7 +914,7 @@ Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId.
   
   Definition Visitor : Set := ink_primitives.types._.Visitor.
   
-  Parameter into_visitor : forall `{H : State.Trait}, unit
+  Parameter into_visitor : forall `{H : State.Trait}, 
       -> M (H := H) ImplSelf.Visitor.
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
@@ -1320,7 +1320,7 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -1347,7 +1347,7 @@ Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash.
   
   Definition Visitor : Set := ink_primitives.types._.Visitor.
   
-  Parameter into_visitor : forall `{H : State.Trait}, unit
+  Parameter into_visitor : forall `{H : State.Trait}, 
       -> M (H := H) ImplSelf.Visitor.
   
   Global Instance AssociatedFunction_into_visitor `{H : State.Trait} :
@@ -1664,7 +1664,7 @@ End Impl_core_convert_From_for_ink_primitives_types_Hash.
 Module Impl_core_default_Default_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_primitives.types.Hash.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -1815,7 +1815,7 @@ Module Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :

@@ -641,7 +641,7 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -665,7 +665,7 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -797,13 +797,13 @@ Module api.
   Parameter caller : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ImplE.AccountId.
   
   Parameter transferred_value : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ImplE.Balance.
   
   Parameter weight_to_fee : forall `{H : State.Trait}, forall
@@ -815,37 +815,37 @@ Module api.
   Parameter gas_left : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ink_env.types.Gas.
   
   Parameter block_timestamp : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ImplE.Timestamp.
   
   Parameter account_id : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ImplE.AccountId.
   
   Parameter balance : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ImplE.Balance.
   
   Parameter block_number : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ImplE.BlockNumber.
   
   Parameter minimum_balance : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) ImplE.Balance.
   
   Parameter emit_event : forall `{H : State.Trait}, forall
@@ -946,7 +946,7 @@ Module api.
   Parameter decode_input : forall `{H : State.Trait}, forall
       {T : Set},
       `{parity_scale_codec.codec.Decode.Trait T}
-      unit
+      
       -> M (H := H) (ink_env.error.Result T).
   
   Parameter return_value : forall `{H : State.Trait}, forall
@@ -998,13 +998,13 @@ Module api.
   Parameter own_code_hash : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) (ink_env.error.Result ImplE.Hash).
   
   Parameter caller_is_origin : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       -> M (H := H) bool.
   
   Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
@@ -1027,13 +1027,13 @@ End api.
 Parameter caller : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ImplE.AccountId.
 
 Parameter transferred_value : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ImplE.Balance.
 
 Parameter weight_to_fee : forall `{H : State.Trait}, forall
@@ -1045,37 +1045,37 @@ Parameter weight_to_fee : forall `{H : State.Trait}, forall
 Parameter gas_left : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ink_env.types.Gas.
 
 Parameter block_timestamp : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ImplE.Timestamp.
 
 Parameter account_id : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ImplE.AccountId.
 
 Parameter balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ImplE.Balance.
 
 Parameter block_number : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ImplE.BlockNumber.
 
 Parameter minimum_balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) ImplE.Balance.
 
 Parameter emit_event : forall `{H : State.Trait}, forall
@@ -1176,7 +1176,7 @@ Parameter transfer : forall `{H : State.Trait}, forall
 Parameter decode_input : forall `{H : State.Trait}, forall
     {T : Set},
     `{parity_scale_codec.codec.Decode.Trait T}
-    unit
+    
     -> M (H := H) (ink_env.error.Result T).
 
 Parameter return_value : forall `{H : State.Trait}, forall
@@ -1227,13 +1227,13 @@ Parameter code_hash : forall `{H : State.Trait}, forall
 Parameter own_code_hash : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) (ink_env.error.Result ImplE.Hash).
 
 Parameter caller_is_origin : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     -> M (H := H) bool.
 
 Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
@@ -1555,7 +1555,7 @@ Module backend.
   Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_env.backend.ReturnFlags.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -1664,7 +1664,7 @@ Module backend.
   Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_env.backend.CallFlags.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -2108,7 +2108,7 @@ Definition ReturnFlags : Set := ReturnFlags.t.
 Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   Definition Self := ink_env.backend.ReturnFlags.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_env.backend.ReturnFlags.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -2217,7 +2217,7 @@ End Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
 Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_env.backend.CallFlags.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -2832,7 +2832,7 @@ Module call.
     Parameter build_call : forall `{H : State.Trait}, forall
         {E : Set},
         `{ink_env.types.Environment.Trait E}
-        unit
+        
         ->
           M (H := H)
             (ink_env.call.call_builder.CallBuilder
@@ -3524,7 +3524,7 @@ Module call.
       
       Definition Self := ink_env.call.common.ReturnType T.
       
-      Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+      Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -3673,7 +3673,7 @@ Module call.
       
       Definition Self := ink_env.call.common.Unset T.
       
-      Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+      Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -4093,7 +4093,7 @@ Module call.
     Parameter build_create : forall `{H : State.Trait}, forall
         {ContractRef : Set},
         `{ink_env.contract.ContractEnv.Trait ContractRef}
-        unit
+        
         ->
           M (H := H)
             (ink_env.call.create_builder.CreateBuilder
@@ -4449,7 +4449,7 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
-      Parameter default : forall `{H : State.Trait}, unit
+      Parameter default : forall `{H : State.Trait}, 
           -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -4607,7 +4607,7 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
-      Parameter default : forall `{H : State.Trait}, unit
+      Parameter default : forall `{H : State.Trait}, 
           -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -4740,7 +4740,7 @@ Module call.
       Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
-      Parameter default : forall `{H : State.Trait}, unit
+      Parameter default : forall `{H : State.Trait}, 
           -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -4778,7 +4778,7 @@ Module call.
     Module Impl_ink_env_call_execution_input_EmptyArgumentList.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
-      Parameter empty : forall `{H : State.Trait}, unit
+      Parameter empty : forall `{H : State.Trait}, 
           -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
       
       Global Instance AssociatedFunction_empty `{H : State.Trait} :
@@ -4967,7 +4967,7 @@ Module call.
     Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Parameter default : forall `{H : State.Trait}, unit
+      Parameter default : forall `{H : State.Trait}, 
           -> M (H := H) ink_env.call.selector.Selector.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -5312,7 +5312,7 @@ Module call_builder.
   Parameter build_call : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
+      
       ->
         M (H := H)
           (ink_env.call.call_builder.CallBuilder
@@ -6128,7 +6128,7 @@ End
 Parameter build_call : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
+    
     ->
       M (H := H)
         (ink_env.call.call_builder.CallBuilder
@@ -6804,7 +6804,7 @@ Module common.
     
     Definition Self := ink_env.call.common.ReturnType T.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -6950,7 +6950,7 @@ Module common.
     
     Definition Self := ink_env.call.common.Unset T.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -7099,7 +7099,7 @@ Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   
   Definition Self := ink_env.call.common.ReturnType T.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -7245,7 +7245,7 @@ Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   
   Definition Self := ink_env.call.common.Unset T.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -7659,7 +7659,7 @@ Module create_builder.
   Parameter build_create : forall `{H : State.Trait}, forall
       {ContractRef : Set},
       `{ink_env.contract.ContractEnv.Trait ContractRef}
-      unit
+      
       ->
         M (H := H)
           (ink_env.call.create_builder.CreateBuilder
@@ -8295,7 +8295,7 @@ Definition CreateBuilder : Set := CreateBuilder.t.
 Parameter build_create : forall `{H : State.Trait}, forall
     {ContractRef : Set},
     `{ink_env.contract.ContractEnv.Trait ContractRef}
-    unit
+    
     ->
       M (H := H)
         (ink_env.call.create_builder.CreateBuilder
@@ -8646,7 +8646,7 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -8801,7 +8801,7 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -8931,7 +8931,7 @@ Module execution_input.
     Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -8969,7 +8969,7 @@ Module execution_input.
   Module Impl_ink_env_call_execution_input_EmptyArgumentList_2.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
-    Parameter empty : forall `{H : State.Trait}, unit
+    Parameter empty : forall `{H : State.Trait}, 
         -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
     
     Global Instance AssociatedFunction_empty `{H : State.Trait} :
@@ -9187,7 +9187,7 @@ Section
   
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -9341,7 +9341,7 @@ Section
   
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -9469,7 +9469,7 @@ Module
   Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -9506,7 +9506,7 @@ Definition EmptyArgumentList : Set :=
 Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
-  Parameter empty : forall `{H : State.Trait}, unit
+  Parameter empty : forall `{H : State.Trait}, 
       -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
   
   Global Instance AssociatedFunction_empty `{H : State.Trait} :
@@ -9690,7 +9690,7 @@ Module selector.
   Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_env.call.selector.Selector.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -9844,7 +9844,7 @@ Definition Selector : Set := Selector.t.
 Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_env.call.selector.Selector.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -11134,7 +11134,7 @@ Module engine.
         Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
         Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
         
-        Parameter default : forall `{H : State.Trait}, unit
+        Parameter default : forall `{H : State.Trait}, 
             -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
         
         Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -11758,7 +11758,7 @@ Module engine.
           E
           -> M (H := H) unit.
       
-      Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
+      Parameter recorded_debug_messages : forall `{H : State.Trait}, 
           -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
       
       Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
@@ -11767,7 +11767,7 @@ Module engine.
       Parameter advance_block : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          unit
+          
           -> M (H := H) unit.
       
       Parameter set_caller : forall `{H : State.Trait}, forall
@@ -11801,7 +11801,7 @@ Module engine.
       Parameter callee : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          unit
+          
           -> M (H := H) ImplT.AccountId.
       
       Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
@@ -11854,7 +11854,7 @@ Module engine.
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          unit
+          
           -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
       
       Module DefaultAccounts.
@@ -11888,7 +11888,7 @@ Module engine.
       End DefaultAccounts.
       Definition DefaultAccounts : Set := DefaultAccounts.t.
       
-      Parameter recorded_events : forall `{H : State.Trait}, unit
+      Parameter recorded_events : forall `{H : State.Trait}, 
           -> M (H := H) OpaqueDef.
       
       Parameter assert_contract_termination : forall `{H : State.Trait}, forall
@@ -12545,7 +12545,7 @@ Module off_chain.
       Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
       Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
       
-      Parameter default : forall `{H : State.Trait}, unit
+      Parameter default : forall `{H : State.Trait}, 
           -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -13145,7 +13145,7 @@ Module off_chain.
         E
         -> M (H := H) unit.
     
-    Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
+    Parameter recorded_debug_messages : forall `{H : State.Trait}, 
         -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
     
     Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
@@ -13154,7 +13154,7 @@ Module off_chain.
     Parameter advance_block : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        unit
+        
         -> M (H := H) unit.
     
     Parameter set_caller : forall `{H : State.Trait}, forall
@@ -13188,7 +13188,7 @@ Module off_chain.
     Parameter callee : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        unit
+        
         -> M (H := H) ImplT.AccountId.
     
     Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
@@ -13241,7 +13241,7 @@ Module off_chain.
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        unit
+        
         -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
     
     Module DefaultAccounts.
@@ -13275,7 +13275,7 @@ Module off_chain.
     End DefaultAccounts.
     Definition DefaultAccounts : Set := DefaultAccounts.t.
     
-    Parameter recorded_events : forall `{H : State.Trait}, unit
+    Parameter recorded_events : forall `{H : State.Trait}, 
         -> M (H := H) OpaqueDef.
     
     Parameter assert_contract_termination : forall `{H : State.Trait}, forall
@@ -14058,7 +14058,7 @@ Module impls.
     Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
     Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -14655,7 +14655,7 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
-    unit
+    
     -> M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
@@ -14723,7 +14723,7 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
-    unit
+    
     -> M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
@@ -14791,7 +14791,7 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
-    unit
+    
     -> M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
@@ -14859,7 +14859,7 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{core.marker.Sized.Trait T}
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
-    unit
+    
     -> M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
@@ -14899,7 +14899,7 @@ Module
   Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
   Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -15463,7 +15463,7 @@ Module test_api.
       E
       -> M (H := H) unit.
   
-  Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
+  Parameter recorded_debug_messages : forall `{H : State.Trait}, 
       -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
   
   Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
@@ -15472,7 +15472,7 @@ Module test_api.
   Parameter advance_block : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      unit
+      
       -> M (H := H) unit.
   
   Parameter set_caller : forall `{H : State.Trait}, forall
@@ -15506,7 +15506,7 @@ Module test_api.
   Parameter callee : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      unit
+      
       -> M (H := H) ImplT.AccountId.
   
   Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
@@ -15559,7 +15559,7 @@ Module test_api.
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      unit
+      
       -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
   
   Module DefaultAccounts.
@@ -15593,7 +15593,7 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts : Set := DefaultAccounts.t.
   
-  Parameter recorded_events : forall `{H : State.Trait}, unit
+  Parameter recorded_events : forall `{H : State.Trait}, 
       -> M (H := H) OpaqueDef.
   
   Parameter assert_contract_termination : forall `{H : State.Trait}, forall
@@ -15658,7 +15658,7 @@ Parameter register_chain_extension : forall `{H : State.Trait}, forall
     E
     -> M (H := H) unit.
 
-Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
+Parameter recorded_debug_messages : forall `{H : State.Trait}, 
     -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
 
 Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
@@ -15667,7 +15667,7 @@ Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
 Parameter advance_block : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    unit
+    
     -> M (H := H) unit.
 
 Parameter set_caller : forall `{H : State.Trait}, forall
@@ -15701,7 +15701,7 @@ Parameter is_contract : forall `{H : State.Trait}, forall
 Parameter callee : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    unit
+    
     -> M (H := H) ImplT.AccountId.
 
 Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
@@ -15754,7 +15754,7 @@ Parameter default_accounts : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    unit
+    
     -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 
 Module DefaultAccounts.
@@ -15788,8 +15788,7 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts : Set := DefaultAccounts.t.
 
-Parameter recorded_events : forall `{H : State.Trait}, unit
-    -> M (H := H) OpaqueDef.
+Parameter recorded_events : forall `{H : State.Trait},  -> M (H := H) OpaqueDef.
 
 Error OpaqueTy.
 
@@ -15981,7 +15980,7 @@ Definition
     (std.thread.local.LocalKey::["new"]
       ink_env.engine.off_chain.on_instance.INSTANCE.__getit).
 
-Parameter __init : forall `{H : State.Trait}, unit
+Parameter __init : forall `{H : State.Trait}, 
     -> M (H := H) (core.cell.RefCell ink_env.engine.off_chain.EnvInstance).
 
 Parameter __getit : forall `{H : State.Trait}, core.option.Option

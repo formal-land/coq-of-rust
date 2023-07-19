@@ -114,21 +114,21 @@ Module bump.
   Module Impl_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Parameter heap_start : forall `{H : State.Trait}, unit -> M (H := H) usize.
+    Parameter heap_start : forall `{H : State.Trait},  -> M (H := H) usize.
     
     Global Instance AssociatedFunction_heap_start `{H : State.Trait} :
       Notation.DoubleColon Self "heap_start" := {
       Notation.double_colon := heap_start;
     }.
     
-    Parameter heap_end : forall `{H : State.Trait}, unit -> M (H := H) usize.
+    Parameter heap_end : forall `{H : State.Trait},  -> M (H := H) usize.
     
     Global Instance AssociatedFunction_heap_end `{H : State.Trait} :
       Notation.DoubleColon Self "heap_end" := {
@@ -268,21 +268,21 @@ End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
 Module Impl_ink_allocator_bump_InnerAlloc_2.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter heap_start : forall `{H : State.Trait}, unit -> M (H := H) usize.
+  Parameter heap_start : forall `{H : State.Trait},  -> M (H := H) usize.
   
   Global Instance AssociatedFunction_heap_start `{H : State.Trait} :
     Notation.DoubleColon Self "heap_start" := {
     Notation.double_colon := heap_start;
   }.
   
-  Parameter heap_end : forall `{H : State.Trait}, unit -> M (H := H) usize.
+  Parameter heap_end : forall `{H : State.Trait},  -> M (H := H) usize.
   
   Global Instance AssociatedFunction_heap_end `{H : State.Trait} :
     Notation.DoubleColon Self "heap_end" := {

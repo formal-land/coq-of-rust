@@ -23,7 +23,7 @@ Module lazy.
       
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+      Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -41,7 +41,7 @@ Module lazy.
     Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
-      Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+      Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -222,7 +222,7 @@ Module lazy.
     
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -238,7 +238,7 @@ Module lazy.
   Module Impl_ink_storage_lazy_Lazy_V_KeyType.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -395,7 +395,7 @@ Module mapping.
     
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -413,7 +413,7 @@ Module mapping.
   Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_3.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
-    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -596,7 +596,7 @@ Section
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -618,7 +618,7 @@ Section
   
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -634,7 +634,7 @@ End Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_5.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -833,7 +833,7 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -853,7 +853,7 @@ Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -869,7 +869,7 @@ End Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
 Module Impl_ink_storage_lazy_Lazy_V_KeyType_4.
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
-  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait},  -> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {

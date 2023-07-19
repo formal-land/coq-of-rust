@@ -21,7 +21,7 @@ Module impls.
   Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
     Definition Self := ink_storage_traits.impls.AutoKey.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) ink_storage_traits.impls.AutoKey.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -189,7 +189,7 @@ Module impls.
     
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) (ink_storage_traits.impls.ManualKey ParentKey).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -419,7 +419,7 @@ Module impls.
     
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
-    Parameter default : forall `{H : State.Trait}, unit
+    Parameter default : forall `{H : State.Trait}, 
         -> M (H := H) (ink_storage_traits.impls.ResolverKey L R).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -726,7 +726,7 @@ Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -742,7 +742,7 @@ End Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
 Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
   Definition Self := ink_storage_traits.impls.AutoKey.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) ink_storage_traits.impls.AutoKey.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -911,7 +911,7 @@ Section
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -933,7 +933,7 @@ Section
   
   Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) (ink_storage_traits.impls.ManualKey ParentKey).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -1159,7 +1159,7 @@ Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Definition Identity : Set := Self.
   
-  Parameter type_info : forall `{H : State.Trait}, unit
+  Parameter type_info : forall `{H : State.Trait}, 
       -> M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
@@ -1179,7 +1179,7 @@ Section Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   
   Definition Self := ink_storage_traits.impls.ResolverKey L R.
   
-  Parameter default : forall `{H : State.Trait}, unit
+  Parameter default : forall `{H : State.Trait}, 
       -> M (H := H) (ink_storage_traits.impls.ResolverKey L R).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
