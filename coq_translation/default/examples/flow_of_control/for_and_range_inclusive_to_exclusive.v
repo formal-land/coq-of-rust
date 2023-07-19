@@ -4,12 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* α0 :=
-    (Impl_IntoIterator_for_Range.Method_into_iter).(@Notation.dot _ "into_iter" _) {| std.ops.Range.start := 1; std.ops.Range._end := 101; |} in
+    {| std.ops.Range.start := 1; std.ops.Range._end := 101; |}.["into_iter"] in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := (Impl_Iterator_for_Range.Method_next).(@Notation.dot _ "next" _) (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
         | std.option.Option.None  => Break
         | std.option.Option.Some n =>
