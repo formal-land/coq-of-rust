@@ -65,7 +65,7 @@ Definition fizzbuzz `{H : State.Trait} (n : u32) : M (H := H) unit :=
         Pure tt.
 
 Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
-  let* α0 := std.ops.RangeInclusive::[new] 1 n in
+  let* α0 := std.ops.RangeInclusive::["new"] 1 n in
   let* α1 := α0.["into_iter"] in
   match α1 with
   | iter =>

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* α0 := std.ops.RangeInclusive::[new] 1 100 in
+  let* α0 := std.ops.RangeInclusive::["new"] 1 100 in
   let* α1 := α0.["into_iter"] in
   match α1 with
   | iter =>
