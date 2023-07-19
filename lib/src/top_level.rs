@@ -829,22 +829,22 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                 },
                 // argument types
                 if strct_args.args.is_empty() {
-                    // text("unit")
                     nil()
                 } else {
+                  concat([
                     intersperse(
                         strct_args
                             .args
                             .iter()
                             .map(|(_, ty)| nest([ty.to_doc(false)])),
                         [text("->"), line()],
-                    )
+                    ),
+                    text("->"),
+                  ])
                 },
                 line(),
                 // return type
                 nest([
-                    text("->"),
-                    line(),
                     strct_args.ret_ty.to_doc(false),
                     text("."),
                 ]),
