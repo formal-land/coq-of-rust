@@ -29,8 +29,8 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
+    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
       Notation.DoubleColon Self "from_le_bytes" := {
@@ -50,8 +50,8 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
+    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
       Notation.DoubleColon Self "from_le_bytes" := {
@@ -71,8 +71,8 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
+    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
       Notation.DoubleColon Self "from_le_bytes" := {
@@ -92,8 +92,8 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
+    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
       Notation.DoubleColon Self "from_le_bytes" := {
@@ -113,8 +113,8 @@ Module types.
     
     Definition Bytes : Set := list u8.
     
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
+    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
       Notation.DoubleColon Self "from_le_bytes" := {
@@ -268,8 +268,8 @@ Module types.
     Definition Self := ink_env.types.DefaultEnvironment.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -283,8 +283,8 @@ Module types.
   Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
     Definition Self := ink_env.types.DefaultEnvironment.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.types.DefaultEnvironment.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.types.DefaultEnvironment.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -307,8 +307,8 @@ Module types.
     Definition Self := ink_env.types.DefaultEnvironment.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.types.DefaultEnvironment
-        -> M (H := H) bool.
+        ref ink_env.types.DefaultEnvironment->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -329,8 +329,9 @@ Module types.
   Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
     Definition Self := ink_env.types.DefaultEnvironment.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -407,8 +408,8 @@ Module Impl_ink_env_types_FromLittleEndian_for_u8.
   
   Definition Bytes : Set := list u8.
   
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
+  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
     Notation.DoubleColon Self "from_le_bytes" := {
@@ -428,8 +429,8 @@ Module Impl_ink_env_types_FromLittleEndian_for_u16.
   
   Definition Bytes : Set := list u8.
   
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
+  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
     Notation.DoubleColon Self "from_le_bytes" := {
@@ -449,8 +450,8 @@ Module Impl_ink_env_types_FromLittleEndian_for_u32.
   
   Definition Bytes : Set := list u8.
   
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
+  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
     Notation.DoubleColon Self "from_le_bytes" := {
@@ -470,8 +471,8 @@ Module Impl_ink_env_types_FromLittleEndian_for_u64.
   
   Definition Bytes : Set := list u8.
   
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
+  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
     Notation.DoubleColon Self "from_le_bytes" := {
@@ -491,8 +492,8 @@ Module Impl_ink_env_types_FromLittleEndian_for_u128.
   
   Definition Bytes : Set := list u8.
   
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
+  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
     Notation.DoubleColon Self "from_le_bytes" := {
@@ -642,7 +643,7 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
   Definition Identity : Set := Self.
   
   Parameter type_info : forall `{H : State.Trait}, 
-      -> M (H := H) scale_info.ty.Type.
+      M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
@@ -666,7 +667,7 @@ Module Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
   Definition Identity : Set := Self.
   
   Parameter type_info : forall `{H : State.Trait}, 
-      -> M (H := H) scale_info.ty.Type.
+      M (H := H) scale_info.ty.Type.
   
   Global Instance AssociatedFunction_type_info `{H : State.Trait} :
     Notation.DoubleColon Self "type_info" := {
@@ -682,8 +683,8 @@ Module Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -697,8 +698,8 @@ End Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
 Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.types.DefaultEnvironment.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.types.DefaultEnvironment.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -721,8 +722,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.types.DefaultEnvironment
-      -> M (H := H) bool.
+      ref ink_env.types.DefaultEnvironment->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -743,8 +744,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
 Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
   Definition Self := ink_env.types.DefaultEnvironment.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -798,97 +799,97 @@ Module api.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ImplE.AccountId.
+      M (H := H) ImplE.AccountId.
   
   Parameter transferred_value : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ImplE.Balance.
+      M (H := H) ImplE.Balance.
   
   Parameter weight_to_fee : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      ink_env.types.Gas
-      -> M (H := H) ImplE.Balance.
+      ink_env.types.Gas->
+      M (H := H) ImplE.Balance.
   
   Parameter gas_left : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ink_env.types.Gas.
+      M (H := H) ink_env.types.Gas.
   
   Parameter block_timestamp : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ImplE.Timestamp.
+      M (H := H) ImplE.Timestamp.
   
   Parameter account_id : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ImplE.AccountId.
+      M (H := H) ImplE.AccountId.
   
   Parameter balance : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ImplE.Balance.
+      M (H := H) ImplE.Balance.
   
   Parameter block_number : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ImplE.BlockNumber.
+      M (H := H) ImplE.BlockNumber.
   
   Parameter minimum_balance : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) ImplE.Balance.
+      M (H := H) ImplE.Balance.
   
   Parameter emit_event : forall `{H : State.Trait}, forall
       {E : Set} {Event : Set},
       `{ink_env.types.Environment.Trait E}
       `{ink_env.topics.Topics.Trait Event}
       `{parity_scale_codec.codec.Encode.Trait Event}
-      Event
-      -> M (H := H) unit.
+      Event->
+      M (H := H) unit.
   
   Parameter set_contract_storage : forall `{H : State.Trait}, forall
       {K : Set} {V : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait V}
       ref K->
-      ref V
-      -> M (H := H) (core.option.Option u32).
+      ref V->
+      M (H := H) (core.option.Option u32).
   
   Parameter get_contract_storage : forall `{H : State.Trait}, forall
       {K : Set} {R : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait R}
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+      ref K->
+      M (H := H) (ink_env.error.Result (core.option.Option R)).
   
   Parameter take_contract_storage : forall `{H : State.Trait}, forall
       {K : Set} {R : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait R}
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+      ref K->
+      M (H := H) (ink_env.error.Result (core.option.Option R)).
   
   Parameter contains_contract_storage : forall `{H : State.Trait}, forall
       {K : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
-      ref K
-      -> M (H := H) (core.option.Option u32).
+      ref K->
+      M (H := H) (core.option.Option u32).
   
   Parameter clear_contract_storage : forall `{H : State.Trait}, forall
       {K : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
-      ref K
-      -> M (H := H) (core.option.Option u32).
+      ref K->
+      M (H := H) (core.option.Option u32).
   
   Parameter invoke_contract : forall `{H : State.Trait}, forall
       {E : Set} {Args : Set} {R : Set},
@@ -900,8 +901,8 @@ Module api.
             E
             (ink_env.call.call_builder.Call E)
             Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+            R)->
+      M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
   
   Parameter invoke_contract_delegate : forall `{H : State.Trait}, forall
       {E : Set} {Args : Set} {R : Set},
@@ -913,8 +914,8 @@ Module api.
             E
             (ink_env.call.call_builder.DelegateCall E)
             Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+            R)->
+      M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
   
   Parameter instantiate_contract : forall `{H : State.Trait}, forall
       {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
@@ -923,9 +924,8 @@ Module api.
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{core.convert.AsRef.Trait Slice Salt}
       `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-      ->
-        M (H := H)
+      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)->
+      M (H := H)
           (ink_env.error.Result
             (ink_primitives.ConstructorResult
               ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -933,192 +933,192 @@ Module api.
   Parameter terminate_contract : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      ImplE.AccountId
-      -> M (H := H) Empty_set.
+      ImplE.AccountId->
+      M (H := H) Empty_set.
   
   Parameter transfer : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       ImplE.AccountId->
-      ImplE.Balance
-      -> M (H := H) (ink_env.error.Result unit).
+      ImplE.Balance->
+      M (H := H) (ink_env.error.Result unit).
   
   Parameter decode_input : forall `{H : State.Trait}, forall
       {T : Set},
       `{parity_scale_codec.codec.Decode.Trait T}
       
-      -> M (H := H) (ink_env.error.Result T).
+      M (H := H) (ink_env.error.Result T).
   
   Parameter return_value : forall `{H : State.Trait}, forall
       {R : Set},
       `{parity_scale_codec.codec.Encode.Trait R}
       ink_env.backend.ReturnFlags->
-      ref R
-      -> M (H := H) Empty_set.
+      ref R->
+      M (H := H) Empty_set.
   
-  Parameter debug_message : forall `{H : State.Trait}, ref str
-      -> M (H := H) unit.
+  Parameter debug_message : forall `{H : State.Trait}, ref str->
+      M (H := H) unit.
   
   Parameter hash_bytes : forall `{H : State.Trait}, forall
       {H : Set},
       `{ink_env.hash.CryptoHash.Trait H}
       ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Parameter hash_encoded : forall `{H : State.Trait}, forall
       {H : Set} {T : Set},
       `{ink_env.hash.CryptoHash.Trait H}
       `{parity_scale_codec.codec.Encode.Trait T}
       ref T->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Parameter ecdsa_recover : forall `{H : State.Trait}, ref list u8->
       ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
+      mut_ref list u8->
+      M (H := H) (ink_env.error.Result unit).
   
   Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
+      mut_ref list u8->
+      M (H := H) (ink_env.error.Result unit).
   
   Parameter is_contract : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      ref ImplE.AccountId
-      -> M (H := H) bool.
+      ref ImplE.AccountId->
+      M (H := H) bool.
   
   Parameter code_hash : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      ref ImplE.AccountId
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
+      ref ImplE.AccountId->
+      M (H := H) (ink_env.error.Result ImplE.Hash).
   
   Parameter own_code_hash : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
+      M (H := H) (ink_env.error.Result ImplE.Hash).
   
   Parameter caller_is_origin : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      -> M (H := H) bool.
+      M (H := H) bool.
   
-  Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
+  Parameter set_code_hash : forall `{H : State.Trait}, ref list u8->
+      M (H := H) (ink_env.error.Result unit).
   
   Parameter set_code_hash2 : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      ref ImplE.Hash
-      -> M (H := H) (ink_env.error.Result unit).
+      ref ImplE.Hash->
+      M (H := H) (ink_env.error.Result unit).
   
   Parameter call_runtime : forall `{H : State.Trait}, forall
       {E : Set} {Call : Set},
       `{ink_env.types.Environment.Trait E}
       `{parity_scale_codec.codec.Encode.Trait Call}
-      ref Call
-      -> M (H := H) (ink_env.error.Result unit).
+      ref Call->
+      M (H := H) (ink_env.error.Result unit).
 End api.
 
 Parameter caller : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ImplE.AccountId.
+    M (H := H) ImplE.AccountId.
 
 Parameter transferred_value : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ImplE.Balance.
+    M (H := H) ImplE.Balance.
 
 Parameter weight_to_fee : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ink_env.types.Gas
-    -> M (H := H) ImplE.Balance.
+    ink_env.types.Gas->
+    M (H := H) ImplE.Balance.
 
 Parameter gas_left : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ink_env.types.Gas.
+    M (H := H) ink_env.types.Gas.
 
 Parameter block_timestamp : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ImplE.Timestamp.
+    M (H := H) ImplE.Timestamp.
 
 Parameter account_id : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ImplE.AccountId.
+    M (H := H) ImplE.AccountId.
 
 Parameter balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ImplE.Balance.
+    M (H := H) ImplE.Balance.
 
 Parameter block_number : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ImplE.BlockNumber.
+    M (H := H) ImplE.BlockNumber.
 
 Parameter minimum_balance : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) ImplE.Balance.
+    M (H := H) ImplE.Balance.
 
 Parameter emit_event : forall `{H : State.Trait}, forall
     {E : Set} {Event : Set},
     `{ink_env.types.Environment.Trait E}
     `{ink_env.topics.Topics.Trait Event}
     `{parity_scale_codec.codec.Encode.Trait Event}
-    Event
-    -> M (H := H) unit.
+    Event->
+    M (H := H) unit.
 
 Parameter set_contract_storage : forall `{H : State.Trait}, forall
     {K : Set} {V : Set},
     `{parity_scale_codec.codec.Encode.Trait K}
     `{ink_storage_traits.storage.Storable.Trait V}
     ref K->
-    ref V
-    -> M (H := H) (core.option.Option u32).
+    ref V->
+    M (H := H) (core.option.Option u32).
 
 Parameter get_contract_storage : forall `{H : State.Trait}, forall
     {K : Set} {R : Set},
     `{parity_scale_codec.codec.Encode.Trait K}
     `{ink_storage_traits.storage.Storable.Trait R}
-    ref K
-    -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+    ref K->
+    M (H := H) (ink_env.error.Result (core.option.Option R)).
 
 Parameter take_contract_storage : forall `{H : State.Trait}, forall
     {K : Set} {R : Set},
     `{parity_scale_codec.codec.Encode.Trait K}
     `{ink_storage_traits.storage.Storable.Trait R}
-    ref K
-    -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+    ref K->
+    M (H := H) (ink_env.error.Result (core.option.Option R)).
 
 Parameter contains_contract_storage : forall `{H : State.Trait}, forall
     {K : Set},
     `{parity_scale_codec.codec.Encode.Trait K}
-    ref K
-    -> M (H := H) (core.option.Option u32).
+    ref K->
+    M (H := H) (core.option.Option u32).
 
 Parameter clear_contract_storage : forall `{H : State.Trait}, forall
     {K : Set},
     `{parity_scale_codec.codec.Encode.Trait K}
-    ref K
-    -> M (H := H) (core.option.Option u32).
+    ref K->
+    M (H := H) (core.option.Option u32).
 
 Parameter invoke_contract : forall `{H : State.Trait}, forall
     {E : Set} {Args : Set} {R : Set},
@@ -1130,8 +1130,8 @@ Parameter invoke_contract : forall `{H : State.Trait}, forall
           E
           (ink_env.call.call_builder.Call E)
           Args
-          R)
-    -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+          R)->
+    M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
 
 Parameter invoke_contract_delegate : forall `{H : State.Trait}, forall
     {E : Set} {Args : Set} {R : Set},
@@ -1143,8 +1143,8 @@ Parameter invoke_contract_delegate : forall `{H : State.Trait}, forall
           E
           (ink_env.call.call_builder.DelegateCall E)
           Args
-          R)
-    -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+          R)->
+    M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
 
 Parameter instantiate_contract : forall `{H : State.Trait}, forall
     {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
@@ -1153,9 +1153,8 @@ Parameter instantiate_contract : forall `{H : State.Trait}, forall
     `{parity_scale_codec.codec.Encode.Trait Args}
     `{core.convert.AsRef.Trait Slice Salt}
     `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-    ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-    ->
-      M (H := H)
+    ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)->
+    M (H := H)
         (ink_env.error.Result
           (ink_primitives.ConstructorResult
             ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -1163,94 +1162,94 @@ Parameter instantiate_contract : forall `{H : State.Trait}, forall
 Parameter terminate_contract : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ImplE.AccountId
-    -> M (H := H) Empty_set.
+    ImplE.AccountId->
+    M (H := H) Empty_set.
 
 Parameter transfer : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     ImplE.AccountId->
-    ImplE.Balance
-    -> M (H := H) (ink_env.error.Result unit).
+    ImplE.Balance->
+    M (H := H) (ink_env.error.Result unit).
 
 Parameter decode_input : forall `{H : State.Trait}, forall
     {T : Set},
     `{parity_scale_codec.codec.Decode.Trait T}
     
-    -> M (H := H) (ink_env.error.Result T).
+    M (H := H) (ink_env.error.Result T).
 
 Parameter return_value : forall `{H : State.Trait}, forall
     {R : Set},
     `{parity_scale_codec.codec.Encode.Trait R}
     ink_env.backend.ReturnFlags->
-    ref R
-    -> M (H := H) Empty_set.
+    ref R->
+    M (H := H) Empty_set.
 
-Parameter debug_message : forall `{H : State.Trait}, ref str -> M (H := H) unit.
+Parameter debug_message : forall `{H : State.Trait}, ref str-> M (H := H) unit.
 
 Parameter hash_bytes : forall `{H : State.Trait}, forall
     {H : Set},
     `{ink_env.hash.CryptoHash.Trait H}
     ref Slice->
-    mut_ref ink_env.hash.HashOutput.Type
-    -> M (H := H) unit.
+    mut_ref ink_env.hash.HashOutput.Type->
+    M (H := H) unit.
 
 Parameter hash_encoded : forall `{H : State.Trait}, forall
     {H : Set} {T : Set},
     `{ink_env.hash.CryptoHash.Trait H}
     `{parity_scale_codec.codec.Encode.Trait T}
     ref T->
-    mut_ref ink_env.hash.HashOutput.Type
-    -> M (H := H) unit.
+    mut_ref ink_env.hash.HashOutput.Type->
+    M (H := H) unit.
 
 Parameter ecdsa_recover : forall `{H : State.Trait}, ref list u8->
     ref list u8->
-    mut_ref list u8
-    -> M (H := H) (ink_env.error.Result unit).
+    mut_ref list u8->
+    M (H := H) (ink_env.error.Result unit).
 
 Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, ref list u8->
-    mut_ref list u8
-    -> M (H := H) (ink_env.error.Result unit).
+    mut_ref list u8->
+    M (H := H) (ink_env.error.Result unit).
 
 Parameter is_contract : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ref ImplE.AccountId
-    -> M (H := H) bool.
+    ref ImplE.AccountId->
+    M (H := H) bool.
 
 Parameter code_hash : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ref ImplE.AccountId
-    -> M (H := H) (ink_env.error.Result ImplE.Hash).
+    ref ImplE.AccountId->
+    M (H := H) (ink_env.error.Result ImplE.Hash).
 
 Parameter own_code_hash : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) (ink_env.error.Result ImplE.Hash).
+    M (H := H) (ink_env.error.Result ImplE.Hash).
 
 Parameter caller_is_origin : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    -> M (H := H) bool.
+    M (H := H) bool.
 
-Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
-    -> M (H := H) (ink_env.error.Result unit).
+Parameter set_code_hash : forall `{H : State.Trait}, ref list u8->
+    M (H := H) (ink_env.error.Result unit).
 
 Parameter set_code_hash2 : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ref ImplE.Hash
-    -> M (H := H) (ink_env.error.Result unit).
+    ref ImplE.Hash->
+    M (H := H) (ink_env.error.Result unit).
 
 Parameter call_runtime : forall `{H : State.Trait}, forall
     {E : Set} {Call : Set},
     `{ink_env.types.Environment.Trait E}
     `{parity_scale_codec.codec.Encode.Trait Call}
-    ref Call
-    -> M (H := H) (ink_env.error.Result unit).
+    ref Call->
+    M (H := H) (ink_env.error.Result unit).
 
 Module arithmetic.
   Module BaseArithmetic.
@@ -1340,8 +1339,8 @@ Module arithmetic.
     Definition Self := T.
     
     Parameter saturating_add : forall `{H : State.Trait}, Self->
-        Self
-        -> M (H := H) Self.
+        Self->
+        M (H := H) Self.
     
     Global Instance Method_saturating_add `{H : State.Trait} :
       Notation.Dot "saturating_add" := {
@@ -1349,8 +1348,8 @@ Module arithmetic.
     }.
     
     Parameter saturating_sub : forall `{H : State.Trait}, Self->
-        Self
-        -> M (H := H) Self.
+        Self->
+        M (H := H) Self.
     
     Global Instance Method_saturating_sub `{H : State.Trait} :
       Notation.Dot "saturating_sub" := {
@@ -1358,8 +1357,8 @@ Module arithmetic.
     }.
     
     Parameter saturating_mul : forall `{H : State.Trait}, Self->
-        Self
-        -> M (H := H) Self.
+        Self->
+        M (H := H) Self.
     
     Global Instance Method_saturating_mul `{H : State.Trait} :
       Notation.Dot "saturating_mul" := {
@@ -1367,8 +1366,8 @@ Module arithmetic.
     }.
     
     Parameter saturating_pow : forall `{H : State.Trait}, Self->
-        usize
-        -> M (H := H) Self.
+        usize->
+        M (H := H) Self.
     
     Global Instance Method_saturating_pow `{H : State.Trait} :
       Notation.Dot "saturating_pow" := {
@@ -1484,8 +1483,8 @@ Section Impl_ink_env_arithmetic_Saturating_for_T.
   Definition Self := T.
   
   Parameter saturating_add : forall `{H : State.Trait}, Self->
-      Self
-      -> M (H := H) Self.
+      Self->
+      M (H := H) Self.
   
   Global Instance Method_saturating_add `{H : State.Trait} :
     Notation.Dot "saturating_add" := {
@@ -1493,8 +1492,8 @@ Section Impl_ink_env_arithmetic_Saturating_for_T.
   }.
   
   Parameter saturating_sub : forall `{H : State.Trait}, Self->
-      Self
-      -> M (H := H) Self.
+      Self->
+      M (H := H) Self.
   
   Global Instance Method_saturating_sub `{H : State.Trait} :
     Notation.Dot "saturating_sub" := {
@@ -1502,8 +1501,8 @@ Section Impl_ink_env_arithmetic_Saturating_for_T.
   }.
   
   Parameter saturating_mul : forall `{H : State.Trait}, Self->
-      Self
-      -> M (H := H) Self.
+      Self->
+      M (H := H) Self.
   
   Global Instance Method_saturating_mul `{H : State.Trait} :
     Notation.Dot "saturating_mul" := {
@@ -1511,8 +1510,8 @@ Section Impl_ink_env_arithmetic_Saturating_for_T.
   }.
   
   Parameter saturating_pow : forall `{H : State.Trait}, Self->
-      usize
-      -> M (H := H) Self.
+      usize->
+      M (H := H) Self.
   
   Global Instance Method_saturating_pow `{H : State.Trait} :
     Notation.Dot "saturating_pow" := {
@@ -1556,7 +1555,7 @@ Module backend.
     Definition Self := ink_env.backend.ReturnFlags.
     
     Parameter default : forall `{H : State.Trait}, 
-        -> M (H := H) ink_env.backend.ReturnFlags.
+        M (H := H) ink_env.backend.ReturnFlags.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1571,8 +1570,8 @@ Module backend.
   Module Impl_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
     
-    Parameter new_with_reverted : forall `{H : State.Trait}, bool
-        -> M (H := H) Self.
+    Parameter new_with_reverted : forall `{H : State.Trait}, bool->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_new_with_reverted `{H : State.Trait} :
       Notation.DoubleColon Self "new_with_reverted" := {
@@ -1580,8 +1579,8 @@ Module backend.
     }.
     
     Parameter set_reverted : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
+        bool->
+        M (H := H) Self.
     
     Global Instance Method_set_reverted `{H : State.Trait} :
       Notation.Dot "set_reverted" := {
@@ -1622,8 +1621,8 @@ Module backend.
   Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.backend.CallFlags.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.backend.CallFlags.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -1649,8 +1648,8 @@ Module backend.
       Notation.double_colon := debug_struct_field4_finish; }.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -1665,7 +1664,7 @@ Module backend.
     Definition Self := ink_env.backend.CallFlags.
     
     Parameter default : forall `{H : State.Trait}, 
-        -> M (H := H) ink_env.backend.CallFlags.
+        M (H := H) ink_env.backend.CallFlags.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -1681,8 +1680,8 @@ Module backend.
     Definition Self := ink_env.backend.CallFlags.
     
     Parameter set_forward_input : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
+        bool->
+        M (H := H) Self.
     
     Global Instance Method_set_forward_input `{H : State.Trait} :
       Notation.Dot "set_forward_input" := {
@@ -1690,8 +1689,8 @@ Module backend.
     }.
     
     Parameter set_clone_input : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
+        bool->
+        M (H := H) Self.
     
     Global Instance Method_set_clone_input `{H : State.Trait} :
       Notation.Dot "set_clone_input" := {
@@ -1699,8 +1698,8 @@ Module backend.
     }.
     
     Parameter set_tail_call : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
+        bool->
+        M (H := H) Self.
     
     Global Instance Method_set_tail_call `{H : State.Trait} :
       Notation.Dot "set_tail_call" := {
@@ -1708,47 +1707,46 @@ Module backend.
     }.
     
     Parameter set_allow_reentry : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
+        bool->
+        M (H := H) Self.
     
     Global Instance Method_set_allow_reentry `{H : State.Trait} :
       Notation.Dot "set_allow_reentry" := {
       Notation.dot := set_allow_reentry;
     }.
     
-    Parameter into_u32 : forall `{H : State.Trait}, Self -> M (H := H) u32.
+    Parameter into_u32 : forall `{H : State.Trait}, Self-> M (H := H) u32.
     
     Global Instance Method_into_u32 `{H : State.Trait} :
       Notation.Dot "into_u32" := {
       Notation.dot := into_u32;
     }.
     
-    Parameter forward_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
+    Parameter forward_input : forall `{H : State.Trait}, ref Self->
+        M (H := H) bool.
     
     Global Instance Method_forward_input `{H : State.Trait} :
       Notation.Dot "forward_input" := {
       Notation.dot := forward_input;
     }.
     
-    Parameter clone_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
+    Parameter clone_input : forall `{H : State.Trait}, ref Self->
+        M (H := H) bool.
     
     Global Instance Method_clone_input `{H : State.Trait} :
       Notation.Dot "clone_input" := {
       Notation.dot := clone_input;
     }.
     
-    Parameter tail_call : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
+    Parameter tail_call : forall `{H : State.Trait}, ref Self-> M (H := H) bool.
     
     Global Instance Method_tail_call `{H : State.Trait} :
       Notation.Dot "tail_call" := {
       Notation.dot := tail_call;
     }.
     
-    Parameter allow_reentry : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
+    Parameter allow_reentry : forall `{H : State.Trait}, ref Self->
+        M (H := H) bool.
     
     Global Instance Method_allow_reentry `{H : State.Trait} :
       Notation.Dot "allow_reentry" := {
@@ -2109,7 +2107,7 @@ Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   Definition Self := ink_env.backend.ReturnFlags.
   
   Parameter default : forall `{H : State.Trait}, 
-      -> M (H := H) ink_env.backend.ReturnFlags.
+      M (H := H) ink_env.backend.ReturnFlags.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -2124,8 +2122,8 @@ End Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
 Module Impl_ink_env_backend_ReturnFlags_2.
   Definition Self := ink_env.backend.ReturnFlags.
   
-  Parameter new_with_reverted : forall `{H : State.Trait}, bool
-      -> M (H := H) Self.
+  Parameter new_with_reverted : forall `{H : State.Trait}, bool->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_new_with_reverted `{H : State.Trait} :
     Notation.DoubleColon Self "new_with_reverted" := {
@@ -2133,8 +2131,8 @@ Module Impl_ink_env_backend_ReturnFlags_2.
   }.
   
   Parameter set_reverted : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
+      bool->
+      M (H := H) Self.
   
   Global Instance Method_set_reverted `{H : State.Trait} :
     Notation.Dot "set_reverted" := {
@@ -2175,8 +2173,8 @@ End Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
 Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.backend.CallFlags.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.backend.CallFlags.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -2202,8 +2200,8 @@ Module Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
     Notation.double_colon := debug_struct_field4_finish; }.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -2218,7 +2216,7 @@ Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
   
   Parameter default : forall `{H : State.Trait}, 
-      -> M (H := H) ink_env.backend.CallFlags.
+      M (H := H) ink_env.backend.CallFlags.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -2234,8 +2232,8 @@ Module Impl_ink_env_backend_CallFlags_2.
   Definition Self := ink_env.backend.CallFlags.
   
   Parameter set_forward_input : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
+      bool->
+      M (H := H) Self.
   
   Global Instance Method_set_forward_input `{H : State.Trait} :
     Notation.Dot "set_forward_input" := {
@@ -2243,8 +2241,8 @@ Module Impl_ink_env_backend_CallFlags_2.
   }.
   
   Parameter set_clone_input : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
+      bool->
+      M (H := H) Self.
   
   Global Instance Method_set_clone_input `{H : State.Trait} :
     Notation.Dot "set_clone_input" := {
@@ -2252,8 +2250,8 @@ Module Impl_ink_env_backend_CallFlags_2.
   }.
   
   Parameter set_tail_call : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
+      bool->
+      M (H := H) Self.
   
   Global Instance Method_set_tail_call `{H : State.Trait} :
     Notation.Dot "set_tail_call" := {
@@ -2261,46 +2259,45 @@ Module Impl_ink_env_backend_CallFlags_2.
   }.
   
   Parameter set_allow_reentry : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
+      bool->
+      M (H := H) Self.
   
   Global Instance Method_set_allow_reentry `{H : State.Trait} :
     Notation.Dot "set_allow_reentry" := {
     Notation.dot := set_allow_reentry;
   }.
   
-  Parameter into_u32 : forall `{H : State.Trait}, Self -> M (H := H) u32.
+  Parameter into_u32 : forall `{H : State.Trait}, Self-> M (H := H) u32.
   
   Global Instance Method_into_u32 `{H : State.Trait} :
     Notation.Dot "into_u32" := {
     Notation.dot := into_u32;
   }.
   
-  Parameter forward_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) bool.
+  Parameter forward_input : forall `{H : State.Trait}, ref Self->
+      M (H := H) bool.
   
   Global Instance Method_forward_input `{H : State.Trait} :
     Notation.Dot "forward_input" := {
     Notation.dot := forward_input;
   }.
   
-  Parameter clone_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) bool.
+  Parameter clone_input : forall `{H : State.Trait}, ref Self-> M (H := H) bool.
   
   Global Instance Method_clone_input `{H : State.Trait} :
     Notation.Dot "clone_input" := {
     Notation.dot := clone_input;
   }.
   
-  Parameter tail_call : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
+  Parameter tail_call : forall `{H : State.Trait}, ref Self-> M (H := H) bool.
   
   Global Instance Method_tail_call `{H : State.Trait} :
     Notation.Dot "tail_call" := {
     Notation.dot := tail_call;
   }.
   
-  Parameter allow_reentry : forall `{H : State.Trait}, ref Self
-      -> M (H := H) bool.
+  Parameter allow_reentry : forall `{H : State.Trait}, ref Self->
+      M (H := H) bool.
   
   Global Instance Method_allow_reentry `{H : State.Trait} :
     Notation.Dot "allow_reentry" := {
@@ -2671,8 +2668,8 @@ Module call.
       Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -2689,17 +2686,16 @@ Module call.
     Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
       Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
       
-      Parameter call_flags : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ink_env.backend.CallFlags).
+      Parameter call_flags : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref ink_env.backend.CallFlags).
       
       Global Instance Method_call_flags `{H : State.Trait} :
         Notation.Dot "call_flags" := {
         Notation.dot := call_flags;
       }.
       
-      Parameter exec_input : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
+      Parameter exec_input : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
       
       Global Instance Method_exec_input `{H : State.Trait} :
         Notation.Dot "exec_input" := {
@@ -2718,24 +2714,24 @@ Module call.
           Args
           R.
       
-      Parameter callee : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.AccountId).
+      Parameter callee : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref ImplE.AccountId).
       
       Global Instance Method_callee `{H : State.Trait} :
         Notation.Dot "callee" := {
         Notation.dot := callee;
       }.
       
-      Parameter gas_limit : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.types.Gas.
+      Parameter gas_limit : forall `{H : State.Trait}, ref Self->
+          M (H := H) ink_env.types.Gas.
       
       Global Instance Method_gas_limit `{H : State.Trait} :
         Notation.Dot "gas_limit" := {
         Notation.dot := gas_limit;
       }.
       
-      Parameter transferred_value : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Balance).
+      Parameter transferred_value : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref ImplE.Balance).
       
       Global Instance Method_transferred_value `{H : State.Trait} :
         Notation.Dot "transferred_value" := {
@@ -2755,8 +2751,8 @@ Module call.
           Args
           R.
       
-      Parameter code_hash : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Hash).
+      Parameter code_hash : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref ImplE.Hash).
       
       Global Instance Method_code_hash `{H : State.Trait} :
         Notation.Dot "code_hash" := {
@@ -2776,16 +2772,15 @@ Module call.
           Args
           R.
       
-      Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
+      Parameter invoke : forall `{H : State.Trait}, ref Self-> M (H := H) R.
       
       Global Instance Method_invoke `{H : State.Trait} :
         Notation.Dot "invoke" := {
         Notation.dot := invoke;
       }.
       
-      Parameter try_invoke : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
+      Parameter try_invoke : forall `{H : State.Trait}, ref Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.MessageResult R)
                 ink_env.error.Error).
@@ -2808,16 +2803,15 @@ Module call.
           Args
           R.
       
-      Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
+      Parameter invoke : forall `{H : State.Trait}, ref Self-> M (H := H) R.
       
       Global Instance Method_invoke `{H : State.Trait} :
         Notation.Dot "invoke" := {
         Notation.dot := invoke;
       }.
       
-      Parameter try_invoke : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
+      Parameter try_invoke : forall `{H : State.Trait}, ref Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.MessageResult R)
                 ink_env.error.Error).
@@ -2833,8 +2827,7 @@ Module call.
         {E : Set},
         `{ink_env.types.Environment.Trait E}
         
-        ->
-          M (H := H)
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder
               E
               (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
@@ -2870,8 +2863,8 @@ Module call.
       
       Definition Self := ink_env.call.call_builder.Call E.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.call_builder.Call E).
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ink_env.call.call_builder.Call E).
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -2887,8 +2880,8 @@ Module call.
     Module Impl_ink_env_call_call_builder_Call_E.
       Definition Self := ink_env.call.call_builder.Call E.
       
-      Parameter new : forall `{H : State.Trait}, ImplE.AccountId
-          -> M (H := H) Self.
+      Parameter new : forall `{H : State.Trait}, ImplE.AccountId->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -2900,8 +2893,8 @@ Module call.
       Definition Self := ink_env.call.call_builder.Call E.
       
       Parameter gas_limit : forall `{H : State.Trait}, Self->
-          ink_env.types.Gas
-          -> M (H := H) Self.
+          ink_env.types.Gas->
+          M (H := H) Self.
       
       Global Instance Method_gas_limit `{H : State.Trait} :
         Notation.Dot "gas_limit" := {
@@ -2909,8 +2902,8 @@ Module call.
       }.
       
       Parameter transferred_value : forall `{H : State.Trait}, Self->
-          ImplE.Balance
-          -> M (H := H) Self.
+          ImplE.Balance->
+          M (H := H) Self.
       
       Global Instance Method_transferred_value `{H : State.Trait} :
         Notation.Dot "transferred_value" := {
@@ -2932,7 +2925,7 @@ Module call.
     Module Impl_ink_env_call_call_builder_DelegateCall_E.
       Definition Self := ink_env.call.call_builder.DelegateCall E.
       
-      Parameter new : forall `{H : State.Trait}, ImplE.Hash -> M (H := H) Self.
+      Parameter new : forall `{H : State.Trait}, ImplE.Hash-> M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -2944,8 +2937,8 @@ Module call.
       Definition Self := ink_env.call.call_builder.DelegateCall E.
       
       Parameter code_hash : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          -> M (H := H) Self.
+          ImplE.Hash->
+          M (H := H) Self.
       
       Global Instance Method_code_hash `{H : State.Trait} :
         Notation.Dot "code_hash" := {
@@ -2991,9 +2984,8 @@ Module call.
         :=
         ink_env.call.call_builder.CallBuilder E CallType Args RetType.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H)
               (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
       
       Global Instance Method_clone `{H : State.Trait} :
@@ -3021,9 +3013,8 @@ Module call.
           RetType.
       
       Parameter call_type : forall `{H : State.Trait}, Self->
-          NewCallType
-          ->
-            M (H := H)
+          NewCallType->
+          M (H := H)
               (ink_env.call.call_builder.CallBuilder
                 E
                 (ink_env.call.common.Set NewCallType)
@@ -3044,9 +3035,8 @@ Module call.
         ink_env.call.call_builder.CallBuilder E CallType Args RetType.
       
       Parameter call_flags : forall `{H : State.Trait}, Self->
-          ink_env.backend.CallFlags
-          ->
-            M (H := H)
+          ink_env.backend.CallFlags->
+          M (H := H)
               (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
       
       Global Instance Method_call_flags `{H : State.Trait} :
@@ -3066,9 +3056,8 @@ Module call.
           Args
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
-      Parameter returns : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter returns : forall `{H : State.Trait}, Self->
+          M (H := H)
               (ink_env.call.call_builder.CallBuilder
                 E
                 CallType
@@ -3096,9 +3085,8 @@ Module call.
           RetType.
       
       Parameter exec_input : forall `{H : State.Trait}, Self->
-          ink_env.call.execution_input.ExecutionInput Args
-          ->
-            M (H := H)
+          ink_env.call.execution_input.ExecutionInput Args->
+          M (H := H)
               (ink_env.call.call_builder.CallBuilder
                 E
                 CallType
@@ -3125,9 +3113,8 @@ Module call.
           RetType.
       
       Parameter call : forall `{H : State.Trait}, Self->
-          ImplE.AccountId
-          ->
-            M (H := H)
+          ImplE.AccountId->
+          M (H := H)
               (ink_env.call.call_builder.CallBuilder
                 E
                 (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
@@ -3139,9 +3126,8 @@ Module call.
       }.
       
       Parameter delegate : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          ->
-            M (H := H)
+          ImplE.Hash->
+          M (H := H)
               (ink_env.call.call_builder.CallBuilder
                 E
                 (ink_env.call.common.Set
@@ -3168,8 +3154,8 @@ Module call.
           RetType.
       
       Parameter gas_limit : forall `{H : State.Trait}, Self->
-          ink_env.types.Gas
-          -> M (H := H) Self.
+          ink_env.types.Gas->
+          M (H := H) Self.
       
       Global Instance Method_gas_limit `{H : State.Trait} :
         Notation.Dot "gas_limit" := {
@@ -3177,8 +3163,8 @@ Module call.
       }.
       
       Parameter transferred_value : forall `{H : State.Trait}, Self->
-          ImplE.Balance
-          -> M (H := H) Self.
+          ImplE.Balance->
+          M (H := H) Self.
       
       Global Instance Method_transferred_value `{H : State.Trait} :
         Notation.Dot "transferred_value" := {
@@ -3199,8 +3185,8 @@ Module call.
           RetType.
       
       Parameter code_hash : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          -> M (H := H) Self.
+          ImplE.Hash->
+          M (H := H) Self.
       
       Global Instance Method_code_hash `{H : State.Trait} :
         Notation.Dot "code_hash" := {
@@ -3221,9 +3207,8 @@ Module call.
             (ink_env.call.execution_input.ExecutionInput Args))
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter params : forall `{H : State.Trait}, Self->
+          M (H := H)
               (ink_env.call.call_builder.CallParams
                 E
                 (ink_env.call.call_builder.Call E)
@@ -3249,9 +3234,8 @@ Module call.
             (ink_env.call.execution_input.ExecutionInput Args))
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter params : forall `{H : State.Trait}, Self->
+          M (H := H)
               (ink_env.call.call_builder.CallParams
                 E
                 (ink_env.call.call_builder.DelegateCall E)
@@ -3278,9 +3262,8 @@ Module call.
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset RetType).
       
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter params : forall `{H : State.Trait}, Self->
+          M (H := H)
               (ink_env.call.call_builder.CallParams
                 E
                 (ink_env.call.call_builder.Call E)
@@ -3307,9 +3290,8 @@ Module call.
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset RetType).
       
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter params : forall `{H : State.Trait}, Self->
+          M (H := H)
               (ink_env.call.call_builder.CallParams
                 E
                 (ink_env.call.call_builder.DelegateCall E)
@@ -3336,16 +3318,15 @@ Module call.
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
+      Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) unit.
       
       Global Instance Method_invoke `{H : State.Trait} :
         Notation.Dot "invoke" := {
         Notation.dot := invoke;
       }.
       
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter try_invoke : forall `{H : State.Trait}, Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.MessageResult unit)
                 ink_env.error.Error).
@@ -3370,16 +3351,15 @@ Module call.
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
+      Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) unit.
       
       Global Instance Method_invoke `{H : State.Trait} :
         Notation.Dot "invoke" := {
         Notation.dot := invoke;
       }.
       
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter try_invoke : forall `{H : State.Trait}, Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.MessageResult unit)
                 ink_env.error.Error).
@@ -3403,16 +3383,15 @@ Module call.
             (ink_env.call.execution_input.ExecutionInput Args))
           (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
       
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
+      Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) R.
       
       Global Instance Method_invoke `{H : State.Trait} :
         Notation.Dot "invoke" := {
         Notation.dot := invoke;
       }.
       
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter try_invoke : forall `{H : State.Trait}, Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.MessageResult R)
                 ink_env.error.Error).
@@ -3436,16 +3415,15 @@ Module call.
             (ink_env.call.execution_input.ExecutionInput Args))
           (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
       
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
+      Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) R.
       
       Global Instance Method_invoke `{H : State.Trait} :
         Notation.Dot "invoke" := {
         Notation.dot := invoke;
       }.
       
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter try_invoke : forall `{H : State.Trait}, Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.MessageResult R)
                 ink_env.error.Error).
@@ -3475,8 +3453,8 @@ Module call.
       Definition Self := ink_env.call.common.ReturnType T.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -3494,7 +3472,7 @@ Module call.
       
       Definition Self := ink_env.call.common.ReturnType T.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
+      Parameter clone : forall `{H : State.Trait}, ref Self-> M (H := H) Self.
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -3524,7 +3502,7 @@ Module call.
       
       Definition Self := ink_env.call.common.ReturnType T.
       
-      Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
+      Parameter default : forall `{H : State.Trait},  M (H := H) Self.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -3553,8 +3531,8 @@ Module call.
       Definition Self := ink_env.call.common.Set T.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -3583,8 +3561,8 @@ Module call.
       
       Definition Self := ink_env.call.common.Set T.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.common.Set T).
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ink_env.call.common.Set T).
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -3600,7 +3578,7 @@ Module call.
     Module Impl_ink_env_call_common_Set_T.
       Definition Self := ink_env.call.common.Set T.
       
-      Parameter value : forall `{H : State.Trait}, Self -> M (H := H) T.
+      Parameter value : forall `{H : State.Trait}, Self-> M (H := H) T.
       
       Global Instance Method_value `{H : State.Trait} :
         Notation.Dot "value" := {
@@ -3624,8 +3602,8 @@ Module call.
       Definition Self := ink_env.call.common.Unset T.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -3643,7 +3621,7 @@ Module call.
       
       Definition Self := ink_env.call.common.Unset T.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
+      Parameter clone : forall `{H : State.Trait}, ref Self-> M (H := H) Self.
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -3673,7 +3651,7 @@ Module call.
       
       Definition Self := ink_env.call.common.Unset T.
       
-      Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
+      Parameter default : forall `{H : State.Trait},  M (H := H) Self.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -3714,8 +3692,8 @@ Module call.
       Definition Output : Set := T.
       
       Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-          F
-          -> M (H := H) ImplSelf.Output.
+          F->
+          M (H := H) ImplSelf.Output.
       
       Global Instance Method_unwrap_or_else `{H : State.Trait} :
         Notation.Dot "unwrap_or_else" := {
@@ -3740,8 +3718,8 @@ Module call.
       Definition Output : Set := T.
       
       Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-          F
-          -> M (H := H) ImplSelf.Output.
+          F->
+          M (H := H) ImplSelf.Output.
       
       Global Instance Method_unwrap_or_else `{H : State.Trait} :
         Notation.Dot "unwrap_or_else" := {
@@ -3828,7 +3806,7 @@ Module call.
       
       Definition Error : Set := unit.
       
-      Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
+      Parameter ok : forall `{H : State.Trait}, C-> M (H := H) ImplSelf.Output.
       
       Global Instance AssociatedFunction_ok `{H : State.Trait} :
         Notation.DoubleColon Self "ok" := {
@@ -3866,15 +3844,15 @@ Module call.
       
       Definition Error : Set := E.
       
-      Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
+      Parameter ok : forall `{H : State.Trait}, C-> M (H := H) ImplSelf.Output.
       
       Global Instance AssociatedFunction_ok `{H : State.Trait} :
         Notation.DoubleColon Self "ok" := {
         Notation.double_colon := ok;
       }.
       
-      Parameter err : forall `{H : State.Trait}, ImplSelf.Error
-          -> M (H := H) (core.option.Option ImplSelf.Output).
+      Parameter err : forall `{H : State.Trait}, ImplSelf.Error->
+          M (H := H) (core.option.Option ImplSelf.Output).
       
       Global Instance AssociatedFunction_err `{H : State.Trait} :
         Notation.DoubleColon Self "err" := {
@@ -3942,8 +3920,8 @@ Module call.
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -3964,33 +3942,32 @@ Module call.
         :=
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
-      Parameter code_hash : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Hash).
+      Parameter code_hash : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref ImplE.Hash).
       
       Global Instance Method_code_hash `{H : State.Trait} :
         Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
       
-      Parameter gas_limit : forall `{H : State.Trait}, ref Self
-          -> M (H := H) u64.
+      Parameter gas_limit : forall `{H : State.Trait}, ref Self->
+          M (H := H) u64.
       
       Global Instance Method_gas_limit `{H : State.Trait} :
         Notation.Dot "gas_limit" := {
         Notation.dot := gas_limit;
       }.
       
-      Parameter endowment : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Balance).
+      Parameter endowment : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref ImplE.Balance).
       
       Global Instance Method_endowment `{H : State.Trait} :
         Notation.Dot "endowment" := {
         Notation.dot := endowment;
       }.
       
-      Parameter exec_input : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
+      Parameter exec_input : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
       
       Global Instance Method_exec_input `{H : State.Trait} :
         Notation.Dot "exec_input" := {
@@ -3998,8 +3975,8 @@ Module call.
       }.
       
       Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-          ink_env.call.selector.Selector
-          -> M (H := H) unit.
+          ink_env.call.selector.Selector->
+          M (H := H) unit.
       
       Global Instance Method_update_selector `{H : State.Trait} :
         Notation.Dot "update_selector" := {
@@ -4014,8 +3991,8 @@ Module call.
         :=
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
-      Parameter salt_bytes : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref Salt).
+      Parameter salt_bytes : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref Salt).
       
       Global Instance Method_salt_bytes `{H : State.Trait} :
         Notation.Dot "salt_bytes" := {
@@ -4031,18 +4008,16 @@ Module call.
         :=
         ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
       
-      Parameter instantiate : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
+      Parameter instantiate : forall `{H : State.Trait}, ref Self->
+          M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
       
       Global Instance Method_instantiate `{H : State.Trait} :
         Notation.Dot "instantiate" := {
         Notation.dot := instantiate;
       }.
       
-      Parameter try_instantiate : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
+      Parameter try_instantiate : forall `{H : State.Trait}, ref Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.ConstructorResult
                   ink_env.call.create_builder.ConstructorReturnType.Output)
@@ -4094,8 +4069,7 @@ Module call.
         {ContractRef : Set},
         `{ink_env.contract.ContractEnv.Trait ContractRef}
         
-        ->
-          M (H := H)
+        M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               ink_env.contract.ContractEnv.Env
               ContractRef
@@ -4125,9 +4099,8 @@ Module call.
           RetType.
       
       Parameter code_hash : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          ->
-            M (H := H)
+          ImplE.Hash->
+          M (H := H)
               (ink_env.call.create_builder.CreateBuilder
                 E
                 ContractRef
@@ -4161,9 +4134,8 @@ Module call.
           RetType.
       
       Parameter gas_limit : forall `{H : State.Trait}, Self->
-          u64
-          ->
-            M (H := H)
+          u64->
+          M (H := H)
               (ink_env.call.create_builder.CreateBuilder
                 E
                 ContractRef
@@ -4197,9 +4169,8 @@ Module call.
           RetType.
       
       Parameter endowment : forall `{H : State.Trait}, Self->
-          ImplE.Balance
-          ->
-            M (H := H)
+          ImplE.Balance->
+          M (H := H)
               (ink_env.call.create_builder.CreateBuilder
                 E
                 ContractRef
@@ -4235,9 +4206,8 @@ Module call.
           RetType.
       
       Parameter exec_input : forall `{H : State.Trait}, Self->
-          ink_env.call.execution_input.ExecutionInput Args
-          ->
-            M (H := H)
+          ink_env.call.execution_input.ExecutionInput Args->
+          M (H := H)
               (ink_env.call.create_builder.CreateBuilder
                 E
                 ContractRef
@@ -4272,9 +4242,8 @@ Module call.
           RetType.
       
       Parameter salt_bytes : forall `{H : State.Trait}, Self->
-          Salt
-          ->
-            M (H := H)
+          Salt->
+          M (H := H)
               (ink_env.call.create_builder.CreateBuilder
                 E
                 ContractRef
@@ -4307,9 +4276,8 @@ Module call.
           Salt
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
-      Parameter returns : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter returns : forall `{H : State.Trait}, Self->
+          M (H := H)
               (ink_env.call.create_builder.CreateBuilder
                 E
                 ContractRef
@@ -4343,9 +4311,8 @@ Module call.
           (ink_env.call.common.Set Salt)
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter params : forall `{H : State.Trait}, Self->
+          M (H := H)
               (ink_env.call.create_builder.CreateParams
                 E
                 ContractRef
@@ -4376,18 +4343,16 @@ Module call.
           (ink_env.call.common.Set Salt)
           (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
       
-      Parameter instantiate : forall `{H : State.Trait}, Self
-          ->
-            M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
+      Parameter instantiate : forall `{H : State.Trait}, Self->
+          M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
       
       Global Instance Method_instantiate `{H : State.Trait} :
         Notation.Dot "instantiate" := {
         Notation.dot := instantiate;
       }.
       
-      Parameter try_instantiate : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
+      Parameter try_instantiate : forall `{H : State.Trait}, Self->
+          M (H := H)
               (core.result.Result
                 (ink_primitives.ConstructorResult
                   ink_env.call.create_builder.ConstructorReturnType.Output)
@@ -4425,8 +4390,8 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -4450,7 +4415,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Parameter default : forall `{H : State.Trait}, 
-          -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
+          M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -4474,8 +4439,8 @@ Module call.
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -4497,8 +4462,10 @@ Module call.
         ink_env.call.execution_input.ExecutionInput
           ink_env.call.execution_input.EmptyArgumentList.
       
-      Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-          -> M (H := H) Self.
+      Parameter new : forall
+            `{H : State.Trait},
+            ink_env.call.selector.Selector->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -4506,9 +4473,8 @@ Module call.
       }.
       
       Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
+          T->
+          M (H := H)
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
                   (ink_env.call.execution_input.Argument T)
@@ -4532,9 +4498,8 @@ Module call.
             Rest).
       
       Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
+          T->
+          M (H := H)
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgsList
                   T
@@ -4551,8 +4516,8 @@ Module call.
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
       Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-          ink_env.call.selector.Selector
-          -> M (H := H) unit.
+          ink_env.call.selector.Selector->
+          M (H := H) unit.
       
       Global Instance Method_update_selector `{H : State.Trait} :
         Notation.Dot "update_selector" := {
@@ -4583,8 +4548,8 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -4608,7 +4573,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Parameter default : forall `{H : State.Trait}, 
-          -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
+          M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -4632,8 +4597,8 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -4669,8 +4634,8 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.Argument T.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.execution_input.Argument T).
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ink_env.call.execution_input.Argument T).
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -4690,8 +4655,8 @@ Module call.
       Definition Self := ink_env.call.execution_input.Argument T.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -4706,7 +4671,7 @@ Module call.
     Module Impl_ink_env_call_execution_input_Argument_T.
       Definition Self := ink_env.call.execution_input.Argument T.
       
-      Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
+      Parameter new : forall `{H : State.Trait}, T-> M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -4723,8 +4688,8 @@ Module call.
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) ink_env.call.execution_input.ArgumentListEnd.
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -4741,7 +4706,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
       Parameter default : forall `{H : State.Trait}, 
-          -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+          M (H := H) ink_env.call.execution_input.ArgumentListEnd.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -4758,8 +4723,8 @@ Module call.
       Definition Self := ink_env.call.execution_input.ArgumentListEnd.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -4779,7 +4744,7 @@ Module call.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
       Parameter empty : forall `{H : State.Trait}, 
-          -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
+          M (H := H) ink_env.call.execution_input.EmptyArgumentList.
       
       Global Instance AssociatedFunction_empty `{H : State.Trait} :
         Notation.DoubleColon Self "empty" := {
@@ -4787,9 +4752,8 @@ Module call.
       }.
       
       Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
+          T->
+          M (H := H)
               (ink_env.call.execution_input.ArgumentList
                 (ink_env.call.execution_input.Argument T)
                 Self).
@@ -4810,9 +4774,8 @@ Module call.
           Rest.
       
       Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
+          T->
+          M (H := H)
               (ink_env.call.execution_input.ArgumentList
                 (ink_env.call.execution_input.Argument T)
                 Self).
@@ -4832,8 +4795,8 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.Argument T.
       
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
+      Parameter size_hint : forall `{H : State.Trait}, ref Self->
+          M (H := H) usize.
       
       Global Instance Method_size_hint `{H : State.Trait} :
         Notation.Dot "size_hint" := {
@@ -4841,8 +4804,8 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
+          mut_ref O->
+          M (H := H) unit.
       
       Global Instance Method_encode_to `{H : State.Trait} :
         Notation.Dot "encode_to" := {
@@ -4860,8 +4823,8 @@ Module call.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
       Definition Self := ink_env.call.execution_input.EmptyArgumentList.
       
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
+      Parameter size_hint : forall `{H : State.Trait}, ref Self->
+          M (H := H) usize.
       
       Global Instance Method_size_hint `{H : State.Trait} :
         Notation.Dot "size_hint" := {
@@ -4869,8 +4832,8 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
+          mut_ref O->
+          M (H := H) unit.
       
       Global Instance Method_encode_to `{H : State.Trait} :
         Notation.Dot "encode_to" := {
@@ -4895,8 +4858,8 @@ Module call.
           (ink_env.call.execution_input.Argument Head)
           Rest.
       
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
+      Parameter size_hint : forall `{H : State.Trait}, ref Self->
+          M (H := H) usize.
       
       Global Instance Method_size_hint `{H : State.Trait} :
         Notation.Dot "size_hint" := {
@@ -4904,8 +4867,8 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
+          mut_ref O->
+          M (H := H) unit.
       
       Global Instance Method_encode_to `{H : State.Trait} :
         Notation.Dot "encode_to" := {
@@ -4927,8 +4890,8 @@ Module call.
       
       Definition Self := ink_env.call.execution_input.ExecutionInput Args.
       
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
+      Parameter size_hint : forall `{H : State.Trait}, ref Self->
+          M (H := H) usize.
       
       Global Instance Method_size_hint `{H : State.Trait} :
         Notation.Dot "size_hint" := {
@@ -4936,8 +4899,8 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
+          mut_ref O->
+          M (H := H) unit.
       
       Global Instance Method_encode_to `{H : State.Trait} :
         Notation.Dot "encode_to" := {
@@ -4968,7 +4931,7 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Parameter default : forall `{H : State.Trait}, 
-          -> M (H := H) ink_env.call.selector.Selector.
+          M (H := H) ink_env.call.selector.Selector.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -4992,8 +4955,8 @@ Module call.
         Notation.double_colon := debug_struct_field1_finish; }.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -5014,8 +4977,8 @@ Module call.
     Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.call.selector.Selector.
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) ink_env.call.selector.Selector.
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -5039,8 +5002,8 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.call.selector.Selector
-          -> M (H := H) bool.
+          ref ink_env.call.selector.Selector->
+          M (H := H) bool.
       
       Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
         Notation.dot := eq;
@@ -5062,8 +5025,8 @@ Module call.
       Definition Self := ink_env.call.selector.Selector.
       
       Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
+              Self->
+          M (H := H) unit.
       
       Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
         Notation.Dot "assert_receiver_is_total_eq" := {
@@ -5077,8 +5040,8 @@ Module call.
     Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Parameter from : forall `{H : State.Trait}, list u8
-          -> M (H := H) ink_env.call.selector.Selector.
+      Parameter from : forall `{H : State.Trait}, list u8->
+          M (H := H) ink_env.call.selector.Selector.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -5093,15 +5056,14 @@ Module call.
     Module Impl_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
       
-      Parameter new : forall `{H : State.Trait}, list u8 -> M (H := H) Self.
+      Parameter new : forall `{H : State.Trait}, list u8-> M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
         Notation.double_colon := new;
       }.
       
-      Parameter to_bytes : forall `{H : State.Trait}, Self
-          -> M (H := H) list u8.
+      Parameter to_bytes : forall `{H : State.Trait}, Self-> M (H := H) list u8.
       
       Global Instance Method_to_bytes `{H : State.Trait} :
         Notation.Dot "to_bytes" := {
@@ -5152,8 +5114,8 @@ Module call_builder.
     Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -5170,16 +5132,16 @@ Module call_builder.
   Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_2.
     Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
     
-    Parameter call_flags : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ink_env.backend.CallFlags).
+    Parameter call_flags : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref ink_env.backend.CallFlags).
     
     Global Instance Method_call_flags `{H : State.Trait} :
       Notation.Dot "call_flags" := {
       Notation.dot := call_flags;
     }.
     
-    Parameter exec_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
+    Parameter exec_input : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
     
     Global Instance Method_exec_input `{H : State.Trait} :
       Notation.Dot "exec_input" := {
@@ -5198,24 +5160,24 @@ Module call_builder.
         Args
         R.
     
-    Parameter callee : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.AccountId).
+    Parameter callee : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref ImplE.AccountId).
     
     Global Instance Method_callee `{H : State.Trait} :
       Notation.Dot "callee" := {
       Notation.dot := callee;
     }.
     
-    Parameter gas_limit : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.types.Gas.
+    Parameter gas_limit : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.types.Gas.
     
     Global Instance Method_gas_limit `{H : State.Trait} :
       Notation.Dot "gas_limit" := {
       Notation.dot := gas_limit;
     }.
     
-    Parameter transferred_value : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Balance).
+    Parameter transferred_value : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref ImplE.Balance).
     
     Global Instance Method_transferred_value `{H : State.Trait} :
       Notation.Dot "transferred_value" := {
@@ -5235,8 +5197,8 @@ Module call_builder.
         Args
         R.
     
-    Parameter code_hash : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Hash).
+    Parameter code_hash : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref ImplE.Hash).
     
     Global Instance Method_code_hash `{H : State.Trait} :
       Notation.Dot "code_hash" := {
@@ -5256,16 +5218,15 @@ Module call_builder.
         Args
         R.
     
-    Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
+    Parameter invoke : forall `{H : State.Trait}, ref Self-> M (H := H) R.
     
     Global Instance Method_invoke `{H : State.Trait} :
       Notation.Dot "invoke" := {
       Notation.dot := invoke;
     }.
     
-    Parameter try_invoke : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
+    Parameter try_invoke : forall `{H : State.Trait}, ref Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.MessageResult R)
               ink_env.error.Error).
@@ -5288,16 +5249,15 @@ Module call_builder.
         Args
         R.
     
-    Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
+    Parameter invoke : forall `{H : State.Trait}, ref Self-> M (H := H) R.
     
     Global Instance Method_invoke `{H : State.Trait} :
       Notation.Dot "invoke" := {
       Notation.dot := invoke;
     }.
     
-    Parameter try_invoke : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
+    Parameter try_invoke : forall `{H : State.Trait}, ref Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.MessageResult R)
               ink_env.error.Error).
@@ -5313,8 +5273,7 @@ Module call_builder.
       {E : Set},
       `{ink_env.types.Environment.Trait E}
       
-      ->
-        M (H := H)
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder
             E
             (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
@@ -5349,8 +5308,8 @@ Module call_builder.
     
     Definition Self := ink_env.call.call_builder.Call E.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.call_builder.Call E).
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ink_env.call.call_builder.Call E).
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -5365,8 +5324,8 @@ Module call_builder.
   Module Impl_ink_env_call_call_builder_Call_E_3.
     Definition Self := ink_env.call.call_builder.Call E.
     
-    Parameter new : forall `{H : State.Trait}, ImplE.AccountId
-        -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait}, ImplE.AccountId->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -5378,8 +5337,8 @@ Module call_builder.
     Definition Self := ink_env.call.call_builder.Call E.
     
     Parameter gas_limit : forall `{H : State.Trait}, Self->
-        ink_env.types.Gas
-        -> M (H := H) Self.
+        ink_env.types.Gas->
+        M (H := H) Self.
     
     Global Instance Method_gas_limit `{H : State.Trait} :
       Notation.Dot "gas_limit" := {
@@ -5387,8 +5346,8 @@ Module call_builder.
     }.
     
     Parameter transferred_value : forall `{H : State.Trait}, Self->
-        ImplE.Balance
-        -> M (H := H) Self.
+        ImplE.Balance->
+        M (H := H) Self.
     
     Global Instance Method_transferred_value `{H : State.Trait} :
       Notation.Dot "transferred_value" := {
@@ -5410,7 +5369,7 @@ Module call_builder.
   Module Impl_ink_env_call_call_builder_DelegateCall_E_3.
     Definition Self := ink_env.call.call_builder.DelegateCall E.
     
-    Parameter new : forall `{H : State.Trait}, ImplE.Hash -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait}, ImplE.Hash-> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -5422,8 +5381,8 @@ Module call_builder.
     Definition Self := ink_env.call.call_builder.DelegateCall E.
     
     Parameter code_hash : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        -> M (H := H) Self.
+        ImplE.Hash->
+        M (H := H) Self.
     
     Global Instance Method_code_hash `{H : State.Trait} :
       Notation.Dot "code_hash" := {
@@ -5469,9 +5428,8 @@ Module call_builder.
       :=
       ink_env.call.call_builder.CallBuilder E CallType Args RetType.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
@@ -5498,9 +5456,8 @@ Module call_builder.
         RetType.
     
     Parameter call_type : forall `{H : State.Trait}, Self->
-        NewCallType
-        ->
-          M (H := H)
+        NewCallType->
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder
               E
               (ink_env.call.common.Set NewCallType)
@@ -5521,9 +5478,8 @@ Module call_builder.
       ink_env.call.call_builder.CallBuilder E CallType Args RetType.
     
     Parameter call_flags : forall `{H : State.Trait}, Self->
-        ink_env.backend.CallFlags
-        ->
-          M (H := H)
+        ink_env.backend.CallFlags->
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
     
     Global Instance Method_call_flags `{H : State.Trait} :
@@ -5543,9 +5499,8 @@ Module call_builder.
         Args
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
-    Parameter returns : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter returns : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder
               E
               CallType
@@ -5573,9 +5528,8 @@ Module call_builder.
         RetType.
     
     Parameter exec_input : forall `{H : State.Trait}, Self->
-        ink_env.call.execution_input.ExecutionInput Args
-        ->
-          M (H := H)
+        ink_env.call.execution_input.ExecutionInput Args->
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder
               E
               CallType
@@ -5602,9 +5556,8 @@ Module call_builder.
         RetType.
     
     Parameter call : forall `{H : State.Trait}, Self->
-        ImplE.AccountId
-        ->
-          M (H := H)
+        ImplE.AccountId->
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder
               E
               (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
@@ -5616,9 +5569,8 @@ Module call_builder.
     }.
     
     Parameter delegate : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        ->
-          M (H := H)
+        ImplE.Hash->
+        M (H := H)
             (ink_env.call.call_builder.CallBuilder
               E
               (ink_env.call.common.Set
@@ -5645,8 +5597,8 @@ Module call_builder.
         RetType.
     
     Parameter gas_limit : forall `{H : State.Trait}, Self->
-        ink_env.types.Gas
-        -> M (H := H) Self.
+        ink_env.types.Gas->
+        M (H := H) Self.
     
     Global Instance Method_gas_limit `{H : State.Trait} :
       Notation.Dot "gas_limit" := {
@@ -5654,8 +5606,8 @@ Module call_builder.
     }.
     
     Parameter transferred_value : forall `{H : State.Trait}, Self->
-        ImplE.Balance
-        -> M (H := H) Self.
+        ImplE.Balance->
+        M (H := H) Self.
     
     Global Instance Method_transferred_value `{H : State.Trait} :
       Notation.Dot "transferred_value" := {
@@ -5676,8 +5628,8 @@ Module call_builder.
         RetType.
     
     Parameter code_hash : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        -> M (H := H) Self.
+        ImplE.Hash->
+        M (H := H) Self.
     
     Global Instance Method_code_hash `{H : State.Trait} :
       Notation.Dot "code_hash" := {
@@ -5698,9 +5650,8 @@ Module call_builder.
           (ink_env.call.execution_input.ExecutionInput Args))
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter params : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.call.call_builder.CallParams
               E
               (ink_env.call.call_builder.Call E)
@@ -5726,9 +5677,8 @@ Module call_builder.
           (ink_env.call.execution_input.ExecutionInput Args))
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter params : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.call.call_builder.CallParams
               E
               (ink_env.call.call_builder.DelegateCall E)
@@ -5755,9 +5705,8 @@ Module call_builder.
             ink_env.call.execution_input.EmptyArgumentList))
         (ink_env.call.common.Unset RetType).
     
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter params : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.call.call_builder.CallParams
               E
               (ink_env.call.call_builder.Call E)
@@ -5784,9 +5733,8 @@ Module call_builder.
             ink_env.call.execution_input.EmptyArgumentList))
         (ink_env.call.common.Unset RetType).
     
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter params : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.call.call_builder.CallParams
               E
               (ink_env.call.call_builder.DelegateCall E)
@@ -5813,16 +5761,15 @@ Module call_builder.
             ink_env.call.execution_input.EmptyArgumentList))
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
+    Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) unit.
     
     Global Instance Method_invoke `{H : State.Trait} :
       Notation.Dot "invoke" := {
       Notation.dot := invoke;
     }.
     
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter try_invoke : forall `{H : State.Trait}, Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.MessageResult unit)
               ink_env.error.Error).
@@ -5847,16 +5794,15 @@ Module call_builder.
             ink_env.call.execution_input.EmptyArgumentList))
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
+    Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) unit.
     
     Global Instance Method_invoke `{H : State.Trait} :
       Notation.Dot "invoke" := {
       Notation.dot := invoke;
     }.
     
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter try_invoke : forall `{H : State.Trait}, Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.MessageResult unit)
               ink_env.error.Error).
@@ -5880,16 +5826,15 @@ Module call_builder.
           (ink_env.call.execution_input.ExecutionInput Args))
         (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
     
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
+    Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) R.
     
     Global Instance Method_invoke `{H : State.Trait} :
       Notation.Dot "invoke" := {
       Notation.dot := invoke;
     }.
     
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter try_invoke : forall `{H : State.Trait}, Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.MessageResult R)
               ink_env.error.Error).
@@ -5913,16 +5858,15 @@ Module call_builder.
           (ink_env.call.execution_input.ExecutionInput Args))
         (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
     
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
+    Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) R.
     
     Global Instance Method_invoke `{H : State.Trait} :
       Notation.Dot "invoke" := {
       Notation.dot := invoke;
     }.
     
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter try_invoke : forall `{H : State.Trait}, Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.MessageResult R)
               ink_env.error.Error).
@@ -5971,8 +5915,8 @@ Section
   Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -5989,16 +5933,16 @@ End
 Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_3.
   Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
   
-  Parameter call_flags : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ink_env.backend.CallFlags).
+  Parameter call_flags : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref ink_env.backend.CallFlags).
   
   Global Instance Method_call_flags `{H : State.Trait} :
     Notation.Dot "call_flags" := {
     Notation.dot := call_flags;
   }.
   
-  Parameter exec_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
+  Parameter exec_input : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
   
   Global Instance Method_exec_input `{H : State.Trait} :
     Notation.Dot "exec_input" := {
@@ -6017,23 +5961,23 @@ Module
       Args
       R.
   
-  Parameter callee : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.AccountId).
+  Parameter callee : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref ImplE.AccountId).
   
   Global Instance Method_callee `{H : State.Trait} : Notation.Dot "callee" := {
     Notation.dot := callee;
   }.
   
-  Parameter gas_limit : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.types.Gas.
+  Parameter gas_limit : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.types.Gas.
   
   Global Instance Method_gas_limit `{H : State.Trait} :
     Notation.Dot "gas_limit" := {
     Notation.dot := gas_limit;
   }.
   
-  Parameter transferred_value : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Balance).
+  Parameter transferred_value : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref ImplE.Balance).
   
   Global Instance Method_transferred_value `{H : State.Trait} :
     Notation.Dot "transferred_value" := {
@@ -6053,8 +5997,8 @@ Module
       Args
       R.
   
-  Parameter code_hash : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Hash).
+  Parameter code_hash : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref ImplE.Hash).
   
   Global Instance Method_code_hash `{H : State.Trait} :
     Notation.Dot "code_hash" := {
@@ -6074,15 +6018,14 @@ Module
       Args
       R.
   
-  Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
+  Parameter invoke : forall `{H : State.Trait}, ref Self-> M (H := H) R.
   
   Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
     Notation.dot := invoke;
   }.
   
-  Parameter try_invoke : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
+  Parameter try_invoke : forall `{H : State.Trait}, ref Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.MessageResult R)
             ink_env.error.Error).
@@ -6105,15 +6048,14 @@ Module
       Args
       R.
   
-  Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
+  Parameter invoke : forall `{H : State.Trait}, ref Self-> M (H := H) R.
   
   Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
     Notation.dot := invoke;
   }.
   
-  Parameter try_invoke : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
+  Parameter try_invoke : forall `{H : State.Trait}, ref Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.MessageResult R)
             ink_env.error.Error).
@@ -6129,8 +6071,7 @@ Parameter build_call : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
     
-    ->
-      M (H := H)
+    M (H := H)
         (ink_env.call.call_builder.CallBuilder
           E
           (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
@@ -6164,8 +6105,8 @@ Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
   
   Definition Self := ink_env.call.call_builder.Call E.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.call_builder.Call E).
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ink_env.call.call_builder.Call E).
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -6180,7 +6121,7 @@ End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
 Module Impl_ink_env_call_call_builder_Call_E_5.
   Definition Self := ink_env.call.call_builder.Call E.
   
-  Parameter new : forall `{H : State.Trait}, ImplE.AccountId -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, ImplE.AccountId-> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -6192,8 +6133,8 @@ Module Impl_ink_env_call_call_builder_Call_E_6.
   Definition Self := ink_env.call.call_builder.Call E.
   
   Parameter gas_limit : forall `{H : State.Trait}, Self->
-      ink_env.types.Gas
-      -> M (H := H) Self.
+      ink_env.types.Gas->
+      M (H := H) Self.
   
   Global Instance Method_gas_limit `{H : State.Trait} :
     Notation.Dot "gas_limit" := {
@@ -6201,8 +6142,8 @@ Module Impl_ink_env_call_call_builder_Call_E_6.
   }.
   
   Parameter transferred_value : forall `{H : State.Trait}, Self->
-      ImplE.Balance
-      -> M (H := H) Self.
+      ImplE.Balance->
+      M (H := H) Self.
   
   Global Instance Method_transferred_value `{H : State.Trait} :
     Notation.Dot "transferred_value" := {
@@ -6224,7 +6165,7 @@ Definition DelegateCall : Set := DelegateCall.t.
 Module Impl_ink_env_call_call_builder_DelegateCall_E_5.
   Definition Self := ink_env.call.call_builder.DelegateCall E.
   
-  Parameter new : forall `{H : State.Trait}, ImplE.Hash -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, ImplE.Hash-> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -6236,8 +6177,8 @@ Module Impl_ink_env_call_call_builder_DelegateCall_E_6.
   Definition Self := ink_env.call.call_builder.DelegateCall E.
   
   Parameter code_hash : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      -> M (H := H) Self.
+      ImplE.Hash->
+      M (H := H) Self.
   
   Global Instance Method_code_hash `{H : State.Trait} :
     Notation.Dot "code_hash" := {
@@ -6283,9 +6224,8 @@ Section
     :=
     ink_env.call.call_builder.CallBuilder E CallType Args RetType.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
@@ -6312,9 +6252,8 @@ Module
       RetType.
   
   Parameter call_type : forall `{H : State.Trait}, Self->
-      NewCallType
-      ->
-        M (H := H)
+      NewCallType->
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder
             E
             (ink_env.call.common.Set NewCallType)
@@ -6335,9 +6274,8 @@ Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_3.
     ink_env.call.call_builder.CallBuilder E CallType Args RetType.
   
   Parameter call_flags : forall `{H : State.Trait}, Self->
-      ink_env.backend.CallFlags
-      ->
-        M (H := H)
+      ink_env.backend.CallFlags->
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
   
   Global Instance Method_call_flags `{H : State.Trait} :
@@ -6357,9 +6295,8 @@ Module
       Args
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
-  Parameter returns : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter returns : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder
             E
             CallType
@@ -6387,9 +6324,8 @@ Module
       RetType.
   
   Parameter exec_input : forall `{H : State.Trait}, Self->
-      ink_env.call.execution_input.ExecutionInput Args
-      ->
-        M (H := H)
+      ink_env.call.execution_input.ExecutionInput Args->
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder
             E
             CallType
@@ -6416,9 +6352,8 @@ Module
       RetType.
   
   Parameter call : forall `{H : State.Trait}, Self->
-      ImplE.AccountId
-      ->
-        M (H := H)
+      ImplE.AccountId->
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder
             E
             (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
@@ -6430,9 +6365,8 @@ Module
   }.
   
   Parameter delegate : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      ->
-        M (H := H)
+      ImplE.Hash->
+      M (H := H)
           (ink_env.call.call_builder.CallBuilder
             E
             (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
@@ -6458,8 +6392,8 @@ Module
       RetType.
   
   Parameter gas_limit : forall `{H : State.Trait}, Self->
-      ink_env.types.Gas
-      -> M (H := H) Self.
+      ink_env.types.Gas->
+      M (H := H) Self.
   
   Global Instance Method_gas_limit `{H : State.Trait} :
     Notation.Dot "gas_limit" := {
@@ -6467,8 +6401,8 @@ Module
   }.
   
   Parameter transferred_value : forall `{H : State.Trait}, Self->
-      ImplE.Balance
-      -> M (H := H) Self.
+      ImplE.Balance->
+      M (H := H) Self.
   
   Global Instance Method_transferred_value `{H : State.Trait} :
     Notation.Dot "transferred_value" := {
@@ -6489,8 +6423,8 @@ Module
       RetType.
   
   Parameter code_hash : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      -> M (H := H) Self.
+      ImplE.Hash->
+      M (H := H) Self.
   
   Global Instance Method_code_hash `{H : State.Trait} :
     Notation.Dot "code_hash" := {
@@ -6511,9 +6445,8 @@ Module
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter params : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.call.call_builder.CallParams
             E
             (ink_env.call.call_builder.Call E)
@@ -6538,9 +6471,8 @@ Module
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter params : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.call.call_builder.CallParams
             E
             (ink_env.call.call_builder.DelegateCall E)
@@ -6566,9 +6498,8 @@ Module
           ink_env.call.execution_input.EmptyArgumentList))
       (ink_env.call.common.Unset RetType).
   
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter params : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.call.call_builder.CallParams
             E
             (ink_env.call.call_builder.Call E)
@@ -6594,9 +6525,8 @@ Module
           ink_env.call.execution_input.EmptyArgumentList))
       (ink_env.call.common.Unset RetType).
   
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter params : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.call.call_builder.CallParams
             E
             (ink_env.call.call_builder.DelegateCall E)
@@ -6622,15 +6552,14 @@ Module
           ink_env.call.execution_input.EmptyArgumentList))
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
+  Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) unit.
   
   Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
     Notation.dot := invoke;
   }.
   
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter try_invoke : forall `{H : State.Trait}, Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.MessageResult unit)
             ink_env.error.Error).
@@ -6655,15 +6584,14 @@ Module
           ink_env.call.execution_input.EmptyArgumentList))
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
+  Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) unit.
   
   Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
     Notation.dot := invoke;
   }.
   
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter try_invoke : forall `{H : State.Trait}, Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.MessageResult unit)
             ink_env.error.Error).
@@ -6687,15 +6615,14 @@ Module
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
+  Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) R.
   
   Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
     Notation.dot := invoke;
   }.
   
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter try_invoke : forall `{H : State.Trait}, Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.MessageResult R)
             ink_env.error.Error).
@@ -6719,15 +6646,14 @@ Module
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
   
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
+  Parameter invoke : forall `{H : State.Trait}, Self-> M (H := H) R.
   
   Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
     Notation.dot := invoke;
   }.
   
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter try_invoke : forall `{H : State.Trait}, Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.MessageResult R)
             ink_env.error.Error).
@@ -6756,8 +6682,8 @@ Module common.
     Definition Self := ink_env.call.common.ReturnType T.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -6775,7 +6701,7 @@ Module common.
     
     Definition Self := ink_env.call.common.ReturnType T.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
+    Parameter clone : forall `{H : State.Trait}, ref Self-> M (H := H) Self.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -6804,7 +6730,7 @@ Module common.
     
     Definition Self := ink_env.call.common.ReturnType T.
     
-    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -6833,8 +6759,8 @@ Module common.
     Definition Self := ink_env.call.common.Set T.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -6863,8 +6789,8 @@ Module common.
     
     Definition Self := ink_env.call.common.Set T.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.common.Set T).
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ink_env.call.common.Set T).
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -6879,7 +6805,7 @@ Module common.
   Module Impl_ink_env_call_common_Set_T_2.
     Definition Self := ink_env.call.common.Set T.
     
-    Parameter value : forall `{H : State.Trait}, Self -> M (H := H) T.
+    Parameter value : forall `{H : State.Trait}, Self-> M (H := H) T.
     
     Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
       Notation.dot := value;
@@ -6902,8 +6828,8 @@ Module common.
     Definition Self := ink_env.call.common.Unset T.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -6921,7 +6847,7 @@ Module common.
     
     Definition Self := ink_env.call.common.Unset T.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
+    Parameter clone : forall `{H : State.Trait}, ref Self-> M (H := H) Self.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -6950,7 +6876,7 @@ Module common.
     
     Definition Self := ink_env.call.common.Unset T.
     
-    Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
+    Parameter default : forall `{H : State.Trait},  M (H := H) Self.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -6991,8 +6917,8 @@ Module common.
     Definition Output : Set := T.
     
     Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-        F
-        -> M (H := H) ImplSelf.Output.
+        F->
+        M (H := H) ImplSelf.Output.
     
     Global Instance Method_unwrap_or_else `{H : State.Trait} :
       Notation.Dot "unwrap_or_else" := {
@@ -7017,8 +6943,8 @@ Module common.
     Definition Output : Set := T.
     
     Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-        F
-        -> M (H := H) ImplSelf.Output.
+        F->
+        M (H := H) ImplSelf.Output.
     
     Global Instance Method_unwrap_or_else `{H : State.Trait} :
       Notation.Dot "unwrap_or_else" := {
@@ -7051,8 +6977,8 @@ Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
   Definition Self := ink_env.call.common.ReturnType T.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -7070,7 +6996,7 @@ Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
   
   Definition Self := ink_env.call.common.ReturnType T.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
+  Parameter clone : forall `{H : State.Trait}, ref Self-> M (H := H) Self.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -7099,7 +7025,7 @@ Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   
   Definition Self := ink_env.call.common.ReturnType T.
   
-  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -7128,8 +7054,8 @@ Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
   Definition Self := ink_env.call.common.Set T.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -7158,8 +7084,8 @@ Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
   
   Definition Self := ink_env.call.common.Set T.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.common.Set T).
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ink_env.call.common.Set T).
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -7174,7 +7100,7 @@ End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
 Module Impl_ink_env_call_common_Set_T_3.
   Definition Self := ink_env.call.common.Set T.
   
-  Parameter value : forall `{H : State.Trait}, Self -> M (H := H) T.
+  Parameter value : forall `{H : State.Trait}, Self-> M (H := H) T.
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -7197,8 +7123,8 @@ Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
   Definition Self := ink_env.call.common.Unset T.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -7216,7 +7142,7 @@ Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
   
   Definition Self := ink_env.call.common.Unset T.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
+  Parameter clone : forall `{H : State.Trait}, ref Self-> M (H := H) Self.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -7245,7 +7171,7 @@ Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
   
   Definition Self := ink_env.call.common.Unset T.
   
-  Parameter default : forall `{H : State.Trait},  -> M (H := H) Self.
+  Parameter default : forall `{H : State.Trait},  M (H := H) Self.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -7286,8 +7212,8 @@ Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
   Definition Output : Set := T.
   
   Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-      F
-      -> M (H := H) ImplSelf.Output.
+      F->
+      M (H := H) ImplSelf.Output.
   
   Global Instance Method_unwrap_or_else `{H : State.Trait} :
     Notation.Dot "unwrap_or_else" := {
@@ -7312,8 +7238,8 @@ Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
   Definition Output : Set := T.
   
   Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-      F
-      -> M (H := H) ImplSelf.Output.
+      F->
+      M (H := H) ImplSelf.Output.
   
   Global Instance Method_unwrap_or_else `{H : State.Trait} :
     Notation.Dot "unwrap_or_else" := {
@@ -7399,7 +7325,7 @@ Module create_builder.
     
     Definition Error : Set := unit.
     
-    Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
+    Parameter ok : forall `{H : State.Trait}, C-> M (H := H) ImplSelf.Output.
     
     Global Instance AssociatedFunction_ok `{H : State.Trait} :
       Notation.DoubleColon Self "ok" := {
@@ -7437,15 +7363,15 @@ Module create_builder.
     
     Definition Error : Set := E.
     
-    Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
+    Parameter ok : forall `{H : State.Trait}, C-> M (H := H) ImplSelf.Output.
     
     Global Instance AssociatedFunction_ok `{H : State.Trait} :
       Notation.DoubleColon Self "ok" := {
       Notation.double_colon := ok;
     }.
     
-    Parameter err : forall `{H : State.Trait}, ImplSelf.Error
-        -> M (H := H) (core.option.Option ImplSelf.Output).
+    Parameter err : forall `{H : State.Trait}, ImplSelf.Error->
+        M (H := H) (core.option.Option ImplSelf.Output).
     
     Global Instance AssociatedFunction_err `{H : State.Trait} :
       Notation.DoubleColon Self "err" := {
@@ -7513,8 +7439,8 @@ Module create_builder.
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -7535,31 +7461,31 @@ Module create_builder.
       :=
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
-    Parameter code_hash : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Hash).
+    Parameter code_hash : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref ImplE.Hash).
     
     Global Instance Method_code_hash `{H : State.Trait} :
       Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
     
-    Parameter gas_limit : forall `{H : State.Trait}, ref Self -> M (H := H) u64.
+    Parameter gas_limit : forall `{H : State.Trait}, ref Self-> M (H := H) u64.
     
     Global Instance Method_gas_limit `{H : State.Trait} :
       Notation.Dot "gas_limit" := {
       Notation.dot := gas_limit;
     }.
     
-    Parameter endowment : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Balance).
+    Parameter endowment : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref ImplE.Balance).
     
     Global Instance Method_endowment `{H : State.Trait} :
       Notation.Dot "endowment" := {
       Notation.dot := endowment;
     }.
     
-    Parameter exec_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
+    Parameter exec_input : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
     
     Global Instance Method_exec_input `{H : State.Trait} :
       Notation.Dot "exec_input" := {
@@ -7567,8 +7493,8 @@ Module create_builder.
     }.
     
     Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-        ink_env.call.selector.Selector
-        -> M (H := H) unit.
+        ink_env.call.selector.Selector->
+        M (H := H) unit.
     
     Global Instance Method_update_selector `{H : State.Trait} :
       Notation.Dot "update_selector" := {
@@ -7583,8 +7509,8 @@ Module create_builder.
       :=
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
-    Parameter salt_bytes : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref Salt).
+    Parameter salt_bytes : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref Salt).
     
     Global Instance Method_salt_bytes `{H : State.Trait} :
       Notation.Dot "salt_bytes" := {
@@ -7599,17 +7525,16 @@ Module create_builder.
       :=
       ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
     
-    Parameter instantiate : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
+    Parameter instantiate : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
     
     Global Instance Method_instantiate `{H : State.Trait} :
       Notation.Dot "instantiate" := {
       Notation.dot := instantiate;
     }.
     
-    Parameter try_instantiate : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
+    Parameter try_instantiate : forall `{H : State.Trait}, ref Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.ConstructorResult
                 ink_env.call.create_builder.ConstructorReturnType.Output)
@@ -7660,8 +7585,7 @@ Module create_builder.
       {ContractRef : Set},
       `{ink_env.contract.ContractEnv.Trait ContractRef}
       
-      ->
-        M (H := H)
+      M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             ink_env.contract.ContractEnv.Env
             ContractRef
@@ -7690,9 +7614,8 @@ Module create_builder.
         RetType.
     
     Parameter code_hash : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        ->
-          M (H := H)
+        ImplE.Hash->
+        M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               E
               ContractRef
@@ -7726,9 +7649,8 @@ Module create_builder.
         RetType.
     
     Parameter gas_limit : forall `{H : State.Trait}, Self->
-        u64
-        ->
-          M (H := H)
+        u64->
+        M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               E
               ContractRef
@@ -7762,9 +7684,8 @@ Module create_builder.
         RetType.
     
     Parameter endowment : forall `{H : State.Trait}, Self->
-        ImplE.Balance
-        ->
-          M (H := H)
+        ImplE.Balance->
+        M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               E
               ContractRef
@@ -7800,9 +7721,8 @@ Module create_builder.
         RetType.
     
     Parameter exec_input : forall `{H : State.Trait}, Self->
-        ink_env.call.execution_input.ExecutionInput Args
-        ->
-          M (H := H)
+        ink_env.call.execution_input.ExecutionInput Args->
+        M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               E
               ContractRef
@@ -7837,9 +7757,8 @@ Module create_builder.
         RetType.
     
     Parameter salt_bytes : forall `{H : State.Trait}, Self->
-        Salt
-        ->
-          M (H := H)
+        Salt->
+        M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               E
               ContractRef
@@ -7872,9 +7791,8 @@ Module create_builder.
         Salt
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
-    Parameter returns : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter returns : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.call.create_builder.CreateBuilder
               E
               ContractRef
@@ -7908,9 +7826,8 @@ Module create_builder.
         (ink_env.call.common.Set Salt)
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter params : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.call.create_builder.CreateParams
               E
               ContractRef
@@ -7941,17 +7858,16 @@ Module create_builder.
         (ink_env.call.common.Set Salt)
         (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
     
-    Parameter instantiate : forall `{H : State.Trait}, Self
-        -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
+    Parameter instantiate : forall `{H : State.Trait}, Self->
+        M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
     
     Global Instance Method_instantiate `{H : State.Trait} :
       Notation.Dot "instantiate" := {
       Notation.dot := instantiate;
     }.
     
-    Parameter try_instantiate : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter try_instantiate : forall `{H : State.Trait}, Self->
+        M (H := H)
             (core.result.Result
               (ink_primitives.ConstructorResult
                 ink_env.call.create_builder.ConstructorReturnType.Output)
@@ -8039,7 +7955,7 @@ Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
   
   Definition Error : Set := unit.
   
-  Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
+  Parameter ok : forall `{H : State.Trait}, C-> M (H := H) ImplSelf.Output.
   
   Global Instance AssociatedFunction_ok `{H : State.Trait} :
     Notation.DoubleColon Self "ok" := {
@@ -8075,15 +7991,15 @@ Section
   
   Definition Error : Set := E.
   
-  Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
+  Parameter ok : forall `{H : State.Trait}, C-> M (H := H) ImplSelf.Output.
   
   Global Instance AssociatedFunction_ok `{H : State.Trait} :
     Notation.DoubleColon Self "ok" := {
     Notation.double_colon := ok;
   }.
   
-  Parameter err : forall `{H : State.Trait}, ImplSelf.Error
-      -> M (H := H) (core.option.Option ImplSelf.Output).
+  Parameter err : forall `{H : State.Trait}, ImplSelf.Error->
+      M (H := H) (core.option.Option ImplSelf.Output).
   
   Global Instance AssociatedFunction_err `{H : State.Trait} :
     Notation.DoubleColon Self "err" := {
@@ -8149,8 +8065,8 @@ Section
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -8171,31 +8087,31 @@ Module
     :=
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Parameter code_hash : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Hash).
+  Parameter code_hash : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref ImplE.Hash).
   
   Global Instance Method_code_hash `{H : State.Trait} :
     Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
   
-  Parameter gas_limit : forall `{H : State.Trait}, ref Self -> M (H := H) u64.
+  Parameter gas_limit : forall `{H : State.Trait}, ref Self-> M (H := H) u64.
   
   Global Instance Method_gas_limit `{H : State.Trait} :
     Notation.Dot "gas_limit" := {
     Notation.dot := gas_limit;
   }.
   
-  Parameter endowment : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Balance).
+  Parameter endowment : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref ImplE.Balance).
   
   Global Instance Method_endowment `{H : State.Trait} :
     Notation.Dot "endowment" := {
     Notation.dot := endowment;
   }.
   
-  Parameter exec_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
+  Parameter exec_input : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
   
   Global Instance Method_exec_input `{H : State.Trait} :
     Notation.Dot "exec_input" := {
@@ -8203,8 +8119,8 @@ Module
   }.
   
   Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-      ink_env.call.selector.Selector
-      -> M (H := H) unit.
+      ink_env.call.selector.Selector->
+      M (H := H) unit.
   
   Global Instance Method_update_selector `{H : State.Trait} :
     Notation.Dot "update_selector" := {
@@ -8219,8 +8135,8 @@ Module
     :=
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Parameter salt_bytes : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref Salt).
+  Parameter salt_bytes : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref Salt).
   
   Global Instance Method_salt_bytes `{H : State.Trait} :
     Notation.Dot "salt_bytes" := {
@@ -8235,17 +8151,16 @@ Module
     :=
     ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
   
-  Parameter instantiate : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
+  Parameter instantiate : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
   
   Global Instance Method_instantiate `{H : State.Trait} :
     Notation.Dot "instantiate" := {
     Notation.dot := instantiate;
   }.
   
-  Parameter try_instantiate : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
+  Parameter try_instantiate : forall `{H : State.Trait}, ref Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.ConstructorResult
               ink_env.call.create_builder.ConstructorReturnType.Output)
@@ -8296,8 +8211,7 @@ Parameter build_create : forall `{H : State.Trait}, forall
     {ContractRef : Set},
     `{ink_env.contract.ContractEnv.Trait ContractRef}
     
-    ->
-      M (H := H)
+    M (H := H)
         (ink_env.call.create_builder.CreateBuilder
           ink_env.contract.ContractEnv.Env
           ContractRef
@@ -8326,9 +8240,8 @@ Module
       RetType.
   
   Parameter code_hash : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      ->
-        M (H := H)
+      ImplE.Hash->
+      M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             E
             ContractRef
@@ -8362,9 +8275,8 @@ Module
       RetType.
   
   Parameter gas_limit : forall `{H : State.Trait}, Self->
-      u64
-      ->
-        M (H := H)
+      u64->
+      M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             E
             ContractRef
@@ -8398,9 +8310,8 @@ Module
       RetType.
   
   Parameter endowment : forall `{H : State.Trait}, Self->
-      ImplE.Balance
-      ->
-        M (H := H)
+      ImplE.Balance->
+      M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             E
             ContractRef
@@ -8436,9 +8347,8 @@ Module
       RetType.
   
   Parameter exec_input : forall `{H : State.Trait}, Self->
-      ink_env.call.execution_input.ExecutionInput Args
-      ->
-        M (H := H)
+      ink_env.call.execution_input.ExecutionInput Args->
+      M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             E
             ContractRef
@@ -8473,9 +8383,8 @@ Module
       RetType.
   
   Parameter salt_bytes : forall `{H : State.Trait}, Self->
-      Salt
-      ->
-        M (H := H)
+      Salt->
+      M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             E
             ContractRef
@@ -8508,9 +8417,8 @@ Module
       Salt
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
-  Parameter returns : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter returns : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.call.create_builder.CreateBuilder
             E
             ContractRef
@@ -8544,9 +8452,8 @@ Module
       (ink_env.call.common.Set Salt)
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter params : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.call.create_builder.CreateParams
             E
             ContractRef
@@ -8576,17 +8483,16 @@ Module
       (ink_env.call.common.Set Salt)
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
-  Parameter instantiate : forall `{H : State.Trait}, Self
-      -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
+  Parameter instantiate : forall `{H : State.Trait}, Self->
+      M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
   
   Global Instance Method_instantiate `{H : State.Trait} :
     Notation.Dot "instantiate" := {
     Notation.dot := instantiate;
   }.
   
-  Parameter try_instantiate : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter try_instantiate : forall `{H : State.Trait}, Self->
+      M (H := H)
           (core.result.Result
             (ink_primitives.ConstructorResult
               ink_env.call.create_builder.ConstructorReturnType.Output)
@@ -8623,8 +8529,8 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8647,7 +8553,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Parameter default : forall `{H : State.Trait}, 
-        -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
+        M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -8671,8 +8577,8 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -8692,8 +8598,8 @@ Module execution_input.
       ink_env.call.execution_input.ExecutionInput
         ink_env.call.execution_input.EmptyArgumentList.
     
-    Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-        -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -8701,9 +8607,8 @@ Module execution_input.
     }.
     
     Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
+        T->
+        M (H := H)
             (ink_env.call.execution_input.ExecutionInput
               (ink_env.call.execution_input.ArgumentList
                 (ink_env.call.execution_input.Argument T)
@@ -8727,9 +8632,8 @@ Module execution_input.
           Rest).
     
     Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
+        T->
+        M (H := H)
             (ink_env.call.execution_input.ExecutionInput
               (ink_env.call.execution_input.ArgsList
                 T
@@ -8746,8 +8650,8 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
     Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-        ink_env.call.selector.Selector
-        -> M (H := H) unit.
+        ink_env.call.selector.Selector->
+        M (H := H) unit.
     
     Global Instance Method_update_selector `{H : State.Trait} :
       Notation.Dot "update_selector" := {
@@ -8778,8 +8682,8 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8802,7 +8706,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Parameter default : forall `{H : State.Trait}, 
-        -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
+        M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -8826,8 +8730,8 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -8863,8 +8767,8 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.Argument T.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.execution_input.Argument T).
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ink_env.call.execution_input.Argument T).
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8883,8 +8787,8 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.Argument T.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -8899,7 +8803,7 @@ Module execution_input.
   Module Impl_ink_env_call_execution_input_Argument_T_2.
     Definition Self := ink_env.call.execution_input.Argument T.
     
-    Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait}, T-> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -8915,8 +8819,8 @@ Module execution_input.
   Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.call.execution_input.ArgumentListEnd.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -8932,7 +8836,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
     Parameter default : forall `{H : State.Trait}, 
-        -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+        M (H := H) ink_env.call.execution_input.ArgumentListEnd.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -8949,8 +8853,8 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -8970,7 +8874,7 @@ Module execution_input.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
     Parameter empty : forall `{H : State.Trait}, 
-        -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
+        M (H := H) ink_env.call.execution_input.EmptyArgumentList.
     
     Global Instance AssociatedFunction_empty `{H : State.Trait} :
       Notation.DoubleColon Self "empty" := {
@@ -8978,9 +8882,8 @@ Module execution_input.
     }.
     
     Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
+        T->
+        M (H := H)
             (ink_env.call.execution_input.ArgumentList
               (ink_env.call.execution_input.Argument T)
               Self).
@@ -9001,9 +8904,8 @@ Module execution_input.
         Rest.
     
     Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
+        T->
+        M (H := H)
             (ink_env.call.execution_input.ArgumentList
               (ink_env.call.execution_input.Argument T)
               Self).
@@ -9023,8 +8925,8 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.Argument T.
     
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
+    Parameter size_hint : forall `{H : State.Trait}, ref Self->
+        M (H := H) usize.
     
     Global Instance Method_size_hint `{H : State.Trait} :
       Notation.Dot "size_hint" := {
@@ -9032,8 +8934,8 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
+        mut_ref O->
+        M (H := H) unit.
     
     Global Instance Method_encode_to `{H : State.Trait} :
       Notation.Dot "encode_to" := {
@@ -9051,8 +8953,8 @@ Module execution_input.
     Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
     Definition Self := ink_env.call.execution_input.EmptyArgumentList.
     
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
+    Parameter size_hint : forall `{H : State.Trait}, ref Self->
+        M (H := H) usize.
     
     Global Instance Method_size_hint `{H : State.Trait} :
       Notation.Dot "size_hint" := {
@@ -9060,8 +8962,8 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
+        mut_ref O->
+        M (H := H) unit.
     
     Global Instance Method_encode_to `{H : State.Trait} :
       Notation.Dot "encode_to" := {
@@ -9086,8 +8988,8 @@ Module execution_input.
         (ink_env.call.execution_input.Argument Head)
         Rest.
     
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
+    Parameter size_hint : forall `{H : State.Trait}, ref Self->
+        M (H := H) usize.
     
     Global Instance Method_size_hint `{H : State.Trait} :
       Notation.Dot "size_hint" := {
@@ -9095,8 +8997,8 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
+        mut_ref O->
+        M (H := H) unit.
     
     Global Instance Method_encode_to `{H : State.Trait} :
       Notation.Dot "encode_to" := {
@@ -9118,8 +9020,8 @@ Module execution_input.
     
     Definition Self := ink_env.call.execution_input.ExecutionInput Args.
     
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
+    Parameter size_hint : forall `{H : State.Trait}, ref Self->
+        M (H := H) usize.
     
     Global Instance Method_size_hint `{H : State.Trait} :
       Notation.Dot "size_hint" := {
@@ -9127,8 +9029,8 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
+        mut_ref O->
+        M (H := H) unit.
     
     Global Instance Method_encode_to `{H : State.Trait} :
       Notation.Dot "encode_to" := {
@@ -9166,8 +9068,8 @@ Section
   
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9188,7 +9090,7 @@ Section
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Parameter default : forall `{H : State.Trait}, 
-      -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
+      M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -9211,8 +9113,8 @@ Section
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -9232,8 +9134,8 @@ Module
     ink_env.call.execution_input.ExecutionInput
       ink_env.call.execution_input.EmptyArgumentList.
   
-  Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-      -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -9241,9 +9143,8 @@ Module
   }.
   
   Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
+      T->
+      M (H := H)
           (ink_env.call.execution_input.ExecutionInput
             (ink_env.call.execution_input.ArgumentList
               (ink_env.call.execution_input.Argument T)
@@ -9267,9 +9168,8 @@ Module
         Rest).
   
   Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
+      T->
+      M (H := H)
           (ink_env.call.execution_input.ExecutionInput
             (ink_env.call.execution_input.ArgsList
               T
@@ -9286,8 +9186,8 @@ Module Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
   Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-      ink_env.call.selector.Selector
-      -> M (H := H) unit.
+      ink_env.call.selector.Selector->
+      M (H := H) unit.
   
   Global Instance Method_update_selector `{H : State.Trait} :
     Notation.Dot "update_selector" := {
@@ -9318,8 +9218,8 @@ Section
   
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9342,7 +9242,7 @@ Section
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Parameter default : forall `{H : State.Trait}, 
-      -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
+      M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -9366,8 +9266,8 @@ Section
   Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -9401,8 +9301,8 @@ Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
   
   Definition Self := ink_env.call.execution_input.Argument T.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.execution_input.Argument T).
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ink_env.call.execution_input.Argument T).
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9421,8 +9321,8 @@ Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
   Definition Self := ink_env.call.execution_input.Argument T.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -9437,7 +9337,7 @@ End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
 Module Impl_ink_env_call_execution_input_Argument_T_3.
   Definition Self := ink_env.call.execution_input.Argument T.
   
-  Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, T-> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -9453,8 +9353,8 @@ Definition ArgumentListEnd := ArgumentListEnd.t.
 Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.call.execution_input.ArgumentListEnd.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9470,7 +9370,7 @@ Module
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
   Parameter default : forall `{H : State.Trait}, 
-      -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
+      M (H := H) ink_env.call.execution_input.ArgumentListEnd.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -9486,8 +9386,8 @@ Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -9507,7 +9407,7 @@ Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
   Parameter empty : forall `{H : State.Trait}, 
-      -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
+      M (H := H) ink_env.call.execution_input.EmptyArgumentList.
   
   Global Instance AssociatedFunction_empty `{H : State.Trait} :
     Notation.DoubleColon Self "empty" := {
@@ -9515,9 +9415,8 @@ Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   }.
   
   Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
+      T->
+      M (H := H)
           (ink_env.call.execution_input.ArgumentList
             (ink_env.call.execution_input.Argument T)
             Self).
@@ -9538,9 +9437,8 @@ Module
       Rest.
   
   Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
+      T->
+      M (H := H)
           (ink_env.call.execution_input.ArgumentList
             (ink_env.call.execution_input.Argument T)
             Self).
@@ -9560,7 +9458,7 @@ Section
   
   Definition Self := ink_env.call.execution_input.Argument T.
   
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
+  Parameter size_hint : forall `{H : State.Trait}, ref Self-> M (H := H) usize.
   
   Global Instance Method_size_hint `{H : State.Trait} :
     Notation.Dot "size_hint" := {
@@ -9568,8 +9466,8 @@ Section
   }.
   
   Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
+      mut_ref O->
+      M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -9587,7 +9485,7 @@ Module
   Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
   Definition Self := ink_env.call.execution_input.EmptyArgumentList.
   
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
+  Parameter size_hint : forall `{H : State.Trait}, ref Self-> M (H := H) usize.
   
   Global Instance Method_size_hint `{H : State.Trait} :
     Notation.Dot "size_hint" := {
@@ -9595,8 +9493,8 @@ Module
   }.
   
   Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
+      mut_ref O->
+      M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -9621,7 +9519,7 @@ Section
       (ink_env.call.execution_input.Argument Head)
       Rest.
   
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
+  Parameter size_hint : forall `{H : State.Trait}, ref Self-> M (H := H) usize.
   
   Global Instance Method_size_hint `{H : State.Trait} :
     Notation.Dot "size_hint" := {
@@ -9629,8 +9527,8 @@ Section
   }.
   
   Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
+      mut_ref O->
+      M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -9652,7 +9550,7 @@ Section
   
   Definition Self := ink_env.call.execution_input.ExecutionInput Args.
   
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
+  Parameter size_hint : forall `{H : State.Trait}, ref Self-> M (H := H) usize.
   
   Global Instance Method_size_hint `{H : State.Trait} :
     Notation.Dot "size_hint" := {
@@ -9660,8 +9558,8 @@ Section
   }.
   
   Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
+      mut_ref O->
+      M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -9691,7 +9589,7 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Parameter default : forall `{H : State.Trait}, 
-        -> M (H := H) ink_env.call.selector.Selector.
+        M (H := H) ink_env.call.selector.Selector.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -9715,8 +9613,8 @@ Module selector.
       Notation.double_colon := debug_struct_field1_finish; }.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -9737,8 +9635,8 @@ Module selector.
   Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.selector.Selector.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.call.selector.Selector.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -9761,8 +9659,8 @@ Module selector.
     Definition Self := ink_env.call.selector.Selector.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.call.selector.Selector
-        -> M (H := H) bool.
+        ref ink_env.call.selector.Selector->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -9783,8 +9681,9 @@ Module selector.
   Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -9798,8 +9697,8 @@ Module selector.
   Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
     
-    Parameter from : forall `{H : State.Trait}, list u8
-        -> M (H := H) ink_env.call.selector.Selector.
+    Parameter from : forall `{H : State.Trait}, list u8->
+        M (H := H) ink_env.call.selector.Selector.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -9814,14 +9713,14 @@ Module selector.
   Module Impl_ink_env_call_selector_Selector_2.
     Definition Self := ink_env.call.selector.Selector.
     
-    Parameter new : forall `{H : State.Trait}, list u8 -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait}, list u8-> M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
       Notation.double_colon := new;
     }.
     
-    Parameter to_bytes : forall `{H : State.Trait}, Self -> M (H := H) list u8.
+    Parameter to_bytes : forall `{H : State.Trait}, Self-> M (H := H) list u8.
     
     Global Instance Method_to_bytes `{H : State.Trait} :
       Notation.Dot "to_bytes" := {
@@ -9845,7 +9744,7 @@ Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Parameter default : forall `{H : State.Trait}, 
-      -> M (H := H) ink_env.call.selector.Selector.
+      M (H := H) ink_env.call.selector.Selector.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -9869,8 +9768,8 @@ Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
     Notation.double_colon := debug_struct_field1_finish; }.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -9891,8 +9790,8 @@ End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
 Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.selector.Selector.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.call.selector.Selector.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -9914,8 +9813,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.call.selector.Selector
-      -> M (H := H) bool.
+      ref ink_env.call.selector.Selector->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -9936,8 +9835,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
 Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -9951,8 +9850,8 @@ End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
 Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Parameter from : forall `{H : State.Trait}, list u8
-      -> M (H := H) ink_env.call.selector.Selector.
+  Parameter from : forall `{H : State.Trait}, list u8->
+      M (H := H) ink_env.call.selector.Selector.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -9967,8 +9866,8 @@ End Impl_core_convert_From_for_ink_env_call_selector_Selector.
 Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
-      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
+  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy->
+      M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -9984,24 +9883,24 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref __CodecOutputEdqy
-      -> M (H := H) unit.
+      mut_ref __CodecOutputEdqy->
+      M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
     Notation.dot := encode_to;
   }.
   
-  Parameter encode : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (alloc.vec.Vec Root.core.primitive.u8).
+  Parameter encode : forall `{H : State.Trait}, ref Self->
+      M (H := H) (alloc.vec.Vec Root.core.primitive.u8).
   
   Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
   Parameter using_encoded : forall `{H : State.Trait}, ref Self->
-      F
-      -> M (H := H) R.
+      F->
+      M (H := H) R.
   
   Global Instance Method_using_encoded `{H : State.Trait} :
     Notation.Dot "using_encoded" := {
@@ -10024,14 +9923,14 @@ End
 Module Impl_ink_env_call_selector_Selector_3.
   Definition Self := ink_env.call.selector.Selector.
   
-  Parameter new : forall `{H : State.Trait}, list u8 -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, list u8-> M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Parameter to_bytes : forall `{H : State.Trait}, Self -> M (H := H) list u8.
+  Parameter to_bytes : forall `{H : State.Trait}, Self-> M (H := H) list u8.
   
   Global Instance Method_to_bytes `{H : State.Trait} :
     Notation.Dot "to_bytes" := {
@@ -10085,8 +9984,8 @@ Module chain_extension.
       ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -10106,7 +10005,7 @@ Module chain_extension.
       :=
       ink_env.chain_extension.ChainExtensionMethod unit unit unit.
     
-    Parameter build : forall `{H : State.Trait}, u32 -> M (H := H) Self.
+    Parameter build : forall `{H : State.Trait}, u32-> M (H := H) Self.
     
     Global Instance AssociatedFunction_build `{H : State.Trait} :
       Notation.DoubleColon Self "build" := {
@@ -10120,10 +10019,8 @@ Module chain_extension.
       :=
       ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
     
-    Parameter input : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
+    Parameter input : forall `{H : State.Trait}, Self->
+        M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
     
     Global Instance Method_input `{H : State.Trait} : Notation.Dot "input" := {
       Notation.dot := input;
@@ -10136,10 +10033,8 @@ Module chain_extension.
       :=
       ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
     
-    Parameter output : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
+    Parameter output : forall `{H : State.Trait}, Self->
+        M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
     
     Global Instance Method_output `{H : State.Trait} :
       Notation.Dot "output" := {
@@ -10150,9 +10045,8 @@ Module chain_extension.
   Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple_.
     Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
     
-    Parameter ignore_error_code : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter ignore_error_code : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.chain_extension.ChainExtensionMethod
               I
               O
@@ -10163,9 +10057,8 @@ Module chain_extension.
       Notation.dot := ignore_error_code;
     }.
     
-    Parameter handle_error_code : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter handle_error_code : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.chain_extension.ChainExtensionMethod
               I
               O
@@ -10189,8 +10082,8 @@ Module chain_extension.
       Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -10221,8 +10114,8 @@ Module chain_extension.
       Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -10246,9 +10139,8 @@ Module chain_extension.
         (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
     
     Parameter call : forall `{H : State.Trait}, Self->
-        ref I
-        ->
-          M (H := H)
+        ref I->
+        M (H := H)
             (core.result.Result
               ink_env.chain_extension.IsResultType.Ok
               ink_env.chain_extension.IsResultType.Err).
@@ -10270,9 +10162,8 @@ Module chain_extension.
         ink_env.chain_extension.state.IgnoreErrorCode.
     
     Parameter call : forall `{H : State.Trait}, Self->
-        ref I
-        ->
-          M (H := H)
+        ref I->
+        M (H := H)
             (core.result.Result
               ink_env.chain_extension.IsResultType.Ok
               ink_env.chain_extension.IsResultType.Err).
@@ -10294,8 +10185,8 @@ Module chain_extension.
         (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
     
     Parameter call : forall `{H : State.Trait}, Self->
-        ref I
-        -> M (H := H) (core.result.Result O ErrorCode).
+        ref I->
+        M (H := H) (core.result.Result O ErrorCode).
     
     Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
@@ -10313,7 +10204,7 @@ Module chain_extension.
         O
         ink_env.chain_extension.state.IgnoreErrorCode.
     
-    Parameter call : forall `{H : State.Trait}, Self-> ref I -> M (H := H) O.
+    Parameter call : forall `{H : State.Trait}, Self-> ref I-> M (H := H) O.
     
     Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
       Notation.dot := call;
@@ -10416,8 +10307,8 @@ Section
   Definition Self := ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -10437,7 +10328,7 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple__2.
     :=
     ink_env.chain_extension.ChainExtensionMethod unit unit unit.
   
-  Parameter build : forall `{H : State.Trait}, u32 -> M (H := H) Self.
+  Parameter build : forall `{H : State.Trait}, u32-> M (H := H) Self.
   
   Global Instance AssociatedFunction_build `{H : State.Trait} :
     Notation.DoubleColon Self "build" := {
@@ -10451,9 +10342,8 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode_2.
     :=
     ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
   
-  Parameter input : forall `{H : State.Trait}, Self
-      ->
-        M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
+  Parameter input : forall `{H : State.Trait}, Self->
+      M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
   
   Global Instance Method_input `{H : State.Trait} : Notation.Dot "input" := {
     Notation.dot := input;
@@ -10466,9 +10356,8 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
     :=
     ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
   
-  Parameter output : forall `{H : State.Trait}, Self
-      ->
-        M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
+  Parameter output : forall `{H : State.Trait}, Self->
+      M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
   
   Global Instance Method_output `{H : State.Trait} : Notation.Dot "output" := {
     Notation.dot := output;
@@ -10478,9 +10367,8 @@ End Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
 Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
   Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
   
-  Parameter ignore_error_code : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter ignore_error_code : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.chain_extension.ChainExtensionMethod
             I
             O
@@ -10491,9 +10379,8 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
     Notation.dot := ignore_error_code;
   }.
   
-  Parameter handle_error_code : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter handle_error_code : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.chain_extension.ChainExtensionMethod
             I
             O
@@ -10516,8 +10403,8 @@ Module state.
     Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -10548,8 +10435,8 @@ Module state.
     Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -10572,8 +10459,8 @@ Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
   Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -10602,8 +10489,8 @@ Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
   Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -10626,9 +10513,8 @@ Module
       (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
   
   Parameter call : forall `{H : State.Trait}, Self->
-      ref I
-      ->
-        M (H := H)
+      ref I->
+      M (H := H)
           (core.result.Result
             ink_env.chain_extension.IsResultType.Ok
             ink_env.chain_extension.IsResultType.Err).
@@ -10650,9 +10536,8 @@ Module
       ink_env.chain_extension.state.IgnoreErrorCode.
   
   Parameter call : forall `{H : State.Trait}, Self->
-      ref I
-      ->
-        M (H := H)
+      ref I->
+      M (H := H)
           (core.result.Result
             ink_env.chain_extension.IsResultType.Ok
             ink_env.chain_extension.IsResultType.Err).
@@ -10674,8 +10559,8 @@ Module
       (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
   
   Parameter call : forall `{H : State.Trait}, Self->
-      ref I
-      -> M (H := H) (core.result.Result O ErrorCode).
+      ref I->
+      M (H := H) (core.result.Result O ErrorCode).
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
@@ -10693,7 +10578,7 @@ Module
       O
       ink_env.chain_extension.state.IgnoreErrorCode.
   
-  Parameter call : forall `{H : State.Trait}, Self-> ref I -> M (H := H) O.
+  Parameter call : forall `{H : State.Trait}, Self-> ref I-> M (H := H) O.
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
     Notation.dot := call;
@@ -10856,8 +10741,8 @@ Module engine.
           Notation.double_colon := debug_struct_field1_finish; }.
         
         Parameter fmt : forall `{H : State.Trait}, ref Self->
-            mut_ref core.fmt.Formatter
-            -> M (H := H) core.fmt.Result.
+            mut_ref core.fmt.Formatter->
+            M (H := H) core.fmt.Result.
         
         Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
           Notation.dot := fmt;
@@ -10872,8 +10757,8 @@ Module engine.
         Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
-        Parameter clone : forall `{H : State.Trait}, ref Self
-            -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
+        Parameter clone : forall `{H : State.Trait}, ref Self->
+            M (H := H) ink_env.engine.off_chain.call_data.CallData.
         
         Global Instance Method_clone `{H : State.Trait} :
           Notation.Dot "clone" := {
@@ -10899,8 +10784,8 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Parameter eq : forall `{H : State.Trait}, ref Self->
-            ref ink_env.engine.off_chain.call_data.CallData
-            -> M (H := H) bool.
+            ref ink_env.engine.off_chain.call_data.CallData->
+            M (H := H) bool.
         
         Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
           Notation.dot := eq;
@@ -10925,8 +10810,8 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-                Self
-            -> M (H := H) unit.
+                Self->
+            M (H := H) unit.
         
         Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
           Notation.Dot "assert_receiver_is_total_eq" := {
@@ -10942,8 +10827,8 @@ Module engine.
         
         Parameter new : forall
               `{H : State.Trait},
-              ink_env.call.selector.Selector
-            -> M (H := H) Self.
+              ink_env.call.selector.Selector->
+            M (H := H) Self.
         
         Global Instance AssociatedFunction_new `{H : State.Trait} :
           Notation.DoubleColon Self "new" := {
@@ -10951,32 +10836,32 @@ Module engine.
         }.
         
         Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-            ref A
-            -> M (H := H) unit.
+            ref A->
+            M (H := H) unit.
         
         Global Instance Method_push_arg `{H : State.Trait} :
           Notation.Dot "push_arg" := {
           Notation.dot := push_arg;
         }.
         
-        Parameter selector : forall `{H : State.Trait}, ref Self
-            -> M (H := H) ink_env.call.selector.Selector.
+        Parameter selector : forall `{H : State.Trait}, ref Self->
+            M (H := H) ink_env.call.selector.Selector.
         
         Global Instance Method_selector `{H : State.Trait} :
           Notation.Dot "selector" := {
           Notation.dot := selector;
         }.
         
-        Parameter params : forall `{H : State.Trait}, ref Self
-            -> M (H := H) (ref Slice).
+        Parameter params : forall `{H : State.Trait}, ref Self->
+            M (H := H) (ref Slice).
         
         Global Instance Method_params `{H : State.Trait} :
           Notation.Dot "params" := {
           Notation.dot := params;
         }.
         
-        Parameter to_bytes : forall `{H : State.Trait}, ref Self
-            -> M (H := H) (ref Slice).
+        Parameter to_bytes : forall `{H : State.Trait}, ref Self->
+            M (H := H) (ref Slice).
         
         Global Instance Method_to_bytes `{H : State.Trait} :
           Notation.Dot "to_bytes" := {
@@ -10988,8 +10873,8 @@ Module engine.
         Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
-        Parameter size_hint : forall `{H : State.Trait}, ref Self
-            -> M (H := H) usize.
+        Parameter size_hint : forall `{H : State.Trait}, ref Self->
+            M (H := H) usize.
         
         Global Instance Method_size_hint `{H : State.Trait} :
           Notation.Dot "size_hint" := {
@@ -10997,8 +10882,8 @@ Module engine.
         }.
         
         Parameter encode_to : forall `{H : State.Trait}, ref Self->
-            mut_ref T
-            -> M (H := H) unit.
+            mut_ref T->
+            M (H := H) unit.
         
         Global Instance Method_encode_to `{H : State.Trait} :
           Notation.Dot "encode_to" := {
@@ -11014,10 +10899,8 @@ Module engine.
         Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
-        Parameter decode : forall `{H : State.Trait}, mut_ref I
-            ->
-              M (H := H)
-                (core.result.Result Self parity_scale_codec.error.Error).
+        Parameter decode : forall `{H : State.Trait}, mut_ref I->
+            M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
         
         Global Instance AssociatedFunction_decode `{H : State.Trait} :
           Notation.DoubleColon Self "decode" := {
@@ -11038,8 +10921,8 @@ Module engine.
         Definition Self := ink_env.hash.Blake2x128.
         
         Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
+            mut_ref ink_env.hash.HashOutput.Type->
+            M (H := H) unit.
         
         Global Instance AssociatedFunction_hash `{H : State.Trait} :
           Notation.DoubleColon Self "hash" := {
@@ -11055,8 +10938,8 @@ Module engine.
         Definition Self := ink_env.hash.Blake2x256.
         
         Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
+            mut_ref ink_env.hash.HashOutput.Type->
+            M (H := H) unit.
         
         Global Instance AssociatedFunction_hash `{H : State.Trait} :
           Notation.DoubleColon Self "hash" := {
@@ -11072,8 +10955,8 @@ Module engine.
         Definition Self := ink_env.hash.Sha2x256.
         
         Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
+            mut_ref ink_env.hash.HashOutput.Type->
+            M (H := H) unit.
         
         Global Instance AssociatedFunction_hash `{H : State.Trait} :
           Notation.DoubleColon Self "hash" := {
@@ -11089,8 +10972,8 @@ Module engine.
         Definition Self := ink_env.hash.Keccak256.
         
         Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
+            mut_ref ink_env.hash.HashOutput.Type->
+            M (H := H) unit.
         
         Global Instance AssociatedFunction_hash `{H : State.Trait} :
           Notation.DoubleColon Self "hash" := {
@@ -11105,8 +10988,8 @@ Module engine.
       Module Impl_core_convert_From_for_ink_env_error_Error.
         Definition Self := ink_env.error.Error.
         
-        Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-            -> M (H := H) Self.
+        Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error->
+            M (H := H) Self.
         
         Global Instance AssociatedFunction_from `{H : State.Trait} :
           Notation.DoubleColon Self "from" := {
@@ -11135,7 +11018,7 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
         
         Parameter default : forall `{H : State.Trait}, 
-            -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+            M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
         
         Global Instance AssociatedFunction_default `{H : State.Trait} :
           Notation.DoubleColon Self "default" := {
@@ -11159,8 +11042,8 @@ Module engine.
         Definition Output : Set := alloc.vec.Vec u8.
         
         Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-            usize
-            -> M (H := H) unit.
+            usize->
+            M (H := H) unit.
         
         Global Instance Method_expect `{H : State.Trait} :
           Notation.Dot "expect" := {
@@ -11168,16 +11051,16 @@ Module engine.
         }.
         
         Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-            ref T
-            -> M (H := H) unit.
+            ref T->
+            M (H := H) unit.
         
         Global Instance Method_push_topic `{H : State.Trait} :
           Notation.Dot "push_topic" := {
           Notation.dot := push_topic;
         }.
         
-        Parameter output : forall `{H : State.Trait}, Self
-            -> M (H := H) ImplSelf.Output.
+        Parameter output : forall `{H : State.Trait}, Self->
+            M (H := H) ImplSelf.Output.
         
         Global Instance Method_output `{H : State.Trait} :
           Notation.Dot "output" := {
@@ -11208,8 +11091,8 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-            (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-            -> M (H := H) (ink_env.error.Result T).
+            (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit->
+            M (H := H) (ink_env.error.Result T).
         
         Global Instance Method_get_property `{H : State.Trait} :
           Notation.Dot "get_property" := {
@@ -11224,8 +11107,8 @@ Module engine.
         Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref
                 Self->
             ref K->
-            ref V
-            -> M (H := H) (core.option.Option u32).
+            ref V->
+            M (H := H) (core.option.Option u32).
         
         Global Instance Method_set_contract_storage `{H : State.Trait} :
           Notation.Dot "set_contract_storage" := {
@@ -11234,8 +11117,8 @@ Module engine.
         
         Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref
                 Self->
-            ref K
-            -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+            ref K->
+            M (H := H) (ink_env.error.Result (core.option.Option R)).
         
         Global Instance Method_get_contract_storage `{H : State.Trait} :
           Notation.Dot "get_contract_storage" := {
@@ -11244,8 +11127,8 @@ Module engine.
         
         Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref
                 Self->
-            ref K
-            -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+            ref K->
+            M (H := H) (ink_env.error.Result (core.option.Option R)).
         
         Global Instance Method_take_contract_storage `{H : State.Trait} :
           Notation.Dot "take_contract_storage" := {
@@ -11254,8 +11137,8 @@ Module engine.
         
         Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
                 Self->
-            ref K
-            -> M (H := H) (core.option.Option u32).
+            ref K->
+            M (H := H) (core.option.Option u32).
         
         Global Instance Method_contains_contract_storage `{H : State.Trait} :
           Notation.Dot "contains_contract_storage" := {
@@ -11264,16 +11147,16 @@ Module engine.
         
         Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref
                 Self->
-            ref K
-            -> M (H := H) (core.option.Option u32).
+            ref K->
+            M (H := H) (core.option.Option u32).
         
         Global Instance Method_clear_contract_storage `{H : State.Trait} :
           Notation.Dot "clear_contract_storage" := {
           Notation.dot := clear_contract_storage;
         }.
         
-        Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) (ink_env.error.Result T).
+        Parameter decode_input : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) (ink_env.error.Result T).
         
         Global Instance Method_decode_input `{H : State.Trait} :
           Notation.Dot "decode_input" := {
@@ -11282,8 +11165,8 @@ Module engine.
         
         Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
             ink_env.backend.ReturnFlags->
-            ref R
-            -> M (H := H) Empty_set.
+            ref R->
+            M (H := H) Empty_set.
         
         Global Instance Method_return_value `{H : State.Trait} :
           Notation.Dot "return_value" := {
@@ -11291,8 +11174,8 @@ Module engine.
         }.
         
         Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-            ref str
-            -> M (H := H) unit.
+            ref str->
+            M (H := H) unit.
         
         Global Instance Method_debug_message `{H : State.Trait} :
           Notation.Dot "debug_message" := {
@@ -11301,8 +11184,8 @@ Module engine.
         
         Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
             ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
+            mut_ref ink_env.hash.HashOutput.Type->
+            M (H := H) unit.
         
         Global Instance Method_hash_bytes `{H : State.Trait} :
           Notation.Dot "hash_bytes" := {
@@ -11311,8 +11194,8 @@ Module engine.
         
         Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
             ref T->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
+            mut_ref ink_env.hash.HashOutput.Type->
+            M (H := H) unit.
         
         Global Instance Method_hash_encoded `{H : State.Trait} :
           Notation.Dot "hash_encoded" := {
@@ -11322,8 +11205,8 @@ Module engine.
         Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
             ref list u8->
             ref list u8->
-            mut_ref list u8
-            -> M (H := H) (ink_env.error.Result unit).
+            mut_ref list u8->
+            M (H := H) (ink_env.error.Result unit).
         
         Global Instance Method_ecdsa_recover `{H : State.Trait} :
           Notation.Dot "ecdsa_recover" := {
@@ -11333,8 +11216,8 @@ Module engine.
         Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref
                 Self->
             ref list u8->
-            mut_ref list u8
-            -> M (H := H) (ink_env.error.Result unit).
+            mut_ref list u8->
+            M (H := H) (ink_env.error.Result unit).
         
         Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
           Notation.Dot "ecdsa_to_eth_address" := {
@@ -11346,8 +11229,8 @@ Module engine.
             u32->
             ref I->
             F->
-            D
-            -> M (H := H) (core.result.Result T E).
+            D->
+            M (H := H) (core.result.Result T E).
         
         Global Instance Method_call_chain_extension `{H : State.Trait} :
           Notation.Dot "call_chain_extension" := {
@@ -11355,8 +11238,8 @@ Module engine.
         }.
         
         Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-            ref Slice
-            -> M (H := H) (ink_env.error.Result unit).
+            ref Slice->
+            M (H := H) (ink_env.error.Result unit).
         
         Global Instance Method_set_code_hash `{H : State.Trait} :
           Notation.Dot "set_code_hash" := {
@@ -11428,64 +11311,64 @@ Module engine.
         Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
-        Parameter caller : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.AccountId.
+        Parameter caller : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) ImplE.AccountId.
         
         Global Instance Method_caller `{H : State.Trait} :
           Notation.Dot "caller" := {
           Notation.dot := caller;
         }.
         
-        Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Balance.
+        Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) ImplE.Balance.
         
         Global Instance Method_transferred_value `{H : State.Trait} :
           Notation.Dot "transferred_value" := {
           Notation.dot := transferred_value;
         }.
         
-        Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) u64.
+        Parameter gas_left : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) u64.
         
         Global Instance Method_gas_left `{H : State.Trait} :
           Notation.Dot "gas_left" := {
           Notation.dot := gas_left;
         }.
         
-        Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Timestamp.
+        Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) ImplE.Timestamp.
         
         Global Instance Method_block_timestamp `{H : State.Trait} :
           Notation.Dot "block_timestamp" := {
           Notation.dot := block_timestamp;
         }.
         
-        Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.AccountId.
+        Parameter account_id : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) ImplE.AccountId.
         
         Global Instance Method_account_id `{H : State.Trait} :
           Notation.Dot "account_id" := {
           Notation.dot := account_id;
         }.
         
-        Parameter balance : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Balance.
+        Parameter balance : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) ImplE.Balance.
         
         Global Instance Method_balance `{H : State.Trait} :
           Notation.Dot "balance" := {
           Notation.dot := balance;
         }.
         
-        Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.BlockNumber.
+        Parameter block_number : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) ImplE.BlockNumber.
         
         Global Instance Method_block_number `{H : State.Trait} :
           Notation.Dot "block_number" := {
           Notation.dot := block_number;
         }.
         
-        Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Balance.
+        Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) ImplE.Balance.
         
         Global Instance Method_minimum_balance `{H : State.Trait} :
           Notation.Dot "minimum_balance" := {
@@ -11493,8 +11376,8 @@ Module engine.
         }.
         
         Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-            Event
-            -> M (H := H) unit.
+            Event->
+            M (H := H) unit.
         
         Global Instance Method_emit_event `{H : State.Trait} :
           Notation.Dot "emit_event" := {
@@ -11507,10 +11390,8 @@ Module engine.
                   E
                   (ink_env.call.call_builder.Call E)
                   Args
-                  R)
-            ->
-              M (H := H)
-                (ink_env.error.Result (ink_primitives.MessageResult R)).
+                  R)->
+            M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
         
         Global Instance Method_invoke_contract `{H : State.Trait} :
           Notation.Dot "invoke_contract" := {
@@ -11524,10 +11405,8 @@ Module engine.
                   E
                   (ink_env.call.call_builder.DelegateCall E)
                   Args
-                  R)
-            ->
-              M (H := H)
-                (ink_env.error.Result (ink_primitives.MessageResult R)).
+                  R)->
+            M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
         
         Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
           Notation.Dot "invoke_contract_delegate" := {
@@ -11542,9 +11421,8 @@ Module engine.
                   ContractRef
                   Args
                   Salt
-                  R)
-            ->
-              M (H := H)
+                  R)->
+            M (H := H)
                 (ink_env.error.Result
                   (ink_primitives.ConstructorResult
                     ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -11555,8 +11433,8 @@ Module engine.
         }.
         
         Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-            ImplE.AccountId
-            -> M (H := H) Empty_set.
+            ImplE.AccountId->
+            M (H := H) Empty_set.
         
         Global Instance Method_terminate_contract `{H : State.Trait} :
           Notation.Dot "terminate_contract" := {
@@ -11565,8 +11443,8 @@ Module engine.
         
         Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
             ImplE.AccountId->
-            ImplE.Balance
-            -> M (H := H) (ink_env.error.Result unit).
+            ImplE.Balance->
+            M (H := H) (ink_env.error.Result unit).
         
         Global Instance Method_transfer `{H : State.Trait} :
           Notation.Dot "transfer" := {
@@ -11574,8 +11452,8 @@ Module engine.
         }.
         
         Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-            u64
-            -> M (H := H) ImplE.Balance.
+            u64->
+            M (H := H) ImplE.Balance.
         
         Global Instance Method_weight_to_fee `{H : State.Trait} :
           Notation.Dot "weight_to_fee" := {
@@ -11583,16 +11461,16 @@ Module engine.
         }.
         
         Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-            ref ImplE.AccountId
-            -> M (H := H) bool.
+            ref ImplE.AccountId->
+            M (H := H) bool.
         
         Global Instance Method_is_contract `{H : State.Trait} :
           Notation.Dot "is_contract" := {
           Notation.dot := is_contract;
         }.
         
-        Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) bool.
+        Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) bool.
         
         Global Instance Method_caller_is_origin `{H : State.Trait} :
           Notation.Dot "caller_is_origin" := {
@@ -11600,16 +11478,16 @@ Module engine.
         }.
         
         Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-            ref ImplE.AccountId
-            -> M (H := H) (ink_env.error.Result ImplE.Hash).
+            ref ImplE.AccountId->
+            M (H := H) (ink_env.error.Result ImplE.Hash).
         
         Global Instance Method_code_hash `{H : State.Trait} :
           Notation.Dot "code_hash" := {
           Notation.dot := code_hash;
         }.
         
-        Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) (ink_env.error.Result ImplE.Hash).
+        Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self->
+            M (H := H) (ink_env.error.Result ImplE.Hash).
         
         Global Instance Method_own_code_hash `{H : State.Trait} :
           Notation.Dot "own_code_hash" := {
@@ -11617,8 +11495,8 @@ Module engine.
         }.
         
         Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-            ref Call
-            -> M (H := H) (ink_env.error.Result unit).
+            ref Call->
+            M (H := H) (ink_env.error.Result unit).
         
         Global Instance Method_call_runtime `{H : State.Trait} :
           Notation.Dot "call_runtime" := {
@@ -11725,8 +11603,8 @@ Module engine.
         Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
         Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
         
-        Parameter clone : forall `{H : State.Trait}, ref Self
-            -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
+        Parameter clone : forall `{H : State.Trait}, ref Self->
+            M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
         
         Global Instance Method_clone `{H : State.Trait} :
           Notation.Dot "clone" := {
@@ -11743,102 +11621,102 @@ Module engine.
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           ImplT.AccountId->
-          ImplT.Balance
-          -> M (H := H) unit.
+          ImplT.Balance->
+          M (H := H) unit.
       
       Parameter get_account_balance : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.AccountId
-          -> M (H := H) (ink_env.error.Result ImplT.Balance).
+          ImplT.AccountId->
+          M (H := H) (ink_env.error.Result ImplT.Balance).
       
       Parameter register_chain_extension : forall `{H : State.Trait}, forall
           {E : Set},
           `{ink_engine.chain_extension.ChainExtension.Trait E}
-          E
-          -> M (H := H) unit.
+          E->
+          M (H := H) unit.
       
       Parameter recorded_debug_messages : forall `{H : State.Trait}, 
-          -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
+          M (H := H) ink_engine.test_api.RecordedDebugMessages.
       
-      Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-          -> M (H := H) unit.
+      Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool->
+          M (H := H) unit.
       
       Parameter advance_block : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           
-          -> M (H := H) unit.
+          M (H := H) unit.
       
       Parameter set_caller : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) unit.
+          ImplT.AccountId->
+          M (H := H) unit.
       
       Parameter set_callee : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) unit.
+          ImplT.AccountId->
+          M (H := H) unit.
       
       Parameter set_contract : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) unit.
+          ImplT.AccountId->
+          M (H := H) unit.
       
       Parameter is_contract : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) bool.
+          ImplT.AccountId->
+          M (H := H) bool.
       
       Parameter callee : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           
-          -> M (H := H) ImplT.AccountId.
+          M (H := H) ImplT.AccountId.
       
       Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ref ImplT.AccountId
-          -> M (H := H) (usize * usize).
+          ref ImplT.AccountId->
+          M (H := H) (usize * usize).
       
       Parameter set_value_transferred : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.Balance
-          -> M (H := H) unit.
+          ImplT.Balance->
+          M (H := H) unit.
       
       Parameter transfer_in : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.Balance
-          -> M (H := H) unit.
+          ImplT.Balance->
+          M (H := H) unit.
       
       Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ref ImplT.AccountId
-          -> M (H := H) (ink_env.error.Result usize).
+          ref ImplT.AccountId->
+          M (H := H) (ink_env.error.Result usize).
       
       Parameter set_block_timestamp : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.Timestamp
-          -> M (H := H) unit.
+          ImplT.Timestamp->
+          M (H := H) unit.
       
       Parameter set_block_number : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.BlockNumber
-          -> M (H := H) unit.
+          ImplT.BlockNumber->
+          M (H := H) unit.
       
       Parameter run_test : forall `{H : State.Trait}, forall
           {T : Set} {F : Set},
@@ -11847,15 +11725,15 @@ Module engine.
             ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
             F}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          F
-          -> M (H := H) (ink_env.error.Result unit).
+          F->
+          M (H := H) (ink_env.error.Result unit).
       
       Parameter default_accounts : forall `{H : State.Trait}, forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
           
-          -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+          M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
       
       Module DefaultAccounts.
         Record t : Set := {
@@ -11889,7 +11767,7 @@ Module engine.
       Definition DefaultAccounts : Set := DefaultAccounts.t.
       
       Parameter recorded_events : forall `{H : State.Trait}, 
-          -> M (H := H) OpaqueDef.
+          M (H := H) OpaqueDef.
       
       Parameter assert_contract_termination : forall `{H : State.Trait}, forall
           {T : Set} {F : Set},
@@ -11900,8 +11778,8 @@ Module engine.
           `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
           F->
           ImplT.AccountId->
-          ImplT.Balance
-          -> M (H := H) unit.
+          ImplT.Balance->
+          M (H := H) unit.
     End test_api.
     
     Module types.
@@ -11911,8 +11789,8 @@ Module engine.
         
         Parameter from : forall
               `{H : State.Trait},
-              ink_engine.test_api.EmittedEvent
-            -> M (H := H) Self.
+              ink_engine.test_api.EmittedEvent->
+            M (H := H) Self.
         
         Global Instance AssociatedFunction_from `{H : State.Trait} :
           Notation.DoubleColon Self "from" := {
@@ -11931,8 +11809,8 @@ Module engine.
       Module Impl_core_convert_From_for_ink_env_error_Error.
         Definition Self := ink_env.error.Error.
         
-        Parameter from : forall `{H : State.Trait}, ink_engine.Error
-            -> M (H := H) Self.
+        Parameter from : forall `{H : State.Trait}, ink_engine.Error->
+            M (H := H) Self.
         
         Global Instance AssociatedFunction_from `{H : State.Trait} :
           Notation.DoubleColon Self "from" := {
@@ -11950,8 +11828,8 @@ Module engine.
         
         Parameter from : forall
               `{H : State.Trait},
-              ink_engine.types.AccountError
-            -> M (H := H) Self.
+              ink_engine.types.AccountError->
+            M (H := H) Self.
         
         Global Instance AssociatedFunction_from `{H : State.Trait} :
           Notation.DoubleColon Self "from" := {
@@ -11971,8 +11849,8 @@ Module engine.
         
         Parameter from : forall
               `{H : State.Trait},
-              ink_engine.types.AccountError
-            -> M (H := H) Self.
+              ink_engine.types.AccountError->
+            M (H := H) Self.
         
         Global Instance AssociatedFunction_from `{H : State.Trait} :
           Notation.DoubleColon Self "from" := {
@@ -12003,7 +11881,7 @@ Module engine.
       Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
-      Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
+      Parameter on_instance : forall `{H : State.Trait}, F-> M (H := H) R.
       
       Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
         Notation.DoubleColon Self "on_instance" := {
@@ -12028,8 +11906,8 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -12045,8 +11923,8 @@ Module engine.
       
       Parameter from : forall
             `{H : State.Trait},
-            ink_env.engine.off_chain.AccountError
-          -> M (H := H) ink_env.engine.off_chain.OffChainError.
+            ink_env.engine.off_chain.AccountError->
+          M (H := H) ink_env.engine.off_chain.OffChainError.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -12074,8 +11952,8 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.engine.off_chain.OffChainError
-          -> M (H := H) bool.
+          ref ink_env.engine.off_chain.OffChainError->
+          M (H := H) bool.
       
       Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
         Notation.dot := eq;
@@ -12099,8 +11977,8 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.OffChainError.
       
       Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
+              Self->
+          M (H := H) unit.
       
       Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
         Notation.Dot "assert_receiver_is_total_eq" := {
@@ -12123,8 +12001,8 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -12138,8 +12016,10 @@ Module engine.
     Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
-      Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-          -> M (H := H) ink_env.engine.off_chain.AccountError.
+      Parameter from : forall
+            `{H : State.Trait},
+            parity_scale_codec.error.Error->
+          M (H := H) ink_env.engine.off_chain.AccountError.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -12167,8 +12047,8 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.engine.off_chain.AccountError
-          -> M (H := H) bool.
+          ref ink_env.engine.off_chain.AccountError->
+          M (H := H) bool.
       
       Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
         Notation.dot := eq;
@@ -12191,8 +12071,8 @@ Module engine.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
       Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
+              Self->
+          M (H := H) unit.
       
       Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
         Notation.Dot "assert_receiver_is_total_eq" := {
@@ -12213,9 +12093,8 @@ Module engine.
       `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       ink_env.error.Result unit->
       mut_ref I->
-      mut_ref I
-      ->
-        M (H := H)
+      mut_ref I->
+      M (H := H)
           (ink_env.error.Result
             (ink_primitives.ConstructorResult
               ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -12227,9 +12106,8 @@ Module engine.
       `{ink_env.types.Environment.Trait E}
       `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
       `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-      mut_ref I
-      ->
-        M (H := H)
+      mut_ref I->
+      M (H := H)
           (ink_env.error.Result
             (ink_primitives.ConstructorResult
               ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -12271,8 +12149,8 @@ Module off_chain.
         Notation.double_colon := debug_struct_field1_finish; }.
       
       Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
+          mut_ref core.fmt.Formatter->
+          M (H := H) core.fmt.Result.
       
       Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
         Notation.dot := fmt;
@@ -12287,8 +12165,8 @@ Module off_chain.
       Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) ink_env.engine.off_chain.call_data.CallData.
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -12314,8 +12192,8 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.engine.off_chain.call_data.CallData
-          -> M (H := H) bool.
+          ref ink_env.engine.off_chain.call_data.CallData->
+          M (H := H) bool.
       
       Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
         Notation.dot := eq;
@@ -12339,8 +12217,8 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
+              Self->
+          M (H := H) unit.
       
       Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
         Notation.Dot "assert_receiver_is_total_eq" := {
@@ -12354,8 +12232,10 @@ Module off_chain.
     Module Impl_ink_env_engine_off_chain_call_data_CallData_2.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
-      Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-          -> M (H := H) Self.
+      Parameter new : forall
+            `{H : State.Trait},
+            ink_env.call.selector.Selector->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_new `{H : State.Trait} :
         Notation.DoubleColon Self "new" := {
@@ -12363,32 +12243,32 @@ Module off_chain.
       }.
       
       Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-          ref A
-          -> M (H := H) unit.
+          ref A->
+          M (H := H) unit.
       
       Global Instance Method_push_arg `{H : State.Trait} :
         Notation.Dot "push_arg" := {
         Notation.dot := push_arg;
       }.
       
-      Parameter selector : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.call.selector.Selector.
+      Parameter selector : forall `{H : State.Trait}, ref Self->
+          M (H := H) ink_env.call.selector.Selector.
       
       Global Instance Method_selector `{H : State.Trait} :
         Notation.Dot "selector" := {
         Notation.dot := selector;
       }.
       
-      Parameter params : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref Slice).
+      Parameter params : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref Slice).
       
       Global Instance Method_params `{H : State.Trait} :
         Notation.Dot "params" := {
         Notation.dot := params;
       }.
       
-      Parameter to_bytes : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref Slice).
+      Parameter to_bytes : forall `{H : State.Trait}, ref Self->
+          M (H := H) (ref Slice).
       
       Global Instance Method_to_bytes `{H : State.Trait} :
         Notation.Dot "to_bytes" := {
@@ -12400,8 +12280,8 @@ Module off_chain.
       Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
+      Parameter size_hint : forall `{H : State.Trait}, ref Self->
+          M (H := H) usize.
       
       Global Instance Method_size_hint `{H : State.Trait} :
         Notation.Dot "size_hint" := {
@@ -12409,8 +12289,8 @@ Module off_chain.
       }.
       
       Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref T
-          -> M (H := H) unit.
+          mut_ref T->
+          M (H := H) unit.
       
       Global Instance Method_encode_to `{H : State.Trait} :
         Notation.Dot "encode_to" := {
@@ -12426,9 +12306,8 @@ Module off_chain.
       Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
-      Parameter decode : forall `{H : State.Trait}, mut_ref I
-          ->
-            M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
+      Parameter decode : forall `{H : State.Trait}, mut_ref I->
+          M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
       
       Global Instance AssociatedFunction_decode `{H : State.Trait} :
         Notation.DoubleColon Self "decode" := {
@@ -12449,8 +12328,8 @@ Module off_chain.
       Definition Self := ink_env.hash.Blake2x128.
       
       Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
+          mut_ref ink_env.hash.HashOutput.Type->
+          M (H := H) unit.
       
       Global Instance AssociatedFunction_hash `{H : State.Trait} :
         Notation.DoubleColon Self "hash" := {
@@ -12466,8 +12345,8 @@ Module off_chain.
       Definition Self := ink_env.hash.Blake2x256.
       
       Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
+          mut_ref ink_env.hash.HashOutput.Type->
+          M (H := H) unit.
       
       Global Instance AssociatedFunction_hash `{H : State.Trait} :
         Notation.DoubleColon Self "hash" := {
@@ -12483,8 +12362,8 @@ Module off_chain.
       Definition Self := ink_env.hash.Sha2x256.
       
       Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
+          mut_ref ink_env.hash.HashOutput.Type->
+          M (H := H) unit.
       
       Global Instance AssociatedFunction_hash `{H : State.Trait} :
         Notation.DoubleColon Self "hash" := {
@@ -12500,8 +12379,8 @@ Module off_chain.
       Definition Self := ink_env.hash.Keccak256.
       
       Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
+          mut_ref ink_env.hash.HashOutput.Type->
+          M (H := H) unit.
       
       Global Instance AssociatedFunction_hash `{H : State.Trait} :
         Notation.DoubleColon Self "hash" := {
@@ -12516,8 +12395,8 @@ Module off_chain.
     Module Impl_core_convert_From_for_ink_env_error_Error.
       Definition Self := ink_env.error.Error.
       
-      Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-          -> M (H := H) Self.
+      Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -12546,7 +12425,7 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
       
       Parameter default : forall `{H : State.Trait}, 
-          -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+          M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
       
       Global Instance AssociatedFunction_default `{H : State.Trait} :
         Notation.DoubleColon Self "default" := {
@@ -12570,8 +12449,8 @@ Module off_chain.
       Definition Output : Set := alloc.vec.Vec u8.
       
       Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-          usize
-          -> M (H := H) unit.
+          usize->
+          M (H := H) unit.
       
       Global Instance Method_expect `{H : State.Trait} :
         Notation.Dot "expect" := {
@@ -12579,16 +12458,16 @@ Module off_chain.
       }.
       
       Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-          ref T
-          -> M (H := H) unit.
+          ref T->
+          M (H := H) unit.
       
       Global Instance Method_push_topic `{H : State.Trait} :
         Notation.Dot "push_topic" := {
         Notation.dot := push_topic;
       }.
       
-      Parameter output : forall `{H : State.Trait}, Self
-          -> M (H := H) ImplSelf.Output.
+      Parameter output : forall `{H : State.Trait}, Self->
+          M (H := H) ImplSelf.Output.
       
       Global Instance Method_output `{H : State.Trait} :
         Notation.Dot "output" := {
@@ -12613,8 +12492,8 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-          (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-          -> M (H := H) (ink_env.error.Result T).
+          (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit->
+          M (H := H) (ink_env.error.Result T).
       
       Global Instance Method_get_property `{H : State.Trait} :
         Notation.Dot "get_property" := {
@@ -12628,8 +12507,8 @@ Module off_chain.
       
       Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref Self->
           ref K->
-          ref V
-          -> M (H := H) (core.option.Option u32).
+          ref V->
+          M (H := H) (core.option.Option u32).
       
       Global Instance Method_set_contract_storage `{H : State.Trait} :
         Notation.Dot "set_contract_storage" := {
@@ -12637,8 +12516,8 @@ Module off_chain.
       }.
       
       Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-          ref K
-          -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+          ref K->
+          M (H := H) (ink_env.error.Result (core.option.Option R)).
       
       Global Instance Method_get_contract_storage `{H : State.Trait} :
         Notation.Dot "get_contract_storage" := {
@@ -12647,8 +12526,8 @@ Module off_chain.
       
       Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref
               Self->
-          ref K
-          -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+          ref K->
+          M (H := H) (ink_env.error.Result (core.option.Option R)).
       
       Global Instance Method_take_contract_storage `{H : State.Trait} :
         Notation.Dot "take_contract_storage" := {
@@ -12657,8 +12536,8 @@ Module off_chain.
       
       Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
               Self->
-          ref K
-          -> M (H := H) (core.option.Option u32).
+          ref K->
+          M (H := H) (core.option.Option u32).
       
       Global Instance Method_contains_contract_storage `{H : State.Trait} :
         Notation.Dot "contains_contract_storage" := {
@@ -12667,16 +12546,16 @@ Module off_chain.
       
       Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref
               Self->
-          ref K
-          -> M (H := H) (core.option.Option u32).
+          ref K->
+          M (H := H) (core.option.Option u32).
       
       Global Instance Method_clear_contract_storage `{H : State.Trait} :
         Notation.Dot "clear_contract_storage" := {
         Notation.dot := clear_contract_storage;
       }.
       
-      Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) (ink_env.error.Result T).
+      Parameter decode_input : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) (ink_env.error.Result T).
       
       Global Instance Method_decode_input `{H : State.Trait} :
         Notation.Dot "decode_input" := {
@@ -12685,8 +12564,8 @@ Module off_chain.
       
       Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
           ink_env.backend.ReturnFlags->
-          ref R
-          -> M (H := H) Empty_set.
+          ref R->
+          M (H := H) Empty_set.
       
       Global Instance Method_return_value `{H : State.Trait} :
         Notation.Dot "return_value" := {
@@ -12694,8 +12573,8 @@ Module off_chain.
       }.
       
       Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-          ref str
-          -> M (H := H) unit.
+          ref str->
+          M (H := H) unit.
       
       Global Instance Method_debug_message `{H : State.Trait} :
         Notation.Dot "debug_message" := {
@@ -12704,8 +12583,8 @@ Module off_chain.
       
       Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
           ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
+          mut_ref ink_env.hash.HashOutput.Type->
+          M (H := H) unit.
       
       Global Instance Method_hash_bytes `{H : State.Trait} :
         Notation.Dot "hash_bytes" := {
@@ -12714,8 +12593,8 @@ Module off_chain.
       
       Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
           ref T->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
+          mut_ref ink_env.hash.HashOutput.Type->
+          M (H := H) unit.
       
       Global Instance Method_hash_encoded `{H : State.Trait} :
         Notation.Dot "hash_encoded" := {
@@ -12725,8 +12604,8 @@ Module off_chain.
       Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
           ref list u8->
           ref list u8->
-          mut_ref list u8
-          -> M (H := H) (ink_env.error.Result unit).
+          mut_ref list u8->
+          M (H := H) (ink_env.error.Result unit).
       
       Global Instance Method_ecdsa_recover `{H : State.Trait} :
         Notation.Dot "ecdsa_recover" := {
@@ -12735,8 +12614,8 @@ Module off_chain.
       
       Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref Self->
           ref list u8->
-          mut_ref list u8
-          -> M (H := H) (ink_env.error.Result unit).
+          mut_ref list u8->
+          M (H := H) (ink_env.error.Result unit).
       
       Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
         Notation.Dot "ecdsa_to_eth_address" := {
@@ -12747,8 +12626,8 @@ Module off_chain.
           u32->
           ref I->
           F->
-          D
-          -> M (H := H) (core.result.Result T E).
+          D->
+          M (H := H) (core.result.Result T E).
       
       Global Instance Method_call_chain_extension `{H : State.Trait} :
         Notation.Dot "call_chain_extension" := {
@@ -12756,8 +12635,8 @@ Module off_chain.
       }.
       
       Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-          ref Slice
-          -> M (H := H) (ink_env.error.Result unit).
+          ref Slice->
+          M (H := H) (ink_env.error.Result unit).
       
       Global Instance Method_set_code_hash `{H : State.Trait} :
         Notation.Dot "set_code_hash" := {
@@ -12826,64 +12705,64 @@ Module off_chain.
       Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
-      Parameter caller : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.AccountId.
+      Parameter caller : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) ImplE.AccountId.
       
       Global Instance Method_caller `{H : State.Trait} :
         Notation.Dot "caller" := {
         Notation.dot := caller;
       }.
       
-      Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Balance.
+      Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) ImplE.Balance.
       
       Global Instance Method_transferred_value `{H : State.Trait} :
         Notation.Dot "transferred_value" := {
         Notation.dot := transferred_value;
       }.
       
-      Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) u64.
+      Parameter gas_left : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) u64.
       
       Global Instance Method_gas_left `{H : State.Trait} :
         Notation.Dot "gas_left" := {
         Notation.dot := gas_left;
       }.
       
-      Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Timestamp.
+      Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) ImplE.Timestamp.
       
       Global Instance Method_block_timestamp `{H : State.Trait} :
         Notation.Dot "block_timestamp" := {
         Notation.dot := block_timestamp;
       }.
       
-      Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.AccountId.
+      Parameter account_id : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) ImplE.AccountId.
       
       Global Instance Method_account_id `{H : State.Trait} :
         Notation.Dot "account_id" := {
         Notation.dot := account_id;
       }.
       
-      Parameter balance : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Balance.
+      Parameter balance : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) ImplE.Balance.
       
       Global Instance Method_balance `{H : State.Trait} :
         Notation.Dot "balance" := {
         Notation.dot := balance;
       }.
       
-      Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.BlockNumber.
+      Parameter block_number : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) ImplE.BlockNumber.
       
       Global Instance Method_block_number `{H : State.Trait} :
         Notation.Dot "block_number" := {
         Notation.dot := block_number;
       }.
       
-      Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Balance.
+      Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) ImplE.Balance.
       
       Global Instance Method_minimum_balance `{H : State.Trait} :
         Notation.Dot "minimum_balance" := {
@@ -12891,8 +12770,8 @@ Module off_chain.
       }.
       
       Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-          Event
-          -> M (H := H) unit.
+          Event->
+          M (H := H) unit.
       
       Global Instance Method_emit_event `{H : State.Trait} :
         Notation.Dot "emit_event" := {
@@ -12905,8 +12784,8 @@ Module off_chain.
                 E
                 (ink_env.call.call_builder.Call E)
                 Args
-                R)
-          -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+                R)->
+          M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
       
       Global Instance Method_invoke_contract `{H : State.Trait} :
         Notation.Dot "invoke_contract" := {
@@ -12920,8 +12799,8 @@ Module off_chain.
                 E
                 (ink_env.call.call_builder.DelegateCall E)
                 Args
-                R)
-          -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+                R)->
+          M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
       
       Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
         Notation.Dot "invoke_contract_delegate" := {
@@ -12935,9 +12814,8 @@ Module off_chain.
                 ContractRef
                 Args
                 Salt
-                R)
-          ->
-            M (H := H)
+                R)->
+          M (H := H)
               (ink_env.error.Result
                 (ink_primitives.ConstructorResult
                   ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -12948,8 +12826,8 @@ Module off_chain.
       }.
       
       Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-          ImplE.AccountId
-          -> M (H := H) Empty_set.
+          ImplE.AccountId->
+          M (H := H) Empty_set.
       
       Global Instance Method_terminate_contract `{H : State.Trait} :
         Notation.Dot "terminate_contract" := {
@@ -12958,8 +12836,8 @@ Module off_chain.
       
       Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
           ImplE.AccountId->
-          ImplE.Balance
-          -> M (H := H) (ink_env.error.Result unit).
+          ImplE.Balance->
+          M (H := H) (ink_env.error.Result unit).
       
       Global Instance Method_transfer `{H : State.Trait} :
         Notation.Dot "transfer" := {
@@ -12967,8 +12845,8 @@ Module off_chain.
       }.
       
       Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-          u64
-          -> M (H := H) ImplE.Balance.
+          u64->
+          M (H := H) ImplE.Balance.
       
       Global Instance Method_weight_to_fee `{H : State.Trait} :
         Notation.Dot "weight_to_fee" := {
@@ -12976,16 +12854,16 @@ Module off_chain.
       }.
       
       Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-          ref ImplE.AccountId
-          -> M (H := H) bool.
+          ref ImplE.AccountId->
+          M (H := H) bool.
       
       Global Instance Method_is_contract `{H : State.Trait} :
         Notation.Dot "is_contract" := {
         Notation.dot := is_contract;
       }.
       
-      Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) bool.
+      Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) bool.
       
       Global Instance Method_caller_is_origin `{H : State.Trait} :
         Notation.Dot "caller_is_origin" := {
@@ -12993,16 +12871,16 @@ Module off_chain.
       }.
       
       Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-          ref ImplE.AccountId
-          -> M (H := H) (ink_env.error.Result ImplE.Hash).
+          ref ImplE.AccountId->
+          M (H := H) (ink_env.error.Result ImplE.Hash).
       
       Global Instance Method_code_hash `{H : State.Trait} :
         Notation.Dot "code_hash" := {
         Notation.dot := code_hash;
       }.
       
-      Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) (ink_env.error.Result ImplE.Hash).
+      Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self->
+          M (H := H) (ink_env.error.Result ImplE.Hash).
       
       Global Instance Method_own_code_hash `{H : State.Trait} :
         Notation.Dot "own_code_hash" := {
@@ -13010,8 +12888,8 @@ Module off_chain.
       }.
       
       Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-          ref Call
-          -> M (H := H) (ink_env.error.Result unit).
+          ref Call->
+          M (H := H) (ink_env.error.Result unit).
       
       Global Instance Method_call_runtime `{H : State.Trait} :
         Notation.Dot "call_runtime" := {
@@ -13112,8 +12990,8 @@ Module off_chain.
       Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
       Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
       
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
+      Parameter clone : forall `{H : State.Trait}, ref Self->
+          M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
       
       Global Instance Method_clone `{H : State.Trait} :
         Notation.Dot "clone" := {
@@ -13130,102 +13008,102 @@ Module off_chain.
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         ImplT.AccountId->
-        ImplT.Balance
-        -> M (H := H) unit.
+        ImplT.Balance->
+        M (H := H) unit.
     
     Parameter get_account_balance : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        ImplT.AccountId
-        -> M (H := H) (ink_env.error.Result ImplT.Balance).
+        ImplT.AccountId->
+        M (H := H) (ink_env.error.Result ImplT.Balance).
     
     Parameter register_chain_extension : forall `{H : State.Trait}, forall
         {E : Set},
         `{ink_engine.chain_extension.ChainExtension.Trait E}
-        E
-        -> M (H := H) unit.
+        E->
+        M (H := H) unit.
     
     Parameter recorded_debug_messages : forall `{H : State.Trait}, 
-        -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
+        M (H := H) ink_engine.test_api.RecordedDebugMessages.
     
-    Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-        -> M (H := H) unit.
+    Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool->
+        M (H := H) unit.
     
     Parameter advance_block : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         
-        -> M (H := H) unit.
+        M (H := H) unit.
     
     Parameter set_caller : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) unit.
+        ImplT.AccountId->
+        M (H := H) unit.
     
     Parameter set_callee : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) unit.
+        ImplT.AccountId->
+        M (H := H) unit.
     
     Parameter set_contract : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) unit.
+        ImplT.AccountId->
+        M (H := H) unit.
     
     Parameter is_contract : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) bool.
+        ImplT.AccountId->
+        M (H := H) bool.
     
     Parameter callee : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         
-        -> M (H := H) ImplT.AccountId.
+        M (H := H) ImplT.AccountId.
     
     Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        ref ImplT.AccountId
-        -> M (H := H) (usize * usize).
+        ref ImplT.AccountId->
+        M (H := H) (usize * usize).
     
     Parameter set_value_transferred : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        ImplT.Balance
-        -> M (H := H) unit.
+        ImplT.Balance->
+        M (H := H) unit.
     
     Parameter transfer_in : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        ImplT.Balance
-        -> M (H := H) unit.
+        ImplT.Balance->
+        M (H := H) unit.
     
     Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        ref ImplT.AccountId
-        -> M (H := H) (ink_env.error.Result usize).
+        ref ImplT.AccountId->
+        M (H := H) (ink_env.error.Result usize).
     
     Parameter set_block_timestamp : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        ImplT.Timestamp
-        -> M (H := H) unit.
+        ImplT.Timestamp->
+        M (H := H) unit.
     
     Parameter set_block_number : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
-        ImplT.BlockNumber
-        -> M (H := H) unit.
+        ImplT.BlockNumber->
+        M (H := H) unit.
     
     Parameter run_test : forall `{H : State.Trait}, forall
         {T : Set} {F : Set},
@@ -13234,15 +13112,15 @@ Module off_chain.
           ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
           F}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        F
-        -> M (H := H) (ink_env.error.Result unit).
+        F->
+        M (H := H) (ink_env.error.Result unit).
     
     Parameter default_accounts : forall `{H : State.Trait}, forall
         {T : Set},
         `{ink_env.types.Environment.Trait T}
         `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
         
-        -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+        M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
     
     Module DefaultAccounts.
       Record t : Set := {
@@ -13276,7 +13154,7 @@ Module off_chain.
     Definition DefaultAccounts : Set := DefaultAccounts.t.
     
     Parameter recorded_events : forall `{H : State.Trait}, 
-        -> M (H := H) OpaqueDef.
+        M (H := H) OpaqueDef.
     
     Parameter assert_contract_termination : forall `{H : State.Trait}, forall
         {T : Set} {F : Set},
@@ -13287,8 +13165,8 @@ Module off_chain.
         `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
         F->
         ImplT.AccountId->
-        ImplT.Balance
-        -> M (H := H) unit.
+        ImplT.Balance->
+        M (H := H) unit.
   End test_api.
   
   Module types.
@@ -13298,8 +13176,8 @@ Module off_chain.
       
       Parameter from : forall
             `{H : State.Trait},
-            ink_engine.test_api.EmittedEvent
-          -> M (H := H) Self.
+            ink_engine.test_api.EmittedEvent->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -13318,8 +13196,8 @@ Module off_chain.
     Module Impl_core_convert_From_for_ink_env_error_Error.
       Definition Self := ink_env.error.Error.
       
-      Parameter from : forall `{H : State.Trait}, ink_engine.Error
-          -> M (H := H) Self.
+      Parameter from : forall `{H : State.Trait}, ink_engine.Error->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -13335,8 +13213,10 @@ Module off_chain.
     Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
       Definition Self := ink_env.engine.off_chain.AccountError.
       
-      Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-          -> M (H := H) Self.
+      Parameter from : forall
+            `{H : State.Trait},
+            ink_engine.types.AccountError->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -13352,8 +13232,10 @@ Module off_chain.
     Module Impl_core_convert_From_for_ink_env_error_Error.
       Definition Self := ink_env.error.Error.
       
-      Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-          -> M (H := H) Self.
+      Parameter from : forall
+            `{H : State.Trait},
+            ink_engine.types.AccountError->
+          M (H := H) Self.
       
       Global Instance AssociatedFunction_from `{H : State.Trait} :
         Notation.DoubleColon Self "from" := {
@@ -13382,7 +13264,7 @@ Module off_chain.
     Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
-    Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
+    Parameter on_instance : forall `{H : State.Trait}, F-> M (H := H) R.
     
     Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
       Notation.DoubleColon Self "on_instance" := {
@@ -13407,8 +13289,8 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -13424,8 +13306,8 @@ Module off_chain.
     
     Parameter from : forall
           `{H : State.Trait},
-          ink_env.engine.off_chain.AccountError
-        -> M (H := H) ink_env.engine.off_chain.OffChainError.
+          ink_env.engine.off_chain.AccountError->
+        M (H := H) ink_env.engine.off_chain.OffChainError.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -13453,8 +13335,8 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.engine.off_chain.OffChainError
-        -> M (H := H) bool.
+        ref ink_env.engine.off_chain.OffChainError->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -13476,8 +13358,9 @@ Module off_chain.
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
     Definition Self := ink_env.engine.off_chain.OffChainError.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -13500,8 +13383,8 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -13515,8 +13398,8 @@ Module off_chain.
   Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
-    Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-        -> M (H := H) ink_env.engine.off_chain.AccountError.
+    Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error->
+        M (H := H) ink_env.engine.off_chain.AccountError.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -13542,8 +13425,8 @@ Module off_chain.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.engine.off_chain.AccountError
-        -> M (H := H) bool.
+        ref ink_env.engine.off_chain.AccountError->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -13565,8 +13448,9 @@ Module off_chain.
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -13602,8 +13486,8 @@ Module call_data.
       Notation.double_colon := debug_struct_field1_finish; }.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -13617,8 +13501,8 @@ Module call_data.
   Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.engine.off_chain.call_data.CallData.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -13643,8 +13527,8 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.engine.off_chain.call_data.CallData
-        -> M (H := H) bool.
+        ref ink_env.engine.off_chain.call_data.CallData->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -13667,8 +13551,9 @@ Module call_data.
   Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -13682,8 +13567,8 @@ Module call_data.
   Module Impl_ink_env_engine_off_chain_call_data_CallData_3.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-        -> M (H := H) Self.
+    Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -13691,32 +13576,32 @@ Module call_data.
     }.
     
     Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-        ref A
-        -> M (H := H) unit.
+        ref A->
+        M (H := H) unit.
     
     Global Instance Method_push_arg `{H : State.Trait} :
       Notation.Dot "push_arg" := {
       Notation.dot := push_arg;
     }.
     
-    Parameter selector : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.selector.Selector.
+    Parameter selector : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.call.selector.Selector.
     
     Global Instance Method_selector `{H : State.Trait} :
       Notation.Dot "selector" := {
       Notation.dot := selector;
     }.
     
-    Parameter params : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref Slice).
+    Parameter params : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref Slice).
     
     Global Instance Method_params `{H : State.Trait} :
       Notation.Dot "params" := {
       Notation.dot := params;
     }.
     
-    Parameter to_bytes : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref Slice).
+    Parameter to_bytes : forall `{H : State.Trait}, ref Self->
+        M (H := H) (ref Slice).
     
     Global Instance Method_to_bytes `{H : State.Trait} :
       Notation.Dot "to_bytes" := {
@@ -13728,8 +13613,8 @@ Module call_data.
     Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
+    Parameter size_hint : forall `{H : State.Trait}, ref Self->
+        M (H := H) usize.
     
     Global Instance Method_size_hint `{H : State.Trait} :
       Notation.Dot "size_hint" := {
@@ -13737,8 +13622,8 @@ Module call_data.
     }.
     
     Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref T
-        -> M (H := H) unit.
+        mut_ref T->
+        M (H := H) unit.
     
     Global Instance Method_encode_to `{H : State.Trait} :
       Notation.Dot "encode_to" := {
@@ -13754,8 +13639,8 @@ Module call_data.
     Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
-    Parameter decode : forall `{H : State.Trait}, mut_ref I
-        -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
+    Parameter decode : forall `{H : State.Trait}, mut_ref I->
+        M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
     
     Global Instance AssociatedFunction_decode `{H : State.Trait} :
       Notation.DoubleColon Self "decode" := {
@@ -13792,8 +13677,8 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
     Notation.double_colon := debug_struct_field1_finish; }.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -13807,8 +13692,8 @@ End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
 Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.engine.off_chain.call_data.CallData.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -13832,8 +13717,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.engine.off_chain.call_data.CallData
-      -> M (H := H) bool.
+      ref ink_env.engine.off_chain.call_data.CallData->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -13856,8 +13741,8 @@ End
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -13871,8 +13756,8 @@ End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
 Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-      -> M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {
@@ -13880,31 +13765,31 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
   }.
   
   Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-      ref A
-      -> M (H := H) unit.
+      ref A->
+      M (H := H) unit.
   
   Global Instance Method_push_arg `{H : State.Trait} :
     Notation.Dot "push_arg" := {
     Notation.dot := push_arg;
   }.
   
-  Parameter selector : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.selector.Selector.
+  Parameter selector : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.call.selector.Selector.
   
   Global Instance Method_selector `{H : State.Trait} :
     Notation.Dot "selector" := {
     Notation.dot := selector;
   }.
   
-  Parameter params : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref Slice).
+  Parameter params : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref Slice).
   
   Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
     Notation.dot := params;
   }.
   
-  Parameter to_bytes : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref Slice).
+  Parameter to_bytes : forall `{H : State.Trait}, ref Self->
+      M (H := H) (ref Slice).
   
   Global Instance Method_to_bytes `{H : State.Trait} :
     Notation.Dot "to_bytes" := {
@@ -13916,7 +13801,7 @@ Module
   Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
+  Parameter size_hint : forall `{H : State.Trait}, ref Self-> M (H := H) usize.
   
   Global Instance Method_size_hint `{H : State.Trait} :
     Notation.Dot "size_hint" := {
@@ -13924,8 +13809,8 @@ Module
   }.
   
   Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref T
-      -> M (H := H) unit.
+      mut_ref T->
+      M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
@@ -13941,8 +13826,8 @@ Module
   Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
-  Parameter decode : forall `{H : State.Trait}, mut_ref I
-      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
+  Parameter decode : forall `{H : State.Trait}, mut_ref I->
+      M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode `{H : State.Trait} :
     Notation.DoubleColon Self "decode" := {
@@ -13962,8 +13847,8 @@ Module impls.
     Definition Self := ink_env.hash.Blake2x128.
     
     Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
+        mut_ref ink_env.hash.HashOutput.Type->
+        M (H := H) unit.
     
     Global Instance AssociatedFunction_hash `{H : State.Trait} :
       Notation.DoubleColon Self "hash" := {
@@ -13979,8 +13864,8 @@ Module impls.
     Definition Self := ink_env.hash.Blake2x256.
     
     Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
+        mut_ref ink_env.hash.HashOutput.Type->
+        M (H := H) unit.
     
     Global Instance AssociatedFunction_hash `{H : State.Trait} :
       Notation.DoubleColon Self "hash" := {
@@ -13996,8 +13881,8 @@ Module impls.
     Definition Self := ink_env.hash.Sha2x256.
     
     Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
+        mut_ref ink_env.hash.HashOutput.Type->
+        M (H := H) unit.
     
     Global Instance AssociatedFunction_hash `{H : State.Trait} :
       Notation.DoubleColon Self "hash" := {
@@ -14013,8 +13898,8 @@ Module impls.
     Definition Self := ink_env.hash.Keccak256.
     
     Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
+        mut_ref ink_env.hash.HashOutput.Type->
+        M (H := H) unit.
     
     Global Instance AssociatedFunction_hash `{H : State.Trait} :
       Notation.DoubleColon Self "hash" := {
@@ -14029,8 +13914,8 @@ Module impls.
   Module Impl_core_convert_From_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-        -> M (H := H) Self.
+    Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -14059,7 +13944,7 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
     
     Parameter default : forall `{H : State.Trait}, 
-        -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+        M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
     
     Global Instance AssociatedFunction_default `{H : State.Trait} :
       Notation.DoubleColon Self "default" := {
@@ -14083,8 +13968,8 @@ Module impls.
     Definition Output : Set := alloc.vec.Vec u8.
     
     Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-        usize
-        -> M (H := H) unit.
+        usize->
+        M (H := H) unit.
     
     Global Instance Method_expect `{H : State.Trait} :
       Notation.Dot "expect" := {
@@ -14092,16 +13977,16 @@ Module impls.
     }.
     
     Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-        ref T
-        -> M (H := H) unit.
+        ref T->
+        M (H := H) unit.
     
     Global Instance Method_push_topic `{H : State.Trait} :
       Notation.Dot "push_topic" := {
       Notation.dot := push_topic;
     }.
     
-    Parameter output : forall `{H : State.Trait}, Self
-        -> M (H := H) ImplSelf.Output.
+    Parameter output : forall `{H : State.Trait}, Self->
+        M (H := H) ImplSelf.Output.
     
     Global Instance Method_output `{H : State.Trait} :
       Notation.Dot "output" := {
@@ -14126,8 +14011,8 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-        (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-        -> M (H := H) (ink_env.error.Result T).
+        (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit->
+        M (H := H) (ink_env.error.Result T).
     
     Global Instance Method_get_property `{H : State.Trait} :
       Notation.Dot "get_property" := {
@@ -14141,8 +14026,8 @@ Module impls.
     
     Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref Self->
         ref K->
-        ref V
-        -> M (H := H) (core.option.Option u32).
+        ref V->
+        M (H := H) (core.option.Option u32).
     
     Global Instance Method_set_contract_storage `{H : State.Trait} :
       Notation.Dot "set_contract_storage" := {
@@ -14150,8 +14035,8 @@ Module impls.
     }.
     
     Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-        ref K
-        -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+        ref K->
+        M (H := H) (ink_env.error.Result (core.option.Option R)).
     
     Global Instance Method_get_contract_storage `{H : State.Trait} :
       Notation.Dot "get_contract_storage" := {
@@ -14159,8 +14044,8 @@ Module impls.
     }.
     
     Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-        ref K
-        -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+        ref K->
+        M (H := H) (ink_env.error.Result (core.option.Option R)).
     
     Global Instance Method_take_contract_storage `{H : State.Trait} :
       Notation.Dot "take_contract_storage" := {
@@ -14169,8 +14054,8 @@ Module impls.
     
     Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
             Self->
-        ref K
-        -> M (H := H) (core.option.Option u32).
+        ref K->
+        M (H := H) (core.option.Option u32).
     
     Global Instance Method_contains_contract_storage `{H : State.Trait} :
       Notation.Dot "contains_contract_storage" := {
@@ -14178,16 +14063,16 @@ Module impls.
     }.
     
     Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-        ref K
-        -> M (H := H) (core.option.Option u32).
+        ref K->
+        M (H := H) (core.option.Option u32).
     
     Global Instance Method_clear_contract_storage `{H : State.Trait} :
       Notation.Dot "clear_contract_storage" := {
       Notation.dot := clear_contract_storage;
     }.
     
-    Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) (ink_env.error.Result T).
+    Parameter decode_input : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) (ink_env.error.Result T).
     
     Global Instance Method_decode_input `{H : State.Trait} :
       Notation.Dot "decode_input" := {
@@ -14196,8 +14081,8 @@ Module impls.
     
     Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
         ink_env.backend.ReturnFlags->
-        ref R
-        -> M (H := H) Empty_set.
+        ref R->
+        M (H := H) Empty_set.
     
     Global Instance Method_return_value `{H : State.Trait} :
       Notation.Dot "return_value" := {
@@ -14205,8 +14090,8 @@ Module impls.
     }.
     
     Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-        ref str
-        -> M (H := H) unit.
+        ref str->
+        M (H := H) unit.
     
     Global Instance Method_debug_message `{H : State.Trait} :
       Notation.Dot "debug_message" := {
@@ -14215,8 +14100,8 @@ Module impls.
     
     Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
         ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
+        mut_ref ink_env.hash.HashOutput.Type->
+        M (H := H) unit.
     
     Global Instance Method_hash_bytes `{H : State.Trait} :
       Notation.Dot "hash_bytes" := {
@@ -14225,8 +14110,8 @@ Module impls.
     
     Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
         ref T->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
+        mut_ref ink_env.hash.HashOutput.Type->
+        M (H := H) unit.
     
     Global Instance Method_hash_encoded `{H : State.Trait} :
       Notation.Dot "hash_encoded" := {
@@ -14236,8 +14121,8 @@ Module impls.
     Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
         ref list u8->
         ref list u8->
-        mut_ref list u8
-        -> M (H := H) (ink_env.error.Result unit).
+        mut_ref list u8->
+        M (H := H) (ink_env.error.Result unit).
     
     Global Instance Method_ecdsa_recover `{H : State.Trait} :
       Notation.Dot "ecdsa_recover" := {
@@ -14246,8 +14131,8 @@ Module impls.
     
     Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref Self->
         ref list u8->
-        mut_ref list u8
-        -> M (H := H) (ink_env.error.Result unit).
+        mut_ref list u8->
+        M (H := H) (ink_env.error.Result unit).
     
     Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
       Notation.Dot "ecdsa_to_eth_address" := {
@@ -14258,8 +14143,8 @@ Module impls.
         u32->
         ref I->
         F->
-        D
-        -> M (H := H) (core.result.Result T E).
+        D->
+        M (H := H) (core.result.Result T E).
     
     Global Instance Method_call_chain_extension `{H : State.Trait} :
       Notation.Dot "call_chain_extension" := {
@@ -14267,8 +14152,8 @@ Module impls.
     }.
     
     Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-        ref Slice
-        -> M (H := H) (ink_env.error.Result unit).
+        ref Slice->
+        M (H := H) (ink_env.error.Result unit).
     
     Global Instance Method_set_code_hash `{H : State.Trait} :
       Notation.Dot "set_code_hash" := {
@@ -14336,64 +14221,64 @@ Module impls.
     Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
-    Parameter caller : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.AccountId.
+    Parameter caller : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) ImplE.AccountId.
     
     Global Instance Method_caller `{H : State.Trait} :
       Notation.Dot "caller" := {
       Notation.dot := caller;
     }.
     
-    Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Balance.
+    Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) ImplE.Balance.
     
     Global Instance Method_transferred_value `{H : State.Trait} :
       Notation.Dot "transferred_value" := {
       Notation.dot := transferred_value;
     }.
     
-    Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) u64.
+    Parameter gas_left : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) u64.
     
     Global Instance Method_gas_left `{H : State.Trait} :
       Notation.Dot "gas_left" := {
       Notation.dot := gas_left;
     }.
     
-    Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Timestamp.
+    Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) ImplE.Timestamp.
     
     Global Instance Method_block_timestamp `{H : State.Trait} :
       Notation.Dot "block_timestamp" := {
       Notation.dot := block_timestamp;
     }.
     
-    Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.AccountId.
+    Parameter account_id : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) ImplE.AccountId.
     
     Global Instance Method_account_id `{H : State.Trait} :
       Notation.Dot "account_id" := {
       Notation.dot := account_id;
     }.
     
-    Parameter balance : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Balance.
+    Parameter balance : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) ImplE.Balance.
     
     Global Instance Method_balance `{H : State.Trait} :
       Notation.Dot "balance" := {
       Notation.dot := balance;
     }.
     
-    Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.BlockNumber.
+    Parameter block_number : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) ImplE.BlockNumber.
     
     Global Instance Method_block_number `{H : State.Trait} :
       Notation.Dot "block_number" := {
       Notation.dot := block_number;
     }.
     
-    Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Balance.
+    Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) ImplE.Balance.
     
     Global Instance Method_minimum_balance `{H : State.Trait} :
       Notation.Dot "minimum_balance" := {
@@ -14401,8 +14286,8 @@ Module impls.
     }.
     
     Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-        Event
-        -> M (H := H) unit.
+        Event->
+        M (H := H) unit.
     
     Global Instance Method_emit_event `{H : State.Trait} :
       Notation.Dot "emit_event" := {
@@ -14415,8 +14300,8 @@ Module impls.
               E
               (ink_env.call.call_builder.Call E)
               Args
-              R)
-        -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+              R)->
+        M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
     
     Global Instance Method_invoke_contract `{H : State.Trait} :
       Notation.Dot "invoke_contract" := {
@@ -14430,8 +14315,8 @@ Module impls.
               E
               (ink_env.call.call_builder.DelegateCall E)
               Args
-              R)
-        -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+              R)->
+        M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
     
     Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
       Notation.Dot "invoke_contract_delegate" := {
@@ -14439,9 +14324,14 @@ Module impls.
     }.
     
     Parameter instantiate_contract : forall `{H : State.Trait}, mut_ref Self->
-        ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-        ->
-          M (H := H)
+        ref
+            (ink_env.call.create_builder.CreateParams
+              E
+              ContractRef
+              Args
+              Salt
+              R)->
+        M (H := H)
             (ink_env.error.Result
               (ink_primitives.ConstructorResult
                 ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -14452,8 +14342,8 @@ Module impls.
     }.
     
     Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-        ImplE.AccountId
-        -> M (H := H) Empty_set.
+        ImplE.AccountId->
+        M (H := H) Empty_set.
     
     Global Instance Method_terminate_contract `{H : State.Trait} :
       Notation.Dot "terminate_contract" := {
@@ -14462,8 +14352,8 @@ Module impls.
     
     Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
         ImplE.AccountId->
-        ImplE.Balance
-        -> M (H := H) (ink_env.error.Result unit).
+        ImplE.Balance->
+        M (H := H) (ink_env.error.Result unit).
     
     Global Instance Method_transfer `{H : State.Trait} :
       Notation.Dot "transfer" := {
@@ -14471,8 +14361,8 @@ Module impls.
     }.
     
     Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-        u64
-        -> M (H := H) ImplE.Balance.
+        u64->
+        M (H := H) ImplE.Balance.
     
     Global Instance Method_weight_to_fee `{H : State.Trait} :
       Notation.Dot "weight_to_fee" := {
@@ -14480,16 +14370,16 @@ Module impls.
     }.
     
     Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-        ref ImplE.AccountId
-        -> M (H := H) bool.
+        ref ImplE.AccountId->
+        M (H := H) bool.
     
     Global Instance Method_is_contract `{H : State.Trait} :
       Notation.Dot "is_contract" := {
       Notation.dot := is_contract;
     }.
     
-    Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) bool.
+    Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) bool.
     
     Global Instance Method_caller_is_origin `{H : State.Trait} :
       Notation.Dot "caller_is_origin" := {
@@ -14497,16 +14387,16 @@ Module impls.
     }.
     
     Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-        ref ImplE.AccountId
-        -> M (H := H) (ink_env.error.Result ImplE.Hash).
+        ref ImplE.AccountId->
+        M (H := H) (ink_env.error.Result ImplE.Hash).
     
     Global Instance Method_code_hash `{H : State.Trait} :
       Notation.Dot "code_hash" := {
       Notation.dot := code_hash;
     }.
     
-    Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) (ink_env.error.Result ImplE.Hash).
+    Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self->
+        M (H := H) (ink_env.error.Result ImplE.Hash).
     
     Global Instance Method_own_code_hash `{H : State.Trait} :
       Notation.Dot "own_code_hash" := {
@@ -14514,8 +14404,8 @@ Module impls.
     }.
     
     Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-        ref Call
-        -> M (H := H) (ink_env.error.Result unit).
+        ref Call->
+        M (H := H) (ink_env.error.Result unit).
     
     Global Instance Method_call_runtime `{H : State.Trait} :
       Notation.Dot "call_runtime" := {
@@ -14599,8 +14489,8 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Global Instance AssociatedFunction_hash `{H : State.Trait} :
     Notation.DoubleColon Self "hash" := {
@@ -14656,19 +14546,19 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
     
-    -> M (H := H) unit.
+    M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
+    mut_ref Slice->
+    M (H := H) (mut_ref list T).
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Global Instance AssociatedFunction_hash `{H : State.Trait} :
     Notation.DoubleColon Self "hash" := {
@@ -14724,19 +14614,19 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
     
-    -> M (H := H) unit.
+    M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
+    mut_ref Slice->
+    M (H := H) (mut_ref list T).
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Global Instance AssociatedFunction_hash `{H : State.Trait} :
     Notation.DoubleColon Self "hash" := {
@@ -14792,19 +14682,19 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
     
-    -> M (H := H) unit.
+    M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
+    mut_ref Slice->
+    M (H := H) (mut_ref list T).
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Global Instance AssociatedFunction_hash `{H : State.Trait} :
     Notation.DoubleColon Self "hash" := {
@@ -14860,18 +14750,18 @@ Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
     `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
     `{core.marker.Sized.Trait U}
     
-    -> M (H := H) unit.
+    M (H := H) unit.
 
 Parameter as_array : forall `{H : State.Trait}, forall
     {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
+    mut_ref Slice->
+    M (H := H) (mut_ref list T).
 
 Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-      -> M (H := H) Self.
+  Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -14900,7 +14790,7 @@ Module
   Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
   
   Parameter default : forall `{H : State.Trait}, 
-      -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
+      M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {
@@ -14923,24 +14813,24 @@ Section
   Definition Output : Set := alloc.vec.Vec u8.
   
   Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-      usize
-      -> M (H := H) unit.
+      usize->
+      M (H := H) unit.
   
   Global Instance Method_expect `{H : State.Trait} : Notation.Dot "expect" := {
     Notation.dot := expect;
   }.
   
   Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-      ref T
-      -> M (H := H) unit.
+      ref T->
+      M (H := H) unit.
   
   Global Instance Method_push_topic `{H : State.Trait} :
     Notation.Dot "push_topic" := {
     Notation.dot := push_topic;
   }.
   
-  Parameter output : forall `{H : State.Trait}, Self
-      -> M (H := H) ImplSelf.Output.
+  Parameter output : forall `{H : State.Trait}, Self->
+      M (H := H) ImplSelf.Output.
   
   Global Instance Method_output `{H : State.Trait} : Notation.Dot "output" := {
     Notation.dot := output;
@@ -14964,8 +14854,8 @@ Module Impl_ink_env_engine_off_chain_EnvInstance_4.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-      (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-      -> M (H := H) (ink_env.error.Result T).
+      (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit->
+      M (H := H) (ink_env.error.Result T).
   
   Global Instance Method_get_property `{H : State.Trait} :
     Notation.Dot "get_property" := {
@@ -14978,8 +14868,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref Self->
       ref K->
-      ref V
-      -> M (H := H) (core.option.Option u32).
+      ref V->
+      M (H := H) (core.option.Option u32).
   
   Global Instance Method_set_contract_storage `{H : State.Trait} :
     Notation.Dot "set_contract_storage" := {
@@ -14987,8 +14877,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+      ref K->
+      M (H := H) (ink_env.error.Result (core.option.Option R)).
   
   Global Instance Method_get_contract_storage `{H : State.Trait} :
     Notation.Dot "get_contract_storage" := {
@@ -14996,8 +14886,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+      ref K->
+      M (H := H) (ink_env.error.Result (core.option.Option R)).
   
   Global Instance Method_take_contract_storage `{H : State.Trait} :
     Notation.Dot "take_contract_storage" := {
@@ -15006,8 +14896,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
           Self->
-      ref K
-      -> M (H := H) (core.option.Option u32).
+      ref K->
+      M (H := H) (core.option.Option u32).
   
   Global Instance Method_contains_contract_storage `{H : State.Trait} :
     Notation.Dot "contains_contract_storage" := {
@@ -15015,16 +14905,16 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-      ref K
-      -> M (H := H) (core.option.Option u32).
+      ref K->
+      M (H := H) (core.option.Option u32).
   
   Global Instance Method_clear_contract_storage `{H : State.Trait} :
     Notation.Dot "clear_contract_storage" := {
     Notation.dot := clear_contract_storage;
   }.
   
-  Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) (ink_env.error.Result T).
+  Parameter decode_input : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) (ink_env.error.Result T).
   
   Global Instance Method_decode_input `{H : State.Trait} :
     Notation.Dot "decode_input" := {
@@ -15033,8 +14923,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
       ink_env.backend.ReturnFlags->
-      ref R
-      -> M (H := H) Empty_set.
+      ref R->
+      M (H := H) Empty_set.
   
   Global Instance Method_return_value `{H : State.Trait} :
     Notation.Dot "return_value" := {
@@ -15042,8 +14932,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-      ref str
-      -> M (H := H) unit.
+      ref str->
+      M (H := H) unit.
   
   Global Instance Method_debug_message `{H : State.Trait} :
     Notation.Dot "debug_message" := {
@@ -15052,8 +14942,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
       ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Global Instance Method_hash_bytes `{H : State.Trait} :
     Notation.Dot "hash_bytes" := {
@@ -15062,8 +14952,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
       ref T->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
+      mut_ref ink_env.hash.HashOutput.Type->
+      M (H := H) unit.
   
   Global Instance Method_hash_encoded `{H : State.Trait} :
     Notation.Dot "hash_encoded" := {
@@ -15073,8 +14963,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
       ref list u8->
       ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
+      mut_ref list u8->
+      M (H := H) (ink_env.error.Result unit).
   
   Global Instance Method_ecdsa_recover `{H : State.Trait} :
     Notation.Dot "ecdsa_recover" := {
@@ -15083,8 +14973,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref Self->
       ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
+      mut_ref list u8->
+      M (H := H) (ink_env.error.Result unit).
   
   Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
     Notation.Dot "ecdsa_to_eth_address" := {
@@ -15095,8 +14985,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
       u32->
       ref I->
       F->
-      D
-      -> M (H := H) (core.result.Result T E).
+      D->
+      M (H := H) (core.result.Result T E).
   
   Global Instance Method_call_chain_extension `{H : State.Trait} :
     Notation.Dot "call_chain_extension" := {
@@ -15104,8 +14994,8 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-      ref Slice
-      -> M (H := H) (ink_env.error.Result unit).
+      ref Slice->
+      M (H := H) (ink_env.error.Result unit).
   
   Global Instance Method_set_code_hash `{H : State.Trait} :
     Notation.Dot "set_code_hash" := {
@@ -15164,63 +15054,62 @@ Module
   Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
-  Parameter caller : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.AccountId.
+  Parameter caller : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) ImplE.AccountId.
   
   Global Instance Method_caller `{H : State.Trait} : Notation.Dot "caller" := {
     Notation.dot := caller;
   }.
   
-  Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Balance.
+  Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) ImplE.Balance.
   
   Global Instance Method_transferred_value `{H : State.Trait} :
     Notation.Dot "transferred_value" := {
     Notation.dot := transferred_value;
   }.
   
-  Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) u64.
+  Parameter gas_left : forall `{H : State.Trait}, mut_ref Self-> M (H := H) u64.
   
   Global Instance Method_gas_left `{H : State.Trait} :
     Notation.Dot "gas_left" := {
     Notation.dot := gas_left;
   }.
   
-  Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Timestamp.
+  Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) ImplE.Timestamp.
   
   Global Instance Method_block_timestamp `{H : State.Trait} :
     Notation.Dot "block_timestamp" := {
     Notation.dot := block_timestamp;
   }.
   
-  Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.AccountId.
+  Parameter account_id : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) ImplE.AccountId.
   
   Global Instance Method_account_id `{H : State.Trait} :
     Notation.Dot "account_id" := {
     Notation.dot := account_id;
   }.
   
-  Parameter balance : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Balance.
+  Parameter balance : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) ImplE.Balance.
   
   Global Instance Method_balance `{H : State.Trait} :
     Notation.Dot "balance" := {
     Notation.dot := balance;
   }.
   
-  Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.BlockNumber.
+  Parameter block_number : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) ImplE.BlockNumber.
   
   Global Instance Method_block_number `{H : State.Trait} :
     Notation.Dot "block_number" := {
     Notation.dot := block_number;
   }.
   
-  Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Balance.
+  Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) ImplE.Balance.
   
   Global Instance Method_minimum_balance `{H : State.Trait} :
     Notation.Dot "minimum_balance" := {
@@ -15228,8 +15117,8 @@ Module
   }.
   
   Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-      Event
-      -> M (H := H) unit.
+      Event->
+      M (H := H) unit.
   
   Global Instance Method_emit_event `{H : State.Trait} :
     Notation.Dot "emit_event" := {
@@ -15242,8 +15131,8 @@ Module
             E
             (ink_env.call.call_builder.Call E)
             Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+            R)->
+      M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
   
   Global Instance Method_invoke_contract `{H : State.Trait} :
     Notation.Dot "invoke_contract" := {
@@ -15256,8 +15145,8 @@ Module
             E
             (ink_env.call.call_builder.DelegateCall E)
             Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+            R)->
+      M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
   
   Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
     Notation.Dot "invoke_contract_delegate" := {
@@ -15265,9 +15154,8 @@ Module
   }.
   
   Parameter instantiate_contract : forall `{H : State.Trait}, mut_ref Self->
-      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-      ->
-        M (H := H)
+      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)->
+      M (H := H)
           (ink_env.error.Result
             (ink_primitives.ConstructorResult
               ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -15278,8 +15166,8 @@ Module
   }.
   
   Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-      ImplE.AccountId
-      -> M (H := H) Empty_set.
+      ImplE.AccountId->
+      M (H := H) Empty_set.
   
   Global Instance Method_terminate_contract `{H : State.Trait} :
     Notation.Dot "terminate_contract" := {
@@ -15288,8 +15176,8 @@ Module
   
   Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
       ImplE.AccountId->
-      ImplE.Balance
-      -> M (H := H) (ink_env.error.Result unit).
+      ImplE.Balance->
+      M (H := H) (ink_env.error.Result unit).
   
   Global Instance Method_transfer `{H : State.Trait} :
     Notation.Dot "transfer" := {
@@ -15297,8 +15185,8 @@ Module
   }.
   
   Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-      u64
-      -> M (H := H) ImplE.Balance.
+      u64->
+      M (H := H) ImplE.Balance.
   
   Global Instance Method_weight_to_fee `{H : State.Trait} :
     Notation.Dot "weight_to_fee" := {
@@ -15306,16 +15194,16 @@ Module
   }.
   
   Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-      ref ImplE.AccountId
-      -> M (H := H) bool.
+      ref ImplE.AccountId->
+      M (H := H) bool.
   
   Global Instance Method_is_contract `{H : State.Trait} :
     Notation.Dot "is_contract" := {
     Notation.dot := is_contract;
   }.
   
-  Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) bool.
+  Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) bool.
   
   Global Instance Method_caller_is_origin `{H : State.Trait} :
     Notation.Dot "caller_is_origin" := {
@@ -15323,16 +15211,16 @@ Module
   }.
   
   Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-      ref ImplE.AccountId
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
+      ref ImplE.AccountId->
+      M (H := H) (ink_env.error.Result ImplE.Hash).
   
   Global Instance Method_code_hash `{H : State.Trait} :
     Notation.Dot "code_hash" := {
     Notation.dot := code_hash;
   }.
   
-  Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
+  Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self->
+      M (H := H) (ink_env.error.Result ImplE.Hash).
   
   Global Instance Method_own_code_hash `{H : State.Trait} :
     Notation.Dot "own_code_hash" := {
@@ -15340,8 +15228,8 @@ Module
   }.
   
   Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-      ref Call
-      -> M (H := H) (ink_env.error.Result unit).
+      ref Call->
+      M (H := H) (ink_env.error.Result unit).
   
   Global Instance Method_call_runtime `{H : State.Trait} :
     Notation.Dot "call_runtime" := {
@@ -15432,8 +15320,8 @@ Module test_api.
     Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
     Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -15448,102 +15336,102 @@ Module test_api.
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       ImplT.AccountId->
-      ImplT.Balance
-      -> M (H := H) unit.
+      ImplT.Balance->
+      M (H := H) unit.
   
   Parameter get_account_balance : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      ImplT.AccountId
-      -> M (H := H) (ink_env.error.Result ImplT.Balance).
+      ImplT.AccountId->
+      M (H := H) (ink_env.error.Result ImplT.Balance).
   
   Parameter register_chain_extension : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_engine.chain_extension.ChainExtension.Trait E}
-      E
-      -> M (H := H) unit.
+      E->
+      M (H := H) unit.
   
   Parameter recorded_debug_messages : forall `{H : State.Trait}, 
-      -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
+      M (H := H) ink_engine.test_api.RecordedDebugMessages.
   
-  Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-      -> M (H := H) unit.
+  Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool->
+      M (H := H) unit.
   
   Parameter advance_block : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       
-      -> M (H := H) unit.
+      M (H := H) unit.
   
   Parameter set_caller : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) unit.
+      ImplT.AccountId->
+      M (H := H) unit.
   
   Parameter set_callee : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) unit.
+      ImplT.AccountId->
+      M (H := H) unit.
   
   Parameter set_contract : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) unit.
+      ImplT.AccountId->
+      M (H := H) unit.
   
   Parameter is_contract : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) bool.
+      ImplT.AccountId->
+      M (H := H) bool.
   
   Parameter callee : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       
-      -> M (H := H) ImplT.AccountId.
+      M (H := H) ImplT.AccountId.
   
   Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      ref ImplT.AccountId
-      -> M (H := H) (usize * usize).
+      ref ImplT.AccountId->
+      M (H := H) (usize * usize).
   
   Parameter set_value_transferred : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      ImplT.Balance
-      -> M (H := H) unit.
+      ImplT.Balance->
+      M (H := H) unit.
   
   Parameter transfer_in : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      ImplT.Balance
-      -> M (H := H) unit.
+      ImplT.Balance->
+      M (H := H) unit.
   
   Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      ref ImplT.AccountId
-      -> M (H := H) (ink_env.error.Result usize).
+      ref ImplT.AccountId->
+      M (H := H) (ink_env.error.Result usize).
   
   Parameter set_block_timestamp : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      ImplT.Timestamp
-      -> M (H := H) unit.
+      ImplT.Timestamp->
+      M (H := H) unit.
   
   Parameter set_block_number : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
-      ImplT.BlockNumber
-      -> M (H := H) unit.
+      ImplT.BlockNumber->
+      M (H := H) unit.
   
   Parameter run_test : forall `{H : State.Trait}, forall
       {T : Set} {F : Set},
@@ -15552,15 +15440,15 @@ Module test_api.
         ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
         F}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      F
-      -> M (H := H) (ink_env.error.Result unit).
+      F->
+      M (H := H) (ink_env.error.Result unit).
   
   Parameter default_accounts : forall `{H : State.Trait}, forall
       {T : Set},
       `{ink_env.types.Environment.Trait T}
       `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
       
-      -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+      M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
   
   Module DefaultAccounts.
     Record t : Set := {
@@ -15593,8 +15481,7 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts : Set := DefaultAccounts.t.
   
-  Parameter recorded_events : forall `{H : State.Trait}, 
-      -> M (H := H) OpaqueDef.
+  Parameter recorded_events : forall `{H : State.Trait},  M (H := H) OpaqueDef.
   
   Parameter assert_contract_termination : forall `{H : State.Trait}, forall
       {T : Set} {F : Set},
@@ -15605,8 +15492,8 @@ Module test_api.
       `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
       F->
       ImplT.AccountId->
-      ImplT.Balance
-      -> M (H := H) unit.
+      ImplT.Balance->
+      M (H := H) unit.
 End test_api.
 
 Module EmittedEvent.
@@ -15627,8 +15514,8 @@ Definition EmittedEvent : Set := EmittedEvent.t.
 Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -15643,102 +15530,102 @@ Parameter set_account_balance : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     ImplT.AccountId->
-    ImplT.Balance
-    -> M (H := H) unit.
+    ImplT.Balance->
+    M (H := H) unit.
 
 Parameter get_account_balance : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    ImplT.AccountId
-    -> M (H := H) (ink_env.error.Result ImplT.Balance).
+    ImplT.AccountId->
+    M (H := H) (ink_env.error.Result ImplT.Balance).
 
 Parameter register_chain_extension : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_engine.chain_extension.ChainExtension.Trait E}
-    E
-    -> M (H := H) unit.
+    E->
+    M (H := H) unit.
 
 Parameter recorded_debug_messages : forall `{H : State.Trait}, 
-    -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
+    M (H := H) ink_engine.test_api.RecordedDebugMessages.
 
-Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-    -> M (H := H) unit.
+Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool->
+    M (H := H) unit.
 
 Parameter advance_block : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     
-    -> M (H := H) unit.
+    M (H := H) unit.
 
 Parameter set_caller : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) unit.
+    ImplT.AccountId->
+    M (H := H) unit.
 
 Parameter set_callee : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) unit.
+    ImplT.AccountId->
+    M (H := H) unit.
 
 Parameter set_contract : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) unit.
+    ImplT.AccountId->
+    M (H := H) unit.
 
 Parameter is_contract : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) bool.
+    ImplT.AccountId->
+    M (H := H) bool.
 
 Parameter callee : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     
-    -> M (H := H) ImplT.AccountId.
+    M (H := H) ImplT.AccountId.
 
 Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    ref ImplT.AccountId
-    -> M (H := H) (usize * usize).
+    ref ImplT.AccountId->
+    M (H := H) (usize * usize).
 
 Parameter set_value_transferred : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    ImplT.Balance
-    -> M (H := H) unit.
+    ImplT.Balance->
+    M (H := H) unit.
 
 Parameter transfer_in : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    ImplT.Balance
-    -> M (H := H) unit.
+    ImplT.Balance->
+    M (H := H) unit.
 
 Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    ref ImplT.AccountId
-    -> M (H := H) (ink_env.error.Result usize).
+    ref ImplT.AccountId->
+    M (H := H) (ink_env.error.Result usize).
 
 Parameter set_block_timestamp : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    ImplT.Timestamp
-    -> M (H := H) unit.
+    ImplT.Timestamp->
+    M (H := H) unit.
 
 Parameter set_block_number : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
-    ImplT.BlockNumber
-    -> M (H := H) unit.
+    ImplT.BlockNumber->
+    M (H := H) unit.
 
 Parameter run_test : forall `{H : State.Trait}, forall
     {T : Set} {F : Set},
@@ -15747,15 +15634,15 @@ Parameter run_test : forall `{H : State.Trait}, forall
       ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
       F}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    F
-    -> M (H := H) (ink_env.error.Result unit).
+    F->
+    M (H := H) (ink_env.error.Result unit).
 
 Parameter default_accounts : forall `{H : State.Trait}, forall
     {T : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
     
-    -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+    M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 
 Module DefaultAccounts.
   Record t : Set := {
@@ -15788,7 +15675,7 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts : Set := DefaultAccounts.t.
 
-Parameter recorded_events : forall `{H : State.Trait},  -> M (H := H) OpaqueDef.
+Parameter recorded_events : forall `{H : State.Trait},  M (H := H) OpaqueDef.
 
 Error OpaqueTy.
 
@@ -15801,16 +15688,18 @@ Parameter assert_contract_termination : forall `{H : State.Trait}, forall
     `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
     F->
     ImplT.AccountId->
-    ImplT.Balance
-    -> M (H := H) unit.
+    ImplT.Balance->
+    M (H := H) unit.
 
 Module types.
   Module
     Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
     Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
     
-    Parameter from : forall `{H : State.Trait}, ink_engine.test_api.EmittedEvent
-        -> M (H := H) Self.
+    Parameter from : forall
+          `{H : State.Trait},
+          ink_engine.test_api.EmittedEvent->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -15828,8 +15717,8 @@ Module types.
   Module Impl_core_convert_From_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Parameter from : forall `{H : State.Trait}, ink_engine.Error
-        -> M (H := H) Self.
+    Parameter from : forall `{H : State.Trait}, ink_engine.Error->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -15845,8 +15734,8 @@ Module types.
   Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
     Definition Self := ink_env.engine.off_chain.AccountError.
     
-    Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-        -> M (H := H) Self.
+    Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -15862,8 +15751,8 @@ Module types.
   Module Impl_core_convert_From_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-        -> M (H := H) Self.
+    Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError->
+        M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -15881,8 +15770,8 @@ Module
   Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
   
-  Parameter from : forall `{H : State.Trait}, ink_engine.test_api.EmittedEvent
-      -> M (H := H) Self.
+  Parameter from : forall `{H : State.Trait}, ink_engine.test_api.EmittedEvent->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -15898,8 +15787,8 @@ End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
 Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Parameter from : forall `{H : State.Trait}, ink_engine.Error
-      -> M (H := H) Self.
+  Parameter from : forall `{H : State.Trait}, ink_engine.Error->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -15914,8 +15803,8 @@ End Impl_core_convert_From_for_ink_env_error_Error.
 Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
-  Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-      -> M (H := H) Self.
+  Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -15931,8 +15820,8 @@ End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
 Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-      -> M (H := H) Self.
+  Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError->
+      M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -15959,7 +15848,7 @@ Definition EnvInstance : Set := EnvInstance.t.
 Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
-  Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
+  Parameter on_instance : forall `{H : State.Trait}, F-> M (H := H) R.
   
   Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
     Notation.DoubleColon Self "on_instance" := {
@@ -15981,14 +15870,13 @@ Definition
       ink_env.engine.off_chain.on_instance.INSTANCE.__getit).
 
 Parameter __init : forall `{H : State.Trait}, 
-    -> M (H := H) (core.cell.RefCell ink_env.engine.off_chain.EnvInstance).
+    M (H := H) (core.cell.RefCell ink_env.engine.off_chain.EnvInstance).
 
 Parameter __getit : forall `{H : State.Trait}, core.option.Option
         (mut_ref
           (core.option.Option
-            (core.cell.RefCell ink_env.engine.off_chain.EnvInstance)))
-    ->
-      M (H := H)
+            (core.cell.RefCell ink_env.engine.off_chain.EnvInstance)))->
+    M (H := H)
         (core.option.Option
           (ref (core.cell.RefCell ink_env.engine.off_chain.EnvInstance))).
 
@@ -16014,8 +15902,8 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -16031,8 +15919,8 @@ Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
   
   Parameter from : forall
         `{H : State.Trait},
-        ink_env.engine.off_chain.AccountError
-      -> M (H := H) ink_env.engine.off_chain.OffChainError.
+        ink_env.engine.off_chain.AccountError->
+      M (H := H) ink_env.engine.off_chain.OffChainError.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -16060,8 +15948,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.engine.off_chain.OffChainError
-      -> M (H := H) bool.
+      ref ink_env.engine.off_chain.OffChainError->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -16082,8 +15970,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
   Definition Self := ink_env.engine.off_chain.OffChainError.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16106,8 +15994,8 @@ Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -16121,8 +16009,8 @@ End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
 Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
-  Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-      -> M (H := H) ink_env.engine.off_chain.AccountError.
+  Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error->
+      M (H := H) ink_env.engine.off_chain.AccountError.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -16148,8 +16036,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.engine.off_chain.AccountError
-      -> M (H := H) bool.
+      ref ink_env.engine.off_chain.AccountError->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -16170,8 +16058,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
 Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
   Definition Self := ink_env.engine.off_chain.AccountError.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16191,9 +16079,8 @@ Parameter decode_instantiate_result : forall `{H : State.Trait}, forall
     `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
     ink_env.error.Result unit->
     mut_ref I->
-    mut_ref I
-    ->
-      M (H := H)
+    mut_ref I->
+    M (H := H)
         (ink_env.error.Result
           (ink_primitives.ConstructorResult
             ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -16205,9 +16092,8 @@ Parameter decode_instantiate_err : forall `{H : State.Trait}, forall
     `{ink_env.types.Environment.Trait E}
     `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
     `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-    mut_ref I
-    ->
-      M (H := H)
+    mut_ref I->
+    M (H := H)
         (ink_env.error.Result
           (ink_primitives.ConstructorResult
             ink_env.call.create_builder.ConstructorReturnType.Output)).
@@ -16236,8 +16122,8 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -16251,8 +16137,8 @@ Module error.
   Module Impl_core_convert_From_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-        -> M (H := H) ink_env.error.Error.
+    Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error->
+        M (H := H) ink_env.error.Error.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -16270,8 +16156,8 @@ Module error.
     
     Parameter from : forall
           `{H : State.Trait},
-          ink_env.engine.off_chain.OffChainError
-        -> M (H := H) ink_env.error.Error.
+          ink_env.engine.off_chain.OffChainError->
+        M (H := H) ink_env.error.Error.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -16297,8 +16183,8 @@ Module error.
     Definition Self := ink_env.error.Error.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.error.Error
-        -> M (H := H) bool.
+        ref ink_env.error.Error->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -16319,8 +16205,9 @@ Module error.
   Module Impl_core_cmp_Eq_for_ink_env_error_Error.
     Definition Self := ink_env.error.Error.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16357,8 +16244,8 @@ Module Impl_core_fmt_Debug_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -16372,8 +16259,8 @@ End Impl_core_fmt_Debug_for_ink_env_error_Error.
 Module Impl_core_convert_From_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-      -> M (H := H) ink_env.error.Error.
+  Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error->
+      M (H := H) ink_env.error.Error.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -16391,8 +16278,8 @@ Module Impl_core_convert_From_for_ink_env_error_Error.
   
   Parameter from : forall
         `{H : State.Trait},
-        ink_env.engine.off_chain.OffChainError
-      -> M (H := H) ink_env.error.Error.
+        ink_env.engine.off_chain.OffChainError->
+      M (H := H) ink_env.error.Error.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -16418,8 +16305,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.error.Error
-      -> M (H := H) bool.
+      ref ink_env.error.Error->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -16440,8 +16327,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_error_Error.
 Module Impl_core_cmp_Eq_for_ink_env_error_Error.
   Definition Self := ink_env.error.Error.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16496,8 +16383,8 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -16518,8 +16405,8 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
     Definition Self := ink_env.hash.Sha2x256.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Sha2x256.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.hash.Sha2x256.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -16541,8 +16428,8 @@ Module hash.
     Definition Self := ink_env.hash.Sha2x256.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Sha2x256
-        -> M (H := H) bool.
+        ref ink_env.hash.Sha2x256->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -16563,8 +16450,9 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
     Definition Self := ink_env.hash.Sha2x256.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16585,8 +16473,8 @@ Module hash.
     Definition Self := ink_env.hash.Keccak256.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -16607,8 +16495,8 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
     Definition Self := ink_env.hash.Keccak256.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Keccak256.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.hash.Keccak256.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -16630,8 +16518,8 @@ Module hash.
     Definition Self := ink_env.hash.Keccak256.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Keccak256
-        -> M (H := H) bool.
+        ref ink_env.hash.Keccak256->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -16652,8 +16540,9 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
     Definition Self := ink_env.hash.Keccak256.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16674,8 +16563,8 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x256.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -16696,8 +16585,8 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
     Definition Self := ink_env.hash.Blake2x256.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Blake2x256.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.hash.Blake2x256.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -16719,8 +16608,8 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x256.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Blake2x256
-        -> M (H := H) bool.
+        ref ink_env.hash.Blake2x256->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -16741,8 +16630,9 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
     Definition Self := ink_env.hash.Blake2x256.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16763,8 +16653,8 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x128.
     
     Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
+        mut_ref core.fmt.Formatter->
+        M (H := H) core.fmt.Result.
     
     Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -16785,8 +16675,8 @@ Module hash.
   Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
     Definition Self := ink_env.hash.Blake2x128.
     
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Blake2x128.
+    Parameter clone : forall `{H : State.Trait}, ref Self->
+        M (H := H) ink_env.hash.Blake2x128.
     
     Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
@@ -16808,8 +16698,8 @@ Module hash.
     Definition Self := ink_env.hash.Blake2x128.
     
     Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Blake2x128
-        -> M (H := H) bool.
+        ref ink_env.hash.Blake2x128->
+        M (H := H) bool.
     
     Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -16830,8 +16720,9 @@ Module hash.
   Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
     Definition Self := ink_env.hash.Blake2x128.
     
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+            Self->
+        M (H := H) unit.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
@@ -16957,8 +16848,8 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -16979,8 +16870,8 @@ End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
 Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Sha2x256.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.hash.Sha2x256.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -17002,8 +16893,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Sha2x256
-      -> M (H := H) bool.
+      ref ink_env.hash.Sha2x256->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -17024,8 +16915,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -17046,8 +16937,8 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -17068,8 +16959,8 @@ End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
 Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Keccak256.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.hash.Keccak256.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -17091,8 +16982,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Keccak256
-      -> M (H := H) bool.
+      ref ink_env.hash.Keccak256->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -17113,8 +17004,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -17135,8 +17026,8 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -17157,8 +17048,8 @@ End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
 Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Blake2x256.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.hash.Blake2x256.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -17180,8 +17071,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Blake2x256
-      -> M (H := H) bool.
+      ref ink_env.hash.Blake2x256->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -17202,8 +17093,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -17224,8 +17115,8 @@ Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+      mut_ref core.fmt.Formatter->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -17246,8 +17137,8 @@ End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
 Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Blake2x128.
+  Parameter clone : forall `{H : State.Trait}, ref Self->
+      M (H := H) ink_env.hash.Blake2x128.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -17269,8 +17160,8 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Blake2x128
-      -> M (H := H) bool.
+      ref ink_env.hash.Blake2x128->
+      M (H := H) bool.
   
   Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -17291,8 +17182,8 @@ End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
 Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self->
+      M (H := H) unit.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
@@ -17439,7 +17330,7 @@ Module topics.
       :=
       ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
     
-    Parameter from : forall `{H : State.Trait}, B -> M (H := H) Self.
+    Parameter from : forall `{H : State.Trait}, B-> M (H := H) Self.
     
     Global Instance AssociatedFunction_from `{H : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -17480,9 +17371,8 @@ Module topics.
       :=
       ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
     
-    Parameter build : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
+    Parameter build : forall `{H : State.Trait}, Self->
+        M (H := H)
             (ink_env.topics.TopicsBuilder
               ink_env.topics.Topics.RemainingTopics
               E
@@ -17497,9 +17387,8 @@ Module topics.
     Definition Self := ink_env.topics.TopicsBuilder S E B.
     
     Parameter push_topic : forall `{H : State.Trait}, Self->
-        ref T
-        ->
-          M (H := H)
+        ref T->
+        M (H := H)
             (ink_env.topics.TopicsBuilder
               ink_env.topics.SomeRemainingTopics.Next
               E
@@ -17518,8 +17407,8 @@ Module topics.
       :=
       ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
     
-    Parameter finish : forall `{H : State.Trait}, Self
-        -> M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
+    Parameter finish : forall `{H : State.Trait}, Self->
+        M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
     
     Global Instance Method_finish `{H : State.Trait} :
       Notation.Dot "finish" := {
@@ -18511,8 +18400,8 @@ Module topics.
     
     Definition Self := ink_env.topics.PrefixedValue X.
     
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
+    Parameter size_hint : forall `{H : State.Trait}, ref Self->
+        M (H := H) usize.
     
     Global Instance Method_size_hint `{H : State.Trait} :
       Notation.Dot "size_hint" := {
@@ -18520,8 +18409,8 @@ Module topics.
     }.
     
     Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref T
-        -> M (H := H) unit.
+        mut_ref T->
+        M (H := H) unit.
     
     Global Instance Method_encode_to `{H : State.Trait} :
       Notation.Dot "encode_to" := {
@@ -18589,7 +18478,7 @@ Section
     :=
     ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
   
-  Parameter from : forall `{H : State.Trait}, B -> M (H := H) Self.
+  Parameter from : forall `{H : State.Trait}, B-> M (H := H) Self.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -18648,9 +18537,8 @@ Module Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B_2.
     :=
     ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
   
-  Parameter build : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
+  Parameter build : forall `{H : State.Trait}, Self->
+      M (H := H)
           (ink_env.topics.TopicsBuilder
             ink_env.topics.Topics.RemainingTopics
             E
@@ -18665,9 +18553,8 @@ Module Impl_ink_env_topics_TopicsBuilder_S_E_B_2.
   Definition Self := ink_env.topics.TopicsBuilder S E B.
   
   Parameter push_topic : forall `{H : State.Trait}, Self->
-      ref T
-      ->
-        M (H := H)
+      ref T->
+      M (H := H)
           (ink_env.topics.TopicsBuilder
             ink_env.topics.SomeRemainingTopics.Next
             E
@@ -18686,8 +18573,8 @@ Module
     :=
     ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
   
-  Parameter finish : forall `{H : State.Trait}, Self
-      -> M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
+  Parameter finish : forall `{H : State.Trait}, Self->
+      M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
   
   Global Instance Method_finish `{H : State.Trait} : Notation.Dot "finish" := {
     Notation.dot := finish;
@@ -19676,7 +19563,7 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
   
   Definition Self := ink_env.topics.PrefixedValue X.
   
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
+  Parameter size_hint : forall `{H : State.Trait}, ref Self-> M (H := H) usize.
   
   Global Instance Method_size_hint `{H : State.Trait} :
     Notation.Dot "size_hint" := {
@@ -19684,8 +19571,8 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
   }.
   
   Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref T
-      -> M (H := H) unit.
+      mut_ref T->
+      M (H := H) unit.
   
   Global Instance Method_encode_to `{H : State.Trait} :
     Notation.Dot "encode_to" := {
