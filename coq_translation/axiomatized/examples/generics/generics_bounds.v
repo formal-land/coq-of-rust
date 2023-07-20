@@ -27,10 +27,12 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Module Rectangle.
+  Unset Primitive Projections.
   Record t : Set := {
     length : f64;
     height : f64;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -69,10 +71,12 @@ End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Triangle.
+  Unset Primitive Projections.
   Record t : Set := {
     length : f64;
     height : f64;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot '(Build_t x0 _) := x0;

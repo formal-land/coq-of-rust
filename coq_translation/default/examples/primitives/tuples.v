@@ -10,8 +10,12 @@ Definition reverse
 
 Module Matrix.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : f32; _ : f32; _ : f32; _ : f32;}.
+  Record t : Set := {
+    _ : f32;
+    _ : f32;
+    _ : f32;
+    _ : f32;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

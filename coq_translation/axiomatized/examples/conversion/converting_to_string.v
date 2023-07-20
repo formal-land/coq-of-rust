@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Circle.
+  Unset Primitive Projections.
   Record t : Set := {
     radius : i32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_radius : Notation.Dot "radius" := {
     Notation.dot '(Build_t x0) := x0;

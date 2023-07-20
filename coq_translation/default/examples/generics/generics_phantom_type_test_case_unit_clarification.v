@@ -115,8 +115,10 @@ End
 
 Module Length.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : f64; _ : core.marker.PhantomData Unit;}.
+  Record t : Set := {
+    _ : f64;
+    _ : core.marker.PhantomData Unit;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

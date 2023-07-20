@@ -54,8 +54,9 @@ Module result_info.
   
   Module IsResultErr.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : ref T;}.
+    Record t : Set := {
+      _ : ref T;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -152,8 +153,9 @@ End
 
 Module IsResultErr.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : ref T;}.
+  Record t : Set := {
+    _ : ref T;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -222,8 +224,9 @@ Module codegen.
     Module type_check.
       Module DispatchInput.
         Unset Primitive Projections.
-        Record t : Set :=
-        { _ : T;}.
+        Record t : Set := {
+          _ : T;
+        }.
         Global Set Primitive Projections.
       
       Global Instance Get_0 : Notation.Dot 0 := {
@@ -234,8 +237,9 @@ Module codegen.
       
       Module DispatchOutput.
         Unset Primitive Projections.
-        Record t : Set :=
-        { _ : T;}.
+        Record t : Set := {
+          _ : T;
+        }.
         Global Set Primitive Projections.
       
       Global Instance Get_0 : Notation.Dot 0 := {
@@ -1486,8 +1490,9 @@ Module dispatch.
   Module type_check.
     Module DispatchInput.
       Unset Primitive Projections.
-      Record t : Set :=
-      { _ : T;}.
+      Record t : Set := {
+        _ : T;
+      }.
       Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot 0 := {
@@ -1498,8 +1503,9 @@ Module dispatch.
     
     Module DispatchOutput.
       Unset Primitive Projections.
-      Record t : Set :=
-      { _ : T;}.
+      Record t : Set := {
+        _ : T;
+      }.
       Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot 0 := {
@@ -1551,8 +1557,9 @@ End ContractCallBuilder.
 Module type_check.
   Module DispatchInput.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : T;}.
+    Record t : Set := {
+      _ : T;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -1563,8 +1570,9 @@ Module type_check.
   
   Module DispatchOutput.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : T;}.
+    Record t : Set := {
+      _ : T;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -1576,8 +1584,9 @@ End type_check.
 
 Module DispatchInput.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : T;}.
+  Record t : Set := {
+    _ : T;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -1588,8 +1597,9 @@ Definition DispatchInput := DispatchInput.t.
 
 Module DispatchOutput.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : T;}.
+  Record t : Set := {
+    _ : T;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -5083,8 +5093,9 @@ Module reflect.
     
     Module ConstructorOutputValue.
       Unset Primitive Projections.
-      Record t : Set :=
-      { _ : T;}.
+      Record t : Set := {
+        _ : T;
+      }.
       Global Set Primitive Projections.
     
     Global Instance Get_0 : Notation.Dot 0 := {
@@ -5673,8 +5684,9 @@ Module dispatch.
   
   Module ConstructorOutputValue.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : T;}.
+    Record t : Set := {
+      _ : T;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -6154,8 +6166,9 @@ End ConstructorOutput.
 
 Module ConstructorOutputValue.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : T;}.
+  Record t : Set := {
+    _ : T;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

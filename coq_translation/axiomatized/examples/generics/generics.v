@@ -8,8 +8,9 @@ Definition A := A.t.
 
 Module Single.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : generics.A;}.
+  Record t : Set := {
+    _ : generics.A;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -20,8 +21,9 @@ Definition Single := Single.t.
 
 Module SingleGen.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : T;}.
+  Record t : Set := {
+    _ : T;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

@@ -3,8 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module PhantomTuple.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : A; _ : core.marker.PhantomData B;}.
+  Record t : Set := {
+    _ : A;
+    _ : core.marker.PhantomData B;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

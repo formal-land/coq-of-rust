@@ -149,8 +149,10 @@ End Impl_associated_functions_and_methods_Rectangle.
 
 Module Pair.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : alloc.boxed.Box i32; _ : alloc.boxed.Box i32;}.
+  Record t : Set := {
+    _ : alloc.boxed.Box i32;
+    _ : alloc.boxed.Box i32;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

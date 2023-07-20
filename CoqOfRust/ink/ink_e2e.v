@@ -1259,8 +1259,9 @@ End
 
 Module Visitor.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : core.marker.PhantomData (E);}.
+  Record t : Set := {
+    _ : core.marker.PhantomData (E);
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -1570,8 +1571,9 @@ End
 
 Module Visitor.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : core.marker.PhantomData (E);}.
+  Record t : Set := {
+    _ : core.marker.PhantomData (E);
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

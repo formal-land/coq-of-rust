@@ -3,9 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module my.
   Module OpenBox.
+    Unset Primitive Projections.
     Record t : Set := {
       contents : T;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
@@ -14,9 +16,11 @@ Module my.
   Definition OpenBox : Set := OpenBox.t.
   
   Module ClosedBox.
+    Unset Primitive Projections.
     Record t : Set := {
       contents : T;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
@@ -39,9 +43,11 @@ Module my.
 End my.
 
 Module OpenBox.
+  Unset Primitive Projections.
   Record t : Set := {
     contents : T;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot '(Build_t x0) := x0;
@@ -50,9 +56,11 @@ End OpenBox.
 Definition OpenBox : Set := OpenBox.t.
 
 Module ClosedBox.
+  Unset Primitive Projections.
   Record t : Set := {
     contents : T;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot '(Build_t x0) := x0;

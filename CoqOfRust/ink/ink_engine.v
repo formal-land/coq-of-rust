@@ -57,8 +57,9 @@ Module ext.
   
   Module ReturnCode.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : u32;}.
+    Record t : Set := {
+      _ : u32;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -516,8 +517,9 @@ End Impl_core_convert_From_for_ink_engine_ext_Result.
 
 Module ReturnCode.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : u32;}.
+  Record t : Set := {
+    _ : u32;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -1882,8 +1884,9 @@ Module chain_extension.
   
   Module ExtensionId.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : u32;}.
+    Record t : Set := {
+      _ : u32;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -2130,8 +2133,9 @@ Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
 
 Module ExtensionId.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : u32;}.
+  Record t : Set := {
+    _ : u32;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -2967,8 +2971,9 @@ Module types.
   
   Module AccountId.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : alloc.vec.Vec u8;}.
+    Record t : Set := {
+      _ : alloc.vec.Vec u8;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -3151,8 +3156,9 @@ Module types.
   
   Module Key.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : alloc.vec.Vec u8;}.
+    Record t : Set := {
+      _ : alloc.vec.Vec u8;
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -3438,8 +3444,9 @@ Definition Balance : Set := u128.
 
 Module AccountId.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : alloc.vec.Vec u8;}.
+  Record t : Set := {
+    _ : alloc.vec.Vec u8;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -3621,8 +3628,9 @@ End Impl_ink_engine_types_AccountId_2.
 
 Module Key.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : alloc.vec.Vec u8;}.
+  Record t : Set := {
+    _ : alloc.vec.Vec u8;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

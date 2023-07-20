@@ -3,8 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Centimeters.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : f64;}.
+  Record t : Set := {
+    _ : f64;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -61,8 +62,9 @@ End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : i32;}.
+  Record t : Set := {
+    _ : i32;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -112,8 +114,9 @@ End Impl_derive_Inches.
 
 Module Seconds.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : i32;}.
+  Record t : Set := {
+    _ : i32;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

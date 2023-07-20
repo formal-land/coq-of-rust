@@ -179,8 +179,9 @@ Module impls.
   
   Module ManualKey.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : core.marker.PhantomData (unit -> ParentKey);}.
+    Record t : Set := {
+      _ : core.marker.PhantomData (ParentKey);
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -418,8 +419,9 @@ Module impls.
   
   Module ResolverKey.
     Unset Primitive Projections.
-    Record t : Set :=
-    { _ : core.marker.PhantomData (unit -> (L * R));}.
+    Record t : Set := {
+      _ : core.marker.PhantomData ((L * R));
+    }.
     Global Set Primitive Projections.
   
   Global Instance Get_0 : Notation.Dot 0 := {
@@ -920,8 +922,9 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 
 Module ManualKey.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : core.marker.PhantomData (unit -> ParentKey);}.
+  Record t : Set := {
+    _ : core.marker.PhantomData (ParentKey);
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
@@ -1178,8 +1181,9 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module ResolverKey.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : core.marker.PhantomData (unit -> (L * R));}.
+  Record t : Set := {
+    _ : core.marker.PhantomData ((L * R));
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {

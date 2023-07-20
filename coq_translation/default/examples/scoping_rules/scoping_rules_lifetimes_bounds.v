@@ -3,8 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
   Unset Primitive Projections.
-  Record t : Set :=
-  { _ : ref T;}.
+  Record t : Set := {
+    _ : ref T;
+  }.
   Global Set Primitive Projections.
 
 Global Instance Get_0 : Notation.Dot 0 := {
