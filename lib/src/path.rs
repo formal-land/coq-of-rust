@@ -79,7 +79,7 @@ fn compile_lang_item(lang_item: &LangItem) -> Path {
             LangItem::FormatArgument => vec!["format_argument".to_string()],
             LangItem::FormatArguments => vec!["format_arguments".to_string()],
             LangItem::Option => vec![
-                "std".to_string(),
+                "core".to_string(),
                 "option".to_string(),
                 "Option".to_string(),
             ],

@@ -1459,7 +1459,7 @@ Module Impl_Iterator_for_Vec_IntoIter.
 
   Definition Item := T.
 
-  Parameter next : forall `{State.Trait} (self : mut_ref Self), M (Option T).
+  Parameter next : forall `{State.Trait} (self : mut_ref Self), M (core.option.Option T).
 
   Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
@@ -1498,7 +1498,7 @@ Module Impl_Iterator_for_Range.
 
   Definition Item := A.
 
-  Parameter next : forall `{State.Trait}, mut_ref Self -> M (Option A).
+  Parameter next : forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
 
   Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
@@ -1540,7 +1540,7 @@ Module Impl_Iterator_for_RangeInclusive.
 
   Definition Item := A.
 
-  Parameter next : forall `{State.Trait}, mut_ref Self -> M (Option A).
+  Parameter next : forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
 
   Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
@@ -1574,7 +1574,7 @@ End Impl_IntoIterator_for_RangeInclusive.
 (* TODO: remove - it is a temporary definition *)
 Module Impl_Iterator_for_Range_Z.
   Global Instance Method_next {A : Set} `{State.Trait} :
-    Notation.Dot "next" (T := std.ops.Range A -> M (std.option.Option Z)).
+    Notation.Dot "next" (T := std.ops.Range A -> M (core.option.Option Z)).
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_Range_Z.
@@ -1583,7 +1583,7 @@ End Impl_Iterator_for_Range_Z.
 Module Impl_Iterator_for_RangeInclusive_Z.
   Global Instance Method_next {A : Set} `{State.Trait} :
     Notation.Dot "next"
-      (T := std.ops.RangeInclusive A -> M (std.option.Option Z)).
+      (T := std.ops.RangeInclusive A -> M (core.option.Option Z)).
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_RangeInclusive_Z.
@@ -1592,5 +1592,5 @@ End Impl_Iterator_for_RangeInclusive_Z.
  * it would probably be better if they were defined in the _std files
  *)
 
-Arguments std.option.Option.Some {_} _.
-Arguments std.option.Option.None {_}.
+Arguments core.option.Option.Some {_} _.
+Arguments core.option.Option.None {_}.
