@@ -85,7 +85,7 @@ fn compile_lang_item(lang_item: &LangItem) -> Path {
             ],
             LangItem::OptionSome => {
                 vec![
-                    "std".to_string(),
+                    "core".to_string(),
                     "option".to_string(),
                     "Option".to_string(),
                     "Some".to_string(),
@@ -93,7 +93,7 @@ fn compile_lang_item(lang_item: &LangItem) -> Path {
             }
             LangItem::OptionNone => {
                 vec![
-                    "std".to_string(),
+                    "core".to_string(),
                     "option".to_string(),
                     "Option".to_string(),
                     "None".to_string(),
