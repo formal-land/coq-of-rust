@@ -1307,29 +1307,35 @@ impl TopLevelItem {
                                     text("Record"),
                                     line(),
                                     text("t"),
-                                    text(" :"),
+                                    line(),
+                                    text(":"),
                                     line(),
                                     text("Set"),
-                                    text(" := {"),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text("{"),
                                 ]),
-                                line(),
                                 if fields.is_empty() {
-                                    nil()
+                                    text(" ")
                                 } else {
                                     concat([
-                                        nest([concat(fields.iter().map(|(name, ty)| {
-                                            concat([
-                                                hardline(),
-                                                nest([
-                                                    text(name),
-                                                    line(),
-                                                    text(":"),
-                                                    line(),
-                                                    ty.to_doc(false),
-                                                    text(";"),
-                                                ]),
-                                            ])
-                                        }))]),
+                                        nest([
+                                            hardline(),
+                                            intersperse(
+                                                fields.iter().map(|(name, ty)| {
+                                                    nest([
+                                                        text(name),
+                                                        line(),
+                                                        text(":"),
+                                                        line(),
+                                                        ty.to_doc(false),
+                                                        text(";"),
+                                                    ])
+                                                }),
+                                                [hardline()],
+                                            ),
+                                        ]),
                                         hardline(),
                                     ])
                                 },
@@ -1428,34 +1434,34 @@ impl TopLevelItem {
                         line(),
                         text("t"),
                         line(),
-                        nest([
-                            text(":"),
-                            line(),
-                            text("Set"),
-                            line(),
-                            text(":="),
-                            line(),
-                            text("{"),
-                        ]),
+                        text(":"),
+                        line(),
+                        text("Set"),
+                        line(),
+                        text(":="),
+                        line(),
+                        text("{"),
                     ]),
-                    line(),
                     if fields.is_empty() {
-                        nil()
+                        text(" ")
                     } else {
                         concat([
-                            nest(fields.iter().map(|(name, ty)| {
-                                group([
-                                    hardline(),
-                                    nest([
-                                        text(name),
-                                        line(),
-                                        text(":"),
-                                        line(),
-                                        ty.to_doc(false),
-                                        text(";"),
-                                    ]),
-                                ])
-                            })),
+                            nest([
+                                hardline(),
+                                intersperse(
+                                    fields.iter().map(|(name, ty)| {
+                                        nest([
+                                            text(name),
+                                            line(),
+                                            text(":"),
+                                            line(),
+                                            ty.to_doc(false),
+                                            text(";"),
+                                        ])
+                                    }),
+                                    [hardline()],
+                                ),
+                            ]),
                             hardline(),
                         ])
                     },
@@ -1549,25 +1555,29 @@ impl TopLevelItem {
                             line(),
                             text("t"),
                             line(),
-                            nest([text(":"), line(), text("Set"), text(" :=")]),
+                            text(":"),
+                            line(),
+                            text("Set"),
+                            line(),
+                            text(":="),
                             line(),
                             text("{"),
                         ]),
                         if fields.is_empty() {
-                            line()
+                            text(" ")
                         } else {
-                          concat([
-                            nest([
+                            concat([
+                                nest([
+                                    hardline(),
+                                    intersperse(
+                                        fields.iter().map(|ty| {
+                                            nest([text("_ :"), line(), ty.to_doc(false), text(";")])
+                                        }),
+                                        [hardline()],
+                                    ),
+                                ]),
                                 hardline(),
-                                intersperse(
-                                    fields.iter().map(|ty| {
-                                        nest([text("_ :"), line(), ty.to_doc(false), text(";")])
-                                    }),
-                                    [hardline()],
-                                ),
-                            ]),
-                            hardline()
-                          ])
+                            ])
                         },
                         text("}."),
                         hardline(),
