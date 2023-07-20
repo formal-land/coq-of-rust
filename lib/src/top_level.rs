@@ -1312,19 +1312,23 @@ impl TopLevelItem {
                                     text("Set"),
                                     text(" := {"),
                                 ]),
-                                nest([concat(fields.iter().map(|(name, ty)| {
-                                    concat([
-                                        hardline(),
-                                        nest([
-                                            text(name),
-                                            line(),
-                                            text(":"),
-                                            line(),
-                                            ty.to_doc(false),
-                                            text(";"),
-                                        ]),
-                                    ])
-                                }))]),
+                                if fields.is_empty() {
+                                    nil()
+                                } else {
+                                    nest([concat(fields.iter().map(|(name, ty)| {
+                                        concat([
+                                            hardline(),
+                                            nest([
+                                                text(name),
+                                                line(),
+                                                text(":"),
+                                                line(),
+                                                ty.to_doc(false),
+                                                text(";"),
+                                            ]),
+                                        ])
+                                    }))])
+                                },
                                 hardline(),
                                 text("}."),
                                 hardline(),
@@ -1431,19 +1435,23 @@ impl TopLevelItem {
                             text("{"),
                         ]),
                     ]),
-                    nest(fields.iter().map(|(name, ty)| {
-                        group([
-                            hardline(),
-                            nest([
-                                text(name),
-                                line(),
-                                text(":"),
-                                line(),
-                                ty.to_doc(false),
-                                text(";"),
-                            ]),
-                        ])
-                    })),
+                    if fields.is_empty() {
+                        nil()
+                    } else {
+                        nest(fields.iter().map(|(name, ty)| {
+                            group([
+                                hardline(),
+                                nest([
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(";"),
+                                ]),
+                            ])
+                        }))
+                    },
                     hardline(),
                     text("}."),
                     hardline(),
@@ -1526,7 +1534,6 @@ impl TopLevelItem {
             TopLevelItem::TypeStructTuple { name, fields } => group([
                 nest([text("Module"), line(), text(name), text(".")]),
                 concat([
-                    // hardline(),
                     nest([
                         hardline(),
                         text("Unset Primitive Projections."),
@@ -1542,12 +1549,16 @@ impl TopLevelItem {
                         nest([
                             text("{"),
                             line(),
-                            intersperse(
-                                fields.iter().map(|ty| {
-                                    nest([text("_ :"), line(), ty.to_doc(false), text(";")])
-                                }),
-                                [line()],
-                            ),
+                            if fields.is_empty() {
+                                nil()
+                            } else {
+                                intersperse(
+                                    fields.iter().map(|ty| {
+                                        nest([text("_ :"), line(), ty.to_doc(false), text(";")])
+                                    }),
+                                    [line()],
+                                )
+                            },
                             text("}"),
                         ]),
                         text("."),
