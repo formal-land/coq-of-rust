@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let data :=
     "86967897737416471853297327050364959
 11861322575564723963297542624962850
@@ -12,7 +12,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668" in
-  let* children := alloc.vec.Vec::["new"] tt in
+  let* children := alloc.vec.Vec::["new"] in
   let* chunked_data := data.["split_whitespace"] in
   let* _ :=
     let* α0 := chunked_data.["enumerate"] in

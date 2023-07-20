@@ -47,12 +47,12 @@ Definition calculate_hash
     `{core.hash.Hash.Trait T}
     (t : ref T)
     : M (H := H) u64 :=
-  let* s := std.collections.hash.map.DefaultHasher::["new"] tt in
+  let* s := std.collections.hash.map.DefaultHasher::["new"] in
   let* _ := t.["hash"] (addr_of s) in
   s.["finish"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* person1 :=
     let* α0 := "Janet".["to_string"] in
     Pure

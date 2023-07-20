@@ -50,13 +50,10 @@ Module erc20.
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
-    Definition default
-        `{H : State.Trait}
-        (_ : unit)
-        : M (H := H) erc20.erc20.Erc20 :=
-      let* α0 := core.default.Default.default tt in
-      let* α1 := core.default.Default.default tt in
-      let* α2 := core.default.Default.default tt in
+    Definition default `{H : State.Trait} : M (H := H) erc20.erc20.Erc20 :=
+      let* α0 := core.default.Default.default in
+      let* α1 := core.default.Default.default in
+      let* α2 := core.default.Default.default in
       Pure
         {|
           erc20.erc20.Erc20.total_supply := α0;
@@ -818,7 +815,7 @@ Module erc20.
               (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
               (ink_env.call.common.Set
                 (ink_env.call.common.ReturnType Self))) :=
-      let* α0 := ink_env.call.create_builder.build_create tt in
+      let* α0 := ink_env.call.create_builder.build_create in
       let* α1 :=
         ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
       let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
@@ -1481,17 +1478,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] tt in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α3 := alloc.vec.Vec::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] tt in
+    let* α6 := scale_info.build.Fields::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -1572,13 +1566,10 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
 Module Impl_core_default_Default_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
-  Definition default
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) erc20.erc20.Erc20 :=
-    let* α0 := core.default.Default.default tt in
-    let* α1 := core.default.Default.default tt in
-    let* α2 := core.default.Default.default tt in
+  Definition default `{H : State.Trait} : M (H := H) erc20.erc20.Erc20 :=
+    let* α0 := core.default.Default.default in
+    let* α1 := core.default.Default.default in
+    let* α2 := core.default.Default.default in
     Pure
       {|
         erc20.erc20.Erc20.total_supply := α0;
@@ -1621,7 +1612,7 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
       `{H : State.Trait}
       (self : Self)
       : M (H := H) ImplSelf.EnvAccess :=
-    core.default.Default.default tt.
+    core.default.Default.default.
   
   Global Instance Method_env `{H : State.Trait} : Notation.Dot "env" := {
     Notation.dot := env;
@@ -1638,11 +1629,8 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) ImplSelf.EnvAccess :=
-    core.default.Default.default tt.
+  Definition env `{H : State.Trait} : M (H := H) ImplSelf.EnvAccess :=
+    core.default.Default.default.
   
   Global Instance AssociatedFunction_env `{H : State.Trait} :
     Notation.DoubleColon Self "env" := {
@@ -1773,8 +1761,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 end in
               Pure
                 (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Transfer α0)))
-            tt in
+                  (erc20.erc20.__ink_EventBase.Transfer α0))) in
         Return α0 in
       Pure tt
     | __codec_x_edqy =>
@@ -1795,8 +1782,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 end in
               Pure
                 (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Approval α0)))
-            tt in
+                  (erc20.erc20.__ink_EventBase.Approval α0))) in
         Return α0 in
       Pure tt
     | _ =>
@@ -1806,8 +1792,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
               let* α0 :=
                 core.convert.Into.into
                   "Could not decode `__ink_EventBase`, variant doesn't exist" in
-              Pure (core.result.Result.Err α0))
-            tt in
+              Pure (core.result.Result.Err α0)) in
         Return α0 in
       Pure tt
     end.
@@ -2883,7 +2868,7 @@ Module
         let* α2 := α0.["andb"] α1 in
         if (α2 : bool) then
           let* _ :=
-            let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+            let* α0 := ink.codegen.dispatch.execution.deny_payment in
             let* α1 := LangItem α0 in
             match α1 with
             | Break {| Break.0 := residual; |} =>
@@ -3210,7 +3195,7 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment in
               let* α1 := LangItem α0 in
               match α1 with
               | Break {| Break.0 := residual; |} =>
@@ -3276,7 +3261,7 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment in
               let* α1 := LangItem α0 in
               match α1 with
               | Break {| Break.0 := residual; |} =>
@@ -3342,7 +3327,7 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment in
               let* α1 := LangItem α0 in
               match α1 with
               | Break {| Break.0 := residual; |} =>
@@ -3408,7 +3393,7 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment in
               let* α1 := LangItem α0 in
               match α1 with
               | Break {| Break.0 := residual; |} =>
@@ -3474,7 +3459,7 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment in
               let* α1 := LangItem α0 in
               match α1 with
               | Break {| Break.0 := residual; |} =>
@@ -3540,7 +3525,7 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment in
               let* α1 := LangItem α0 in
               match α1 with
               | Break {| Break.0 := residual; |} =>
@@ -3606,7 +3591,7 @@ Definition
     _
     `{H : State.Trait} :
     ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
-  run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"] tt).
+  run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
 
 Module Impl_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
@@ -3615,20 +3600,20 @@ Module Impl_erc20_erc20_Erc20.
       `{H : State.Trait}
       (total_supply : erc20.erc20.Balance)
       : M (H := H) Self :=
-    let* balances := ink_storage.lazy.mapping.Mapping::["default"] tt in
+    let* balances := ink_storage.lazy.mapping.Mapping::["default"] in
     let* caller :=
-      let* α0 := Self::["env"] tt in
+      let* α0 := Self::["env"] in
       α0.["caller"] in
     let* _ := balances.["insert"] caller (addr_of total_supply) in
     let* _ :=
-      let* α0 := Self::["env"] tt in
+      let* α0 := Self::["env"] in
       α0.["emit_event"]
         {|
           erc20.erc20.Transfer.from := core.option.Option.None;
           erc20.erc20.Transfer.to := core.option.Option.Some caller;
           erc20.erc20.Transfer.value := total_supply;
         |} in
-    let* α0 := core.default.Default.default tt in
+    let* α0 := core.default.Default.default in
     Pure
       {|
         Self.total_supply := total_supply;
@@ -3956,8 +3941,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
             parity_scale_codec.decode_finished.DecodeFinished
             parity_scale_codec.error.Error) :=
     let* _ :=
-      let* α0 := core.mem.size_of tt in
-      let* α1 := core.mem.size_of tt in
+      let* α0 := core.mem.size_of in
+      let* α1 := core.mem.size_of in
       match (addr_of α0, addr_of α1) with
       | (left_val, right_val) =>
         let* α0 := left_val.["deref"] in
@@ -3979,7 +3964,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
           Pure tt
       end in
     let* _ :=
-      let* α0 := core.mem.size_of tt in
+      let* α0 := core.mem.size_of in
       let* α1 := α0.["gt"] 0 in
       let* α2 :=
         if (α1 : bool) then
@@ -4012,8 +3997,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
         end in
       Pure tt in
     let* α0 :=
-      parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"]
-        tt in
+      parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
     Pure (core.result.Result.Ok α0).
   
   Global Instance AssociatedFunction_decode_into `{H : State.Trait} :
@@ -4121,14 +4105,11 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] tt in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α3 := alloc.vec.Vec::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 :=
       α4.["docs"]
@@ -4139,7 +4120,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
             "Implements the underlying on-chain calling of the ink! smart contract";
             "messages and trait implementations in a type safe way."
           ]) in
-    let* α6 := scale_info.build.Fields::["named"] tt in
+    let* α6 := scale_info.build.Fields::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -4307,7 +4288,7 @@ Module Impl_erc20_erc20___CallBuilder.
                 ink_env.call.execution_input.EmptyArgumentList))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.call.call_builder.build_call tt in
+    let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 219; 99; 117; 168 ] in
@@ -4337,7 +4318,7 @@ Module Impl_erc20_erc20___CallBuilder.
                   ink_env.call.execution_input.EmptyArgumentList)))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.call.call_builder.build_call tt in
+    let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 15; 117; 90; 86 ] in
@@ -4372,7 +4353,7 @@ Module Impl_erc20_erc20___CallBuilder.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.call.call_builder.build_call tt in
+    let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 106; 0; 22; 94 ] in
@@ -4408,7 +4389,7 @@ Module Impl_erc20_erc20___CallBuilder.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.call.call_builder.build_call tt in
+    let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 132; 161; 93; 161 ] in
@@ -4444,7 +4425,7 @@ Module Impl_erc20_erc20___CallBuilder.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.call.call_builder.build_call tt in
+    let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 104; 18; 102; 160 ] in
@@ -4484,7 +4465,7 @@ Module Impl_erc20_erc20___CallBuilder.
                       ink_env.call.execution_input.EmptyArgumentList)))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.call.call_builder.build_call tt in
+    let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 11; 57; 111; 24 ] in
@@ -4718,17 +4699,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] tt in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α3 := alloc.vec.Vec::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] tt in
+    let* α6 := scale_info.build.Fields::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -4895,7 +4873,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
                   ink_env.call.execution_input.EmptyArgumentList)))
             (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
             (ink_env.call.common.Set (ink_env.call.common.ReturnType Self))) :=
-    let* α0 := ink_env.call.create_builder.build_create tt in
+    let* α0 := ink_env.call.create_builder.build_create in
     let* α1 := ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
     let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
     let* α3 := α2.["push_arg"] __ink_binding_0 in
@@ -5309,7 +5287,6 @@ End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
 Definition __ink_generate_metadata
     `{H : State.Trait}
-    (_ : unit)
     : M (H := H) ink_metadata.InkProject :=
   let* layout :=
     let* α0 :=
@@ -5331,7 +5308,7 @@ Definition __ink_generate_metadata
             (addr_of [ "metadata ink! generation failed: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1) in
-  let* α0 := ink_metadata.specs.ContractSpec::["new"] tt in
+  let* α0 := ink_metadata.specs.ContractSpec::["new"] in
   let* α1 := ink_metadata.specs.ConstructorSpec::["from_label"] "new" in
   let* α2 := α1.["selector"] [ 155; 174; 157; 94 ] in
   let* α3 := ink_metadata.specs.MessageParamSpec::["new"] "total_supply" in
@@ -5660,7 +5637,7 @@ Definition __ink_generate_metadata
     core.iter.traits.iterator.Iterator.map α215 core.convert.AsRef.as_ref in
   let* α217 := ink_metadata.specs.TypeSpec::["with_name_segs"] α216 in
   let* α218 := α214.["lang_error"] α217 in
-  let* α219 := ink_metadata.specs.EnvironmentSpec::["new"] tt in
+  let* α219 := ink_metadata.specs.EnvironmentSpec::["new"] in
   let* α220 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α221 :=
@@ -5713,17 +5690,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   
   Definition Identity : Set := Self.
   
-  Definition type_info
-      `{H : State.Trait}
-      (_ : unit)
-      : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] tt in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] tt in
+    let* α3 := alloc.vec.Vec::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "The ERC-20 error types." ]) in
-    let* α6 := scale_info.build.Variants::["new"] tt in
+    let* α6 := scale_info.build.Variants::["new"] in
     let* α7 :=
       α6.["variant"]
         "InsufficientBalance"
@@ -5897,8 +5871,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         let* α0 :=
           (fun  =>
               Pure
-                (core.result.Result.Ok erc20.erc20.Error.InsufficientBalance))
-            tt in
+                (core.result.Result.Ok
+                  erc20.erc20.Error.InsufficientBalance)) in
         Return α0 in
       Pure tt
     | __codec_x_edqy =>
@@ -5906,8 +5880,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         let* α0 :=
           (fun  =>
               Pure
-                (core.result.Result.Ok erc20.erc20.Error.InsufficientAllowance))
-            tt in
+                (core.result.Result.Ok
+                  erc20.erc20.Error.InsufficientAllowance)) in
         Return α0 in
       Pure tt
     | _ =>
@@ -5917,8 +5891,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
               let* α0 :=
                 core.convert.Into.into
                   "Could not decode `Error`, variant doesn't exist" in
-              Pure (core.result.Result.Err α0))
-            tt in
+              Pure (core.result.Result.Err α0)) in
         Return α0 in
       Pure tt
     end.

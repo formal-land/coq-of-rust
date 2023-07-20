@@ -54,8 +54,9 @@ Module CompSciStudent.
   }.
 End CompSciStudent.
 
-Parameter comp_sci_student_greeting : forall `{H : State.Trait}, ref TraitObject
-    -> M (H := H) alloc.string.String.
+Parameter comp_sci_student_greeting : forall `{H : State.Trait},
+    ref TraitObject ->
+    M (H := H) alloc.string.String.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

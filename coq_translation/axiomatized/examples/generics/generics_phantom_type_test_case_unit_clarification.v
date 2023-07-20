@@ -11,9 +11,10 @@ Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -29,8 +30,9 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) generics_phantom_type_test_case_unit_clarification.Inch.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) generics_phantom_type_test_case_unit_clarification.Inch.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -61,9 +63,10 @@ Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -79,8 +82,9 @@ Module
   Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) generics_phantom_type_test_case_unit_clarification.Mm.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) generics_phantom_type_test_case_unit_clarification.Mm.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -124,9 +128,10 @@ Section
     :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -151,10 +156,10 @@ Section
     :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
-          (generics_phantom_type_test_case_unit_clarification.Length Unit).
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H)
+        (generics_phantom_type_test_case_unit_clarification.Length Unit).
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -200,11 +205,11 @@ Section
   Definition Output : Set :=
     generics_phantom_type_test_case_unit_clarification.Length Unit.
   
-  Parameter add : forall `{H : State.Trait}, Self->
-      generics_phantom_type_test_case_unit_clarification.Length Unit
-      ->
-        M (H := H)
-          (generics_phantom_type_test_case_unit_clarification.Length Unit).
+  Parameter add : forall `{H : State.Trait},
+      Self ->
+      generics_phantom_type_test_case_unit_clarification.Length Unit ->
+      M (H := H)
+        (generics_phantom_type_test_case_unit_clarification.Length Unit).
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -219,4 +224,4 @@ End
   Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

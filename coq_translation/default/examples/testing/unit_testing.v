@@ -9,7 +9,7 @@ Definition bad_add `{H : State.Trait} (a : i32) (b : i32) : M (H := H) i32 :=
   a.["sub"] b.
 
 Module tests.
-  Definition test_add `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+  Definition test_add `{H : State.Trait} : M (H := H) unit :=
     let* _ :=
       let* α0 := unit_testing.add 1 2 in
       match (addr_of α0, addr_of 3) with
@@ -34,7 +34,7 @@ Module tests.
       end in
     Pure tt.
   
-  Definition test_bad_add `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+  Definition test_bad_add `{H : State.Trait} : M (H := H) unit :=
     let* _ :=
       let* α0 := unit_testing.bad_add 1 2 in
       match (addr_of α0, addr_of 3) with
@@ -60,7 +60,7 @@ Module tests.
     Pure tt.
 End tests.
 
-Definition test_add `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition test_add `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* α0 := unit_testing.add 1 2 in
     match (addr_of α0, addr_of 3) with
@@ -85,7 +85,7 @@ Definition test_add `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     end in
   Pure tt.
 
-Definition test_bad_add `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition test_bad_add `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* α0 := unit_testing.bad_add 1 2 in
     match (addr_of α0, addr_of 3) with

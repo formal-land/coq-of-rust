@@ -18,8 +18,9 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   
   Definition Self := T.
   
-  Parameter print_in_option : forall `{H : State.Trait}, Self
-      -> M (H := H) unit.
+  Parameter print_in_option : forall `{H : State.Trait},
+      Self ->
+      M (H := H) unit.
   
   Global Instance Method_print_in_option `{H : State.Trait} :
     Notation.Dot "print_in_option" := {
@@ -36,4 +37,4 @@ End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

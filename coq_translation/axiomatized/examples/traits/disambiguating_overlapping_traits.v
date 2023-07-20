@@ -42,8 +42,9 @@ Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
-  Parameter get : forall `{H : State.Trait}, ref Self
-      -> M (H := H) alloc.string.String.
+  Parameter get : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) alloc.string.String.
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
@@ -77,4 +78,4 @@ End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

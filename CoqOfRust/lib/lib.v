@@ -12,6 +12,9 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
+Require Export CoqOfRust.Monad.
+Export Monad.Notations.
+
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
       methods, or access to named or indexed fields of structures.

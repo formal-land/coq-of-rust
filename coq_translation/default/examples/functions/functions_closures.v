@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let outer_var := 42 in
   let closure_annotated := fun i => i.["add"] outer_var in
   let closure_inferred := fun i => i.["add"] outer_var in
@@ -31,7 +31,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let one := fun  => Pure 1 in
   let* _ :=
     let* _ :=
-      let* α0 := one tt in
+      let* α0 := one in
       let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
         format_arguments::["new_v1"]

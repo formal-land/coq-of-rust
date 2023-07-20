@@ -40,7 +40,7 @@ Definition annotated_pass
   Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let x := 3 in
   let* _ := scoping_rules_lifetimes_elision.elided_input (addr_of x) in
   let* _ := scoping_rules_lifetimes_elision.annotated_input (addr_of x) in

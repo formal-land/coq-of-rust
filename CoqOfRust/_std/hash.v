@@ -1,7 +1,7 @@
 Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.marker.
+Require Import CoqOfRust.core.marker.
 
 (* ********STRUCTS******** *)
 (* 

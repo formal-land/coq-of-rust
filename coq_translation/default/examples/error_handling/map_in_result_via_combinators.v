@@ -40,7 +40,7 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* twenty := map_in_result_via_combinators.multiply "10" "2" in
   let* _ := map_in_result_via_combinators.print twenty in
   let* tt := map_in_result_via_combinators.multiply "t" "2" in

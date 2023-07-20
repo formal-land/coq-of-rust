@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -11,7 +11,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* secret_number :=
-    let* α0 := rand.thread_rng tt in
+    let* α0 := rand.thread_rng in
     let* α1 := LangItem 1 100 in
     α0.["gen_range"] α1 in
   loop
@@ -23,9 +23,9 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in
-    let* guess := alloc.string.String::["new"] tt in
+    let* guess := alloc.string.String::["new"] in
     let* _ :=
-      let* α0 := std.io.stdio.stdin tt in
+      let* α0 := std.io.stdio.stdin in
       let* α1 := α0.["read_line"] (addr_of guess) in
       α1.["expect"] "Failed to read line" in
     let* guess :=

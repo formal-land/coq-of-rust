@@ -19,9 +19,10 @@ Definition FooBar := FooBar.t.
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self := operator_overloading.FooBar.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -40,9 +41,10 @@ Definition BarFoo := BarFoo.t.
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self := operator_overloading.BarFoo.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -58,9 +60,10 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   
   Definition Output : Set := operator_overloading.FooBar.
   
-  Parameter add : forall `{H : State.Trait}, Self->
-      operator_overloading.Bar
-      -> M (H := H) operator_overloading.FooBar.
+  Parameter add : forall `{H : State.Trait},
+      Self ->
+      operator_overloading.Bar ->
+      M (H := H) operator_overloading.FooBar.
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -79,9 +82,10 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   
   Definition Output : Set := operator_overloading.BarFoo.
   
-  Parameter add : forall `{H : State.Trait}, Self->
-      operator_overloading.Foo
-      -> M (H := H) operator_overloading.BarFoo.
+  Parameter add : forall `{H : State.Trait},
+      Self ->
+      operator_overloading.Foo ->
+      M (H := H) operator_overloading.BarFoo.
   
   Global Instance Method_add `{H : State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
@@ -96,4 +100,4 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

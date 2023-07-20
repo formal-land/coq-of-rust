@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.clone.
+Require CoqOfRust.core.clone.
 Require Import CoqOfRust._std.fmt.
 (* BUGGED: Circular Dependency *)
 (* Require Import CoqOfRust._std.cmp. *)
@@ -93,7 +93,7 @@ End Unsize.
 (* pub trait Copy: Clone { } *)
 Module Copy.
   Unset Primitive Projections.
-  Class Trait (Self : Set) `{Clone.Trait Self} : Set := { }.
+  Class Trait (Self : Set) `{core.clone.Clone.Trait Self} : Set := { }.
   Set Primitive Projections.
 End Copy.
 

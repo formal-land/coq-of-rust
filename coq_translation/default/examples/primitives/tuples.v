@@ -52,7 +52,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* long_tuple :=
     let* α0 := 1.["neg"] in
     let* α1 := 2.["neg"] in

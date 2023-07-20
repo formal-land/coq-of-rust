@@ -13,7 +13,6 @@ Module Impl_enums_testcase_linked_list_List.
   
   Definition new
       `{H : State.Trait}
-      (_ : unit)
       : M (H := H) enums_testcase_linked_list.List :=
     Pure enums_testcase_linked_list.List.Nil.
   
@@ -79,8 +78,8 @@ Module Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* list := enums_testcase_linked_list.List::["new"] tt in
+Definition main `{H : State.Trait} : M (H := H) unit :=
+  let* list := enums_testcase_linked_list.List::["new"] in
   let* _ :=
     let* α0 := list.["prepend"] 1 in
     assign list α0 in

@@ -99,7 +99,7 @@ Definition difference
   α0.["sub"] α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container :=

@@ -25,7 +25,7 @@ Definition decrease `{H : State.Trait} (number : i32) : M (H := H) unit :=
     Pure tt in
   Pure tt.
 
-Definition help `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition help `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -44,9 +44,9 @@ match_args {increase|decrease} <integer>
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* args :=
-    let* α0 := std.env.args tt in
+    let* α0 := std.env.args in
     α0.["collect"] in
   let* α0 := args.["len"] in
   match α0 with
@@ -97,8 +97,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
             std.io.stdio._eprint α0 in
           Pure tt in
-        let* _ := program_arguments_parsing.help tt in
-        let* _ := Return tt in
+        let* _ := program_arguments_parsing.help in
+        let* _ := Return in
         Pure tt
       end in
     match addr_of cmd[RangeFull {|  |}] with
@@ -113,10 +113,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
           std.io.stdio._eprint α0 in
         Pure tt in
-      let* _ := program_arguments_parsing.help tt in
+      let* _ := program_arguments_parsing.help in
       Pure tt
     end
   | _ =>
-    let* _ := program_arguments_parsing.help tt in
+    let* _ := program_arguments_parsing.help in
     Pure tt
   end.

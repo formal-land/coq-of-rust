@@ -9,9 +9,10 @@ Definition Unit := Unit.t.
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self := clone.Unit.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -25,8 +26,9 @@ End Impl_core_fmt_Debug_for_clone_Unit.
 Module Impl_core_clone_Clone_for_clone_Unit.
   Definition Self := clone.Unit.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) clone.Unit.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) clone.Unit.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -59,8 +61,9 @@ Definition Pair := Pair.t.
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) clone.Pair.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) clone.Pair.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -74,9 +77,10 @@ End Impl_core_clone_Clone_for_clone_Pair.
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self := clone.Pair.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -88,4 +92,4 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

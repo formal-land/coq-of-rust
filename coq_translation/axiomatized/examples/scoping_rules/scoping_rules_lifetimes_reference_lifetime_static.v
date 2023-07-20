@@ -3,8 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM `{H : State.Trait} : i32 := run (Pure 18).
 
-Parameter coerce_static : forall `{H : State.Trait}, ref i32
-    -> M (H := H) (ref i32).
+Parameter coerce_static : forall `{H : State.Trait},
+    ref i32 ->
+    M (H := H) (ref i32).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

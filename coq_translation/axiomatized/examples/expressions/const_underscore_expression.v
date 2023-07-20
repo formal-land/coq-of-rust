@@ -38,8 +38,9 @@ Module
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
   Definition Self := const_underscore_expression.Bar.
   
-  Parameter show : forall `{H : State.Trait}, Self
-      -> M (H := H) alloc.string.String.
+  Parameter show : forall `{H : State.Trait},
+      Self ->
+      M (H := H) alloc.string.String.
   
   Global Instance Method_show `{H : State.Trait} : Notation.Dot "show" := {
     Notation.dot := show;
