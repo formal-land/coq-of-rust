@@ -143,15 +143,17 @@ impl CoqType {
                 with_paren,
                 group([
                     if args.is_empty() {
-                        text("unit")
+                        nil()
                     } else {
-                        intersperse(
-                            args.iter().map(|arg| arg.to_doc(true)),
-                            [text(" ->"), line()],
-                        )
+                        concat([
+                            intersperse(
+                                args.iter().map(|arg| arg.to_doc(true)),
+                                [text(" ->"), line()],
+                            ),
+                            text(" ->"),
+                            line(),
+                        ])
                     },
-                    text(" ->"),
-                    line(),
                     ret.to_doc(true),
                 ]),
             ),
