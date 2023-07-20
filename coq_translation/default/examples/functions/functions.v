@@ -73,8 +73,8 @@ Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | std.option.Option.None  => Break
-        | std.option.Option.Some n =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some n =>
           let* _ := functions.fizzbuzz n in
           Pure tt
         end in

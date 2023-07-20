@@ -16,8 +16,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some i =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some i =>
             let* _ :=
               let* α0 :=
                 std.thread.spawn
@@ -46,8 +46,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | std.option.Option.None  => Break
-        | std.option.Option.Some child =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some child =>
           let* _ := child.["join"] in
           Pure tt
         end in

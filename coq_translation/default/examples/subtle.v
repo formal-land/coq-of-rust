@@ -351,8 +351,8 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
           (let* _ :=
             let* α0 := (addr_of iter).["next"] in
             match α0 with
-            | std.option.Option.None  => Break
-            | std.option.Option.Some (ai, bi) =>
+            | core.option.Option.None  => Break
+            | core.option.Option.Some (ai, bi) =>
               let* _ :=
                 let* α0 := ai.["ct_eq"] bi in
                 let* α1 := α0.["unwrap_u8"] in

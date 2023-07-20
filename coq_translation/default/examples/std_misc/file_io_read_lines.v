@@ -28,8 +28,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | std.option.Option.None  => Break
-        | std.option.Option.Some line =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some line =>
           let* _ :=
             let* _ :=
               let* α0 := line.["unwrap"] in

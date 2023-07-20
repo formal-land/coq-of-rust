@@ -29,8 +29,8 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some i =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some i =>
             let* addition :=
               let* α0 := i.["rem"] 2 in
               let* α1 := α0.["eq"] 1 in

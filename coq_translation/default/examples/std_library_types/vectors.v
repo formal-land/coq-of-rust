@@ -95,8 +95,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some x =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some x =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of x) in
@@ -121,8 +121,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some (i, x) =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some (i, x) =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -147,8 +147,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some x =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some x =>
             let* _ :=
               let* α0 := x.["deref"] in
               α0.["mul_assign"] 3 in

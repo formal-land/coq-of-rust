@@ -17,8 +17,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some id =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some id =>
             let* thread_tx := tx.["clone"] in
             let* child :=
               std.thread.spawn
@@ -54,8 +54,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some _ =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some _ =>
             let* _ :=
               let* α0 := rx.["recv"] in
               ids.["push"] α0 in
@@ -71,8 +71,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some child =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some child =>
             let* _ :=
               let* α0 := child.["join"] in
               α0.["expect"] "oops! the child thread panicked" in

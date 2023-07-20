@@ -28,8 +28,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (let* _ :=
           let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | std.option.Option.None  => Break
-          | std.option.Option.Some n =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some n =>
             let* n_squared := n.["mul"] n in
             let* α0 := n_squared.["ge"] upper in
             if (α0 : bool) then

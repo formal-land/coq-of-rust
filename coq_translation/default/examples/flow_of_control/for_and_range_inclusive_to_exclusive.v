@@ -11,8 +11,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | std.option.Option.None  => Break
-        | std.option.Option.Some n =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some n =>
           let* α0 := n.["rem"] 15 in
           let* α1 := α0.["eq"] 0 in
           if (α1 : bool) then

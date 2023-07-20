@@ -19,8 +19,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
       (let* _ :=
         let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | std.option.Option.None  => Break
-        | std.option.Option.Some _ =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some _ =>
           let* _ := scoping_rules_raii.create_box in
           Pure tt
         end in
