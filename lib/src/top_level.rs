@@ -1312,24 +1312,27 @@ impl TopLevelItem {
                                     text("Set"),
                                     text(" := {"),
                                 ]),
+                                line(),
                                 if fields.is_empty() {
                                     nil()
                                 } else {
-                                    nest([concat(fields.iter().map(|(name, ty)| {
-                                        concat([
-                                            hardline(),
-                                            nest([
-                                                text(name),
-                                                line(),
-                                                text(":"),
-                                                line(),
-                                                ty.to_doc(false),
-                                                text(";"),
-                                            ]),
-                                        ])
-                                    }))])
+                                    concat([
+                                        nest([concat(fields.iter().map(|(name, ty)| {
+                                            concat([
+                                                hardline(),
+                                                nest([
+                                                    text(name),
+                                                    line(),
+                                                    text(":"),
+                                                    line(),
+                                                    ty.to_doc(false),
+                                                    text(";"),
+                                                ]),
+                                            ])
+                                        }))]),
+                                        hardline(),
+                                    ])
                                 },
-                                hardline(),
                                 text("}."),
                                 hardline(),
                                 text("Global Set Primitive Projections."),
@@ -1435,24 +1438,27 @@ impl TopLevelItem {
                             text("{"),
                         ]),
                     ]),
+                    line(),
                     if fields.is_empty() {
                         nil()
                     } else {
-                        nest(fields.iter().map(|(name, ty)| {
-                            group([
-                                hardline(),
-                                nest([
-                                    text(name),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    ty.to_doc(false),
-                                    text(";"),
-                                ]),
-                            ])
-                        }))
+                        concat([
+                            nest(fields.iter().map(|(name, ty)| {
+                                group([
+                                    hardline(),
+                                    nest([
+                                        text(name),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        ty.to_doc(false),
+                                        text(";"),
+                                    ]),
+                                ])
+                            })),
+                            hardline(),
+                        ])
                     },
-                    hardline(),
                     text("}."),
                     hardline(),
                     text("Global Set Primitive Projections."),
@@ -1544,24 +1550,26 @@ impl TopLevelItem {
                             text("t"),
                             line(),
                             nest([text(":"), line(), text("Set"), text(" :=")]),
-                        ]),
-                        line(),
-                        nest([
-                            text("{"),
                             line(),
-                            if fields.is_empty() {
-                                nil()
-                            } else {
+                            text("{"),
+                        ]),
+                        if fields.is_empty() {
+                            line()
+                        } else {
+                          concat([
+                            nest([
+                                hardline(),
                                 intersperse(
                                     fields.iter().map(|ty| {
                                         nest([text("_ :"), line(), ty.to_doc(false), text(";")])
                                     }),
-                                    [line()],
-                                )
-                            },
-                            text("}"),
-                        ]),
-                        text("."),
+                                    [hardline()],
+                                ),
+                            ]),
+                            hardline()
+                          ])
+                        },
+                        text("}."),
                         hardline(),
                         text("Global Set Primitive Projections."),
                     ]),
