@@ -40,11 +40,8 @@ examples/error_handling/unpacking_options_and_defaults_via_or.v
 examples/error_handling/unpacking_options_via_question_mark.v
 examples/error_handling/wrapping_errors.v
 examples/expressions/blocks.v
-examples/flow_of_control/for_and_iterators_into_iter.v
 examples/flow_of_control/for_and_iterators_iter_mut.v
 examples/flow_of_control/for_and_iterators_iter.v
-examples/flow_of_control/for_and_range_completely_inclusive.v
-examples/flow_of_control/for_and_range_inclusive_to_exclusive.v
 examples/flow_of_control/if_else.v
 examples/flow_of_control/if_let_challenge.v
 examples/flow_of_control/if_let_match_enum_values.v

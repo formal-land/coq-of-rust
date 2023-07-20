@@ -21,15 +21,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* lines :=
     let* α0 := "./hosts".["to_string"] in
     file_io_read_lines.read_lines α0 in
-  let* α0 := LangItem lines in
+  let* α0 := lines.["into_iter"] in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := line; |} =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some line =>
           let* _ :=
             let* _ :=
               let* α0 := line.["unwrap"] in

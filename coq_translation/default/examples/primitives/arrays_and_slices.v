@@ -93,7 +93,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   let* _ :=
     arrays_and_slices.analyze_slice
-      (addr_of ys[Range {| Range.start := 1; Range.end := 4; |}]) in
+      (addr_of ys[{| std.ops.Range.start := 1; std.ops.Range._end := 4; |}]) in
   let empty_array := [ ] in
   let* _ :=
     match (addr_of (addr_of empty_array), addr_of (addr_of [ ])) with
@@ -118,7 +118,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     end in
   let* _ :=
     match
-      (addr_of (addr_of empty_array), addr_of (addr_of [ ][RangeFull {|  |}]))
+      (addr_of (addr_of empty_array),
+        addr_of (addr_of [ ][LanguageItem.RangeFull {|  |}]))
     with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
@@ -141,15 +142,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     end in
   let* α0 := xs.["len"] in
   let* α1 := α0.["add"] 1 in
-  let* α2 := LangItem Range {| Range.start := 0; Range.end := α1; |} in
+  let* α2 :=
+    {| std.ops.Range.start := 0; std.ops.Range._end := α1; |}.["into_iter"] in
   match α2 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := i; |} =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some i =>
           let* α0 := xs.["get"] i in
           match α0 with
           | core.option.Option.Some xval =>

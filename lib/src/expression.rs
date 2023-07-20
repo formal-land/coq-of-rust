@@ -592,6 +592,39 @@ fn mt_stmt(stmt: Stmt) -> Stmt {
     }
 }
 
+/// modifies the name of the identifier to avoid a collision with Coq keywords
+fn to_valid_coq_identifier(ident: String) -> String {
+    match ident.as_str() {
+        "end" => "_end".to_string(),
+        _ => ident,
+    }
+}
+/// decides how to compile an object of type LangItem, when it acts like a function
+/// in a function call
+fn compile_lang_item_in_a_call(lang_item: rustc_hir::LangItem, args: &[Expr]) -> Expr {
+    match lang_item {
+        rustc_hir::LangItem::RangeInclusiveNew => {
+            let func = Box::new(Expr::LocalVar(
+                "std.ops.RangeInclusive::[\"new\"]".to_string(),
+            ));
+            let args = args.to_vec();
+            Expr::Call { func, args }
+        }
+        _ => {
+            let object = Box::new(args[0].clone());
+            let func = lang_item.name().to_string();
+            let args = args
+                .get(1..)
+                .expect(
+                    "Expected at least one argument of a function call, \
+                    while compiling rustc_hir::QPath::LangItem in ExprKind::Path in ExprKind::Call",
+                )
+                .to_vec();
+            Expr::MethodCall { object, func, args }
+        }
+    }
+}
+
 pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
     match &expr.kind {
         ExprKind::ConstBlock(_anon_const) => Expr::LocalVar("ConstBlock".to_string()),
@@ -627,6 +660,9 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     fields: args,
                     struct_or_variant: StructOrVariant::of_qpath(env, &qpath),
                 },
+                ExprKind::Path(rustc_hir::QPath::LangItem(lang_item, _, _)) => {
+                    compile_lang_item_in_a_call(lang_item, &args)
+                }
                 _ => {
                     let func = Box::new(compile_expr(env, func));
                     Expr::Call { func, args }
@@ -813,7 +849,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             let fields = fields
                 .iter()
                 .map(|rustc_hir::ExprField { ident, expr, .. }| {
-                    let field = ident.name.to_string();
+                    let field = to_valid_coq_identifier(ident.name.to_string());
                     let expr = compile_expr(env, expr);
                     (field, expr)
                 })
