@@ -113,4 +113,4 @@ Module Impl_traits_Sheep_2.
 End Impl_traits_Sheep_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

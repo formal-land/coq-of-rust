@@ -49,7 +49,7 @@ End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* vec :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
     Slice::["into_vec"] α0 in

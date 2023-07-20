@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := 1.["add"] 2 in
@@ -71,7 +71,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           8
           LanguageItem.format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] tt in
+      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 AND 0101 is "; "
@@ -94,7 +94,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           8
           LanguageItem.format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] tt in
+      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 OR 0101 is "; "
@@ -117,7 +117,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           8
           LanguageItem.format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] tt in
+      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 XOR 0101 is "; "

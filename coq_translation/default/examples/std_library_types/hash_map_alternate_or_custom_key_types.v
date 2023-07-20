@@ -197,8 +197,8 @@ Definition try_logon
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* accounts := std.collections.hash.map.HashMap::["new"] tt in
+Definition main `{H : State.Trait} : M (H := H) unit :=
+  let* accounts := std.collections.hash.map.HashMap::["new"] in
   let account :=
     {|
       hash_map_alternate_or_custom_key_types.Account.username := "j.everyman";

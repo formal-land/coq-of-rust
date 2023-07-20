@@ -14,7 +14,7 @@ Definition division
     dividend.["div"] divisor.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _x := alloc.boxed.Box::["new"] 0 in
   let* _ := panic.division 3 0 in
   let* _ :=

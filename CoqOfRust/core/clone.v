@@ -15,7 +15,6 @@ pub trait Clone: Sized {
 *)
 Module Clone.
   Class Trait (Self : Set) : Set := {
-    clone : ref Self -> Self;
-    clone_from : mut_ref Self -> ref Self;
+    clone `{H : State.Trait} : ref Self -> M (H := H) Self;
   }.
 End Clone.

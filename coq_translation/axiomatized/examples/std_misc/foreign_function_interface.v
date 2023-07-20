@@ -3,11 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Error ForeignMod.
 
-Parameter cos : forall `{H : State.Trait}, foreign_function_interface.Complex
-    -> M (H := H) foreign_function_interface.Complex.
+Parameter cos : forall `{H : State.Trait},
+    foreign_function_interface.Complex ->
+    M (H := H) foreign_function_interface.Complex.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.
 
 Module Complex.
   Record t : Set := {
@@ -27,8 +28,9 @@ Definition Complex : Set := Complex.t.
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) foreign_function_interface.Complex.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) foreign_function_interface.Complex.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -58,9 +60,10 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
     core.fmt.Formatter "struct_parameter_for_fmt" := {
     Notation.double_colon := struct_parameter_for_fmt; }.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

@@ -141,7 +141,7 @@ Definition NonTermination `{State.Trait} {R A : Set} : StateMonad R A :=
 
 (* TODO: define for every (A : Set) in (Monad R A) *)
 (** the definition of a function representing the loop construction *)
-Definition loop `{State.Trait} {R  : Set} (m : Monad R unit) : Monad R unit :=
+Definition loop `{State.Trait} {R : Set} (m : Monad R unit) : Monad R unit :=
   fix F (fuel : nat) :=
     match fuel with
     | 0 => NonTermination

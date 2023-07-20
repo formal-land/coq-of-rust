@@ -87,7 +87,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* α0 := try_from_and_try_into.EvenNumber::["try_from"] 8 in
     match

@@ -10,7 +10,7 @@ Definition coerce_static
   Pure (addr_of scoping_rules_lifetimes_reference_lifetime_static.NUM).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let static_string := "I'm in read-only memory" in
     let* _ :=

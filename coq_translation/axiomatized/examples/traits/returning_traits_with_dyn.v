@@ -53,8 +53,9 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
-Parameter random_animal : forall `{H : State.Trait}, f64
-    -> M (H := H) (alloc.boxed.Box TraitObject).
+Parameter random_animal : forall `{H : State.Trait},
+    f64 ->
+    M (H := H) (alloc.boxed.Box TraitObject).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

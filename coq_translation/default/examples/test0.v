@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition message `{H : State.Trait} : ref str := run (Pure "Hello, World!").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of test0.message) in

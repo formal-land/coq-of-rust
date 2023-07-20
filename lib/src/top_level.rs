@@ -775,8 +775,8 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     line(),
                     monadic_typeclass_parameter(),
                     text(","),
-                    line(),
                 ]),
+                line(),
                 // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
                 match strct_args.ty_params {
                     None => nil(),
@@ -828,25 +828,15 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     )),
                 },
                 // argument types
-                if strct_args.args.is_empty() {
-                    text("unit")
-                } else {
-                    intersperse(
-                        strct_args
-                            .args
-                            .iter()
-                            .map(|(_, ty)| nest([ty.to_doc(false)])),
-                        [text("->"), line()],
-                    )
-                },
-                line(),
+                concat(
+                    strct_args
+                        .args
+                        .iter()
+                        .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
+                ),
                 // return type
-                nest([
-                    text("->"),
-                    line(),
-                    strct_args.ret_ty.to_doc(false),
-                    text("."),
-                ]),
+                strct_args.ret_ty.to_doc(false),
+                text("."),
             ])])
         } else {
             nest([
@@ -900,25 +890,20 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                             },
                         )),
                     },
-                    if strct_args.args.is_empty() {
-                        text("(_ : unit)")
-                    } else {
-                        intersperse(
-                            strct_args.args.iter().map(|(name, ty)| {
-                                nest([
-                                    text("("),
-                                    text(name),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    ty.to_doc(false),
-                                    text(")"),
-                                ])
-                            }),
-                            [line()],
-                        )
-                    },
-                    line(),
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        concat([
+                            nest([
+                                text("("),
+                                text(name),
+                                line(),
+                                text(":"),
+                                line(),
+                                ty.to_doc(false),
+                                text(")"),
+                            ]),
+                            line(),
+                        ])
+                    })),
                     nest([
                         text(":"),
                         line(),
@@ -1869,23 +1854,19 @@ impl TopLevelItem {
                                         nest([
                                             nest([
                                                 text("Notation.dot"),
-                                                if args.is_empty() {
-                                                    concat([line(), text("tt")])
-                                                } else {
-                                                    concat(args.iter().map(|(name, ty)| {
-                                                        concat([
+                                                concat(args.iter().map(|(name, ty)| {
+                                                    concat([
+                                                        line(),
+                                                        nest([
+                                                            text("("),
+                                                            text(name),
                                                             line(),
-                                                            nest([
-                                                                text("("),
-                                                                text(name),
-                                                                line(),
-                                                                text(": "),
-                                                                ty.to_doc(false),
-                                                                text(")"),
-                                                            ]),
-                                                        ])
-                                                    }))
-                                                },
+                                                            text(": "),
+                                                            ty.to_doc(false),
+                                                            text(")"),
+                                                        ]),
+                                                    ])
+                                                })),
                                                 text(" :="),
                                             ]),
                                             line(),

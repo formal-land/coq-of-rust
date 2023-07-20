@@ -30,9 +30,10 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
     core.fmt.Formatter "debug_struct_field2_finish" := {
     Notation.double_colon := debug_struct_field2_finish; }.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -47,8 +48,9 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) box_stack_heap.Point.
+  Parameter clone : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) box_stack_heap.Point.
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -82,11 +84,10 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Parameter origin : forall `{H : State.Trait}, unit
-    -> M (H := H) box_stack_heap.Point.
+Parameter origin : forall `{H : State.Trait}, M (H := H) box_stack_heap.Point.
 
-Parameter boxed_origin : forall `{H : State.Trait}, unit
-    -> M (H := H) (alloc.boxed.Box box_stack_heap.Point).
+Parameter boxed_origin : forall `{H : State.Trait},
+    M (H := H) (alloc.boxed.Box box_stack_heap.Point).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

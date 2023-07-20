@@ -58,7 +58,7 @@ Definition old_enough
   (age.[0]).["ge"] 18.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let age := generics_new_type_idiom.Years.Build_t 5 in
   let* age_days := age.["to_days"] in
   let* _ :=

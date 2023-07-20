@@ -194,7 +194,7 @@ Definition eat
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let apple := core.option.Option.Some combinators_map.Food.Apple in
   let carrot := core.option.Option.Some combinators_map.Food.Carrot in
   let potato := core.option.Option.None in

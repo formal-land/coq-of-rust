@@ -46,7 +46,7 @@ Definition try_division
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ := option.try_division 4 2 in
   let* _ := option.try_division 1 0 in
   let none := core.option.Option.None in

@@ -106,7 +106,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let unit := clone.Unit.Build in
   let copied_unit := unit in
   let* _ :=

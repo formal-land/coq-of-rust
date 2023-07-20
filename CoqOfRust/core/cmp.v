@@ -1,8 +1,7 @@
-Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.option.
-Require Import CoqOfRust._std.marker.
+Require CoqOfRust.core.option.
+Require Import CoqOfRust.core.marker.
 
 (* ********STRUCTS******** *)
 (* [x] Reverse *)
@@ -37,33 +36,35 @@ Module PartialEq.
     Rhs := defaultType Rhs Self;
 
     eq `{State.Trait} : ref Self -> ref Rhs -> M bool;
-    ne `{State.Trait} : ref Self -> ref Rhs -> M bool;
   }.
 
   Global Instance Method_eq `{State.Trait} `(Trait) : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   Global Instance Method_ne `{State.Trait} `(Trait) : Notation.Dot "ne" := {
-    Notation.dot := ne;
+    Notation.dot x y :=
+      let* is_eq := eq x y in
+      Pure (negb is_eq);
   }.
 End PartialEq.
 
 Module PartialOrd.
   Class Trait (Self : Set) (Rhs : option Set) : Set := {
     Rhs := defaultType Rhs Self;
+    partial_cmp `{State.Trait} :
+      ref Self -> ref Self -> M (core.option.Option (Ordering.t));
 
-    partial_cmp `{State.Trait} : ref Self -> ref Self -> M (option (Ordering.t));
-    lt `{State.Trait} : ref Self -> ref Rhs -> M bool;
+    (* lt `{State.Trait} : ref Self -> ref Rhs -> M bool;
     le `{State.Trait} : ref Self -> ref Rhs -> M bool;
     gt `{State.Trait} : ref Self -> ref Rhs -> M bool;
-    ge `{State.Trait} : ref Self -> ref Rhs -> M bool;
+    ge `{State.Trait} : ref Self -> ref Rhs -> M bool; *)
   }.
 
   Global Instance Method_partial_cmp `{State.Trait} `(Trait) :
     Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
   }.
-  Global Instance Method_lt `{State.Trait} `(Trait) : Notation.Dot "lt" := {
+  (* Global Instance Method_lt `{State.Trait} `(Trait) : Notation.Dot "lt" := {
     Notation.dot := lt;
   }.
   Global Instance Method_le `{State.Trait} `(Trait) : Notation.Dot "le" := {
@@ -74,7 +75,7 @@ Module PartialOrd.
   }.
   Global Instance Method_ge `{State.Trait} `(Trait) : Notation.Dot "ge" := {
     Notation.dot := ge;
-  }.
+  }. *)
 End PartialOrd.
 
 (* 

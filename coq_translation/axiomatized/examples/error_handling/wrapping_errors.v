@@ -13,9 +13,10 @@ Definition DoubleError := DoubleError.t.
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -29,9 +30,10 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -45,8 +47,9 @@ End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
-  Parameter source : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (core.option.Option (ref TraitObject)).
+  Parameter source : forall `{H : State.Trait},
+      ref Self ->
+      M (H := H) (core.option.Option (ref TraitObject)).
   
   Global Instance Method_source `{H : State.Trait} : Notation.Dot "source" := {
     Notation.dot := source;
@@ -59,8 +62,9 @@ End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
   Definition Self := wrapping_errors.DoubleError.
   
-  Parameter from : forall `{H : State.Trait}, core.num.error.ParseIntError
-      -> M (H := H) wrapping_errors.DoubleError.
+  Parameter from : forall `{H : State.Trait},
+      core.num.error.ParseIntError ->
+      M (H := H) wrapping_errors.DoubleError.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -73,11 +77,13 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
   }.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.
 
-Parameter double_first : forall `{H : State.Trait}, alloc.vec.Vec (ref str)
-    -> M (H := H) (wrapping_errors.Result i32).
+Parameter double_first : forall `{H : State.Trait},
+    alloc.vec.Vec (ref str) ->
+    M (H := H) (wrapping_errors.Result i32).
 
-Parameter print : forall `{H : State.Trait}, wrapping_errors.Result i32
-    -> M (H := H) unit.
+Parameter print : forall `{H : State.Trait},
+    wrapping_errors.Result i32 ->
+    M (H := H) unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

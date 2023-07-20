@@ -12,7 +12,7 @@ Definition tri
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ := example01.id 0 in
   let* _ :=
     let* α0 := example01.id 0 in

@@ -18,7 +18,7 @@ End Color.
 Definition Color := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -57,7 +57,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           8
           LanguageItem.format_count::["Implied"]
           α1 in
-      let* α3 := LanguageItem.format_unsafe_arg::["new"] tt in
+      let* α3 := LanguageItem.format_unsafe_arg::["new"] in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "roses are #"; "
@@ -81,7 +81,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           8
           LanguageItem.format_count::["Implied"]
           α1 in
-      let* α3 := LanguageItem.format_unsafe_arg::["new"] tt in
+      let* α3 := LanguageItem.format_unsafe_arg::["new"] in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "violets are #"; "

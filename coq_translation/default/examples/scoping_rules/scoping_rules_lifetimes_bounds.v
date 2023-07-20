@@ -73,7 +73,7 @@ Definition print_ref
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let x := 7 in
   let ref_x := scoping_rules_lifetimes_bounds.Ref.Build_t (addr_of x) in
   let* _ := scoping_rules_lifetimes_bounds.print_ref (addr_of ref_x) in

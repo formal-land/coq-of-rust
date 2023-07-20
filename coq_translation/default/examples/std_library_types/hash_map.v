@@ -15,8 +15,8 @@ Definition call `{H : State.Trait} (number : ref str) : M (H := H) (ref str) :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* contacts := std.collections.hash.map.HashMap::["new"] tt in
+Definition main `{H : State.Trait} : M (H := H) unit :=
+  let* contacts := std.collections.hash.map.HashMap::["new"] in
   let* _ := contacts.["insert"] "Daniel" "798-1364" in
   let* _ := contacts.["insert"] "Ashley" "645-7689" in
   let* _ := contacts.["insert"] "Katie" "435-8291" in

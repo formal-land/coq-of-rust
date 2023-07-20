@@ -55,7 +55,7 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* α0 := introducing_question_mark.multiply "10" "2" in
     introducing_question_mark.print α0 in

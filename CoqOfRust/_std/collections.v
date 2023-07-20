@@ -1,8 +1,8 @@
 Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust._std.alloc.
-Require Import CoqOfRust._std.clone.
-Require Import CoqOfRust._std.cmp.
+Require Import CoqOfRust.core.clone.
+Require Import CoqOfRust.core.cmp.
 
 
 (* ********MODULES******** *)

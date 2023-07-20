@@ -21,7 +21,6 @@ Module Impl_associated_functions_and_methods_Point.
   
   Definition origin
       `{H : State.Trait}
-      (_ : unit)
       : M (H := H) associated_functions_and_methods.Point :=
     Pure
       {|
@@ -181,9 +180,9 @@ Module Impl_associated_functions_and_methods_Pair.
 End Impl_associated_functions_and_methods_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* rectangle :=
-    let* α0 := associated_functions_and_methods.Point::["origin"] tt in
+    let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 :=
       associated_functions_and_methods.Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *) in
     Pure
@@ -214,7 +213,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α2 in
     Pure tt in
   let* square :=
-    let* α0 := associated_functions_and_methods.Point::["origin"] tt in
+    let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 :=
       associated_functions_and_methods.Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *) in
     Pure

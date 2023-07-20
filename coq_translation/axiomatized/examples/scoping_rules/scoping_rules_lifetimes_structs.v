@@ -13,9 +13,10 @@ Definition Borrowed := Borrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   Definition Self := scoping_rules_lifetimes_structs.Borrowed.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -53,9 +54,10 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
     core.fmt.Formatter "debug_struct_field2_finish" := {
     Notation.double_colon := debug_struct_field2_finish; }.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -76,9 +78,10 @@ Definition Either := Either.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Definition Self := scoping_rules_lifetimes_structs.Either.
   
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
+  Parameter fmt : forall `{H : State.Trait},
+      ref Self ->
+      mut_ref core.fmt.Formatter ->
+      M (H := H) core.fmt.Result.
   
   Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -90,4 +93,4 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, unit -> M (H := H) unit.
+Parameter main : forall `{H : State.Trait}, M (H := H) unit.

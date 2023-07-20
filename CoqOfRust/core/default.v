@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.marker.
+Require Import CoqOfRust.core.marker.
 
 (* ********TRAITS******** *)
 (* 
@@ -14,7 +14,7 @@ pub trait Default: Sized {
 }
 *)
 Module Default.
-  Class Trait (Self : Set) : Set := { 
-    default : Self;
+  Class Trait (Self : Set) : Set := {
+    default `{H : State.Trait} : M Self;
   }.
 End Default.

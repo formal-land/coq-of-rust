@@ -971,12 +971,7 @@ impl Expr {
                 with_paren,
                 nest([
                     func.to_doc(true),
-                    line(),
-                    if args.is_empty() {
-                        text("tt")
-                    } else {
-                        intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()])
-                    },
+                    concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
             Expr::MethodCall { object, func, args } => paren(

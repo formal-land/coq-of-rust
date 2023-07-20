@@ -7,10 +7,10 @@ Definition call_me
     `{core.ops.function.Fn.Trait unit F}
     (f : F)
     : M (H := H) unit :=
-  let* _ := f tt in
+  let* _ := f in
   Pure tt.
 
-Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition function `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -21,7 +21,7 @@ Definition function `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let closure :=
     fun  =>
       let* _ :=

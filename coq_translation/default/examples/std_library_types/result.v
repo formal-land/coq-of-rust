@@ -175,7 +175,7 @@ Definition op `{H : State.Trait} (x : f64) (y : f64) : M (H := H) f64 :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := result.op 1 (* 1.0 *) 10 (* 10.0 *) in

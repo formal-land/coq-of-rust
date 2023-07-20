@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
+Definition main `{H : State.Trait} : M (H := H) unit := Pure tt.
 
 Definition foo `{H : State.Trait} (arg : i32) : M (H := H) i32 :=
   let* _ :=

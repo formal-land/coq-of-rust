@@ -57,7 +57,7 @@ Definition drink
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let water := core.option.Option.Some "water" in
   let lemonade := core.option.Option.Some "lemonade" in
   let void := core.option.Option.None in

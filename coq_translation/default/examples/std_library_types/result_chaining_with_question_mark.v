@@ -280,7 +280,7 @@ Definition op `{H : State.Trait} (x : f64) (y : f64) : M (H := H) unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     result_chaining_with_question_mark.checked.op 1 (* 1.0 *) 10 (* 10.0 *) in
   Pure tt.

@@ -4,7 +4,6 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main
     `{H : State.Trait}
-    (_ : unit)
     : M (H := H) (core.result.Result unit core.num.error.ParseIntError) :=
   let number_str := "10" in
   let* number :=
