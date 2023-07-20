@@ -433,12 +433,6 @@ Module core.
     Parameter assert_failed :
       forall `{State.Trait} {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},
       AssertKind -> ref T -> ref U -> option.Option fmt.Arguments -> M Empty_set.
-
-(*     Definition assert_failed
-      {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U}
-      (kind : AssertKind) (left : ref T) (right : ref U)
-      (args : option.Option fmt.Arguments) : Empty_set :=
-        assert_failed_inner kind left right args. *)
   End panicking.
 
   Module ops.
@@ -1587,10 +1581,3 @@ Module Impl_Iterator_for_RangeInclusive_Z.
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_RangeInclusive_Z.
-
-(* temporary argument specifications
- * it would probably be better if they were defined in the _std files
- *)
-
-Arguments core.option.Option.Some {_} _.
-Arguments core.option.Option.None {_}.
