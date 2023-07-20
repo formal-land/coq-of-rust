@@ -1419,6 +1419,48 @@ Module Impl_Slice.
   End Impl_Slice.
 End Impl_Slice.
 
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+Module Impl_Iterator_for_Slice_Iter.
+  Section Impl_Iterator_for_Slice_Iter.
+  Context {A : Set}.
+
+  Definition Self := std.slice.Iter A.
+
+  Definition Item := A.
+
+  Parameter next :
+    forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+    Notation.dot := next;
+  }.
+  End Impl_Iterator_for_Slice_Iter.
+End Impl_Iterator_for_Slice_Iter.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+(* this should be replaced with a generic instance of IntoIterator for Iterator *)
+Module Impl_IntoIterator_for_Slice_Iter.
+  Section Impl_IntoIterator_for_Slice_Iter.
+  Context {A : Set}.
+  Definition I := std.slice.Iter A.
+
+  Definition Self := I.
+
+  Definition Item := A.
+  Definition IntoIter := I.
+
+  Parameter into_iter :
+    forall `{State.Trait}, Self -> M IntoIter.
+
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" := {
+    Notation.dot := into_iter;
+  }.
+  End Impl_IntoIterator_for_Slice_Iter.
+End Impl_IntoIterator_for_Slice_Iter.
+
 Module Impl_IntoIter_for_Vec.
   Section Impl_IntoIter_for_Vec.
   Context {T (* A *) : Set}.
@@ -1453,7 +1495,8 @@ Module Impl_Iterator_for_Vec_IntoIter.
 
   Definition Item := T.
 
-  Parameter next : forall `{State.Trait} (self : mut_ref Self), M (core.option.Option T).
+  Parameter next : forall `{State.Trait} (self : mut_ref Self),
+    M (core.option.Option T).
 
   Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
@@ -1480,6 +1523,23 @@ Module Impl_IntoIter_for_Vec_IntoIter.
   }.
   End Impl_IntoIter_for_Vec_IntoIter.
 End Impl_IntoIter_for_Vec_IntoIter.
+
+(* TODO: a temporary implementation providing methods,
+         which can be called in Rust on Vec,
+         but only after applying a coercion *)
+Module Temp_Impl_for_Vec.
+  Section Temp_Impl_for_Vec.
+  Context {T : Set}.
+
+  Definition Self := Vec T None.
+
+  Parameter iter : forall `{State.Trait}, ref Self -> M (std.slice.Iter T).
+
+  Global Instance Method_iter `{State.Trait} : Notation.Dot "iter" := {
+    Notation.dot := iter;
+  }.
+  End Temp_Impl_for_Vec.
+End Temp_Impl_for_Vec.
 
 (* TODO: this is only a temporary implementation,
          it needs to be rewritten when all std files will be fixed *)
