@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let n := 1 in
   loop
-    let* α0 := n.["lt"] 101 in
+    (let* α0 := n.["lt"] 101 in
     if (α0 : bool) then
       let* _ :=
         let* α0 := n.["rem"] 15 in
@@ -58,7 +58,5 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       let* _ := n.["add_assign"] 1 in
       Pure tt
     else
-      let _ := Break in
-      Pure tt
-    from
-    while.
+      let* _ := Break in
+      Pure tt).

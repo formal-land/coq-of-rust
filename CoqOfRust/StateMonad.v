@@ -84,19 +84,26 @@ End Run.
 
 Module Exception.
   Inductive t (R : Set) : Set :=
+  (* exceptions with Rust equivalents *)
   | Return : R -> t R
   | Continue : t R
   | Break : t R
-  | Panic {A : Set} : A -> t R.
+  | Panic {A : Set} : A -> t R
+  (* exception for potential non-termination *)
+  | NonTermination : t R.
   Arguments Return {_}.
   Arguments Continue {_}.
   Arguments Break {_}.
   Arguments Panic {_ _}.
+  Arguments NonTermination {_}.
 End Exception.
 Definition Exception := Exception.t.
 
+Definition StateMonad `{State.Trait} (R A : Set) : Set :=
+  State -> RawMonad ((A + Exception R) * State).
+
 Definition Monad `{State.Trait} (R A : Set) : Set :=
-  nat -> State -> RawMonad ((A + Exception R) * State).
+  nat -> StateMonad R A.
 
 Definition M `{State.Trait} (A : Set) : Set :=
   Monad Empty_set A.
@@ -112,3 +119,43 @@ Definition bind `{State.Trait} {R A B : Set}
   | inl v => e2 v fuel s
   | inr e => RawMonad.Pure (inr e, s)
   end).
+
+Module Notations.
+  Notation "'let*' a := b 'in' c" :=
+    (bind b (fun a => c))
+      (at level 200, b at level 100, a name).
+End Notations.
+Import Notations.
+
+Definition Return `{State.Trait} {R A : Set} (r : R) : Monad R A :=
+  fun _ s => RawMonad.Pure (inr (Exception.Return r), s).
+Definition Continue `{State.Trait} {R A : Set} : Monad R A :=
+  fun _ s => RawMonad.Pure (inr Exception.Continue, s).
+Definition Break `{State.Trait} {R A : Set} : Monad R A :=
+  fun _ s => RawMonad.Pure (inr Exception.Break, s).
+Definition Panic `{State.Trait} {R A B : Set} (a : A) : Monad R B :=
+  fun _ s => RawMonad.Pure (inr (Exception.Panic a), s).
+
+Definition NonTermination `{State.Trait} {R A : Set} : StateMonad R A :=
+  fun s => RawMonad.Pure (inr Exception.NonTermination, s).
+
+(* TODO: define for every (A : Set) in (Monad R A) *)
+(** the definition of a function representing the loop construction *)
+Definition loop `{State.Trait} {R : Set} (m : Monad R unit) : Monad R unit :=
+  fix F (fuel : nat) :=
+    match fuel with
+    | 0 => NonTermination
+    | S fuel' => fun s =>
+      RawMonad.smart_bind (m fuel s) (fun '(v, s) =>
+        match v with
+        (* only Break ends the loop *)
+        | inl tt                 => F fuel' s
+        | inr Exception.Continue => F fuel' s
+        | inr Exception.Break    => RawMonad.Pure (inl tt, s)
+        (* every other exception is kept *)
+        | inr (Exception.Return _)
+        | inr (Exception.Panic _)
+        | inr Exception.NonTermination => RawMonad.Pure (v, s)
+        end
+      )
+    end.

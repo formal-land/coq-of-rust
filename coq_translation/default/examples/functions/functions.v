@@ -70,15 +70,13 @@ Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
   match α1 with
   | iter =>
     loop
-      let* _ :=
+      (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Pure Break
+        | None => Break
         | Some {| Some.0 := n; |} =>
           let* _ := functions.fizzbuzz n in
           Pure tt
         end in
-      Pure tt
-      from
-      for
+      Pure tt)
   end.

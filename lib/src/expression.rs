@@ -31,6 +31,14 @@ pub struct MatchArm {
     body: Expr,
 }
 
+/// [LoopControlFlow] represents the expressions responsible for
+/// the flow of control in a loop
+#[derive(Clone, Debug)]
+pub(crate) enum LoopControlFlow {
+    Continue,
+    Break,
+}
+
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Clone, Debug)]
 pub(crate) enum Expr {
@@ -104,6 +112,7 @@ pub(crate) enum Expr {
         base: Box<Expr>,
         index: Box<Expr>,
     },
+    ControlFlow(LoopControlFlow),
     StructStruct {
         path: Path,
         fields: Vec<(String, Expr)>,
@@ -462,6 +471,11 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 fresh_vars,
             )
         }),
+        // control flow expressions are responsible for side effects, so they are monadic already
+        Expr::ControlFlow(lcf_expression) => (
+            Stmt::Expr(Box::new(Expr::ControlFlow(lcf_expression))),
+            fresh_vars,
+        ),
         Expr::StructStruct {
             path,
             fields,
@@ -783,8 +797,8 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             compile_qpath(env, qpath)
         }
         ExprKind::AddrOf(_, _, expr) => Expr::AddrOf(Box::new(compile_expr(env, expr))),
-        ExprKind::Break(_, _) => Expr::LocalVar("Break".to_string()),
-        ExprKind::Continue(_) => Expr::LocalVar("Continue".to_string()),
+        ExprKind::Break(_, _) => Expr::ControlFlow(LoopControlFlow::Break),
+        ExprKind::Continue(_) => Expr::ControlFlow(LoopControlFlow::Continue),
         ExprKind::Ret(expr) => {
             let func = Box::new(Expr::LocalVar("Return".to_string()));
             let args = match expr {
@@ -888,6 +902,15 @@ impl MatchArm {
             line(),
             self.body.to_doc(false),
         ]);
+    }
+}
+
+impl LoopControlFlow {
+    pub fn to_doc(&self) -> Doc {
+        match self {
+            LoopControlFlow::Break => text("Break"),
+            LoopControlFlow::Continue => text("Continue"),
+        }
     }
 }
 
@@ -1019,17 +1042,12 @@ impl Expr {
                     nest([text("else"), hardline(), failure.to_doc(false)]),
                 ]),
             ),
-            Expr::Loop { body, loop_source } => paren(
+            Expr::Loop {
+                body, /*loop_source*/
+                ..
+            } => paren(
                 with_paren,
-                nest([
-                    text("loop"),
-                    line(),
-                    body.to_doc(),
-                    line(),
-                    text("from"),
-                    line(),
-                    text(loop_source),
-                ]),
+                nest([text("loop"), line(), paren(true, body.to_doc())]),
             ),
             Expr::Match { scrutinee, arms } => group([
                 group([
@@ -1071,6 +1089,7 @@ impl Expr {
             Expr::Index { base, index } => {
                 nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
             }
+            Expr::ControlFlow(lcf_expression) => lcf_expression.to_doc(),
             Expr::StructStruct {
                 path,
                 fields,

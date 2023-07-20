@@ -33,10 +33,10 @@ Module tests.
     match α0 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := _; |} =>
             let* _ :=
               let* α0 := "Ferris
@@ -45,9 +45,7 @@ Module tests.
               α1.["expect"] "Could not write to ferris.txt" in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end.
   
   Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -61,10 +59,10 @@ Module tests.
     match α0 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := _; |} =>
             let* _ :=
               let* α0 := "Corro
@@ -73,9 +71,7 @@ Module tests.
               α1.["expect"] "Could not write to ferris.txt" in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end.
 End tests.
 
@@ -90,10 +86,10 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   match α0 with
   | iter =>
     loop
-      let* _ :=
+      (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Pure Break
+        | None => Break
         | Some {| Some.0 := _; |} =>
           let* _ :=
             let* α0 := "Ferris
@@ -102,9 +98,7 @@ Definition test_file `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             α1.["expect"] "Could not write to ferris.txt" in
           Pure tt
         end in
-      Pure tt
-      from
-      for
+      Pure tt)
   end.
 
 Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
@@ -118,10 +112,10 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   match α0 with
   | iter =>
     loop
-      let* _ :=
+      (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Pure Break
+        | None => Break
         | Some {| Some.0 := _; |} =>
           let* _ :=
             let* α0 := "Corro
@@ -130,7 +124,5 @@ Definition test_file_also `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             α1.["expect"] "Could not write to ferris.txt" in
           Pure tt
         end in
-      Pure tt
-      from
-      for
+      Pure tt)
   end.

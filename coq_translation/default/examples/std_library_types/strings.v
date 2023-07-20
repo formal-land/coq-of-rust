@@ -28,10 +28,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     match α2 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := word; |} =>
             let* _ :=
               let* _ :=
@@ -45,9 +45,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
               Pure tt in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   let* chars :=
     let* α0 := pangram.["chars"] in
@@ -60,18 +58,16 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     match α0 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := c; |} =>
             let* _ := string.["push"] c in
             let* _ := string.["push_str"] ", " in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   let chars_to_trim := addr_of [ " "%char; ","%char ] in
   let* trimmed_str := string.["trim_matches"] chars_to_trim in

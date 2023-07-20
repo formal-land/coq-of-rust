@@ -348,10 +348,10 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
       match α3 with
       | iter =>
         loop
-          let* _ :=
+          (let* _ :=
             let* α0 := LangItem (addr_of iter) in
             match α0 with
-            | None => Pure Break
+            | None => Break
             | Some {| Some.0 := (ai, bi); |} =>
               let* _ :=
                 let* α0 := ai.["ct_eq"] bi in
@@ -359,9 +359,7 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
                 x.["bitand_assign"] α1 in
               Pure tt
             end in
-          Pure tt
-          from
-          for
+          Pure tt)
       end in
     x.["into"].
   
@@ -1793,7 +1791,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 8 in
+        (let* α0 := pow.["lt"] 8 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := ltb.["shr"] pow in
@@ -1801,17 +1799,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* bit :=
       let* α0 := ltb.["not"] in
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 8 in
+        (let* α0 := pow.["lt"] 8 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := bit.["shr"] pow in
@@ -1819,10 +1815,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
   
@@ -1852,7 +1846,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 16 in
+        (let* α0 := pow.["lt"] 16 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := ltb.["shr"] pow in
@@ -1860,17 +1854,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* bit :=
       let* α0 := ltb.["not"] in
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 16 in
+        (let* α0 := pow.["lt"] 16 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := bit.["shr"] pow in
@@ -1878,10 +1870,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
   
@@ -1911,7 +1901,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 32 in
+        (let* α0 := pow.["lt"] 32 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := ltb.["shr"] pow in
@@ -1919,17 +1909,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* bit :=
       let* α0 := ltb.["not"] in
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 32 in
+        (let* α0 := pow.["lt"] 32 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := bit.["shr"] pow in
@@ -1937,10 +1925,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
   
@@ -1970,7 +1956,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 64 in
+        (let* α0 := pow.["lt"] 64 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := ltb.["shr"] pow in
@@ -1978,17 +1964,15 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* bit :=
       let* α0 := ltb.["not"] in
       gtb.["bitand"] α0 in
     let pow := 1 in
     let* _ :=
       loop
-        let* α0 := pow.["lt"] 64 in
+        (let* α0 := pow.["lt"] 64 in
         if (α0 : bool) then
           let* _ :=
             let* α0 := bit.["shr"] pow in
@@ -1996,10 +1980,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let* _ := pow.["add_assign"] pow in
           Pure tt
         else
-          let _ := Break in
-          Pure tt
-        from
-        while in
+          let* _ := Break in
+          Pure tt) in
     let* α0 := bit.["bitand"] 1 in
     subtle.Choice::["from"] (cast α0 u8).
   

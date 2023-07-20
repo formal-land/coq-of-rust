@@ -24,23 +24,21 @@ Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
     match α0 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := i; |} =>
             let* addition :=
               let* α0 := i.["rem"] 2 in
               let* α1 := α0.["eq"] 1 in
               match α1 with
               | true => Pure i
-              | false => Pure Continue
+              | false => Continue
               end in
             let* _ := acc.["add_assign"] addition in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   Pure acc.

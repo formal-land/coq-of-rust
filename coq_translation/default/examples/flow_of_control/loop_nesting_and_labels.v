@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   let* _ :=
     loop
-      let* _ :=
+      (let* _ :=
         let* _ :=
           let* α0 :=
             format_arguments::["new_const"]
@@ -15,7 +15,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
         Pure tt in
       let* _ :=
         loop
-          let* _ :=
+          (let* _ :=
             let* _ :=
               let* α0 :=
                 format_arguments::["new_const"]
@@ -23,10 +23,8 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
               std.io.stdio._print α0 in
             Pure tt in
-          let _ := Break in
-          Pure tt
-          from
-          loop in
+          let* _ := Break in
+          Pure tt) in
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -35,9 +33,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in
-      Pure tt
-      from
-      loop in
+      Pure tt) in
   let* _ :=
     let* _ :=
       let* α0 :=

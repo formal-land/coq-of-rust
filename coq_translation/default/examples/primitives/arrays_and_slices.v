@@ -145,10 +145,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
   match α2 with
   | iter =>
     loop
-      let* _ :=
+      (let* _ :=
         let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | None => Pure Break
+        | None => Break
         | Some {| Some.0 := i; |} =>
           let* α0 := xs.["get"] i in
           match α0 with
@@ -175,7 +175,5 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             Pure tt
           end
         end in
-      Pure tt
-      from
-      for
+      Pure tt)
   end.

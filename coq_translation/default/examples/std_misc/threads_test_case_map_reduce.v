@@ -20,10 +20,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     match α1 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := (i, data_segment); |} =>
             let* _ :=
               let* _ :=
@@ -66,9 +66,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
               children.["push"] α0 in
             Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   let* final_result :=
     let* α0 := children.["into_iter"] in

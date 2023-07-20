@@ -10,10 +10,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     match α0 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := line; |} =>
             let* α0 := let_if core.result.Result.Ok ip := line in
             if (α0 : bool) then
@@ -31,9 +31,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
             else
               Pure tt
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end
   else
     Pure tt.

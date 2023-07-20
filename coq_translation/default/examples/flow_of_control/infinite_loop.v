@@ -13,7 +13,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   loop
-    let* _ := count.["add_assign"] 1 in
+    (let* _ := count.["add_assign"] 1 in
     let* _ :=
       let* α0 := count.["eq"] 3 in
       if (α0 : bool) then
@@ -23,7 +23,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
             std.io.stdio._print α0 in
           Pure tt in
-        let _ := Continue in
+        let* _ := Continue in
         Pure tt
       else
         Pure tt in
@@ -45,9 +45,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in
-      let _ := Break in
+      let* _ := Break in
       Pure tt
     else
-      Pure tt
-    from
-    loop.
+      Pure tt).

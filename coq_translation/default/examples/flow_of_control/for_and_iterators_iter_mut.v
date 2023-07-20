@@ -12,10 +12,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     match α1 with
     | iter =>
       loop
-        let* _ :=
+        (let* _ :=
           let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | None => Pure Break
+          | None => Break
           | Some {| Some.0 := name; |} =>
             let* α0 :=
               match name with
@@ -24,9 +24,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
               end in
             assign name.["deref"] α0
           end in
-        Pure tt
-        from
-        for
+        Pure tt)
     end in
   let* _ :=
     let* _ :=

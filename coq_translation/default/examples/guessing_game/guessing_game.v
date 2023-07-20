@@ -15,7 +15,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
     let* α1 := LangItem 1 100 in
     α0.["gen_range"] α1 in
   loop
-    let* _ :=
+    (let* _ :=
       let* _ :=
         let* α0 :=
           format_arguments::["new_const"]
@@ -33,7 +33,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       let* α1 := α0.["parse"] in
       match α1 with
       | core.result.Result.Ok num => Pure num
-      | core.result.Result.Err _ => Pure Continue
+      | core.result.Result.Err _ => Continue
       end in
     let* _ :=
       let* _ :=
@@ -68,8 +68,6 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in
-      let _ := Break in
+      let* _ := Break in
       Pure tt
-    end
-    from
-    loop.
+    end).
