@@ -7,7 +7,7 @@ Definition apply
     `{core.ops.function.FnOnce.Trait unit F}
     (f : F)
     : M (H := H) unit :=
-  let* _ := f tt in
+  let* _ := f in
   Pure tt.
 
 Definition apply_to_3
@@ -19,7 +19,7 @@ Definition apply_to_3
   f 3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let greeting := "hello" in
   let* farewell := "goodbye".["to_owned"] in
   let diary :=

@@ -1,7 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust._std.pin.
-Require Import CoqOfRust._std.cmp.
-Require Import CoqOfRust._std.marker.
+Require Import CoqOfRust.core.cmp.
+Require Import CoqOfRust.core.marker.
 
 
 (* ********ENUMS******** *)

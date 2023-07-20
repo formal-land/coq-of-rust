@@ -3226,7 +3226,7 @@ Module xts.
   Module ContractsApi.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
-      _phantom : core.marker.PhantomData (unit -> (C * E));
+      _phantom : core.marker.PhantomData ((C * E));
     }.
     
     Global Instance Get_client : Notation.Dot "client" := {
@@ -4937,7 +4937,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 Module ContractsApi.
   Record t : Set := {
     client : subxt.client.online_client.OnlineClient C;
-    _phantom : core.marker.PhantomData (unit -> (C * E));
+    _phantom : core.marker.PhantomData ((C * E));
   }.
   
   Global Instance Get_client : Notation.Dot "client" := {
@@ -5143,7 +5143,7 @@ Definition Signer : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
 Definition INIT `{H : State.Trait} : std.sync.once.Once :=
-  run (std.sync.once.Once::["new"] tt).
+  run (std.sync.once.Once::["new"]).
 
 Definition
     LOG_PREFIX
@@ -5167,8 +5167,7 @@ Definition
       (core.cell.RefCell alloc.string.String) :=
   run
     ((std.sys.common.thread_local.fast_local.Key
-          (core.cell.RefCell alloc.string.String))::["new"]
-      tt).
+          (core.cell.RefCell alloc.string.String))::["new"]).
 
 Parameter log_prefix : forall `{H : State.Trait},
     M (H := H) alloc.string.String.

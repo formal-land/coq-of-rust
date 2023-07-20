@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* path := std.path.Path::["new"] "hello.txt" in
   let* display := path.["display"] in
   let* file :=
@@ -18,7 +18,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
       core.panicking.panic_fmt α2
     | core.result.Result.Ok file => Pure file
     end in
-  let* s := alloc.string.String::["new"] tt in
+  let* s := alloc.string.String::["new"] in
   let* α0 := file.["read_to_string"] (addr_of s) in
   match α0 with
   | core.result.Result.Err why =>

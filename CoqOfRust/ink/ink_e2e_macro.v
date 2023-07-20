@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module codegen.
   Definition BUILD_ONCE `{H : State.Trait} : std.sync.once.Once :=
-    run (std.sync.once.Once::["new"] tt).
+    run (std.sync.once.Once::["new"]).
   
   Definition
       ALREADY_BUILT_CONTRACTS
@@ -139,7 +139,7 @@ Module codegen.
 End codegen.
 
 Definition BUILD_ONCE `{H : State.Trait} : std.sync.once.Once :=
-  run (std.sync.once.Once::["new"] tt).
+  run (std.sync.once.Once::["new"]).
 
 Definition
     ALREADY_BUILT_CONTRACTS
@@ -189,8 +189,7 @@ Definition
           (core.cell.RefCell
             (std.collections.hash.map.HashMap
               alloc.string.String
-              alloc.string.String)))::["new"]
-      tt).
+              alloc.string.String)))::["new"]).
 
 Parameter already_built_contracts : forall `{H : State.Trait},
     M (H := H)

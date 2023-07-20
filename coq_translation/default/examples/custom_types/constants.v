@@ -9,7 +9,7 @@ Definition is_big `{H : State.Trait} (n : i32) : M (H := H) bool :=
   n.["gt"] constants.THRESHOLD.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let n := 16 in
   let* _ :=
     let* _ :=

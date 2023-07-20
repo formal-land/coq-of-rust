@@ -890,25 +890,20 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                             },
                         )),
                     },
-                    if strct_args.args.is_empty() {
-                        text("(_ : unit)")
-                    } else {
-                        intersperse(
-                            strct_args.args.iter().map(|(name, ty)| {
-                                nest([
-                                    text("("),
-                                    text(name),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    ty.to_doc(false),
-                                    text(")"),
-                                ])
-                            }),
-                            [line()],
-                        )
-                    },
-                    line(),
+                    concat(strct_args.args.iter().map(|(name, ty)| {
+                        concat([
+                            nest([
+                                text("("),
+                                text(name),
+                                line(),
+                                text(":"),
+                                line(),
+                                ty.to_doc(false),
+                                text(")"),
+                            ]),
+                            line(),
+                        ])
+                    })),
                     nest([
                         text(":"),
                         line(),
@@ -1859,23 +1854,19 @@ impl TopLevelItem {
                                         nest([
                                             nest([
                                                 text("Notation.dot"),
-                                                if args.is_empty() {
-                                                    concat([line(), text("tt")])
-                                                } else {
-                                                    concat(args.iter().map(|(name, ty)| {
-                                                        concat([
+                                                concat(args.iter().map(|(name, ty)| {
+                                                    concat([
+                                                        line(),
+                                                        nest([
+                                                            text("("),
+                                                            text(name),
                                                             line(),
-                                                            nest([
-                                                                text("("),
-                                                                text(name),
-                                                                line(),
-                                                                text(": "),
-                                                                ty.to_doc(false),
-                                                                text(")"),
-                                                            ]),
-                                                        ])
-                                                    }))
-                                                },
+                                                            text(": "),
+                                                            ty.to_doc(false),
+                                                            text(")"),
+                                                        ]),
+                                                    ])
+                                                })),
                                                 text(" :="),
                                             ]),
                                             line(),

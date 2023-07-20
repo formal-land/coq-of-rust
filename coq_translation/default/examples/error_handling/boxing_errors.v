@@ -115,11 +115,11 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
     Slice::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] tt in
+  let* empty := alloc.vec.Vec::["new"] in
   let* strings :=
     let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
     Slice::["into_vec"] α0 in

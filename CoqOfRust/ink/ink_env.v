@@ -2734,7 +2734,7 @@ Module call.
         call_flags : ink_env.backend.CallFlags;
         _return_type : ink_env.call.common.ReturnType R;
         exec_input : ink_env.call.execution_input.ExecutionInput Args;
-        _phantom : core.marker.PhantomData (unit -> E);
+        _phantom : core.marker.PhantomData (E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -3061,7 +3061,7 @@ Module call.
         call_flags : ink_env.backend.CallFlags;
         exec_input : Args;
         return_type : RetType;
-        _phantom : core.marker.PhantomData (unit -> E);
+        _phantom : core.marker.PhantomData (E);
       }.
       
       Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -3565,7 +3565,7 @@ Module call.
   
   Module common.
     Module ReturnType.
-      Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
+      Record t : Set := { _ : core.marker.PhantomData (T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -3717,7 +3717,7 @@ Module call.
     End Impl_ink_env_call_common_Set_T.
     
     Module Unset.
-      Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
+      Record t : Set := { _ : core.marker.PhantomData (T);}.
       
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
@@ -4015,7 +4015,7 @@ Module call.
         exec_input : ink_env.call.execution_input.ExecutionInput Args;
         salt_bytes : Salt;
         _return_type : ink_env.call.common.ReturnType R;
-        _phantom : core.marker.PhantomData (unit -> ContractRef);
+        _phantom : core.marker.PhantomData (ContractRef);
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -4181,7 +4181,7 @@ Module call.
         exec_input : Args;
         salt : Salt;
         return_type : RetType;
-        _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
+        _phantom : core.marker.PhantomData ((E * ContractRef));
       }.
       
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -5261,7 +5261,7 @@ Module call_builder.
       call_flags : ink_env.backend.CallFlags;
       _return_type : ink_env.call.common.ReturnType R;
       exec_input : ink_env.call.execution_input.ExecutionInput Args;
-      _phantom : core.marker.PhantomData (unit -> E);
+      _phantom : core.marker.PhantomData (E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -5587,7 +5587,7 @@ Module call_builder.
       call_flags : ink_env.backend.CallFlags;
       exec_input : Args;
       return_type : RetType;
-      _phantom : core.marker.PhantomData (unit -> E);
+      _phantom : core.marker.PhantomData (E);
     }.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -6093,7 +6093,7 @@ Module CallParams.
     call_flags : ink_env.backend.CallFlags;
     _return_type : ink_env.call.common.ReturnType R;
     exec_input : ink_env.call.execution_input.ExecutionInput Args;
-    _phantom : core.marker.PhantomData (unit -> E);
+    _phantom : core.marker.PhantomData (E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -6413,7 +6413,7 @@ Module CallBuilder.
     call_flags : ink_env.backend.CallFlags;
     exec_input : Args;
     return_type : RetType;
-    _phantom : core.marker.PhantomData (unit -> E);
+    _phantom : core.marker.PhantomData (E);
   }.
   
   Global Instance Get_call_type : Notation.Dot "call_type" := {
@@ -6906,7 +6906,7 @@ End
 
 Module common.
   Module ReturnType.
-    Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
+    Record t : Set := { _ : core.marker.PhantomData (T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -7055,7 +7055,7 @@ Module common.
   End Impl_ink_env_call_common_Set_T_2.
   
   Module Unset.
-    Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
+    Record t : Set := { _ : core.marker.PhantomData (T);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -7207,7 +7207,7 @@ Module common.
 End common.
 
 Module ReturnType.
-  Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
+  Record t : Set := { _ : core.marker.PhantomData (T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -7356,7 +7356,7 @@ Module Impl_ink_env_call_common_Set_T_3.
 End Impl_ink_env_call_common_Set_T_3.
 
 Module Unset.
-  Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
+  Record t : Set := { _ : core.marker.PhantomData (T);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -7652,7 +7652,7 @@ Module create_builder.
       exec_input : ink_env.call.execution_input.ExecutionInput Args;
       salt_bytes : Salt;
       _return_type : ink_env.call.common.ReturnType R;
-      _phantom : core.marker.PhantomData (unit -> ContractRef);
+      _phantom : core.marker.PhantomData (ContractRef);
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -7814,7 +7814,7 @@ Module create_builder.
       exec_input : Args;
       salt : Salt;
       return_type : RetType;
-      _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
+      _phantom : core.marker.PhantomData ((E * ContractRef));
     }.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -8296,7 +8296,7 @@ Module CreateParams.
     exec_input : ink_env.call.execution_input.ExecutionInput Args;
     salt_bytes : Salt;
     _return_type : ink_env.call.common.ReturnType R;
-    _phantom : core.marker.PhantomData (unit -> ContractRef);
+    _phantom : core.marker.PhantomData (ContractRef);
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -8458,7 +8458,7 @@ Module CreateBuilder.
     exec_input : Args;
     salt : Salt;
     return_type : RetType;
-    _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
+    _phantom : core.marker.PhantomData ((E * ContractRef));
   }.
   
   Global Instance Get_code_hash : Notation.Dot "code_hash" := {
@@ -10300,7 +10300,7 @@ Module chain_extension.
   Module ChainExtensionMethod.
     Record t : Set := {
       func_id : u32;
-      state : core.marker.PhantomData (unit -> (I * O * ErrorCode));
+      state : core.marker.PhantomData ((I * O * ErrorCode));
     }.
     
     Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -10442,7 +10442,7 @@ Module chain_extension.
     
     Module HandleErrorCode.
       Record t : Set := {
-        error_code : core.marker.PhantomData (unit -> T);
+        error_code : core.marker.PhantomData (T);
       }.
       
       Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -10636,7 +10636,7 @@ End FromStatusCode.
 Module ChainExtensionMethod.
   Record t : Set := {
     func_id : u32;
-    state : core.marker.PhantomData (unit -> (I * O * ErrorCode));
+    state : core.marker.PhantomData ((I * O * ErrorCode));
   }.
   
   Global Instance Get_func_id : Notation.Dot "func_id" := {
@@ -10773,7 +10773,7 @@ Module state.
   
   Module HandleErrorCode.
     Record t : Set := {
-      error_code : core.marker.PhantomData (unit -> T);
+      error_code : core.marker.PhantomData (T);
     }.
     
     Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -10831,7 +10831,7 @@ End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 
 Module HandleErrorCode.
   Record t : Set := {
-    error_code : core.marker.PhantomData (unit -> T);
+    error_code : core.marker.PhantomData (T);
   }.
   
   Global Instance Get_error_code : Notation.Dot "error_code" := {
@@ -15058,11 +15058,11 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
 
 Definition OutputType : Set := list u8.
 
-Definition _ `{H : State.Trait} : unit -> unit :=
+Definition _ `{H : State.Trait} : unit :=
   run
     (Pure
       (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
+        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all in
         Pure tt)).
 
 Module TypeEq.
@@ -15128,11 +15128,11 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ `{H : State.Trait} : unit -> unit :=
+Definition _ `{H : State.Trait} : unit :=
   run
     (Pure
       (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
+        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all in
         Pure tt)).
 
 Module TypeEq.
@@ -15198,11 +15198,11 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ `{H : State.Trait} : unit -> unit :=
+Definition _ `{H : State.Trait} : unit :=
   run
     (Pure
       (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
+        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all in
         Pure tt)).
 
 Module TypeEq.
@@ -15268,11 +15268,11 @@ End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
 
 Definition OutputType : Set := list u8.
 
-Definition _ `{H : State.Trait} : unit -> unit :=
+Definition _ `{H : State.Trait} : unit :=
   run
     (Pure
       (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
+        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all in
         Pure tt)).
 
 Module TypeEq.
@@ -16529,8 +16529,7 @@ Definition
       (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
   run
     ((std.sys.common.thread_local.fast_local.Key
-          (core.cell.RefCell ink_env.engine.off_chain.EnvInstance))::["new"]
-      tt).
+          (core.cell.RefCell ink_env.engine.off_chain.EnvInstance))::["new"]).
 
 Module OffChainError.
   Inductive t : Set :=
@@ -17991,7 +17990,7 @@ Module topics.
   Module TopicsBuilder.
     Record t : Set := {
       backend : B;
-      state : core.marker.PhantomData (unit -> (S * E));
+      state : core.marker.PhantomData ((S * E));
     }.
     
     Global Instance Get_backend : Notation.Dot "backend" := {
@@ -19144,7 +19143,7 @@ End TopicsBuilderBackend.
 Module TopicsBuilder.
   Record t : Set := {
     backend : B;
-    state : core.marker.PhantomData (unit -> (S * E));
+    state : core.marker.PhantomData ((S * E));
   }.
   
   Global Instance Get_backend : Notation.Dot "backend" := {

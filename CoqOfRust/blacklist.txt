@@ -256,7 +256,7 @@ ink/ink_env.v
 ink/ink_macro.v
 ink/ink_primitives.v
 ink/ink_storage.v
-# ink/ink_storage_traits.v
+ink/ink_storage_traits.v
 # _std/error.v
 # _std/io.v
 _std/iter_type.v

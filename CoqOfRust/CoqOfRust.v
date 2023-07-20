@@ -175,19 +175,19 @@ Global Instance Method_ne_u64 `{State.Trait} :
    translated code, it always use the real definition (in [core] in
    this case).
 *)
-Module core.
-  Require Export CoqOfRust.core.default.
 
-  Module option.
-    Module Option.
-      Inductive t (T : Set) : Set :=
-      | None : t T
-      | Some : T -> t T.
-      Arguments None {T}.
-      Arguments Some {T} _.
-    End Option.
-    Definition Option := Option.t.
-  End option.
+Require CoqOfRust.core.clone.
+Require CoqOfRust.core.cmp.
+Require CoqOfRust.core.default.
+Require CoqOfRust.core.marker.
+Require CoqOfRust.core.option.
+
+Module core.
+  Export CoqOfRust.core.clone.
+  Export CoqOfRust.core.cmp.
+  Export CoqOfRust.core.default.
+  Export CoqOfRust.core.marker.
+  Export CoqOfRust.core.option.
 
   Module result.
     Module Result.
@@ -906,8 +906,6 @@ Require CoqOfRust._std.borrow.
 Require CoqOfRust._std.boxed.
 Require CoqOfRust._std.cell.
 Require CoqOfRust._std.char.
-Require CoqOfRust._std.clone.
-Require CoqOfRust._std.cmp.
 Require CoqOfRust._std.collections.
 Require CoqOfRust._std.convert.
 Require CoqOfRust._std.env.
@@ -922,12 +920,10 @@ Require CoqOfRust._std.intrinsics.
 Require CoqOfRust._std.io.
 (* Require CoqOfRust._std.iter. *)
 (* Require Import CoqOfRust._std.iter_type. *)
-Require Import CoqOfRust._std.marker.
 Require Import CoqOfRust._std.mem.
 (* Require Import CoqOfRust._std.net. *)
 Require Import CoqOfRust._std.num.
 Require Import CoqOfRust._std.ops.
-Require Import CoqOfRust._std.option.
 (* Require Import CoqOfRust._std.os. *)
 Require Import CoqOfRust._std.panic.
 Require Import CoqOfRust._std.path.
@@ -960,8 +956,8 @@ Module std.
   Module boxed := _std.boxed.
   Module cell := _std.cell.
   Module char := _std.char.
-  Module clone := _std.clone.
-  Module cmp := _std.cmp.
+  Module clone := core.clone.
+  Module cmp := core.cmp.
   Module collections := _std.collections.
   Module convert := _std.convert.
   Module env := _std.env.
@@ -975,12 +971,10 @@ Module std.
   Module intrinsics := _std.intrinsics.
   Module io := _std.io.
   (* Module iter := _std.iter. *)
-  Module marker := _std.marker.
   Module mem := _std.mem.
   (* Module net := _std.net. *)
   Module num := _std.num.
   Module ops := _std.ops.
-  Module option := _std.option.
   (* Module os := _std.os. *)
   Module panic := _std.panic.
   Module path := _std.path.

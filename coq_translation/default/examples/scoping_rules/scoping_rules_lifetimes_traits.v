@@ -46,7 +46,7 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Definition default `{H : State.Trait} (_ : unit) : M (H := H) Self :=
+  Definition default `{H : State.Trait} : M (H := H) Self :=
     Pure {| Self.x := addr_of 10; |}.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
@@ -60,8 +60,8 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* b := core.default.Default.default tt in
+Definition main `{H : State.Trait} : M (H := H) unit :=
+  let* b := core.default.Default.default in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of b) in

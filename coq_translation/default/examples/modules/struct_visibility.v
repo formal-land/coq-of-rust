@@ -78,7 +78,7 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
 End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let open_box :=
     {| struct_visibility.my.OpenBox.contents := "public information"; |} in
   let* _ :=

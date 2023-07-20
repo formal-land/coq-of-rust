@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.marker.
+Require Import CoqOfRust.core.marker.
 
 (* NOTE:
 https://rust-lang.github.io/api-guidelines/future-proofing.html#sealed-traits-protect-against-downstream-implementations-c-sealed

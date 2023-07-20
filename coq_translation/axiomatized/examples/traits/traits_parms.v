@@ -31,7 +31,7 @@ Module SomeTrait.
       `{traits_parms.Tar.Trait SomeType} :
       Set := {
     SomeType := SomeType;
-    some_fn `{H : State.Trait} : unit -> (M (H := H) unit);
+    some_fn `{H : State.Trait} : (M (H := H) unit);
   }.
   
   Global Instance Method_SomeType `{H : State.Trait} `(Trait)

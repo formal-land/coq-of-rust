@@ -5,7 +5,7 @@ Module bump.
   Definition PAGE_SIZE `{H : State.Trait} : usize := run (64.["mul"] 1024).
   
   Definition INNER `{H : State.Trait} : ink_allocator.bump.InnerAlloc :=
-    run (ink_allocator.bump.InnerAlloc::["new"] tt).
+    run (ink_allocator.bump.InnerAlloc::["new"]).
   
   Module BumpAllocator.
     Inductive t : Set := Build.
@@ -168,7 +168,7 @@ End bump.
 Definition PAGE_SIZE `{H : State.Trait} : usize := run (64.["mul"] 1024).
 
 Definition INNER `{H : State.Trait} : ink_allocator.bump.InnerAlloc :=
-  run (ink_allocator.bump.InnerAlloc::["new"] tt).
+  run (ink_allocator.bump.InnerAlloc::["new"]).
 
 Module BumpAllocator.
   Inductive t : Set := Build.

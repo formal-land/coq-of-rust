@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.option.
+Require Import CoqOfRust.core.option.
 Require Import CoqOfRust._std.pin.
 Require Import CoqOfRust._std.task.
 

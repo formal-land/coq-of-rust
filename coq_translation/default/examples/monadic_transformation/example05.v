@@ -23,7 +23,7 @@ Module Impl_example05_Foo.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let foo := example05.Foo.Build_t 0 in
   let _ := foo.["plus1"] in
   Pure tt.

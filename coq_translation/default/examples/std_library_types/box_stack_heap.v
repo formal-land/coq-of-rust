@@ -95,10 +95,7 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
 
-Definition origin
-    `{H : State.Trait}
-    (_ : unit)
-    : M (H := H) box_stack_heap.Point :=
+Definition origin `{H : State.Trait} : M (H := H) box_stack_heap.Point :=
   Pure
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -107,7 +104,6 @@ Definition origin
 
 Definition boxed_origin
     `{H : State.Trait}
-    (_ : unit)
     : M (H := H) (alloc.boxed.Box box_stack_heap.Point) :=
   alloc.boxed.Box::["new"]
     {|
@@ -116,10 +112,10 @@ Definition boxed_origin
     |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* point := box_stack_heap.origin tt in
+Definition main `{H : State.Trait} : M (H := H) unit :=
+  let* point := box_stack_heap.origin in
   let* rectangle :=
-    let* α0 := box_stack_heap.origin tt in
+    let* α0 := box_stack_heap.origin in
     let* α1 := 4 (* 4.0 *).["neg"] in
     Pure
       {|
@@ -131,7 +127,7 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           |};
       |} in
   let* boxed_rectangle :=
-    let* α0 := box_stack_heap.origin tt in
+    let* α0 := box_stack_heap.origin in
     let* α1 := 4 (* 4.0 *).["neg"] in
     alloc.boxed.Box::["new"]
       {|
@@ -143,10 +139,10 @@ Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
           |};
       |} in
   let* boxed_point :=
-    let* α0 := box_stack_heap.origin tt in
+    let* α0 := box_stack_heap.origin in
     alloc.boxed.Box::["new"] α0 in
   let* box_in_a_box :=
-    let* α0 := box_stack_heap.boxed_origin tt in
+    let* α0 := box_stack_heap.boxed_origin in
     alloc.boxed.Box::["new"] α0 in
   let* _ :=
     let* _ :=

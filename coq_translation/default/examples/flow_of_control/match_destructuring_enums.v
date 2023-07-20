@@ -15,7 +15,7 @@ End Color.
 Definition Color := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let color := match_destructuring_enums.Color.RGB 122 17 40 in
   let* _ :=
     let* _ :=

@@ -6,7 +6,7 @@ Module lazy.
   Module mapping.
     Module Mapping.
       Record t : Set := {
-        _marker : core.marker.PhantomData (unit -> (K * V * KeyType));
+        _marker : core.marker.PhantomData ((K * V * KeyType));
       }.
       
       Global Instance Get__marker : Notation.Dot "_marker" := {
@@ -215,7 +215,7 @@ Module lazy.
   
   Module Lazy.
     Record t : Set := {
-      _marker : core.marker.PhantomData (unit -> (V * KeyType));
+      _marker : core.marker.PhantomData ((V * KeyType));
     }.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
@@ -392,7 +392,7 @@ End lazy.
 Module mapping.
   Module Mapping.
     Record t : Set := {
-      _marker : core.marker.PhantomData (unit -> (K * V * KeyType));
+      _marker : core.marker.PhantomData ((K * V * KeyType));
     }.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
@@ -600,7 +600,7 @@ End mapping.
 
 Module Mapping.
   Record t : Set := {
-    _marker : core.marker.PhantomData (unit -> (K * V * KeyType));
+    _marker : core.marker.PhantomData ((K * V * KeyType));
   }.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {
@@ -851,7 +851,7 @@ End
 
 Module Lazy.
   Record t : Set := {
-    _marker : core.marker.PhantomData (unit -> (V * KeyType));
+    _marker : core.marker.PhantomData ((V * KeyType));
   }.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {

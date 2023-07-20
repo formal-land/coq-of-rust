@@ -29,7 +29,7 @@ Definition analyze_slice
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let xs := [ 1; 2; 3; 4; 5 ] in
   let* ys := repeat 0 in
   let* _ :=

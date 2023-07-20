@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
+Definition main `{H : State.Trait} : M (H := H) unit :=
   let* person :=
     let* α0 := alloc.string.String::["from"] "Alice" in
     let* α1 := alloc.boxed.Box::["new"] 20 in
