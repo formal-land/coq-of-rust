@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module result_info.
   Module IsResultType.
     Record t : Set := {
-      marker : core.marker.PhantomData (unit -> T);
+      marker : core.marker.PhantomData (T);
     }.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
@@ -97,7 +97,7 @@ End result_info.
 
 Module IsResultType.
   Record t : Set := {
-    marker : core.marker.PhantomData (unit -> T);
+    marker : core.marker.PhantomData (T);
   }.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
@@ -250,7 +250,7 @@ Module codegen.
     Module StaticEnv.
       Class Trait (Self : Set) {EnvAccess : Set} : Set := {
         EnvAccess := EnvAccess;
-        env `{H : State.Trait} : unit -> (M (H := H) ImplSelf.EnvAccess);
+        env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
       }.
       
       Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -281,7 +281,7 @@ Module codegen.
     Module topics.
       Module EventRespectsTopicLimit.
         Record t : Set := {
-          marker : core.marker.PhantomData (unit -> Event);
+          marker : core.marker.PhantomData (Event);
         }.
         
         Global Instance Get_marker : Notation.Dot "marker" := {
@@ -1580,7 +1580,7 @@ Module env.
   Module StaticEnv.
     Class Trait (Self : Set) {EnvAccess : Set} : Set := {
       EnvAccess := EnvAccess;
-      env `{H : State.Trait} : unit -> (M (H := H) ImplSelf.EnvAccess);
+      env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
     }.
     
     Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -1613,7 +1613,7 @@ End Env.
 Module StaticEnv.
   Class Trait (Self : Set) {EnvAccess : Set} : Set := {
     EnvAccess := EnvAccess;
-    env `{H : State.Trait} : unit -> (M (H := H) ImplSelf.EnvAccess);
+    env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
   }.
   
   Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -1643,7 +1643,7 @@ Module event.
   Module topics.
     Module EventRespectsTopicLimit.
       Record t : Set := {
-        marker : core.marker.PhantomData (unit -> Event);
+        marker : core.marker.PhantomData (Event);
       }.
       
       Global Instance Get_marker : Notation.Dot "marker" := {
@@ -2614,7 +2614,7 @@ End EmitEvent.
 Module topics.
   Module EventRespectsTopicLimit.
     Record t : Set := {
-      marker : core.marker.PhantomData (unit -> Event);
+      marker : core.marker.PhantomData (Event);
     }.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
@@ -3468,7 +3468,7 @@ End topics.
 
 Module EventRespectsTopicLimit.
   Record t : Set := {
-    marker : core.marker.PhantomData (unit -> Event);
+    marker : core.marker.PhantomData (Event);
   }.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
@@ -5403,7 +5403,7 @@ Module reflect.
     Module registry.
       Module TraitDefinitionRegistry.
         Record t : Set := {
-          marker : core.marker.PhantomData (unit -> E);
+          marker : core.marker.PhantomData (E);
         }.
         
         Global Instance Get_marker : Notation.Dot "marker" := {
@@ -6457,7 +6457,7 @@ Module trait_def.
   Module registry.
     Module TraitDefinitionRegistry.
       Record t : Set := {
-        marker : core.marker.PhantomData (unit -> E);
+        marker : core.marker.PhantomData (E);
       }.
       
       Global Instance Get_marker : Notation.Dot "marker" := {
@@ -6566,7 +6566,7 @@ End TraitInfo.
 Module registry.
   Module TraitDefinitionRegistry.
     Record t : Set := {
-      marker : core.marker.PhantomData (unit -> E);
+      marker : core.marker.PhantomData (E);
     }.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
@@ -6595,7 +6595,7 @@ End registry.
 
 Module TraitDefinitionRegistry.
   Record t : Set := {
-    marker : core.marker.PhantomData (unit -> E);
+    marker : core.marker.PhantomData (E);
   }.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
@@ -6625,7 +6625,7 @@ Module chain_extension.
   Module ChainExtensionInstance.
     Class Trait (Self : Set) {Instance : Set} : Set := {
       Instance := Instance;
-      instantiate `{H : State.Trait} : unit -> (M (H := H) ImplSelf.Instance);
+      instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
     }.
     
     Global Instance Method_Instance `{H : State.Trait} `(Trait)
@@ -6803,7 +6803,7 @@ End chain_extension.
 Module ChainExtensionInstance.
   Class Trait (Self : Set) {Instance : Set} : Set := {
     Instance := Instance;
-    instantiate `{H : State.Trait} : unit -> (M (H := H) ImplSelf.Instance);
+    instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
   }.
   
   Global Instance Method_Instance `{H : State.Trait} `(Trait)
@@ -7022,7 +7022,7 @@ End ToAccountId.
 Module env_access.
   Module EnvAccess.
     Record t : Set := {
-      marker : core.marker.PhantomData (unit -> (ref E));
+      marker : core.marker.PhantomData ((ref E));
     }.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
@@ -7345,7 +7345,7 @@ End env_access.
 
 Module EnvAccess.
   Record t : Set := {
-    marker : core.marker.PhantomData (unit -> (ref E));
+    marker : core.marker.PhantomData ((ref E));
   }.
   
   Global Instance Get_marker : Notation.Dot "marker" := {

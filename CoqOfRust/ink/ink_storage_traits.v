@@ -174,7 +174,7 @@ Module impls.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
   
   Module ManualKey.
-    Record t : Set := { _ : core.marker.PhantomData (unit -> ParentKey);}.
+    Record t : Set := { _ : core.marker.PhantomData (ParentKey);}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -406,7 +406,7 @@ Module impls.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module ResolverKey.
-    Record t : Set := { _ : core.marker.PhantomData (unit -> (L * R));}.
+    Record t : Set := { _ : core.marker.PhantomData ((L * R));}.
     
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
@@ -896,7 +896,7 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 
 Module ManualKey.
-  Record t : Set := { _ : core.marker.PhantomData (unit -> ParentKey);}.
+  Record t : Set := { _ : core.marker.PhantomData (ParentKey);}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
@@ -1146,7 +1146,7 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module ResolverKey.
-  Record t : Set := { _ : core.marker.PhantomData (unit -> (L * R));}.
+  Record t : Set := { _ : core.marker.PhantomData ((L * R));}.
   
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;

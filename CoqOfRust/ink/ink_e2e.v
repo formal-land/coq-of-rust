@@ -3114,7 +3114,7 @@ Module xts.
   Module ContractsApi.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
-      _phantom : core.marker.PhantomData (unit -> (C * E));
+      _phantom : core.marker.PhantomData ((C * E));
     }.
     
     Global Instance Get_client : Notation.Dot "client" := {
@@ -4762,7 +4762,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 Module ContractsApi.
   Record t : Set := {
     client : subxt.client.online_client.OnlineClient C;
-    _phantom : core.marker.PhantomData (unit -> (C * E));
+    _phantom : core.marker.PhantomData ((C * E));
   }.
   
   Global Instance Get_client : Notation.Dot "client" := {
