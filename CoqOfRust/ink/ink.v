@@ -3,9 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module result_info.
   Module IsResultType.
+    Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (T);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
@@ -51,11 +53,15 @@ Module result_info.
     Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
   
   Module IsResultErr.
-    Record t : Set := { _ : ref T;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : ref T;
     }.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End IsResultErr.
   Definition IsResultErr := IsResultErr.t.
   
@@ -96,9 +102,11 @@ Module result_info.
 End result_info.
 
 Module IsResultType.
+  Unset Primitive Projections.
   Record t : Set := {
     marker : core.marker.PhantomData (T);
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
     Notation.dot '(Build_t x0) := x0;
@@ -144,11 +152,15 @@ End
   Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
 
 Module IsResultErr.
-  Record t : Set := { _ : ref T;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : ref T;
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End IsResultErr.
 Definition IsResultErr := IsResultErr.t.
 
@@ -211,20 +223,28 @@ Module codegen.
     
     Module type_check.
       Module DispatchInput.
-        Record t : Set := { _ : T;}.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : T;
         }.
+        Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
       End DispatchInput.
       Definition DispatchInput := DispatchInput.t.
       
       Module DispatchOutput.
-        Record t : Set := { _ : T;}.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : T;
         }.
+        Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
       End DispatchOutput.
       Definition DispatchOutput := DispatchOutput.t.
     End type_check.
@@ -280,9 +300,11 @@ Module codegen.
     
     Module topics.
       Module EventRespectsTopicLimit.
+        Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (Event);
         }.
+        Global Set Primitive Projections.
         
         Global Instance Get_marker : Notation.Dot "marker" := {
           Notation.dot '(Build_t x0) := x0;
@@ -1417,9 +1439,11 @@ Module codegen.
     
     Module same_type.
       Module IsSameType.
+        Unset Primitive Projections.
         Record t : Set := {
           _marker : core.marker.PhantomData T;
         }.
+        Global Set Primitive Projections.
         
         Global Instance Get__marker : Notation.Dot "_marker" := {
           Notation.dot '(Build_t x0) := x0;
@@ -1465,20 +1489,28 @@ Module dispatch.
   
   Module type_check.
     Module DispatchInput.
-      Record t : Set := { _ : T;}.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : T;
       }.
+      Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
     End DispatchInput.
     Definition DispatchInput := DispatchInput.t.
     
     Module DispatchOutput.
-      Record t : Set := { _ : T;}.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : T;
       }.
+      Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
     End DispatchOutput.
     Definition DispatchOutput := DispatchOutput.t.
   End type_check.
@@ -1524,39 +1556,55 @@ End ContractCallBuilder.
 
 Module type_check.
   Module DispatchInput.
-    Record t : Set := { _ : T;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : T;
     }.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End DispatchInput.
   Definition DispatchInput := DispatchInput.t.
   
   Module DispatchOutput.
-    Record t : Set := { _ : T;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : T;
     }.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End DispatchOutput.
   Definition DispatchOutput := DispatchOutput.t.
 End type_check.
 
 Module DispatchInput.
-  Record t : Set := { _ : T;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : T;
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End DispatchInput.
 Definition DispatchInput := DispatchInput.t.
 
 Module DispatchOutput.
-  Record t : Set := { _ : T;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : T;
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End DispatchOutput.
 Definition DispatchOutput := DispatchOutput.t.
 
@@ -1642,9 +1690,11 @@ Module event.
   
   Module topics.
     Module EventRespectsTopicLimit.
+      Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (Event);
       }.
+      Global Set Primitive Projections.
       
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
@@ -2613,9 +2663,11 @@ End EmitEvent.
 
 Module topics.
   Module EventRespectsTopicLimit.
+    Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (Event);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
@@ -3467,9 +3519,11 @@ Module topics.
 End topics.
 
 Module EventRespectsTopicLimit.
+  Unset Primitive Projections.
   Record t : Set := {
     marker : core.marker.PhantomData (Event);
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
     Notation.dot '(Build_t x0) := x0;
@@ -4785,9 +4839,11 @@ Module utils.
   
   Module same_type.
     Module IsSameType.
+      Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData T;
       }.
+      Global Set Primitive Projections.
       
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t x0) := x0;
@@ -4822,9 +4878,11 @@ Parameter consume_type : forall `{H : State.Trait},
 
 Module same_type.
   Module IsSameType.
+    Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData T;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
@@ -4845,9 +4903,11 @@ Module same_type.
 End same_type.
 
 Module IsSameType.
+  Unset Primitive Projections.
   Record t : Set := {
     _marker : core.marker.PhantomData T;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {
     Notation.dot '(Build_t x0) := x0;
@@ -5032,11 +5092,15 @@ Module reflect.
     End ConstructorOutput.
     
     Module ConstructorOutputValue.
-      Record t : Set := { _ : T;}.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : T;
       }.
+      Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
     End ConstructorOutputValue.
     Definition ConstructorOutputValue := ConstructorOutputValue.t.
     
@@ -5408,9 +5472,11 @@ Module reflect.
     
     Module registry.
       Module TraitDefinitionRegistry.
+        Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (E);
         }.
+        Global Set Primitive Projections.
         
         Global Instance Get_marker : Notation.Dot "marker" := {
           Notation.dot '(Build_t x0) := x0;
@@ -5617,11 +5683,15 @@ Module dispatch.
   End ConstructorOutput.
   
   Module ConstructorOutputValue.
-    Record t : Set := { _ : T;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : T;
     }.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End ConstructorOutputValue.
   Definition ConstructorOutputValue := ConstructorOutputValue.t.
   
@@ -6095,11 +6165,15 @@ Module ConstructorOutput.
 End ConstructorOutput.
 
 Module ConstructorOutputValue.
-  Record t : Set := { _ : T;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : T;
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End ConstructorOutputValue.
 Definition ConstructorOutputValue := ConstructorOutputValue.t.
 
@@ -6476,9 +6550,11 @@ Module trait_def.
   
   Module registry.
     Module TraitDefinitionRegistry.
+      Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (E);
       }.
+      Global Set Primitive Projections.
       
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
@@ -6585,9 +6661,11 @@ End TraitInfo.
 
 Module registry.
   Module TraitDefinitionRegistry.
+    Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (E);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
@@ -6614,9 +6692,11 @@ Module registry.
 End registry.
 
 Module TraitDefinitionRegistry.
+  Unset Primitive Projections.
   Record t : Set := {
     marker : core.marker.PhantomData (E);
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
     Notation.dot '(Build_t x0) := x0;
@@ -7041,9 +7121,11 @@ End ToAccountId.
 
 Module env_access.
   Module EnvAccess.
+    Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData ((ref E));
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
@@ -7390,9 +7472,11 @@ Module env_access.
 End env_access.
 
 Module EnvAccess.
+  Unset Primitive Projections.
   Record t : Set := {
     marker : core.marker.PhantomData ((ref E));
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_marker : Notation.Dot "marker" := {
     Notation.dot '(Build_t x0) := x0;

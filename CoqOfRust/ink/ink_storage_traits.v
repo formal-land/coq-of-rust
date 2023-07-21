@@ -178,11 +178,15 @@ Module impls.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
   
   Module ManualKey.
-    Record t : Set := { _ : core.marker.PhantomData (ParentKey);}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (ParentKey);
     }.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End ManualKey.
   Definition ManualKey := ManualKey.t.
   
@@ -414,11 +418,15 @@ Module impls.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module ResolverKey.
-    Record t : Set := { _ : core.marker.PhantomData ((L * R));}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData ((L * R));
     }.
+    Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
   End ResolverKey.
   Definition ResolverKey := ResolverKey.t.
   
@@ -913,11 +921,15 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 
 Module ManualKey.
-  Record t : Set := { _ : core.marker.PhantomData (ParentKey);}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : core.marker.PhantomData (ParentKey);
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End ManualKey.
 Definition ManualKey := ManualKey.t.
 
@@ -1168,11 +1180,15 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module ResolverKey.
-  Record t : Set := { _ : core.marker.PhantomData ((L * R));}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : core.marker.PhantomData ((L * R));
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End ResolverKey.
 Definition ResolverKey := ResolverKey.t.
 
