@@ -136,8 +136,9 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       : M (H := H) unit :=
     let* _ :=
       let* α0 := self.["deref"] in
-      let* α1 := α0.["bitand"] rhs in
-      assign self.["deref"] α1 in
+      let* α1 := self.["deref"] in
+      let* α2 := α1.["bitand"] rhs in
+      assign α0 α2 in
     Pure tt.
   
   Global Instance Method_bitand_assign `{H : State.Trait} :
@@ -182,8 +183,9 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       : M (H := H) unit :=
     let* _ :=
       let* α0 := self.["deref"] in
-      let* α1 := α0.["bitor"] rhs in
-      assign self.["deref"] α1 in
+      let* α1 := self.["deref"] in
+      let* α2 := α1.["bitor"] rhs in
+      assign α0 α2 in
     Pure tt.
   
   Global Instance Method_bitor_assign `{H : State.Trait} :
@@ -228,8 +230,9 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       : M (H := H) unit :=
     let* _ :=
       let* α0 := self.["deref"] in
-      let* α1 := α0.["bitxor"] rhs in
-      assign self.["deref"] α1 in
+      let* α1 := self.["deref"] in
+      let* α2 := α1.["bitxor"] rhs in
+      assign α0 α2 in
     Pure tt.
   
   Global Instance Method_bitxor_assign `{H : State.Trait} :
@@ -651,8 +654,9 @@ Module ConditionallySelectable.
         (other : ref Self)
         (choice : subtle.Choice) :=
       (let* _ :=
-        let* α0 := Self::["conditional_select"] self other choice in
-        assign self.["deref"] α0 in
+        let* α0 := self.["deref"] in
+        let* α1 := Self::["conditional_select"] self other choice in
+        assign α0 α1 in
       Pure tt
       : M (H := H) unit);
   }.

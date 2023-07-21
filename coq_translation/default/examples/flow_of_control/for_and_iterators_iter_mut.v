@@ -4,9 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* names :=
-    let* α0 :=
-      alloc.boxed.Method_Box_new.(@Notation.double_colon _ alloc.boxed.Box "new" _)
-        [ "Bob"; "Frank"; "Ferris" ] in
+    let* α0 := alloc.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
     Slice::["into_vec"] α0 in
   let* _ :=
     let* α0 := names.["iter_mut"] in
@@ -19,13 +17,13 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           match α0 with
           | core.option.Option.None  => Break
           | core.option.Option.Some name =>
-            let* α0 :=
+            let* α0 := name.["deref"] in
+            let* α1 :=
               match name with
               | "Ferris" => Pure "There is a rustacean among us!"
               | _ => Pure "Hello"
               end in
-            (* assign *) let* x := core.ops.Deref.deref name (* .["deref"] *) in
-            assign x α0
+            assign α0 α1
           end in
         Pure tt)
     end in
