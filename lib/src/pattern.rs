@@ -251,6 +251,17 @@ impl Pattern {
                 )]),
             ),
             Pattern::Lit(literal) => literal_to_doc(false, literal),
+            Pattern::Slice(pats) => {
+                let pats: Vec<Doc> = pats
+                    .into_iter()
+                    .map(|pat| pat.to_doc())
+                    .collect();
+                nest([
+                    text("["),
+                    intersperse(pats, [text(","), line()]),
+                    text("]")
+                ])
+            },
         }
     }
 }
