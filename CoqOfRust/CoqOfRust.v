@@ -142,13 +142,28 @@ Global Instance Method_Z_abs `{State.Trait} : Notation.Dot "abs" := {
 }.
 
 (* TODO: find a better place for this instance *)
+Global Instance Method_Z_neg `{State.Trait} : Notation.Dot "neg" := {
+  Notation.dot (x : Z) := Pure (Z.opp x);
+}.
+
+(* TODO: find a better place for this instance *)
 Global Instance Method_Z_lt `{State.Trait} : Notation.Dot "lt" := {
   Notation.dot (x y : Z) := Pure (Z.ltb x y);
 }.
 
 (* TODO: find a better place for this instance *)
+Global Instance Method_Z_gt `{State.Trait} : Notation.Dot "gt" := {
+  Notation.dot (x y : Z) := Pure (Z.gtb x y);
+}.
+
+(* TODO: find a better place for this instance *)
 Global Instance Method_Z_eq `{State.Trait} : Notation.Dot "eq" := {
   Notation.dot (x y : Z) := Pure (Z.eqb x y);
+}.
+
+(* TODO: find a better place for this instance *)
+Global Instance Method_bool_andb `{State.Trait} : Notation.Dot "andb" := {
+  Notation.dot (x y : bool) := Pure (andb x y);
 }.
 
 Global Instance Method_destroy `{State.Trait} (A : Set) :
