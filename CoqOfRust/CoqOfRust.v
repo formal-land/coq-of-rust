@@ -1541,6 +1541,18 @@ Module Temp_Impl_for_Vec.
   End Temp_Impl_for_Vec.
 End Temp_Impl_for_Vec.
 
+Module Impl_Debug_for_Vec.
+  Section Impl_Debug_for_Vec.
+  Context {T (* A *) : Set}.
+  Context `{core.fmt.Debug.Trait T}.
+(*   Context `{alloc.Allocator.Trait A}. *)
+
+  Definition Self := Vec T None (* (Some A) *).
+
+  Global Instance IDebug : core.fmt.Debug.Trait Self. Admitted.
+  End Impl_Debug_for_Vec.
+End Impl_Debug_for_Vec.
+
 (* TODO: this is only a temporary implementation,
          it needs to be rewritten when all std files will be fixed *)
 Module Impl_Iterator_for_Range.
