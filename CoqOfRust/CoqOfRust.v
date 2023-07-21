@@ -1534,9 +1534,15 @@ Module Temp_Impl_for_Vec.
   Definition Self := Vec T None.
 
   Parameter iter : forall `{State.Trait}, ref Self -> M (std.slice.Iter T).
+  Parameter iter_mut :
+    forall `{State.Trait}, ref Self -> M (std.slice.IterMut T).
 
   Global Instance Method_iter `{State.Trait} : Notation.Dot "iter" := {
     Notation.dot := iter;
+  }.
+
+  Global Instance Method_iter_mut `{State.Trait} : Notation.Dot "iter_mut" := {
+    Notation.dot := iter_mut;
   }.
   End Temp_Impl_for_Vec.
 End Temp_Impl_for_Vec.
