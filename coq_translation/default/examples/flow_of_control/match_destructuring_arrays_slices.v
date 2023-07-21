@@ -7,7 +7,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* α0 := 2.["neg"] in
     Pure [ 1; α0; 6 ] in
   match array with
-  | [0, second, third] =>
+  | [0; second; third] =>
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of second) in
       let* α1 := format_argument::["new_display"] (addr_of third) in
@@ -18,7 +18,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           (addr_of [ α0; α1 ]) in
       std.io.stdio._print α2 in
     Pure tt
-  | [1, _, third] =>
+  | [1; _; third] =>
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of third) in
       let* α1 :=
