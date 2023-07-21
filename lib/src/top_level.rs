@@ -1301,30 +1301,47 @@ impl TopLevelItem {
                             nest([text("Module"), line(), text(name), text(".")]),
                             nest([
                                 hardline(),
+                                text("Unset Primitive Projections."),
+                                hardline(),
                                 nest([
                                     text("Record"),
                                     line(),
                                     text("t"),
-                                    text(" :"),
+                                    line(),
+                                    text(":"),
                                     line(),
                                     text("Set"),
-                                    text(" := {"),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text("{"),
                                 ]),
-                                nest([concat(fields.iter().map(|(name, ty)| {
+                                if fields.is_empty() {
+                                    text(" ")
+                                } else {
                                     concat([
-                                        hardline(),
                                         nest([
-                                            text(name),
-                                            line(),
-                                            text(":"),
-                                            line(),
-                                            ty.to_doc(false),
-                                            text(";"),
+                                            hardline(),
+                                            intersperse(
+                                                fields.iter().map(|(name, ty)| {
+                                                    nest([
+                                                        text(name),
+                                                        line(),
+                                                        text(":"),
+                                                        line(),
+                                                        ty.to_doc(false),
+                                                        text(";"),
+                                                    ])
+                                                }),
+                                                [hardline()],
+                                            ),
                                         ]),
+                                        hardline(),
                                     ])
-                                }))]),
-                                hardline(),
+                                },
                                 text("}."),
+                                hardline(),
+                                text("Global Set Primitive Projections."),
                             ]),
                             hardline(),
                             nest([text("End"), line(), text(name), text(".")]),
@@ -1410,36 +1427,47 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
                     hardline(),
+                    text("Unset Primitive Projections."),
+                    hardline(),
                     nest([
                         text("Record"),
                         line(),
                         text("t"),
                         line(),
-                        nest([
-                            text(":"),
-                            line(),
-                            text("Set"),
-                            line(),
-                            text(":="),
-                            line(),
-                            text("{"),
-                        ]),
+                        text(":"),
+                        line(),
+                        text("Set"),
+                        line(),
+                        text(":="),
+                        line(),
+                        text("{"),
                     ]),
-                    nest(fields.iter().map(|(name, ty)| {
-                        group([
-                            hardline(),
+                    if fields.is_empty() {
+                        text(" ")
+                    } else {
+                        concat([
                             nest([
-                                text(name),
-                                line(),
-                                text(":"),
-                                line(),
-                                ty.to_doc(false),
-                                text(";"),
+                                hardline(),
+                                intersperse(
+                                    fields.iter().map(|(name, ty)| {
+                                        nest([
+                                            text(name),
+                                            line(),
+                                            text(":"),
+                                            line(),
+                                            ty.to_doc(false),
+                                            text(";"),
+                                        ])
+                                    }),
+                                    [hardline()],
+                                ),
                             ]),
+                            hardline(),
                         ])
-                    })),
-                    hardline(),
+                    },
                     text("}."),
+                    hardline(),
+                    text("Global Set Primitive Projections."),
                     if !fields.is_empty() {
                         hardline()
                     } else {
@@ -1517,29 +1545,43 @@ impl TopLevelItem {
             ]),
             TopLevelItem::TypeStructTuple { name, fields } => group([
                 nest([text("Module"), line(), text(name), text(".")]),
-                nest([
-                    hardline(),
+                concat([
                     nest([
+                        hardline(),
+                        text("Unset Primitive Projections."),
+                        hardline(),
                         nest([
                             text("Record"),
                             line(),
                             text("t"),
                             line(),
-                            nest([text(":"), line(), text("Set"), text(" :=")]),
-                        ]),
-                        line(),
-                        nest([
-                            text("{"),
+                            text(":"),
                             line(),
-                            intersperse(
-                                fields.iter().map(|ty| {
-                                    nest([text("_ :"), line(), ty.to_doc(false), text(";")])
-                                }),
-                                [line()],
-                            ),
-                            text("}"),
+                            text("Set"),
+                            line(),
+                            text(":="),
+                            line(),
+                            text("{"),
                         ]),
-                        text("."),
+                        if fields.is_empty() {
+                            text(" ")
+                        } else {
+                            concat([
+                                nest([
+                                    hardline(),
+                                    intersperse(
+                                        fields.iter().map(|ty| {
+                                            nest([text("_ :"), line(), ty.to_doc(false), text(";")])
+                                        }),
+                                        [hardline()],
+                                    ),
+                                ]),
+                                hardline(),
+                            ])
+                        },
+                        text("}."),
+                        hardline(),
+                        text("Global Set Primitive Projections."),
                     ]),
                     hardline(),
                     intersperse(
