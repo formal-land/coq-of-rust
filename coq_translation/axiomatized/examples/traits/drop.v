@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Droppable.
+  Unset Primitive Projections.
   Record t : Set := {
     name : ref str;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0) := x0;

@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
+  Unset Primitive Projections.
   Record t : Set := {
     job : core.option.Option unpacking_options_via_question_mark.Job;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_job : Notation.Dot "job" := {
     Notation.dot '(Build_t x0) := x0;
@@ -13,11 +15,13 @@ End Person.
 Definition Person : Set := Person.t.
 
 Module Job.
+  Unset Primitive Projections.
   Record t : Set := {
     phone_number
       :
       core.option.Option unpacking_options_via_question_mark.PhoneNumber;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_phone_number : Notation.Dot "phone_number" := {
     Notation.dot '(Build_t x0) := x0;
@@ -49,10 +53,12 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 Module PhoneNumber.
+  Unset Primitive Projections.
   Record t : Set := {
     area_code : core.option.Option u8;
     number : u32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_area_code : Notation.Dot "area_code" := {
     Notation.dot '(Build_t x0 _) := x0;

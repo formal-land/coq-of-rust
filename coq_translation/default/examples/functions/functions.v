@@ -65,16 +65,16 @@ Definition fizzbuzz `{H : State.Trait} (n : u32) : M (H := H) unit :=
         Pure tt.
 
 Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
-  let* α0 := std.ops.RangeInclusive::["new"] 1 n in
-  let* α1 := α0.["into_iter"] in
+  let* α0 := LangItem 1 n in
+  let* α1 := LangItem α0 in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := (addr_of iter).["next"] in
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | core.option.Option.None  => Break
-        | core.option.Option.Some n =>
+        | None => Break
+        | Some {| Some.0 := n; |} =>
           let* _ := functions.fizzbuzz n in
           Pure tt
         end in

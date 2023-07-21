@@ -62,16 +62,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* _ :=
       let* α0 := 3.["bitand"] 5 in
       let* α1 := format_argument::["new_binary"] (addr_of α0) in
-      let* α2 := LanguageItem.format_count::["Is"] 4 in
+      let* α2 := format_count::["Is"] 4 in
       let* α3 :=
-        LanguageItem.format_placeholder::["new"]
+        format_placeholder::["new"]
           0
           " "%char
-          LanguageItem.format_alignment::["Unknown"]
+          format_alignment::["Unknown"]
           8
-          LanguageItem.format_count::["Implied"]
+          format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
+      let* α4 := format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 AND 0101 is "; "
@@ -85,16 +85,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* _ :=
       let* α0 := 3.["bitor"] 5 in
       let* α1 := format_argument::["new_binary"] (addr_of α0) in
-      let* α2 := LanguageItem.format_count::["Is"] 4 in
+      let* α2 := format_count::["Is"] 4 in
       let* α3 :=
-        LanguageItem.format_placeholder::["new"]
+        format_placeholder::["new"]
           0
           " "%char
-          LanguageItem.format_alignment::["Unknown"]
+          format_alignment::["Unknown"]
           8
-          LanguageItem.format_count::["Implied"]
+          format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
+      let* α4 := format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 OR 0101 is "; "
@@ -108,16 +108,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* _ :=
       let* α0 := 3.["bitxor"] 5 in
       let* α1 := format_argument::["new_binary"] (addr_of α0) in
-      let* α2 := LanguageItem.format_count::["Is"] 4 in
+      let* α2 := format_count::["Is"] 4 in
       let* α3 :=
-        LanguageItem.format_placeholder::["new"]
+        format_placeholder::["new"]
           0
           " "%char
-          LanguageItem.format_alignment::["Unknown"]
+          format_alignment::["Unknown"]
           8
-          LanguageItem.format_count::["Implied"]
+          format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
+      let* α4 := format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ "0011 XOR 0101 is "; "

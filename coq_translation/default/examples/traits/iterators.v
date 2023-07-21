@@ -2,10 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fibonacci.
+  Unset Primitive Projections.
   Record t : Set := {
     curr : u32;
     next : u32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_curr : Notation.Dot "curr" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -46,7 +48,7 @@ Definition fibonacci `{H : State.Trait} : M (H := H) iterators.Fibonacci :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let sequence := {| std.ops.Range.start := 0; std.ops.Range._end := 3; |} in
+  let sequence := Range {| Range.start := 0; Range.end := 3; |} in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -100,16 +102,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range._end := 3; |}.["into_iter"] in
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := 3; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some i =>
+          | None => Break
+          | Some {| Some.0 := i; |} =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -136,15 +137,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* α0 := iterators.fibonacci in
     let* α1 := α0.["take"] 4 in
-    let* α2 := α1.["into_iter"] in
+    let* α2 := LangItem α1 in
     match α2 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some i =>
+          | None => Break
+          | Some {| Some.0 := i; |} =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -172,15 +173,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* α0 := iterators.fibonacci in
     let* α1 := α0.["skip"] 4 in
     let* α2 := α1.["take"] 4 in
-    let* α3 := α2.["into_iter"] in
+    let* α3 := LangItem α2 in
     match α3 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some i =>
+          | None => Break
+          | Some {| Some.0 := i; |} =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -207,15 +208,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   let* α0 := array.["iter"] in
-  let* α1 := α0.["into_iter"] in
+  let* α1 := LangItem α0 in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := (addr_of iter).["next"] in
+        let* α0 := LangItem (addr_of iter) in
         match α0 with
-        | core.option.Option.None  => Break
-        | core.option.Option.Some i =>
+        | None => Break
+        | Some {| Some.0 := i; |} =>
           let* _ :=
             let* _ :=
               let* α0 := format_argument::["new_display"] (addr_of i) in

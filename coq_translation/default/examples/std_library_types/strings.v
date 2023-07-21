@@ -24,15 +24,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* α0 := pangram.["split_whitespace"] in
     let* α1 := α0.["rev"] in
-    let* α2 := α1.["into_iter"] in
+    let* α2 := LangItem α1 in
     match α2 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some word =>
+          | None => Break
+          | Some {| Some.0 := word; |} =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of word) in
@@ -54,15 +54,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ := chars.["dedup"] in
   let* string := alloc.string.String::["new"] in
   let* _ :=
-    let* α0 := chars.["into_iter"] in
+    let* α0 := LangItem chars in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some c =>
+          | None => Break
+          | Some {| Some.0 := c; |} =>
             let* _ := string.["push"] c in
             let* _ := string.["push_str"] ", " in
             Pure tt

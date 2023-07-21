@@ -20,17 +20,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
 Definition sum_odd_numbers `{H : State.Trait} (up_to : u32) : M (H := H) u32 :=
   let acc := 0 in
   let* _ :=
-    let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range._end := up_to;
-        |}.["into_iter"] in
+    let* α0 := LangItem Range {| Range.start := 0; Range.end := up_to; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some i =>
+          | None => Break
+          | Some {| Some.0 := i; |} =>
             let* addition :=
               let* α0 := i.["rem"] 2 in
               let* α1 := α0.["eq"] 1 in

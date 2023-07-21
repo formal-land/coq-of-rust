@@ -2,11 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Choice.
-  Record t : Set := { _ : u8;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : u8;
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Choice.
 Definition Choice := Choice.t.
 
@@ -344,15 +348,15 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
       let* α0 := self.["iter"] in
       let* α1 := _rhs.["iter"] in
       let* α2 := α0.["zip"] α1 in
-      let* α3 := α2.["into_iter"] in
+      let* α3 := LangItem α2 in
       match α3 with
       | iter =>
         loop
           (let* _ :=
-            let* α0 := (addr_of iter).["next"] in
+            let* α0 := LangItem (addr_of iter) in
             match α0 with
-            | core.option.Option.None  => Break
-            | core.option.Option.Some (ai, bi) =>
+            | None => Break
+            | Some {| Some.0 := (ai, bi); |} =>
               let* _ :=
                 let* α0 := ai.["ct_eq"] bi in
                 let* α1 := α0.["unwrap_u8"] in
@@ -1396,10 +1400,12 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
+  Unset Primitive Projections.
   Record t : Set := {
     value : T;
     is_some : subtle.Choice;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0 _) := x0;

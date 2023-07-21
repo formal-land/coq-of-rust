@@ -3,11 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Book.
+  Unset Primitive Projections.
   Record t : Set := {
     author : ref str;
     title : ref str;
     year : u32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_author : Notation.Dot "author" := {
     Notation.dot '(Build_t x0 _ _) := x0;

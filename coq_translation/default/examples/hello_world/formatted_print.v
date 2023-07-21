@@ -80,16 +80,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of 1) in
-      let* α1 := LanguageItem.format_count::["Is"] 5 in
+      let* α1 := format_count::["Is"] 5 in
       let* α2 :=
-        LanguageItem.format_placeholder::["new"]
+        format_placeholder::["new"]
           0
           " "%char
-          LanguageItem.format_alignment::["Right"]
+          format_alignment::["Right"]
           0
-          LanguageItem.format_count::["Implied"]
+          format_count::["Implied"]
           α1 in
-      let* α3 := LanguageItem.format_unsafe_arg::["new"] in
+      let* α3 := format_unsafe_arg::["new"] in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "
@@ -102,16 +102,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of 1) in
-      let* α1 := LanguageItem.format_count::["Is"] 5 in
+      let* α1 := format_count::["Is"] 5 in
       let* α2 :=
-        LanguageItem.format_placeholder::["new"]
+        format_placeholder::["new"]
           0
           "0"%char
-          LanguageItem.format_alignment::["Left"]
+          format_alignment::["Left"]
           0
-          LanguageItem.format_count::["Implied"]
+          format_count::["Implied"]
           α1 in
-      let* α3 := LanguageItem.format_unsafe_arg::["new"] in
+      let* α3 := format_unsafe_arg::["new"] in
       let* α4 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "
@@ -125,16 +125,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of 1) in
       let* α1 := format_argument::["from_usize"] (addr_of 5) in
-      let* α2 := LanguageItem.format_count::["Param"] 1 in
+      let* α2 := format_count::["Param"] 1 in
       let* α3 :=
-        LanguageItem.format_placeholder::["new"]
+        format_placeholder::["new"]
           0
           "0"%char
-          LanguageItem.format_alignment::["Right"]
+          format_alignment::["Right"]
           0
-          LanguageItem.format_count::["Implied"]
+          format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
+      let* α4 := format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "
@@ -159,16 +159,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of number) in
       let* α1 := format_argument::["from_usize"] (addr_of width) in
-      let* α2 := LanguageItem.format_count::["Param"] 1 in
+      let* α2 := format_count::["Param"] 1 in
       let* α3 :=
-        LanguageItem.format_placeholder::["new"]
+        format_placeholder::["new"]
           0
           " "%char
-          LanguageItem.format_alignment::["Right"]
+          format_alignment::["Right"]
           0
-          LanguageItem.format_count::["Implied"]
+          format_count::["Implied"]
           α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
+      let* α4 := format_unsafe_arg::["new"] in
       let* α5 :=
         format_arguments::["new_v1_formatted"]
           (addr_of [ ""; "
@@ -181,10 +181,14 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 Module Structure.
-  Record t : Set := { _ : i32;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : i32;
   }.
+  Global Set Primitive Projections.
+
+Global Instance Get_0 : Notation.Dot 0 := {
+  Notation.dot '(Build_t x0) := x0;
+}.
 End Structure.
 Definition Structure := Structure.t.

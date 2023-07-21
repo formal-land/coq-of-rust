@@ -19,17 +19,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let upper := 1000 in
   let acc := 0 in
   let* _ :=
-    let* α0 :=
-      LanguageItem.RangeFrom {| LanguageItem.RangeFrom.start := 0;
-        |}.["into_iter"] in
+    let* α0 := LangItem RangeFrom {| RangeFrom.start := 0; |} in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some n =>
+          | None => Break
+          | Some {| Some.0 := n; |} =>
             let* n_squared := n.["mul"] n in
             let* α0 := n_squared.["ge"] upper in
             if (α0 : bool) then
@@ -57,8 +55,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   let* sum_of_squared_odd_numbers :=
     let* α0 :=
-      LanguageItem.RangeFrom {| LanguageItem.RangeFrom.start := 0; |}.["map"]
-        (fun n => n.["mul"] n) in
+      RangeFrom {| RangeFrom.start := 0; |}.["map"] (fun n => n.["mul"] n) in
     let* α1 := α0.["take_while"] (fun n_squared => n_squared.["lt"] upper) in
     let* α2 :=
       α1.["filter"]

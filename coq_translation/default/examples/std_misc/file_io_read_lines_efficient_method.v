@@ -6,15 +6,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
   let* α1 := let_if core.result.Result.Ok lines := α0 in
   if (α1 : bool) then
-    let* α0 := lines.["into_iter"] in
+    let* α0 := LangItem lines in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some line =>
+          | None => Break
+          | Some {| Some.0 := line; |} =>
             let* α0 := let_if core.result.Result.Ok ip := line in
             if (α0 : bool) then
               let* _ :=
@@ -47,12 +47,12 @@ Definition read_lines
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
-    let* α1 := α0.["branch"] in
+    let* α1 := LangItem α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
+    | Break {| Break.0 := residual; |} =>
+      let* α0 := LangItem residual in
       Return α0
-    | LanguageItem.Continue val => Pure val
+    | Continue {| Continue.0 := val; |} => Pure val
     end in
   let* α0 := std.io.buffered.bufreader.BufReader::["new"] file in
   let* α1 := α0.["lines"] in

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* collected_iterator :=
-    {| std.ops.Range.start := 0; std.ops.Range._end := 10; |}.["collect"] in
+    Range {| Range.start := 0; Range.end := 10; |}.["collect"] in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of collected_iterator) in
@@ -88,15 +88,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   let* _ :=
     let* α0 := xs.["iter"] in
-    let* α1 := α0.["into_iter"] in
+    let* α1 := LangItem α0 in
     match α1 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some x =>
+          | None => Break
+          | Some {| Some.0 := x; |} =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of x) in
@@ -114,15 +114,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* α0 := xs.["iter"] in
     let* α1 := α0.["enumerate"] in
-    let* α2 := α1.["into_iter"] in
+    let* α2 := LangItem α1 in
     match α2 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some (i, x) =>
+          | None => Break
+          | Some {| Some.0 := (i, x); |} =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in
@@ -140,15 +140,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     end in
   let* _ :=
     let* α0 := xs.["iter_mut"] in
-    let* α1 := α0.["into_iter"] in
+    let* α1 := LangItem α0 in
     match α1 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
+          let* α0 := LangItem (addr_of iter) in
           match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some x =>
+          | None => Break
+          | Some {| Some.0 := x; |} =>
             let* _ :=
               let* α0 := x.["deref"] in
               α0.["mul_assign"] 3 in

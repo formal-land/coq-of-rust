@@ -94,21 +94,21 @@ Module checked.
       : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
-      let* α1 := α0.["branch"] in
+      let* α1 := LangItem α0 in
       match α1 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     let* ln :=
       let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-      let* α1 := α0.["branch"] in
+      let* α1 := LangItem α0 in
       match α1 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
@@ -233,21 +233,21 @@ Definition op_
     : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
-    let* α1 := α0.["branch"] in
+    let* α1 := LangItem α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
+    | Break {| Break.0 := residual; |} =>
+      let* α0 := LangItem residual in
       Return α0
-    | LanguageItem.Continue val => Pure val
+    | Continue {| Continue.0 := val; |} => Pure val
     end in
   let* ln :=
     let* α0 := result_chaining_with_question_mark.checked.ln ratio in
-    let* α1 := α0.["branch"] in
+    let* α1 := LangItem α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
+    | Break {| Break.0 := residual; |} =>
+      let* α0 := LangItem residual in
       Return α0
-    | LanguageItem.Continue val => Pure val
+    | Continue {| Continue.0 := val; |} => Pure val
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 
