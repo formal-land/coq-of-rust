@@ -344,15 +344,15 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
       let* α0 := self.["iter"] in
       let* α1 := _rhs.["iter"] in
       let* α2 := α0.["zip"] α1 in
-      let* α3 := LangItem α2 in
+      let* α3 := α2.["into_iter"] in
       match α3 with
       | iter =>
         loop
           (let* _ :=
-            let* α0 := LangItem (addr_of iter) in
+            let* α0 := (addr_of iter).["next"] in
             match α0 with
-            | None => Break
-            | Some {| Some.0 := (ai, bi); |} =>
+            | core.option.Option.None  => Break
+            | core.option.Option.Some (ai, bi) =>
               let* _ :=
                 let* α0 := ai.["ct_eq"] bi in
                 let* α1 := α0.["unwrap_u8"] in

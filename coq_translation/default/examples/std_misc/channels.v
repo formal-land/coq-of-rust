@@ -9,15 +9,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] in
   let* _ :=
     let* α0 :=
-      LangItem Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
+      {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;
+        |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := id; |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some id =>
             let* thread_tx := tx.["clone"] in
             let* child :=
               std.thread.spawn
@@ -45,15 +46,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* ids := alloc.vec.Vec::["with_capacity"] (cast channels.NTHREADS usize) in
   let* _ :=
     let* α0 :=
-      LangItem Range {| Range.start := 0; Range.end := channels.NTHREADS; |} in
+      {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;
+        |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := _; |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some _ =>
             let* _ :=
               let* α0 := rx.["recv"] in
               ids.["push"] α0 in
@@ -62,15 +64,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         Pure tt)
     end in
   let* _ :=
-    let* α0 := LangItem children in
+    let* α0 := children.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := child; |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some child =>
             let* _ :=
               let* α0 := child.["join"] in
               α0.["expect"] "oops! the child thread panicked" in

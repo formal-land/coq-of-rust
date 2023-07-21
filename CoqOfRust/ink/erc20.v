@@ -1411,31 +1411,31 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       (__input : mut_ref __ink_I)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink_storage_traits.storage.Storable.decode __input in
-    let* α1 := LangItem α0 in
+    let* α1 := α0.["branch"] in
     let* α2 :=
       match α1 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     let* α3 := ink_storage_traits.storage.Storable.decode __input in
-    let* α4 := LangItem α3 in
+    let* α4 := α3.["branch"] in
     let* α5 :=
       match α4 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     let* α6 := ink_storage_traits.storage.Storable.decode __input in
-    let* α7 := LangItem α6 in
+    let* α7 := α6.["branch"] in
     let* α8 :=
       match α7 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     Pure
       (core.result.Result.Ok
@@ -1746,13 +1746,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
         (fun e =>
           e.["chain"]
             "Could not decode `__ink_EventBase`, failed to read variant byte") in
-    let* α2 := LangItem α1 in
+    let* α2 := α1.["branch"] in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>
@@ -2792,13 +2792,13 @@ Module
     let* α1 :=
       α0.["map_err"]
         (fun _ => Pure ink.reflect.dispatch.DispatchError.InvalidSelector) in
-    let* α2 := LangItem α1 in
+    let* α2 := α1.["branch"] in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     match α3 with
     | erc20.erc20._.decode_dispatch.CONSTRUCTOR_0 =>
@@ -2807,13 +2807,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := LangItem α1 in
+      let* α2 := α1.["branch"] in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       let* α4 := Self::["Constructor0"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -2885,12 +2885,12 @@ Module
         if (α2 : bool) then
           let* _ :=
             let* α0 := ink.codegen.dispatch.execution.deny_payment in
-            let* α1 := LangItem α0 in
+            let* α1 := α0.["branch"] in
             match α1 with
-            | Break {| Break.0 := residual; |} =>
-              let* α0 := LangItem residual in
+            | LanguageItem.Break residual =>
+              let* α0 := residual.["from_residual"] in
               Return α0
-            | Continue {| Continue.0 := val; |} => Pure val
+            | LanguageItem.Continue val => Pure val
             end in
           Pure tt
         else
@@ -2972,13 +2972,13 @@ Module
     let* α1 :=
       α0.["map_err"]
         (fun _ => Pure ink.reflect.dispatch.DispatchError.InvalidSelector) in
-    let* α2 := LangItem α1 in
+    let* α2 := α1.["branch"] in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     match α3 with
     | erc20.erc20._.decode_dispatch.MESSAGE_0 =>
@@ -2987,13 +2987,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := LangItem α1 in
+      let* α2 := α1.["branch"] in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       let* α4 := Self::["Message0"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3003,13 +3003,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := LangItem α1 in
+      let* α2 := α1.["branch"] in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       let* α4 := Self::["Message1"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3019,13 +3019,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := LangItem α1 in
+      let* α2 := α1.["branch"] in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       let* α4 := Self::["Message2"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3035,13 +3035,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := LangItem α1 in
+      let* α2 := α1.["branch"] in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       let* α4 := Self::["Message3"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3051,13 +3051,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := LangItem α1 in
+      let* α2 := α1.["branch"] in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       let* α4 := Self::["Message4"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3067,13 +3067,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := LangItem α1 in
+      let* α2 := α1.["branch"] in
       let* α3 :=
         match α2 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       let* α4 := Self::["Message5"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3212,12 +3212,12 @@ Module
           if (α2 : bool) then
             let* _ :=
               let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := LangItem α0 in
+              let* α1 := α0.["branch"] in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
-                let* α0 := LangItem residual in
+              | LanguageItem.Break residual =>
+                let* α0 := residual.["from_residual"] in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | LanguageItem.Continue val => Pure val
               end in
             Pure tt
           else
@@ -3278,12 +3278,12 @@ Module
           if (α2 : bool) then
             let* _ :=
               let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := LangItem α0 in
+              let* α1 := α0.["branch"] in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
-                let* α0 := LangItem residual in
+              | LanguageItem.Break residual =>
+                let* α0 := residual.["from_residual"] in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | LanguageItem.Continue val => Pure val
               end in
             Pure tt
           else
@@ -3344,12 +3344,12 @@ Module
           if (α2 : bool) then
             let* _ :=
               let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := LangItem α0 in
+              let* α1 := α0.["branch"] in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
-                let* α0 := LangItem residual in
+              | LanguageItem.Break residual =>
+                let* α0 := residual.["from_residual"] in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | LanguageItem.Continue val => Pure val
               end in
             Pure tt
           else
@@ -3410,12 +3410,12 @@ Module
           if (α2 : bool) then
             let* _ :=
               let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := LangItem α0 in
+              let* α1 := α0.["branch"] in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
-                let* α0 := LangItem residual in
+              | LanguageItem.Break residual =>
+                let* α0 := residual.["from_residual"] in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | LanguageItem.Continue val => Pure val
               end in
             Pure tt
           else
@@ -3476,12 +3476,12 @@ Module
           if (α2 : bool) then
             let* _ :=
               let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := LangItem α0 in
+              let* α1 := α0.["branch"] in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
-                let* α0 := LangItem residual in
+              | LanguageItem.Break residual =>
+                let* α0 := residual.["from_residual"] in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | LanguageItem.Continue val => Pure val
               end in
             Pure tt
           else
@@ -3542,12 +3542,12 @@ Module
           if (α2 : bool) then
             let* _ :=
               let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := LangItem α0 in
+              let* α1 := α0.["branch"] in
               match α1 with
-              | Break {| Break.0 := residual; |} =>
-                let* α0 := LangItem residual in
+              | LanguageItem.Break residual =>
+                let* α0 := residual.["from_residual"] in
                 Return α0
-              | Continue {| Continue.0 := val; |} => Pure val
+              | LanguageItem.Continue val => Pure val
               end in
             Pure tt
           else
@@ -3741,12 +3741,12 @@ Module Impl_erc20_erc20_Erc20.
         Pure tt in
     let* _ :=
       let* α0 := self.["transfer_from_to"] (addr_of from) (addr_of to) value in
-      let* α1 := LangItem α0 in
+      let* α1 := α0.["branch"] in
       match α1 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     let* _ :=
       let* α0 := allowance.["sub"] value in
@@ -4006,12 +4006,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       let* _ :=
         let* α0 :=
           parity_scale_codec.codec.Decode.decode_into __codec_input_edqy dst_ in
-        let* α1 := LangItem α0 in
+        let* α1 := α0.["branch"] in
         match α1 with
-        | Break {| Break.0 := residual; |} =>
-          let* α0 := LangItem residual in
+        | LanguageItem.Break residual =>
+          let* α0 := residual.["from_residual"] in
           Return α0
-        | Continue {| Continue.0 := val; |} => Pure val
+        | LanguageItem.Continue val => Pure val
         end in
       Pure tt in
     let* α0 :=
@@ -5877,13 +5877,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         (fun e =>
           e.["chain"]
             "Could not decode `Error`, failed to read variant byte") in
-    let* α2 := LangItem α1 in
+    let* α2 := α1.["branch"] in
     let* α3 :=
       match α2 with
-      | Break {| Break.0 := residual; |} =>
-        let* α0 := LangItem residual in
+      | LanguageItem.Break residual =>
+        let* α0 := residual.["from_residual"] in
         Return α0
-      | Continue {| Continue.0 := val; |} => Pure val
+      | LanguageItem.Continue val => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>

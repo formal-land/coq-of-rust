@@ -7,12 +7,12 @@ Definition cat
     : M (H := H) (std.io.error.Result alloc.string.String) :=
   let* f :=
     let* α0 := std.fs.File::["open"] path in
-    let* α1 := LangItem α0 in
+    let* α1 := α0.["branch"] in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
-      let* α0 := LangItem residual in
+    | LanguageItem.Break residual =>
+      let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* s := alloc.string.String::["new"] in
   let* α0 := f.["read_to_string"] (addr_of s) in
@@ -28,12 +28,12 @@ Definition echo
     : M (H := H) (std.io.error.Result unit) :=
   let* f :=
     let* α0 := std.fs.File::["create"] path in
-    let* α1 := LangItem α0 in
+    let* α1 := α0.["branch"] in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
-      let* α0 := LangItem residual in
+    | LanguageItem.Break residual =>
+      let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* α0 := s.["as_bytes"] in
   f.["write_all"] α0.
@@ -230,15 +230,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         std.io.stdio._print α2 in
       Pure tt
     | core.result.Result.Ok paths =>
-      let* α0 := LangItem paths in
+      let* α0 := paths.["into_iter"] in
       match α0 with
       | iter =>
         loop
           (let* _ :=
-            let* α0 := LangItem (addr_of iter) in
+            let* α0 := (addr_of iter).["next"] in
             match α0 with
-            | None => Break
-            | Some {| Some.0 := path; |} =>
+            | core.option.Option.None  => Break
+            | core.option.Option.Some path =>
               let* _ :=
                 let* _ :=
                   let* α0 := path.["unwrap"] in

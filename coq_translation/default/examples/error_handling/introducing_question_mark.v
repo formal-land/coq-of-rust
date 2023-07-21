@@ -8,21 +8,21 @@ Definition multiply
     : M (H := H) (core.result.Result i32 core.num.error.ParseIntError) :=
   let* first_number :=
     let* α0 := first_number_str.["parse"] in
-    let* α1 := LangItem α0 in
+    let* α1 := α0.["branch"] in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
-      let* α0 := LangItem residual in
+    | LanguageItem.Break residual =>
+      let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* second_number :=
     let* α0 := second_number_str.["parse"] in
-    let* α1 := LangItem α0 in
+    let* α1 := α0.["branch"] in
     match α1 with
-    | Break {| Break.0 := residual; |} =>
-      let* α0 := LangItem residual in
+    | LanguageItem.Break residual =>
+      let* α0 := residual.["from_residual"] in
       Return α0
-    | Continue {| Continue.0 := val; |} => Pure val
+    | LanguageItem.Continue val => Pure val
     end in
   let* α0 := first_number.["mul"] second_number in
   Pure (core.result.Result.Ok α0).

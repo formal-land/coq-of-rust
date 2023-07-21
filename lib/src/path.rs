@@ -72,6 +72,46 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
     compile_path_without_env(path)
 }
 
+/// compilation of [QPath] in [LangItem] variant
+fn compile_lang_item(lang_item: &LangItem) -> Path {
+    Path {
+        segments: match lang_item {
+            LangItem::FormatArgument => vec!["format_argument".to_string()],
+            LangItem::FormatArguments => vec!["format_arguments".to_string()],
+            LangItem::Option => vec![
+                "core".to_string(),
+                "option".to_string(),
+                "Option".to_string(),
+            ],
+            LangItem::OptionSome => {
+                vec![
+                    "core".to_string(),
+                    "option".to_string(),
+                    "Option".to_string(),
+                    "Some".to_string(),
+                ]
+            }
+            LangItem::OptionNone => {
+                vec![
+                    "core".to_string(),
+                    "option".to_string(),
+                    "Option".to_string(),
+                    "None".to_string(),
+                ]
+            }
+            LangItem::Range => {
+                vec!["std".to_string(), "ops".to_string(), "Range".to_string()]
+            }
+            // all the unimplemented variants
+            // TODO: provide implementation for all the variants
+            _ => vec![
+                "LanguageItem".to_string(),
+                to_valid_coq_name(lang_item.name().to_string()),
+            ],
+        },
+    }
+}
+
 pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
     match qpath {
         QPath::Resolved(_, path) => compile_path(env, path),
@@ -91,9 +131,7 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
                     .collect(),
             }
         }
-        QPath::LangItem(lang_item, _, _) => Path {
-            segments: vec![to_valid_coq_name(lang_item.name().to_string())],
-        },
+        QPath::LangItem(lang_item, _, _) => compile_lang_item(lang_item),
     }
 }
 
@@ -145,7 +183,7 @@ impl StructOrVariant {
                 LangItem::RangeFull => StructOrVariant::Variant,
                 LangItem::RangeInclusiveStruct => StructOrVariant::Variant,
                 LangItem::RangeInclusiveNew => StructOrVariant::Variant,
-                LangItem::Range => StructOrVariant::Variant,
+                LangItem::Range => StructOrVariant::Struct,
                 LangItem::RangeToInclusive => StructOrVariant::Variant,
                 LangItem::RangeTo => StructOrVariant::Variant,
                 _ => {
