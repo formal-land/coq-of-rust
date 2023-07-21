@@ -150,21 +150,23 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
         },
         PatKind::Slice(pat_before, maybe_slice_again, pat_after) => {
             let pat_before: Vec<Pattern> = pat_before
-                .into_iter()
+                .iter()
                 .map(|pat| compile_pattern(env, pat))
                 .collect();
             let pat_after: Vec<Pattern> = pat_after
-                .into_iter()
+                .iter()
                 .map(|pat| compile_pattern(env, pat))
                 .collect();
             match maybe_slice_again {
-                Some(_) => Pattern::Variable("0TODO_implement_Some_in_Slice_in_compile_pattern".to_string()),
+                Some(_) => Pattern::Variable(
+                    "0TODO_implement_Some_in_Slice_in_compile_pattern".to_string(),
+                ),
                 None => {
                     let all_patterns = [pat_before, pat_after].concat().to_vec();
                     Pattern::Slice(all_patterns)
                 }
             }
-        },
+        }
     }
 }
 
@@ -252,16 +254,9 @@ impl Pattern {
             ),
             Pattern::Lit(literal) => literal_to_doc(false, literal),
             Pattern::Slice(pats) => {
-                let pats: Vec<Doc> = pats
-                    .into_iter()
-                    .map(|pat| pat.to_doc())
-                    .collect();
-                nest([
-                    text("["),
-                    intersperse(pats, [text(","), line()]),
-                    text("]")
-                ])
-            },
+                let pats: Vec<Doc> = pats.iter().map(|pat| pat.to_doc()).collect();
+                nest([text("["), intersperse(pats, [text(","), line()]), text("]")])
+            }
         }
     }
 }
