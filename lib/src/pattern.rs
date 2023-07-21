@@ -148,7 +148,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 Pattern::Wild
             }
         },
-        PatKind::Slice(pat_before, maybeSliceAgain, pat_after) => {
+        PatKind::Slice(pat_before, maybe_slice_again, pat_after) => {
             let pat_before: Vec<Pattern> = pat_before
                 .into_iter()
                 .map(|pat| compile_pattern(env, pat))
@@ -157,7 +157,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .into_iter()
                 .map(|pat| compile_pattern(env, pat))
                 .collect();
-            match maybeSliceAgain {
+            match maybe_slice_again {
                 Some(_) => Pattern::Variable("0TODO_implement_Some_in_Slice_in_compile_pattern".to_string()),
                 None => {
                     let all_patterns = [pat_before, pat_after].concat().to_vec();
