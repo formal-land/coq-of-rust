@@ -1461,6 +1461,48 @@ Module Impl_IntoIterator_for_Slice_Iter.
   End Impl_IntoIterator_for_Slice_Iter.
 End Impl_IntoIterator_for_Slice_Iter.
 
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+Module Impl_Iterator_for_Slice_IterMut.
+  Section Impl_Iterator_for_Slice_IterMut.
+  Context {A : Set}.
+
+  Definition Self := std.slice.IterMut A.
+
+  Definition Item := A.
+
+  Parameter next :
+    forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+    Notation.dot := next;
+  }.
+  End Impl_Iterator_for_Slice_IterMut.
+End Impl_Iterator_for_Slice_IterMut.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+(* this should be replaced with a generic instance of IntoIterator for Iterator *)
+Module Impl_IntoIterator_for_Slice_IterMut.
+  Section Impl_IntoIterator_for_Slice_IterMut.
+  Context {A : Set}.
+  Definition I := std.slice.IterMut A.
+
+  Definition Self := I.
+
+  Definition Item := A.
+  Definition IntoIter := I.
+
+  Parameter into_iter :
+    forall `{State.Trait}, Self -> M IntoIter.
+
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" := {
+    Notation.dot := into_iter;
+  }.
+  End Impl_IntoIterator_for_Slice_IterMut.
+End Impl_IntoIterator_for_Slice_IterMut.
+
 Module Impl_IntoIter_for_Vec.
   Section Impl_IntoIter_for_Vec.
   Context {T (* A *) : Set}.
