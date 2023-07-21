@@ -12,7 +12,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   let* secret_number :=
     let* α0 := rand.thread_rng in
-    let* α1 := LangItem 1 100 in
+    let* α1 := std.ops.RangeInclusive::["new"] 1 100 in
     α0.["gen_range"] α1 in
   loop
     (let* _ :=

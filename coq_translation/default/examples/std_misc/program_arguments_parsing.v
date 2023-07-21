@@ -101,7 +101,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         let* _ := Return in
         Pure tt
       end in
-    match addr_of cmd[RangeFull {|  |}] with
+    match addr_of cmd[LanguageItem.RangeFull {|  |}] with
     | "increase" => program_arguments_parsing.increase number
     | "decrease" => program_arguments_parsing.decrease number
     | _ =>

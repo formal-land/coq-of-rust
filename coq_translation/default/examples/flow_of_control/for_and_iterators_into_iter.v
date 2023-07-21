@@ -7,15 +7,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* α0 := alloc.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
     Slice::["into_vec"] α0 in
   let* α0 := names.["into_iter"] in
-  let* α1 := LangItem α0 in
+  let* α1 := α0.["into_iter"] in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := name; |} =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some name =>
           match name with
           | "Ferris" =>
             let* _ :=

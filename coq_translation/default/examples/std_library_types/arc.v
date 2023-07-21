@@ -5,15 +5,16 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
-    let* α0 := LangItem Range {| Range.start := 0; Range.end := 10; |} in
+    let* α0 :=
+      {| std.ops.Range.start := 0; std.ops.Range._end := 10; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := _; |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some _ =>
             let* apple := alloc.sync.Arc::["clone"] (addr_of apple) in
             let* _ :=
               std.thread.spawn

@@ -16,15 +16,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* chunked_data := data.["split_whitespace"] in
   let* _ :=
     let* α0 := chunked_data.["enumerate"] in
-    let* α1 := LangItem α0 in
+    let* α1 := α0.["into_iter"] in
     match α1 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := (i, data_segment); |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some (i, data_segment) =>
             let* _ :=
               let* _ :=
                 let* α0 := format_argument::["new_display"] (addr_of i) in

@@ -29,15 +29,16 @@ Module tests.
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
       α3.["expect"] "Failed to open ferris.txt" in
-    let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+    let* α0 :=
+      {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := _; |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some _ =>
             let* _ :=
               let* α0 := "Ferris
 ".["as_bytes"] in
@@ -55,15 +56,16 @@ Module tests.
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
       α3.["expect"] "Failed to open ferris.txt" in
-    let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+    let* α0 :=
+      {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := _; |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some _ =>
             let* _ :=
               let* α0 := "Corro
 ".["as_bytes"] in
@@ -82,15 +84,16 @@ Definition test_file `{H : State.Trait} : M (H := H) unit :=
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in
     α3.["expect"] "Failed to open ferris.txt" in
-  let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+  let* α0 :=
+    {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := _; |} =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some _ =>
           let* _ :=
             let* α0 := "Ferris
 ".["as_bytes"] in
@@ -108,15 +111,16 @@ Definition test_file_also `{H : State.Trait} : M (H := H) unit :=
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in
     α3.["expect"] "Failed to open ferris.txt" in
-  let* α0 := LangItem Range {| Range.start := 0; Range.end := 5; |} in
+  let* α0 :=
+    {| std.ops.Range.start := 0; std.ops.Range._end := 5; |}.["into_iter"] in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := _; |} =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some _ =>
           let* _ :=
             let* α0 := "Corro
 ".["as_bytes"] in

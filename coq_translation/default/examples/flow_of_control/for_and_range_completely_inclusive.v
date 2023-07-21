@@ -3,16 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let* α0 := LangItem 1 100 in
-  let* α1 := LangItem α0 in
+  let* α0 := std.ops.RangeInclusive::["new"] 1 100 in
+  let* α1 := α0.["into_iter"] in
   match α1 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := n; |} =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some n =>
           let* α0 := n.["rem"] 15 in
           let* α1 := α0.["eq"] 0 in
           if (α1 : bool) then

@@ -8,15 +8,16 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* children := alloc.vec.Vec::["new"] in
   let* _ :=
     let* α0 :=
-      LangItem Range {| Range.start := 0; Range.end := threads.NTHREADS; |} in
+      {| std.ops.Range.start := 0; std.ops.Range._end := threads.NTHREADS;
+        |}.["into_iter"] in
     match α0 with
     | iter =>
       loop
         (let* _ :=
-          let* α0 := LangItem (addr_of iter) in
+          let* α0 := (addr_of iter).["next"] in
           match α0 with
-          | None => Break
-          | Some {| Some.0 := i; |} =>
+          | core.option.Option.None  => Break
+          | core.option.Option.Some i =>
             let* _ :=
               let* α0 :=
                 std.thread.spawn
@@ -38,15 +39,15 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           end in
         Pure tt)
     end in
-  let* α0 := LangItem children in
+  let* α0 := children.["into_iter"] in
   match α0 with
   | iter =>
     loop
       (let* _ :=
-        let* α0 := LangItem (addr_of iter) in
+        let* α0 := (addr_of iter).["next"] in
         match α0 with
-        | None => Break
-        | Some {| Some.0 := child; |} =>
+        | core.option.Option.None  => Break
+        | core.option.Option.Some child =>
           let* _ := child.["join"] in
           Pure tt
         end in
