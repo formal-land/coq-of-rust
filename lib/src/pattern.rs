@@ -18,6 +18,8 @@ pub(crate) enum Pattern {
     Path(Path),
     Tuple(Vec<Pattern>),
     Lit(LitKind),
+    // TODO: modify if necessary to fully implement the case of Slice in compile_pattern below
+    Slice(Vec<Pattern>),
 }
 
 /// The function [compile_pattern] translates a hir pattern to a coq-of-rust pattern.
@@ -146,7 +148,23 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 Pattern::Wild
             }
         },
-        PatKind::Slice(_, _, _) => Pattern::Wild,
+        PatKind::Slice(pat_before, maybeSliceAgain, pat_after) => {
+            let pat_before: Vec<Pattern> = pat_before
+                .into_iter()
+                .map(|pat| compile_pattern(env, pat))
+                .collect();
+            let pat_after: Vec<Pattern> = pat_after
+                .into_iter()
+                .map(|pat| compile_pattern(env, pat))
+                .collect();
+            match maybeSliceAgain {
+                Some(_) => Pattern::Variable("0TODO_implement_Some_in_Slice_in_compile_pattern".to_string()),
+                None => {
+                    let all_patterns = [pat_before, pat_after].concat().to_vec();
+                    Pattern::Slice(all_patterns)
+                }
+            }
+        },
     }
 }
 
