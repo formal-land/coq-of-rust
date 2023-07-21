@@ -2,8 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Borrowed.
-  Record t : Set := { _ : ref i32;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : ref i32;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -33,10 +37,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 Module NamedBorrowed.
+  Unset Primitive Projections.
   Record t : Set := {
     x : ref i32;
     y : ref i32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;

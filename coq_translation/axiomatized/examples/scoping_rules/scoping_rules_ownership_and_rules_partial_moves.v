@@ -5,10 +5,12 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : forall `{H : State.Trait}, M (H := H) unit.
 
 Module Person.
+  Unset Primitive Projections.
   Record t : Set := {
     name : alloc.string.String;
     age : alloc.boxed.Box u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;

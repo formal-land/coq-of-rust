@@ -35,8 +35,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 Module Peeled.
-  Record t : Set := { _ : combinators_map.Food;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : combinators_map.Food;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -66,8 +70,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 Module Chopped.
-  Record t : Set := { _ : combinators_map.Food;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : combinators_map.Food;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -97,8 +105,12 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 Module Cooked.
-  Record t : Set := { _ : combinators_map.Food;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : combinators_map.Food;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
