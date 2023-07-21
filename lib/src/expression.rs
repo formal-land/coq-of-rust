@@ -435,14 +435,16 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             })
         }
         Expr::Block(stmt) => (mt_stmt(*stmt), fresh_vars),
-        Expr::Assign { left, right } => monadic_let(fresh_vars, *right, |fresh_vars, right| {
-            (
-                Stmt::Expr(Box::new(Expr::Assign {
-                    left,
-                    right: Box::new(right),
-                })),
-                fresh_vars,
-            )
+        Expr::Assign { left, right } => monadic_let(fresh_vars, *left, |fresh_vars, left| {
+            monadic_let(fresh_vars, *right, |fresh_vars, right| {
+                (
+                    Stmt::Expr(Box::new(Expr::Assign {
+                        left: Box::new(left),
+                        right: Box::new(right),
+                    })),
+                    fresh_vars,
+                )
+            })
         }),
         Expr::IndexedField { base, index } => monadic_let(fresh_vars, *base, |fresh_vars, base| {
             (
