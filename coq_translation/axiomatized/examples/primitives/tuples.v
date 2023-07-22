@@ -15,18 +15,18 @@ Module Matrix.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0 _ _ _) := x0;
-}.
-Global Instance Get_1 : Notation.Dot 1 := {
-  Notation.dot '(Build_t _ x1 _ _) := x1;
-}.
-Global Instance Get_2 : Notation.Dot 2 := {
-  Notation.dot '(Build_t _ _ x2 _) := x2;
-}.
-Global Instance Get_3 : Notation.Dot 3 := {
-  Notation.dot '(Build_t _ _ _ x3) := x3;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _ _ _) := x0;
+  }.
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1 _ _) := x1;
+  }.
+  Global Instance Get_2 : Notation.Dot 2 := {
+    Notation.dot '(Build_t _ _ x2 _) := x2;
+  }.
+  Global Instance Get_3 : Notation.Dot 3 := {
+    Notation.dot '(Build_t _ _ _ x3) := x3;
+  }.
 End Matrix.
 Definition Matrix := Matrix.t.
 

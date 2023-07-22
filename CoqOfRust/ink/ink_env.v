@@ -3587,9 +3587,9 @@ Module call.
       }.
       Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End ReturnType.
     Definition ReturnType := ReturnType.t.
     
@@ -3670,9 +3670,9 @@ Module call.
       }.
       Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End Set.
     Definition Set := Set.t.
     
@@ -3747,9 +3747,9 @@ Module call.
       }.
       Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End Unset.
     Definition Unset := Unset.t.
     
@@ -6968,9 +6968,9 @@ Module common.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End ReturnType.
   Definition ReturnType := ReturnType.t.
   
@@ -7050,9 +7050,9 @@ Module common.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End Set.
   Definition Set := Set.t.
   
@@ -7125,9 +7125,9 @@ Module common.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End Unset.
   Definition Unset := Unset.t.
   
@@ -7281,9 +7281,9 @@ Module ReturnType.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End ReturnType.
 Definition ReturnType := ReturnType.t.
 
@@ -7363,9 +7363,9 @@ Module Set.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Set.
 Definition Set := Set.t.
 
@@ -7438,9 +7438,9 @@ Module Unset.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Unset.
 Definition Unset := Unset.t.
 

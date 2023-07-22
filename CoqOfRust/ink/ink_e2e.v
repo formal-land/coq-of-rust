@@ -1264,9 +1264,9 @@ Module Visitor.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Visitor.
 Definition Visitor := Visitor.t.
 
@@ -1576,9 +1576,9 @@ Module Visitor.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Visitor.
 Definition Visitor := Visitor.t.
 

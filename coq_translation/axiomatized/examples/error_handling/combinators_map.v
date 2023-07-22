@@ -33,9 +33,9 @@ Module Peeled.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Peeled.
 Definition Peeled := Peeled.t.
 
@@ -63,9 +63,9 @@ Module Chopped.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Chopped.
 Definition Chopped := Chopped.t.
 
@@ -93,9 +93,9 @@ Module Cooked.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Cooked.
 Definition Cooked := Cooked.t.
 

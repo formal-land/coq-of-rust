@@ -62,9 +62,9 @@ Module ext.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End ReturnCode.
   Definition ReturnCode := ReturnCode.t.
   
@@ -522,9 +522,9 @@ Module ReturnCode.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End ReturnCode.
 Definition ReturnCode := ReturnCode.t.
 
@@ -1889,9 +1889,9 @@ Module chain_extension.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End ExtensionId.
   Definition ExtensionId := ExtensionId.t.
   
@@ -2138,9 +2138,9 @@ Module ExtensionId.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End ExtensionId.
 Definition ExtensionId := ExtensionId.t.
 
@@ -2976,9 +2976,9 @@ Module types.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End AccountId.
   Definition AccountId := AccountId.t.
   
@@ -3161,9 +3161,9 @@ Module types.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End Key.
   Definition Key := Key.t.
   
@@ -3449,9 +3449,9 @@ Module AccountId.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End AccountId.
 Definition AccountId := AccountId.t.
 
@@ -3633,9 +3633,9 @@ Module Key.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End Key.
 Definition Key := Key.t.
 

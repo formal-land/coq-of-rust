@@ -184,9 +184,9 @@ Module impls.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End ManualKey.
   Definition ManualKey := ManualKey.t.
   
@@ -424,9 +424,9 @@ Module impls.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End ResolverKey.
   Definition ResolverKey := ResolverKey.t.
   
@@ -927,9 +927,9 @@ Module ManualKey.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End ManualKey.
 Definition ManualKey := ManualKey.t.
 
@@ -1186,9 +1186,9 @@ Module ResolverKey.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End ResolverKey.
 Definition ResolverKey := ResolverKey.t.
 

@@ -121,12 +121,12 @@ Module Length.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0 _) := x0;
-}.
-Global Instance Get_1 : Notation.Dot 1 := {
-  Notation.dot '(Build_t _ x1) := x1;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0 _) := x0;
+  }.
+  Global Instance Get_1 : Notation.Dot 1 := {
+    Notation.dot '(Build_t _ x1) := x1;
+  }.
 End Length.
 Definition Length := Length.t.
 

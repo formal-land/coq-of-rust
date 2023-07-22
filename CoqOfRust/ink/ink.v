@@ -59,9 +59,9 @@ Module result_info.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End IsResultErr.
   Definition IsResultErr := IsResultErr.t.
   
@@ -158,9 +158,9 @@ Module IsResultErr.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End IsResultErr.
 Definition IsResultErr := IsResultErr.t.
 
@@ -229,9 +229,9 @@ Module codegen.
         }.
         Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
       End DispatchInput.
       Definition DispatchInput := DispatchInput.t.
       
@@ -242,9 +242,9 @@ Module codegen.
         }.
         Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
       End DispatchOutput.
       Definition DispatchOutput := DispatchOutput.t.
     End type_check.
@@ -1495,9 +1495,9 @@ Module dispatch.
       }.
       Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End DispatchInput.
     Definition DispatchInput := DispatchInput.t.
     
@@ -1508,9 +1508,9 @@ Module dispatch.
       }.
       Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End DispatchOutput.
     Definition DispatchOutput := DispatchOutput.t.
   End type_check.
@@ -1562,9 +1562,9 @@ Module type_check.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End DispatchInput.
   Definition DispatchInput := DispatchInput.t.
   
@@ -1575,9 +1575,9 @@ Module type_check.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End DispatchOutput.
   Definition DispatchOutput := DispatchOutput.t.
 End type_check.
@@ -1589,9 +1589,9 @@ Module DispatchInput.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End DispatchInput.
 Definition DispatchInput := DispatchInput.t.
 
@@ -1602,9 +1602,9 @@ Module DispatchOutput.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End DispatchOutput.
 Definition DispatchOutput := DispatchOutput.t.
 
@@ -5098,9 +5098,9 @@ Module reflect.
       }.
       Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End ConstructorOutputValue.
     Definition ConstructorOutputValue := ConstructorOutputValue.t.
     
@@ -5689,9 +5689,9 @@ Module dispatch.
     }.
     Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End ConstructorOutputValue.
   Definition ConstructorOutputValue := ConstructorOutputValue.t.
   
@@ -6171,9 +6171,9 @@ Module ConstructorOutputValue.
   }.
   Global Set Primitive Projections.
 
-Global Instance Get_0 : Notation.Dot 0 := {
-  Notation.dot '(Build_t x0) := x0;
-}.
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End ConstructorOutputValue.
 Definition ConstructorOutputValue := ConstructorOutputValue.t.
 
