@@ -41,8 +41,6 @@ examples/error_handling/unpacking_options_via_question_mark.v
 examples/error_handling/wrapping_errors.v
 examples/expressions/blocks.v
 examples/flow_of_control/if_let_challenge.v
-examples/flow_of_control/if_let_match_enum_values.v
-examples/flow_of_control/if_let.v
 examples/flow_of_control/loop_returning_from_loops.v
 examples/flow_of_control/match_destructuring_arrays_slices.v
 examples/flow_of_control/match_destructuring_tuples.v
