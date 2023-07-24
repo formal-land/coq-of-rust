@@ -158,9 +158,17 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .map(|pat| compile_pattern(env, pat))
                 .collect();
             match maybe_slice_again {
-                Some(_) => Pattern::Variable(
-                    "0TODO_implement_Some_in_Slice_in_compile_pattern".to_string(),
-                ),
+                Some(_) => {
+                    env.tcx
+                        .sess
+                        .struct_span_warn(
+                            pat.span,
+                            "Only leading `..` patterns are supported in tuple patterns.",
+                        )
+                        .help("Use underscore `_` patterns instead.")
+                        .emit();
+                    Pattern::Wild
+                }
                 None => {
                     let all_patterns = [pat_before, pat_after].concat().to_vec();
                     Pattern::Slice(all_patterns)
