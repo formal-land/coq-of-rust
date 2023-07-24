@@ -1,6 +1,6 @@
 Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.convert.
+Require Import CoqOfRust.core.convert.
 Require Import CoqOfRust._std.fmt.
 
 (* ********TYPE DEFS******** *)
