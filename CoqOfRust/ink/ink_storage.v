@@ -5,9 +5,11 @@ Require Import CoqOfRust.CoqOfRust.
 Module lazy.
   Module mapping.
     Module Mapping.
+      Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData ((K * V * KeyType));
       }.
+      Global Set Primitive Projections.
       
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t x0) := x0;
@@ -214,9 +216,11 @@ Module lazy.
   End mapping.
   
   Module Lazy.
+    Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData ((V * KeyType));
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
@@ -391,9 +395,11 @@ End lazy.
 
 Module mapping.
   Module Mapping.
+    Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData ((K * V * KeyType));
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
@@ -599,9 +605,11 @@ Module mapping.
 End mapping.
 
 Module Mapping.
+  Unset Primitive Projections.
   Record t : Set := {
     _marker : core.marker.PhantomData ((K * V * KeyType));
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {
     Notation.dot '(Build_t x0) := x0;
@@ -850,9 +858,11 @@ End
   Impl_ink_storage_traits_layout_StorageLayout_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
 
 Module Lazy.
+  Unset Primitive Projections.
   Record t : Set := {
     _marker : core.marker.PhantomData ((V * KeyType));
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get__marker : Notation.Dot "_marker" := {
     Notation.dot '(Build_t x0) := x0;

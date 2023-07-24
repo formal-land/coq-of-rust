@@ -6,8 +6,15 @@ Parameter reverse : forall `{H : State.Trait},
     M (H := H) (bool * i32).
 
 Module Matrix.
-  Record t : Set := { _ : f32; _ : f32; _ : f32; _ : f32;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : f32;
+    _ : f32;
+    _ : f32;
+    _ : f32;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
   }.

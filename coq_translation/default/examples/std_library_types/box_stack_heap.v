@@ -3,10 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Point.
+  Unset Primitive Projections.
   Record t : Set := {
     x : f64;
     y : f64;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -81,10 +83,12 @@ End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Rectangle.
+  Unset Primitive Projections.
   Record t : Set := {
     top_left : box_stack_heap.Point;
     bottom_right : box_stack_heap.Point;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot '(Build_t x0 _) := x0;

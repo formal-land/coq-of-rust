@@ -7,8 +7,12 @@ End A.
 Definition A := A.t.
 
 Module S.
-  Record t : Set := { _ : generics_functions.A;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : generics_functions.A;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -16,8 +20,12 @@ End S.
 Definition S := S.t.
 
 Module SGen.
-  Record t : Set := { _ : T;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : T;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.

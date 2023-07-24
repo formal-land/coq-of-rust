@@ -2,10 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
+  Unset Primitive Projections.
   Record t : Set := {
     x : f64;
     y : f64;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -51,10 +53,12 @@ Module Impl_associated_functions_and_methods_Point.
 End Impl_associated_functions_and_methods_Point.
 
 Module Rectangle.
+  Unset Primitive Projections.
   Record t : Set := {
     p1 : associated_functions_and_methods.Point;
     p2 : associated_functions_and_methods.Point;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_p1 : Notation.Dot "p1" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -144,8 +148,13 @@ Module Impl_associated_functions_and_methods_Rectangle.
 End Impl_associated_functions_and_methods_Rectangle.
 
 Module Pair.
-  Record t : Set := { _ : alloc.boxed.Box i32; _ : alloc.boxed.Box i32;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : alloc.boxed.Box i32;
+    _ : alloc.boxed.Box i32;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
