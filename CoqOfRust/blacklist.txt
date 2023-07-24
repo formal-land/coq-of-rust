@@ -45,7 +45,6 @@ examples/flow_of_control/if_let_match_enum_values.v
 examples/flow_of_control/if_let.v
 examples/flow_of_control/loop_returning_from_loops.v
 examples/flow_of_control/match_destructuring_arrays_slices.v
-examples/flow_of_control/match_destructuring_pointers_ref.v
 examples/flow_of_control/match_destructuring_tuples.v
 examples/flow_of_control/match_guards_unreachable.v
 examples/flow_of_control/match_guards.v
