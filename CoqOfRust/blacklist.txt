@@ -46,8 +46,6 @@ examples/flow_of_control/match_destructuring_arrays_slices.v
 examples/flow_of_control/match_destructuring_tuples.v
 examples/flow_of_control/match_guards_unreachable.v
 examples/flow_of_control/match_guards.v
-examples/flow_of_control/while_let_match_is_weird.v
-examples/flow_of_control/while_let.v
 examples/functions/diverging_functions_example_sum_odd_numbers.v
 examples/functions/diverging_functions.v
 examples/functions/functions_closures_as_input_parameters.v
