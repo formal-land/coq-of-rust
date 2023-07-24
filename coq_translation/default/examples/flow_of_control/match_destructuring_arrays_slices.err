@@ -6,29 +6,13 @@ warning: Only literal expressions in patterns are supported.
    |
    = help: Use an `if` statement instead.
 
-warning: Only leading `..` patterns are supported in tuple patterns.
-  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:16:9
-   |
-16 |         [-1, second, ..] => println!(
-   |         ^^^^^^^^^^^^^^^^
-   |
-   = help: Use underscore `_` patterns instead.
-
-warning: Only leading `..` patterns are supported in tuple patterns.
-  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:25:9
-   |
-25 |         [3, second, tail @ ..] => println!(
-   |         ^^^^^^^^^^^^^^^^^^^^^^
-   |
-   = help: Use underscore `_` patterns instead.
-
-warning: Only leading `..` patterns are supported in tuple patterns.
+warning: Destructuring after slice patterns is supported.
   --> examples/flow_of_control/match_destructuring_arrays_slices.rs:32:9
    |
 32 |         [first, middle @ .., last] => println!(
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
    |
-   = help: Use underscore `_` patterns instead.
+   = help: Reverse the slice instead.
 
-warning: 4 warnings emitted
+warning: 2 warnings emitted
 
