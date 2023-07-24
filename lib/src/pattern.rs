@@ -19,7 +19,10 @@ pub(crate) enum Pattern {
     Tuple(Vec<Pattern>),
     Lit(LitKind),
     // TODO: modify if necessary to fully implement the case of Slice in compile_pattern below
-    Slice(Vec<Pattern>),
+    Slice {
+        init_patterns: Vec<Pattern>,
+        slice_pattern: Option<Box<Pattern>>,
+    },
 }
 
 /// The function [compile_pattern] translates a hir pattern to a coq-of-rust pattern.
@@ -158,20 +161,31 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .map(|pat| compile_pattern(env, pat))
                 .collect();
             match maybe_slice_again {
-                Some(_) => {
-                    env.tcx
-                        .sess
-                        .struct_span_warn(
-                            pat.span,
-                            "Only leading `..` patterns are supported in tuple patterns.",
-                        )
-                        .help("Use underscore `_` patterns instead.")
-                        .emit();
-                    Pattern::Wild
+                Some(pat_middle) => {
+                    if pat_after.is_empty() {
+                        let pat_middle = compile_pattern(env, pat_middle);
+                        Pattern::Slice {
+                            init_patterns: pat_before,
+                            slice_pattern: Some(Box::new(pat_middle)),
+                        }
+                    } else {
+                        env.tcx
+                            .sess
+                            .struct_span_warn(
+                                pat.span,
+                                "Destructuring after slice patterns is supported.",
+                            )
+                            .help("Reverse the slice instead.")
+                            .emit();
+                        Pattern::Wild
+                    }
                 }
                 None => {
                     let all_patterns = [pat_before, pat_after].concat().to_vec();
-                    Pattern::Slice(all_patterns)
+                    Pattern::Slice {
+                        init_patterns: all_patterns,
+                        slice_pattern: None,
+                    }
                 }
             }
         }
@@ -261,9 +275,20 @@ impl Pattern {
                 )]),
             ),
             Pattern::Lit(literal) => literal_to_doc(false, literal),
-            Pattern::Slice(pats) => {
-                let pats: Vec<Doc> = pats.iter().map(|pat| pat.to_doc()).collect();
-                nest([text("["), intersperse(pats, [text(";"), line()]), text("]")])
+            Pattern::Slice {
+                init_patterns,
+                slice_pattern,
+            } => {
+                let pats: Vec<Doc> = init_patterns.iter().map(|pat| pat.to_doc()).collect();
+                match slice_pattern {
+                    Some(slice_pattern) => nest([
+                        text("("),
+                        intersperse(pats, [text("::"), line()]),
+                        slice_pattern.to_doc(),
+                        text(")"),
+                    ]),
+                    None => nest([text("["), intersperse(pats, [text(";"), line()]), text("]")]),
+                }
             }
         }
     }
