@@ -21,6 +21,14 @@ pub(crate) struct TopLevelOptions {
     pub(crate) reorder: Vec<String>,
 }
 
+/// Trait for getting a name of an AST node. Used
+/// for ordering the nodes based on a list of names
+trait ToName {
+    /// We return [String] instead of [&String] because
+    /// some AST nodes need their names to be constructed.
+    fn to_name(&self) -> String;
+}
+
 #[derive(Debug)]
 enum TraitItem {
     Definition {
@@ -139,6 +147,37 @@ enum TopLevelItem {
         trait_non_default_items: Vec<String>,
     },
     Error(String),
+}
+
+impl ToName for TopLevelItem {
+    fn to_name(&self) -> String {
+        match self {
+            TopLevelItem::Definition { name, .. } => name.clone(),
+            TopLevelItem::Const { name, .. } => name.clone(),
+            TopLevelItem::TypeAlias { name, .. } => name.clone(),
+            TopLevelItem::TypeEnum { name, .. } => name.clone(),
+            TopLevelItem::TypeStructStruct { name, .. } => name.clone(),
+            TopLevelItem::TypeStructTuple { name, .. } => name.clone(),
+            TopLevelItem::TypeStructUnit { name, .. } => name.clone(),
+            TopLevelItem::Module { name, .. } => name.clone(),
+            TopLevelItem::Impl {
+                self_ty, counter, ..
+            } => format!(
+                "Impl_{}{}",
+                self_ty.to_name(),
+                if *counter != 1 {
+                    format!("_{counter}")
+                } else {
+                    "".to_string()
+                }
+            ),
+            TopLevelItem::Trait { name, .. } => name.to_string(),
+            TopLevelItem::TraitImpl {
+                of_trait, self_ty, ..
+            } => format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name()),
+            TopLevelItem::Error(msg) => msg.clone(),
+        }
+    }
 }
 
 /// The actual value of the type parameter of the trait implementation
@@ -802,23 +841,14 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
     let order = opts.reorder;
 
     results.sort_by(|a, b| {
-        if !(matches!(a, TopLevelItem::Definition { .. })
-            && matches!(b, TopLevelItem::Definition { .. }))
-        {
-            return Ordering::Equal;
-        }
-
-        let TopLevelItem::Definition { name: a_name, ..} = a
-	else { panic!("should never happen") };
-        let TopLevelItem::Definition { name: b_name, ..} = b
-	else { panic!("should never happen") };
-
-        let a_position = order.iter().position(|elm| elm == a_name);
+        let a_name = a.to_name();
+        let b_name = b.to_name();
+        let a_position = order.iter().position(|elm| *elm == a_name);
         if a_position.is_none() {
             return Ordering::Equal;
         }
 
-        let b_position = order.iter().position(|elm| elm == b_name);
+        let b_position = order.iter().position(|elm| *elm == b_name);
         if b_position.is_none() {
             return Ordering::Equal;
         };
