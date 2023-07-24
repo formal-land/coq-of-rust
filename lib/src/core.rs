@@ -116,7 +116,7 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
                     &ctxt,
                     TopLevelOptions {
                         axiomatize: opts.axiomatize,
-			reorder: opts.reorder.clone(),
+                        reorder: opts.reorder.clone(),
                     },
                 )
             })

@@ -32,7 +32,13 @@ impl Callbacks for ToCoq {
             let current_crate_name = ctxt.crate_name(rustc_hir::def_id::LOCAL_CRATE);
             (
                 current_crate_name.to_string(),
-                top_level_to_coq(&ctxt, TopLevelOptions { axiomatize, reorder }),
+                top_level_to_coq(
+                    &ctxt,
+                    TopLevelOptions {
+                        axiomatize,
+                        reorder,
+                    },
+                ),
             )
         });
         let mut file = File::create(format!("{crate_name}.v")).unwrap();

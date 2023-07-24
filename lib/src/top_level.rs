@@ -1,4 +1,3 @@
-
 use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
@@ -791,40 +790,42 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         axiomatize: opts.axiomatize,
     };
 
-    let mut results: Vec<TopLevelItem> = tcx.hir()
-            .items()
-            .flat_map(|item_id| {
-                let item = tcx.hir().item(item_id);
-                compile_top_level_item(tcx, &mut env, item)
-            })
-            .collect();
+    let mut results: Vec<TopLevelItem> = tcx
+        .hir()
+        .items()
+        .flat_map(|item_id| {
+            let item = tcx.hir().item(item_id);
+            compile_top_level_item(tcx, &mut env, item)
+        })
+        .collect();
 
     let order = opts.reorder;
 
     results.sort_by(|a, b| {
-        if !(matches!(a, TopLevelItem::Definition { .. }) &&
-	     matches!(b, TopLevelItem::Definition { .. })) {
-	    return Ordering::Equal;
-	}
+        if !(matches!(a, TopLevelItem::Definition { .. })
+            && matches!(b, TopLevelItem::Definition { .. }))
+        {
+            return Ordering::Equal;
+        }
 
-	let TopLevelItem::Definition { name: a_name, ..} = a
+        let TopLevelItem::Definition { name: a_name, ..} = a
 	else { panic!("should never happen") };
-	let TopLevelItem::Definition { name: b_name, ..} = b
+        let TopLevelItem::Definition { name: b_name, ..} = b
 	else { panic!("should never happen") };
 
-	let a_position = order.iter().position(|elm| elm == a_name);
-	match a_position {
-	    None => return Ordering::Equal,
-	    _ => (),
-	};
+        let a_position = order.iter().position(|elm| elm == a_name);
+        match a_position {
+            None => return Ordering::Equal,
+            _ => (),
+        };
 
-	let b_position = order.iter().position(|elm| elm == b_name);
-	match b_position {
-	    None => return Ordering::Equal,
-	    _ => (),
-	};
+        let b_position = order.iter().position(|elm| elm == b_name);
+        match b_position {
+            None => return Ordering::Equal,
+            _ => (),
+        };
 
-	a_position.cmp(&b_position)
+        a_position.cmp(&b_position)
     });
 
     TopLevel(results)

@@ -33,7 +33,7 @@ impl Options {
         Options {
             in_cargo: cargo_coq_of_rust,
             axiomatize: coq_of_rust.axiomatize,
-	    reorder: coq_of_rust.reorder,
+            reorder: coq_of_rust.reorder,
         }
     }
 }
