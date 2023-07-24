@@ -730,10 +730,28 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 Some(expr) => Box::new(compile_expr(env, expr)),
                 None => Box::new(tt()),
             };
-            Expr::If {
-                condition,
-                success,
-                failure,
+
+            // we need to handle the case of "let" in "if let" here
+            if let Expr::LetIf { pat, init } = *condition {
+                Expr::Match {
+                    scrutinee: init,
+                    arms: vec![
+                        MatchArm {
+                            pat,
+                            body: *success,
+                        },
+                        MatchArm {
+                            pat: Pattern::Wild,
+                            body: *failure,
+                        },
+                    ],
+                }
+            } else {
+                Expr::If {
+                    condition,
+                    success,
+                    failure,
+                }
             }
         }
         ExprKind::Loop(block, label, loop_source, _) => {
