@@ -822,6 +822,44 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
+// @TODO Move these to its own files
+/// Read the configuration file and return data inside
+/// the index [index].
+/// See https://docs.rs/serde_json/1.0.103/serde_json/enum.Value.html#method.pointer
+fn configfile_get(index: &str) -> Option<serde_json::Value> {
+    use serde_json::{from_reader, Value};
+    use std::fs::File;
+    use std::io::BufReader;
+
+    match File::open("coq-of-rust-config.json") {
+        Ok(f) => {
+            let reader = BufReader::new(f);
+            match from_reader::<BufReader<File>, Value>(reader) {
+                Ok(json) => json.pointer(index).cloned(),
+                Err(e) => {
+                    panic!("Error reading configuration file {}", e)
+                }
+            }
+        }
+        Err(..) => None,
+    }
+}
+
+/// Read the configuration file and return dta inside
+/// index [index] as a [Vec<String>]. Returns an empty
+/// vector if the index is not found
+/// See also configfile_get
+fn configfile_get_as_vec_string(index: &str) -> Vec<String> {
+    configfile_get(index)
+        .map(|v| {
+            let x = v.as_array().expect("to be array");
+            x.iter()
+                .map(|v| v.as_str().expect("to be string").to_string())
+                .collect()
+        })
+        .unwrap_or(vec![])
+}
+
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
     let mut env = Env {
         impl_counter: HashMap::new(),
@@ -838,11 +876,13 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         })
         .collect();
 
-    let order = opts.reorder;
+    let order = configfile_get_as_vec_string("/reorder/top_level");
+    eprintln!("order: {:?}", order);
 
     results.sort_by(|a, b| {
         let a_name = a.to_name();
         let b_name = b.to_name();
+        eprintln!("a_name {}, b_name {}", a_name, b_name);
         let a_position = order.iter().position(|elm| *elm == a_name);
         if a_position.is_none() {
             return Ordering::Equal;

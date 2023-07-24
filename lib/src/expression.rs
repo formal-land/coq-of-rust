@@ -289,7 +289,6 @@ fn monadic_lets(
     }
 }
 
-// @TODO finish the translation logic
 /// Monadic translation of an expression
 ///
 /// The convention is to do transformation in a deep first fashion, so

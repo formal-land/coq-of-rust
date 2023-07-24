@@ -2,8 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module SomeType.
-  Record t : Set := { _ : u32;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : u32;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -30,24 +34,24 @@ Module Impl_functions_order_SomeType.
 End Impl_functions_order_SomeType.
 
 Module inner_mod.
-  Definition bar `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-    let* _ := functions_order.inner_mod.tar tt in
+  Definition bar `{H : State.Trait} : M (H := H) unit :=
+    let* _ := functions_order.inner_mod.tar in
     Pure tt.
   
-  Definition tar `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
+  Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
 End inner_mod.
 
-Definition bar `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* _ := functions_order.inner_mod.tar tt in
+Definition bar `{H : State.Trait} : M (H := H) unit :=
+  let* _ := functions_order.inner_mod.tar in
   Pure tt.
 
-Definition tar `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
+Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
+
+Definition foo `{H : State.Trait} : M (H := H) unit := Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} (_ : unit) : M (H := H) unit :=
-  let* _ := functions_order.foo tt in
-  let* _ := functions_order.inner_mod.bar tt in
+Definition main `{H : State.Trait} : M (H := H) unit :=
+  let* _ := functions_order.foo in
+  let* _ := functions_order.inner_mod.bar in
   let* _ := (functions_order.SomeType.Build_t 0).["meth1"] in
   Pure tt.
-
-Definition foo `{H : State.Trait} (_ : unit) : M (H := H) unit := Pure tt.
