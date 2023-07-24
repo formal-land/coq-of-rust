@@ -6,7 +6,7 @@ warning: Only literal expressions in patterns are supported.
    |
    = help: Use an `if` statement instead.
 
-warning: Destructuring after slice patterns is supported.
+warning: Destructuring after slice patterns is not supported.
   --> examples/flow_of_control/match_destructuring_arrays_slices.rs:32:9
    |
 32 |         [first, middle @ .., last] => println!(
