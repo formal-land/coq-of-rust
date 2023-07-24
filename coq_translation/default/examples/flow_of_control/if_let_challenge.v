@@ -10,8 +10,8 @@ Definition Foo := Foo.t.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let a := if_let_challenge.Foo.Bar in
-  let* α0 := let_if if_let_challenge.Foo.Bar := a in
-  if (α0 : bool) then
+  match a with
+  | if_let_challenge.Foo.Bar =>
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -20,5 +20,5 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         std.io.stdio._print α0 in
       Pure tt in
     Pure tt
-  else
-    Pure tt.
+  | _ => Pure tt
+  end.

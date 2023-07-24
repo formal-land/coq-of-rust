@@ -29,7 +29,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt
-  | 0TODO_implement_Some_in_Slice_in_compile_pattern =>
+  | _ =>
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of second) in
       let* α1 :=
@@ -43,7 +43,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt
-  | 0TODO_implement_Some_in_Slice_in_compile_pattern =>
+  | _ =>
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of second) in
       let* α1 := format_argument::["new_debug"] (addr_of tail) in
@@ -56,7 +56,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           (addr_of [ α0; α1 ]) in
       std.io.stdio._print α2 in
     Pure tt
-  | 0TODO_implement_Some_in_Slice_in_compile_pattern =>
+  | _ =>
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of first) in
       let* α1 := format_argument::["new_debug"] (addr_of middle) in

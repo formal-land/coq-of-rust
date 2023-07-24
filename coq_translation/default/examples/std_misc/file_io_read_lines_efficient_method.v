@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
-  let* α1 := let_if core.result.Result.Ok lines := α0 in
-  if (α1 : bool) then
+  match α0 with
+  | core.result.Result.Ok lines =>
     let* α0 := lines.["into_iter"] in
     match α0 with
     | iter =>
@@ -15,8 +15,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           match α0 with
           | core.option.Option.None  => Break
           | core.option.Option.Some line =>
-            let* α0 := let_if core.result.Result.Ok ip := line in
-            if (α0 : bool) then
+            match line with
+            | core.result.Result.Ok ip =>
               let* _ :=
                 let* _ :=
                   let* α0 := format_argument::["new_display"] (addr_of ip) in
@@ -28,13 +28,13 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
                   std.io.stdio._print α1 in
                 Pure tt in
               Pure tt
-            else
-              Pure tt
+            | _ => Pure tt
+            end
           end in
         Pure tt)
     end
-  else
-    Pure tt.
+  | _ => Pure tt
+  end.
 
 Definition read_lines
     `{H : State.Trait}
