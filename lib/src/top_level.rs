@@ -814,15 +814,13 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
 	else { panic!("should never happen") };
 
         let a_position = order.iter().position(|elm| elm == a_name);
-        match a_position {
-            None => return Ordering::Equal,
-            _ => (),
-        };
+        if a_position.is_none() {
+            return Ordering::Equal;
+        }
 
         let b_position = order.iter().position(|elm| elm == b_name);
-        match b_position {
-            None => return Ordering::Equal,
-            _ => (),
+        if b_position.is_none() {
+            return Ordering::Equal;
         };
 
         a_position.cmp(&b_position)

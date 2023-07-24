@@ -53,7 +53,7 @@ fn main() {
 
     match cli.command {
         Commands::Translate(t) => {
-            let reorder: Vec<String> = t.reorder.split(",").map(String::from).collect();
+            let reorder: Vec<String> = t.reorder.split(',').map(String::from).collect();
             println!("Translating: {}", &t.path.display());
             core::run(core::CliOptions {
                 path: t.path,
