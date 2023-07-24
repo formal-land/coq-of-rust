@@ -723,6 +723,19 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             Expr::LetIf { pat, init }
         }
         ExprKind::If(condition, success, failure) => {
+            // we have to compute the number of variants in the type of init
+            // if it is one then we cannot produce the arm with the wildcard pattern
+            let should_produce_one_arm_match = if let rustc_hir::Expr { kind: ExprKind::Let(rustc_hir::Let { init: init_rustc_expr, .. }), .. } = *condition {
+                if let Some(adt_def) = env.tcx.type_of(init_rustc_expr.hir_id.owner).0.ty_adt_def() {
+                    if adt_def.variants().len() <= 1 {
+                        ()
+                    }
+                    ()
+                }
+                true
+            } else {
+                false
+            };
             let condition = Box::new(compile_expr(env, condition));
             let success = Box::new(compile_expr(env, success));
 
@@ -733,18 +746,26 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
 
             // we need to handle the case of "let" in "if let" here
             if let Expr::LetIf { pat, init } = *condition {
-                Expr::Match {
+                let success = MatchArm {
+                    pat,
+                    body: *success,
+                };
+                let failure = MatchArm {
+                    pat: Pattern::Wild,
+                    body: *failure,
+                };
+                let two_arm_match = Expr::Match {
                     scrutinee: init,
-                    arms: vec![
-                        MatchArm {
-                            pat,
-                            body: *success,
-                        },
-                        MatchArm {
-                            pat: Pattern::Wild,
-                            body: *failure,
-                        },
-                    ],
+                    arms: vec![success, failure],
+                };
+                let one_arm_match = Expr::Match {
+                    scrutinee: init,
+                    arms: vec![success],
+                };
+                if should_produce_one_arm_match {
+                    one_arm_match
+                } else {
+                    two_arm_match
                 }
             } else {
                 Expr::If {
