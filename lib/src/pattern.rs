@@ -283,8 +283,10 @@ impl Pattern {
                 match slice_pattern {
                     Some(slice_pattern) => nest([
                         text("("),
-                        intersperse(pats, [text("::"), line()]),
-                        slice_pattern.to_doc(),
+                        intersperse(
+                            [pats, vec![slice_pattern.to_doc()]].concat(),
+                            [text("::"), line()],
+                        ),
                         text(")"),
                     ]),
                     None => nest([text("["), intersperse(pats, [text(";"), line()]), text("]")]),
