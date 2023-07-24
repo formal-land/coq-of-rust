@@ -711,6 +711,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     text("Parameter "),
                     strct_args.body.parameter_name_for_fmt(),
                     text(" : "),
+                    text("forall `{H : State.Trait}, "),
                     // get type of argument named f
                     // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
                     concat(strct_args.args.iter().map(|(name, ty)| {
@@ -730,6 +731,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                 nest([
                     text("Global Instance Deb_"),
                     strct_args.body.parameter_name_for_fmt(),
+                    text(" `{H : State.Trait}"),
                     text(" : "),
                     text("Notation.DoubleColon"),
                     line(),
