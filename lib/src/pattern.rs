@@ -173,7 +173,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                             .sess
                             .struct_span_warn(
                                 pat.span,
-                                "Destructuring after slice patterns is supported.",
+                                "Destructuring after slice patterns is not supported.",
                             )
                             .help("Reverse the slice instead.")
                             .emit();
