@@ -1,6 +1,6 @@
 {
   "reorder": {
-    "examples::functions::functions_order.rs": {
+    "examples/functions/functions_order.rs": {
       "top_level": [
          "SomeType",
          "impl_SomeType",

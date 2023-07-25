@@ -17,6 +17,7 @@ use std::iter::repeat;
 use std::string::ToString;
 
 pub(crate) struct TopLevelOptions {
+    pub(crate) filename: String,
     pub(crate) axiomatize: bool,
 }
 
@@ -864,6 +865,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         impl_counter: HashMap::new(),
         tcx: *tcx,
         axiomatize: opts.axiomatize,
+        filename: opts.filename,
     };
 
     let mut results: Vec<TopLevelItem> = tcx
@@ -875,8 +877,8 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         })
         .collect();
 
-    let order =
-        configfile_get_as_vec_string("/reorder/examples::functions::functions_order.rs/top_level");
+    let fname = &env.filename.replace("/", "~1");
+    let order = configfile_get_as_vec_string(format!("/reorder/{}/top_level", fname).as_str());
     eprintln!("order: {:?}", order);
 
     results.sort_by(|a, b| {
