@@ -85,11 +85,11 @@ Definition tick `{H : State.Trait} : M (H := H) unit :=
 
 Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
 
+Definition foo `{H : State.Trait} : M (H := H) unit := Pure tt.
+
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ := functions_order.foo in
   let* _ := functions_order.inner_mod.bar in
   let* _ := (functions_order.SomeType.Build_t 0).["meth1"] in
   Pure tt.
-
-Definition foo `{H : State.Trait} : M (H := H) unit := Pure tt.
