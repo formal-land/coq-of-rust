@@ -1,6 +1,7 @@
 #![feature(rustc_private)]
 #![feature(internal_output_capture)]
 
+extern crate rustc_abi;
 extern crate rustc_ast;
 extern crate rustc_ast_pretty;
 extern crate rustc_driver;
