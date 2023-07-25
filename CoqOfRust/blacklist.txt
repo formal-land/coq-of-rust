@@ -93,7 +93,6 @@ examples/scoping_rules/scoping_rules_lifetimes_bounds.v
 examples/scoping_rules/scoping_rules_lifetimes_functions.v
 examples/scoping_rules/scoping_rules_lifetimes_structs.v
 examples/scoping_rules/scoping_rules_lifetimes_traits.v
-examples/scoping_rules/scoping_rules_ownership_and_rules_mutablity.v
 examples/scoping_rules/scoping_rules_ownership_and_rules_partial_moves.v
 examples/scoping_rules/scoping_rules_raii_desctructor.v
 examples/scoping_rules/scoping_rules_raii.v
@@ -128,7 +127,6 @@ examples/std_misc/program_arguments.v
 examples/std_misc/threads_test_case_map_reduce.v
 examples/std_misc/threads.v
 examples/subtle.v
-examples/test0.v
 examples/testing/documentation_testing.v
 examples/testing/unit_testing.v
 examples/traits/clone.v
