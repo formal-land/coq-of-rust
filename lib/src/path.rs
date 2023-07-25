@@ -50,7 +50,21 @@ fn compile_path_without_env<Res>(path: &rustc_hir::Path<Res>) -> Path {
     }
 }
 
+fn print_stacktrace() {
+    eprintln!("------------ Backtrace ------------");
+    for frame in std::backtrace::Backtrace::capture()
+        .frames()
+        .iter()
+        .skip(2)
+        .take(12)
+    {
+        eprintln!("{:?}", frame);
+    }
+    eprintln!("--------- end of backtrace -------");
+}
+
 pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
+    // print_stacktrace();
     if let Some(def_if) = path.res.opt_def_id() {
         // The type parameters should not have an absolute name, as they are not
         // not declared at top-level.

@@ -1,5 +1,6 @@
 #![feature(rustc_private)]
 #![feature(internal_output_capture)]
+#![feature(backtrace_frames)]
 
 extern crate rustc_abi;
 extern crate rustc_ast;
