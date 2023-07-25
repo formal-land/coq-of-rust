@@ -30,7 +30,6 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
-    | _ => Pure tt
     end in
   let* _ :=
     match letter with
@@ -44,16 +43,6 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
 " ])
               (addr_of [ α0 ]) in
           std.io.stdio._print α1 in
-        Pure tt in
-      Pure tt
-    | _ =>
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Didn't match a number. Let's go with a letter!
-" ]) in
-          std.io.stdio._print α0 in
         Pure tt in
       Pure tt
     end in
@@ -71,26 +60,4 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         std.io.stdio._print α1 in
       Pure tt in
     Pure tt
-  | _ =>
-    if (i_like_letters : bool) then
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Didn't match a number. Let's go with a letter!
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt
-    else
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of
-                [ "I don't like letters. Let's go with an emoticon :)!
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt
   end.
