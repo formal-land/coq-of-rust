@@ -877,7 +877,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         })
         .collect();
 
-    let fname = &env.filename.replace("/", "~1");
+    let fname = &env.filename.replace('/', "~1");
     let order = configfile_get_as_vec_string(format!("/reorder/{}/top_level", fname).as_str());
     eprintln!("order: {:?}", order);
 
