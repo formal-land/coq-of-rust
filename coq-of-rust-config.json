@@ -2,14 +2,15 @@
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": [
-         "SomeType",
-         "impl_SomeType",
-         "inner_mod",
-         "foo",
-         "main"
+        "SomeType",
+        "Impl_core_default_Default_for_functions_order_SomeType",
+        "Impl_functions_order_SomeType",
+        "inner_mod",
+        "foo",
+        "main"
       ],
-      "impl_Default_for_SomeType": ["default"],
-      "impl_SomeType": ["meth2", "meth1"],
+      "Impl_core_default_Default_for_functions_order_SomeType": ["default"],
+      "Impl_functions_order_SomeType": ["meth2", "meth1"],
       "inner_mod": ["tar", "bar"],
       "inner_mod::nested_mod": ["tack", "tick"]
     }

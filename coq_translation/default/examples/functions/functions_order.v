@@ -14,6 +14,22 @@ Module SomeType.
 End SomeType.
 Definition SomeType := SomeType.t.
 
+Module Impl_core_default_Default_for_functions_order_SomeType.
+  Definition Self := functions_order.SomeType.
+  
+  Definition default `{H : State.Trait} : M (H := H) functions_order.SomeType :=
+    Pure (functions_order.SomeType.Build_t 42).
+  
+  Global Instance AssociatedFunction_default `{H : State.Trait} :
+    Notation.DoubleColon Self "default" := {
+    Notation.double_colon := default;
+  }.
+  
+  Global Instance I : core.default.Default.Trait Self := {
+    core.default.Default.default `{H : State.Trait} := default;
+  }.
+End Impl_core_default_Default_for_functions_order_SomeType.
+
 Module Impl_functions_order_SomeType.
   Definition Self := functions_order.SomeType.
   
@@ -32,22 +48,6 @@ Module Impl_functions_order_SomeType.
     Notation.dot := meth2;
   }.
 End Impl_functions_order_SomeType.
-
-Module Impl_core_default_Default_for_functions_order_SomeType.
-  Definition Self := functions_order.SomeType.
-  
-  Definition default `{H : State.Trait} : M (H := H) functions_order.SomeType :=
-    Pure (functions_order.SomeType.Build_t 42).
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_functions_order_SomeType.
 
 Module inner_mod.
   Definition bar `{H : State.Trait} : M (H := H) unit :=

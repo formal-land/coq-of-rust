@@ -865,7 +865,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         impl_counter: HashMap::new(),
         tcx: *tcx,
         axiomatize: opts.axiomatize,
-        filename: opts.filename,
+        context: opts.filename,
     };
 
     let mut results: Vec<TopLevelItem> = tcx
@@ -877,14 +877,17 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         })
         .collect();
 
-    let fname = &env.filename.replace('/', "~1");
-    let order = configfile_get_as_vec_string(format!("/reorder/{}/top_level", fname).as_str());
-    eprintln!("order: {:?}", order);
+    // JSON pointers need / in JSON keys to be espabed to ~1.
+    // See https://datatracker.ietf.org/doc/html/rfc6901#section-3
+    // The context here is the path of the file name with / so we need
+    // to escape it
+    let context = &env.context.replace('/', "~1");
+    let order = configfile_get_as_vec_string(format!("/reorder/{}/top_level", context).as_str());
+    eprintln!("order: {:?}", order); // @TOOD remove this
 
     results.sort_by(|a, b| {
         let a_name = a.to_name();
         let b_name = b.to_name();
-        eprintln!("a_name {}, b_name {}", a_name, b_name);
         let a_position = order.iter().position(|elm| *elm == a_name);
         if a_position.is_none() {
             return Ordering::Equal;
