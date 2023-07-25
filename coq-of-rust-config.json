@@ -1,0 +1,17 @@
+{
+  "reorder": {
+    "examples::functions::functions_order.rs": {
+      "top_level": [
+         "SomeType",
+         "impl_SomeType",
+         "inner_mod",
+         "foo",
+         "main"
+      ],
+      "impl_Default_for_SomeType": ["default"],
+      "impl_SomeType": ["meth2", "meth1"],
+      "inner_mod": ["tar", "bar"],
+      "inner_mod::nested_mod": ["tack", "tick"]
+    }
+  }
+}

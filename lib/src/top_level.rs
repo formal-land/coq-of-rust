@@ -875,7 +875,8 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         })
         .collect();
 
-    let order = configfile_get_as_vec_string("/reorder/top_level");
+    let order =
+        configfile_get_as_vec_string("/reorder/examples::functions::functions_order.rs/top_level");
     eprintln!("order: {:?}", order);
 
     results.sort_by(|a, b| {
