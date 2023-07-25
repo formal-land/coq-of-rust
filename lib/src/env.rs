@@ -15,17 +15,14 @@ pub(crate) struct Env<'a> {
 }
 
 impl<'a> Env<'a> {
-    pub(crate) fn push_context(self, context: &'a str) -> Env {
-        Env {
-            context: format!("{}::{}", self.context, context),
-            ..self
-        }
+    pub(crate) fn push_context(&mut self, context: &str) {
+        self.context = format!("{}::{}", self.context, context);
     }
 
-    pub(crate) fn pop_context(self) -> Env<'a> {
+    pub(crate) fn pop_context(&mut self) {
         let segments: Vec<String> = self.context.split("::").map(String::from).collect();
         let segments: &[String] = &segments[0..segments.len() - 1];
         let context: String = segments.join("::");
-        Env { context, ..self }
+        self.context = context
     }
 }

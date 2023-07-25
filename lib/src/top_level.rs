@@ -401,7 +401,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let items: Vec<_> = module
+            env.push_context(&name);
+            let items = module
                 .item_ids
                 .iter()
                 .flat_map(|item_id| {
@@ -409,6 +410,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     compile_top_level_item(tcx, env, item)
                 })
                 .collect();
+            env.pop_context();
             // We remove empty modules in the translation
             if items.is_empty() {
                 return vec![];
@@ -423,10 +425,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             vec![TopLevelItem::Error("ForeignMod".to_string())]
         }
         ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
-        ItemKind::TyAlias(ty, _) => vec![TopLevelItem::TypeAlias {
-            name,
-            ty: compile_type(env, ty),
-        }],
+        ItemKind::TyAlias(ty, _) => {
+            vec![TopLevelItem::TypeAlias {
+                name,
+                ty: compile_type(env, ty),
+            }]
+        }
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
             name,
@@ -883,7 +887,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
     // to escape it
     let context = &env.context.replace('/', "~1");
     let order = configfile_get_as_vec_string(format!("/reorder/{}/top_level", context).as_str());
-    eprintln!("order: {:?}", order); // @TOOD remove this
+    eprintln!("order: {} {:?}", context, order); // @TOOD remove this
 
     results.sort_by(|a, b| {
         let a_name = a.to_name();
