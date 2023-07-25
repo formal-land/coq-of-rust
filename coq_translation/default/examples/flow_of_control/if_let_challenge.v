@@ -20,5 +20,4 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         std.io.stdio._print α0 in
       Pure tt in
     Pure tt
-  | _ => Pure tt
   end.

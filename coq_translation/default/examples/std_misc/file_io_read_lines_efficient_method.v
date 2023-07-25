@@ -28,10 +28,12 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
                   std.io.stdio._print α1 in
                 Pure tt in
               Pure tt
+            | _ => Pure tt
             end
           end in
         Pure tt)
     end
+  | _ => Pure tt
   end.
 
 Definition read_lines

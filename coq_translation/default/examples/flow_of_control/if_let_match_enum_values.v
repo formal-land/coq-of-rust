@@ -25,6 +25,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α0 in
         Pure tt in
       Pure tt
+    | _ => Pure tt
     end in
   let* _ :=
     match b with
@@ -37,6 +38,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α0 in
         Pure tt in
       Pure tt
+    | _ => Pure tt
     end in
   let* _ :=
     match c with
@@ -52,6 +54,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
+    | _ => Pure tt
     end in
   match c with
   | if_let_match_enum_values.Foo.Qux (100 as value) =>
@@ -63,4 +66,5 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         std.io.stdio._print α0 in
       Pure tt in
     Pure tt
+  | _ => Pure tt
   end.

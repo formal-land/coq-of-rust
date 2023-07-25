@@ -34,4 +34,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           let* α0 := i.["add"] 1 in
           assign optional (core.option.Option.Some α0) in
         Pure tt
+    | _ =>
+      let* _ := Break in
+      Pure tt
     end).

@@ -175,6 +175,7 @@ Definition print
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
+    | _ => Pure tt
     end
   end.
 
