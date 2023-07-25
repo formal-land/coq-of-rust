@@ -18,7 +18,6 @@ use std::string::ToString;
 
 pub(crate) struct TopLevelOptions {
     pub(crate) axiomatize: bool,
-    pub(crate) reorder: Vec<String>,
 }
 
 /// Trait for getting a name of an AST node. Used

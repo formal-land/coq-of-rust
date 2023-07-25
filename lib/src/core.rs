@@ -10,7 +10,6 @@ pub struct CliOptions {
     pub path: path::PathBuf,
     pub output: path::PathBuf,
     pub axiomatize: bool,
-    pub reorder: Vec<String>,
 }
 
 pub const LINE_WIDTH: usize = 80;
@@ -116,7 +115,6 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
                     &ctxt,
                     TopLevelOptions {
                         axiomatize: opts.axiomatize,
-                        reorder: opts.reorder.clone(),
                     },
                 )
             })
