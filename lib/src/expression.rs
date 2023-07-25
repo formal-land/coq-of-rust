@@ -742,7 +742,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 if let Some(variant_range) = ty.variant_range(env.tcx) {
                     // here we check if it has at least two variants
                     // (their ordering start with 0)
-                    variant_range.contains(&VariantIdx::from_u32(1))
+                    variant_range.last() == Some(VariantIdx::from_u32(0))
                 } else {
                     false
                 }
