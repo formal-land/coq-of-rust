@@ -3,10 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module WebEvent.
   Module Click.
+    Unset Primitive Projections.
     Record t : Set := {
       x : i64;
       y : i64;
     }.
+    Global Set Primitive Projections.
   End Click.
   
   Inductive t : Set :=

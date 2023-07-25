@@ -2,10 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Account.
+  Unset Primitive Projections.
   Record t : Set := {
     username : ref str;
     password : ref str;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -86,10 +88,12 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module AccountInfo.
+  Unset Primitive Projections.
   Record t : Set := {
     name : ref str;
     email : ref str;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;

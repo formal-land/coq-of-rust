@@ -30,9 +30,11 @@ Module codegen.
       M (H := H) unit.
   
   Module InkE2ETest.
+    Unset Primitive Projections.
     Record t : Set := {
       test : ink_e2e_macro.ir.InkE2ETest;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_test : Notation.Dot "test" := {
       Notation.dot '(Build_t x0) := x0;
@@ -72,10 +74,12 @@ Module codegen.
   End Impl_ink_e2e_macro_codegen_InkE2ETest.
   
   Module ContractManifests.
+    Unset Primitive Projections.
     Record t : Set := {
       root_package : core.option.Option alloc.string.String;
       contract_dependencies : alloc.vec.Vec alloc.string.String;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_root_package : Notation.Dot "root_package" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -202,9 +206,11 @@ Parameter set_already_built_contracts : forall `{H : State.Trait},
     M (H := H) unit.
 
 Module InkE2ETest.
+  Unset Primitive Projections.
   Record t : Set := {
     test : ink_e2e_macro.ir.InkE2ETest;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot '(Build_t x0) := x0;
@@ -247,10 +253,12 @@ Definition DEFAULT_CONTRACTS_NODE `{H : State.Trait} : ref str :=
   run (Pure "substrate-contracts-node").
 
 Module ContractManifests.
+  Unset Primitive Projections.
   Record t : Set := {
     root_package : core.option.Option alloc.string.String;
     contract_dependencies : alloc.vec.Vec alloc.string.String;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_root_package : Notation.Dot "root_package" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -318,11 +326,13 @@ Parameter build_contract : forall `{H : State.Trait},
 
 Module config.
   Module E2EConfig.
+    Unset Primitive Projections.
     Record t : Set := {
       whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
       additional_contracts : alloc.vec.Vec alloc.string.String;
       environment : core.option.Option syn.path.Path;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_whitelisted_attributes :
         Notation.Dot "whitelisted_attributes" := {
@@ -475,11 +485,13 @@ Module config.
 End config.
 
 Module E2EConfig.
+  Unset Primitive Projections.
   Record t : Set := {
     whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
     additional_contracts : alloc.vec.Vec alloc.string.String;
     environment : core.option.Option syn.path.Path;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_whitelisted_attributes :
       Notation.Dot "whitelisted_attributes" := {
@@ -631,10 +643,12 @@ End Impl_ink_e2e_macro_config_E2EConfig_2.
 
 Module ir.
   Module InkE2ETest.
+    Unset Primitive Projections.
     Record t : Set := {
       item_fn : ink_e2e_macro.ir.E2EFn;
       config : ink_e2e_macro.config.E2EConfig;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_item_fn : Notation.Dot "item_fn" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -646,9 +660,11 @@ Module ir.
   Definition InkE2ETest : Set := InkE2ETest.t.
   
   Module E2EFn.
+    Unset Primitive Projections.
     Record t : Set := {
       item_fn : syn.item.ItemFn;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_item_fn : Notation.Dot "item_fn" := {
       Notation.dot '(Build_t x0) := x0;
@@ -689,10 +705,12 @@ Module ir.
 End ir.
 
 Module InkE2ETest.
+  Unset Primitive Projections.
   Record t : Set := {
     item_fn : ink_e2e_macro.ir.E2EFn;
     config : ink_e2e_macro.config.E2EConfig;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_item_fn : Notation.Dot "item_fn" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -704,9 +722,11 @@ End InkE2ETest.
 Definition InkE2ETest : Set := InkE2ETest.t.
 
 Module E2EFn.
+  Unset Primitive Projections.
   Record t : Set := {
     item_fn : syn.item.ItemFn;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_item_fn : Notation.Dot "item_fn" := {
     Notation.dot '(Build_t x0) := x0;

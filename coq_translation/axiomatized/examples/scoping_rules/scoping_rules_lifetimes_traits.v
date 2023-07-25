@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Borrowed.
+  Unset Primitive Projections.
   Record t : Set := {
     x : ref i32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0) := x0;

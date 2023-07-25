@@ -2,10 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
+  Unset Primitive Projections.
   Record t : Set := {
     name : alloc.string.String;
     age : u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -48,8 +50,13 @@ End Unit.
 Definition Unit := Unit.t.
 
 Module Pair.
-  Record t : Set := { _ : i32; _ : f32;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : i32;
+    _ : f32;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
@@ -60,10 +67,12 @@ End Pair.
 Definition Pair := Pair.t.
 
 Module Point.
+  Unset Primitive Projections.
   Record t : Set := {
     x : f32;
     y : f32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
@@ -75,10 +84,12 @@ End Point.
 Definition Point : Set := Point.t.
 
 Module Rectangle.
+  Unset Primitive Projections.
   Record t : Set := {
     top_left : structures.Point;
     bottom_right : structures.Point;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot '(Build_t x0 _) := x0;

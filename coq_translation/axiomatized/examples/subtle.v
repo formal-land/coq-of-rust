@@ -2,8 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Choice.
-  Record t : Set := { _ : u8;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : u8;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -902,10 +906,12 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
+  Unset Primitive Projections.
   Record t : Set := {
     value : T;
     is_some : subtle.Choice;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0 _) := x0;

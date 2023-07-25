@@ -1,7 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.core.option.
-Require Import CoqOfRust._std.result.
+Require Import CoqOfRust.core.result.
 
 (* ********MODULES******** *)
 (*

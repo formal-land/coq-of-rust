@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
+  Unset Primitive Projections.
   Record t : Set := {
     test : bool;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot '(Build_t x0) := x0;
@@ -13,9 +15,11 @@ End Foo.
 Definition Foo : Set := Foo.t.
 
 Module Bar.
+  Unset Primitive Projections.
   Record t : Set := {
     test : alloc.string.String;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot '(Build_t x0) := x0;

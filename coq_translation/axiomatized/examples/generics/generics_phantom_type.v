@@ -2,8 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PhantomTuple.
-  Record t : Set := { _ : A; _ : core.marker.PhantomData B;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : A;
+    _ : core.marker.PhantomData B;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
@@ -50,10 +55,12 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
+  Unset Primitive Projections.
   Record t : Set := {
     first : A;
     phantom : core.marker.PhantomData B;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_first : Notation.Dot "first" := {
     Notation.dot '(Build_t x0 _) := x0;

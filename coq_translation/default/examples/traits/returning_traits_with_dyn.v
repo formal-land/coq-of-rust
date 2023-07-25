@@ -2,14 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
-  Record t : Set := {
-  }.
+  Unset Primitive Projections.
+  Record t : Set := { }.
+  Global Set Primitive Projections.
 End Sheep.
 Definition Sheep : Set := Sheep.t.
 
 Module Cow.
-  Record t : Set := {
-  }.
+  Unset Primitive Projections.
+  Record t : Set := { }.
+  Global Set Primitive Projections.
 End Cow.
 Definition Cow : Set := Cow.t.
 

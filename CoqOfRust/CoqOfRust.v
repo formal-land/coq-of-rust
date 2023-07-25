@@ -193,27 +193,22 @@ Global Instance Method_ne_u64 `{State.Trait} :
 
 Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
+Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
+Require CoqOfRust.core.hash.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.option.
+Require CoqOfRust.core.result.
 
 Module core.
   Export CoqOfRust.core.clone.
   Export CoqOfRust.core.cmp.
+  Export CoqOfRust.core.convert.
   Export CoqOfRust.core.default.
+  Export CoqOfRust.core.hash.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.option.
-
-  Module result.
-    Module Result.
-      Inductive t (T E : Set) : Set :=
-      | Ok : T -> t T E
-      | Err : E -> t T E.
-      Arguments Ok {T E} _.
-      Arguments Err {T E} _.
-    End Result.
-    Definition Result := Result.t.
-  End result.
+  Export CoqOfRust.core.result.
 
   Module fmt.
     Parameter Alignment : Set.
@@ -948,14 +943,12 @@ Require CoqOfRust._std.boxed.
 Require CoqOfRust._std.cell.
 Require CoqOfRust._std.char.
 Require CoqOfRust._std.collections.
-Require CoqOfRust._std.convert.
 Require CoqOfRust._std.env.
 Require CoqOfRust._std.error.
 Require CoqOfRust._std.ffi.
 Require CoqOfRust._std.fmt.
 Require CoqOfRust._std.fs.
 Require CoqOfRust._std.future.
-Require CoqOfRust._std.hash.
 Require CoqOfRust._std.hint.
 Require CoqOfRust._std.intrinsics.
 Require CoqOfRust._std.io.
@@ -974,7 +967,6 @@ Require Import CoqOfRust._std.primitive.
 Require Import CoqOfRust._std.process.
 Require Import CoqOfRust._std.ptr.
 Require Import CoqOfRust._std.rc.
-Require Import CoqOfRust._std.result.
 Require Import CoqOfRust._std.simd.
 Require Import CoqOfRust._std.slice.
 Require Import CoqOfRust._std.str.
@@ -1000,14 +992,12 @@ Module std.
   Module clone := core.clone.
   Module cmp := core.cmp.
   Module collections := _std.collections.
-  Module convert := _std.convert.
   Module env := _std.env.
   Module error := _std.error.
   Module ffi := _std.ffi.
   Module fmt := _std.fmt.
   Module fs := _std.fs.
   Module future := _std.future.
-  Module hash := _std.hash.
   Module hint := _std.hint.
   Module intrinsics := _std.intrinsics.
   Module io := _std.io.
@@ -1025,7 +1015,6 @@ Module std.
   Module process := _std.process.
   Module ptr := _std.ptr.
   Module rc := _std.rc.
-  Module result := _std.result.
   Module simd := _std.simd.
   Module slice := _std.slice.
   Module str := _std.str.
@@ -1041,30 +1030,30 @@ End std.
 
 Module hash_Instances.
   (** Hasher instance functions *)
-  Global Instance Hasher_Method_finish (T : Set) `{std.hash.Hasher.Trait T} :
+  Global Instance Hasher_Method_finish (T : Set) `{core.hash.Hasher.Trait T} :
     Notation.Dot "finish" := {
-    Notation.dot (x : T) := std.hash.Hasher.finish x;
+    Notation.dot (x : T) := core.hash.Hasher.finish x;
   }.
 
   (** Hash instance functions *)
   Global Instance Hash_Method_hash
-    `{State.Trait} (T : Set) `{std.hash.Hasher.Trait} `{std.hash.Hash.Trait T} :
+    `{State.Trait} (T : Set) `{core.hash.Hasher.Trait} `{core.hash.Hash.Trait T} :
     Notation.Dot "hash" := {
-      Notation.dot (x : T) := std.hash.Hash.hash x;
+      Notation.dot (x : T) := core.hash.Hash.hash x;
   }.
 
   (** Hasher implementation for DefaultHasher *)
   Global Instance DefaultHasher_Hasher :
-    std.hash.Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
+    core.hash.Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
 
   (** Hash implementation for primitive types *)
-  Global Instance Hash_for_unit : std.hash.Hash.Trait unit. Admitted.
-  Global Instance Hash_for_bool : std.hash.Hash.Trait unit. Admitted.
-  Global Instance Hash_for_i32 : std.hash.Hash.Trait i32. Admitted.
-  Global Instance Hash_for_u32 : std.hash.Hash.Trait u32. Admitted.
-  Global Instance Hash_for_String : std.hash.Hash.Trait alloc.string.String. Admitted.
-  Global Instance Hash_for_i64 : std.hash.Hash.Trait i64. Admitted.
-  Global Instance Hash_for_u64 : std.hash.Hash.Trait u64. Admitted.
+  Global Instance Hash_for_unit : core.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_bool : core.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_i32 : core.hash.Hash.Trait i32. Admitted.
+  Global Instance Hash_for_u32 : core.hash.Hash.Trait u32. Admitted.
+  Global Instance Hash_for_String : core.hash.Hash.Trait alloc.string.String. Admitted.
+  Global Instance Hash_for_i64 : core.hash.Hash.Trait i64. Admitted.
+  Global Instance Hash_for_u64 : core.hash.Hash.Trait u64. Admitted.
 End hash_Instances.
 
 Module bool_Instances.
@@ -1274,7 +1263,7 @@ Module _crate.
 
   Module fmt := core.fmt.
 
-  Module hash := std.hash.
+  Module hash := core.hash.
 
   Module log.
     Parameter sol_log : forall `{State.Trait}, str -> M unit.

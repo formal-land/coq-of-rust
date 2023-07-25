@@ -181,8 +181,12 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 Module Structure.
-  Record t : Set := { _ : i32;}.
-  
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : i32;
+  }.
+  Global Set Primitive Projections.
+
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
