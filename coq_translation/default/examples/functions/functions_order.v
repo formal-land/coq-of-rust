@@ -33,6 +33,13 @@ End Impl_core_default_Default_for_functions_order_SomeType.
 Module Impl_functions_order_SomeType.
   Definition Self := functions_order.SomeType.
   
+  Definition meth2 `{H : State.Trait} (self : Self) : M (H := H) unit :=
+    Pure tt.
+  
+  Global Instance Method_meth2 `{H : State.Trait} : Notation.Dot "meth2" := {
+    Notation.dot := meth2;
+  }.
+  
   Definition meth1 `{H : State.Trait} (self : Self) : M (H := H) unit :=
     let* _ := self.["meth2"] in
     Pure tt.
@@ -40,28 +47,21 @@ Module Impl_functions_order_SomeType.
   Global Instance Method_meth1 `{H : State.Trait} : Notation.Dot "meth1" := {
     Notation.dot := meth1;
   }.
-  
-  Definition meth2 `{H : State.Trait} (self : Self) : M (H := H) unit :=
-    Pure tt.
-  
-  Global Instance Method_meth2 `{H : State.Trait} : Notation.Dot "meth2" := {
-    Notation.dot := meth2;
-  }.
 End Impl_functions_order_SomeType.
 
 Module inner_mod.
+  Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
+  
   Definition bar `{H : State.Trait} : M (H := H) unit :=
     let* _ := functions_order.inner_mod.tar in
     Pure tt.
   
-  Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
-  
   Module nested_mod.
+    Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
+    
     Definition tick `{H : State.Trait} : M (H := H) unit :=
       let* _ := functions_order.inner_mod.nested_mod.tack in
       Pure tt.
-    
-    Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
   End nested_mod.
 End inner_mod.
 

@@ -11,6 +11,7 @@ pub(crate) struct Env<'a> {
     pub(crate) impl_counter: HashMap<CoqType, u64>,
     pub(crate) tcx: TyCtxt<'a>,
     pub(crate) axiomatize: bool,
+    pub(crate) file: String,    // full path for the current scope
     pub(crate) context: String, // full path for the current scope
 }
 

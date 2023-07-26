@@ -191,6 +191,13 @@ enum TraitImplTyParam {
     JustDefault { name: String },
 }
 
+impl ToName for (String, ImplItem) {
+    fn to_name(&self) -> String {
+        self.0.clone()
+    }
+}
+
+
 #[derive(Debug)]
 pub struct TopLevel(Vec<TopLevelItem>);
 
@@ -402,7 +409,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             env.push_context(&name);
-            let items = module
+            let mut items = module
                 .item_ids
                 .iter()
                 .flat_map(|item_id| {
@@ -410,6 +417,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     compile_top_level_item(tcx, env, item)
                 })
                 .collect();
+            reorder_definitions_inplace(&env.file, &env.context, &mut items);
             env.pop_context();
             // We remove empty modules in the translation
             if items.is_empty() {
@@ -655,7 +663,20 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 .filter(|param| matches!(param.kind, rustc_hir::GenericParamKind::Type { .. }))
                 .map(|param| param.name.ident().to_string())
                 .collect();
-            let items = items
+            let self_ty = compile_type(env, self_ty);
+            let entry = env.impl_counter.entry(*self_ty.clone());
+            let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
+            let impl_name = format!(
+                "Impl_{}{}",
+                self_ty.to_name(),
+                if counter != 1 {
+                    format!("_{counter}")
+                } else {
+                    "".to_string()
+                }
+            );
+            env.push_context(&impl_name);
+            let mut items = items
                 .iter()
                 .map(|item| {
                     let is_method = match item.kind {
@@ -754,7 +775,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     (item.ident.name.to_string(), value)
                 })
                 .collect();
-            let self_ty = compile_type(env, self_ty);
+            reorder_definitions_inplace(&env.file, &env.context, &mut items);
+            env.pop_context();
             match of_trait {
                 Some(trait_ref) => {
                     let trait_non_default_items = tcx
@@ -812,9 +834,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     }]
                 }
                 None => {
-                    let entry = env.impl_counter.entry(*self_ty.clone());
-                    let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
-
                     vec![TopLevelItem::Impl {
                         self_ty,
                         counter,
@@ -864,32 +883,15 @@ fn configfile_get_as_vec_string(index: &str) -> Vec<String> {
         .unwrap_or(vec![])
 }
 
-fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
-    let mut env = Env {
-        impl_counter: HashMap::new(),
-        tcx: *tcx,
-        axiomatize: opts.axiomatize,
-        context: opts.filename,
-    };
-
-    let mut results: Vec<TopLevelItem> = tcx
-        .hir()
-        .items()
-        .flat_map(|item_id| {
-            let item = tcx.hir().item(item_id);
-            compile_top_level_item(tcx, &mut env, item)
-        })
-        .collect();
-
+fn reorder_definitions_inplace(file: &str, context: &str, definitions: &mut Vec<impl ToName>) {
     // JSON pointers need / in JSON keys to be espabed to ~1.
     // See https://datatracker.ietf.org/doc/html/rfc6901#section-3
     // The context here is the path of the file name with / so we need
     // to escape it
-    let context = &env.context.replace('/', "~1");
-    let order = configfile_get_as_vec_string(format!("/reorder/{}/top_level", context).as_str());
-    eprintln!("order: {} {:?}", context, order); // @TOOD remove this
-
-    results.sort_by(|a, b| {
+    let file = file.replace('/', "~1");
+    let pointer = format!("/reorder/{}/{}", file, context);
+    let order = configfile_get_as_vec_string(pointer.as_str());
+    definitions.sort_by(|a, b| {
         let a_name = a.to_name();
         let b_name = b.to_name();
         let a_position = order.iter().position(|elm| *elm == a_name);
@@ -904,7 +906,27 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
 
         a_position.cmp(&b_position)
     });
+}
 
+fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
+    let mut env = Env {
+        impl_counter: HashMap::new(),
+        tcx: *tcx,
+        axiomatize: opts.axiomatize,
+        file: opts.filename,
+        context: "top_level".to_string(),
+    };
+
+    let mut results: Vec<TopLevelItem> = tcx
+        .hir()
+        .items()
+        .flat_map(|item_id| {
+            let item = tcx.hir().item(item_id);
+            compile_top_level_item(tcx, &mut env, item)
+        })
+        .collect();
+
+    reorder_definitions_inplace(&env.file, &env.context, &mut results);
     TopLevel(results)
 }
 
