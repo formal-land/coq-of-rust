@@ -1459,8 +1459,7 @@ impl TopLevelItem {
                 } else {
                     nil()
                 },
-                nest([text("Module"), line(), text(name), text(".")]),
-                add_section_if_necessary(
+                module(name, [add_section_if_necessary(
                     name,
                     &ty_params.iter().collect(),
                     [
@@ -1565,9 +1564,7 @@ impl TopLevelItem {
                             nil()
                         },
                     ],
-                ),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
+                )]),
                 hardline(),
                 nest([
                     text("Definition"),
@@ -1591,8 +1588,7 @@ impl TopLevelItem {
                 ty_params,
                 fields,
             } => group([
-                nest([text("Module"), line(), text(name), text(".")]),
-                add_section_if_necessary(
+                module(name, [add_section_if_necessary(
                     name,
                     &ty_params.iter().collect(),
                     [
@@ -1689,9 +1685,7 @@ impl TopLevelItem {
                             [nil()],
                         ),
                     ],
-                ),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
+                )]),
                 hardline(),
                 nest([
                     text("Definition"),
@@ -1705,8 +1699,7 @@ impl TopLevelItem {
                 ]),
             ]),
             TopLevelItem::TypeStructUnit { name, ty_params } => group([
-                nest([text("Module"), line(), text(name), text(".")]),
-                add_section_if_necessary(
+                module(name, [add_section_if_necessary(
                     name,
                     &ty_params.iter().collect(),
                     [
@@ -1721,9 +1714,7 @@ impl TopLevelItem {
                         line(),
                         nest([text("Build"), text(".")]),
                     ],
-                ),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
+                )]),
                 hardline(),
                 nest([
                     text("Definition"),
