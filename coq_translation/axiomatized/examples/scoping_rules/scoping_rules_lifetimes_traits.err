@@ -3,6 +3,8 @@ warning: Only type parameters are supported.
   |
 3 | struct Borrowed<'a> {
   |                 ^^
+  |
+  = note: It should be supported in future versions.
 
 warning: 1 warning emitted
 
