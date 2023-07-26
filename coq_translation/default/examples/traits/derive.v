@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Centimeters.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : f64;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : f64;
+    }.
+    Global Set Primitive Projections.
+  
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
 End Centimeters.
 Definition Centimeters := Centimeters.t.
 
@@ -61,15 +61,15 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : i32;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : i32;
+    }.
+    Global Set Primitive Projections.
+  
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
 End Inches.
 Definition Inches := Inches.t.
 
@@ -113,15 +113,15 @@ Module Impl_derive_Inches.
 End Impl_derive_Inches.
 
 Module Seconds.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : i32;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : i32;
+    }.
+    Global Set Primitive Projections.
+  
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
 End Seconds.
 Definition Seconds := Seconds.t.
 

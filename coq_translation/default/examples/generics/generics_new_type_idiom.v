@@ -2,28 +2,28 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : i64;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : i64;
+    }.
+    Global Set Primitive Projections.
+  
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
 End Years.
 Definition Years := Years.t.
 
 Module Days.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : i64;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : i64;
+    }.
+    Global Set Primitive Projections.
+  
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
 End Days.
 Definition Days := Days.t.
 

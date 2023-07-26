@@ -105,20 +105,25 @@ Module
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
-Module Length.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : f64;
-    _ : core.marker.PhantomData Unit;
-  }.
-  Global Set Primitive Projections.
+Module Length.Section Length.
+Context {Unit : Set}.
 
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : f64;
+      _ : core.marker.PhantomData Unit;
+    }.
+    Global Set Primitive Projections.
+  
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_1 : Notation.Dot 1 := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+
+
+End Length.
 End Length.
 Definition Length := Length.t.
 

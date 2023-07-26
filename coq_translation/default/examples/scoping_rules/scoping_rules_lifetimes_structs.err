@@ -1,0 +1,14 @@
+warning: Only type parameters are supported.
+ --> examples/scoping_rules/scoping_rules_lifetimes_structs.rs:4:17
+  |
+4 | struct Borrowed<'a>(&'a i32);
+  |                 ^^
+
+warning: Only type parameters are supported.
+ --> examples/scoping_rules/scoping_rules_lifetimes_structs.rs:8:22
+  |
+8 | struct NamedBorrowed<'a> {
+  |                      ^^
+
+warning: 2 warnings emitted
+

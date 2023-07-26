@@ -51,19 +51,19 @@ Module Impl_core_marker_Copy_for_clone_Unit.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : alloc.boxed.Box i32;
-    _ : alloc.boxed.Box i32;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : alloc.boxed.Box i32;
+      _ : alloc.boxed.Box i32;
+    }.
+    Global Set Primitive Projections.
+  
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_1 : Notation.Dot 1 := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
 End Pair.
 Definition Pair := Pair.t.
 

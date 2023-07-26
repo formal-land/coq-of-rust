@@ -2,7 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
-  Module OpenBox.
+  Module OpenBox.Section OpenBox.
+  Context {T : Set}.
+  
     Unset Primitive Projections.
     Record t : Set := {
       contents : T;
@@ -12,10 +14,15 @@ Module my.
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+  
+  
+  End OpenBox.
   End OpenBox.
   Definition OpenBox : Set := OpenBox.t.
   
-  Module ClosedBox.
+  Module ClosedBox.Section ClosedBox.
+  Context {T : Set}.
+  
     Unset Primitive Projections.
     Record t : Set := {
       contents : T;
@@ -25,6 +32,9 @@ Module my.
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+  
+  
+  End ClosedBox.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
   
@@ -42,7 +52,9 @@ Module my.
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
-Module OpenBox.
+Module OpenBox.Section OpenBox.
+Context {T : Set}.
+
   Unset Primitive Projections.
   Record t : Set := {
     contents : T;
@@ -52,10 +64,15 @@ Module OpenBox.
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+
+
+End OpenBox.
 End OpenBox.
 Definition OpenBox : Set := OpenBox.t.
 
-Module ClosedBox.
+Module ClosedBox.Section ClosedBox.
+Context {T : Set}.
+
   Unset Primitive Projections.
   Record t : Set := {
     contents : T;
@@ -65,6 +82,9 @@ Module ClosedBox.
   Global Instance Get_contents : Notation.Dot "contents" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+
+
+End ClosedBox.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
