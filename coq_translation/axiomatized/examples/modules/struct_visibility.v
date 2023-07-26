@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module my.
   Module OpenBox.
     Section OpenBox.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         contents : T;
@@ -20,7 +20,7 @@ Module my.
   
   Module ClosedBox.
     Section ClosedBox.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         contents : T;
@@ -50,7 +50,7 @@ End my.
 
 Module OpenBox.
   Section OpenBox.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       contents : T;
@@ -66,7 +66,7 @@ Definition OpenBox : Set := OpenBox.t.
 
 Module ClosedBox.
   Section ClosedBox.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       contents : T;

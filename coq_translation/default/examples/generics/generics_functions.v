@@ -21,7 +21,7 @@ Definition S := S.t.
 
 Module SGen.
   Section SGen.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;

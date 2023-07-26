@@ -906,7 +906,7 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
   Section CtOption.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       value : T;

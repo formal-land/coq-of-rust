@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module PhantomTuple.
   Section PhantomTuple.
-    Context (A B : Set).
+    Context [A B : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : A;
@@ -59,7 +59,7 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
   Section PhantomStruct.
-    Context (A B : Set).
+    Context [A B : Set].
     Unset Primitive Projections.
     Record t : Set := {
       first : A;

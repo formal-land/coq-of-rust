@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
   Section Ref.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : ref T;

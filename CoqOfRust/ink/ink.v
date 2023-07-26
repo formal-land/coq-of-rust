@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module result_info.
   Module IsResultType.
     Section IsResultType.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (T);
@@ -57,7 +57,7 @@ Module result_info.
   
   Module IsResultErr.
     Section IsResultErr.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         _ : ref T;
@@ -109,7 +109,7 @@ End result_info.
 
 Module IsResultType.
   Section IsResultType.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (T);
@@ -162,7 +162,7 @@ End
 
 Module IsResultErr.
   Section IsResultErr.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : ref T;
@@ -236,7 +236,7 @@ Module codegen.
     Module type_check.
       Module DispatchInput.
         Section DispatchInput.
-          Context (T : Set).
+          Context [T : Set].
           Unset Primitive Projections.
           Record t : Set := {
             _ : T;
@@ -252,7 +252,7 @@ Module codegen.
       
       Module DispatchOutput.
         Section DispatchOutput.
-          Context (T : Set).
+          Context [T : Set].
           Unset Primitive Projections.
           Record t : Set := {
             _ : T;
@@ -319,7 +319,7 @@ Module codegen.
     Module topics.
       Module EventRespectsTopicLimit.
         Section EventRespectsTopicLimit.
-          Context (Event : Set).
+          Context [Event : Set].
           Unset Primitive Projections.
           Record t : Set := {
             marker : core.marker.PhantomData (Event);
@@ -1461,7 +1461,7 @@ Module codegen.
     Module same_type.
       Module IsSameType.
         Section IsSameType.
-          Context (T : Set).
+          Context [T : Set].
           Unset Primitive Projections.
           Record t : Set := {
             _marker : core.marker.PhantomData T;
@@ -1514,7 +1514,7 @@ Module dispatch.
   Module type_check.
     Module DispatchInput.
       Section DispatchInput.
-        Context (T : Set).
+        Context [T : Set].
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -1530,7 +1530,7 @@ Module dispatch.
     
     Module DispatchOutput.
       Section DispatchOutput.
-        Context (T : Set).
+        Context [T : Set].
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -1587,7 +1587,7 @@ End ContractCallBuilder.
 Module type_check.
   Module DispatchInput.
     Section DispatchInput.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -1603,7 +1603,7 @@ Module type_check.
   
   Module DispatchOutput.
     Section DispatchOutput.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -1620,7 +1620,7 @@ End type_check.
 
 Module DispatchInput.
   Section DispatchInput.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -1636,7 +1636,7 @@ Definition DispatchInput := DispatchInput.t.
 
 Module DispatchOutput.
   Section DispatchOutput.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -1733,7 +1733,7 @@ Module event.
   Module topics.
     Module EventRespectsTopicLimit.
       Section EventRespectsTopicLimit.
-        Context (Event : Set).
+        Context [Event : Set].
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (Event);
@@ -2709,7 +2709,7 @@ End EmitEvent.
 Module topics.
   Module EventRespectsTopicLimit.
     Section EventRespectsTopicLimit.
-      Context (Event : Set).
+      Context [Event : Set].
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (Event);
@@ -3568,7 +3568,7 @@ End topics.
 
 Module EventRespectsTopicLimit.
   Section EventRespectsTopicLimit.
-    Context (Event : Set).
+    Context [Event : Set].
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (Event);
@@ -4891,7 +4891,7 @@ Module utils.
   Module same_type.
     Module IsSameType.
       Section IsSameType.
-        Context (T : Set).
+        Context [T : Set].
         Unset Primitive Projections.
         Record t : Set := {
           _marker : core.marker.PhantomData T;
@@ -4933,7 +4933,7 @@ Parameter consume_type : forall `{H : State.Trait},
 Module same_type.
   Module IsSameType.
     Section IsSameType.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData T;
@@ -4961,7 +4961,7 @@ End same_type.
 
 Module IsSameType.
   Section IsSameType.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData T;
@@ -5153,7 +5153,7 @@ Module reflect.
     
     Module ConstructorOutputValue.
       Section ConstructorOutputValue.
-        Context (T : Set).
+        Context [T : Set].
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -5536,7 +5536,7 @@ Module reflect.
     Module registry.
       Module TraitDefinitionRegistry.
         Section TraitDefinitionRegistry.
-          Context (E : Set).
+          Context [E : Set].
           Unset Primitive Projections.
           Record t : Set := {
             marker : core.marker.PhantomData (E);
@@ -5750,7 +5750,7 @@ Module dispatch.
   
   Module ConstructorOutputValue.
     Section ConstructorOutputValue.
-      Context (T : Set).
+      Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -6235,7 +6235,7 @@ End ConstructorOutput.
 
 Module ConstructorOutputValue.
   Section ConstructorOutputValue.
-    Context (T : Set).
+    Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -6623,7 +6623,7 @@ Module trait_def.
   Module registry.
     Module TraitDefinitionRegistry.
       Section TraitDefinitionRegistry.
-        Context (E : Set).
+        Context [E : Set].
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (E);
@@ -6737,7 +6737,7 @@ End TraitInfo.
 Module registry.
   Module TraitDefinitionRegistry.
     Section TraitDefinitionRegistry.
-      Context (E : Set).
+      Context [E : Set].
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (E);
@@ -6771,7 +6771,7 @@ End registry.
 
 Module TraitDefinitionRegistry.
   Section TraitDefinitionRegistry.
-    Context (E : Set).
+    Context [E : Set].
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (E);
@@ -7203,7 +7203,7 @@ End ToAccountId.
 Module env_access.
   Module EnvAccess.
     Section EnvAccess.
-      Context (E : Set).
+      Context [E : Set].
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData ((ref E));
@@ -7557,7 +7557,7 @@ End env_access.
 
 Module EnvAccess.
   Section EnvAccess.
-    Context (E : Set).
+    Context [E : Set].
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData ((ref E));

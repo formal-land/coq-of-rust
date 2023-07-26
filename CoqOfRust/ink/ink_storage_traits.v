@@ -179,7 +179,7 @@ Module impls.
   
   Module ManualKey.
     Section ManualKey.
-      Context (ParentKey : Set).
+      Context [ParentKey : Set].
       Unset Primitive Projections.
       Record t : Set := {
         _ : core.marker.PhantomData (ParentKey);
@@ -422,7 +422,7 @@ Module impls.
   
   Module ResolverKey.
     Section ResolverKey.
-      Context (L R : Set).
+      Context [L R : Set].
       Unset Primitive Projections.
       Record t : Set := {
         _ : core.marker.PhantomData ((L * R));
@@ -928,7 +928,7 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 
 Module ManualKey.
   Section ManualKey.
-    Context (ParentKey : Set).
+    Context [ParentKey : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData (ParentKey);
@@ -1190,7 +1190,7 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module ResolverKey.
   Section ResolverKey.
-    Context (L R : Set).
+    Context [L R : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData ((L * R));

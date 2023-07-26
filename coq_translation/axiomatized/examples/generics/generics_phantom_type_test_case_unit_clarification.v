@@ -107,7 +107,7 @@ End
 
 Module Length.
   Section Length.
-    Context (Unit : Set).
+    Context [Unit : Set].
     Unset Primitive Projections.
     Record t : Set := {
       _ : f64;
