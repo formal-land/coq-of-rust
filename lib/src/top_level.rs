@@ -1596,48 +1596,46 @@ impl TopLevelItem {
                     name,
                     &ty_params.iter().collect(),
                     [
+                        hardline(),
+                        text("Unset Primitive Projections."),
+                        hardline(),
                         nest([
-                            hardline(),
-                            text("Unset Primitive Projections."),
-                            hardline(),
-                            nest([
-                                text("Record"),
-                                line(),
-                                text("t"),
-                                line(),
-                                text(":"),
-                                line(),
-                                text("Set"),
-                                line(),
-                                text(":="),
-                                line(),
-                                text("{"),
-                            ]),
-                            if fields.is_empty() {
-                                text(" ")
-                            } else {
-                                concat([
-                                    nest([
-                                        hardline(),
-                                        intersperse(
-                                            fields.iter().map(|ty| {
-                                                nest([
-                                                    text("_ :"),
-                                                    line(),
-                                                    ty.to_doc(false),
-                                                    text(";"),
-                                                ])
-                                            }),
-                                            [hardline()],
-                                        ),
-                                    ]),
-                                    hardline(),
-                                ])
-                            },
-                            text("}."),
-                            hardline(),
-                            text("Global Set Primitive Projections."),
+                            text("Record"),
+                            line(),
+                            text("t"),
+                            line(),
+                            text(":"),
+                            line(),
+                            text("Set"),
+                            line(),
+                            text(":="),
+                            line(),
+                            text("{"),
                         ]),
+                        if fields.is_empty() {
+                            text(" ")
+                        } else {
+                            concat([
+                                nest([
+                                    hardline(),
+                                    intersperse(
+                                        fields.iter().map(|ty| {
+                                            nest([
+                                                text("_ :"),
+                                                line(),
+                                                ty.to_doc(false),
+                                                text(";"),
+                                            ])
+                                        }),
+                                        [hardline()],
+                                    ),
+                                ]),
+                                hardline(),
+                            ])
+                        },
+                        text("}."),
+                        hardline(),
+                        text("Global Set Primitive Projections."),
                         hardline(),
                         nest([intersperse(
                             fields.iter().enumerate().map(|(i, _)| {
