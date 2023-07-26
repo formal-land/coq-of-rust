@@ -949,7 +949,7 @@ Module api.
       `{ink_env.types.Environment.Trait E}
       `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
       `{parity_scale_codec.codec.Encode.Trait Args}
-      `{core.convert.AsRef.Trait Slice Salt}
+      `{core.convert.AsRef.Trait (Slice u8) Salt}
       `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       ref
         (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
@@ -995,7 +995,7 @@ Module api.
       forall
       {H : Set},
       `{ink_env.hash.CryptoHash.Trait H}
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref ink_env.hash.HashOutput.Type ->
       M (H := H) unit.
   
@@ -1202,7 +1202,7 @@ Parameter instantiate_contract : forall `{H : State.Trait},
     `{ink_env.types.Environment.Trait E}
     `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
     `{parity_scale_codec.codec.Encode.Trait Args}
-    `{core.convert.AsRef.Trait Slice Salt}
+    `{core.convert.AsRef.Trait (Slice u8) Salt}
     `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
     ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
     M (H := H)
@@ -1245,7 +1245,7 @@ Parameter hash_bytes : forall `{H : State.Trait},
     forall
     {H : Set},
     `{ink_env.hash.CryptoHash.Trait H}
-    ref Slice ->
+    ref (Slice u8) ->
     mut_ref ink_env.hash.HashOutput.Type ->
     M (H := H) unit.
 
@@ -1890,7 +1890,7 @@ Module backend.
         `{H : State.Trait}
         :
         (mut_ref Self) ->
-        (ref Slice) ->
+        (ref (Slice u8)) ->
         (mut_ref ink_env.hash.HashOutput.Type) ->
         (M (H := H) unit);
       hash_encoded
@@ -1928,7 +1928,7 @@ Module backend.
         `{H : State.Trait}
         :
         (mut_ref Self) ->
-        (ref Slice) ->
+        (ref (Slice u8)) ->
         (M (H := H) (ink_env.error.Result unit));
     }.
     
@@ -2457,7 +2457,7 @@ Module EnvBackend.
       `{H : State.Trait}
       :
       (mut_ref Self) ->
-      (ref Slice) ->
+      (ref (Slice u8)) ->
       (mut_ref ink_env.hash.HashOutput.Type) ->
       (M (H := H) unit);
     hash_encoded
@@ -2494,7 +2494,9 @@ Module EnvBackend.
     set_code_hash
       `{H : State.Trait}
       :
-      (mut_ref Self) -> (ref Slice) -> (M (H := H) (ink_env.error.Result unit));
+      (mut_ref Self) ->
+      (ref (Slice u8)) ->
+      (M (H := H) (ink_env.error.Result unit));
   }.
   
   Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
@@ -11478,7 +11480,7 @@ Module engine.
         
         Parameter params : forall `{H : State.Trait},
             ref Self ->
-            M (H := H) (ref Slice).
+            M (H := H) (ref (Slice u8)).
         
         Global Instance Method_params `{H : State.Trait} :
           Notation.Dot "params" := {
@@ -11487,7 +11489,7 @@ Module engine.
         
         Parameter to_bytes : forall `{H : State.Trait},
             ref Self ->
-            M (H := H) (ref Slice).
+            M (H := H) (ref (Slice u8)).
         
         Global Instance Method_to_bytes `{H : State.Trait} :
           Notation.Dot "to_bytes" := {
@@ -11550,7 +11552,7 @@ Module engine.
         Definition Self := ink_env.hash.Blake2x128.
         
         Parameter hash : forall `{H : State.Trait},
-            ref Slice ->
+            ref (Slice u8) ->
             mut_ref ink_env.hash.HashOutput.Type ->
             M (H := H) unit.
         
@@ -11568,7 +11570,7 @@ Module engine.
         Definition Self := ink_env.hash.Blake2x256.
         
         Parameter hash : forall `{H : State.Trait},
-            ref Slice ->
+            ref (Slice u8) ->
             mut_ref ink_env.hash.HashOutput.Type ->
             M (H := H) unit.
         
@@ -11586,7 +11588,7 @@ Module engine.
         Definition Self := ink_env.hash.Sha2x256.
         
         Parameter hash : forall `{H : State.Trait},
-            ref Slice ->
+            ref (Slice u8) ->
             mut_ref ink_env.hash.HashOutput.Type ->
             M (H := H) unit.
         
@@ -11604,7 +11606,7 @@ Module engine.
         Definition Self := ink_env.hash.Keccak256.
         
         Parameter hash : forall `{H : State.Trait},
-            ref Slice ->
+            ref (Slice u8) ->
             mut_ref ink_env.hash.HashOutput.Type ->
             M (H := H) unit.
         
@@ -11731,7 +11733,9 @@ Module engine.
         
         Parameter get_property : forall `{H : State.Trait},
             mut_ref Self ->
-            (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit ->
+            (ref ink_engine.ext.Engine) ->
+            (mut_ref (mut_ref (Slice u8))) ->
+            unit ->
             M (H := H) (ink_env.error.Result T).
         
         Global Instance Method_get_property `{H : State.Trait} :
@@ -11827,7 +11831,7 @@ Module engine.
         
         Parameter hash_bytes : forall `{H : State.Trait},
             mut_ref Self ->
-            ref Slice ->
+            ref (Slice u8) ->
             mut_ref ink_env.hash.HashOutput.Type ->
             M (H := H) unit.
         
@@ -11885,7 +11889,7 @@ Module engine.
         
         Parameter set_code_hash : forall `{H : State.Trait},
             mut_ref Self ->
-            ref Slice ->
+            ref (Slice u8) ->
             M (H := H) (ink_env.error.Result unit).
         
         Global Instance Method_set_code_hash `{H : State.Trait} :
@@ -12960,7 +12964,7 @@ Module off_chain.
       
       Parameter params : forall `{H : State.Trait},
           ref Self ->
-          M (H := H) (ref Slice).
+          M (H := H) (ref (Slice u8)).
       
       Global Instance Method_params `{H : State.Trait} :
         Notation.Dot "params" := {
@@ -12969,7 +12973,7 @@ Module off_chain.
       
       Parameter to_bytes : forall `{H : State.Trait},
           ref Self ->
-          M (H := H) (ref Slice).
+          M (H := H) (ref (Slice u8)).
       
       Global Instance Method_to_bytes `{H : State.Trait} :
         Notation.Dot "to_bytes" := {
@@ -13032,7 +13036,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Blake2x128.
       
       Parameter hash : forall `{H : State.Trait},
-          ref Slice ->
+          ref (Slice u8) ->
           mut_ref ink_env.hash.HashOutput.Type ->
           M (H := H) unit.
       
@@ -13050,7 +13054,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Blake2x256.
       
       Parameter hash : forall `{H : State.Trait},
-          ref Slice ->
+          ref (Slice u8) ->
           mut_ref ink_env.hash.HashOutput.Type ->
           M (H := H) unit.
       
@@ -13068,7 +13072,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Sha2x256.
       
       Parameter hash : forall `{H : State.Trait},
-          ref Slice ->
+          ref (Slice u8) ->
           mut_ref ink_env.hash.HashOutput.Type ->
           M (H := H) unit.
       
@@ -13086,7 +13090,7 @@ Module off_chain.
       Definition Self := ink_env.hash.Keccak256.
       
       Parameter hash : forall `{H : State.Trait},
-          ref Slice ->
+          ref (Slice u8) ->
           mut_ref ink_env.hash.HashOutput.Type ->
           M (H := H) unit.
       
@@ -13207,7 +13211,9 @@ Module off_chain.
       
       Parameter get_property : forall `{H : State.Trait},
           mut_ref Self ->
-          (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit ->
+          (ref ink_engine.ext.Engine) ->
+          (mut_ref (mut_ref (Slice u8))) ->
+          unit ->
           M (H := H) (ink_env.error.Result T).
       
       Global Instance Method_get_property `{H : State.Trait} :
@@ -13303,7 +13309,7 @@ Module off_chain.
       
       Parameter hash_bytes : forall `{H : State.Trait},
           mut_ref Self ->
-          ref Slice ->
+          ref (Slice u8) ->
           mut_ref ink_env.hash.HashOutput.Type ->
           M (H := H) unit.
       
@@ -13361,7 +13367,7 @@ Module off_chain.
       
       Parameter set_code_hash : forall `{H : State.Trait},
           mut_ref Self ->
-          ref Slice ->
+          ref (Slice u8) ->
           M (H := H) (ink_env.error.Result unit).
       
       Global Instance Method_set_code_hash `{H : State.Trait} :
@@ -14374,7 +14380,7 @@ Module call_data.
     
     Parameter params : forall `{H : State.Trait},
         ref Self ->
-        M (H := H) (ref Slice).
+        M (H := H) (ref (Slice u8)).
     
     Global Instance Method_params `{H : State.Trait} :
       Notation.Dot "params" := {
@@ -14383,7 +14389,7 @@ Module call_data.
     
     Parameter to_bytes : forall `{H : State.Trait},
         ref Self ->
-        M (H := H) (ref Slice).
+        M (H := H) (ref (Slice u8)).
     
     Global Instance Method_to_bytes `{H : State.Trait} :
       Notation.Dot "to_bytes" := {
@@ -14577,7 +14583,7 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
   
   Parameter params : forall `{H : State.Trait},
       ref Self ->
-      M (H := H) (ref Slice).
+      M (H := H) (ref (Slice u8)).
   
   Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
     Notation.dot := params;
@@ -14585,7 +14591,7 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
   
   Parameter to_bytes : forall `{H : State.Trait},
       ref Self ->
-      M (H := H) (ref Slice).
+      M (H := H) (ref (Slice u8)).
   
   Global Instance Method_to_bytes `{H : State.Trait} :
     Notation.Dot "to_bytes" := {
@@ -14645,7 +14651,7 @@ Module impls.
     Definition Self := ink_env.hash.Blake2x128.
     
     Parameter hash : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref ink_env.hash.HashOutput.Type ->
         M (H := H) unit.
     
@@ -14663,7 +14669,7 @@ Module impls.
     Definition Self := ink_env.hash.Blake2x256.
     
     Parameter hash : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref ink_env.hash.HashOutput.Type ->
         M (H := H) unit.
     
@@ -14681,7 +14687,7 @@ Module impls.
     Definition Self := ink_env.hash.Sha2x256.
     
     Parameter hash : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref ink_env.hash.HashOutput.Type ->
         M (H := H) unit.
     
@@ -14699,7 +14705,7 @@ Module impls.
     Definition Self := ink_env.hash.Keccak256.
     
     Parameter hash : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref ink_env.hash.HashOutput.Type ->
         M (H := H) unit.
     
@@ -14820,7 +14826,7 @@ Module impls.
     
     Parameter get_property : forall `{H : State.Trait},
         mut_ref Self ->
-        (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit ->
+        (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref (Slice u8))) -> unit ->
         M (H := H) (ink_env.error.Result T).
     
     Global Instance Method_get_property `{H : State.Trait} :
@@ -14916,7 +14922,7 @@ Module impls.
     
     Parameter hash_bytes : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref ink_env.hash.HashOutput.Type ->
         M (H := H) unit.
     
@@ -14974,7 +14980,7 @@ Module impls.
     
     Parameter set_code_hash : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) (ink_env.error.Result unit).
     
     Global Instance Method_set_code_hash `{H : State.Trait} :
@@ -15330,7 +15336,7 @@ Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
   Definition Self := ink_env.hash.Blake2x128.
   
   Parameter hash : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref ink_env.hash.HashOutput.Type ->
       M (H := H) unit.
   
@@ -15393,14 +15399,14 @@ Parameter assert_type_eq_all : forall `{H : State.Trait},
 Parameter as_array : forall `{H : State.Trait},
     forall
     {T : Set},
-    mut_ref Slice ->
+    mut_ref (Slice T) ->
     M (H := H) (mut_ref list T).
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
   Definition Self := ink_env.hash.Blake2x256.
   
   Parameter hash : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref ink_env.hash.HashOutput.Type ->
       M (H := H) unit.
   
@@ -15463,14 +15469,14 @@ Parameter assert_type_eq_all : forall `{H : State.Trait},
 Parameter as_array : forall `{H : State.Trait},
     forall
     {T : Set},
-    mut_ref Slice ->
+    mut_ref (Slice T) ->
     M (H := H) (mut_ref list T).
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
   Definition Self := ink_env.hash.Sha2x256.
   
   Parameter hash : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref ink_env.hash.HashOutput.Type ->
       M (H := H) unit.
   
@@ -15533,14 +15539,14 @@ Parameter assert_type_eq_all : forall `{H : State.Trait},
 Parameter as_array : forall `{H : State.Trait},
     forall
     {T : Set},
-    mut_ref Slice ->
+    mut_ref (Slice T) ->
     M (H := H) (mut_ref list T).
 
 Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
   Definition Self := ink_env.hash.Keccak256.
   
   Parameter hash : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref ink_env.hash.HashOutput.Type ->
       M (H := H) unit.
   
@@ -15603,7 +15609,7 @@ Parameter assert_type_eq_all : forall `{H : State.Trait},
 Parameter as_array : forall `{H : State.Trait},
     forall
     {T : Set},
-    mut_ref Slice ->
+    mut_ref (Slice T) ->
     M (H := H) (mut_ref list T).
 
 Module Impl_core_convert_From_for_ink_env_error_Error.
@@ -15710,7 +15716,7 @@ Module Impl_ink_env_engine_off_chain_EnvInstance_4.
   
   Parameter get_property : forall `{H : State.Trait},
       mut_ref Self ->
-      (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit ->
+      (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref (Slice u8))) -> unit ->
       M (H := H) (ink_env.error.Result T).
   
   Global Instance Method_get_property `{H : State.Trait} :
@@ -15805,7 +15811,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter hash_bytes : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref ink_env.hash.HashOutput.Type ->
       M (H := H) unit.
   
@@ -15863,7 +15869,7 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   
   Parameter set_code_hash : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (ink_env.error.Result unit).
   
   Global Instance Method_set_code_hash `{H : State.Trait} :
@@ -17323,7 +17329,7 @@ Module hash.
       hash
         `{H : State.Trait}
         :
-        (ref Slice) ->
+        (ref (Slice u8)) ->
         (mut_ref ink_env.hash.HashOutput.Type) ->
         (M (H := H) unit);
     }.
@@ -17800,7 +17806,7 @@ Module CryptoHash.
     hash
       `{H : State.Trait}
       :
-      (ref Slice) ->
+      (ref (Slice u8)) ->
       (mut_ref ink_env.hash.HashOutput.Type) ->
       (M (H := H) unit);
   }.
@@ -19379,7 +19385,7 @@ Module topics.
       Context [T : Set].
       Unset Primitive Projections.
       Record t : Set := {
-        prefix : ref Slice;
+        prefix : ref (Slice u8);
         value : ref T;
       }.
       Global Set Primitive Projections.
@@ -20559,7 +20565,7 @@ Module PrefixedValue.
     Context [T : Set].
     Unset Primitive Projections.
     Record t : Set := {
-      prefix : ref Slice;
+      prefix : ref (Slice u8);
       value : ref T;
     }.
     Global Set Primitive Projections.

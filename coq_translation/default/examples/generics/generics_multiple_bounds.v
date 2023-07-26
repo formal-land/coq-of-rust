@@ -66,7 +66,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let array := [ 1; 2; 3 ] in
   let* vec :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
-    Slice::["into_vec"] α0 in
+    (Slice _)::["into_vec"] α0 in
   let* _ := generics_multiple_bounds.compare_prints (addr_of string) in
   let* _ :=
     generics_multiple_bounds.compare_types (addr_of array) (addr_of vec) in

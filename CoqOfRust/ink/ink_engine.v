@@ -178,8 +178,8 @@ Module ext.
     
     Parameter transfer : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
-        ref Slice ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
         M (H := H) ink_engine.ext.Result.
     
     Global Instance Method_transfer `{H : State.Trait} :
@@ -189,8 +189,8 @@ Module ext.
     
     Parameter deposit_event : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
-        ref Slice ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
         M (H := H) unit.
     
     Global Instance Method_deposit_event `{H : State.Trait} :
@@ -200,8 +200,8 @@ Module ext.
     
     Parameter set_storage : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
-        ref Slice ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option u32).
     
     Global Instance Method_set_storage `{H : State.Trait} :
@@ -211,8 +211,8 @@ Module ext.
     
     Parameter get_storage : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
-        mut_ref (mut_ref Slice) ->
+        ref (Slice u8) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) ink_engine.ext.Result.
     
     Global Instance Method_get_storage `{H : State.Trait} :
@@ -222,8 +222,8 @@ Module ext.
     
     Parameter take_storage : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
-        mut_ref (mut_ref Slice) ->
+        ref (Slice u8) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) ink_engine.ext.Result.
     
     Global Instance Method_take_storage `{H : State.Trait} :
@@ -233,7 +233,7 @@ Module ext.
     
     Parameter contains_storage : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option u32).
     
     Global Instance Method_contains_storage `{H : State.Trait} :
@@ -243,7 +243,7 @@ Module ext.
     
     Parameter clear_storage : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option u32).
     
     Global Instance Method_clear_storage `{H : State.Trait} :
@@ -253,7 +253,7 @@ Module ext.
     
     Parameter terminate : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) Empty_set.
     
     Global Instance Method_terminate `{H : State.Trait} :
@@ -263,7 +263,7 @@ Module ext.
     
     Parameter caller : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_caller `{H : State.Trait} :
@@ -273,7 +273,7 @@ Module ext.
     
     Parameter balance : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_balance `{H : State.Trait} :
@@ -283,7 +283,7 @@ Module ext.
     
     Parameter value_transferred : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_value_transferred `{H : State.Trait} :
@@ -293,7 +293,7 @@ Module ext.
     
     Parameter address : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_address `{H : State.Trait} :
@@ -312,7 +312,7 @@ Module ext.
     }.
     
     Parameter hash_blake2_256 : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref list u8 ->
         M (H := H) unit.
     
@@ -322,7 +322,7 @@ Module ext.
     }.
     
     Parameter hash_blake2_128 : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref list u8 ->
         M (H := H) unit.
     
@@ -332,7 +332,7 @@ Module ext.
     }.
     
     Parameter hash_sha2_256 : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref list u8 ->
         M (H := H) unit.
     
@@ -342,7 +342,7 @@ Module ext.
     }.
     
     Parameter hash_keccak_256 : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         mut_ref list u8 ->
         M (H := H) unit.
     
@@ -353,7 +353,7 @@ Module ext.
     
     Parameter block_number : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_block_number `{H : State.Trait} :
@@ -363,7 +363,7 @@ Module ext.
     
     Parameter block_timestamp : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_block_timestamp `{H : State.Trait} :
@@ -373,7 +373,7 @@ Module ext.
     
     Parameter gas_left : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_gas_left `{H : State.Trait} :
@@ -383,7 +383,7 @@ Module ext.
     
     Parameter minimum_balance : forall `{H : State.Trait},
         ref Self ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_minimum_balance `{H : State.Trait} :
@@ -393,13 +393,13 @@ Module ext.
     
     Parameter instantiate : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         u64 ->
-        ref Slice ->
-        ref Slice ->
-        mut_ref (mut_ref Slice) ->
-        mut_ref (mut_ref Slice) ->
-        ref Slice ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
+        mut_ref (mut_ref (Slice u8)) ->
+        mut_ref (mut_ref (Slice u8)) ->
+        ref (Slice u8) ->
         M (H := H) ink_engine.ext.Result.
     
     Global Instance Method_instantiate `{H : State.Trait} :
@@ -409,11 +409,11 @@ Module ext.
     
     Parameter call : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         u64 ->
-        ref Slice ->
-        ref Slice ->
-        mut_ref (mut_ref Slice) ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) ink_engine.ext.Result.
     
     Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
@@ -423,7 +423,7 @@ Module ext.
     Parameter weight_to_fee : forall `{H : State.Trait},
         ref Self ->
         u64 ->
-        mut_ref (mut_ref Slice) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_weight_to_fee `{H : State.Trait} :
@@ -434,8 +434,8 @@ Module ext.
     Parameter call_chain_extension : forall `{H : State.Trait},
         mut_ref Self ->
         u32 ->
-        ref Slice ->
-        mut_ref (mut_ref Slice) ->
+        ref (Slice u8) ->
+        mut_ref (mut_ref (Slice u8)) ->
         M (H := H) unit.
     
     Global Instance Method_call_chain_extension `{H : State.Trait} :
@@ -457,8 +457,8 @@ Module ext.
   End Impl_ink_engine_ext_Engine_2.
   
   Parameter set_output : forall `{H : State.Trait},
-      mut_ref (mut_ref Slice) ->
-      ref Slice ->
+      mut_ref (mut_ref (Slice u8)) ->
+      ref (Slice u8) ->
       M (H := H) unit.
 End ext.
 
@@ -636,8 +636,8 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter transfer : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
       M (H := H) ink_engine.ext.Result.
   
   Global Instance Method_transfer `{H : State.Trait} :
@@ -647,8 +647,8 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter deposit_event : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
       M (H := H) unit.
   
   Global Instance Method_deposit_event `{H : State.Trait} :
@@ -658,8 +658,8 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter set_storage : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option u32).
   
   Global Instance Method_set_storage `{H : State.Trait} :
@@ -669,8 +669,8 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter get_storage : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
-      mut_ref (mut_ref Slice) ->
+      ref (Slice u8) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) ink_engine.ext.Result.
   
   Global Instance Method_get_storage `{H : State.Trait} :
@@ -680,8 +680,8 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter take_storage : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
-      mut_ref (mut_ref Slice) ->
+      ref (Slice u8) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) ink_engine.ext.Result.
   
   Global Instance Method_take_storage `{H : State.Trait} :
@@ -691,7 +691,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter contains_storage : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option u32).
   
   Global Instance Method_contains_storage `{H : State.Trait} :
@@ -701,7 +701,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter clear_storage : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option u32).
   
   Global Instance Method_clear_storage `{H : State.Trait} :
@@ -711,7 +711,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter terminate : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) Empty_set.
   
   Global Instance Method_terminate `{H : State.Trait} :
@@ -721,7 +721,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter caller : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_caller `{H : State.Trait} : Notation.Dot "caller" := {
@@ -730,7 +730,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter balance : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_balance `{H : State.Trait} :
@@ -740,7 +740,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter value_transferred : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_value_transferred `{H : State.Trait} :
@@ -750,7 +750,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter address : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_address `{H : State.Trait} :
@@ -769,7 +769,7 @@ Module Impl_ink_engine_ext_Engine_4.
   }.
   
   Parameter hash_blake2_256 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
   
@@ -779,7 +779,7 @@ Module Impl_ink_engine_ext_Engine_4.
   }.
   
   Parameter hash_blake2_128 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
   
@@ -789,7 +789,7 @@ Module Impl_ink_engine_ext_Engine_4.
   }.
   
   Parameter hash_sha2_256 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
   
@@ -799,7 +799,7 @@ Module Impl_ink_engine_ext_Engine_4.
   }.
   
   Parameter hash_keccak_256 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
   
@@ -810,7 +810,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter block_number : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_block_number `{H : State.Trait} :
@@ -820,7 +820,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter block_timestamp : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_block_timestamp `{H : State.Trait} :
@@ -830,7 +830,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter gas_left : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_gas_left `{H : State.Trait} :
@@ -840,7 +840,7 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter minimum_balance : forall `{H : State.Trait},
       ref Self ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_minimum_balance `{H : State.Trait} :
@@ -850,13 +850,13 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter instantiate : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       u64 ->
-      ref Slice ->
-      ref Slice ->
-      mut_ref (mut_ref Slice) ->
-      mut_ref (mut_ref Slice) ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
+      mut_ref (mut_ref (Slice u8)) ->
+      mut_ref (mut_ref (Slice u8)) ->
+      ref (Slice u8) ->
       M (H := H) ink_engine.ext.Result.
   
   Global Instance Method_instantiate `{H : State.Trait} :
@@ -866,11 +866,11 @@ Module Impl_ink_engine_ext_Engine_4.
   
   Parameter call : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       u64 ->
-      ref Slice ->
-      ref Slice ->
-      mut_ref (mut_ref Slice) ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) ink_engine.ext.Result.
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
@@ -880,7 +880,7 @@ Module Impl_ink_engine_ext_Engine_4.
   Parameter weight_to_fee : forall `{H : State.Trait},
       ref Self ->
       u64 ->
-      mut_ref (mut_ref Slice) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_weight_to_fee `{H : State.Trait} :
@@ -891,8 +891,8 @@ Module Impl_ink_engine_ext_Engine_4.
   Parameter call_chain_extension : forall `{H : State.Trait},
       mut_ref Self ->
       u32 ->
-      ref Slice ->
-      mut_ref (mut_ref Slice) ->
+      ref (Slice u8) ->
+      mut_ref (mut_ref (Slice u8)) ->
       M (H := H) unit.
   
   Global Instance Method_call_chain_extension `{H : State.Trait} :
@@ -914,8 +914,8 @@ Module Impl_ink_engine_ext_Engine_4.
 End Impl_ink_engine_ext_Engine_4.
 
 Parameter set_output : forall `{H : State.Trait},
-    mut_ref (mut_ref Slice) ->
-    ref Slice ->
+    mut_ref (mut_ref (Slice u8)) ->
+    ref (Slice u8) ->
     M (H := H) unit.
 
 Module test_api.
@@ -1285,7 +1285,7 @@ Module test_api.
     
     Parameter count_used_storage_cells : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) (core.result.Result usize ink_engine.Error).
     
     Global Instance Method_count_used_storage_cells `{H : State.Trait} :
@@ -1752,7 +1752,7 @@ Module Impl_ink_engine_ext_Engine_6.
   
   Parameter count_used_storage_cells : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (core.result.Result usize ink_engine.Error).
   
   Global Instance Method_count_used_storage_cells `{H : State.Trait} :
@@ -2038,7 +2038,7 @@ Module chain_extension.
         `{H : State.Trait}
         :
         (mut_ref Self) ->
-        (ref Slice) ->
+        (ref (Slice u8)) ->
         (mut_ref (alloc.vec.Vec u8)) ->
         (M (H := H) u32);
     }.
@@ -2101,8 +2101,9 @@ Module chain_extension.
     Parameter eval : forall `{H : State.Trait},
         mut_ref Self ->
         u32 ->
-        ref Slice ->
-        M (H := H) (core.result.Result (u32 * (ref Slice)) ink_engine.Error).
+        ref (Slice u8) ->
+        M (H := H)
+          (core.result.Result (u32 * (ref (Slice u8))) ink_engine.Error).
     
     Global Instance Method_eval `{H : State.Trait} : Notation.Dot "eval" := {
       Notation.dot := eval;
@@ -2351,7 +2352,7 @@ Module ChainExtension.
       `{H : State.Trait}
       :
       (mut_ref Self) ->
-      (ref Slice) ->
+      (ref (Slice u8)) ->
       (mut_ref (alloc.vec.Vec u8)) ->
       (M (H := H) u32);
   }.
@@ -2412,8 +2413,8 @@ Module Impl_ink_engine_chain_extension_ChainExtensionHandler_2.
   Parameter eval : forall `{H : State.Trait},
       mut_ref Self ->
       u32 ->
-      ref Slice ->
-      M (H := H) (core.result.Result (u32 * (ref Slice)) ink_engine.Error).
+      ref (Slice u8) ->
+      M (H := H) (core.result.Result (u32 * (ref (Slice u8))) ink_engine.Error).
   
   Global Instance Method_eval `{H : State.Trait} : Notation.Dot "eval" := {
     Notation.dot := eval;
@@ -2421,21 +2422,21 @@ Module Impl_ink_engine_chain_extension_ChainExtensionHandler_2.
 End Impl_ink_engine_chain_extension_ChainExtensionHandler_2.
 
 Module database.
-  Definition BALANCE_OF `{H : State.Trait} : ref Slice :=
+  Definition BALANCE_OF `{H : State.Trait} : ref (Slice u8) :=
     run (Pure [98, 97, 108, 97, 110, 99, 101, 58]).
   
-  Definition STORAGE_OF `{H : State.Trait} : ref Slice :=
+  Definition STORAGE_OF `{H : State.Trait} : ref (Slice u8) :=
     run
       (Pure
         [99, 111, 110, 116, 114, 97, 99, 116, 45, 115, 116, 111, 114, 97, 103, 101, 58]).
   
   Parameter balance_of_key : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) list u8.
   
   Parameter storage_of_contract_key : forall `{H : State.Trait},
-      ref Slice ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
       M (H := H) list u8.
   
   Module Database.
@@ -2481,7 +2482,7 @@ Module database.
     
     Parameter get : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option (ref (alloc.vec.Vec u8))).
     
     Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
@@ -2490,8 +2491,8 @@ Module database.
     
     Parameter get_from_contract_storage : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
-        ref Slice ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option (ref (alloc.vec.Vec u8))).
     
     Global Instance Method_get_from_contract_storage `{H : State.Trait} :
@@ -2501,8 +2502,8 @@ Module database.
     
     Parameter insert_into_contract_storage : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
-        ref Slice ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
         alloc.vec.Vec u8 ->
         M (H := H) (core.option.Option (alloc.vec.Vec u8)).
     
@@ -2513,8 +2514,8 @@ Module database.
     
     Parameter remove_contract_storage : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
-        ref Slice ->
+        ref (Slice u8) ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option (alloc.vec.Vec u8)).
     
     Global Instance Method_remove_contract_storage `{H : State.Trait} :
@@ -2524,7 +2525,7 @@ Module database.
     
     Parameter remove : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option (alloc.vec.Vec u8)).
     
     Global Instance Method_remove `{H : State.Trait} :
@@ -2553,7 +2554,7 @@ Module database.
     
     Parameter get_balance : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) (core.option.Option ink_engine.types.Balance).
     
     Global Instance Method_get_balance `{H : State.Trait} :
@@ -2563,7 +2564,7 @@ Module database.
     
     Parameter set_balance : forall `{H : State.Trait},
         mut_ref Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         ink_engine.types.Balance ->
         M (H := H) unit.
     
@@ -2574,21 +2575,21 @@ Module database.
   End Impl_ink_engine_database_Database.
 End database.
 
-Definition BALANCE_OF `{H : State.Trait} : ref Slice :=
+Definition BALANCE_OF `{H : State.Trait} : ref (Slice u8) :=
   run (Pure [98, 97, 108, 97, 110, 99, 101, 58]).
 
-Definition STORAGE_OF `{H : State.Trait} : ref Slice :=
+Definition STORAGE_OF `{H : State.Trait} : ref (Slice u8) :=
   run
     (Pure
       [99, 111, 110, 116, 114, 97, 99, 116, 45, 115, 116, 111, 114, 97, 103, 101, 58]).
 
 Parameter balance_of_key : forall `{H : State.Trait},
-    ref Slice ->
+    ref (Slice u8) ->
     M (H := H) list u8.
 
 Parameter storage_of_contract_key : forall `{H : State.Trait},
-    ref Slice ->
-    ref Slice ->
+    ref (Slice u8) ->
+    ref (Slice u8) ->
     M (H := H) list u8.
 
 Module Database.
@@ -2634,7 +2635,7 @@ Module Impl_ink_engine_database_Database_2.
   
   Parameter get : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option (ref (alloc.vec.Vec u8))).
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
@@ -2643,8 +2644,8 @@ Module Impl_ink_engine_database_Database_2.
   
   Parameter get_from_contract_storage : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option (ref (alloc.vec.Vec u8))).
   
   Global Instance Method_get_from_contract_storage `{H : State.Trait} :
@@ -2654,8 +2655,8 @@ Module Impl_ink_engine_database_Database_2.
   
   Parameter insert_into_contract_storage : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
       alloc.vec.Vec u8 ->
       M (H := H) (core.option.Option (alloc.vec.Vec u8)).
   
@@ -2666,8 +2667,8 @@ Module Impl_ink_engine_database_Database_2.
   
   Parameter remove_contract_storage : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
-      ref Slice ->
+      ref (Slice u8) ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option (alloc.vec.Vec u8)).
   
   Global Instance Method_remove_contract_storage `{H : State.Trait} :
@@ -2677,7 +2678,7 @@ Module Impl_ink_engine_database_Database_2.
   
   Parameter remove : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option (alloc.vec.Vec u8)).
   
   Global Instance Method_remove `{H : State.Trait} : Notation.Dot "remove" := {
@@ -2702,7 +2703,7 @@ Module Impl_ink_engine_database_Database_2.
   
   Parameter get_balance : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (core.option.Option ink_engine.types.Balance).
   
   Global Instance Method_get_balance `{H : State.Trait} :
@@ -2712,7 +2713,7 @@ Module Impl_ink_engine_database_Database_2.
   
   Parameter set_balance : forall `{H : State.Trait},
       mut_ref Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       ink_engine.types.Balance ->
       M (H := H) unit.
   
@@ -2918,47 +2919,47 @@ End Impl_ink_engine_exec_context_ExecContext_2.
 
 Module hashing.
   Parameter blake2b_256 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
   
   Parameter blake2b_128 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
   
   Parameter keccak_256 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
   
   Parameter sha2_256 : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       mut_ref list u8 ->
       M (H := H) unit.
 End hashing.
 
 Parameter blake2b_256 : forall `{H : State.Trait},
-    ref Slice ->
+    ref (Slice u8) ->
     mut_ref list u8 ->
     M (H := H) unit.
 
 Definition Blake2b256 : Set := blake2.Blake2b typenum.generated.consts.U32.
 
 Parameter blake2b_128 : forall `{H : State.Trait},
-    ref Slice ->
+    ref (Slice u8) ->
     mut_ref list u8 ->
     M (H := H) unit.
 
 Definition Blake2b128 : Set := blake2.Blake2b typenum.generated.consts.U16.
 
 Parameter keccak_256 : forall `{H : State.Trait},
-    ref Slice ->
+    ref (Slice u8) ->
     mut_ref list u8 ->
     M (H := H) unit.
 
 Parameter sha2_256 : forall `{H : State.Trait},
-    ref Slice ->
+    ref (Slice u8) ->
     mut_ref list u8 ->
     M (H := H) unit.
 
@@ -3136,7 +3137,7 @@ Module types.
     Definition Self := ink_engine.types.AccountId.
     
     Parameter from_bytes : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) Self.
     
     Global Instance AssociatedFunction_from_bytes `{H : State.Trait} :
@@ -3146,7 +3147,7 @@ Module types.
     
     Parameter as_bytes : forall `{H : State.Trait},
         ref Self ->
-        M (H := H) (ref Slice).
+        M (H := H) (ref (Slice u8)).
     
     Global Instance Method_as_bytes `{H : State.Trait} :
       Notation.Dot "as_bytes" := {
@@ -3320,7 +3321,7 @@ Module types.
     Definition Self := ink_engine.types.Key.
     
     Parameter from_bytes : forall `{H : State.Trait},
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) Self.
     
     Global Instance AssociatedFunction_from_bytes `{H : State.Trait} :
@@ -3608,7 +3609,7 @@ Module Impl_ink_engine_types_AccountId_2.
   Definition Self := ink_engine.types.AccountId.
   
   Parameter from_bytes : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) Self.
   
   Global Instance AssociatedFunction_from_bytes `{H : State.Trait} :
@@ -3618,7 +3619,7 @@ Module Impl_ink_engine_types_AccountId_2.
   
   Parameter as_bytes : forall `{H : State.Trait},
       ref Self ->
-      M (H := H) (ref Slice).
+      M (H := H) (ref (Slice u8)).
   
   Global Instance Method_as_bytes `{H : State.Trait} :
     Notation.Dot "as_bytes" := {
@@ -3791,7 +3792,7 @@ Module Impl_ink_engine_types_Key_2.
   Definition Self := ink_engine.types.Key.
   
   Parameter from_bytes : forall `{H : State.Trait},
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) Self.
   
   Global Instance AssociatedFunction_from_bytes `{H : State.Trait} :

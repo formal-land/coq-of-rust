@@ -200,7 +200,7 @@ Module client.
     
     Parameter return_data : forall `{H : State.Trait},
         ref Self ->
-        M (H := H) (ref Slice).
+        M (H := H) (ref (Slice u8)).
     
     Global Instance Method_return_data `{H : State.Trait} :
       Notation.Dot "return_data" := {
@@ -329,7 +329,7 @@ Module client.
     
     Parameter return_data : forall `{H : State.Trait},
         ref Self ->
-        M (H := H) (ref Slice).
+        M (H := H) (ref (Slice u8)).
     
     Global Instance Method_return_data `{H : State.Trait} :
       Notation.Dot "return_data" := {
@@ -475,7 +475,7 @@ Module client.
     
     Parameter encode_as_fields_to : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice scale_encode.PortableField) ->
         ref scale_info.portable.PortableRegistry ->
         mut_ref (alloc.vec.Vec u8) ->
         M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -599,7 +599,7 @@ Module client.
     
     Parameter encode_as_fields_to : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice scale_encode.PortableField) ->
         ref scale_info.portable.PortableRegistry ->
         mut_ref (alloc.vec.Vec u8) ->
         M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -999,7 +999,7 @@ Module Impl_ink_e2e_client_CallResult_C_E_V_2.
   
   Parameter return_data : forall `{H : State.Trait},
       ref Self ->
-      M (H := H) (ref Slice).
+      M (H := H) (ref (Slice u8)).
   
   Global Instance Method_return_data `{H : State.Trait} :
     Notation.Dot "return_data" := {
@@ -1127,7 +1127,7 @@ Module Impl_ink_e2e_client_CallDryRunResult_E_V_2.
   
   Parameter return_data : forall `{H : State.Trait},
       ref Self ->
-      M (H := H) (ref Slice).
+      M (H := H) (ref (Slice u8)).
   
   Global Instance Method_return_data `{H : State.Trait} :
     Notation.Dot "return_data" := {
@@ -1383,8 +1383,8 @@ Section
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
   Parameter decode_as_fields : forall `{H : State.Trait},
-      mut_ref (ref Slice) ->
-      ref Slice ->
+      mut_ref (ref (Slice u8)) ->
+      ref (Slice scale_decode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       M (H := H) (core.result.Result Self scale_decode.error.Error).
   
@@ -1445,7 +1445,7 @@ Section
   
   Parameter encode_as_fields_to : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice scale_encode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       mut_ref (alloc.vec.Vec u8) ->
       M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -1695,8 +1695,8 @@ Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
   Parameter decode_as_fields : forall `{H : State.Trait},
-      mut_ref (ref Slice) ->
-      ref Slice ->
+      mut_ref (ref (Slice u8)) ->
+      ref (Slice scale_decode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       M (H := H) (core.result.Result Self scale_decode.error.Error).
   
@@ -1749,7 +1749,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   
   Parameter encode_as_fields_to : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice scale_encode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       mut_ref (alloc.vec.Vec u8) ->
       M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -2667,7 +2667,7 @@ Module xts.
     
     Parameter encode_as_fields_to : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice scale_encode.PortableField) ->
         ref scale_info.portable.PortableRegistry ->
         mut_ref (alloc.vec.Vec u8) ->
         M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -2815,7 +2815,7 @@ Module xts.
     
     Parameter encode_as_fields_to : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice scale_encode.PortableField) ->
         ref scale_info.portable.PortableRegistry ->
         mut_ref (alloc.vec.Vec u8) ->
         M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -2923,7 +2923,7 @@ Module xts.
     
     Parameter encode_as_fields_to : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice scale_encode.PortableField) ->
         ref scale_info.portable.PortableRegistry ->
         mut_ref (alloc.vec.Vec u8) ->
         M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -3018,7 +3018,7 @@ Module xts.
     
     Parameter encode_as_fields_to : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice scale_encode.PortableField) ->
         ref scale_info.portable.PortableRegistry ->
         mut_ref (alloc.vec.Vec u8) ->
         M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -3235,7 +3235,7 @@ Module xts.
     
     Parameter encode_as_fields_to : forall `{H : State.Trait},
         ref Self ->
-        ref Slice ->
+        ref (Slice scale_encode.PortableField) ->
         ref scale_info.portable.PortableRegistry ->
         mut_ref (alloc.vec.Vec u8) ->
         M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -3740,7 +3740,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
   
   Parameter encode_as_fields_to : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice scale_encode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       mut_ref (alloc.vec.Vec u8) ->
       M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -3843,7 +3843,7 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   
   Parameter visit_bytes : forall `{H : State.Trait},
       Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) (core.result.Result ImplSelf.Value __E).
   
   Global Instance Method_visit_bytes `{H : State.Trait} :
@@ -3930,7 +3930,7 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   }.
 End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
 
-Definition FIELDS `{H : State.Trait} : ref Slice :=
+Definition FIELDS `{H : State.Trait} : ref (Slice (ref str)) :=
   run (Pure (addr_of [ "ref_time"; "proof_size" ])).
 
 Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
@@ -4123,7 +4123,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Parameter encode_as_fields_to : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice scale_encode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       mut_ref (alloc.vec.Vec u8) ->
       M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -4284,7 +4284,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   
   Parameter encode_as_fields_to : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice scale_encode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       mut_ref (alloc.vec.Vec u8) ->
       M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -4434,7 +4434,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   
   Parameter encode_as_fields_to : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice scale_encode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       mut_ref (alloc.vec.Vec u8) ->
       M (H := H) (core.result.Result unit scale_encode.error.Error).
@@ -4766,7 +4766,7 @@ Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   
   Parameter encode_as_fields_to : forall `{H : State.Trait},
       ref Self ->
-      ref Slice ->
+      ref (Slice scale_encode.PortableField) ->
       ref scale_info.portable.PortableRegistry ->
       mut_ref (alloc.vec.Vec u8) ->
       M (H := H) (core.result.Result unit scale_encode.error.Error).

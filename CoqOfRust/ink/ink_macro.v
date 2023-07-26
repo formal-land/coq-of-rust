@@ -356,7 +356,10 @@ Parameter StorageLayout : forall `{H : State.Trait},
     proc_macro.TokenStream ->
     M (H := H) proc_macro.TokenStream.
 
-Definition _DECLS `{H : State.Trait} : ref Slice :=
+Definition
+    _DECLS
+    `{H : State.Trait} :
+    ref (Slice proc_macro.bridge.client.ProcMacro) :=
   run
     (let* α0 :=
       proc_macro.bridge.client.ProcMacro::["bang"]

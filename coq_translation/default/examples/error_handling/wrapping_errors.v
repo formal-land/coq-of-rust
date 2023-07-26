@@ -162,8 +162,8 @@ Definition print
         std.io.stdio._print α1 in
       Pure tt in
     let* α0 := e.["source"] in
-    let* α1 := let_if core.option.Option.Some source := α0 in
-    if (α1 : bool) then
+    match α0 with
+    | core.option.Option.Some source =>
       let* _ :=
         let* _ :=
           let* α0 := format_argument::["new_display"] (addr_of source) in
@@ -175,19 +175,19 @@ Definition print
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
-    else
-      Pure tt
+    | _ => Pure tt
+    end
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
+    (Slice _)::["into_vec"] α0 in
   let* empty := alloc.vec.Vec::["new"] in
   let* strings :=
     let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
+    (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := wrapping_errors.double_first numbers in
     wrapping_errors.print α0 in

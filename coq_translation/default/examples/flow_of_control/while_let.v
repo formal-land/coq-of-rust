@@ -5,8 +5,8 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let optional := core.option.Option.Some 0 in
   loop
-    (let* α0 := let_if core.option.Option.Some i := optional in
-    if (α0 : bool) then
+    (match optional with
+    | core.option.Option.Some i =>
       let* α0 := i.["gt"] 9 in
       if (α0 : bool) then
         let* _ :=
@@ -34,6 +34,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           let* α0 := i.["add"] 1 in
           assign optional (core.option.Option.Some α0) in
         Pure tt
-    else
+    | _ =>
       let* _ := Break in
-      Pure tt).
+      Pure tt
+    end).

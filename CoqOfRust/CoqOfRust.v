@@ -142,13 +142,28 @@ Global Instance Method_Z_abs `{State.Trait} : Notation.Dot "abs" := {
 }.
 
 (* TODO: find a better place for this instance *)
+Global Instance Method_Z_neg `{State.Trait} : Notation.Dot "neg" := {
+  Notation.dot (x : Z) := Pure (Z.opp x);
+}.
+
+(* TODO: find a better place for this instance *)
 Global Instance Method_Z_lt `{State.Trait} : Notation.Dot "lt" := {
   Notation.dot (x y : Z) := Pure (Z.ltb x y);
 }.
 
 (* TODO: find a better place for this instance *)
+Global Instance Method_Z_gt `{State.Trait} : Notation.Dot "gt" := {
+  Notation.dot (x y : Z) := Pure (Z.gtb x y);
+}.
+
+(* TODO: find a better place for this instance *)
 Global Instance Method_Z_eq `{State.Trait} : Notation.Dot "eq" := {
   Notation.dot (x y : Z) := Pure (Z.eqb x y);
+}.
+
+(* TODO: find a better place for this instance *)
+Global Instance Method_bool_andb `{State.Trait} : Notation.Dot "andb" := {
+  Notation.dot (x y : bool) := Pure (andb x y);
 }.
 
 Global Instance Method_destroy `{State.Trait} (A : Set) :
@@ -1401,12 +1416,96 @@ Module Impl_Slice.
 
     Global Instance Method_into_vec `{State.Trait}
       (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *) :
-      Notation.DoubleColon Slice "into_vec" := {
+      Notation.DoubleColon (Slice T) "into_vec" := {
         Notation.double_colon (self : ref Self) (* (alloc : A) *) :=
           into_vec self (* alloc *);
       }.
   End Impl_Slice.
 End Impl_Slice.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+Module Impl_Iterator_for_Slice_Iter.
+  Section Impl_Iterator_for_Slice_Iter.
+  Context {A : Set}.
+
+  Definition Self := std.slice.Iter A.
+
+  Definition Item := A.
+
+  Parameter next :
+    forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+    Notation.dot := next;
+  }.
+  End Impl_Iterator_for_Slice_Iter.
+End Impl_Iterator_for_Slice_Iter.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+(* this should be replaced with a generic instance of IntoIterator for Iterator *)
+Module Impl_IntoIterator_for_Slice_Iter.
+  Section Impl_IntoIterator_for_Slice_Iter.
+  Context {A : Set}.
+  Definition I := std.slice.Iter A.
+
+  Definition Self := I.
+
+  Definition Item := A.
+  Definition IntoIter := I.
+
+  Parameter into_iter :
+    forall `{State.Trait}, Self -> M IntoIter.
+
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" := {
+    Notation.dot := into_iter;
+  }.
+  End Impl_IntoIterator_for_Slice_Iter.
+End Impl_IntoIterator_for_Slice_Iter.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+Module Impl_Iterator_for_Slice_IterMut.
+  Section Impl_Iterator_for_Slice_IterMut.
+  Context {A : Set}.
+
+  Definition Self := std.slice.IterMut A.
+
+  Definition Item := A.
+
+  Parameter next :
+    forall `{State.Trait}, mut_ref Self -> M (core.option.Option A).
+
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
+    Notation.dot := next;
+  }.
+  End Impl_Iterator_for_Slice_IterMut.
+End Impl_Iterator_for_Slice_IterMut.
+
+(* TODO: this is only a temporary implementation,
+         it needs to be rewritten when all std files will be fixed *)
+(* this should be replaced with a generic instance of IntoIterator for Iterator *)
+Module Impl_IntoIterator_for_Slice_IterMut.
+  Section Impl_IntoIterator_for_Slice_IterMut.
+  Context {A : Set}.
+  Definition I := std.slice.IterMut A.
+
+  Definition Self := I.
+
+  Definition Item := A.
+  Definition IntoIter := I.
+
+  Parameter into_iter :
+    forall `{State.Trait}, Self -> M IntoIter.
+
+  Global Instance Method_into_iter `{State.Trait} :
+    Notation.Dot "into_iter" := {
+    Notation.dot := into_iter;
+  }.
+  End Impl_IntoIterator_for_Slice_IterMut.
+End Impl_IntoIterator_for_Slice_IterMut.
 
 Module Impl_IntoIter_for_Vec.
   Section Impl_IntoIter_for_Vec.
@@ -1442,7 +1541,8 @@ Module Impl_Iterator_for_Vec_IntoIter.
 
   Definition Item := T.
 
-  Parameter next : forall `{State.Trait} (self : mut_ref Self), M (core.option.Option T).
+  Parameter next : forall `{State.Trait} (self : mut_ref Self),
+    M (core.option.Option T).
 
   Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
@@ -1469,6 +1569,41 @@ Module Impl_IntoIter_for_Vec_IntoIter.
   }.
   End Impl_IntoIter_for_Vec_IntoIter.
 End Impl_IntoIter_for_Vec_IntoIter.
+
+(* TODO: a temporary implementation providing methods,
+         which can be called in Rust on Vec,
+         but only after applying a coercion *)
+Module Temp_Impl_for_Vec.
+  Section Temp_Impl_for_Vec.
+  Context {T : Set}.
+
+  Definition Self := Vec T None.
+
+  Parameter iter : forall `{State.Trait}, ref Self -> M (std.slice.Iter T).
+  Parameter iter_mut :
+    forall `{State.Trait}, ref Self -> M (std.slice.IterMut T).
+
+  Global Instance Method_iter `{State.Trait} : Notation.Dot "iter" := {
+    Notation.dot := iter;
+  }.
+
+  Global Instance Method_iter_mut `{State.Trait} : Notation.Dot "iter_mut" := {
+    Notation.dot := iter_mut;
+  }.
+  End Temp_Impl_for_Vec.
+End Temp_Impl_for_Vec.
+
+Module Impl_Debug_for_Vec.
+  Section Impl_Debug_for_Vec.
+  Context {T (* A *) : Set}.
+  Context `{core.fmt.Debug.Trait T}.
+(*   Context `{alloc.Allocator.Trait A}. *)
+
+  Definition Self := Vec T None (* (Some A) *).
+
+  Global Instance IDebug : core.fmt.Debug.Trait Self. Admitted.
+  End Impl_Debug_for_Vec.
+End Impl_Debug_for_Vec.
 
 (* TODO: this is only a temporary implementation,
          it needs to be rewritten when all std files will be fixed *)

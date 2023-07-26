@@ -83,7 +83,9 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           scoping_rules_borrowing_the_ref_pattern.Point.y := mut_ref_to_y;
         |} :=
       mutable_point in
-    let* _ := assign mut_ref_to_y.["deref"] 1 in
+    let* _ :=
+      let* α0 := mut_ref_to_y.["deref"] in
+      assign α0 1 in
     Pure tt in
   let* _ :=
     let* _ :=
@@ -114,7 +116,9 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure (α0, 3) in
   let* _ :=
     let '(_, last) := mutable_tuple in
-    let* _ := assign last.["deref"] 2 in
+    let* _ :=
+      let* α0 := last.["deref"] in
+      assign α0 2 in
     Pure tt in
   let* _ :=
     let* _ :=

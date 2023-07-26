@@ -7456,7 +7456,7 @@ Module env_access.
     
     Parameter hash_bytes : forall `{H : State.Trait},
         Self ->
-        ref Slice ->
+        ref (Slice u8) ->
         M (H := H) ink_env.hash.HashOutput.Type.
     
     Global Instance Method_hash_bytes `{H : State.Trait} :
@@ -7804,7 +7804,7 @@ Module Impl_ink_env_access_EnvAccess_E_4.
   
   Parameter hash_bytes : forall `{H : State.Trait},
       Self ->
-      ref Slice ->
+      ref (Slice u8) ->
       M (H := H) ink_env.hash.HashOutput.Type.
   
   Global Instance Method_hash_bytes `{H : State.Trait} :

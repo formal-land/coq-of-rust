@@ -140,8 +140,9 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
       : M (H := H) unit :=
     let* _ :=
       let* α0 := self.["deref"] in
-      let* α1 := α0.["bitand"] rhs in
-      assign self.["deref"] α1 in
+      let* α1 := self.["deref"] in
+      let* α2 := α1.["bitand"] rhs in
+      assign α0 α2 in
     Pure tt.
   
   Global Instance Method_bitand_assign `{H : State.Trait} :
@@ -186,8 +187,9 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
       : M (H := H) unit :=
     let* _ :=
       let* α0 := self.["deref"] in
-      let* α1 := α0.["bitor"] rhs in
-      assign self.["deref"] α1 in
+      let* α1 := self.["deref"] in
+      let* α2 := α1.["bitor"] rhs in
+      assign α0 α2 in
     Pure tt.
   
   Global Instance Method_bitor_assign `{H : State.Trait} :
@@ -232,8 +234,9 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
       : M (H := H) unit :=
     let* _ :=
       let* α0 := self.["deref"] in
-      let* α1 := α0.["bitxor"] rhs in
-      assign self.["deref"] α1 in
+      let* α1 := self.["deref"] in
+      let* α2 := α1.["bitxor"] rhs in
+      assign α0 α2 in
     Pure tt.
   
   Global Instance Method_bitxor_assign `{H : State.Trait} :
@@ -321,16 +324,16 @@ Module ConstantTimeEq.
   }.
 End ConstantTimeEq.
 
-Module Impl_subtle_ConstantTimeEq_for_Slice.
-Section Impl_subtle_ConstantTimeEq_for_Slice.
+Module Impl_subtle_ConstantTimeEq_for_Slice_T.
+Section Impl_subtle_ConstantTimeEq_for_Slice_T.
   Context {T : Set}.
   
-  Definition Self := Slice.
+  Definition Self := Slice T.
   
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
-      (_rhs : ref Slice)
+      (_rhs : ref (Slice T))
       : M (H := H) subtle.Choice :=
     let* len := self.["len"] in
     let* _ :=
@@ -374,8 +377,8 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
   Global Instance I : subtle.ConstantTimeEq.Trait Self := {
     subtle.ConstantTimeEq.ct_eq `{H : State.Trait} := ct_eq;
   }.
-End Impl_subtle_ConstantTimeEq_for_Slice.
-End Impl_subtle_ConstantTimeEq_for_Slice.
+End Impl_subtle_ConstantTimeEq_for_Slice_T.
+End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition Self := subtle.Choice.
@@ -655,8 +658,9 @@ Module ConditionallySelectable.
         (other : ref Self)
         (choice : subtle.Choice) :=
       (let* _ :=
-        let* α0 := Self::["conditional_select"] self other choice in
-        assign self.["deref"] α0 in
+        let* α0 := self.["deref"] in
+        let* α1 := Self::["conditional_select"] self other choice in
+        assign α0 α1 in
       Pure tt
       : M (H := H) unit);
   }.
