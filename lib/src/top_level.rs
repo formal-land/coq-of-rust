@@ -391,21 +391,21 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Struct(body, generics) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let ty_params = generics
-            .params
-            .iter()
-            .filter_map(|param| match param.kind {
-                rustc_hir::GenericParamKind::Type { .. } => {
-                    Some(param.name.ident().to_string())
-                }
-                _ => {
-                    env.tcx
-                    .sess
-                    .struct_span_warn(param.span, "Only type parameters are supported.")
-                    .emit();
-                    None
-                }
-            })
-            .collect();
+                .params
+                .iter()
+                .filter_map(|param| match param.kind {
+                    rustc_hir::GenericParamKind::Type { .. } => {
+                        Some(param.name.ident().to_string())
+                    }
+                    _ => {
+                        env.tcx
+                            .sess
+                            .struct_span_warn(param.span, "Only type parameters are supported.")
+                            .emit();
+                        None
+                    }
+                })
+                .collect();
 
             match body {
                 VariantData::Struct(fields, _) => {
@@ -1048,10 +1048,18 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             fields,
             is_dead_code,
         },
-        TopLevelItem::TypeStructTuple { name, ty_params, fields } => {
-            TopLevelItem::TypeStructTuple { name, ty_params, fields }
+        TopLevelItem::TypeStructTuple {
+            name,
+            ty_params,
+            fields,
+        } => TopLevelItem::TypeStructTuple {
+            name,
+            ty_params,
+            fields,
+        },
+        TopLevelItem::TypeStructUnit { name, ty_params } => {
+            TopLevelItem::TypeStructUnit { name, ty_params }
         }
-        TopLevelItem::TypeStructUnit { name, ty_params } => TopLevelItem::TypeStructUnit { name, ty_params },
         TopLevelItem::Module {
             name,
             body,
@@ -1452,12 +1460,13 @@ impl TopLevelItem {
                     nil()
                 },
                 nest([text("Module"), line(), text(name), text(".")]),
-                (|docs| if ty_params.is_empty() {
-                    nest(docs)
-                } else {
-                    section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
-                })
-                ([
+                (|docs| {
+                    if ty_params.is_empty() {
+                        nest(docs)
+                    } else {
+                        section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
+                    }
+                })([
                     hardline(),
                     text("Unset Primitive Projections."),
                     hardline(),
@@ -1579,14 +1588,19 @@ impl TopLevelItem {
                     text("."),
                 ]),
             ]),
-            TopLevelItem::TypeStructTuple { name, ty_params, fields } => group([
+            TopLevelItem::TypeStructTuple {
+                name,
+                ty_params,
+                fields,
+            } => group([
                 nest([text("Module"), line(), text(name), text(".")]),
-                (|docs| if ty_params.is_empty() {
-                    nest(docs)
-                } else {
-                    section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
-                })
-                ([
+                (|docs| {
+                    if ty_params.is_empty() {
+                        nest(docs)
+                    } else {
+                        section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
+                    }
+                })([
                     nest([
                         hardline(),
                         text("Unset Primitive Projections."),
@@ -1698,12 +1712,13 @@ impl TopLevelItem {
             ]),
             TopLevelItem::TypeStructUnit { name, ty_params } => group([
                 nest([text("Module"), line(), text(name), text(".")]),
-                (|docs| if ty_params.is_empty() {
-                    nest(docs)
-                } else {
-                    section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
-                })
-                ([
+                (|docs| {
+                    if ty_params.is_empty() {
+                        nest(docs)
+                    } else {
+                        section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
+                    }
+                })([
                     hardline(),
                     nest([
                         nest([
