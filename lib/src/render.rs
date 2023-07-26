@@ -171,7 +171,7 @@ where
             if ty_context.is_empty() {
                 nil()
             } else {
-                let types: Vec<Doc<'a>> = ty_context.into_iter().map(|&ty| text(ty)).collect();
+                let types: Vec<Doc<'a>> = ty_context.iter().map(|&ty| text(ty)).collect();
                 nest([
                     text("Context"),
                     line(),
