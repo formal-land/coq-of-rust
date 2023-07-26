@@ -157,3 +157,35 @@ where
 {
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
+
+pub(crate) fn enclose<'a, K, U, I>(kind: K, name: U, docs: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    U: Into<std::borrow::Cow<'a, str>>,
+    K: Into<std::borrow::Cow<'a, str>>,
+{
+    nest([
+        nest([text(kind), line(), text(name), text(".")]),
+        nest(docs),
+        nest([text("End"), line(), text(name), text(".")]),
+    ])
+}
+
+pub(crate) fn module<'a, U, I>(name: U, docs: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    U: Into<std::borrow::Cow<'a, str>>,
+{
+    enclose("Module", name, docs)
+}
+
+pub(crate) fn section<'a, U, I>(name: U, docs: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    U: Into<std::borrow::Cow<'a, str>>,
+{
+    enclose("Section", name, docs)
+}
