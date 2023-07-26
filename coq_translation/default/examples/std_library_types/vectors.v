@@ -17,7 +17,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   let* xs :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
-    Slice::["into_vec"] α0 in
+    (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of xs) in

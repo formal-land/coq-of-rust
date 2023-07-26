@@ -324,16 +324,16 @@ Module ConstantTimeEq.
   }.
 End ConstantTimeEq.
 
-Module Impl_subtle_ConstantTimeEq_for_Slice.
-Section Impl_subtle_ConstantTimeEq_for_Slice.
+Module Impl_subtle_ConstantTimeEq_for_Slice_T.
+Section Impl_subtle_ConstantTimeEq_for_Slice_T.
   Context {T : Set}.
   
-  Definition Self := Slice.
+  Definition Self := Slice T.
   
   Definition ct_eq
       `{H : State.Trait}
       (self : ref Self)
-      (_rhs : ref Slice)
+      (_rhs : ref (Slice T))
       : M (H := H) subtle.Choice :=
     let* len := self.["len"] in
     let* _ :=
@@ -377,8 +377,8 @@ Section Impl_subtle_ConstantTimeEq_for_Slice.
   Global Instance I : subtle.ConstantTimeEq.Trait Self := {
     subtle.ConstantTimeEq.ct_eq `{H : State.Trait} := ct_eq;
   }.
-End Impl_subtle_ConstantTimeEq_for_Slice.
-End Impl_subtle_ConstantTimeEq_for_Slice.
+End Impl_subtle_ConstantTimeEq_for_Slice_T.
+End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Definition Self := subtle.Choice.
