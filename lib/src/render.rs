@@ -179,7 +179,7 @@ where
                     text(": Set}."),
                 ])
             },
-            doc,
+            nest([doc]),
             nest([text("End"), line(), text(name), text(".")]),
         ],
         [hardline()],
@@ -207,6 +207,6 @@ where
     if ty_params.is_empty() {
         doc
     } else {
-        section(name, ty_params, nest([doc]))
+        section(name, ty_params, doc)
     }
 }
