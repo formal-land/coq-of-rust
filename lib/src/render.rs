@@ -158,10 +158,8 @@ where
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
 
-pub(crate) fn enclose<'a, K, U, I>(kind: K, name: U, ty_context: &Vec<U>, docs: I) -> Doc<'a>
+pub(crate) fn enclose<'a, K, U>(kind: K, name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
 where
-    I: IntoIterator,
-    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
     K: Into<std::borrow::Cow<'a, str>>,
 {
@@ -181,7 +179,7 @@ where
                     text(": Set}."),
                 ])
             },
-            nest(docs),
+            doc,
             hardline(),
             nest([text("End"), line(), text(name), text(".")]),
         ],
@@ -189,34 +187,27 @@ where
     )
 }
 
-#[allow(dead_code)]
-pub(crate) fn module<'a, U, I>(name: U, docs: I) -> Doc<'a>
+pub(crate) fn module<'a, U>(name: U, doc: Doc<'a>) -> Doc<'a>
 where
-    I: IntoIterator,
-    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    enclose("Module", name, &vec![], docs)
+    enclose("Module", name, &vec![], doc)
 }
 
-pub(crate) fn section<'a, U, I>(name: U, ty_context: &Vec<U>, docs: I) -> Doc<'a>
+pub(crate) fn section<'a, U>(name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
 where
-    I: IntoIterator,
-    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    enclose("Section", name, ty_context, docs)
+    enclose("Section", name, ty_context, doc)
 }
 
-pub(crate) fn add_section_if_necessary<'a, U, I>(name: U, ty_params: &Vec<U>, docs: I) -> Doc<'a>
+pub(crate) fn add_section_if_necessary<'a, U>(name: U, ty_params: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
 where
-    I: IntoIterator,
-    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
     if ty_params.is_empty() {
-        nest(docs)
+        doc
     } else {
-        section(name, ty_params, docs)
+        section(name, ty_params, doc)
     }
 }

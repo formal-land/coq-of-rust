@@ -1461,10 +1461,10 @@ impl TopLevelItem {
                 },
                 module(
                     name,
-                    [add_section_if_necessary(
+                    add_section_if_necessary(
                         name,
                         &ty_params.iter().collect(),
-                        [
+                        nest([
                             hardline(),
                             text("Unset Primitive Projections."),
                             hardline(),
@@ -1565,8 +1565,8 @@ impl TopLevelItem {
                             } else {
                                 nil()
                             },
-                        ],
-                    )],
+                        ]),
+                    ),
                 ),
                 hardline(),
                 nest([
@@ -1593,10 +1593,10 @@ impl TopLevelItem {
             } => group([
                 module(
                     name,
-                    [add_section_if_necessary(
+                    add_section_if_necessary(
                         name,
                         &ty_params.iter().collect(),
-                        [
+                        nest([
                             hardline(),
                             text("Unset Primitive Projections."),
                             hardline(),
@@ -1694,8 +1694,8 @@ impl TopLevelItem {
                                 }),
                                 [nil()],
                             ),
-                        ],
-                    )],
+                        ]),
+                    ),
                 ),
                 hardline(),
                 nest([
@@ -1712,10 +1712,10 @@ impl TopLevelItem {
             TopLevelItem::TypeStructUnit { name, ty_params } => group([
                 module(
                     name,
-                    [add_section_if_necessary(
+                    add_section_if_necessary(
                         name,
                         &ty_params.iter().collect(),
-                        [
+                        nest([
                             hardline(),
                             nest([
                                 text("Inductive"),
@@ -1726,8 +1726,8 @@ impl TopLevelItem {
                             ]),
                             line(),
                             nest([text("Build"), text(".")]),
-                        ],
-                    )],
+                        ]),
+                    ),
                 ),
                 hardline(),
                 nest([
