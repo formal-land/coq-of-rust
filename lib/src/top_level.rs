@@ -1712,16 +1712,14 @@ impl TopLevelItem {
                     [
                         hardline(),
                         nest([
-                            nest([
-                                text("Inductive"),
-                                line(),
-                                text("t"),
-                                line(),
-                                nest([text(":"), line(), text("Set"), text(" :=")]),
-                            ]),
+                            text("Inductive"),
                             line(),
-                            nest([text("Build"), text(".")]),
+                            text("t"),
+                            line(),
+                            nest([text(":"), line(), text("Set"), text(" :=")]),
                         ]),
+                        line(),
+                        nest([text("Build"), text(".")]),
                     ],
                 ),
                 hardline(),
