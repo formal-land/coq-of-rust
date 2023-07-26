@@ -165,25 +165,28 @@ where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
     K: Into<std::borrow::Cow<'a, str>>,
 {
-    intersperse([
-        nest([text(kind), line(), text(name), text(".")]),
-        if ty_context.is_empty() {
-            nil()
-        } else {
-            let types: Vec<Doc<'a>> = ty_context.into_iter().map(|&ty| text(ty)).collect();
-            nest([
-                text("Context"),
-                line(),
-                text("{"),
-                intersperse(types, [line()]),
-                line(),
-                text(": Set}."),
-            ])
-        },
-        nest(docs),
-        hardline(),
-        nest([text("End"), line(), text(name), text(".")]),
-    ], [hardline()])
+    intersperse(
+        [
+            nest([text(kind), line(), text(name), text(".")]),
+            if ty_context.is_empty() {
+                nil()
+            } else {
+                let types: Vec<Doc<'a>> = ty_context.into_iter().map(|&ty| text(ty)).collect();
+                nest([
+                    text("Context"),
+                    line(),
+                    text("{"),
+                    intersperse(types, [line()]),
+                    line(),
+                    text(": Set}."),
+                ])
+            },
+            nest(docs),
+            hardline(),
+            nest([text("End"), line(), text(name), text(".")]),
+        ],
+        [hardline()],
+    )
 }
 
 #[allow(dead_code)]
