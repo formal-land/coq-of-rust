@@ -1620,12 +1620,7 @@ impl TopLevelItem {
                                     hardline(),
                                     intersperse(
                                         fields.iter().map(|ty| {
-                                            nest([
-                                                text("_ :"),
-                                                line(),
-                                                ty.to_doc(false),
-                                                text(";"),
-                                            ])
+                                            nest([text("_ :"), line(), ty.to_doc(false), text(";")])
                                         }),
                                         [hardline()],
                                     ),
