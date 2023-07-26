@@ -1465,7 +1465,6 @@ impl TopLevelItem {
                         name,
                         &ty_params.iter().collect(),
                         nest([
-                            hardline(),
                             text("Unset Primitive Projections."),
                             hardline(),
                             nest([
@@ -1597,7 +1596,6 @@ impl TopLevelItem {
                         name,
                         &ty_params.iter().collect(),
                         nest([
-                            hardline(),
                             text("Unset Primitive Projections."),
                             hardline(),
                             nest([
@@ -1716,7 +1714,6 @@ impl TopLevelItem {
                         name,
                         &ty_params.iter().collect(),
                         nest([
-                            hardline(),
                             nest([
                                 text("Inductive"),
                                 line(),
