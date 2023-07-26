@@ -158,18 +158,32 @@ where
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
 
-pub(crate) fn enclose<'a, K, U, I>(kind: K, name: U, docs: I) -> Doc<'a>
+pub(crate) fn enclose<'a, K, U, I>(kind: K, name: U, ty_context: &Vec<U>, docs: I) -> Doc<'a>
 where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>>,
     K: Into<std::borrow::Cow<'a, str>>,
 {
-    nest([
+    intersperse([
         nest([text(kind), line(), text(name), text(".")]),
+        if ty_context.is_empty() {
+            nil()
+        } else {
+            let types: Vec<Doc<'a>> = ty_context.into_iter().map(|&ty| text(ty)).collect();
+            nest([
+                text("Context"),
+                line(),
+                text("{"),
+                intersperse(types, [line()]),
+                line(),
+                text(": Set}."),
+            ])
+        },
         nest(docs),
+        hardline(),
         nest([text("End"), line(), text(name), text(".")]),
-    ])
+    ], [hardline()])
 }
 
 pub(crate) fn module<'a, U, I>(name: U, docs: I) -> Doc<'a>
@@ -178,14 +192,14 @@ where
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>>,
 {
-    enclose("Module", name, docs)
+    enclose("Module", name, &vec![], docs)
 }
 
-pub(crate) fn section<'a, U, I>(name: U, docs: I) -> Doc<'a>
+pub(crate) fn section<'a, U, I>(name: U, ty_context: &Vec<U>, docs: I) -> Doc<'a>
 where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>>,
 {
-    enclose("Section", name, docs)
+    enclose("Section", name, ty_context, docs)
 }
