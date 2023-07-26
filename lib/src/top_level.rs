@@ -1632,7 +1632,7 @@ impl TopLevelItem {
                         hardline(),
                         text("Global Set Primitive Projections."),
                         hardline(),
-                        nest([intersperse(
+                        intersperse(
                             fields.iter().enumerate().map(|(i, _)| {
                                 group([
                                     hardline(),
@@ -1687,7 +1687,7 @@ impl TopLevelItem {
                                 ])
                             }),
                             [nil()],
-                        )]),
+                        ),
                     ],
                 ),
                 hardline(),
