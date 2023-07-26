@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition analyze_slice
     `{H : State.Trait}
-    (slice : ref Slice)
+    (slice : ref (Slice i32))
     : M (H := H) unit :=
   let* _ :=
     let* _ :=

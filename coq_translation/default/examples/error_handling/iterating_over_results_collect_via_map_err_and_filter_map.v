@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* strings :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "tofu"; "93"; "999"; "18" ] in
-    Slice::["into_vec"] α0 in
+    (Slice _)::["into_vec"] α0 in
   let* errors := alloc.vec.Vec::["new"] in
   let* numbers :=
     let* α0 := strings.["into_iter"] in

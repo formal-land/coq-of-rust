@@ -780,7 +780,10 @@ Parameter generate_or_err : forall `{H : State.Trait},
     proc_macro2.TokenStream ->
     M (H := H) (syn.error.Result proc_macro2.TokenStream).
 
-Definition _DECLS `{H : State.Trait} : ref Slice :=
+Definition
+    _DECLS
+    `{H : State.Trait} :
+    ref (Slice proc_macro.bridge.client.ProcMacro) :=
   run
     (let* α0 :=
       proc_macro.bridge.client.ProcMacro::["attr"] "test" ink_e2e_macro.test in

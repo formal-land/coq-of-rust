@@ -58,7 +58,11 @@ pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
 
 pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
     match &ty.kind {
-        TyKind::Slice(_) => CoqType::var("Slice".to_string()),
+        TyKind::Slice(ty) => {
+            let func = Box::new(Path::local("Slice".to_string()));
+            let args = vec![compile_type(env, ty)];
+            Box::new(CoqType::Application { func, args })
+        }
         TyKind::Array(ty, _) => Box::new(CoqType::Array(compile_type(env, ty))),
         TyKind::Ptr(mut_ty) => Box::new(CoqType::Ref(compile_type(env, mut_ty.ty), mut_ty.mutbl)),
         TyKind::Ref(_, mut_ty) => {

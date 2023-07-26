@@ -16,11 +16,11 @@ Definition double_first
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* numbers :=
     let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
+    (Slice _)::["into_vec"] α0 in
   let* empty := alloc.vec.Vec::["new"] in
   let* strings :=
     let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-    Slice::["into_vec"] α0 in
+    (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* _ :=
       let* α0 := multiple_error_types.double_first numbers in
