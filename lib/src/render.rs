@@ -162,7 +162,7 @@ pub(crate) fn enclose<'a, K, U, I>(kind: K, name: U, ty_context: &Vec<U>, docs: 
 where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    U: Into<std::borrow::Cow<'a, str>>,
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
     K: Into<std::borrow::Cow<'a, str>>,
 {
     intersperse([
@@ -190,7 +190,7 @@ pub(crate) fn module<'a, U, I>(name: U, docs: I) -> Doc<'a>
 where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    U: Into<std::borrow::Cow<'a, str>>,
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
     enclose("Module", name, &vec![], docs)
 }
@@ -199,7 +199,7 @@ pub(crate) fn section<'a, U, I>(name: U, ty_context: &Vec<U>, docs: I) -> Doc<'a
 where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    U: Into<std::borrow::Cow<'a, str>>,
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
     enclose("Section", name, ty_context, docs)
 }
