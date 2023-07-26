@@ -208,6 +208,6 @@ where
     if ty_params.is_empty() {
         doc
     } else {
-        section(name, ty_params, doc)
+        section(name, ty_params, nest([doc]))
     }
 }
