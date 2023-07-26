@@ -1450,30 +1450,133 @@ impl TopLevelItem {
                 ty_params,
                 fields,
                 is_dead_code,
-            } => group([
-                if *is_dead_code {
-                    concat([
-                        text("(* #[allow(dead_code)] - struct was ignored by the compiler *)"),
-                        hardline(),
-                    ])
-                } else {
-                    nil()
-                },
-                nest([text("Module"), line(), text(name), text(".")]),
-                (|docs| {
+            } => {
+                let add_section_if_necessary = |docs| {
                     if ty_params.is_empty() {
                         nest(docs)
                     } else {
-                        section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
+                        section(name, &ty_params.into_iter().collect(), docs)
                     }
-                })([
+                };
+                group([
+                    if *is_dead_code {
+                        concat([
+                            text("(* #[allow(dead_code)] - struct was ignored by the compiler *)"),
+                            hardline(),
+                        ])
+                    } else {
+                        nil()
+                    },
+                    nest([text("Module"), line(), text(name), text(".")]),
+                    add_section_if_necessary([
+                        hardline(),
+                        text("Unset Primitive Projections."),
+                        hardline(),
+                        nest([
+                            text("Record"),
+                            line(),
+                            text("t"),
+                            line(),
+                            text(":"),
+                            line(),
+                            text("Set"),
+                            line(),
+                            text(":="),
+                            line(),
+                            text("{"),
+                        ]),
+                        if fields.is_empty() {
+                            text(" ")
+                        } else {
+                            concat([
+                                nest([
+                                    hardline(),
+                                    intersperse(
+                                        fields.iter().map(|(name, ty)| {
+                                            nest([
+                                                text(name),
+                                                line(),
+                                                text(":"),
+                                                line(),
+                                                ty.to_doc(false),
+                                                text(";"),
+                                            ])
+                                        }),
+                                        [hardline()],
+                                    ),
+                                ]),
+                                hardline(),
+                            ])
+                        },
+                        text("}."),
+                        hardline(),
+                        text("Global Set Primitive Projections."),
+                        // gy@TODO: I think the below code blocks, since { and } are not at the same level, can be
+                        // optimized. I will work on eliminating redundant wrappers...
+                        if !fields.is_empty() {
+                            concat([
+                                hardline(),
+                                concat(fields.iter().enumerate().map(|(i, (name, _))| {
+                                    group([
+                                        hardline(),
+                                        nest([
+                                            nest([
+                                                nest([
+                                                    text("Global Instance"),
+                                                    line(),
+                                                    text(format!("Get_{name}")),
+                                                    text(" :"),
+                                                ]),
+                                                line(),
+                                                nest([
+                                                    text("Notation.Dot"),
+                                                    line(),
+                                                    text(format!("\"{name}\"")),
+                                                    text(" := {"),
+                                                ]),
+                                            ]),
+                                            hardline(),
+                                            nest([
+                                                text("Notation.dot"),
+                                                line(),
+                                                nest([
+                                                    text("'(Build_t"),
+                                                    line(),
+                                                    intersperse(
+                                                        (0..fields.len()).map(|j| {
+                                                            if i == j {
+                                                                text(format!("x{j}"))
+                                                            } else {
+                                                                text("_")
+                                                            }
+                                                        }),
+                                                        [line()],
+                                                    ),
+                                                    text(")"),
+                                                ]),
+                                                line(),
+                                                text(":="),
+                                                line(),
+                                                text(format!("x{i}")),
+                                                text(";"),
+                                            ]),
+                                        ]),
+                                        hardline(),
+                                        text("}."),
+                                    ])
+                                })),
+                            ])
+                        } else {
+                            nil()
+                        },
+                    ]),
                     hardline(),
-                    text("Unset Primitive Projections."),
+                    nest([text("End"), line(), text(name), text(".")]),
                     hardline(),
                     nest([
-                        text("Record"),
+                        text("Definition"),
                         line(),
-                        text("t"),
+                        text(name),
                         line(),
                         text(":"),
                         line(),
@@ -1481,40 +1584,73 @@ impl TopLevelItem {
                         line(),
                         text(":="),
                         line(),
-                        text("{"),
+                        text(name),
+                        text("."),
+                        text("t"),
+                        text("."),
                     ]),
-                    if fields.is_empty() {
-                        text(" ")
+                ])
+            }
+            TopLevelItem::TypeStructTuple {
+                name,
+                ty_params,
+                fields,
+            } => {
+                let add_section_if_necessary = |docs| {
+                    if ty_params.is_empty() {
+                        nest(docs)
                     } else {
-                        concat([
+                        section(name, &ty_params.into_iter().collect(), docs)
+                    }
+                };
+                group([
+                    nest([text("Module"), line(), text(name), text(".")]),
+                    add_section_if_necessary([
+                        nest([
+                            hardline(),
+                            text("Unset Primitive Projections."),
+                            hardline(),
                             nest([
-                                hardline(),
-                                intersperse(
-                                    fields.iter().map(|(name, ty)| {
-                                        nest([
-                                            text(name),
-                                            line(),
-                                            text(":"),
-                                            line(),
-                                            ty.to_doc(false),
-                                            text(";"),
-                                        ])
-                                    }),
-                                    [hardline()],
-                                ),
+                                text("Record"),
+                                line(),
+                                text("t"),
+                                line(),
+                                text(":"),
+                                line(),
+                                text("Set"),
+                                line(),
+                                text(":="),
+                                line(),
+                                text("{"),
                             ]),
+                            if fields.is_empty() {
+                                text(" ")
+                            } else {
+                                concat([
+                                    nest([
+                                        hardline(),
+                                        intersperse(
+                                            fields.iter().map(|ty| {
+                                                nest([
+                                                    text("_ :"),
+                                                    line(),
+                                                    ty.to_doc(false),
+                                                    text(";"),
+                                                ])
+                                            }),
+                                            [hardline()],
+                                        ),
+                                    ]),
+                                    hardline(),
+                                ])
+                            },
+                            text("}."),
                             hardline(),
-                        ])
-                    },
-                    text("}."),
-                    hardline(),
-                    text("Global Set Primitive Projections."),
-                    // gy@TODO: I think the below code blocks, since { and } are not at the same level, can be
-                    // optimized. I will work on eliminating redundant wrappers...
-                    if !fields.is_empty() {
-                        concat([
-                            hardline(),
-                            concat(fields.iter().enumerate().map(|(i, (name, _))| {
+                            text("Global Set Primitive Projections."),
+                        ]),
+                        hardline(),
+                        nest([intersperse(
+                            fields.iter().enumerate().map(|(i, _)| {
                                 group([
                                     hardline(),
                                     nest([
@@ -1522,18 +1658,22 @@ impl TopLevelItem {
                                             nest([
                                                 text("Global Instance"),
                                                 line(),
-                                                text(format!("Get_{name}")),
+                                                text(format!("Get_{i}")),
                                                 text(" :"),
                                             ]),
                                             line(),
                                             nest([
                                                 text("Notation.Dot"),
                                                 line(),
-                                                text(format!("\"{name}\"")),
+                                                text(i.to_string()),
                                                 text(" := {"),
                                             ]),
                                         ]),
-                                        hardline(),
+                                        if !fields.is_empty() {
+                                            hardline()
+                                        } else {
+                                            nil()
+                                        },
                                         nest([
                                             text("Notation.dot"),
                                             line(),
@@ -1562,190 +1702,64 @@ impl TopLevelItem {
                                     hardline(),
                                     text("}."),
                                 ])
-                            })),
-                        ])
-                    } else {
-                        nil()
-                    },
-                ]),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
-                hardline(),
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":"),
-                    line(),
-                    text("Set"),
-                    line(),
-                    text(":="),
-                    line(),
-                    text(name),
-                    text("."),
-                    text("t"),
-                    text("."),
-                ]),
-            ]),
-            TopLevelItem::TypeStructTuple {
-                name,
-                ty_params,
-                fields,
-            } => group([
-                nest([text("Module"), line(), text(name), text(".")]),
-                (|docs| {
-                    if ty_params.is_empty() {
-                        nest(docs)
-                    } else {
-                        section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
-                    }
-                })([
-                    nest([
-                        hardline(),
-                        text("Unset Primitive Projections."),
-                        hardline(),
-                        nest([
-                            text("Record"),
-                            line(),
-                            text("t"),
-                            line(),
-                            text(":"),
-                            line(),
-                            text("Set"),
-                            line(),
-                            text(":="),
-                            line(),
-                            text("{"),
-                        ]),
-                        if fields.is_empty() {
-                            text(" ")
-                        } else {
-                            concat([
-                                nest([
-                                    hardline(),
-                                    intersperse(
-                                        fields.iter().map(|ty| {
-                                            nest([text("_ :"), line(), ty.to_doc(false), text(";")])
-                                        }),
-                                        [hardline()],
-                                    ),
-                                ]),
-                                hardline(),
-                            ])
-                        },
-                        text("}."),
-                        hardline(),
-                        text("Global Set Primitive Projections."),
+                            }),
+                            [nil()],
+                        )]),
                     ]),
                     hardline(),
-                    nest([intersperse(
-                        fields.iter().enumerate().map(|(i, _)| {
-                            group([
-                                hardline(),
-                                nest([
-                                    nest([
-                                        nest([
-                                            text("Global Instance"),
-                                            line(),
-                                            text(format!("Get_{i}")),
-                                            text(" :"),
-                                        ]),
-                                        line(),
-                                        nest([
-                                            text("Notation.Dot"),
-                                            line(),
-                                            text(i.to_string()),
-                                            text(" := {"),
-                                        ]),
-                                    ]),
-                                    if !fields.is_empty() {
-                                        hardline()
-                                    } else {
-                                        nil()
-                                    },
-                                    nest([
-                                        text("Notation.dot"),
-                                        line(),
-                                        nest([
-                                            text("'(Build_t"),
-                                            line(),
-                                            intersperse(
-                                                (0..fields.len()).map(|j| {
-                                                    if i == j {
-                                                        text(format!("x{j}"))
-                                                    } else {
-                                                        text("_")
-                                                    }
-                                                }),
-                                                [line()],
-                                            ),
-                                            text(")"),
-                                        ]),
-                                        line(),
-                                        text(":="),
-                                        line(),
-                                        text(format!("x{i}")),
-                                        text(";"),
-                                    ]),
-                                ]),
-                                hardline(),
-                                text("}."),
-                            ])
-                        }),
-                        [nil()],
-                    )]),
-                ]),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
-                hardline(),
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":="),
-                    line(),
-                    text(name),
-                    text(".t."),
-                ]),
-            ]),
-            TopLevelItem::TypeStructUnit { name, ty_params } => group([
-                nest([text("Module"), line(), text(name), text(".")]),
-                (|docs| {
-                    if ty_params.is_empty() {
-                        nest(docs)
-                    } else {
-                        section(name, &ty_params.into_iter().map(|ty| ty).collect(), docs)
-                    }
-                })([
+                    nest([text("End"), line(), text(name), text(".")]),
                     hardline(),
                     nest([
-                        nest([
-                            text("Inductive"),
-                            line(),
-                            text("t"),
-                            line(),
-                            nest([text(":"), line(), text("Set"), text(" :=")]),
-                        ]),
+                        text("Definition"),
                         line(),
-                        nest([text("Build"), text(".")]),
+                        text(name),
+                        line(),
+                        text(":="),
+                        line(),
+                        text(name),
+                        text(".t."),
                     ]),
-                ]),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
-                hardline(),
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":="),
-                    line(),
-                    text(name),
-                    text(".t."),
-                ]),
-            ]),
+                ])
+            }
+            TopLevelItem::TypeStructUnit { name, ty_params } => {
+                let add_section_if_necessary = |docs| {
+                    if ty_params.is_empty() {
+                        nest(docs)
+                    } else {
+                        section(name, &ty_params.into_iter().collect(), docs)
+                    }
+                };
+                group([
+                    nest([text("Module"), line(), text(name), text(".")]),
+                    add_section_if_necessary([
+                        hardline(),
+                        nest([
+                            nest([
+                                text("Inductive"),
+                                line(),
+                                text("t"),
+                                line(),
+                                nest([text(":"), line(), text("Set"), text(" :=")]),
+                            ]),
+                            line(),
+                            nest([text("Build"), text(".")]),
+                        ]),
+                    ]),
+                    hardline(),
+                    nest([text("End"), line(), text(name), text(".")]),
+                    hardline(),
+                    nest([
+                        text("Definition"),
+                        line(),
+                        text(name),
+                        line(),
+                        text(":="),
+                        line(),
+                        text(name),
+                        text(".t."),
+                    ]),
+                ])
+            }
             TopLevelItem::Impl {
                 self_ty,
                 counter,
