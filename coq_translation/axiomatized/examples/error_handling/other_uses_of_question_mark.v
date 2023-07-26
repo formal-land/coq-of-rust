@@ -4,7 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Definition Result : Set := core.result.Result T (alloc.boxed.Box TraitObject).
 
 Module EmptyVec.
-  Inductive t : Set := Build.
+  Inductive t : Set :=
+  Build.
 End EmptyVec.
 Definition EmptyVec := EmptyVec.t.
 

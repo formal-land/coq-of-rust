@@ -53,7 +53,8 @@ Module Impl_core_fmt_Debug_for_structures_Person.
 End Impl_core_fmt_Debug_for_structures_Person.
 
 Module Unit.
-  Inductive t : Set := Build.
+  Inductive t : Set :=
+  Build.
 End Unit.
 Definition Unit := Unit.t.
 

@@ -2,7 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set := Build.
+  Inductive t : Set :=
+  Build.
 End A.
 Definition A := A.t.
 
