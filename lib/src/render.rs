@@ -158,6 +158,7 @@ where
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
 
+/// puts [doc] in a section or a module (that depends on [kind])
 pub(crate) fn enclose<'a, K, U>(kind: K, name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -190,6 +191,7 @@ where
     ])
 }
 
+/// puts [doc] in a module of name [name]
 pub(crate) fn module<'a, U>(name: U, doc: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -197,6 +199,7 @@ where
     enclose("Module", name, &vec![], doc)
 }
 
+/// puts [doc] in a section of name [name] with type parameters from [ty_context]
 pub(crate) fn section<'a, U>(name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -204,6 +207,7 @@ where
     enclose("Section", name, ty_context, doc)
 }
 
+/// decides whether to enclose [doc] within a section
 pub(crate) fn add_section_if_necessary<'a, U>(name: U, ty_params: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
