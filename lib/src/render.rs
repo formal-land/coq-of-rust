@@ -186,6 +186,7 @@ where
     ], [hardline()])
 }
 
+#[allow(dead_code)]
 pub(crate) fn module<'a, U, I>(name: U, docs: I) -> Doc<'a>
 where
     I: IntoIterator,
