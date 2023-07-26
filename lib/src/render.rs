@@ -180,7 +180,6 @@ where
                 ])
             },
             doc,
-            hardline(),
             nest([text("End"), line(), text(name), text(".")]),
         ],
         [hardline()],
