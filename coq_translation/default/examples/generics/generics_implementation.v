@@ -16,7 +16,7 @@ Definition Val : Set := Val.t.
 
 Module GenVal.
   Section GenVal.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       gen_val : T;

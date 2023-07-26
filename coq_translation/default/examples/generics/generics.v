@@ -21,7 +21,7 @@ Definition Single := Single.t.
 
 Module SingleGen.
   Section SingleGen.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;

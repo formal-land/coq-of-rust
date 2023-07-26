@@ -6,7 +6,7 @@ Module lazy.
   Module mapping.
     Module Mapping.
       Section Mapping.
-        Context {K V KeyType : Set}.
+        Context (K V KeyType : Set).
         Unset Primitive Projections.
         Record t : Set := {
           _marker : core.marker.PhantomData ((K * V * KeyType));
@@ -220,7 +220,7 @@ Module lazy.
   
   Module Lazy.
     Section Lazy.
-      Context {V KeyType : Set}.
+      Context (V KeyType : Set).
       Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData ((V * KeyType));
@@ -402,7 +402,7 @@ End lazy.
 Module mapping.
   Module Mapping.
     Section Mapping.
-      Context {K V KeyType : Set}.
+      Context (K V KeyType : Set).
       Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData ((K * V * KeyType));
@@ -615,7 +615,7 @@ End mapping.
 
 Module Mapping.
   Section Mapping.
-    Context {K V KeyType : Set}.
+    Context (K V KeyType : Set).
     Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData ((K * V * KeyType));
@@ -871,7 +871,7 @@ End
 
 Module Lazy.
   Section Lazy.
-    Context {V KeyType : Set}.
+    Context (V KeyType : Set).
     Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData ((V * KeyType));

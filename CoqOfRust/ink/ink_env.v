@@ -2738,7 +2738,7 @@ Module call.
   Module call_builder.
     Module CallParams.
       Section CallParams.
-        Context {E CallType Args R : Set}.
+        Context (E CallType Args R : Set).
         Unset Primitive Projections.
         Record t : Set := {
           call_type : CallType;
@@ -2956,7 +2956,7 @@ Module call.
     
     Module Call.
       Section Call.
-        Context {E : Set}.
+        Context (E : Set).
         Unset Primitive Projections.
         Record t : Set := {
           callee : ImplE.AccountId;
@@ -3039,7 +3039,7 @@ Module call.
     
     Module DelegateCall.
       Section DelegateCall.
-        Context {E : Set}.
+        Context (E : Set).
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : ImplE.Hash;
@@ -3080,7 +3080,7 @@ Module call.
     
     Module CallBuilder.
       Section CallBuilder.
-        Context {E CallType Args RetType : Set}.
+        Context (E CallType Args RetType : Set).
         Unset Primitive Projections.
         Record t : Set := {
           call_type : CallType;
@@ -3594,7 +3594,7 @@ Module call.
   Module common.
     Module ReturnType.
       Section ReturnType.
-        Context {T : Set}.
+        Context (T : Set).
         Unset Primitive Projections.
         Record t : Set := {
           _ : core.marker.PhantomData (T);
@@ -3680,7 +3680,7 @@ Module call.
     
     Module Set.
       Section Set.
-        Context {T : Set}.
+        Context (T : Set).
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -3760,7 +3760,7 @@ Module call.
     
     Module Unset.
       Section Unset.
-        Context {T : Set}.
+        Context (T : Set).
         Unset Primitive Projections.
         Record t : Set := {
           _ : core.marker.PhantomData (T);
@@ -4058,7 +4058,7 @@ Module call.
     
     Module CreateParams.
       Section CreateParams.
-        Context {E ContractRef Args Salt R : Set}.
+        Context (E ContractRef Args Salt R : Set).
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : ImplE.Hash;
@@ -4230,7 +4230,7 @@ Module call.
     Module CreateBuilder.
       Section CreateBuilder.
         Context
-          {E
+          (E
           ContractRef
           CodeHash
           GasLimit
@@ -4238,7 +4238,7 @@ Module call.
           Args
           Salt
           RetType
-          : Set}.
+          : Set).
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : CodeHash;
@@ -4588,7 +4588,7 @@ Module call.
   Module execution_input.
     Module ExecutionInput.
       Section ExecutionInput.
-        Context {Args : Set}.
+        Context (Args : Set).
         Unset Primitive Projections.
         Record t : Set := {
           selector : ink_env.call.selector.Selector;
@@ -4755,7 +4755,7 @@ Module call.
     
     Module ArgumentList.
       Section ArgumentList.
-        Context {Head Rest : Set}.
+        Context (Head Rest : Set).
         Unset Primitive Projections.
         Record t : Set := {
           head : Head;
@@ -4854,7 +4854,7 @@ Module call.
     
     Module Argument.
       Section Argument.
-        Context {T : Set}.
+        Context (T : Set).
         Unset Primitive Projections.
         Record t : Set := {
           arg : T;
@@ -5342,7 +5342,7 @@ End call.
 Module call_builder.
   Module CallParams.
     Section CallParams.
-      Context {E CallType Args R : Set}.
+      Context (E CallType Args R : Set).
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
@@ -5560,7 +5560,7 @@ Module call_builder.
   
   Module Call.
     Section Call.
-      Context {E : Set}.
+      Context (E : Set).
       Unset Primitive Projections.
       Record t : Set := {
         callee : ImplE.AccountId;
@@ -5642,7 +5642,7 @@ Module call_builder.
   
   Module DelegateCall.
     Section DelegateCall.
-      Context {E : Set}.
+      Context (E : Set).
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : ImplE.Hash;
@@ -5683,7 +5683,7 @@ Module call_builder.
   
   Module CallBuilder.
     Section CallBuilder.
-      Context {E CallType Args RetType : Set}.
+      Context (E CallType Args RetType : Set).
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
@@ -6194,7 +6194,7 @@ End call_builder.
 
 Module CallParams.
   Section CallParams.
-    Context {E CallType Args R : Set}.
+    Context (E CallType Args R : Set).
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
@@ -6409,7 +6409,7 @@ Parameter build_call : forall `{H : State.Trait},
 
 Module Call.
   Section Call.
-    Context {E : Set}.
+    Context (E : Set).
     Unset Primitive Projections.
     Record t : Set := {
       callee : ImplE.AccountId;
@@ -6489,7 +6489,7 @@ End Impl_ink_env_call_call_builder_Call_E_6.
 
 Module DelegateCall.
   Section DelegateCall.
-    Context {E : Set}.
+    Context (E : Set).
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
@@ -6530,7 +6530,7 @@ End Impl_ink_env_call_call_builder_DelegateCall_E_6.
 
 Module CallBuilder.
   Section CallBuilder.
-    Context {E CallType Args RetType : Set}.
+    Context (E CallType Args RetType : Set).
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
@@ -7033,7 +7033,7 @@ End
 Module common.
   Module ReturnType.
     Section ReturnType.
-      Context {T : Set}.
+      Context (T : Set).
       Unset Primitive Projections.
       Record t : Set := {
         _ : core.marker.PhantomData (T);
@@ -7118,7 +7118,7 @@ Module common.
   
   Module Set.
     Section Set.
-      Context {T : Set}.
+      Context (T : Set).
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -7196,7 +7196,7 @@ Module common.
   
   Module Unset.
     Section Unset.
-      Context {T : Set}.
+      Context (T : Set).
       Unset Primitive Projections.
       Record t : Set := {
         _ : core.marker.PhantomData (T);
@@ -7355,7 +7355,7 @@ End common.
 
 Module ReturnType.
   Section ReturnType.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData (T);
@@ -7440,7 +7440,7 @@ End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
 
 Module Set.
   Section Set.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -7518,7 +7518,7 @@ End Impl_ink_env_call_common_Set_T_3.
 
 Module Unset.
   Section Unset.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData (T);
@@ -7814,7 +7814,7 @@ Module create_builder.
   
   Module CreateParams.
     Section CreateParams.
-      Context {E ContractRef Args Salt R : Set}.
+      Context (E ContractRef Args Salt R : Set).
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : ImplE.Hash;
@@ -7982,7 +7982,7 @@ Module create_builder.
   Module CreateBuilder.
     Section CreateBuilder.
       Context
-        {E
+        (E
         ContractRef
         CodeHash
         GasLimit
@@ -7990,7 +7990,7 @@ Module create_builder.
         Args
         Salt
         RetType
-        : Set}.
+        : Set).
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : CodeHash;
@@ -8477,7 +8477,7 @@ End
 
 Module CreateParams.
   Section CreateParams.
-    Context {E ContractRef Args Salt R : Set}.
+    Context (E ContractRef Args Salt R : Set).
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
@@ -8644,7 +8644,7 @@ End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_9.
 
 Module CreateBuilder.
   Section CreateBuilder.
-    Context {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+    Context (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set).
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : CodeHash;
@@ -8992,7 +8992,7 @@ End
 Module execution_input.
   Module ExecutionInput.
     Section ExecutionInput.
-      Context {Args : Set}.
+      Context (Args : Set).
       Unset Primitive Projections.
       Record t : Set := {
         selector : ink_env.call.selector.Selector;
@@ -9156,7 +9156,7 @@ Module execution_input.
   
   Module ArgumentList.
     Section ArgumentList.
-      Context {Head Rest : Set}.
+      Context (Head Rest : Set).
       Unset Primitive Projections.
       Record t : Set := {
         head : Head;
@@ -9254,7 +9254,7 @@ Module execution_input.
   
   Module Argument.
     Section Argument.
-      Context {T : Set}.
+      Context (T : Set).
       Unset Primitive Projections.
       Record t : Set := {
         arg : T;
@@ -9568,7 +9568,7 @@ End execution_input.
 
 Module ExecutionInput.
   Section ExecutionInput.
-    Context {Args : Set}.
+    Context (Args : Set).
     Unset Primitive Projections.
     Record t : Set := {
       selector : ink_env.call.selector.Selector;
@@ -9729,7 +9729,7 @@ End Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
 
 Module ArgumentList.
   Section ArgumentList.
-    Context {Head Rest : Set}.
+    Context (Head Rest : Set).
     Unset Primitive Projections.
     Record t : Set := {
       head : Head;
@@ -9825,7 +9825,7 @@ Definition ArgsList : Set :=
 
 Module Argument.
   Section Argument.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       arg : T;
@@ -10530,7 +10530,7 @@ Module chain_extension.
   
   Module ChainExtensionMethod.
     Section ChainExtensionMethod.
-      Context {I O ErrorCode : Set}.
+      Context (I O ErrorCode : Set).
       Unset Primitive Projections.
       Record t : Set := {
         func_id : u32;
@@ -10678,7 +10678,7 @@ Module chain_extension.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
-        Context {T : Set}.
+        Context (T : Set).
         Unset Primitive Projections.
         Record t : Set := {
           error_code : core.marker.PhantomData (T);
@@ -10876,7 +10876,7 @@ End FromStatusCode.
 
 Module ChainExtensionMethod.
   Section ChainExtensionMethod.
-    Context {I O ErrorCode : Set}.
+    Context (I O ErrorCode : Set).
     Unset Primitive Projections.
     Record t : Set := {
       func_id : u32;
@@ -11019,7 +11019,7 @@ Module state.
   
   Module HandleErrorCode.
     Section HandleErrorCode.
-      Context {T : Set}.
+      Context (T : Set).
       Unset Primitive Projections.
       Record t : Set := {
         error_code : core.marker.PhantomData (T);
@@ -11082,7 +11082,7 @@ End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 
 Module HandleErrorCode.
   Section HandleErrorCode.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       error_code : core.marker.PhantomData (T);
@@ -12420,7 +12420,7 @@ Module engine.
       
       Module DefaultAccounts.
         Section DefaultAccounts.
-          Context {T : Set}.
+          Context (T : Set).
           Unset Primitive Projections.
           Record t : Set := {
             alice : ImplT.AccountId;
@@ -13887,7 +13887,7 @@ Module off_chain.
     
     Module DefaultAccounts.
       Section DefaultAccounts.
-        Context {T : Set}.
+        Context (T : Set).
         Unset Primitive Projections.
         Record t : Set := {
           alice : ImplT.AccountId;
@@ -16361,7 +16361,7 @@ Module test_api.
   
   Module DefaultAccounts.
     Section DefaultAccounts.
-      Context {T : Set}.
+      Context (T : Set).
       Unset Primitive Projections.
       Record t : Set := {
         alice : ImplT.AccountId;
@@ -16579,7 +16579,7 @@ Parameter default_accounts : forall `{H : State.Trait},
 
 Module DefaultAccounts.
   Section DefaultAccounts.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       alice : ImplT.AccountId;
@@ -18295,7 +18295,7 @@ Module topics.
   
   Module TopicsBuilder.
     Section TopicsBuilder.
-      Context {S E B : Set}.
+      Context (S E B : Set).
       Unset Primitive Projections.
       Record t : Set := {
         backend : B;
@@ -19376,7 +19376,7 @@ Module topics.
   
   Module PrefixedValue.
     Section PrefixedValue.
-      Context {T : Set}.
+      Context (T : Set).
       Unset Primitive Projections.
       Record t : Set := {
         prefix : ref Slice;
@@ -19458,7 +19458,7 @@ End TopicsBuilderBackend.
 
 Module TopicsBuilder.
   Section TopicsBuilder.
-    Context {S E B : Set}.
+    Context (S E B : Set).
     Unset Primitive Projections.
     Record t : Set := {
       backend : B;
@@ -20556,7 +20556,7 @@ End Topics.
 
 Module PrefixedValue.
   Section PrefixedValue.
-    Context {T : Set}.
+    Context (T : Set).
     Unset Primitive Projections.
     Record t : Set := {
       prefix : ref Slice;
