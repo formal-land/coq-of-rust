@@ -207,3 +207,16 @@ where
 {
     enclose("Section", name, ty_context, docs)
 }
+
+pub(crate) fn add_section_if_necessary<'a, U, I>(name: U, ty_params: &Vec<U>, docs: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    if ty_params.is_empty() {
+        nest(docs)
+    } else {
+        section(name, &ty_params.into_iter().map(|&ty| ty).collect(), docs)
+    }
+}

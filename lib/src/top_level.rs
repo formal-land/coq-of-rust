@@ -1450,25 +1450,20 @@ impl TopLevelItem {
                 ty_params,
                 fields,
                 is_dead_code,
-            } => {
-                let add_section_if_necessary = |docs| {
-                    if ty_params.is_empty() {
-                        nest(docs)
-                    } else {
-                        section(name, &ty_params.into_iter().collect(), docs)
-                    }
-                };
-                group([
-                    if *is_dead_code {
-                        concat([
-                            text("(* #[allow(dead_code)] - struct was ignored by the compiler *)"),
-                            hardline(),
-                        ])
-                    } else {
-                        nil()
-                    },
-                    nest([text("Module"), line(), text(name), text(".")]),
-                    add_section_if_necessary([
+            } => group([
+                if *is_dead_code {
+                    concat([
+                        text("(* #[allow(dead_code)] - struct was ignored by the compiler *)"),
+                        hardline(),
+                    ])
+                } else {
+                    nil()
+                },
+                nest([text("Module"), line(), text(name), text(".")]),
+                add_section_if_necessary(
+                    name,
+                    &ty_params.into_iter().collect(),
+                    [
                         hardline(),
                         text("Unset Primitive Projections."),
                         hardline(),
@@ -1569,43 +1564,38 @@ impl TopLevelItem {
                         } else {
                             nil()
                         },
-                    ]),
-                    hardline(),
-                    nest([text("End"), line(), text(name), text(".")]),
-                    hardline(),
-                    nest([
-                        text("Definition"),
-                        line(),
-                        text(name),
-                        line(),
-                        text(":"),
-                        line(),
-                        text("Set"),
-                        line(),
-                        text(":="),
-                        line(),
-                        text(name),
-                        text("."),
-                        text("t"),
-                        text("."),
-                    ]),
-                ])
-            }
+                    ],
+                ),
+                hardline(),
+                nest([text("End"), line(), text(name), text(".")]),
+                hardline(),
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":"),
+                    line(),
+                    text("Set"),
+                    line(),
+                    text(":="),
+                    line(),
+                    text(name),
+                    text("."),
+                    text("t"),
+                    text("."),
+                ]),
+            ]),
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
                 fields,
-            } => {
-                let add_section_if_necessary = |docs| {
-                    if ty_params.is_empty() {
-                        nest(docs)
-                    } else {
-                        section(name, &ty_params.into_iter().collect(), docs)
-                    }
-                };
-                group([
-                    nest([text("Module"), line(), text(name), text(".")]),
-                    add_section_if_necessary([
+            } => group([
+                nest([text("Module"), line(), text(name), text(".")]),
+                add_section_if_necessary(
+                    name,
+                    &ty_params.into_iter().collect(),
+                    [
                         nest([
                             hardline(),
                             text("Unset Primitive Projections."),
@@ -1705,33 +1695,28 @@ impl TopLevelItem {
                             }),
                             [nil()],
                         )]),
-                    ]),
-                    hardline(),
-                    nest([text("End"), line(), text(name), text(".")]),
-                    hardline(),
-                    nest([
-                        text("Definition"),
-                        line(),
-                        text(name),
-                        line(),
-                        text(":="),
-                        line(),
-                        text(name),
-                        text(".t."),
-                    ]),
-                ])
-            }
-            TopLevelItem::TypeStructUnit { name, ty_params } => {
-                let add_section_if_necessary = |docs| {
-                    if ty_params.is_empty() {
-                        nest(docs)
-                    } else {
-                        section(name, &ty_params.into_iter().collect(), docs)
-                    }
-                };
-                group([
-                    nest([text("Module"), line(), text(name), text(".")]),
-                    add_section_if_necessary([
+                    ],
+                ),
+                hardline(),
+                nest([text("End"), line(), text(name), text(".")]),
+                hardline(),
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":="),
+                    line(),
+                    text(name),
+                    text(".t."),
+                ]),
+            ]),
+            TopLevelItem::TypeStructUnit { name, ty_params } => group([
+                nest([text("Module"), line(), text(name), text(".")]),
+                add_section_if_necessary(
+                    name,
+                    &ty_params.into_iter().collect(),
+                    [
                         hardline(),
                         nest([
                             nest([
@@ -1744,22 +1729,22 @@ impl TopLevelItem {
                             line(),
                             nest([text("Build"), text(".")]),
                         ]),
-                    ]),
-                    hardline(),
-                    nest([text("End"), line(), text(name), text(".")]),
-                    hardline(),
-                    nest([
-                        text("Definition"),
-                        line(),
-                        text(name),
-                        line(),
-                        text(":="),
-                        line(),
-                        text(name),
-                        text(".t."),
-                    ]),
-                ])
-            }
+                    ],
+                ),
+                hardline(),
+                nest([text("End"), line(), text(name), text(".")]),
+                hardline(),
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(name),
+                    line(),
+                    text(":="),
+                    line(),
+                    text(name),
+                    text(".t."),
+                ]),
+            ]),
             TopLevelItem::Impl {
                 self_ty,
                 counter,
