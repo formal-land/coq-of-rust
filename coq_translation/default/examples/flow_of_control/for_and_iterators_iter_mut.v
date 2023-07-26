@@ -17,12 +17,13 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           match α0 with
           | core.option.Option.None  => Break
           | core.option.Option.Some name =>
-            let* α0 :=
+            let* α0 := name.["deref"] in
+            let* α1 :=
               match name with
               | "Ferris" => Pure "There is a rustacean among us!"
               | _ => Pure "Hello"
               end in
-            assign name.["deref"] α0
+            assign α0 α1
           end in
         Pure tt)
     end in

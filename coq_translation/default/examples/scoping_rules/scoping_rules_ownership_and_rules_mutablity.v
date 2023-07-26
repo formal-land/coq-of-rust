@@ -25,7 +25,9 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
-  let* _ := assign mutable_box.["deref"] 4 in
+  let* _ :=
+    let* α0 := mutable_box.["deref"] in
+    assign α0 4 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of mutable_box) in

@@ -17,8 +17,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let letter := core.option.Option.None in
   let emoticon := core.option.Option.None in
   let* _ :=
-    let* α0 := let_if core.option.Option.Some i := number in
-    if (α0 : bool) then
+    match number with
+    | core.option.Option.Some i =>
       let* _ :=
         let* _ :=
           let* α0 := format_argument::["new_debug"] (addr_of i) in
@@ -30,11 +30,11 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
-    else
-      Pure tt in
+    | _ => Pure tt
+    end in
   let* _ :=
-    let* α0 := let_if core.option.Option.Some j := letter in
-    if (α0 : bool) then
+    match letter with
+    | core.option.Option.Some j =>
       let* _ :=
         let* _ :=
           let* α0 := format_argument::["new_debug"] (addr_of j) in
@@ -46,7 +46,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
-    else
+    | _ =>
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -55,10 +55,11 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in
-      Pure tt in
+      Pure tt
+    end in
   let i_like_letters := false in
-  let* α0 := let_if core.option.Option.Some i := emoticon in
-  if (α0 : bool) then
+  match emoticon with
+  | core.option.Option.Some i =>
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_debug"] (addr_of i) in
@@ -70,7 +71,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         std.io.stdio._print α1 in
       Pure tt in
     Pure tt
-  else
+  | _ =>
     if (i_like_letters : bool) then
       let* _ :=
         let* _ :=
@@ -91,4 +92,5 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in
-      Pure tt.
+      Pure tt
+  end.

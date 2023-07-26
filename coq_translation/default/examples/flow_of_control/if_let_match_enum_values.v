@@ -15,8 +15,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let b := if_let_match_enum_values.Foo.Baz in
   let c := if_let_match_enum_values.Foo.Qux 100 in
   let* _ :=
-    let* α0 := let_if if_let_match_enum_values.Foo.Bar := a in
-    if (α0 : bool) then
+    match a with
+    | if_let_match_enum_values.Foo.Bar =>
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -25,11 +25,11 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α0 in
         Pure tt in
       Pure tt
-    else
-      Pure tt in
+    | _ => Pure tt
+    end in
   let* _ :=
-    let* α0 := let_if if_let_match_enum_values.Foo.Bar := b in
-    if (α0 : bool) then
+    match b with
+    | if_let_match_enum_values.Foo.Bar =>
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -38,11 +38,11 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α0 in
         Pure tt in
       Pure tt
-    else
-      Pure tt in
+    | _ => Pure tt
+    end in
   let* _ :=
-    let* α0 := let_if if_let_match_enum_values.Foo.Qux value := c in
-    if (α0 : bool) then
+    match c with
+    | if_let_match_enum_values.Foo.Qux value =>
       let* _ :=
         let* _ :=
           let* α0 := format_argument::["new_display"] (addr_of value) in
@@ -54,10 +54,10 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
-    else
-      Pure tt in
-  let* α0 := let_if if_let_match_enum_values.Foo.Qux (100 as value) := c in
-  if (α0 : bool) then
+    | _ => Pure tt
+    end in
+  match c with
+  | if_let_match_enum_values.Foo.Qux (100 as value) =>
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -66,5 +66,5 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         std.io.stdio._print α0 in
       Pure tt in
     Pure tt
-  else
-    Pure tt.
+  | _ => Pure tt
+  end.

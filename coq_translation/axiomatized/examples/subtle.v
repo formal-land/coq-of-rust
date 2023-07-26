@@ -472,8 +472,9 @@ Module ConditionallySelectable.
         (other : ref Self)
         (choice : subtle.Choice) :=
       (let* _ :=
-        let* α0 := Self::["conditional_select"] self other choice in
-        assign self.["deref"] α0 in
+        let* α0 := self.["deref"] in
+        let* α1 := Self::["conditional_select"] self other choice in
+        assign α0 α1 in
       Pure tt
       : M (H := H) unit);
   }.

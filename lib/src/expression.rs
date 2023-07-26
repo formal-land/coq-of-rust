@@ -6,6 +6,7 @@ use crate::pattern::*;
 use crate::render::*;
 use crate::ty::*;
 
+use rustc_abi::VariantIdx;
 use rustc_ast::LitKind;
 use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath};
 
@@ -435,14 +436,16 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             })
         }
         Expr::Block(stmt) => (mt_stmt(*stmt), fresh_vars),
-        Expr::Assign { left, right } => monadic_let(fresh_vars, *right, |fresh_vars, right| {
-            (
-                Stmt::Expr(Box::new(Expr::Assign {
-                    left,
-                    right: Box::new(right),
-                })),
-                fresh_vars,
-            )
+        Expr::Assign { left, right } => monadic_let(fresh_vars, *left, |fresh_vars, left| {
+            monadic_let(fresh_vars, *right, |fresh_vars, right| {
+                (
+                    Stmt::Expr(Box::new(Expr::Assign {
+                        left: Box::new(left),
+                        right: Box::new(right),
+                    })),
+                    fresh_vars,
+                )
+            })
         }),
         Expr::IndexedField { base, index } => monadic_let(fresh_vars, *base, |fresh_vars, base| {
             (
@@ -721,6 +724,32 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             Expr::LetIf { pat, init }
         }
         ExprKind::If(condition, success, failure) => {
+            // if we compile the if-let construction,
+            // we have to compute the number of variants in the type of init
+            // if it is one then we should not produce the arm with the wildcard pattern
+            let should_produce_one_arm_match = if let rustc_hir::Expr {
+                kind:
+                    ExprKind::Let(rustc_hir::Let {
+                        init: rustc_hir::Expr { hir_id, .. },
+                        ..
+                    }),
+                ..
+            } = *condition
+            {
+                // here we compute the type of the init field
+                let ty = env.tcx.typeck(hir_id.owner).node_type(*hir_id);
+                // here we check if it has variants
+                if let Some(variant_range) = ty.variant_range(env.tcx) {
+                    // here we check if it has at least two variants
+                    // (their ordering start with 0)
+                    variant_range.last() == Some(VariantIdx::from_u32(0))
+                } else {
+                    false
+                }
+            } else {
+                false
+            };
+
             let condition = Box::new(compile_expr(env, condition));
             let success = Box::new(compile_expr(env, success));
 
@@ -728,10 +757,34 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 Some(expr) => Box::new(compile_expr(env, expr)),
                 None => Box::new(tt()),
             };
-            Expr::If {
-                condition,
-                success,
-                failure,
+
+            // we need to handle the case of "let" in "if let" here
+            if let Expr::LetIf { pat, init } = *condition {
+                let success = MatchArm {
+                    pat,
+                    body: *success,
+                };
+                let failure = MatchArm {
+                    pat: Pattern::Wild,
+                    body: *failure,
+                };
+                if should_produce_one_arm_match {
+                    Expr::Match {
+                        scrutinee: init,
+                        arms: vec![success],
+                    }
+                } else {
+                    Expr::Match {
+                        scrutinee: init,
+                        arms: vec![success, failure],
+                    }
+                }
+            } else {
+                Expr::If {
+                    condition,
+                    success,
+                    failure,
+                }
             }
         }
         ExprKind::Loop(block, label, loop_source, _) => {

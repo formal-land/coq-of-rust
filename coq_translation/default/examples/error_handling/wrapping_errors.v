@@ -162,8 +162,8 @@ Definition print
         std.io.stdio._print α1 in
       Pure tt in
     let* α0 := e.["source"] in
-    let* α1 := let_if core.option.Option.Some source := α0 in
-    if (α1 : bool) then
+    match α0 with
+    | core.option.Option.Some source =>
       let* _ :=
         let* _ :=
           let* α0 := format_argument::["new_display"] (addr_of source) in
@@ -175,8 +175,8 @@ Definition print
           std.io.stdio._print α1 in
         Pure tt in
       Pure tt
-    else
-      Pure tt
+    | _ => Pure tt
+    end
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
