@@ -883,6 +883,7 @@ fn configfile_get_as_vec_string(index: &str) -> Vec<String> {
         .unwrap_or(vec![])
 }
 
+#[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
 fn reorder_definitions_inplace(file: &str, context: &str, definitions: &mut Vec<impl ToName>) {
     // JSON pointers need / in JSON keys to be espabed to ~1.
     // See https://datatracker.ietf.org/doc/html/rfc6901#section-3
