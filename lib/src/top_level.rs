@@ -1464,7 +1464,7 @@ impl TopLevelItem {
                     add_section_if_necessary(
                         name,
                         &ty_params.iter().collect(),
-                        nest([
+                        group([
                             text("Unset Primitive Projections."),
                             hardline(),
                             nest([
@@ -1595,7 +1595,7 @@ impl TopLevelItem {
                     add_section_if_necessary(
                         name,
                         &ty_params.iter().collect(),
-                        nest([
+                        group([
                             text("Unset Primitive Projections."),
                             hardline(),
                             nest([
@@ -1713,7 +1713,7 @@ impl TopLevelItem {
                     add_section_if_necessary(
                         name,
                         &ty_params.iter().collect(),
-                        nest([
+                        group([
                             nest([
                                 text("Inductive"),
                                 line(),

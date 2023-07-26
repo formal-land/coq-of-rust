@@ -163,27 +163,31 @@ where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
     K: Into<std::borrow::Cow<'a, str>>,
 {
-    intersperse(
-        [
-            nest([text(kind), line(), text(name), text(".")]),
+    group([
+        group([text(kind), line(), text(name), text(".")]),
+        nest([
+            hardline(),
             if ty_context.is_empty() {
                 nil()
             } else {
                 let types: Vec<Doc<'a>> = ty_context.iter().map(|&ty| text(ty)).collect();
-                nest([
-                    text("Context"),
-                    line(),
-                    text("{"),
-                    intersperse(types, [line()]),
-                    line(),
-                    text(": Set}."),
+                group([
+                    nest([
+                        text("Context"),
+                        line(),
+                        text("{"),
+                        intersperse(types, [line()]),
+                        line(),
+                        text(": Set}."),
+                    ]),
+                    hardline(),
                 ])
             },
-            nest([doc]),
-            nest([text("End"), line(), text(name), text(".")]),
-        ],
-        [hardline()],
-    )
+            doc,
+        ]),
+        hardline(),
+        group([text("End"), line(), text(name), text(".")]),
+    ])
 }
 
 pub(crate) fn module<'a, U>(name: U, doc: Doc<'a>) -> Doc<'a>
