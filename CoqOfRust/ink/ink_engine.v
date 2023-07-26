@@ -61,7 +61,7 @@ Module ext.
       _ : u32;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
@@ -521,7 +521,7 @@ Module ReturnCode.
     _ : u32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -1888,7 +1888,7 @@ Module chain_extension.
       _ : u32;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
@@ -2137,7 +2137,7 @@ Module ExtensionId.
     _ : u32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -2975,7 +2975,7 @@ Module types.
       _ : alloc.vec.Vec u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
@@ -3160,7 +3160,7 @@ Module types.
       _ : alloc.vec.Vec u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
@@ -3448,7 +3448,7 @@ Module AccountId.
     _ : alloc.vec.Vec u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -3632,7 +3632,7 @@ Module Key.
     _ : alloc.vec.Vec u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.

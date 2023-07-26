@@ -258,7 +258,7 @@ Module types.
       _ : list u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
@@ -561,7 +561,7 @@ Module types.
       _ : list u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
@@ -926,7 +926,7 @@ Module AccountId.
     _ : list u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -957,7 +957,7 @@ Module Visitor.
     _ : core.marker.PhantomData unit;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -1389,7 +1389,7 @@ Module Hash.
     _ : list u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
@@ -1420,7 +1420,7 @@ Module Visitor.
     _ : core.marker.PhantomData unit;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
