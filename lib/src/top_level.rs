@@ -1462,7 +1462,7 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 add_section_if_necessary(
                     name,
-                    &ty_params.into_iter().collect(),
+                    &ty_params.iter().collect(),
                     [
                         hardline(),
                         text("Unset Primitive Projections."),
@@ -1594,7 +1594,7 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 add_section_if_necessary(
                     name,
-                    &ty_params.into_iter().collect(),
+                    &ty_params.iter().collect(),
                     [
                         nest([
                             hardline(),
@@ -1715,7 +1715,7 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 add_section_if_necessary(
                     name,
-                    &ty_params.into_iter().collect(),
+                    &ty_params.iter().collect(),
                     [
                         hardline(),
                         nest([
