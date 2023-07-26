@@ -217,6 +217,6 @@ where
     if ty_params.is_empty() {
         nest(docs)
     } else {
-        section(name, &ty_params.iter().copied().collect(), docs)
+        section(name, ty_params, docs)
     }
 }
