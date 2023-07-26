@@ -1416,7 +1416,7 @@ Module Impl_Slice.
 
     Global Instance Method_into_vec `{State.Trait}
       (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *) :
-      Notation.DoubleColon Slice "into_vec" := {
+      Notation.DoubleColon (Slice T) "into_vec" := {
         Notation.double_colon (self : ref Self) (* (alloc : A) *) :=
           into_vec self (* alloc *);
       }.
