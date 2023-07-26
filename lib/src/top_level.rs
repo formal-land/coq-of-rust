@@ -401,6 +401,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         env.tcx
                             .sess
                             .struct_span_warn(param.span, "Only type parameters are supported.")
+                            .note("It should be supported in future versions.")
                             .emit();
                         None
                     }
