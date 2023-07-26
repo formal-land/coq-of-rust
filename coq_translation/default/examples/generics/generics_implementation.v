@@ -14,21 +14,19 @@ Module Val.
 End Val.
 Definition Val : Set := Val.t.
 
-Module GenVal.Section GenVal.
-Context {T : Set}.
-
-  Unset Primitive Projections.
-  Record t : Set := {
-    gen_val : T;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_gen_val : Notation.Dot "gen_val" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-
-
-End GenVal.
+Module GenVal.
+  Section GenVal.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      gen_val : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_gen_val : Notation.Dot "gen_val" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End GenVal.
 End GenVal.
 Definition GenVal : Set := GenVal.t.
 

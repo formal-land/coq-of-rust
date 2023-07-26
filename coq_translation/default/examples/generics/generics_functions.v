@@ -2,8 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set :=
-  Build.
+  Inductive t : Set := Build.
 End A.
 Definition A := A.t.
 
@@ -20,21 +19,19 @@ Module S.
 End S.
 Definition S := S.t.
 
-Module SGen.Section SGen.
-Context {T : Set}.
-
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : T;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-
-
-End SGen.
+Module SGen.
+  Section SGen.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End SGen.
 End SGen.
 Definition SGen := SGen.t.
 

@@ -2,8 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module A.
-  Inductive t : Set :=
-  Build.
+  Inductive t : Set := Build.
 End A.
 Definition A := A.t.
 
@@ -20,21 +19,19 @@ Module Single.
 End Single.
 Definition Single := Single.t.
 
-Module SingleGen.Section SingleGen.
-Context {T : Set}.
-
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : T;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-
-
-End SingleGen.
+Module SingleGen.
+  Section SingleGen.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End SingleGen.
 End SingleGen.
 Definition SingleGen := SingleGen.t.
 

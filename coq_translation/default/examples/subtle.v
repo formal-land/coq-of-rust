@@ -1399,25 +1399,23 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
 End Impl_subtle_ConditionallyNegatable_for_T.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
-Module CtOption.Section CtOption.
-Context {T : Set}.
-
-  Unset Primitive Projections.
-  Record t : Set := {
-    value : T;
-    is_some : subtle.Choice;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_is_some : Notation.Dot "is_some" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-
-
-End CtOption.
+Module CtOption.
+  Section CtOption.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      value : T;
+      is_some : subtle.Choice;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_is_some : Notation.Dot "is_some" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End CtOption.
 End CtOption.
 Definition CtOption : Set := CtOption.t.
 

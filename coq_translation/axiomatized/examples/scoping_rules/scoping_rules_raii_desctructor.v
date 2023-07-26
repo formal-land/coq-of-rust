@@ -2,8 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module ToDrop.
-  Inductive t : Set :=
-  Build.
+  Inductive t : Set := Build.
 End ToDrop.
 Definition ToDrop := ToDrop.t.
 

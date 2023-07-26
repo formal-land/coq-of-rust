@@ -2,14 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Empty.
-  Inductive t : Set :=
-  Build.
+  Inductive t : Set := Build.
 End Empty.
 Definition Empty := Empty.t.
 
 Module Null.
-  Inductive t : Set :=
-  Build.
+  Inductive t : Set := Build.
 End Null.
 Definition Null := Null.t.
 
