@@ -175,10 +175,10 @@ where
                     nest([
                         text("Context"),
                         line(),
-                        text("{"),
+                        text("("),
                         intersperse(types, [line()]),
                         line(),
-                        text(": Set}."),
+                        text(": Set)."),
                     ]),
                     hardline(),
                 ])
