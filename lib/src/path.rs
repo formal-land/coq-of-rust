@@ -202,8 +202,11 @@ pub(crate) fn to_valid_coq_name(str: String) -> String {
 }
 
 impl Path {
-    pub(crate) fn to_doc(&self) -> Doc {
-        intersperse(self.segments.iter().map(text), [text(".")])
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        // clone to be able to consume
+        let segments = self.segments.clone();
+        // consume (by into_iter) to let the result live arbitrarily long
+        intersperse(segments.into_iter().map(text), [text(".")])
     }
 
     pub(crate) fn to_name(&self) -> String {
