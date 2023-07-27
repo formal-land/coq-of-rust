@@ -12,6 +12,7 @@ use rustc_hir::{
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
 use std::collections::HashMap;
+use std::iter::repeat;
 use std::string::ToString;
 
 pub(crate) struct TopLevelOptions {
@@ -120,7 +121,6 @@ enum TopLevelItem {
     },
     TraitImpl {
         generic_tys: Vec<String>,
-        /// The boolean is there to indicate if the type parameter has a default
         ty_params: Vec<Box<TraitImplTyParam>>,
         self_ty: Box<CoqType>,
         of_trait: Path,
@@ -130,11 +130,15 @@ enum TopLevelItem {
     Error(String),
 }
 
-#[derive(Debug)]
-struct TraitImplTyParam {
-    name: String,
-    ty: Box<CoqType>,
-    has_default: bool,
+/// The actual value of the type parameter of the trait implementation
+#[derive(Clone, Debug)]
+enum TraitImplTyParam {
+    /// the value of the parameter that has no default
+    JustValue { name: String, ty: Box<CoqType> },
+    /// the value that replaces the default value of the parameter
+    ValWithDef { name: String, ty: Box<CoqType> },
+    /// means the default value of the type parameter is used
+    JustDefault { name: String },
 }
 
 #[derive(Debug)]
@@ -422,10 +426,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     .iter()
                     .map(|param| {
                         let default = match param.kind {
-                            GenericParamKind::Type { default, .. } => match default {
-                                Some(default) => Some(compile_type(env, default)),
-                                None => None,
-                            },
+                            GenericParamKind::Type { default, .. } => {
+                                default.map(|default| compile_type(env, default))
+                            }
                             _ => {
                                 env.tcx
                                     .sess
@@ -579,12 +582,19 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         generic_tys,
                         ty_params: ty_params
                             .into_iter()
+                            .map(Some)
+                            .chain(repeat(None))
                             .zip(type_params_name_and_default_status)
                             .map(|(ty, (name, has_default))| {
-                                Box::new(TraitImplTyParam {
-                                    name,
-                                    ty,
-                                    has_default,
+                                Box::new(match ty {
+                                    Some(ty) => {
+                                        if has_default {
+                                            TraitImplTyParam::ValWithDef { name, ty }
+                                        } else {
+                                            TraitImplTyParam::JustValue { name, ty }
+                                        }
+                                    }
+                                    None => TraitImplTyParam::JustDefault { name },
                                 })
                             })
                             .collect(),
@@ -1778,7 +1788,8 @@ impl TopLevelItem {
                                             text("{"),
                                             concat(ty_params.iter().map(|(ty, default)| {
                                                 match default {
-                                                    Some(default) => concat([
+                                                    // @TODO: implement translation of type parameters with default
+                                                    Some(_default) => concat([
                                                         text("(* TODO *)"),
                                                         line(),
                                                         text(ty),
@@ -2036,26 +2047,45 @@ impl TopLevelItem {
                                     line(),
                                     text("Self"),
                                     concat(ty_params.iter().map(|ty_param| {
+                                        let ty_param = *ty_param.clone();
                                         concat([
                                             line(),
-                                            nest([
-                                                text("("),
-                                                text(ty_param.name.clone()),
-                                                line(),
-                                                text(":="),
-                                                line(),
-                                                if ty_param.has_default {
+                                            match ty_param {
+                                                TraitImplTyParam::ValWithDef { name, ty } => {
                                                     nest([
-                                                        text("(Some"),
+                                                        text("("),
+                                                        text(name),
                                                         line(),
-                                                        ty_param.ty.to_doc(false),
-                                                        text(")"),
+                                                        text(":="),
+                                                        line(),
+                                                        nest([
+                                                            text("(Some"),
+                                                            line(),
+                                                            ty.to_doc(false),
+                                                            text(")"),
+                                                            text(")"),
+                                                        ]),
                                                     ])
-                                                } else {
-                                                    ty_param.ty.to_doc(false)
-                                                },
-                                                text(")"),
-                                            ]),
+                                                }
+                                                TraitImplTyParam::JustValue { name, ty } => nest([
+                                                    text("("),
+                                                    text(name),
+                                                    line(),
+                                                    text(":="),
+                                                    line(),
+                                                    ty.to_doc(false),
+                                                    text(")"),
+                                                ]),
+                                                TraitImplTyParam::JustDefault { name } => nest([
+                                                    text("("),
+                                                    text(name),
+                                                    line(),
+                                                    text(":="),
+                                                    line(),
+                                                    text("None"),
+                                                    text(")"),
+                                                ]),
+                                            },
                                         ])
                                     })),
                                 ]),
