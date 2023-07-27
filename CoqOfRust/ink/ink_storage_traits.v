@@ -77,7 +77,7 @@ Module impls.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
@@ -118,7 +118,7 @@ Module impls.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
@@ -314,7 +314,7 @@ Module impls.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -338,7 +338,7 @@ Module impls.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -512,7 +512,7 @@ Module impls.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -569,7 +569,7 @@ Module impls.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -821,7 +821,7 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_AutoKey.
@@ -862,7 +862,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_AutoKey.
@@ -1076,7 +1076,7 @@ Section
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1100,7 +1100,7 @@ Section
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1295,7 +1295,7 @@ Section Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
@@ -1350,7 +1350,7 @@ Section Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.

@@ -125,7 +125,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
     Notation.dot := bitand;
   }.
   
-  Global Instance I : core.ops.bit.BitAnd.Trait Self := {
+  Global Instance I : core.ops.bit.BitAnd.Trait Self (Rhs := None) := {
     core.ops.bit.BitAnd.bitand `{H : State.Trait} := bitand;
   }.
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -150,7 +150,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
     Notation.dot := bitand_assign;
   }.
   
-  Global Instance I : core.ops.bit.BitAndAssign.Trait Self := {
+  Global Instance I : core.ops.bit.BitAndAssign.Trait Self (Rhs := None) := {
     core.ops.bit.BitAndAssign.bitand_assign `{H : State.Trait} := bitand_assign;
   }.
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
@@ -172,7 +172,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
     Notation.dot := bitor;
   }.
   
-  Global Instance I : core.ops.bit.BitOr.Trait Self := {
+  Global Instance I : core.ops.bit.BitOr.Trait Self (Rhs := None) := {
     core.ops.bit.BitOr.bitor `{H : State.Trait} := bitor;
   }.
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -197,7 +197,7 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
     Notation.dot := bitor_assign;
   }.
   
-  Global Instance I : core.ops.bit.BitOrAssign.Trait Self := {
+  Global Instance I : core.ops.bit.BitOrAssign.Trait Self (Rhs := None) := {
     core.ops.bit.BitOrAssign.bitor_assign `{H : State.Trait} := bitor_assign;
   }.
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
@@ -219,7 +219,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
     Notation.dot := bitxor;
   }.
   
-  Global Instance I : core.ops.bit.BitXor.Trait Self := {
+  Global Instance I : core.ops.bit.BitXor.Trait Self (Rhs := None) := {
     core.ops.bit.BitXor.bitxor `{H : State.Trait} := bitxor;
   }.
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -244,7 +244,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
     Notation.dot := bitxor_assign;
   }.
   
-  Global Instance I : core.ops.bit.BitXorAssign.Trait Self := {
+  Global Instance I : core.ops.bit.BitXorAssign.Trait Self (Rhs := None) := {
     core.ops.bit.BitXorAssign.bitxor_assign `{H : State.Trait} := bitxor_assign;
   }.
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.

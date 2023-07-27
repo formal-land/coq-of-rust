@@ -51,7 +51,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.

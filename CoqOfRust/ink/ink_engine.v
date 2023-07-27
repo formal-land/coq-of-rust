@@ -1950,7 +1950,7 @@ Module chain_extension.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
@@ -1992,7 +1992,7 @@ Module chain_extension.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
@@ -2220,7 +2220,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId.
   Definition Self := ink_engine.chain_extension.ExtensionId.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId.
@@ -2265,7 +2266,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_engine_chain_extension_ExtensionId.
@@ -2306,7 +2307,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_engine_chain_extension_ExtensionId.
@@ -3053,7 +3054,7 @@ Module types.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
@@ -3094,7 +3095,7 @@ Module types.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
@@ -3237,7 +3238,7 @@ Module types.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
@@ -3278,7 +3279,7 @@ Module types.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
@@ -3408,7 +3409,7 @@ Module types.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
@@ -3525,7 +3526,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountId.
@@ -3566,7 +3567,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_engine_types_AccountId.
@@ -3708,7 +3709,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_Key.
@@ -3749,7 +3750,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_engine_types_Key.
@@ -3879,7 +3880,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_engine_types_AccountError.
@@ -3970,7 +3971,7 @@ Module Impl_core_cmp_PartialEq_for_ink_engine_Error.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_engine_Error.
