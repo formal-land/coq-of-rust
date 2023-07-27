@@ -6,8 +6,8 @@ use crate::render::*;
 use crate::ty::*;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty,
-    TyKind, VariantData,
+    GenericBound, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn,
+    TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -115,7 +115,7 @@ enum TopLevelItem {
     },
     Trait {
         name: String,
-        ty_params: Vec<String>,
+        ty_params: Vec<(String, Option<Box<CoqType>>)>,
         body: Vec<(String, TraitItem)>,
     },
     TraitImpl {
@@ -420,7 +420,27 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 ty_params: generics
                     .params
                     .iter()
-                    .map(|param| param.name.ident().to_string())
+                    .map(|param| {
+                        let default = match param.kind {
+                            GenericParamKind::Type { default, .. } => match default {
+                                Some(default) => Some(compile_type(env, default)),
+                                None => None,
+                            },
+                            _ => {
+                                env.tcx
+                                    .sess
+                                    .struct_span_warn(
+                                        param.span,
+                                        "Only type parameters are currently supported.",
+                                    )
+                                    .note("It should be supported in future versions.")
+                                    .emit();
+                                None
+                            }
+                        };
+                        let name = param.name.ident().to_string();
+                        (name, default)
+                    })
                     .collect(),
                 body: items
                     .iter()
@@ -1756,11 +1776,17 @@ impl TopLevelItem {
                                         line(),
                                         nest([
                                             text("{"),
-                                            concat(
-                                                ty_params
-                                                    .iter()
-                                                    .map(|ty| concat([text(ty), line()])),
-                                            ),
+                                            concat(ty_params.iter().map(|(ty, default)| {
+                                                match default {
+                                                    Some(default) => concat([
+                                                        text("(* TODO *)"),
+                                                        line(),
+                                                        text(ty),
+                                                        line(),
+                                                    ]),
+                                                    None => concat([text(ty), line()]),
+                                                }
+                                            })),
                                             text(":"),
                                             line(),
                                             text("Set"),
