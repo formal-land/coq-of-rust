@@ -924,9 +924,11 @@ Module alloc.
   End string.
 
   Module Allocator.
+    Unset Primitive Projections.
     Class Trait (Self : Set) : Set := {
       (* TODO *)
     }.
+    Global Set Primitive Projections.
   End Allocator.
 End alloc.
 
