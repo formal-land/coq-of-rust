@@ -53,7 +53,7 @@ Module client.
   
   Module InstantiationResult.
     Section InstantiationResult.
-      Context [C E : Set].
+      Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         account_id : ImplE.AccountId;
@@ -77,7 +77,7 @@ Module client.
       }.
     End InstantiationResult.
   End InstantiationResult.
-  Definition InstantiationResult : Set := InstantiationResult.t.
+  Definition InstantiationResult : Set := @InstantiationResult.t.
   
   Module Impl_ink_e2e_client_InstantiationResult_C_E.
     Definition Self := ink_e2e.client.InstantiationResult C E.
@@ -93,7 +93,7 @@ Module client.
   
   Module UploadResult.
     Section UploadResult.
-      Context [C E : Set].
+      Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : ImplE.Hash;
@@ -115,7 +115,7 @@ Module client.
       }.
     End UploadResult.
   End UploadResult.
-  Definition UploadResult : Set := UploadResult.t.
+  Definition UploadResult : Set := @UploadResult.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -161,7 +161,7 @@ Module client.
   
   Module CallResult.
     Section CallResult.
-      Context [C E V : Set].
+      Context {C E V : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         dry_run : ink_e2e.client.CallDryRunResult E V;
@@ -177,7 +177,7 @@ Module client.
       }.
     End CallResult.
   End CallResult.
-  Definition CallResult : Set := CallResult.t.
+  Definition CallResult : Set := @CallResult.t.
   
   Module Impl_ink_e2e_client_CallResult_C_E_V.
     Definition Self := ink_e2e.client.CallResult C E V.
@@ -251,7 +251,7 @@ Module client.
   
   Module CallDryRunResult.
     Section CallDryRunResult.
-      Context [E V : Set].
+      Context {E V : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         exec_result
@@ -269,7 +269,7 @@ Module client.
       }.
     End CallDryRunResult.
   End CallDryRunResult.
-  Definition CallDryRunResult : Set := CallDryRunResult.t.
+  Definition CallDryRunResult : Set := @CallDryRunResult.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -395,7 +395,7 @@ Module client.
   
   Module ContractInstantiatedEvent.
     Section ContractInstantiatedEvent.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         deployer : ImplE.AccountId;
@@ -411,7 +411,7 @@ Module client.
       }.
     End ContractInstantiatedEvent.
   End ContractInstantiatedEvent.
-  Definition ContractInstantiatedEvent : Set := ContractInstantiatedEvent.t.
+  Definition ContractInstantiatedEvent : Set := @ContractInstantiatedEvent.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -529,7 +529,7 @@ Module client.
   
   Module CodeStoredEvent.
     Section CodeStoredEvent.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : ImplE.Hash;
@@ -541,7 +541,7 @@ Module client.
       }.
     End CodeStoredEvent.
   End CodeStoredEvent.
-  Definition CodeStoredEvent : Set := CodeStoredEvent.t.
+  Definition CodeStoredEvent : Set := @CodeStoredEvent.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
@@ -647,7 +647,7 @@ Module client.
   
   Module Client.
     Section Client.
-      Context [C E : Set].
+      Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         api : ink_e2e.xts.ContractsApi C E;
@@ -667,7 +667,7 @@ Module client.
       }.
     End Client.
   End Client.
-  Definition Client : Set := Client.t.
+  Definition Client : Set := @Client.t.
   
   Module Impl_ink_e2e_client_Client_C_E.
     Definition Self := ink_e2e.client.Client C E.
@@ -852,7 +852,7 @@ Definition CallBuilderFinal : Set :=
 
 Module InstantiationResult.
   Section InstantiationResult.
-    Context [C E : Set].
+    Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       account_id : ImplE.AccountId;
@@ -876,7 +876,7 @@ Module InstantiationResult.
     }.
   End InstantiationResult.
 End InstantiationResult.
-Definition InstantiationResult : Set := InstantiationResult.t.
+Definition InstantiationResult : Set := @InstantiationResult.t.
 
 Module Impl_ink_e2e_client_InstantiationResult_C_E_2.
   Definition Self := ink_e2e.client.InstantiationResult C E.
@@ -892,7 +892,7 @@ End Impl_ink_e2e_client_InstantiationResult_C_E_2.
 
 Module UploadResult.
   Section UploadResult.
-    Context [C E : Set].
+    Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
@@ -914,7 +914,7 @@ Module UploadResult.
     }.
   End UploadResult.
 End UploadResult.
-Definition UploadResult : Set := UploadResult.t.
+Definition UploadResult : Set := @UploadResult.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -960,7 +960,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
 
 Module CallResult.
   Section CallResult.
-    Context [C E V : Set].
+    Context {C E V : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       dry_run : ink_e2e.client.CallDryRunResult E V;
@@ -976,7 +976,7 @@ Module CallResult.
     }.
   End CallResult.
 End CallResult.
-Definition CallResult : Set := CallResult.t.
+Definition CallResult : Set := @CallResult.t.
 
 Module Impl_ink_e2e_client_CallResult_C_E_V_2.
   Definition Self := ink_e2e.client.CallResult C E V.
@@ -1050,7 +1050,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 
 Module CallDryRunResult.
   Section CallDryRunResult.
-    Context [E V : Set].
+    Context {E V : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       exec_result
@@ -1068,7 +1068,7 @@ Module CallDryRunResult.
     }.
   End CallDryRunResult.
 End CallDryRunResult.
-Definition CallDryRunResult : Set := CallDryRunResult.t.
+Definition CallDryRunResult : Set := @CallDryRunResult.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -1191,7 +1191,7 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 
 Module ContractInstantiatedEvent.
   Section ContractInstantiatedEvent.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       deployer : ImplE.AccountId;
@@ -1207,7 +1207,7 @@ Module ContractInstantiatedEvent.
     }.
   End ContractInstantiatedEvent.
 End ContractInstantiatedEvent.
-Definition ContractInstantiatedEvent : Set := ContractInstantiatedEvent.t.
+Definition ContractInstantiatedEvent : Set := @ContractInstantiatedEvent.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1297,7 +1297,7 @@ End
 
 Module Visitor.
   Section Visitor.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData (E);
@@ -1309,7 +1309,7 @@ Module Visitor.
     }.
   End Visitor.
 End Visitor.
-Definition Visitor := Visitor.t.
+Definition Visitor := @Visitor.t.
 
 Module
   Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1499,7 +1499,7 @@ End
 
 Module CodeStoredEvent.
   Section CodeStoredEvent.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
@@ -1511,7 +1511,7 @@ Module CodeStoredEvent.
     }.
   End CodeStoredEvent.
 End CodeStoredEvent.
-Definition CodeStoredEvent : Set := CodeStoredEvent.t.
+Definition CodeStoredEvent : Set := @CodeStoredEvent.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
@@ -1615,7 +1615,7 @@ End
 
 Module Visitor.
   Section Visitor.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData (E);
@@ -1627,7 +1627,7 @@ Module Visitor.
     }.
   End Visitor.
 End Visitor.
-Definition Visitor := Visitor.t.
+Definition Visitor := @Visitor.t.
 
 Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
 Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
@@ -1797,7 +1797,7 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 
 Module Client.
   Section Client.
-    Context [C E : Set].
+    Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       api : ink_e2e.xts.ContractsApi C E;
@@ -1817,7 +1817,7 @@ Module Client.
     }.
   End Client.
 End Client.
-Definition Client : Set := Client.t.
+Definition Client : Set := @Client.t.
 
 Module Impl_ink_e2e_client_Client_C_E_2.
   Definition Self := ink_e2e.client.Client C E.
@@ -2154,7 +2154,7 @@ Parameter two : forall `{H : State.Trait},
 Module node_proc.
   Module TestNodeProcess.
     Section TestNodeProcess.
-      Context [R : Set].
+      Context {R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         proc : std.process.Child;
@@ -2174,7 +2174,7 @@ Module node_proc.
       }.
     End TestNodeProcess.
   End TestNodeProcess.
-  Definition TestNodeProcess : Set := TestNodeProcess.t.
+  Definition TestNodeProcess : Set := @TestNodeProcess.t.
   
   Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -2232,7 +2232,7 @@ Module node_proc.
   
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
-      Context [R : Set].
+      Context {R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         node_path : std.ffi.os_str.OsString;
@@ -2252,7 +2252,7 @@ Module node_proc.
       }.
     End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
-  Definition TestNodeProcessBuilder : Set := TestNodeProcessBuilder.t.
+  Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
   
   Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R.
     Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
@@ -2296,7 +2296,7 @@ End node_proc.
 
 Module TestNodeProcess.
   Section TestNodeProcess.
-    Context [R : Set].
+    Context {R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       proc : std.process.Child;
@@ -2316,7 +2316,7 @@ Module TestNodeProcess.
     }.
   End TestNodeProcess.
 End TestNodeProcess.
-Definition TestNodeProcess : Set := TestNodeProcess.t.
+Definition TestNodeProcess : Set := @TestNodeProcess.t.
 
 Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
 Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -2423,7 +2423,7 @@ Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
 
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
-    Context [R : Set].
+    Context {R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       node_path : std.ffi.os_str.OsString;
@@ -2443,7 +2443,7 @@ Module TestNodeProcessBuilder.
     }.
   End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
-Definition TestNodeProcessBuilder : Set := TestNodeProcessBuilder.t.
+Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
 
 Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
   Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
@@ -2525,7 +2525,7 @@ Module xts.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End Weight.
-  Definition Weight : Set := Weight.t.
+  Definition Weight : Set := @Weight.t.
   
   Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
@@ -2723,7 +2723,7 @@ Module xts.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         value : ImplE.Balance;
@@ -2756,7 +2756,7 @@ Module xts.
       }.
     End InstantiateWithCode.
   End InstantiateWithCode.
-  Definition InstantiateWithCode : Set := InstantiateWithCode.t.
+  Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -2836,7 +2836,7 @@ Module xts.
   
   Module Call.
     Section Call.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
@@ -2865,7 +2865,7 @@ Module xts.
       }.
     End Call.
   End Call.
-  Definition Call : Set := Call.t.
+  Definition Call : Set := @Call.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -2944,7 +2944,7 @@ Module xts.
   
   Module Transfer.
     Section Transfer.
-      Context [E C : Set].
+      Context {E C : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         dest : subxt.utils.static_type.Static ImplC.Address;
@@ -2960,7 +2960,7 @@ Module xts.
       }.
     End Transfer.
   End Transfer.
-  Definition Transfer : Set := Transfer.t.
+  Definition Transfer : Set := @Transfer.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -3156,7 +3156,7 @@ Module xts.
   
   Module UploadCode.
     Section UploadCode.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code : alloc.vec.Vec u8;
@@ -3177,7 +3177,7 @@ Module xts.
       }.
     End UploadCode.
   End UploadCode.
-  Definition UploadCode : Set := UploadCode.t.
+  Definition UploadCode : Set := @UploadCode.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -3256,7 +3256,7 @@ Module xts.
   
   Module RpcInstantiateRequest.
     Section RpcInstantiateRequest.
-      Context [C E : Set].
+      Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         origin : ImplC.AccountId;
@@ -3293,11 +3293,11 @@ Module xts.
       }.
     End RpcInstantiateRequest.
   End RpcInstantiateRequest.
-  Definition RpcInstantiateRequest : Set := RpcInstantiateRequest.t.
+  Definition RpcInstantiateRequest : Set := @RpcInstantiateRequest.t.
   
   Module RpcCodeUploadRequest.
     Section RpcCodeUploadRequest.
-      Context [C E : Set].
+      Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         origin : ImplC.AccountId;
@@ -3322,11 +3322,11 @@ Module xts.
       }.
     End RpcCodeUploadRequest.
   End RpcCodeUploadRequest.
-  Definition RpcCodeUploadRequest : Set := RpcCodeUploadRequest.t.
+  Definition RpcCodeUploadRequest : Set := @RpcCodeUploadRequest.t.
   
   Module RpcCallRequest.
     Section RpcCallRequest.
-      Context [C E : Set].
+      Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         origin : ImplC.AccountId;
@@ -3359,7 +3359,7 @@ Module xts.
       }.
     End RpcCallRequest.
   End RpcCallRequest.
-  Definition RpcCallRequest : Set := RpcCallRequest.t.
+  Definition RpcCallRequest : Set := @RpcCallRequest.t.
   
   Module Code.
     Inductive t : Set :=
@@ -3370,7 +3370,7 @@ Module xts.
   
   Module ContractsApi.
     Section ContractsApi.
-      Context [C E : Set].
+      Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         client : subxt.client.online_client.OnlineClient C;
@@ -3386,7 +3386,7 @@ Module xts.
       }.
     End ContractsApi.
   End ContractsApi.
-  Definition ContractsApi : Set := ContractsApi.t.
+  Definition ContractsApi : Set := @ContractsApi.t.
   
   Module Impl_ink_e2e_xts_ContractsApi_C_E.
     Definition Self := ink_e2e.xts.ContractsApi C E.
@@ -3536,7 +3536,7 @@ Module Weight.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Weight.
-Definition Weight : Set := Weight.t.
+Definition Weight : Set := @Weight.t.
 
 Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
@@ -3804,7 +3804,7 @@ Definition __Field := __Field.t.
 Module __FieldVisitor.
   Inductive t : Set := Build.
 End __FieldVisitor.
-Definition __FieldVisitor := __FieldVisitor.t.
+Definition __FieldVisitor := @__FieldVisitor.t.
 
 Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   Definition Self := ink_e2e.xts._.deserialize.__FieldVisitor.
@@ -3888,7 +3888,7 @@ Module __Visitor.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End __Visitor.
-Definition __Visitor : Set := __Visitor.t.
+Definition __Visitor : Set := @__Visitor.t.
 
 Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   Definition Self := ink_e2e.xts._.deserialize.__Visitor.
@@ -3971,7 +3971,7 @@ End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       value : ImplE.Balance;
@@ -4004,7 +4004,7 @@ Module InstantiateWithCode.
     }.
   End InstantiateWithCode.
 End InstantiateWithCode.
-Definition InstantiateWithCode : Set := InstantiateWithCode.t.
+Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4144,7 +4144,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Call.
   Section Call.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
@@ -4173,7 +4173,7 @@ Module Call.
     }.
   End Call.
 End Call.
-Definition Call : Set := Call.t.
+Definition Call : Set := @Call.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -4305,7 +4305,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 
 Module Transfer.
   Section Transfer.
-    Context [E C : Set].
+    Context {E C : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.static_type.Static ImplC.Address;
@@ -4321,7 +4321,7 @@ Module Transfer.
     }.
   End Transfer.
 End Transfer.
-Definition Transfer : Set := Transfer.t.
+Definition Transfer : Set := @Transfer.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -4632,7 +4632,7 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 
 Module UploadCode.
   Section UploadCode.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       code : alloc.vec.Vec u8;
@@ -4653,7 +4653,7 @@ Module UploadCode.
     }.
   End UploadCode.
 End UploadCode.
-Definition UploadCode : Set := UploadCode.t.
+Definition UploadCode : Set := @UploadCode.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -4787,7 +4787,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 
 Module RpcInstantiateRequest.
   Section RpcInstantiateRequest.
-    Context [C E : Set].
+    Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       origin : ImplC.AccountId;
@@ -4824,7 +4824,7 @@ Module RpcInstantiateRequest.
     }.
   End RpcInstantiateRequest.
 End RpcInstantiateRequest.
-Definition RpcInstantiateRequest : Set := RpcInstantiateRequest.t.
+Definition RpcInstantiateRequest : Set := @RpcInstantiateRequest.t.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
 Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
@@ -4890,7 +4890,7 @@ End
 
 Module RpcCodeUploadRequest.
   Section RpcCodeUploadRequest.
-    Context [C E : Set].
+    Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       origin : ImplC.AccountId;
@@ -4915,7 +4915,7 @@ Module RpcCodeUploadRequest.
     }.
   End RpcCodeUploadRequest.
 End RpcCodeUploadRequest.
-Definition RpcCodeUploadRequest : Set := RpcCodeUploadRequest.t.
+Definition RpcCodeUploadRequest : Set := @RpcCodeUploadRequest.t.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
 Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
@@ -4981,7 +4981,7 @@ End
 
 Module RpcCallRequest.
   Section RpcCallRequest.
-    Context [C E : Set].
+    Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       origin : ImplC.AccountId;
@@ -5014,7 +5014,7 @@ Module RpcCallRequest.
     }.
   End RpcCallRequest.
 End RpcCallRequest.
-Definition RpcCallRequest : Set := RpcCallRequest.t.
+Definition RpcCallRequest : Set := @RpcCallRequest.t.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
 Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
@@ -5125,7 +5125,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 
 Module ContractsApi.
   Section ContractsApi.
-    Context [C E : Set].
+    Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
@@ -5141,7 +5141,7 @@ Module ContractsApi.
     }.
   End ContractsApi.
 End ContractsApi.
-Definition ContractsApi : Set := ContractsApi.t.
+Definition ContractsApi : Set := @ContractsApi.t.
 
 Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
   Definition Self := ink_e2e.xts.ContractsApi C E.

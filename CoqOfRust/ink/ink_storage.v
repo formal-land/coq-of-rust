@@ -6,7 +6,7 @@ Module lazy.
   Module mapping.
     Module Mapping.
       Section Mapping.
-        Context [K V KeyType : Set].
+        Context {K V KeyType : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _marker : core.marker.PhantomData ((K * V * KeyType));
@@ -18,7 +18,7 @@ Module lazy.
         }.
       End Mapping.
     End Mapping.
-    Definition Mapping : Set := Mapping.t.
+    Definition Mapping : Set := @Mapping.t.
     
     Module
       Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -220,7 +220,7 @@ Module lazy.
   
   Module Lazy.
     Section Lazy.
-      Context [V KeyType : Set].
+      Context {V KeyType : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData ((V * KeyType));
@@ -232,7 +232,7 @@ Module lazy.
       }.
     End Lazy.
   End Lazy.
-  Definition Lazy : Set := Lazy.t.
+  Definition Lazy : Set := @Lazy.t.
   
   Module Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
   Section Impl_core_default_Default_for_ink_storage_lazy_Lazy_V_KeyType.
@@ -402,7 +402,7 @@ End lazy.
 Module mapping.
   Module Mapping.
     Section Mapping.
-      Context [K V KeyType : Set].
+      Context {K V KeyType : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData ((K * V * KeyType));
@@ -414,7 +414,7 @@ Module mapping.
       }.
     End Mapping.
   End Mapping.
-  Definition Mapping : Set := Mapping.t.
+  Definition Mapping : Set := @Mapping.t.
   
   Module
     Impl_core_default_Default_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -615,7 +615,7 @@ End mapping.
 
 Module Mapping.
   Section Mapping.
-    Context [K V KeyType : Set].
+    Context {K V KeyType : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData ((K * V * KeyType));
@@ -627,7 +627,7 @@ Module Mapping.
     }.
   End Mapping.
 End Mapping.
-Definition Mapping : Set := Mapping.t.
+Definition Mapping : Set := @Mapping.t.
 
 Module
   Impl_scale_info_TypeInfo_for_ink_storage_lazy_mapping_Mapping_K_V_KeyType.
@@ -871,7 +871,7 @@ End
 
 Module Lazy.
   Section Lazy.
-    Context [V KeyType : Set].
+    Context {V KeyType : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData ((V * KeyType));
@@ -883,7 +883,7 @@ Module Lazy.
     }.
   End Lazy.
 End Lazy.
-Definition Lazy : Set := Lazy.t.
+Definition Lazy : Set := @Lazy.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.
 Section Impl_scale_info_TypeInfo_for_ink_storage_lazy_Lazy_V_KeyType.

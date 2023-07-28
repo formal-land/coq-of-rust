@@ -1622,7 +1622,7 @@ Module backend.
       Notation.dot '(Build_t x0) := x0;
     }.
   End ReturnFlags.
-  Definition ReturnFlags : Set := ReturnFlags.t.
+  Definition ReturnFlags : Set := @ReturnFlags.t.
   
   Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
@@ -1686,7 +1686,7 @@ Module backend.
       Notation.dot '(Build_t _ _ _ x3) := x3;
     }.
   End CallFlags.
-  Definition CallFlags : Set := CallFlags.t.
+  Definition CallFlags : Set := @CallFlags.t.
   
   Module Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
@@ -2191,7 +2191,7 @@ Module ReturnFlags.
     Notation.dot '(Build_t x0) := x0;
   }.
 End ReturnFlags.
-Definition ReturnFlags : Set := ReturnFlags.t.
+Definition ReturnFlags : Set := @ReturnFlags.t.
 
 Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   Definition Self := ink_env.backend.ReturnFlags.
@@ -2255,7 +2255,7 @@ Module CallFlags.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End CallFlags.
-Definition CallFlags : Set := CallFlags.t.
+Definition CallFlags : Set := @CallFlags.t.
 
 Module Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
@@ -2740,7 +2740,7 @@ Module call.
   Module call_builder.
     Module CallParams.
       Section CallParams.
-        Context [E CallType Args R : Set].
+        Context {E CallType Args R : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           call_type : CallType;
@@ -2768,7 +2768,7 @@ Module call.
         }.
       End CallParams.
     End CallParams.
-    Definition CallParams : Set := CallParams.t.
+    Definition CallParams : Set := @CallParams.t.
     
     Module
       Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
@@ -2958,7 +2958,7 @@ Module call.
     
     Module Call.
       Section Call.
-        Context [E : Set].
+        Context {E : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           callee : ImplE.AccountId;
@@ -2979,7 +2979,7 @@ Module call.
         }.
       End Call.
     End Call.
-    Definition Call : Set := Call.t.
+    Definition Call : Set := @Call.t.
     
     Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
     Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
@@ -3041,7 +3041,7 @@ Module call.
     
     Module DelegateCall.
       Section DelegateCall.
-        Context [E : Set].
+        Context {E : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : ImplE.Hash;
@@ -3053,7 +3053,7 @@ Module call.
         }.
       End DelegateCall.
     End DelegateCall.
-    Definition DelegateCall : Set := DelegateCall.t.
+    Definition DelegateCall : Set := @DelegateCall.t.
     
     Module Impl_ink_env_call_call_builder_DelegateCall_E.
       Definition Self := ink_env.call.call_builder.DelegateCall E.
@@ -3082,7 +3082,7 @@ Module call.
     
     Module CallBuilder.
       Section CallBuilder.
-        Context [E CallType Args RetType : Set].
+        Context {E CallType Args RetType : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           call_type : CallType;
@@ -3110,7 +3110,7 @@ Module call.
         }.
       End CallBuilder.
     End CallBuilder.
-    Definition CallBuilder : Set := CallBuilder.t.
+    Definition CallBuilder : Set := @CallBuilder.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
@@ -3596,7 +3596,7 @@ Module call.
   Module common.
     Module ReturnType.
       Section ReturnType.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _ : core.marker.PhantomData (T);
@@ -3608,7 +3608,7 @@ Module call.
         }.
       End ReturnType.
     End ReturnType.
-    Definition ReturnType := ReturnType.t.
+    Definition ReturnType := @ReturnType.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
     Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
@@ -3682,7 +3682,7 @@ Module call.
     
     Module Set.
       Section Set.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -3694,7 +3694,7 @@ Module call.
         }.
       End Set.
     End Set.
-    Definition Set := Set.t.
+    Definition Set := @Set.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
     Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
@@ -3762,7 +3762,7 @@ Module call.
     
     Module Unset.
       Section Unset.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _ : core.marker.PhantomData (T);
@@ -3774,7 +3774,7 @@ Module call.
         }.
       End Unset.
     End Unset.
-    Definition Unset := Unset.t.
+    Definition Unset := @Unset.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
     Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
@@ -4060,7 +4060,7 @@ Module call.
     
     Module CreateParams.
       Section CreateParams.
-        Context [E ContractRef Args Salt R : Set].
+        Context {E ContractRef Args Salt R : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : ImplE.Hash;
@@ -4096,7 +4096,7 @@ Module call.
         }.
       End CreateParams.
     End CreateParams.
-    Definition CreateParams : Set := CreateParams.t.
+    Definition CreateParams : Set := @CreateParams.t.
     
     Module
       Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
@@ -4232,7 +4232,7 @@ Module call.
     Module CreateBuilder.
       Section CreateBuilder.
         Context
-          [E
+          {E
           ContractRef
           CodeHash
           GasLimit
@@ -4240,7 +4240,7 @@ Module call.
           Args
           Salt
           RetType
-          : Set].
+          : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : CodeHash;
@@ -4276,7 +4276,7 @@ Module call.
         }.
       End CreateBuilder.
     End CreateBuilder.
-    Definition CreateBuilder : Set := CreateBuilder.t.
+    Definition CreateBuilder : Set := @CreateBuilder.t.
     
     Parameter build_create : forall `{H : State.Trait},
         forall
@@ -4590,7 +4590,7 @@ Module call.
   Module execution_input.
     Module ExecutionInput.
       Section ExecutionInput.
-        Context [Args : Set].
+        Context {Args : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           selector : ink_env.call.selector.Selector;
@@ -4606,7 +4606,7 @@ Module call.
         }.
       End ExecutionInput.
     End ExecutionInput.
-    Definition ExecutionInput : Set := ExecutionInput.t.
+    Definition ExecutionInput : Set := @ExecutionInput.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -4757,7 +4757,7 @@ Module call.
     
     Module ArgumentList.
       Section ArgumentList.
-        Context [Head Rest : Set].
+        Context {Head Rest : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           head : Head;
@@ -4773,7 +4773,7 @@ Module call.
         }.
       End ArgumentList.
     End ArgumentList.
-    Definition ArgumentList : Set := ArgumentList.t.
+    Definition ArgumentList : Set := @ArgumentList.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
@@ -4856,7 +4856,7 @@ Module call.
     
     Module Argument.
       Section Argument.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           arg : T;
@@ -4868,7 +4868,7 @@ Module call.
         }.
       End Argument.
     End Argument.
-    Definition Argument : Set := Argument.t.
+    Definition Argument : Set := @Argument.t.
     
     Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
     Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -4926,7 +4926,7 @@ Module call.
     Module ArgumentListEnd.
       Inductive t : Set := Build.
     End ArgumentListEnd.
-    Definition ArgumentListEnd := ArgumentListEnd.t.
+    Definition ArgumentListEnd := @ArgumentListEnd.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
@@ -5183,7 +5183,7 @@ Module call.
         Notation.dot '(Build_t x0) := x0;
       }.
     End Selector.
-    Definition Selector : Set := Selector.t.
+    Definition Selector : Set := @Selector.t.
     
     Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
@@ -5344,7 +5344,7 @@ End call.
 Module call_builder.
   Module CallParams.
     Section CallParams.
-      Context [E CallType Args R : Set].
+      Context {E CallType Args R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
@@ -5372,7 +5372,7 @@ Module call_builder.
       }.
     End CallParams.
   End CallParams.
-  Definition CallParams : Set := CallParams.t.
+  Definition CallParams : Set := @CallParams.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
@@ -5562,7 +5562,7 @@ Module call_builder.
   
   Module Call.
     Section Call.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         callee : ImplE.AccountId;
@@ -5583,7 +5583,7 @@ Module call_builder.
       }.
     End Call.
   End Call.
-  Definition Call : Set := Call.t.
+  Definition Call : Set := @Call.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
   Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
@@ -5644,7 +5644,7 @@ Module call_builder.
   
   Module DelegateCall.
     Section DelegateCall.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : ImplE.Hash;
@@ -5656,7 +5656,7 @@ Module call_builder.
       }.
     End DelegateCall.
   End DelegateCall.
-  Definition DelegateCall : Set := DelegateCall.t.
+  Definition DelegateCall : Set := @DelegateCall.t.
   
   Module Impl_ink_env_call_call_builder_DelegateCall_E_3.
     Definition Self := ink_env.call.call_builder.DelegateCall E.
@@ -5685,7 +5685,7 @@ Module call_builder.
   
   Module CallBuilder.
     Section CallBuilder.
-      Context [E CallType Args RetType : Set].
+      Context {E CallType Args RetType : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
@@ -5713,7 +5713,7 @@ Module call_builder.
       }.
     End CallBuilder.
   End CallBuilder.
-  Definition CallBuilder : Set := CallBuilder.t.
+  Definition CallBuilder : Set := @CallBuilder.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
@@ -6196,7 +6196,7 @@ End call_builder.
 
 Module CallParams.
   Section CallParams.
-    Context [E CallType Args R : Set].
+    Context {E CallType Args R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
@@ -6224,7 +6224,7 @@ Module CallParams.
     }.
   End CallParams.
 End CallParams.
-Definition CallParams : Set := CallParams.t.
+Definition CallParams : Set := @CallParams.t.
 
 Module
   Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
@@ -6411,7 +6411,7 @@ Parameter build_call : forall `{H : State.Trait},
 
 Module Call.
   Section Call.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       callee : ImplE.AccountId;
@@ -6432,7 +6432,7 @@ Module Call.
     }.
   End Call.
 End Call.
-Definition Call : Set := Call.t.
+Definition Call : Set := @Call.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
 Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
@@ -6491,7 +6491,7 @@ End Impl_ink_env_call_call_builder_Call_E_6.
 
 Module DelegateCall.
   Section DelegateCall.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
@@ -6503,7 +6503,7 @@ Module DelegateCall.
     }.
   End DelegateCall.
 End DelegateCall.
-Definition DelegateCall : Set := DelegateCall.t.
+Definition DelegateCall : Set := @DelegateCall.t.
 
 Module Impl_ink_env_call_call_builder_DelegateCall_E_5.
   Definition Self := ink_env.call.call_builder.DelegateCall E.
@@ -6532,7 +6532,7 @@ End Impl_ink_env_call_call_builder_DelegateCall_E_6.
 
 Module CallBuilder.
   Section CallBuilder.
-    Context [E CallType Args RetType : Set].
+    Context {E CallType Args RetType : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
@@ -6560,7 +6560,7 @@ Module CallBuilder.
     }.
   End CallBuilder.
 End CallBuilder.
-Definition CallBuilder : Set := CallBuilder.t.
+Definition CallBuilder : Set := @CallBuilder.t.
 
 Module
   Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
@@ -7035,7 +7035,7 @@ End
 Module common.
   Module ReturnType.
     Section ReturnType.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _ : core.marker.PhantomData (T);
@@ -7047,7 +7047,7 @@ Module common.
       }.
     End ReturnType.
   End ReturnType.
-  Definition ReturnType := ReturnType.t.
+  Definition ReturnType := @ReturnType.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
   Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
@@ -7120,7 +7120,7 @@ Module common.
   
   Module Set.
     Section Set.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -7132,7 +7132,7 @@ Module common.
       }.
     End Set.
   End Set.
-  Definition Set := Set.t.
+  Definition Set := @Set.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
   Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
@@ -7198,7 +7198,7 @@ Module common.
   
   Module Unset.
     Section Unset.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _ : core.marker.PhantomData (T);
@@ -7210,7 +7210,7 @@ Module common.
       }.
     End Unset.
   End Unset.
-  Definition Unset := Unset.t.
+  Definition Unset := @Unset.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
   Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
@@ -7357,7 +7357,7 @@ End common.
 
 Module ReturnType.
   Section ReturnType.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData (T);
@@ -7369,7 +7369,7 @@ Module ReturnType.
     }.
   End ReturnType.
 End ReturnType.
-Definition ReturnType := ReturnType.t.
+Definition ReturnType := @ReturnType.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
 Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
@@ -7442,7 +7442,7 @@ End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
 
 Module Set.
   Section Set.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -7454,7 +7454,7 @@ Module Set.
     }.
   End Set.
 End Set.
-Definition Set := Set.t.
+Definition Set := @Set.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
 Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
@@ -7520,7 +7520,7 @@ End Impl_ink_env_call_common_Set_T_3.
 
 Module Unset.
   Section Unset.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : core.marker.PhantomData (T);
@@ -7532,7 +7532,7 @@ Module Unset.
     }.
   End Unset.
 End Unset.
-Definition Unset := Unset.t.
+Definition Unset := @Unset.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
 Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
@@ -7816,7 +7816,7 @@ Module create_builder.
   
   Module CreateParams.
     Section CreateParams.
-      Context [E ContractRef Args Salt R : Set].
+      Context {E ContractRef Args Salt R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : ImplE.Hash;
@@ -7852,7 +7852,7 @@ Module create_builder.
       }.
     End CreateParams.
   End CreateParams.
-  Definition CreateParams : Set := CreateParams.t.
+  Definition CreateParams : Set := @CreateParams.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
@@ -7984,7 +7984,7 @@ Module create_builder.
   Module CreateBuilder.
     Section CreateBuilder.
       Context
-        [E
+        {E
         ContractRef
         CodeHash
         GasLimit
@@ -7992,7 +7992,7 @@ Module create_builder.
         Args
         Salt
         RetType
-        : Set].
+        : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : CodeHash;
@@ -8028,7 +8028,7 @@ Module create_builder.
       }.
     End CreateBuilder.
   End CreateBuilder.
-  Definition CreateBuilder : Set := CreateBuilder.t.
+  Definition CreateBuilder : Set := @CreateBuilder.t.
   
   Parameter build_create : forall `{H : State.Trait},
       forall
@@ -8479,7 +8479,7 @@ End
 
 Module CreateParams.
   Section CreateParams.
-    Context [E ContractRef Args Salt R : Set].
+    Context {E ContractRef Args Salt R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
@@ -8515,7 +8515,7 @@ Module CreateParams.
     }.
   End CreateParams.
 End CreateParams.
-Definition CreateParams : Set := CreateParams.t.
+Definition CreateParams : Set := @CreateParams.t.
 
 Module
   Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
@@ -8646,7 +8646,7 @@ End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_9.
 
 Module CreateBuilder.
   Section CreateBuilder.
-    Context [E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set].
+    Context {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : CodeHash;
@@ -8682,7 +8682,7 @@ Module CreateBuilder.
     }.
   End CreateBuilder.
 End CreateBuilder.
-Definition CreateBuilder : Set := CreateBuilder.t.
+Definition CreateBuilder : Set := @CreateBuilder.t.
 
 Parameter build_create : forall `{H : State.Trait},
     forall
@@ -8994,7 +8994,7 @@ End
 Module execution_input.
   Module ExecutionInput.
     Section ExecutionInput.
-      Context [Args : Set].
+      Context {Args : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         selector : ink_env.call.selector.Selector;
@@ -9010,7 +9010,7 @@ Module execution_input.
       }.
     End ExecutionInput.
   End ExecutionInput.
-  Definition ExecutionInput : Set := ExecutionInput.t.
+  Definition ExecutionInput : Set := @ExecutionInput.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -9158,7 +9158,7 @@ Module execution_input.
   
   Module ArgumentList.
     Section ArgumentList.
-      Context [Head Rest : Set].
+      Context {Head Rest : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         head : Head;
@@ -9174,7 +9174,7 @@ Module execution_input.
       }.
     End ArgumentList.
   End ArgumentList.
-  Definition ArgumentList : Set := ArgumentList.t.
+  Definition ArgumentList : Set := @ArgumentList.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
@@ -9256,7 +9256,7 @@ Module execution_input.
   
   Module Argument.
     Section Argument.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         arg : T;
@@ -9268,7 +9268,7 @@ Module execution_input.
       }.
     End Argument.
   End Argument.
-  Definition Argument : Set := Argument.t.
+  Definition Argument : Set := @Argument.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
   Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -9325,7 +9325,7 @@ Module execution_input.
   Module ArgumentListEnd.
     Inductive t : Set := Build.
   End ArgumentListEnd.
-  Definition ArgumentListEnd := ArgumentListEnd.t.
+  Definition ArgumentListEnd := @ArgumentListEnd.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
@@ -9570,7 +9570,7 @@ End execution_input.
 
 Module ExecutionInput.
   Section ExecutionInput.
-    Context [Args : Set].
+    Context {Args : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       selector : ink_env.call.selector.Selector;
@@ -9586,7 +9586,7 @@ Module ExecutionInput.
     }.
   End ExecutionInput.
 End ExecutionInput.
-Definition ExecutionInput : Set := ExecutionInput.t.
+Definition ExecutionInput : Set := @ExecutionInput.t.
 
 Module
   Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -9731,7 +9731,7 @@ End Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
 
 Module ArgumentList.
   Section ArgumentList.
-    Context [Head Rest : Set].
+    Context {Head Rest : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       head : Head;
@@ -9747,7 +9747,7 @@ Module ArgumentList.
     }.
   End ArgumentList.
 End ArgumentList.
-Definition ArgumentList : Set := ArgumentList.t.
+Definition ArgumentList : Set := @ArgumentList.t.
 
 Module
   Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
@@ -9827,7 +9827,7 @@ Definition ArgsList : Set :=
 
 Module Argument.
   Section Argument.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       arg : T;
@@ -9839,7 +9839,7 @@ Module Argument.
     }.
   End Argument.
 End Argument.
-Definition Argument : Set := Argument.t.
+Definition Argument : Set := @Argument.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
 Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -9896,7 +9896,7 @@ End Impl_ink_env_call_execution_input_Argument_T_3.
 Module ArgumentListEnd.
   Inductive t : Set := Build.
 End ArgumentListEnd.
-Definition ArgumentListEnd := ArgumentListEnd.t.
+Definition ArgumentListEnd := @ArgumentListEnd.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
@@ -10141,7 +10141,7 @@ Module selector.
       Notation.dot '(Build_t x0) := x0;
     }.
   End Selector.
-  Definition Selector : Set := Selector.t.
+  Definition Selector : Set := @Selector.t.
   
   Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
@@ -10302,7 +10302,7 @@ Module Selector.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Selector.
-Definition Selector : Set := Selector.t.
+Definition Selector : Set := @Selector.t.
 
 Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
@@ -10532,7 +10532,7 @@ Module chain_extension.
   
   Module ChainExtensionMethod.
     Section ChainExtensionMethod.
-      Context [I O ErrorCode : Set].
+      Context {I O ErrorCode : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         func_id : u32;
@@ -10548,7 +10548,7 @@ Module chain_extension.
       }.
     End ChainExtensionMethod.
   End ChainExtensionMethod.
-  Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
+  Definition ChainExtensionMethod : Set := @ChainExtensionMethod.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
@@ -10680,7 +10680,7 @@ Module chain_extension.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           error_code : core.marker.PhantomData (T);
@@ -10692,7 +10692,7 @@ Module chain_extension.
         }.
       End HandleErrorCode.
     End HandleErrorCode.
-    Definition HandleErrorCode : Set := HandleErrorCode.t.
+    Definition HandleErrorCode : Set := @HandleErrorCode.t.
     
     Module
       Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
@@ -10878,7 +10878,7 @@ End FromStatusCode.
 
 Module ChainExtensionMethod.
   Section ChainExtensionMethod.
-    Context [I O ErrorCode : Set].
+    Context {I O ErrorCode : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       func_id : u32;
@@ -10894,7 +10894,7 @@ Module ChainExtensionMethod.
     }.
   End ChainExtensionMethod.
 End ChainExtensionMethod.
-Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
+Definition ChainExtensionMethod : Set := @ChainExtensionMethod.t.
 
 Module
   Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
@@ -11021,7 +11021,7 @@ Module state.
   
   Module HandleErrorCode.
     Section HandleErrorCode.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         error_code : core.marker.PhantomData (T);
@@ -11033,7 +11033,7 @@ Module state.
       }.
     End HandleErrorCode.
   End HandleErrorCode.
-  Definition HandleErrorCode : Set := HandleErrorCode.t.
+  Definition HandleErrorCode : Set := @HandleErrorCode.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
@@ -11084,7 +11084,7 @@ End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 
 Module HandleErrorCode.
   Section HandleErrorCode.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       error_code : core.marker.PhantomData (T);
@@ -11096,7 +11096,7 @@ Module HandleErrorCode.
     }.
   End HandleErrorCode.
 End HandleErrorCode.
-Definition HandleErrorCode : Set := HandleErrorCode.t.
+Definition HandleErrorCode : Set := @HandleErrorCode.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
 Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
@@ -11348,7 +11348,7 @@ Module engine.
           Notation.dot '(Build_t x0) := x0;
         }.
       End CallData.
-      Definition CallData : Set := CallData.t.
+      Definition CallData : Set := @CallData.t.
       
       Module
         Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
@@ -11649,7 +11649,7 @@ Module engine.
           Notation.dot '(Build_t x0) := x0;
         }.
       End TopicsBuilder.
-      Definition TopicsBuilder : Set := TopicsBuilder.t.
+      Definition TopicsBuilder : Set := @TopicsBuilder.t.
       
       Module
         Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -12268,7 +12268,7 @@ Module engine.
           Notation.dot '(Build_t _ x1) := x1;
         }.
       End EmittedEvent.
-      Definition EmittedEvent : Set := EmittedEvent.t.
+      Definition EmittedEvent : Set := @EmittedEvent.t.
       
       Module
         Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -12424,7 +12424,7 @@ Module engine.
       
       Module DefaultAccounts.
         Section DefaultAccounts.
-          Context [T : Set].
+          Context {T : Set}.
           Unset Primitive Projections.
           Record t : Set := {
             alice : ImplT.AccountId;
@@ -12456,7 +12456,7 @@ Module engine.
           }.
         End DefaultAccounts.
       End DefaultAccounts.
-      Definition DefaultAccounts : Set := DefaultAccounts.t.
+      Definition DefaultAccounts : Set := @DefaultAccounts.t.
       
       Parameter recorded_events : forall `{H : State.Trait},
           M (H := H) OpaqueDef.
@@ -12568,7 +12568,7 @@ Module engine.
         Notation.dot '(Build_t x0) := x0;
       }.
     End EnvInstance.
-    Definition EnvInstance : Set := EnvInstance.t.
+    Definition EnvInstance : Set := @EnvInstance.t.
     
     Module
       Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
@@ -12834,7 +12834,7 @@ Module off_chain.
         Notation.dot '(Build_t x0) := x0;
       }.
     End CallData.
-    Definition CallData : Set := CallData.t.
+    Definition CallData : Set := @CallData.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
@@ -13133,7 +13133,7 @@ Module off_chain.
         Notation.dot '(Build_t x0) := x0;
       }.
     End TopicsBuilder.
-    Definition TopicsBuilder : Set := TopicsBuilder.t.
+    Definition TopicsBuilder : Set := @TopicsBuilder.t.
     
     Module
       Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -13737,7 +13737,7 @@ Module off_chain.
         Notation.dot '(Build_t _ x1) := x1;
       }.
     End EmittedEvent.
-    Definition EmittedEvent : Set := EmittedEvent.t.
+    Definition EmittedEvent : Set := @EmittedEvent.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -13893,7 +13893,7 @@ Module off_chain.
     
     Module DefaultAccounts.
       Section DefaultAccounts.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           alice : ImplT.AccountId;
@@ -13925,7 +13925,7 @@ Module off_chain.
         }.
       End DefaultAccounts.
     End DefaultAccounts.
-    Definition DefaultAccounts : Set := DefaultAccounts.t.
+    Definition DefaultAccounts : Set := @DefaultAccounts.t.
     
     Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
     
@@ -14032,7 +14032,7 @@ Module off_chain.
       Notation.dot '(Build_t x0) := x0;
     }.
   End EnvInstance.
-  Definition EnvInstance : Set := EnvInstance.t.
+  Definition EnvInstance : Set := @EnvInstance.t.
   
   Module
     Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
@@ -14252,7 +14252,7 @@ Module call_data.
       Notation.dot '(Build_t x0) := x0;
     }.
   End CallData.
-  Definition CallData : Set := CallData.t.
+  Definition CallData : Set := @CallData.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
@@ -14456,7 +14456,7 @@ Module CallData.
     Notation.dot '(Build_t x0) := x0;
   }.
 End CallData.
-Definition CallData : Set := CallData.t.
+Definition CallData : Set := @CallData.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
@@ -14748,7 +14748,7 @@ Module impls.
       Notation.dot '(Build_t x0) := x0;
     }.
   End TopicsBuilder.
-  Definition TopicsBuilder : Set := TopicsBuilder.t.
+  Definition TopicsBuilder : Set := @TopicsBuilder.t.
   
   Module
     Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -15641,7 +15641,7 @@ Module TopicsBuilder.
     Notation.dot '(Build_t x0) := x0;
   }.
 End TopicsBuilder.
-Definition TopicsBuilder : Set := TopicsBuilder.t.
+Definition TopicsBuilder : Set := @TopicsBuilder.t.
 
 Module
   Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -16213,7 +16213,7 @@ Module test_api.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
-  Definition EmittedEvent : Set := EmittedEvent.t.
+  Definition EmittedEvent : Set := @EmittedEvent.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -16367,7 +16367,7 @@ Module test_api.
   
   Module DefaultAccounts.
     Section DefaultAccounts.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         alice : ImplT.AccountId;
@@ -16399,7 +16399,7 @@ Module test_api.
       }.
     End DefaultAccounts.
   End DefaultAccounts.
-  Definition DefaultAccounts : Set := DefaultAccounts.t.
+  Definition DefaultAccounts : Set := @DefaultAccounts.t.
   
   Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
   
@@ -16432,7 +16432,7 @@ Module EmittedEvent.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
-Definition EmittedEvent : Set := EmittedEvent.t.
+Definition EmittedEvent : Set := @EmittedEvent.t.
 
 Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
@@ -16585,7 +16585,7 @@ Parameter default_accounts : forall `{H : State.Trait},
 
 Module DefaultAccounts.
   Section DefaultAccounts.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       alice : ImplT.AccountId;
@@ -16617,7 +16617,7 @@ Module DefaultAccounts.
     }.
   End DefaultAccounts.
 End DefaultAccounts.
-Definition DefaultAccounts : Set := DefaultAccounts.t.
+Definition DefaultAccounts : Set := @DefaultAccounts.t.
 
 Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
 
@@ -16796,7 +16796,7 @@ Module EnvInstance.
     Notation.dot '(Build_t x0) := x0;
   }.
 End EnvInstance.
-Definition EnvInstance : Set := EnvInstance.t.
+Definition EnvInstance : Set := @EnvInstance.t.
 
 Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
@@ -18301,7 +18301,7 @@ Module topics.
   
   Module TopicsBuilder.
     Section TopicsBuilder.
-      Context [S E B : Set].
+      Context {S E B : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         backend : B;
@@ -18317,7 +18317,7 @@ Module topics.
       }.
     End TopicsBuilder.
   End TopicsBuilder.
-  Definition TopicsBuilder : Set := TopicsBuilder.t.
+  Definition TopicsBuilder : Set := @TopicsBuilder.t.
   
   Module
     Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
@@ -19382,7 +19382,7 @@ Module topics.
   
   Module PrefixedValue.
     Section PrefixedValue.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         prefix : ref (Slice u8);
@@ -19398,7 +19398,7 @@ Module topics.
       }.
     End PrefixedValue.
   End PrefixedValue.
-  Definition PrefixedValue : Set := PrefixedValue.t.
+  Definition PrefixedValue : Set := @PrefixedValue.t.
   
   Module
     Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
@@ -19464,7 +19464,7 @@ End TopicsBuilderBackend.
 
 Module TopicsBuilder.
   Section TopicsBuilder.
-    Context [S E B : Set].
+    Context {S E B : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       backend : B;
@@ -19480,7 +19480,7 @@ Module TopicsBuilder.
     }.
   End TopicsBuilder.
 End TopicsBuilder.
-Definition TopicsBuilder : Set := TopicsBuilder.t.
+Definition TopicsBuilder : Set := @TopicsBuilder.t.
 
 Module
   Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
@@ -20562,7 +20562,7 @@ End Topics.
 
 Module PrefixedValue.
   Section PrefixedValue.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       prefix : ref (Slice u8);
@@ -20578,7 +20578,7 @@ Module PrefixedValue.
     }.
   End PrefixedValue.
 End PrefixedValue.
-Definition PrefixedValue : Set := PrefixedValue.t.
+Definition PrefixedValue : Set := @PrefixedValue.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
 Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.

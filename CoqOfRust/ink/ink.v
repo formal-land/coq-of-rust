@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module result_info.
   Module IsResultType.
     Section IsResultType.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (T);
@@ -16,7 +16,7 @@ Module result_info.
       }.
     End IsResultType.
   End IsResultType.
-  Definition IsResultType : Set := IsResultType.t.
+  Definition IsResultType : Set := @IsResultType.t.
   
   Module Impl_ink_result_info_IsResultType_core_result_Result_T_E.
     Definition Self := ink.result_info.IsResultType (core.result.Result T E).
@@ -57,7 +57,7 @@ Module result_info.
   
   Module IsResultErr.
     Section IsResultErr.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _ : ref T;
@@ -69,7 +69,7 @@ Module result_info.
       }.
     End IsResultErr.
   End IsResultErr.
-  Definition IsResultErr := IsResultErr.t.
+  Definition IsResultErr := @IsResultErr.t.
   
   Module Impl_ink_result_info_IsResultErr_core_result_Result_T_E.
     Definition Self := ink.result_info.IsResultErr (core.result.Result T E).
@@ -109,7 +109,7 @@ End result_info.
 
 Module IsResultType.
   Section IsResultType.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (T);
@@ -121,7 +121,7 @@ Module IsResultType.
     }.
   End IsResultType.
 End IsResultType.
-Definition IsResultType : Set := IsResultType.t.
+Definition IsResultType : Set := @IsResultType.t.
 
 Module Impl_ink_result_info_IsResultType_core_result_Result_T_E_2.
   Definition Self := ink.result_info.IsResultType (core.result.Result T E).
@@ -162,7 +162,7 @@ End
 
 Module IsResultErr.
   Section IsResultErr.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : ref T;
@@ -174,7 +174,7 @@ Module IsResultErr.
     }.
   End IsResultErr.
 End IsResultErr.
-Definition IsResultErr := IsResultErr.t.
+Definition IsResultErr := @IsResultErr.t.
 
 Module Impl_ink_result_info_IsResultErr_core_result_Result_T_E_2.
   Definition Self := ink.result_info.IsResultErr (core.result.Result T E).
@@ -236,7 +236,7 @@ Module codegen.
     Module type_check.
       Module DispatchInput.
         Section DispatchInput.
-          Context [T : Set].
+          Context {T : Set}.
           Unset Primitive Projections.
           Record t : Set := {
             _ : T;
@@ -248,11 +248,11 @@ Module codegen.
           }.
         End DispatchInput.
       End DispatchInput.
-      Definition DispatchInput := DispatchInput.t.
+      Definition DispatchInput := @DispatchInput.t.
       
       Module DispatchOutput.
         Section DispatchOutput.
-          Context [T : Set].
+          Context {T : Set}.
           Unset Primitive Projections.
           Record t : Set := {
             _ : T;
@@ -264,7 +264,7 @@ Module codegen.
           }.
         End DispatchOutput.
       End DispatchOutput.
-      Definition DispatchOutput := DispatchOutput.t.
+      Definition DispatchOutput := @DispatchOutput.t.
     End type_check.
   End dispatch.
   
@@ -319,7 +319,7 @@ Module codegen.
     Module topics.
       Module EventRespectsTopicLimit.
         Section EventRespectsTopicLimit.
-          Context [Event : Set].
+          Context {Event : Set}.
           Unset Primitive Projections.
           Record t : Set := {
             marker : core.marker.PhantomData (Event);
@@ -331,7 +331,7 @@ Module codegen.
           }.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
-      Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
+      Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
       
       Module RespectTopicLimit.
         Unset Primitive Projections.
@@ -343,7 +343,7 @@ Module codegen.
       Module EventTopics.
         Inductive t : Set := Build.
       End EventTopics.
-      Definition EventTopics := EventTopics.t.
+      Definition EventTopics := @EventTopics.t.
       
       Module
         Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -1441,12 +1441,12 @@ Module codegen.
       Module TraitMessagePayable.
         Inductive t : Set := Build.
       End TraitMessagePayable.
-      Definition TraitMessagePayable := TraitMessagePayable.t.
+      Definition TraitMessagePayable := @TraitMessagePayable.t.
       
       Module TraitMessageSelector.
         Inductive t : Set := Build.
       End TraitMessageSelector.
-      Definition TraitMessageSelector := TraitMessageSelector.t.
+      Definition TraitMessageSelector := @TraitMessageSelector.t.
     End trait_message.
   End trait_def.
   
@@ -1461,7 +1461,7 @@ Module codegen.
     Module same_type.
       Module IsSameType.
         Section IsSameType.
-          Context [T : Set].
+          Context {T : Set}.
           Unset Primitive Projections.
           Record t : Set := {
             _marker : core.marker.PhantomData T;
@@ -1473,7 +1473,7 @@ Module codegen.
           }.
         End IsSameType.
       End IsSameType.
-      Definition IsSameType : Set := IsSameType.t.
+      Definition IsSameType : Set := @IsSameType.t.
       
       Module Impl_ink_codegen_utils_same_type_IsSameType_T.
         Definition Self := ink.codegen.utils.same_type.IsSameType T.
@@ -1514,7 +1514,7 @@ Module dispatch.
   Module type_check.
     Module DispatchInput.
       Section DispatchInput.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -1526,11 +1526,11 @@ Module dispatch.
         }.
       End DispatchInput.
     End DispatchInput.
-    Definition DispatchInput := DispatchInput.t.
+    Definition DispatchInput := @DispatchInput.t.
     
     Module DispatchOutput.
       Section DispatchOutput.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -1542,7 +1542,7 @@ Module dispatch.
         }.
       End DispatchOutput.
     End DispatchOutput.
-    Definition DispatchOutput := DispatchOutput.t.
+    Definition DispatchOutput := @DispatchOutput.t.
   End type_check.
 End dispatch.
 
@@ -1587,7 +1587,7 @@ End ContractCallBuilder.
 Module type_check.
   Module DispatchInput.
     Section DispatchInput.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -1599,11 +1599,11 @@ Module type_check.
       }.
     End DispatchInput.
   End DispatchInput.
-  Definition DispatchInput := DispatchInput.t.
+  Definition DispatchInput := @DispatchInput.t.
   
   Module DispatchOutput.
     Section DispatchOutput.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -1615,12 +1615,12 @@ Module type_check.
       }.
     End DispatchOutput.
   End DispatchOutput.
-  Definition DispatchOutput := DispatchOutput.t.
+  Definition DispatchOutput := @DispatchOutput.t.
 End type_check.
 
 Module DispatchInput.
   Section DispatchInput.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -1632,11 +1632,11 @@ Module DispatchInput.
     }.
   End DispatchInput.
 End DispatchInput.
-Definition DispatchInput := DispatchInput.t.
+Definition DispatchInput := @DispatchInput.t.
 
 Module DispatchOutput.
   Section DispatchOutput.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -1648,7 +1648,7 @@ Module DispatchOutput.
     }.
   End DispatchOutput.
 End DispatchOutput.
-Definition DispatchOutput := DispatchOutput.t.
+Definition DispatchOutput := @DispatchOutput.t.
 
 Module env.
   Module Env.
@@ -1733,7 +1733,7 @@ Module event.
   Module topics.
     Module EventRespectsTopicLimit.
       Section EventRespectsTopicLimit.
-        Context [Event : Set].
+        Context {Event : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (Event);
@@ -1745,7 +1745,7 @@ Module event.
         }.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
-    Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
+    Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
     
     Module RespectTopicLimit.
       Unset Primitive Projections.
@@ -1757,7 +1757,7 @@ Module event.
     Module EventTopics.
       Inductive t : Set := Build.
     End EventTopics.
-    Definition EventTopics := EventTopics.t.
+    Definition EventTopics := @EventTopics.t.
     
     Module
       Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -2709,7 +2709,7 @@ End EmitEvent.
 Module topics.
   Module EventRespectsTopicLimit.
     Section EventRespectsTopicLimit.
-      Context [Event : Set].
+      Context {Event : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (Event);
@@ -2721,7 +2721,7 @@ Module topics.
       }.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
-  Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
+  Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
   
   Module RespectTopicLimit.
     Unset Primitive Projections.
@@ -2733,7 +2733,7 @@ Module topics.
   Module EventTopics.
     Inductive t : Set := Build.
   End EventTopics.
-  Definition EventTopics := EventTopics.t.
+  Definition EventTopics := @EventTopics.t.
   
   Module
     Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -3568,7 +3568,7 @@ End topics.
 
 Module EventRespectsTopicLimit.
   Section EventRespectsTopicLimit.
-    Context [Event : Set].
+    Context {Event : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (Event);
@@ -3580,7 +3580,7 @@ Module EventRespectsTopicLimit.
     }.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
-Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
+Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
@@ -3592,7 +3592,7 @@ End RespectTopicLimit.
 Module EventTopics.
   Inductive t : Set := Build.
 End EventTopics.
-Definition EventTopics := EventTopics.t.
+Definition EventTopics := @EventTopics.t.
 
 Module
   Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
@@ -4663,12 +4663,12 @@ Module trait_def.
     Module TraitMessagePayable.
       Inductive t : Set := Build.
     End TraitMessagePayable.
-    Definition TraitMessagePayable := TraitMessagePayable.t.
+    Definition TraitMessagePayable := @TraitMessagePayable.t.
     
     Module TraitMessageSelector.
       Inductive t : Set := Build.
     End TraitMessageSelector.
-    Definition TraitMessageSelector := TraitMessageSelector.t.
+    Definition TraitMessageSelector := @TraitMessageSelector.t.
   End trait_message.
 End trait_def.
 
@@ -4862,23 +4862,23 @@ Module trait_message.
   Module TraitMessagePayable.
     Inductive t : Set := Build.
   End TraitMessagePayable.
-  Definition TraitMessagePayable := TraitMessagePayable.t.
+  Definition TraitMessagePayable := @TraitMessagePayable.t.
   
   Module TraitMessageSelector.
     Inductive t : Set := Build.
   End TraitMessageSelector.
-  Definition TraitMessageSelector := TraitMessageSelector.t.
+  Definition TraitMessageSelector := @TraitMessageSelector.t.
 End trait_message.
 
 Module TraitMessagePayable.
   Inductive t : Set := Build.
 End TraitMessagePayable.
-Definition TraitMessagePayable := TraitMessagePayable.t.
+Definition TraitMessagePayable := @TraitMessagePayable.t.
 
 Module TraitMessageSelector.
   Inductive t : Set := Build.
 End TraitMessageSelector.
-Definition TraitMessageSelector := TraitMessageSelector.t.
+Definition TraitMessageSelector := @TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
@@ -4891,7 +4891,7 @@ Module utils.
   Module same_type.
     Module IsSameType.
       Section IsSameType.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _marker : core.marker.PhantomData T;
@@ -4903,7 +4903,7 @@ Module utils.
         }.
       End IsSameType.
     End IsSameType.
-    Definition IsSameType : Set := IsSameType.t.
+    Definition IsSameType : Set := @IsSameType.t.
     
     Module Impl_ink_codegen_utils_same_type_IsSameType_T_2.
       Definition Self := ink.codegen.utils.same_type.IsSameType T.
@@ -4933,7 +4933,7 @@ Parameter consume_type : forall `{H : State.Trait},
 Module same_type.
   Module IsSameType.
     Section IsSameType.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData T;
@@ -4945,7 +4945,7 @@ Module same_type.
       }.
     End IsSameType.
   End IsSameType.
-  Definition IsSameType : Set := IsSameType.t.
+  Definition IsSameType : Set := @IsSameType.t.
   
   Module Impl_ink_codegen_utils_same_type_IsSameType_T_3.
     Definition Self := ink.codegen.utils.same_type.IsSameType T.
@@ -4961,7 +4961,7 @@ End same_type.
 
 Module IsSameType.
   Section IsSameType.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _marker : core.marker.PhantomData T;
@@ -4973,7 +4973,7 @@ Module IsSameType.
     }.
   End IsSameType.
 End IsSameType.
-Definition IsSameType : Set := IsSameType.t.
+Definition IsSameType : Set := @IsSameType.t.
 
 Module Impl_ink_codegen_utils_same_type_IsSameType_T_4.
   Definition Self := ink.codegen.utils.same_type.IsSameType T.
@@ -5153,7 +5153,7 @@ Module reflect.
     
     Module ConstructorOutputValue.
       Section ConstructorOutputValue.
-        Context [T : Set].
+        Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           _ : T;
@@ -5165,7 +5165,7 @@ Module reflect.
         }.
       End ConstructorOutputValue.
     End ConstructorOutputValue.
-    Definition ConstructorOutputValue := ConstructorOutputValue.t.
+    Definition ConstructorOutputValue := @ConstructorOutputValue.t.
     
     Module Impl_ink_reflect_dispatch_ConstructorOutputValue_T.
       Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
@@ -5536,7 +5536,7 @@ Module reflect.
     Module registry.
       Module TraitDefinitionRegistry.
         Section TraitDefinitionRegistry.
-          Context [E : Set].
+          Context {E : Set}.
           Unset Primitive Projections.
           Record t : Set := {
             marker : core.marker.PhantomData (E);
@@ -5548,7 +5548,7 @@ Module reflect.
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+      Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
       
       Module
         Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -5750,7 +5750,7 @@ Module dispatch.
   
   Module ConstructorOutputValue.
     Section ConstructorOutputValue.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         _ : T;
@@ -5762,7 +5762,7 @@ Module dispatch.
       }.
     End ConstructorOutputValue.
   End ConstructorOutputValue.
-  Definition ConstructorOutputValue := ConstructorOutputValue.t.
+  Definition ConstructorOutputValue := @ConstructorOutputValue.t.
   
   Module Impl_ink_reflect_dispatch_ConstructorOutputValue_T_2.
     Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
@@ -6235,7 +6235,7 @@ End ConstructorOutput.
 
 Module ConstructorOutputValue.
   Section ConstructorOutputValue.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -6247,7 +6247,7 @@ Module ConstructorOutputValue.
     }.
   End ConstructorOutputValue.
 End ConstructorOutputValue.
-Definition ConstructorOutputValue := ConstructorOutputValue.t.
+Definition ConstructorOutputValue := @ConstructorOutputValue.t.
 
 Module Impl_ink_reflect_dispatch_ConstructorOutputValue_T_3.
   Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
@@ -6623,7 +6623,7 @@ Module trait_def.
   Module registry.
     Module TraitDefinitionRegistry.
       Section TraitDefinitionRegistry.
-        Context [E : Set].
+        Context {E : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (E);
@@ -6635,7 +6635,7 @@ Module trait_def.
         }.
       End TraitDefinitionRegistry.
     End TraitDefinitionRegistry.
-    Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+    Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
     
     Module
       Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -6737,7 +6737,7 @@ End TraitInfo.
 Module registry.
   Module TraitDefinitionRegistry.
     Section TraitDefinitionRegistry.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (E);
@@ -6749,7 +6749,7 @@ Module registry.
       }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
-  Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+  Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
   
   Module
     Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -6771,7 +6771,7 @@ End registry.
 
 Module TraitDefinitionRegistry.
   Section TraitDefinitionRegistry.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (E);
@@ -6783,7 +6783,7 @@ Module TraitDefinitionRegistry.
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
-Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
 
 Module
   Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
@@ -6897,7 +6897,7 @@ Module chain_extension.
   Module ValueReturned.
     Inductive t : Set := Build.
   End ValueReturned.
-  Definition ValueReturned := ValueReturned.t.
+  Definition ValueReturned := @ValueReturned.t.
   
   Module
     Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
@@ -7073,7 +7073,7 @@ End Output.
 Module ValueReturned.
   Inductive t : Set := Build.
 End ValueReturned.
-Definition ValueReturned := ValueReturned.t.
+Definition ValueReturned := @ValueReturned.t.
 
 Module
   Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
@@ -7203,7 +7203,7 @@ End ToAccountId.
 Module env_access.
   Module EnvAccess.
     Section EnvAccess.
-      Context [E : Set].
+      Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData ((ref E));
@@ -7215,7 +7215,7 @@ Module env_access.
       }.
     End EnvAccess.
   End EnvAccess.
-  Definition EnvAccess : Set := EnvAccess.t.
+  Definition EnvAccess : Set := @EnvAccess.t.
   
   Module Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
   Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
@@ -7557,7 +7557,7 @@ End env_access.
 
 Module EnvAccess.
   Section EnvAccess.
-    Context [E : Set].
+    Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData ((ref E));
@@ -7569,7 +7569,7 @@ Module EnvAccess.
     }.
   End EnvAccess.
 End EnvAccess.
-Definition EnvAccess : Set := EnvAccess.t.
+Definition EnvAccess : Set := @EnvAccess.t.
 
 Module Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
 Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.

@@ -47,7 +47,7 @@ Module erc20.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Erc20.
-  Definition Erc20 : Set := Erc20.t.
+  Definition Erc20 : Set := @Erc20.t.
   
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
@@ -117,7 +117,7 @@ Module erc20.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Transfer.
-  Definition Transfer : Set := Transfer.t.
+  Definition Transfer : Set := @Transfer.t.
   
   Module Approval.
     Unset Primitive Projections.
@@ -138,7 +138,7 @@ Module erc20.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Approval.
-  Definition Approval : Set := Approval.t.
+  Definition Approval : Set := @Approval.t.
   
   Module
     Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
@@ -678,7 +678,7 @@ Module erc20.
       Notation.dot '(Build_t x0) := x0;
     }.
   End Erc20Ref.
-  Definition Erc20Ref : Set := Erc20Ref.t.
+  Definition Erc20Ref : Set := @Erc20Ref.t.
   
   Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
@@ -1347,7 +1347,7 @@ Module Check.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End Check.
-Definition Check : Set := Check.t.
+Definition Check : Set := @Check.t.
 
 Module Erc20.
   Unset Primitive Projections.
@@ -1368,7 +1368,7 @@ Module Erc20.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Erc20.
-Definition Erc20 : Set := Erc20.t.
+Definition Erc20 : Set := @Erc20.t.
 
 Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
@@ -1959,7 +1959,7 @@ Module Transfer.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Transfer.
-Definition Transfer : Set := Transfer.t.
+Definition Transfer : Set := @Transfer.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
@@ -2070,7 +2070,7 @@ Module Approval.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Approval.
-Definition Approval : Set := Approval.t.
+Definition Approval : Set := @Approval.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
@@ -3837,7 +3837,7 @@ Module CallBuilder.
     Notation.dot '(Build_t x0) := x0;
   }.
 End CallBuilder.
-Definition CallBuilder : Set := CallBuilder.t.
+Definition CallBuilder : Set := @CallBuilder.t.
 
 Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
@@ -4511,7 +4511,7 @@ Module Erc20Ref.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Erc20Ref.
-Definition Erc20Ref : Set := Erc20Ref.t.
+Definition Erc20Ref : Set := @Erc20Ref.t.
 
 Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
