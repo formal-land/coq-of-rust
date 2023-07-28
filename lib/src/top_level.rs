@@ -39,6 +39,7 @@ enum ImplItem {
         is_dead_code: bool,
     },
     Definition {
+        ty_params: Vec<String>,
         args: Vec<(String, Box<CoqType>)>,
         ret_ty: Box<CoqType>,
         body: Box<Expr>,
@@ -552,10 +553,31 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                     _ => "Pattern".to_string(),
                                 }
                             });
+                            let ty_params = item
+                                .generics
+                                .params
+                                .iter()
+                                .map(|param| {
+                                    match param.kind {
+                                        rustc_hir::GenericParamKind::Type { .. } => (),
+                                        _ => env
+                                            .tcx
+                                            .sess
+                                            .struct_span_warn(
+                                                param.span,
+                                                "Only type parameters are currently supported.",
+                                            )
+                                            .note("It may change in future versions.")
+                                            .emit(),
+                                    };
+                                    param.name.ident().to_string()
+                                })
+                                .collect();
                             let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
                             let ret_ty = compile_fn_ret_ty(env, output);
                             let expr = tcx.hir().body(*body_id).value;
                             ImplItem::Definition {
+                                ty_params,
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
                                 body: Box::new(compile_expr(env, expr)),
@@ -985,6 +1007,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             }
         }
         ImplItem::Definition {
+            ty_params,
             args,
             ret_ty,
             body,
@@ -994,6 +1017,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
         } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Definition {
+                ty_params,
                 args,
                 ret_ty: CoqType::monad(mt_ty(ret_ty)),
                 body: Box::new(Expr::Block(Box::new(body))),
@@ -1212,6 +1236,7 @@ impl ImplItem {
                 ),
             ]),
             ImplItem::Definition {
+                ty_params,
                 args,
                 ret_ty,
                 body,
@@ -1221,7 +1246,7 @@ impl ImplItem {
             } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
-                    ty_params: None,
+                    ty_params: Some(ty_params),
                     where_predicates: None,
                     args,
                     ret_ty,
