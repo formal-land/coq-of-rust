@@ -16,7 +16,7 @@ Module Person.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Person.
-Definition Person : Set := Person.t.
+Definition Person : Set := @Person.t.
 
 Module Impl_core_fmt_Debug_for_structures_Person.
   Definition Self := structures.Person.
@@ -47,7 +47,7 @@ End Impl_core_fmt_Debug_for_structures_Person.
 Module Unit.
   Inductive t : Set := Build.
 End Unit.
-Definition Unit := Unit.t.
+Definition Unit := @Unit.t.
 
 Module Pair.
   Unset Primitive Projections.
@@ -64,7 +64,7 @@ Module Pair.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Pair.
-Definition Pair := Pair.t.
+Definition Pair := @Pair.t.
 
 Module Point.
   Unset Primitive Projections.
@@ -81,7 +81,7 @@ Module Point.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point : Set := Point.t.
+Definition Point : Set := @Point.t.
 
 Module Rectangle.
   Unset Primitive Projections.
@@ -98,7 +98,7 @@ Module Rectangle.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := Rectangle.t.
+Definition Rectangle : Set := @Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{H : State.Trait}, M (H := H) unit.

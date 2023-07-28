@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module A.
   Inductive t : Set := Build.
 End A.
-Definition A := A.t.
+Definition A := @A.t.
 
 Module S.
   Unset Primitive Projections.
@@ -17,11 +17,11 @@ Module S.
     Notation.dot '(Build_t x0) := x0;
   }.
 End S.
-Definition S := S.t.
+Definition S := @S.t.
 
 Module SGen.
   Section SGen.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -33,7 +33,7 @@ Module SGen.
     }.
   End SGen.
 End SGen.
-Definition SGen := SGen.t.
+Definition SGen := @SGen.t.
 
 Definition reg_fn
     `{H : State.Trait}

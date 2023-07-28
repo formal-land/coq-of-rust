@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module ToDrop.
   Inductive t : Set := Build.
 End ToDrop.
-Definition ToDrop := ToDrop.t.
+Definition ToDrop := @ToDrop.t.
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Definition Self := scoping_rules_raii_desctructor.ToDrop.

@@ -16,7 +16,7 @@ Module Container.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Container.
-Definition Container := Container.t.
+Definition Container := @Container.t.
 
 Module Contains.
   Class Trait (Self : Set) {A : Set} {B : Set} : Set := {

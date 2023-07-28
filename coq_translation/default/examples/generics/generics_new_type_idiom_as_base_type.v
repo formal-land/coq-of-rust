@@ -12,7 +12,7 @@ Module Years.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Years.
-Definition Years := Years.t.
+Definition Years := @Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=

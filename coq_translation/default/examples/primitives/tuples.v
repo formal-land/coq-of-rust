@@ -31,7 +31,7 @@ Module Matrix.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End Matrix.
-Definition Matrix := Matrix.t.
+Definition Matrix := @Matrix.t.
 
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self := tuples.Matrix.

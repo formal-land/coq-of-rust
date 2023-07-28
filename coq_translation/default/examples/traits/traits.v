@@ -16,7 +16,7 @@ Module Sheep.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Sheep.
-Definition Sheep : Set := Sheep.t.
+Definition Sheep : Set := @Sheep.t.
 
 Module Animal.
   Class Trait (Self : Set) : Set := {

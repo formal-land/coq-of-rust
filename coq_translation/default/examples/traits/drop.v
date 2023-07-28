@@ -12,7 +12,7 @@ Module Droppable.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Droppable.
-Definition Droppable : Set := Droppable.t.
+Definition Droppable : Set := @Droppable.t.
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.

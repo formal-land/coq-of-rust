@@ -12,11 +12,11 @@ Module Val.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Val.
-Definition Val : Set := Val.t.
+Definition Val : Set := @Val.t.
 
 Module GenVal.
   Section GenVal.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       gen_val : T;
@@ -28,7 +28,7 @@ Module GenVal.
     }.
   End GenVal.
 End GenVal.
-Definition GenVal : Set := GenVal.t.
+Definition GenVal : Set := @GenVal.t.
 
 Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.

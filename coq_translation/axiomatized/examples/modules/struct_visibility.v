@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module my.
   Module OpenBox.
     Section OpenBox.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         contents : T;
@@ -16,11 +16,11 @@ Module my.
       }.
     End OpenBox.
   End OpenBox.
-  Definition OpenBox : Set := OpenBox.t.
+  Definition OpenBox : Set := @OpenBox.t.
   
   Module ClosedBox.
     Section ClosedBox.
-      Context [T : Set].
+      Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         contents : T;
@@ -32,7 +32,7 @@ Module my.
       }.
     End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox : Set := ClosedBox.t.
+  Definition ClosedBox : Set := @ClosedBox.t.
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self := struct_visibility.my.ClosedBox T.
@@ -50,7 +50,7 @@ End my.
 
 Module OpenBox.
   Section OpenBox.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       contents : T;
@@ -62,11 +62,11 @@ Module OpenBox.
     }.
   End OpenBox.
 End OpenBox.
-Definition OpenBox : Set := OpenBox.t.
+Definition OpenBox : Set := @OpenBox.t.
 
 Module ClosedBox.
   Section ClosedBox.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       contents : T;
@@ -78,7 +78,7 @@ Module ClosedBox.
     }.
   End ClosedBox.
 End ClosedBox.
-Definition ClosedBox : Set := ClosedBox.t.
+Definition ClosedBox : Set := @ClosedBox.t.
 
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.

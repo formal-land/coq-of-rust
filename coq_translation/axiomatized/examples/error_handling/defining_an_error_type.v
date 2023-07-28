@@ -7,7 +7,7 @@ Definition Result : Set :=
 Module DoubleError.
   Inductive t : Set := Build.
 End DoubleError.
-Definition DoubleError := DoubleError.t.
+Definition DoubleError := @DoubleError.t.
 
 Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Definition Self := defining_an_error_type.DoubleError.

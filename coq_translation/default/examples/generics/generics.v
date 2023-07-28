@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module A.
   Inductive t : Set := Build.
 End A.
-Definition A := A.t.
+Definition A := @A.t.
 
 Module Single.
   Unset Primitive Projections.
@@ -17,11 +17,11 @@ Module Single.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Single.
-Definition Single := Single.t.
+Definition Single := @Single.t.
 
 Module SingleGen.
   Section SingleGen.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : T;
@@ -33,7 +33,7 @@ Module SingleGen.
     }.
   End SingleGen.
 End SingleGen.
-Definition SingleGen := SingleGen.t.
+Definition SingleGen := @SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=

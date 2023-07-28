@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
   Section Ref.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : ref T;
@@ -15,7 +15,7 @@ Module Ref.
     }.
   End Ref.
 End Ref.
-Definition Ref := Ref.t.
+Definition Ref := @Ref.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.

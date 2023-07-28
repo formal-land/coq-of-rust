@@ -191,4 +191,4 @@ Module Structure.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Structure.
-Definition Structure := Structure.t.
+Definition Structure := @Structure.t.

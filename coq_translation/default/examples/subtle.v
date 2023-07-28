@@ -12,7 +12,7 @@ Module Choice.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Choice.
-Definition Choice := Choice.t.
+Definition Choice := @Choice.t.
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
   Definition Self := subtle.Choice.
@@ -1405,7 +1405,7 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
   Section CtOption.
-    Context [T : Set].
+    Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       value : T;
@@ -1421,7 +1421,7 @@ Module CtOption.
     }.
   End CtOption.
 End CtOption.
-Definition CtOption : Set := CtOption.t.
+Definition CtOption : Set := @CtOption.t.
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
 Section Impl_core_clone_Clone_for_subtle_CtOption_T.

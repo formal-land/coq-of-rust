@@ -6,7 +6,7 @@ Definition Result : Set := core.result.Result T (alloc.boxed.Box TraitObject).
 Module EmptyVec.
   Inductive t : Set := Build.
 End EmptyVec.
-Definition EmptyVec := EmptyVec.t.
+Definition EmptyVec := @EmptyVec.t.
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.

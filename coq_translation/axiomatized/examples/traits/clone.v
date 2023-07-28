@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Unit.
   Inductive t : Set := Build.
 End Unit.
-Definition Unit := Unit.t.
+Definition Unit := @Unit.t.
 
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self := clone.Unit.
@@ -61,7 +61,7 @@ Module Pair.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Pair.
-Definition Pair := Pair.t.
+Definition Pair := @Pair.t.
 
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.

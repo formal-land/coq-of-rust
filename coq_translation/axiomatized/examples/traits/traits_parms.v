@@ -55,7 +55,7 @@ Module SomeOtherType.
     Notation.dot '(Build_t x0) := x0;
   }.
 End SomeOtherType.
-Definition SomeOtherType := SomeOtherType.t.
+Definition SomeOtherType := @SomeOtherType.t.
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
   Definition Self := traits_parms.SomeOtherType.

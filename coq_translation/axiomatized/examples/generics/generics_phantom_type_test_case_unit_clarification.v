@@ -107,7 +107,7 @@ End
 
 Module Length.
   Section Length.
-    Context [Unit : Set].
+    Context {Unit : Set}.
     Unset Primitive Projections.
     Record t : Set := {
       _ : f64;
@@ -123,7 +123,7 @@ Module Length.
     }.
   End Length.
 End Length.
-Definition Length := Length.t.
+Definition Length := @Length.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.

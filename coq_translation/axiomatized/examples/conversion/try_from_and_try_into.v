@@ -12,7 +12,7 @@ Module EvenNumber.
     Notation.dot '(Build_t x0) := x0;
   }.
 End EvenNumber.
-Definition EvenNumber := EvenNumber.t.
+Definition EvenNumber := @EvenNumber.t.
 
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.

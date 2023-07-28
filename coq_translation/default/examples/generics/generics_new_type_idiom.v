@@ -12,7 +12,7 @@ Module Years.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Years.
-Definition Years := Years.t.
+Definition Years := @Years.t.
 
 Module Days.
   Unset Primitive Projections.
@@ -25,7 +25,7 @@ Module Days.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Days.
-Definition Days := Days.t.
+Definition Days := @Days.t.
 
 Module Impl_generics_new_type_idiom_Years.
   Definition Self := generics_new_type_idiom.Years.

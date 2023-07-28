@@ -12,7 +12,7 @@ Module Owner.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Owner.
-Definition Owner := Owner.t.
+Definition Owner := @Owner.t.
 
 Module Impl_scoping_rules_lifetimes_methods_Owner.
   Definition Self := scoping_rules_lifetimes_methods.Owner.
