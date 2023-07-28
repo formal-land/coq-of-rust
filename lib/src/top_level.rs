@@ -311,7 +311,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     .iter()
                     .flat_map(|predicate| match predicate {
                         rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                            eprintln!("{:?}", predicate);
                             let names_and_ty_params =
                                 predicate.bounds.iter().filter_map(|bound| match bound {
                                     rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
@@ -581,22 +580,26 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 .iter()
                                 .flat_map(|predicate| match predicate {
                                     rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                                        eprintln!("{:?}", predicate);
-                                        let names_and_ty_params = predicate
-                                            .bounds
-                                            .iter()
-                                            .filter_map(|bound| match bound {
-                                                rustc_hir::GenericBound::Trait(
-                                                    ref trait_ref,
-                                                    _,
-                                                ) => {
+                                        let names_and_ty_params =
+                                            predicate.bounds.iter().filter_map(|bound| match bound {
+                                                rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
                                                     let path = trait_ref.trait_ref.path;
                                                     Some((
                                                         compile_path(env, path),
                                                         compile_path_ty_params(env, path),
                                                     ))
                                                 }
-                                                _ => None,
+                                                _ => {
+                                                    env.tcx
+                                                        .sess
+                                                        .struct_span_warn(
+                                                            predicate.span,
+                                                            "Only trait bounds are currently supported.",
+                                                        )
+                                                        .note("It may change in future versions.")
+                                                        .emit();
+                                                    None
+                                                },
                                             });
                                         names_and_ty_params
                                             .map(|(name, ty_params)| WherePredicate {
