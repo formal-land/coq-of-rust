@@ -559,37 +559,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 .params
                                 .iter()
                                 .filter_map(|param| match param.kind {
-                                    rustc_hir::GenericParamKind::Lifetime { .. } => {
-                                        env.tcx
-                                            .sess
-                                            .struct_span_warn(
-                                                param.span,
-                                                format!(
-                                                    "Tried to translate a lifetime parameter \'{}\', but only type parameters are currently supported.",
-                                                    param.name.ident().to_string(),
-                                                ),
-                                            )
-                                            .note("It may change in future versions.")
-                                            .emit();
-                                        None
-                                    }
                                     rustc_hir::GenericParamKind::Type { .. } => {
                                         Some(param.name.ident().to_string())
                                     }
-                                    rustc_hir::GenericParamKind::Const { .. } => {
-                                        env.tcx
-                                            .sess
-                                            .struct_span_warn(
-                                                param.span,
-                                                format!(
-                                                    "Tried to translate a constant parameter \'{}\', but only type parameters are currently supported.",
-                                                    param.name.ident().to_string(),
-                                                ),
-                                            )
-                                            .note("It may change in future versions.")
-                                            .emit();
-                                        None
-                                    }
+                                    _ => None,
                                 })
                                 .collect();
                             let where_predicates = item
