@@ -2904,15 +2904,15 @@ Module
           (addr_of output_value) in
       let* _ :=
         let* α0 := output_result.["as_ref"] in
-        match α0 with
-        | core.result.Result.Ok contract =>
+        let* α1 := let_if core.result.Result.Ok contract := α0 in
+        if (α1 : bool) then
           let* _ :=
             ink_env.api.set_contract_storage
               (addr_of ink_storage_traits.storage.StorageKey.KEY)
               contract in
           Pure tt
-        | _ => Pure tt
-        end in
+        else
+          Pure tt in
       let* _ :=
         let* α0 := output_result.["is_err"] in
         let* α1 := ink_env.backend.ReturnFlags::["new_with_reverted"] α0 in

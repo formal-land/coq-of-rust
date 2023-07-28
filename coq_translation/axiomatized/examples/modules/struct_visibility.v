@@ -27,19 +27,6 @@ Module my.
     }.
   End ClosedBox.
   Definition ClosedBox : Set := ClosedBox.t.
-  
-  Module Impl_struct_visibility_my_ClosedBox_T.
-    Definition Self := struct_visibility.my.ClosedBox T.
-    
-    Parameter new : forall `{H : State.Trait},
-        T ->
-        M (H := H) (struct_visibility.my.ClosedBox T).
-    
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-  End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
 Module OpenBox.
@@ -68,7 +55,7 @@ Module ClosedBox.
 End ClosedBox.
 Definition ClosedBox : Set := ClosedBox.t.
 
-Module Impl_struct_visibility_my_ClosedBox_T_2.
+Module Impl_struct_visibility_my_ClosedBox_T.
   Definition Self := struct_visibility.my.ClosedBox T.
   
   Parameter new : forall `{H : State.Trait},
@@ -79,7 +66,7 @@ Module Impl_struct_visibility_my_ClosedBox_T_2.
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End Impl_struct_visibility_my_ClosedBox_T_2.
+End Impl_struct_visibility_my_ClosedBox_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{H : State.Trait}, M (H := H) unit.

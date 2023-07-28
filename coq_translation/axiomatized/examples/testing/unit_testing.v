@@ -7,9 +7,7 @@ Parameter add : forall `{H : State.Trait}, i32 -> i32 -> M (H := H) i32.
 Parameter bad_add : forall `{H : State.Trait}, i32 -> i32 -> M (H := H) i32.
 
 Module tests.
-  Parameter test_add : forall `{H : State.Trait}, M (H := H) unit.
   
-  Parameter test_bad_add : forall `{H : State.Trait}, M (H := H) unit.
 End tests.
 
 Parameter test_add : forall `{H : State.Trait}, M (H := H) unit.
