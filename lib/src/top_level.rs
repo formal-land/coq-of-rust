@@ -343,9 +343,19 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let is_axiomatized = env.axiomatize;
             let items = module
                 .item_ids
                 .iter()
+                .filter(|item_id| {
+                    if is_axiomatized {
+                        let item = tcx.hir().item(**item_id);
+                        let def_id = item.owner_id.to_def_id();
+                        tcx.visibility(def_id).is_public()
+                    } else {
+                        true
+                    }
+                })
                 .flat_map(|item_id| {
                     let item = tcx.hir().item(*item_id);
                     compile_top_level_item(tcx, env, item)
