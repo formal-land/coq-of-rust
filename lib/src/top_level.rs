@@ -575,7 +575,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                     }
                                 })
                                 .collect();
-                            let where_predicates = item.generics
+                            let where_predicates = item
+                                .generics
                                 .predicates
                                 .iter()
                                 .flat_map(|predicate| match predicate {
