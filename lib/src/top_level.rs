@@ -557,20 +557,21 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 .generics
                                 .params
                                 .iter()
-                                .map(|param| {
-                                    match param.kind {
-                                        rustc_hir::GenericParamKind::Type { .. } => (),
-                                        _ => env
-                                            .tcx
+                                .filter_map(|param| match param.kind {
+                                    rustc_hir::GenericParamKind::Type { .. } => {
+                                        Some(param.name.ident().to_string())
+                                    }
+                                    _ => {
+                                        env.tcx
                                             .sess
                                             .struct_span_warn(
                                                 param.span,
                                                 "Only type parameters are currently supported.",
                                             )
                                             .note("It may change in future versions.")
-                                            .emit(),
-                                    };
-                                    param.name.ident().to_string()
+                                            .emit();
+                                        None
+                                    }
                                 })
                                 .collect();
                             let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
