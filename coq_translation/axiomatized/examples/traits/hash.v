@@ -26,6 +26,9 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.
   
   Parameter hash : forall `{H : State.Trait},
+      forall
+      {__H : Set},
+      `{core.hash.Hasher.Trait __H}
       ref Self ->
       mut_ref __H ->
       M (H := H) unit.

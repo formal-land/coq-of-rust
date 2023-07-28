@@ -3153,6 +3153,8 @@ Module call.
           RetType.
       
       Parameter call_type : forall `{H : State.Trait},
+          forall
+          {NewCallType : Set},
           Self ->
           NewCallType ->
           M (H := H)
@@ -3199,6 +3201,8 @@ Module call.
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
       Parameter returns : forall `{H : State.Trait},
+          forall
+          {R : Set},
           Self ->
           M (H := H)
             (ink_env.call.call_builder.CallBuilder
@@ -3228,6 +3232,8 @@ Module call.
           RetType.
       
       Parameter exec_input : forall `{H : State.Trait},
+          forall
+          {Args : Set},
           Self ->
           ink_env.call.execution_input.ExecutionInput Args ->
           M (H := H)
@@ -3874,6 +3880,9 @@ Module call.
       Definition Output : Set := T.
       
       Parameter unwrap_or_else : forall `{H : State.Trait},
+          forall
+          {F : Set},
+          `{core.ops.function.FnOnce.Trait unit F}
           Self ->
           F ->
           M (H := H) ImplSelf.Output.
@@ -3901,6 +3910,9 @@ Module call.
       Definition Output : Set := T.
       
       Parameter unwrap_or_else : forall `{H : State.Trait},
+          forall
+          {F : Set},
+          `{core.ops.function.FnOnce.Trait unit F}
           Self ->
           F ->
           M (H := H) ImplSelf.Output.
@@ -4421,6 +4433,8 @@ Module call.
           RetType.
       
       Parameter exec_input : forall `{H : State.Trait},
+          forall
+          {Args : Set},
           Self ->
           ink_env.call.execution_input.ExecutionInput Args ->
           M (H := H)
@@ -4458,6 +4472,9 @@ Module call.
           RetType.
       
       Parameter salt_bytes : forall `{H : State.Trait},
+          forall
+          {Salt : Set},
+          `{core.convert.AsRef.Trait (Slice u8) Salt}
           Self ->
           Salt ->
           M (H := H)
@@ -4494,6 +4511,12 @@ Module call.
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
       
       Parameter returns : forall `{H : State.Trait},
+          forall
+          {R : Set},
+          `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+          `{ink_env.call.create_builder.ConstructorReturnType.Trait
+            ContractRef
+            R}
           Self ->
           M (H := H)
             (ink_env.call.create_builder.CreateBuilder
@@ -4700,6 +4723,9 @@ Module call.
       }.
       
       Parameter push_arg : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Encode.Trait T}
           Self ->
           T ->
           M (H := H)
@@ -4726,6 +4752,9 @@ Module call.
             Rest).
       
       Parameter push_arg : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Encode.Trait T}
           Self ->
           T ->
           M (H := H)
@@ -4998,6 +5027,9 @@ Module call.
       }.
       
       Parameter push_arg : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Encode.Trait T}
           Self ->
           T ->
           M (H := H)
@@ -5021,6 +5053,9 @@ Module call.
           Rest.
       
       Parameter push_arg : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Encode.Trait T}
           Self ->
           T ->
           M (H := H)
@@ -5053,6 +5088,10 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait},
+          forall
+          {O : Set},
+          `{parity_scale_codec.codec.Output.Trait O}
+          `{core.marker.Sized.Trait O}
           ref Self ->
           mut_ref O ->
           M (H := H) unit.
@@ -5083,6 +5122,10 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait},
+          forall
+          {O : Set},
+          `{parity_scale_codec.codec.Output.Trait O}
+          `{core.marker.Sized.Trait O}
           ref Self ->
           mut_ref O ->
           M (H := H) unit.
@@ -5120,6 +5163,10 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait},
+          forall
+          {O : Set},
+          `{parity_scale_codec.codec.Output.Trait O}
+          `{core.marker.Sized.Trait O}
           ref Self ->
           mut_ref O ->
           M (H := H) unit.
@@ -5154,6 +5201,10 @@ Module call.
       }.
       
       Parameter encode_to : forall `{H : State.Trait},
+          forall
+          {O : Set},
+          `{parity_scale_codec.codec.Output.Trait O}
+          `{core.marker.Sized.Trait O}
           ref Self ->
           mut_ref O ->
           M (H := H) unit.
@@ -5755,6 +5806,8 @@ Module call_builder.
         RetType.
     
     Parameter call_type : forall `{H : State.Trait},
+        forall
+        {NewCallType : Set},
         Self ->
         NewCallType ->
         M (H := H)
@@ -5801,6 +5854,8 @@ Module call_builder.
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
     Parameter returns : forall `{H : State.Trait},
+        forall
+        {R : Set},
         Self ->
         M (H := H)
           (ink_env.call.call_builder.CallBuilder
@@ -5830,6 +5885,8 @@ Module call_builder.
         RetType.
     
     Parameter exec_input : forall `{H : State.Trait},
+        forall
+        {Args : Set},
         Self ->
         ink_env.call.execution_input.ExecutionInput Args ->
         M (H := H)
@@ -6602,6 +6659,8 @@ Module
       RetType.
   
   Parameter call_type : forall `{H : State.Trait},
+      forall
+      {NewCallType : Set},
       Self ->
       NewCallType ->
       M (H := H)
@@ -6648,6 +6707,8 @@ Module
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
   Parameter returns : forall `{H : State.Trait},
+      forall
+      {R : Set},
       Self ->
       M (H := H)
         (ink_env.call.call_builder.CallBuilder
@@ -6677,6 +6738,8 @@ Module
       RetType.
   
   Parameter exec_input : forall `{H : State.Trait},
+      forall
+      {Args : Set},
       Self ->
       ink_env.call.execution_input.ExecutionInput Args ->
       M (H := H)
@@ -7309,6 +7372,9 @@ Module common.
     Definition Output : Set := T.
     
     Parameter unwrap_or_else : forall `{H : State.Trait},
+        forall
+        {F : Set},
+        `{core.ops.function.FnOnce.Trait unit F}
         Self ->
         F ->
         M (H := H) ImplSelf.Output.
@@ -7336,6 +7402,9 @@ Module common.
     Definition Output : Set := T.
     
     Parameter unwrap_or_else : forall `{H : State.Trait},
+        forall
+        {F : Set},
+        `{core.ops.function.FnOnce.Trait unit F}
         Self ->
         F ->
         M (H := H) ImplSelf.Output.
@@ -7631,6 +7700,9 @@ Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
   Definition Output : Set := T.
   
   Parameter unwrap_or_else : forall `{H : State.Trait},
+      forall
+      {F : Set},
+      `{core.ops.function.FnOnce.Trait unit F}
       Self ->
       F ->
       M (H := H) ImplSelf.Output.
@@ -7658,6 +7730,9 @@ Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
   Definition Output : Set := T.
   
   Parameter unwrap_or_else : forall `{H : State.Trait},
+      forall
+      {F : Set},
+      `{core.ops.function.FnOnce.Trait unit F}
       Self ->
       F ->
       M (H := H) ImplSelf.Output.
@@ -8173,6 +8248,8 @@ Module create_builder.
         RetType.
     
     Parameter exec_input : forall `{H : State.Trait},
+        forall
+        {Args : Set},
         Self ->
         ink_env.call.execution_input.ExecutionInput Args ->
         M (H := H)
@@ -8210,6 +8287,9 @@ Module create_builder.
         RetType.
     
     Parameter salt_bytes : forall `{H : State.Trait},
+        forall
+        {Salt : Set},
+        `{core.convert.AsRef.Trait (Slice u8) Salt}
         Self ->
         Salt ->
         M (H := H)
@@ -8246,6 +8326,10 @@ Module create_builder.
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
     
     Parameter returns : forall `{H : State.Trait},
+        forall
+        {R : Set},
+        `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
         Self ->
         M (H := H)
           (ink_env.call.create_builder.CreateBuilder
@@ -8827,6 +8911,8 @@ Module
       RetType.
   
   Parameter exec_input : forall `{H : State.Trait},
+      forall
+      {Args : Set},
       Self ->
       ink_env.call.execution_input.ExecutionInput Args ->
       M (H := H)
@@ -8864,6 +8950,9 @@ Module
       RetType.
   
   Parameter salt_bytes : forall `{H : State.Trait},
+      forall
+      {Salt : Set},
+      `{core.convert.AsRef.Trait (Slice u8) Salt}
       Self ->
       Salt ->
       M (H := H)
@@ -8900,6 +8989,10 @@ Module
       (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
   
   Parameter returns : forall `{H : State.Trait},
+      forall
+      {R : Set},
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       Self ->
       M (H := H)
         (ink_env.call.create_builder.CreateBuilder
@@ -9101,6 +9194,9 @@ Module execution_input.
     }.
     
     Parameter push_arg : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Encode.Trait T}
         Self ->
         T ->
         M (H := H)
@@ -9127,6 +9223,9 @@ Module execution_input.
           Rest).
     
     Parameter push_arg : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Encode.Trait T}
         Self ->
         T ->
         M (H := H)
@@ -9395,6 +9494,9 @@ Module execution_input.
     }.
     
     Parameter push_arg : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Encode.Trait T}
         Self ->
         T ->
         M (H := H)
@@ -9418,6 +9520,9 @@ Module execution_input.
         Rest.
     
     Parameter push_arg : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Encode.Trait T}
         Self ->
         T ->
         M (H := H)
@@ -9450,6 +9555,10 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait},
+        forall
+        {O : Set},
+        `{parity_scale_codec.codec.Output.Trait O}
+        `{core.marker.Sized.Trait O}
         ref Self ->
         mut_ref O ->
         M (H := H) unit.
@@ -9480,6 +9589,10 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait},
+        forall
+        {O : Set},
+        `{parity_scale_codec.codec.Output.Trait O}
+        `{core.marker.Sized.Trait O}
         ref Self ->
         mut_ref O ->
         M (H := H) unit.
@@ -9517,6 +9630,10 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait},
+        forall
+        {O : Set},
+        `{parity_scale_codec.codec.Output.Trait O}
+        `{core.marker.Sized.Trait O}
         ref Self ->
         mut_ref O ->
         M (H := H) unit.
@@ -9551,6 +9668,10 @@ Module execution_input.
     }.
     
     Parameter encode_to : forall `{H : State.Trait},
+        forall
+        {O : Set},
+        `{parity_scale_codec.codec.Output.Trait O}
+        `{core.marker.Sized.Trait O}
         ref Self ->
         mut_ref O ->
         M (H := H) unit.
@@ -9674,6 +9795,9 @@ Module
   }.
   
   Parameter push_arg : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Encode.Trait T}
       Self ->
       T ->
       M (H := H)
@@ -9700,6 +9824,9 @@ Module
         Rest).
   
   Parameter push_arg : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Encode.Trait T}
       Self ->
       T ->
       M (H := H)
@@ -9965,6 +10092,9 @@ Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
   }.
   
   Parameter push_arg : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Encode.Trait T}
       Self ->
       T ->
       M (H := H)
@@ -9988,6 +10118,9 @@ Module
       Rest.
   
   Parameter push_arg : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Encode.Trait T}
       Self ->
       T ->
       M (H := H)
@@ -10018,6 +10151,10 @@ Section
   }.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {O : Set},
+      `{parity_scale_codec.codec.Output.Trait O}
+      `{core.marker.Sized.Trait O}
       ref Self ->
       mut_ref O ->
       M (H := H) unit.
@@ -10046,6 +10183,10 @@ Module
   }.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {O : Set},
+      `{parity_scale_codec.codec.Output.Trait O}
+      `{core.marker.Sized.Trait O}
       ref Self ->
       mut_ref O ->
       M (H := H) unit.
@@ -10081,6 +10222,10 @@ Section
   }.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {O : Set},
+      `{parity_scale_codec.codec.Output.Trait O}
+      `{core.marker.Sized.Trait O}
       ref Self ->
       mut_ref O ->
       M (H := H) unit.
@@ -10113,6 +10258,10 @@ Section
   }.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {O : Set},
+      `{parity_scale_codec.codec.Output.Trait O}
+      `{core.marker.Sized.Trait O}
       ref Self ->
       mut_ref O ->
       M (H := H) unit.
@@ -10436,6 +10585,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {__CodecInputEdqy : Set},
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       mut_ref __CodecInputEdqy ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
@@ -10453,6 +10605,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {__CodecOutputEdqy : Set},
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       ref Self ->
       mut_ref __CodecOutputEdqy ->
       M (H := H) unit.
@@ -10471,6 +10627,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
   }.
   
   Parameter using_encoded : forall `{H : State.Trait},
+      forall
+      {R : Set} {F : Set},
+      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
       ref Self ->
       F ->
       M (H := H) R.
@@ -10600,6 +10759,9 @@ Module chain_extension.
       ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
     
     Parameter input : forall `{H : State.Trait},
+        forall
+        {I : Set},
+        `{parity_scale_codec.codec.Encode.Trait I}
         Self ->
         M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
     
@@ -10615,6 +10777,9 @@ Module chain_extension.
       ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
     
     Parameter output : forall `{H : State.Trait},
+        forall
+        {O : Set},
+        `{parity_scale_codec.codec.Decode.Trait O}
         Self ->
         M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
     
@@ -10641,6 +10806,9 @@ Module chain_extension.
     }.
     
     Parameter handle_error_code : forall `{H : State.Trait},
+        forall
+        {ErrorCode : Set},
+        `{ink_env.chain_extension.FromStatusCode.Trait ErrorCode}
         Self ->
         M (H := H)
           (ink_env.chain_extension.ChainExtensionMethod
@@ -10943,6 +11111,9 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode_2.
     ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
   
   Parameter input : forall `{H : State.Trait},
+      forall
+      {I : Set},
+      `{parity_scale_codec.codec.Encode.Trait I}
       Self ->
       M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
   
@@ -10958,6 +11129,9 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
     ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
   
   Parameter output : forall `{H : State.Trait},
+      forall
+      {O : Set},
+      `{parity_scale_codec.codec.Decode.Trait O}
       Self ->
       M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
   
@@ -10983,6 +11157,9 @@ Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
   }.
   
   Parameter handle_error_code : forall `{H : State.Trait},
+      forall
+      {ErrorCode : Set},
+      `{ink_env.chain_extension.FromStatusCode.Trait ErrorCode}
       Self ->
       M (H := H)
         (ink_env.chain_extension.ChainExtensionMethod
@@ -11461,6 +11638,9 @@ Module engine.
         }.
         
         Parameter push_arg : forall `{H : State.Trait},
+            forall
+            {A : Set},
+            `{parity_scale_codec.codec.Encode.Trait A}
             mut_ref Self ->
             ref A ->
             M (H := H) unit.
@@ -11512,6 +11692,10 @@ Module engine.
         }.
         
         Parameter encode_to : forall `{H : State.Trait},
+            forall
+            {T : Set},
+            `{parity_scale_codec.codec.Output.Trait T}
+            `{core.marker.Sized.Trait T}
             ref Self ->
             mut_ref T ->
             M (H := H) unit.
@@ -11531,6 +11715,9 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.call_data.CallData.
         
         Parameter decode : forall `{H : State.Trait},
+            forall
+            {I : Set},
+            `{parity_scale_codec.codec.Input.Trait I}
             mut_ref I ->
             M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
         
@@ -11691,6 +11878,9 @@ Module engine.
         }.
         
         Parameter push_topic : forall `{H : State.Trait},
+            forall
+            {T : Set},
+            `{parity_scale_codec.codec.Encode.Trait T}
             mut_ref Self ->
             ref T ->
             M (H := H) unit.
@@ -11733,6 +11923,9 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Parameter get_property : forall `{H : State.Trait},
+            forall
+            {T : Set},
+            `{parity_scale_codec.codec.Decode.Trait T}
             mut_ref Self ->
             (ref ink_engine.ext.Engine) ->
             (mut_ref (mut_ref (Slice u8))) ->
@@ -11750,6 +11943,10 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Parameter set_contract_storage : forall `{H : State.Trait},
+            forall
+            {K : Set} {V : Set},
+            `{parity_scale_codec.codec.Encode.Trait K}
+            `{ink_storage_traits.storage.Storable.Trait V}
             mut_ref Self ->
             ref K ->
             ref V ->
@@ -11761,6 +11958,10 @@ Module engine.
         }.
         
         Parameter get_contract_storage : forall `{H : State.Trait},
+            forall
+            {K : Set} {R : Set},
+            `{parity_scale_codec.codec.Encode.Trait K}
+            `{ink_storage_traits.storage.Storable.Trait R}
             mut_ref Self ->
             ref K ->
             M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -11771,6 +11972,10 @@ Module engine.
         }.
         
         Parameter take_contract_storage : forall `{H : State.Trait},
+            forall
+            {K : Set} {R : Set},
+            `{parity_scale_codec.codec.Encode.Trait K}
+            `{ink_storage_traits.storage.Storable.Trait R}
             mut_ref Self ->
             ref K ->
             M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -11781,6 +11986,9 @@ Module engine.
         }.
         
         Parameter contains_contract_storage : forall `{H : State.Trait},
+            forall
+            {K : Set},
+            `{parity_scale_codec.codec.Encode.Trait K}
             mut_ref Self ->
             ref K ->
             M (H := H) (core.option.Option u32).
@@ -11791,6 +11999,9 @@ Module engine.
         }.
         
         Parameter clear_contract_storage : forall `{H : State.Trait},
+            forall
+            {K : Set},
+            `{parity_scale_codec.codec.Encode.Trait K}
             mut_ref Self ->
             ref K ->
             M (H := H) (core.option.Option u32).
@@ -11801,6 +12012,9 @@ Module engine.
         }.
         
         Parameter decode_input : forall `{H : State.Trait},
+            forall
+            {T : Set},
+            `{parity_scale_codec.codec.Decode.Trait T}
             mut_ref Self ->
             M (H := H) (ink_env.error.Result T).
         
@@ -11810,6 +12024,9 @@ Module engine.
         }.
         
         Parameter return_value : forall `{H : State.Trait},
+            forall
+            {R : Set},
+            `{parity_scale_codec.codec.Encode.Trait R}
             mut_ref Self ->
             ink_env.backend.ReturnFlags ->
             ref R ->
@@ -11831,6 +12048,9 @@ Module engine.
         }.
         
         Parameter hash_bytes : forall `{H : State.Trait},
+            forall
+            {H : Set},
+            `{ink_env.hash.CryptoHash.Trait H}
             mut_ref Self ->
             ref (Slice u8) ->
             mut_ref ink_env.hash.HashOutput.Type ->
@@ -11842,6 +12062,10 @@ Module engine.
         }.
         
         Parameter hash_encoded : forall `{H : State.Trait},
+            forall
+            {H : Set} {T : Set},
+            `{ink_env.hash.CryptoHash.Trait H}
+            `{parity_scale_codec.codec.Encode.Trait T}
             mut_ref Self ->
             ref T ->
             mut_ref ink_env.hash.HashOutput.Type ->
@@ -11876,6 +12100,13 @@ Module engine.
         }.
         
         Parameter call_chain_extension : forall `{H : State.Trait},
+            forall
+            {I : Set} {T : Set} {E : Set} {ErrorCode : Set} {F : Set} {D : Set},
+            `{parity_scale_codec.codec.Encode.Trait I}
+            `{parity_scale_codec.codec.Decode.Trait T}
+            `{core.convert.From.Trait ErrorCode E}
+            `{core.ops.function.FnOnce.Trait (u32) F}
+            `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
             mut_ref Self ->
             u32 ->
             ref I ->
@@ -11964,6 +12195,9 @@ Module engine.
         Definition Self := ink_env.engine.off_chain.EnvInstance.
         
         Parameter caller : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) ImplE.AccountId.
         
@@ -11973,6 +12207,9 @@ Module engine.
         }.
         
         Parameter transferred_value : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) ImplE.Balance.
         
@@ -11982,6 +12219,9 @@ Module engine.
         }.
         
         Parameter gas_left : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) u64.
         
@@ -11991,6 +12231,9 @@ Module engine.
         }.
         
         Parameter block_timestamp : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) ImplE.Timestamp.
         
@@ -12000,6 +12243,9 @@ Module engine.
         }.
         
         Parameter account_id : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) ImplE.AccountId.
         
@@ -12009,6 +12255,9 @@ Module engine.
         }.
         
         Parameter balance : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) ImplE.Balance.
         
@@ -12018,6 +12267,9 @@ Module engine.
         }.
         
         Parameter block_number : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) ImplE.BlockNumber.
         
@@ -12027,6 +12279,9 @@ Module engine.
         }.
         
         Parameter minimum_balance : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) ImplE.Balance.
         
@@ -12036,6 +12291,11 @@ Module engine.
         }.
         
         Parameter emit_event : forall `{H : State.Trait},
+            forall
+            {E : Set} {Event : Set},
+            `{ink_env.types.Environment.Trait E}
+            `{ink_env.topics.Topics.Trait Event}
+            `{parity_scale_codec.codec.Encode.Trait Event}
             mut_ref Self ->
             Event ->
             M (H := H) unit.
@@ -12046,6 +12306,11 @@ Module engine.
         }.
         
         Parameter invoke_contract : forall `{H : State.Trait},
+            forall
+            {E : Set} {Args : Set} {R : Set},
+            `{ink_env.types.Environment.Trait E}
+            `{parity_scale_codec.codec.Encode.Trait Args}
+            `{parity_scale_codec.codec.Decode.Trait R}
             mut_ref Self ->
             ref
               (ink_env.call.call_builder.CallParams
@@ -12061,6 +12326,11 @@ Module engine.
         }.
         
         Parameter invoke_contract_delegate : forall `{H : State.Trait},
+            forall
+            {E : Set} {Args : Set} {R : Set},
+            `{ink_env.types.Environment.Trait E}
+            `{parity_scale_codec.codec.Encode.Trait Args}
+            `{parity_scale_codec.codec.Decode.Trait R}
             mut_ref Self ->
             ref
               (ink_env.call.call_builder.CallParams
@@ -12076,6 +12346,15 @@ Module engine.
         }.
         
         Parameter instantiate_contract : forall `{H : State.Trait},
+            forall
+            {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+            `{ink_env.types.Environment.Trait E}
+            `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+            `{parity_scale_codec.codec.Encode.Trait Args}
+            `{core.convert.AsRef.Trait (Slice u8) Salt}
+            `{ink_env.call.create_builder.ConstructorReturnType.Trait
+              ContractRef
+              R}
             mut_ref Self ->
             ref
               (ink_env.call.create_builder.CreateParams
@@ -12095,6 +12374,9 @@ Module engine.
         }.
         
         Parameter terminate_contract : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             ImplE.AccountId ->
             M (H := H) Empty_set.
@@ -12105,6 +12387,9 @@ Module engine.
         }.
         
         Parameter transfer : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             ImplE.AccountId ->
             ImplE.Balance ->
@@ -12116,6 +12401,9 @@ Module engine.
         }.
         
         Parameter weight_to_fee : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             u64 ->
             M (H := H) ImplE.Balance.
@@ -12126,6 +12414,9 @@ Module engine.
         }.
         
         Parameter is_contract : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             ref ImplE.AccountId ->
             M (H := H) bool.
@@ -12136,6 +12427,9 @@ Module engine.
         }.
         
         Parameter caller_is_origin : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) bool.
         
@@ -12145,6 +12439,9 @@ Module engine.
         }.
         
         Parameter code_hash : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             ref ImplE.AccountId ->
             M (H := H) (ink_env.error.Result ImplE.Hash).
@@ -12155,6 +12452,9 @@ Module engine.
         }.
         
         Parameter own_code_hash : forall `{H : State.Trait},
+            forall
+            {E : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             M (H := H) (ink_env.error.Result ImplE.Hash).
         
@@ -12164,6 +12464,9 @@ Module engine.
         }.
         
         Parameter call_runtime : forall `{H : State.Trait},
+            forall
+            {E : Set} {Call : Set},
+            `{ink_env.types.Environment.Trait E}
             mut_ref Self ->
             ref Call ->
             M (H := H) (ink_env.error.Result unit).
@@ -12575,7 +12878,12 @@ Module engine.
       Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
-      Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
+      Parameter on_instance : forall `{H : State.Trait},
+          forall
+          {F : Set} {R : Set},
+          `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+          F ->
+          M (H := H) R.
       
       Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
         Notation.DoubleColon Self "on_instance" := {
@@ -12945,6 +13253,9 @@ Module off_chain.
       }.
       
       Parameter push_arg : forall `{H : State.Trait},
+          forall
+          {A : Set},
+          `{parity_scale_codec.codec.Encode.Trait A}
           mut_ref Self ->
           ref A ->
           M (H := H) unit.
@@ -12996,6 +13307,10 @@ Module off_chain.
       }.
       
       Parameter encode_to : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Output.Trait T}
+          `{core.marker.Sized.Trait T}
           ref Self ->
           mut_ref T ->
           M (H := H) unit.
@@ -13015,6 +13330,9 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
       
       Parameter decode : forall `{H : State.Trait},
+          forall
+          {I : Set},
+          `{parity_scale_codec.codec.Input.Trait I}
           mut_ref I ->
           M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
       
@@ -13175,6 +13493,9 @@ Module off_chain.
       }.
       
       Parameter push_topic : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Encode.Trait T}
           mut_ref Self ->
           ref T ->
           M (H := H) unit.
@@ -13211,6 +13532,9 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Parameter get_property : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Decode.Trait T}
           mut_ref Self ->
           (ref ink_engine.ext.Engine) ->
           (mut_ref (mut_ref (Slice u8))) ->
@@ -13228,6 +13552,10 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Parameter set_contract_storage : forall `{H : State.Trait},
+          forall
+          {K : Set} {V : Set},
+          `{parity_scale_codec.codec.Encode.Trait K}
+          `{ink_storage_traits.storage.Storable.Trait V}
           mut_ref Self ->
           ref K ->
           ref V ->
@@ -13239,6 +13567,10 @@ Module off_chain.
       }.
       
       Parameter get_contract_storage : forall `{H : State.Trait},
+          forall
+          {K : Set} {R : Set},
+          `{parity_scale_codec.codec.Encode.Trait K}
+          `{ink_storage_traits.storage.Storable.Trait R}
           mut_ref Self ->
           ref K ->
           M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -13249,6 +13581,10 @@ Module off_chain.
       }.
       
       Parameter take_contract_storage : forall `{H : State.Trait},
+          forall
+          {K : Set} {R : Set},
+          `{parity_scale_codec.codec.Encode.Trait K}
+          `{ink_storage_traits.storage.Storable.Trait R}
           mut_ref Self ->
           ref K ->
           M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -13259,6 +13595,9 @@ Module off_chain.
       }.
       
       Parameter contains_contract_storage : forall `{H : State.Trait},
+          forall
+          {K : Set},
+          `{parity_scale_codec.codec.Encode.Trait K}
           mut_ref Self ->
           ref K ->
           M (H := H) (core.option.Option u32).
@@ -13269,6 +13608,9 @@ Module off_chain.
       }.
       
       Parameter clear_contract_storage : forall `{H : State.Trait},
+          forall
+          {K : Set},
+          `{parity_scale_codec.codec.Encode.Trait K}
           mut_ref Self ->
           ref K ->
           M (H := H) (core.option.Option u32).
@@ -13279,6 +13621,9 @@ Module off_chain.
       }.
       
       Parameter decode_input : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Decode.Trait T}
           mut_ref Self ->
           M (H := H) (ink_env.error.Result T).
       
@@ -13288,6 +13633,9 @@ Module off_chain.
       }.
       
       Parameter return_value : forall `{H : State.Trait},
+          forall
+          {R : Set},
+          `{parity_scale_codec.codec.Encode.Trait R}
           mut_ref Self ->
           ink_env.backend.ReturnFlags ->
           ref R ->
@@ -13309,6 +13657,9 @@ Module off_chain.
       }.
       
       Parameter hash_bytes : forall `{H : State.Trait},
+          forall
+          {H : Set},
+          `{ink_env.hash.CryptoHash.Trait H}
           mut_ref Self ->
           ref (Slice u8) ->
           mut_ref ink_env.hash.HashOutput.Type ->
@@ -13320,6 +13671,10 @@ Module off_chain.
       }.
       
       Parameter hash_encoded : forall `{H : State.Trait},
+          forall
+          {H : Set} {T : Set},
+          `{ink_env.hash.CryptoHash.Trait H}
+          `{parity_scale_codec.codec.Encode.Trait T}
           mut_ref Self ->
           ref T ->
           mut_ref ink_env.hash.HashOutput.Type ->
@@ -13354,6 +13709,13 @@ Module off_chain.
       }.
       
       Parameter call_chain_extension : forall `{H : State.Trait},
+          forall
+          {I : Set} {T : Set} {E : Set} {ErrorCode : Set} {F : Set} {D : Set},
+          `{parity_scale_codec.codec.Encode.Trait I}
+          `{parity_scale_codec.codec.Decode.Trait T}
+          `{core.convert.From.Trait ErrorCode E}
+          `{core.ops.function.FnOnce.Trait (u32) F}
+          `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
           mut_ref Self ->
           u32 ->
           ref I ->
@@ -13439,6 +13801,9 @@ Module off_chain.
       Definition Self := ink_env.engine.off_chain.EnvInstance.
       
       Parameter caller : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) ImplE.AccountId.
       
@@ -13448,6 +13813,9 @@ Module off_chain.
       }.
       
       Parameter transferred_value : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) ImplE.Balance.
       
@@ -13457,6 +13825,9 @@ Module off_chain.
       }.
       
       Parameter gas_left : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) u64.
       
@@ -13466,6 +13837,9 @@ Module off_chain.
       }.
       
       Parameter block_timestamp : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) ImplE.Timestamp.
       
@@ -13475,6 +13849,9 @@ Module off_chain.
       }.
       
       Parameter account_id : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) ImplE.AccountId.
       
@@ -13484,6 +13861,9 @@ Module off_chain.
       }.
       
       Parameter balance : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) ImplE.Balance.
       
@@ -13493,6 +13873,9 @@ Module off_chain.
       }.
       
       Parameter block_number : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) ImplE.BlockNumber.
       
@@ -13502,6 +13885,9 @@ Module off_chain.
       }.
       
       Parameter minimum_balance : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) ImplE.Balance.
       
@@ -13511,6 +13897,11 @@ Module off_chain.
       }.
       
       Parameter emit_event : forall `{H : State.Trait},
+          forall
+          {E : Set} {Event : Set},
+          `{ink_env.types.Environment.Trait E}
+          `{ink_env.topics.Topics.Trait Event}
+          `{parity_scale_codec.codec.Encode.Trait Event}
           mut_ref Self ->
           Event ->
           M (H := H) unit.
@@ -13521,6 +13912,11 @@ Module off_chain.
       }.
       
       Parameter invoke_contract : forall `{H : State.Trait},
+          forall
+          {E : Set} {Args : Set} {R : Set},
+          `{ink_env.types.Environment.Trait E}
+          `{parity_scale_codec.codec.Encode.Trait Args}
+          `{parity_scale_codec.codec.Decode.Trait R}
           mut_ref Self ->
           ref
             (ink_env.call.call_builder.CallParams
@@ -13536,6 +13932,11 @@ Module off_chain.
       }.
       
       Parameter invoke_contract_delegate : forall `{H : State.Trait},
+          forall
+          {E : Set} {Args : Set} {R : Set},
+          `{ink_env.types.Environment.Trait E}
+          `{parity_scale_codec.codec.Encode.Trait Args}
+          `{parity_scale_codec.codec.Decode.Trait R}
           mut_ref Self ->
           ref
             (ink_env.call.call_builder.CallParams
@@ -13551,6 +13952,15 @@ Module off_chain.
       }.
       
       Parameter instantiate_contract : forall `{H : State.Trait},
+          forall
+          {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+          `{ink_env.types.Environment.Trait E}
+          `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+          `{parity_scale_codec.codec.Encode.Trait Args}
+          `{core.convert.AsRef.Trait (Slice u8) Salt}
+          `{ink_env.call.create_builder.ConstructorReturnType.Trait
+            ContractRef
+            R}
           mut_ref Self ->
           ref
             (ink_env.call.create_builder.CreateParams
@@ -13570,6 +13980,9 @@ Module off_chain.
       }.
       
       Parameter terminate_contract : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           ImplE.AccountId ->
           M (H := H) Empty_set.
@@ -13580,6 +13993,9 @@ Module off_chain.
       }.
       
       Parameter transfer : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           ImplE.AccountId ->
           ImplE.Balance ->
@@ -13591,6 +14007,9 @@ Module off_chain.
       }.
       
       Parameter weight_to_fee : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           u64 ->
           M (H := H) ImplE.Balance.
@@ -13601,6 +14020,9 @@ Module off_chain.
       }.
       
       Parameter is_contract : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           ref ImplE.AccountId ->
           M (H := H) bool.
@@ -13611,6 +14033,9 @@ Module off_chain.
       }.
       
       Parameter caller_is_origin : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) bool.
       
@@ -13620,6 +14045,9 @@ Module off_chain.
       }.
       
       Parameter code_hash : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           ref ImplE.AccountId ->
           M (H := H) (ink_env.error.Result ImplE.Hash).
@@ -13630,6 +14058,9 @@ Module off_chain.
       }.
       
       Parameter own_code_hash : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           M (H := H) (ink_env.error.Result ImplE.Hash).
       
@@ -13639,6 +14070,9 @@ Module off_chain.
       }.
       
       Parameter call_runtime : forall `{H : State.Trait},
+          forall
+          {E : Set} {Call : Set},
+          `{ink_env.types.Environment.Trait E}
           mut_ref Self ->
           ref Call ->
           M (H := H) (ink_env.error.Result unit).
@@ -14039,7 +14473,12 @@ Module off_chain.
     Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
-    Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
+    Parameter on_instance : forall `{H : State.Trait},
+        forall
+        {F : Set} {R : Set},
+        `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+        F ->
+        M (H := H) R.
     
     Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
       Notation.DoubleColon Self "on_instance" := {
@@ -14361,6 +14800,9 @@ Module call_data.
     }.
     
     Parameter push_arg : forall `{H : State.Trait},
+        forall
+        {A : Set},
+        `{parity_scale_codec.codec.Encode.Trait A}
         mut_ref Self ->
         ref A ->
         M (H := H) unit.
@@ -14412,6 +14854,10 @@ Module call_data.
     }.
     
     Parameter encode_to : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
         ref Self ->
         mut_ref T ->
         M (H := H) unit.
@@ -14431,6 +14877,9 @@ Module call_data.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
     
     Parameter decode : forall `{H : State.Trait},
+        forall
+        {I : Set},
+        `{parity_scale_codec.codec.Input.Trait I}
         mut_ref I ->
         M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
     
@@ -14564,6 +15013,9 @@ Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
   }.
   
   Parameter push_arg : forall `{H : State.Trait},
+      forall
+      {A : Set},
+      `{parity_scale_codec.codec.Encode.Trait A}
       mut_ref Self ->
       ref A ->
       M (H := H) unit.
@@ -14612,6 +15064,10 @@ Module
   }.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Output.Trait T}
+      `{core.marker.Sized.Trait T}
       ref Self ->
       mut_ref T ->
       M (H := H) unit.
@@ -14631,6 +15087,9 @@ Module
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {I : Set},
+      `{parity_scale_codec.codec.Input.Trait I}
       mut_ref I ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
@@ -14790,6 +15249,9 @@ Module impls.
     }.
     
     Parameter push_topic : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Encode.Trait T}
         mut_ref Self ->
         ref T ->
         M (H := H) unit.
@@ -14826,6 +15288,9 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Parameter get_property : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Decode.Trait T}
         mut_ref Self ->
         (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref (Slice u8))) -> unit ->
         M (H := H) (ink_env.error.Result T).
@@ -14841,6 +15306,10 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Parameter set_contract_storage : forall `{H : State.Trait},
+        forall
+        {K : Set} {V : Set},
+        `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait V}
         mut_ref Self ->
         ref K ->
         ref V ->
@@ -14852,6 +15321,10 @@ Module impls.
     }.
     
     Parameter get_contract_storage : forall `{H : State.Trait},
+        forall
+        {K : Set} {R : Set},
+        `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait R}
         mut_ref Self ->
         ref K ->
         M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -14862,6 +15335,10 @@ Module impls.
     }.
     
     Parameter take_contract_storage : forall `{H : State.Trait},
+        forall
+        {K : Set} {R : Set},
+        `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait R}
         mut_ref Self ->
         ref K ->
         M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -14872,6 +15349,9 @@ Module impls.
     }.
     
     Parameter contains_contract_storage : forall `{H : State.Trait},
+        forall
+        {K : Set},
+        `{parity_scale_codec.codec.Encode.Trait K}
         mut_ref Self ->
         ref K ->
         M (H := H) (core.option.Option u32).
@@ -14882,6 +15362,9 @@ Module impls.
     }.
     
     Parameter clear_contract_storage : forall `{H : State.Trait},
+        forall
+        {K : Set},
+        `{parity_scale_codec.codec.Encode.Trait K}
         mut_ref Self ->
         ref K ->
         M (H := H) (core.option.Option u32).
@@ -14892,6 +15375,9 @@ Module impls.
     }.
     
     Parameter decode_input : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Decode.Trait T}
         mut_ref Self ->
         M (H := H) (ink_env.error.Result T).
     
@@ -14901,6 +15387,9 @@ Module impls.
     }.
     
     Parameter return_value : forall `{H : State.Trait},
+        forall
+        {R : Set},
+        `{parity_scale_codec.codec.Encode.Trait R}
         mut_ref Self ->
         ink_env.backend.ReturnFlags ->
         ref R ->
@@ -14922,6 +15411,9 @@ Module impls.
     }.
     
     Parameter hash_bytes : forall `{H : State.Trait},
+        forall
+        {H : Set},
+        `{ink_env.hash.CryptoHash.Trait H}
         mut_ref Self ->
         ref (Slice u8) ->
         mut_ref ink_env.hash.HashOutput.Type ->
@@ -14933,6 +15425,10 @@ Module impls.
     }.
     
     Parameter hash_encoded : forall `{H : State.Trait},
+        forall
+        {H : Set} {T : Set},
+        `{ink_env.hash.CryptoHash.Trait H}
+        `{parity_scale_codec.codec.Encode.Trait T}
         mut_ref Self ->
         ref T ->
         mut_ref ink_env.hash.HashOutput.Type ->
@@ -14967,6 +15463,13 @@ Module impls.
     }.
     
     Parameter call_chain_extension : forall `{H : State.Trait},
+        forall
+        {I : Set} {T : Set} {E : Set} {ErrorCode : Set} {F : Set} {D : Set},
+        `{parity_scale_codec.codec.Encode.Trait I}
+        `{parity_scale_codec.codec.Decode.Trait T}
+        `{core.convert.From.Trait ErrorCode E}
+        `{core.ops.function.FnOnce.Trait (u32) F}
+        `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
         mut_ref Self ->
         u32 ->
         ref I ->
@@ -15051,6 +15554,9 @@ Module impls.
     Definition Self := ink_env.engine.off_chain.EnvInstance.
     
     Parameter caller : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) ImplE.AccountId.
     
@@ -15060,6 +15566,9 @@ Module impls.
     }.
     
     Parameter transferred_value : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) ImplE.Balance.
     
@@ -15069,6 +15578,9 @@ Module impls.
     }.
     
     Parameter gas_left : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) u64.
     
@@ -15078,6 +15590,9 @@ Module impls.
     }.
     
     Parameter block_timestamp : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) ImplE.Timestamp.
     
@@ -15087,6 +15602,9 @@ Module impls.
     }.
     
     Parameter account_id : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) ImplE.AccountId.
     
@@ -15096,6 +15614,9 @@ Module impls.
     }.
     
     Parameter balance : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) ImplE.Balance.
     
@@ -15105,6 +15626,9 @@ Module impls.
     }.
     
     Parameter block_number : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) ImplE.BlockNumber.
     
@@ -15114,6 +15638,9 @@ Module impls.
     }.
     
     Parameter minimum_balance : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) ImplE.Balance.
     
@@ -15123,6 +15650,11 @@ Module impls.
     }.
     
     Parameter emit_event : forall `{H : State.Trait},
+        forall
+        {E : Set} {Event : Set},
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.Topics.Trait Event}
+        `{parity_scale_codec.codec.Encode.Trait Event}
         mut_ref Self ->
         Event ->
         M (H := H) unit.
@@ -15133,6 +15665,11 @@ Module impls.
     }.
     
     Parameter invoke_contract : forall `{H : State.Trait},
+        forall
+        {E : Set} {Args : Set} {R : Set},
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
         mut_ref Self ->
         ref
           (ink_env.call.call_builder.CallParams
@@ -15148,6 +15685,11 @@ Module impls.
     }.
     
     Parameter invoke_contract_delegate : forall `{H : State.Trait},
+        forall
+        {E : Set} {Args : Set} {R : Set},
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
         mut_ref Self ->
         ref
           (ink_env.call.call_builder.CallParams
@@ -15163,6 +15705,13 @@ Module impls.
     }.
     
     Parameter instantiate_contract : forall `{H : State.Trait},
+        forall
+        {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{core.convert.AsRef.Trait (Slice u8) Salt}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
         mut_ref Self ->
         ref
           (ink_env.call.create_builder.CreateParams
@@ -15182,6 +15731,9 @@ Module impls.
     }.
     
     Parameter terminate_contract : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         ImplE.AccountId ->
         M (H := H) Empty_set.
@@ -15192,6 +15744,9 @@ Module impls.
     }.
     
     Parameter transfer : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         ImplE.AccountId ->
         ImplE.Balance ->
@@ -15203,6 +15758,9 @@ Module impls.
     }.
     
     Parameter weight_to_fee : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         u64 ->
         M (H := H) ImplE.Balance.
@@ -15213,6 +15771,9 @@ Module impls.
     }.
     
     Parameter is_contract : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         ref ImplE.AccountId ->
         M (H := H) bool.
@@ -15223,6 +15784,9 @@ Module impls.
     }.
     
     Parameter caller_is_origin : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) bool.
     
@@ -15232,6 +15796,9 @@ Module impls.
     }.
     
     Parameter code_hash : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         ref ImplE.AccountId ->
         M (H := H) (ink_env.error.Result ImplE.Hash).
@@ -15242,6 +15809,9 @@ Module impls.
     }.
     
     Parameter own_code_hash : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         M (H := H) (ink_env.error.Result ImplE.Hash).
     
@@ -15251,6 +15821,9 @@ Module impls.
     }.
     
     Parameter call_runtime : forall `{H : State.Trait},
+        forall
+        {E : Set} {Call : Set},
+        `{ink_env.types.Environment.Trait E}
         mut_ref Self ->
         ref Call ->
         M (H := H) (ink_env.error.Result unit).
@@ -15681,6 +16254,9 @@ Section
   }.
   
   Parameter push_topic : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Encode.Trait T}
       mut_ref Self ->
       ref T ->
       M (H := H) unit.
@@ -15716,6 +16292,9 @@ Module Impl_ink_env_engine_off_chain_EnvInstance_4.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Parameter get_property : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Decode.Trait T}
       mut_ref Self ->
       (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref (Slice u8))) -> unit ->
       M (H := H) (ink_env.error.Result T).
@@ -15730,6 +16309,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Parameter set_contract_storage : forall `{H : State.Trait},
+      forall
+      {K : Set} {V : Set},
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait V}
       mut_ref Self ->
       ref K ->
       ref V ->
@@ -15741,6 +16324,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter get_contract_storage : forall `{H : State.Trait},
+      forall
+      {K : Set} {R : Set},
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R}
       mut_ref Self ->
       ref K ->
       M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -15751,6 +16338,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter take_contract_storage : forall `{H : State.Trait},
+      forall
+      {K : Set} {R : Set},
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R}
       mut_ref Self ->
       ref K ->
       M (H := H) (ink_env.error.Result (core.option.Option R)).
@@ -15761,6 +16352,9 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter contains_contract_storage : forall `{H : State.Trait},
+      forall
+      {K : Set},
+      `{parity_scale_codec.codec.Encode.Trait K}
       mut_ref Self ->
       ref K ->
       M (H := H) (core.option.Option u32).
@@ -15771,6 +16365,9 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter clear_contract_storage : forall `{H : State.Trait},
+      forall
+      {K : Set},
+      `{parity_scale_codec.codec.Encode.Trait K}
       mut_ref Self ->
       ref K ->
       M (H := H) (core.option.Option u32).
@@ -15781,6 +16378,9 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter decode_input : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Decode.Trait T}
       mut_ref Self ->
       M (H := H) (ink_env.error.Result T).
   
@@ -15790,6 +16390,9 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter return_value : forall `{H : State.Trait},
+      forall
+      {R : Set},
+      `{parity_scale_codec.codec.Encode.Trait R}
       mut_ref Self ->
       ink_env.backend.ReturnFlags ->
       ref R ->
@@ -15811,6 +16414,9 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter hash_bytes : forall `{H : State.Trait},
+      forall
+      {H : Set},
+      `{ink_env.hash.CryptoHash.Trait H}
       mut_ref Self ->
       ref (Slice u8) ->
       mut_ref ink_env.hash.HashOutput.Type ->
@@ -15822,6 +16428,10 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter hash_encoded : forall `{H : State.Trait},
+      forall
+      {H : Set} {T : Set},
+      `{ink_env.hash.CryptoHash.Trait H}
+      `{parity_scale_codec.codec.Encode.Trait T}
       mut_ref Self ->
       ref T ->
       mut_ref ink_env.hash.HashOutput.Type ->
@@ -15856,6 +16466,13 @@ Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
   }.
   
   Parameter call_chain_extension : forall `{H : State.Trait},
+      forall
+      {I : Set} {T : Set} {E : Set} {ErrorCode : Set} {F : Set} {D : Set},
+      `{parity_scale_codec.codec.Encode.Trait I}
+      `{parity_scale_codec.codec.Decode.Trait T}
+      `{core.convert.From.Trait ErrorCode E}
+      `{core.ops.function.FnOnce.Trait (u32) F}
+      `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
       mut_ref Self ->
       u32 ->
       ref I ->
@@ -15931,6 +16548,9 @@ Module
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
   Parameter caller : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) ImplE.AccountId.
   
@@ -15939,6 +16559,9 @@ Module
   }.
   
   Parameter transferred_value : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) ImplE.Balance.
   
@@ -15948,6 +16571,9 @@ Module
   }.
   
   Parameter gas_left : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) u64.
   
@@ -15957,6 +16583,9 @@ Module
   }.
   
   Parameter block_timestamp : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) ImplE.Timestamp.
   
@@ -15966,6 +16595,9 @@ Module
   }.
   
   Parameter account_id : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) ImplE.AccountId.
   
@@ -15975,6 +16607,9 @@ Module
   }.
   
   Parameter balance : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) ImplE.Balance.
   
@@ -15984,6 +16619,9 @@ Module
   }.
   
   Parameter block_number : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) ImplE.BlockNumber.
   
@@ -15993,6 +16631,9 @@ Module
   }.
   
   Parameter minimum_balance : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) ImplE.Balance.
   
@@ -16002,6 +16643,11 @@ Module
   }.
   
   Parameter emit_event : forall `{H : State.Trait},
+      forall
+      {E : Set} {Event : Set},
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.Topics.Trait Event}
+      `{parity_scale_codec.codec.Encode.Trait Event}
       mut_ref Self ->
       Event ->
       M (H := H) unit.
@@ -16012,6 +16658,11 @@ Module
   }.
   
   Parameter invoke_contract : forall `{H : State.Trait},
+      forall
+      {E : Set} {Args : Set} {R : Set},
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       mut_ref Self ->
       ref
         (ink_env.call.call_builder.CallParams
@@ -16027,6 +16678,11 @@ Module
   }.
   
   Parameter invoke_contract_delegate : forall `{H : State.Trait},
+      forall
+      {E : Set} {Args : Set} {R : Set},
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       mut_ref Self ->
       ref
         (ink_env.call.call_builder.CallParams
@@ -16042,6 +16698,13 @@ Module
   }.
   
   Parameter instantiate_contract : forall `{H : State.Trait},
+      forall
+      {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait (Slice u8) Salt}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       mut_ref Self ->
       ref
         (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
@@ -16056,6 +16719,9 @@ Module
   }.
   
   Parameter terminate_contract : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       ImplE.AccountId ->
       M (H := H) Empty_set.
@@ -16066,6 +16732,9 @@ Module
   }.
   
   Parameter transfer : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       ImplE.AccountId ->
       ImplE.Balance ->
@@ -16077,6 +16746,9 @@ Module
   }.
   
   Parameter weight_to_fee : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       u64 ->
       M (H := H) ImplE.Balance.
@@ -16087,6 +16759,9 @@ Module
   }.
   
   Parameter is_contract : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       ref ImplE.AccountId ->
       M (H := H) bool.
@@ -16097,6 +16772,9 @@ Module
   }.
   
   Parameter caller_is_origin : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) bool.
   
@@ -16106,6 +16784,9 @@ Module
   }.
   
   Parameter code_hash : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       ref ImplE.AccountId ->
       M (H := H) (ink_env.error.Result ImplE.Hash).
@@ -16116,6 +16797,9 @@ Module
   }.
   
   Parameter own_code_hash : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       M (H := H) (ink_env.error.Result ImplE.Hash).
   
@@ -16125,6 +16809,9 @@ Module
   }.
   
   Parameter call_runtime : forall `{H : State.Trait},
+      forall
+      {E : Set} {Call : Set},
+      `{ink_env.types.Environment.Trait E}
       mut_ref Self ->
       ref Call ->
       M (H := H) (ink_env.error.Result unit).
@@ -16802,7 +17489,12 @@ Definition EnvInstance : Set := @EnvInstance.t.
 Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
   
-  Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
+  Parameter on_instance : forall `{H : State.Trait},
+      forall
+      {F : Set} {R : Set},
+      `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+      F ->
+      M (H := H) R.
   
   Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
     Notation.DoubleColon Self "on_instance" := {
@@ -18373,6 +19065,9 @@ Module topics.
       ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
     
     Parameter build : forall `{H : State.Trait},
+        forall
+        {Event : Set},
+        `{ink_env.topics.Topics.Trait Event}
         Self ->
         M (H := H)
           (ink_env.topics.TopicsBuilder
@@ -18389,6 +19084,9 @@ Module topics.
     Definition Self := ink_env.topics.TopicsBuilder S E B.
     
     Parameter push_topic : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Encode.Trait T}
         Self ->
         ref T ->
         M (H := H)
@@ -18411,6 +19109,7 @@ Module topics.
       ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
     
     Parameter finish : forall `{H : State.Trait},
+        `{ink_env.topics.TopicsBuilderBackend.Trait E B}
         Self ->
         M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
     
@@ -19419,6 +20118,10 @@ Module topics.
     }.
     
     Parameter encode_to : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
         ref Self ->
         mut_ref T ->
         M (H := H) unit.
@@ -19554,6 +20257,9 @@ Module Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B_2.
     ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
   
   Parameter build : forall `{H : State.Trait},
+      forall
+      {Event : Set},
+      `{ink_env.topics.Topics.Trait Event}
       Self ->
       M (H := H)
         (ink_env.topics.TopicsBuilder
@@ -19570,6 +20276,9 @@ Module Impl_ink_env_topics_TopicsBuilder_S_E_B_2.
   Definition Self := ink_env.topics.TopicsBuilder S E B.
   
   Parameter push_topic : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Encode.Trait T}
       Self ->
       ref T ->
       M (H := H)
@@ -19592,6 +20301,7 @@ Module
     ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
   
   Parameter finish : forall `{H : State.Trait},
+      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       Self ->
       M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
   
@@ -20595,6 +21305,10 @@ Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
   }.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Output.Trait T}
+      `{core.marker.Sized.Trait T}
       ref Self ->
       mut_ref T ->
       M (H := H) unit.

@@ -27,6 +27,8 @@ Module Impl_core_hash_Hash_for_hash_Person.
   
   Definition hash
       `{H : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
       : M (H := H) unit :=

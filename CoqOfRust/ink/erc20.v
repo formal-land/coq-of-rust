@@ -716,6 +716,8 @@ Module erc20.
     
     Definition hash
         `{H : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
         (self : ref Self)
         (state : mut_ref __H)
         : M (H := H) unit :=
@@ -1408,6 +1410,8 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   
   Definition decode
       `{H : State.Trait}
+      {__ink_I : Set}
+      `{parity_scale_codec.codec.Input.Trait __ink_I}
       (__input : mut_ref __ink_I)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink_storage_traits.storage.Storable.decode __input in
@@ -1452,6 +1456,9 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   
   Definition encode
       `{H : State.Trait}
+      {__ink_O : Set}
+      `{parity_scale_codec.codec.Output.Trait __ink_O}
+      `{core.marker.Sized.Trait __ink_O}
       (self : ref Self)
       (__dest : mut_ref __ink_O)
       : M (H := H) unit :=
@@ -1660,6 +1667,8 @@ Module
   
   Definition emit_event
       `{H : State.Trait}
+      {E : Set}
+      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
       (self : Self)
       (event : E)
       : M (H := H) unit :=
@@ -1695,6 +1704,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
   
   Definition encode_to
       `{H : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -1739,6 +1751,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
   
   Definition decode
       `{H : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
@@ -1900,6 +1914,9 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
   
   Definition topics
       `{H : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -1967,6 +1984,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
   
   Definition encode_to
       `{H : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -2006,6 +2026,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
   
   Definition decode
       `{H : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -2079,6 +2101,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
   
   Definition encode_to
       `{H : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -2118,6 +2143,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
   
   Definition decode
       `{H : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -2173,6 +2200,9 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
   
   Definition topics
       `{H : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2220,6 +2250,9 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
   
   Definition topics
       `{H : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2787,6 +2820,8 @@ Module
   
   Definition decode_dispatch
       `{H : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       :
         M (H := H)
@@ -2849,6 +2884,8 @@ Module
   
   Definition decode
       `{H : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
@@ -2967,6 +3004,8 @@ Module
   
   Definition decode_dispatch
       `{H : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       :
         M (H := H)
@@ -3124,6 +3163,8 @@ Module
   
   Definition decode
       `{H : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
@@ -3878,6 +3919,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   
   Definition encode_to
       `{H : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -3903,6 +3947,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   
   Definition using_encoded
       `{H : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -3934,6 +3980,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   
   Definition decode
       `{H : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -3955,6 +4003,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   
   Definition decode_into
       `{H : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       (dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self))
       :
@@ -4037,6 +4087,8 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
   
   Definition hash
       `{H : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
       : M (H := H) unit :=
@@ -4553,6 +4605,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   
   Definition encode_to
       `{H : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -4577,6 +4632,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   
   Definition using_encoded
       `{H : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -4606,6 +4663,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
   
   Definition decode
       `{H : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -4634,6 +4693,8 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
   
   Definition hash
       `{H : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
       : M (H := H) unit :=
@@ -5837,6 +5898,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
   
   Definition encode_to
       `{H : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -5875,6 +5939,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   
   Definition decode
       `{H : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
