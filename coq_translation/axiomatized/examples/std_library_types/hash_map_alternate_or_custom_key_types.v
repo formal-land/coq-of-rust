@@ -74,6 +74,9 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
   Parameter hash : forall `{H : State.Trait},
+      forall
+      {__H : Set},
+      `{core.hash.Hasher.Trait __H}
       ref Self ->
       mut_ref __H ->
       M (H := H) unit.

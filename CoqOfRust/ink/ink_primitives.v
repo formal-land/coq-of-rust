@@ -438,6 +438,9 @@ Module types.
     Definition Self := ink_primitives.types.AccountId.
     
     Parameter hash : forall `{H : State.Trait},
+        forall
+        {__H : Set},
+        `{core.hash.Hasher.Trait __H}
         ref Self ->
         mut_ref __H ->
         M (H := H) unit.
@@ -741,6 +744,9 @@ Module types.
     Definition Self := ink_primitives.types.Hash.
     
     Parameter hash : forall `{H : State.Trait},
+        forall
+        {__H : Set},
+        `{core.hash.Hasher.Trait __H}
         ref Self ->
         mut_ref __H ->
         M (H := H) unit.
@@ -1211,6 +1217,9 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
   Definition Self := ink_primitives.types.AccountId.
   
   Parameter hash : forall `{H : State.Trait},
+      forall
+      {__H : Set},
+      `{core.hash.Hasher.Trait __H}
       ref Self ->
       mut_ref __H ->
       M (H := H) unit.
@@ -1228,6 +1237,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
   Definition Self := ink_primitives.types.AccountId.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {__CodecInputEdqy : Set},
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       mut_ref __CodecInputEdqy ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
@@ -1245,6 +1257,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
   Definition Self := ink_primitives.types.AccountId.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {__CodecOutputEdqy : Set},
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       ref Self ->
       mut_ref __CodecOutputEdqy ->
       M (H := H) unit.
@@ -1263,6 +1279,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
   }.
   
   Parameter using_encoded : forall `{H : State.Trait},
+      forall
+      {R : Set} {F : Set},
+      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
       ref Self ->
       F ->
       M (H := H) R.
@@ -1675,6 +1694,9 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.
   
   Parameter hash : forall `{H : State.Trait},
+      forall
+      {__H : Set},
+      `{core.hash.Hasher.Trait __H}
       ref Self ->
       mut_ref __H ->
       M (H := H) unit.
@@ -1692,6 +1714,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {__CodecInputEdqy : Set},
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       mut_ref __CodecInputEdqy ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
@@ -1709,6 +1734,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {__CodecOutputEdqy : Set},
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       ref Self ->
       mut_ref __CodecOutputEdqy ->
       M (H := H) unit.
@@ -1727,6 +1756,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
   }.
   
   Parameter using_encoded : forall `{H : State.Trait},
+      forall
+      {R : Set} {F : Set},
+      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
       ref Self ->
       F ->
       M (H := H) R.
@@ -2029,6 +2061,10 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
   Definition Self := ink_primitives.LangError.
   
   Parameter encode_to : forall `{H : State.Trait},
+      forall
+      {__CodecOutputEdqy : Set},
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy}
       ref Self ->
       mut_ref __CodecOutputEdqy ->
       M (H := H) unit.
@@ -2055,6 +2091,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
   Definition Self := ink_primitives.LangError.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {__CodecInputEdqy : Set},
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       mut_ref __CodecInputEdqy ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   

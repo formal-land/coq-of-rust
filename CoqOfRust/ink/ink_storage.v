@@ -80,6 +80,11 @@ Module lazy.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
       Parameter insert : forall `{H : State.Trait},
+          forall
+          {Q : Set} {R : Set},
+          `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
+          `{ink_storage_traits.storage.Storable.Trait R}
+          `{parity_scale_codec.encode_like.EncodeLike.Trait V R}
           mut_ref Self ->
           Q ->
           ref R ->
@@ -91,6 +96,9 @@ Module lazy.
       }.
       
       Parameter get : forall `{H : State.Trait},
+          forall
+          {Q : Set},
+          `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
           ref Self ->
           Q ->
           M (H := H) (core.option.Option V).
@@ -100,6 +108,9 @@ Module lazy.
       }.
       
       Parameter take : forall `{H : State.Trait},
+          forall
+          {Q : Set},
+          `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
           ref Self ->
           Q ->
           M (H := H) (core.option.Option V).
@@ -109,6 +120,9 @@ Module lazy.
       }.
       
       Parameter size : forall `{H : State.Trait},
+          forall
+          {Q : Set},
+          `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
           ref Self ->
           Q ->
           M (H := H) (core.option.Option u32).
@@ -118,6 +132,9 @@ Module lazy.
       }.
       
       Parameter contains : forall `{H : State.Trait},
+          forall
+          {Q : Set},
+          `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
           ref Self ->
           Q ->
           M (H := H) bool.
@@ -128,6 +145,9 @@ Module lazy.
       }.
       
       Parameter remove : forall `{H : State.Trait},
+          forall
+          {Q : Set},
+          `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
           ref Self ->
           Q ->
           M (H := H) unit.
@@ -147,6 +167,10 @@ Module lazy.
       Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
       
       Parameter encode : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{parity_scale_codec.codec.Output.Trait T}
+          `{core.marker.Sized.Trait T}
           ref Self ->
           mut_ref T ->
           M (H := H) unit.
@@ -157,6 +181,9 @@ Module lazy.
       }.
       
       Parameter decode : forall `{H : State.Trait},
+          forall
+          {I : Set},
+          `{parity_scale_codec.codec.Input.Trait I}
           mut_ref I ->
           M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
       
@@ -328,6 +355,10 @@ Module lazy.
     Definition Self := ink_storage.lazy.Lazy V KeyType.
     
     Parameter encode : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
         ref Self ->
         mut_ref T ->
         M (H := H) unit.
@@ -338,6 +369,9 @@ Module lazy.
     }.
     
     Parameter decode : forall `{H : State.Trait},
+        forall
+        {I : Set},
+        `{parity_scale_codec.codec.Input.Trait I}
         mut_ref I ->
         M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
     
@@ -475,6 +509,11 @@ Module mapping.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
     Parameter insert : forall `{H : State.Trait},
+        forall
+        {Q : Set} {R : Set},
+        `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
+        `{ink_storage_traits.storage.Storable.Trait R}
+        `{parity_scale_codec.encode_like.EncodeLike.Trait V R}
         mut_ref Self ->
         Q ->
         ref R ->
@@ -486,6 +525,9 @@ Module mapping.
     }.
     
     Parameter get : forall `{H : State.Trait},
+        forall
+        {Q : Set},
+        `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
         ref Self ->
         Q ->
         M (H := H) (core.option.Option V).
@@ -495,6 +537,9 @@ Module mapping.
     }.
     
     Parameter take : forall `{H : State.Trait},
+        forall
+        {Q : Set},
+        `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
         ref Self ->
         Q ->
         M (H := H) (core.option.Option V).
@@ -504,6 +549,9 @@ Module mapping.
     }.
     
     Parameter size : forall `{H : State.Trait},
+        forall
+        {Q : Set},
+        `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
         ref Self ->
         Q ->
         M (H := H) (core.option.Option u32).
@@ -513,6 +561,9 @@ Module mapping.
     }.
     
     Parameter contains : forall `{H : State.Trait},
+        forall
+        {Q : Set},
+        `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
         ref Self ->
         Q ->
         M (H := H) bool.
@@ -523,6 +574,9 @@ Module mapping.
     }.
     
     Parameter remove : forall `{H : State.Trait},
+        forall
+        {Q : Set},
+        `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
         ref Self ->
         Q ->
         M (H := H) unit.
@@ -542,6 +596,10 @@ Module mapping.
     Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
     
     Parameter encode : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
         ref Self ->
         mut_ref T ->
         M (H := H) unit.
@@ -552,6 +610,9 @@ Module mapping.
     }.
     
     Parameter decode : forall `{H : State.Trait},
+        forall
+        {I : Set},
+        `{parity_scale_codec.codec.Input.Trait I}
         mut_ref I ->
         M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
     
@@ -710,6 +771,11 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
   Parameter insert : forall `{H : State.Trait},
+      forall
+      {Q : Set} {R : Set},
+      `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
+      `{ink_storage_traits.storage.Storable.Trait R}
+      `{parity_scale_codec.encode_like.EncodeLike.Trait V R}
       mut_ref Self ->
       Q ->
       ref R ->
@@ -720,6 +786,9 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   }.
   
   Parameter get : forall `{H : State.Trait},
+      forall
+      {Q : Set},
+      `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
       ref Self ->
       Q ->
       M (H := H) (core.option.Option V).
@@ -729,6 +798,9 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   }.
   
   Parameter take : forall `{H : State.Trait},
+      forall
+      {Q : Set},
+      `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
       ref Self ->
       Q ->
       M (H := H) (core.option.Option V).
@@ -738,6 +810,9 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   }.
   
   Parameter size : forall `{H : State.Trait},
+      forall
+      {Q : Set},
+      `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
       ref Self ->
       Q ->
       M (H := H) (core.option.Option u32).
@@ -747,6 +822,9 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   }.
   
   Parameter contains : forall `{H : State.Trait},
+      forall
+      {Q : Set},
+      `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
       ref Self ->
       Q ->
       M (H := H) bool.
@@ -757,6 +835,9 @@ Module Impl_ink_storage_lazy_mapping_Mapping_K_V_KeyType_6.
   }.
   
   Parameter remove : forall `{H : State.Trait},
+      forall
+      {Q : Set},
+      `{parity_scale_codec.encode_like.EncodeLike.Trait K Q}
       ref Self ->
       Q ->
       M (H := H) unit.
@@ -775,6 +856,10 @@ Section
   Definition Self := ink_storage.lazy.mapping.Mapping K V KeyType.
   
   Parameter encode : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Output.Trait T}
+      `{core.marker.Sized.Trait T}
       ref Self ->
       mut_ref T ->
       M (H := H) unit.
@@ -784,6 +869,9 @@ Section
   }.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {I : Set},
+      `{parity_scale_codec.codec.Input.Trait I}
       mut_ref I ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   
@@ -1001,6 +1089,10 @@ Section
   Definition Self := ink_storage.lazy.Lazy V KeyType.
   
   Parameter encode : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Output.Trait T}
+      `{core.marker.Sized.Trait T}
       ref Self ->
       mut_ref T ->
       M (H := H) unit.
@@ -1010,6 +1102,9 @@ Section
   }.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {I : Set},
+      `{parity_scale_codec.codec.Input.Trait I}
       mut_ref I ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   

@@ -1023,7 +1023,11 @@ Module Impl_subtle_CtOption_T.
     Notation.dot := unwrap;
   }.
   
-  Parameter unwrap_or : forall `{H : State.Trait}, Self -> T -> M (H := H) T.
+  Parameter unwrap_or : forall `{H : State.Trait},
+      `{subtle.ConditionallySelectable.Trait T}
+      Self ->
+      T ->
+      M (H := H) T.
   
   Global Instance Method_unwrap_or `{H : State.Trait} :
     Notation.Dot "unwrap_or" := {
@@ -1031,6 +1035,10 @@ Module Impl_subtle_CtOption_T.
   }.
   
   Parameter unwrap_or_else : forall `{H : State.Trait},
+      forall
+      {F : Set},
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait unit F}
       Self ->
       F ->
       M (H := H) T.
@@ -1059,6 +1067,11 @@ Module Impl_subtle_CtOption_T.
   }.
   
   Parameter map : forall `{H : State.Trait},
+      forall
+      {U : Set} {F : Set},
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait (T) F}
       Self ->
       F ->
       M (H := H) (subtle.CtOption U).
@@ -1068,6 +1081,11 @@ Module Impl_subtle_CtOption_T.
   }.
   
   Parameter and_then : forall `{H : State.Trait},
+      forall
+      {U : Set} {F : Set},
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait (T) F}
       Self ->
       F ->
       M (H := H) (subtle.CtOption U).
@@ -1078,6 +1096,10 @@ Module Impl_subtle_CtOption_T.
   }.
   
   Parameter or_else : forall `{H : State.Trait},
+      forall
+      {F : Set},
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait unit F}
       Self ->
       F ->
       M (H := H) (subtle.CtOption T).

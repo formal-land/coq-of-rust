@@ -39,6 +39,8 @@ enum ImplItem {
         is_dead_code: bool,
     },
     Definition {
+        ty_params: Vec<String>,
+        where_predicates: Vec<WherePredicate>,
         args: Vec<(String, Box<CoqType>)>,
         ret_ty: Box<CoqType>,
         body: Box<Expr>,
@@ -552,10 +554,61 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                     _ => "Pattern".to_string(),
                                 }
                             });
+                            let ty_params = item
+                                .generics
+                                .params
+                                .iter()
+                                .filter_map(|param| match param.kind {
+                                    rustc_hir::GenericParamKind::Type { .. } => {
+                                        Some(param.name.ident().to_string())
+                                    }
+                                    _ => None,
+                                })
+                                .collect();
+                            let where_predicates = item
+                                .generics
+                                .predicates
+                                .iter()
+                                .flat_map(|predicate| match predicate {
+                                    rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+                                        let names_and_ty_params =
+                                            predicate.bounds.iter().filter_map(|bound| match bound {
+                                                rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
+                                                    let path = trait_ref.trait_ref.path;
+                                                    Some((
+                                                        compile_path(env, path),
+                                                        compile_path_ty_params(env, path),
+                                                    ))
+                                                }
+                                                _ => {
+                                                    env.tcx
+                                                        .sess
+                                                        .struct_span_warn(
+                                                            predicate.span,
+                                                            "Only trait bounds are currently supported.",
+                                                        )
+                                                        .note("It may change in future versions.")
+                                                        .emit();
+                                                    None
+                                                },
+                                            });
+                                        names_and_ty_params
+                                            .map(|(name, ty_params)| WherePredicate {
+                                                name,
+                                                ty_params,
+                                                ty: compile_type(env, predicate.bounded_ty),
+                                            })
+                                            .collect()
+                                    }
+                                    _ => vec![],
+                                })
+                                .collect();
                             let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
                             let ret_ty = compile_fn_ret_ty(env, output);
                             let expr = tcx.hir().body(*body_id).value;
                             ImplItem::Definition {
+                                ty_params,
+                                where_predicates,
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
                                 body: Box::new(compile_expr(env, expr)),
@@ -985,6 +1038,8 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             }
         }
         ImplItem::Definition {
+            ty_params,
+            where_predicates,
             args,
             ret_ty,
             body,
@@ -994,6 +1049,8 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
         } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Definition {
+                ty_params,
+                where_predicates,
                 args,
                 ret_ty: CoqType::monad(mt_ty(ret_ty)),
                 body: Box::new(Expr::Block(Box::new(body))),
@@ -1212,6 +1269,8 @@ impl ImplItem {
                 ),
             ]),
             ImplItem::Definition {
+                ty_params,
+                where_predicates,
                 args,
                 ret_ty,
                 body,
@@ -1221,8 +1280,8 @@ impl ImplItem {
             } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
-                    ty_params: None,
-                    where_predicates: None,
+                    ty_params: Some(ty_params),
+                    where_predicates: Some(where_predicates),
                     args,
                     ret_ty,
                     body,

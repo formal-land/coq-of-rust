@@ -7385,6 +7385,12 @@ Module env_access.
     }.
     
     Parameter instantiate_contract : forall `{H : State.Trait},
+        forall
+        {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+        `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{core.convert.AsRef.Trait (Slice u8) Salt}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
         Self ->
         ref
           (ink_env.call.create_builder.CreateParams
@@ -7404,6 +7410,10 @@ Module env_access.
     }.
     
     Parameter invoke_contract : forall `{H : State.Trait},
+        forall
+        {Args : Set} {R : Set},
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
         Self ->
         ref
           (ink_env.call.call_builder.CallParams
@@ -7419,6 +7429,10 @@ Module env_access.
     }.
     
     Parameter invoke_contract_delegate : forall `{H : State.Trait},
+        forall
+        {Args : Set} {R : Set},
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
         Self ->
         ref
           (ink_env.call.call_builder.CallParams
@@ -7455,6 +7469,9 @@ Module env_access.
     }.
     
     Parameter hash_bytes : forall `{H : State.Trait},
+        forall
+        {H : Set},
+        `{ink_env.hash.CryptoHash.Trait H}
         Self ->
         ref (Slice u8) ->
         M (H := H) ink_env.hash.HashOutput.Type.
@@ -7465,6 +7482,10 @@ Module env_access.
     }.
     
     Parameter hash_encoded : forall `{H : State.Trait},
+        forall
+        {H : Set} {V : Set},
+        `{ink_env.hash.CryptoHash.Trait H}
+        `{parity_scale_codec.codec.Encode.Trait V}
         Self ->
         ref V ->
         M (H := H) ink_env.hash.HashOutput.Type.
@@ -7544,6 +7565,9 @@ Module env_access.
     }.
     
     Parameter call_runtime : forall `{H : State.Trait},
+        forall
+        {Call : Set},
+        `{parity_scale_codec.codec.Encode.Trait Call}
         Self ->
         ref Call ->
         M (H := H) (ink_env.error.Result unit).
@@ -7738,6 +7762,12 @@ Module Impl_ink_env_access_EnvAccess_E_4.
   }.
   
   Parameter instantiate_contract : forall `{H : State.Trait},
+      forall
+      {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait (Slice u8) Salt}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       Self ->
       ref
         (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
@@ -7752,6 +7782,10 @@ Module Impl_ink_env_access_EnvAccess_E_4.
   }.
   
   Parameter invoke_contract : forall `{H : State.Trait},
+      forall
+      {Args : Set} {R : Set},
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       Self ->
       ref
         (ink_env.call.call_builder.CallParams
@@ -7767,6 +7801,10 @@ Module Impl_ink_env_access_EnvAccess_E_4.
   }.
   
   Parameter invoke_contract_delegate : forall `{H : State.Trait},
+      forall
+      {Args : Set} {R : Set},
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       Self ->
       ref
         (ink_env.call.call_builder.CallParams
@@ -7803,6 +7841,9 @@ Module Impl_ink_env_access_EnvAccess_E_4.
   }.
   
   Parameter hash_bytes : forall `{H : State.Trait},
+      forall
+      {H : Set},
+      `{ink_env.hash.CryptoHash.Trait H}
       Self ->
       ref (Slice u8) ->
       M (H := H) ink_env.hash.HashOutput.Type.
@@ -7813,6 +7854,10 @@ Module Impl_ink_env_access_EnvAccess_E_4.
   }.
   
   Parameter hash_encoded : forall `{H : State.Trait},
+      forall
+      {H : Set} {V : Set},
+      `{ink_env.hash.CryptoHash.Trait H}
+      `{parity_scale_codec.codec.Encode.Trait V}
       Self ->
       ref V ->
       M (H := H) ink_env.hash.HashOutput.Type.
@@ -7892,6 +7937,9 @@ Module Impl_ink_env_access_EnvAccess_E_4.
   }.
   
   Parameter call_runtime : forall `{H : State.Trait},
+      forall
+      {Call : Set},
+      `{parity_scale_codec.codec.Encode.Trait Call}
       Self ->
       ref Call ->
       M (H := H) (ink_env.error.Result unit).

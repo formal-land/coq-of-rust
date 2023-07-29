@@ -1551,6 +1551,10 @@ Module storage.
     Definition Self := P.
     
     Parameter encode : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
         ref Self ->
         mut_ref T ->
         M (H := H) unit.
@@ -1561,6 +1565,9 @@ Module storage.
     }.
     
     Parameter decode : forall `{H : State.Trait},
+        forall
+        {I : Set},
+        `{parity_scale_codec.codec.Input.Trait I}
         mut_ref I ->
         M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
     
@@ -1674,6 +1681,10 @@ Section Impl_ink_storage_traits_storage_Storable_for_P.
   Definition Self := P.
   
   Parameter encode : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Output.Trait T}
+      `{core.marker.Sized.Trait T}
       ref Self ->
       mut_ref T ->
       M (H := H) unit.
@@ -1683,6 +1694,9 @@ Section Impl_ink_storage_traits_storage_Storable_for_P.
   }.
   
   Parameter decode : forall `{H : State.Trait},
+      forall
+      {I : Set},
+      `{parity_scale_codec.codec.Input.Trait I}
       mut_ref I ->
       M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
   

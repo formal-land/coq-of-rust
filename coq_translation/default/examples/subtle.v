@@ -1599,6 +1599,7 @@ Module Impl_subtle_CtOption_T.
   
   Definition unwrap_or
       `{H : State.Trait}
+      `{subtle.ConditionallySelectable.Trait T}
       (self : Self)
       (def : T)
       : M (H := H) T :=
@@ -1614,6 +1615,9 @@ Module Impl_subtle_CtOption_T.
   
   Definition unwrap_or_else
       `{H : State.Trait}
+      {F : Set}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait unit F}
       (self : Self)
       (f : F)
       : M (H := H) T :=
@@ -1652,6 +1656,10 @@ Module Impl_subtle_CtOption_T.
   
   Definition map
       `{H : State.Trait}
+      {U F : Set}
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait (T) F}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
@@ -1670,6 +1678,10 @@ Module Impl_subtle_CtOption_T.
   
   Definition and_then
       `{H : State.Trait}
+      {U F : Set}
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait (T) F}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
@@ -1691,6 +1703,9 @@ Module Impl_subtle_CtOption_T.
   
   Definition or_else
       `{H : State.Trait}
+      {F : Set}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait unit F}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption T) :=
