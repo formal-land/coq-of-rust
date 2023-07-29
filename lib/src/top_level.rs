@@ -397,7 +397,15 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     rustc_hir::GenericParamKind::Type { .. } => {
                         Some(param.name.ident().to_string())
                     }
-                    _ => None,
+                    rustc_hir::GenericParamKind::Const { .. } => {
+                        env.tcx
+                            .sess
+                            .struct_span_warn(param.span, "Constant parameters are not supported.")
+                            .note("It should be supported in future versions.")
+                            .emit();
+                        None
+                    }
+                    rustc_hir::GenericParamKind::Lifetime { .. } => None,
                 })
                 .collect();
 
