@@ -14,7 +14,7 @@ Module Matrix.
     _ : f32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
   }.
@@ -28,7 +28,7 @@ Module Matrix.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End Matrix.
-Definition Matrix := Matrix.t.
+Definition Matrix := @Matrix.t.
 
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self := tuples.Matrix.

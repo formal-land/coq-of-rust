@@ -9,7 +9,7 @@ Module key.
   Module KeyComposer.
     Inductive t : Set := Build.
   End KeyComposer.
-  Definition KeyComposer := KeyComposer.t.
+  Definition KeyComposer := @KeyComposer.t.
   
   Module Impl_ink_primitives_key_KeyComposer.
     Definition Self := ink_primitives.key.KeyComposer.
@@ -134,7 +134,7 @@ Definition Key : Set := u32.
 Module KeyComposer.
   Inductive t : Set := Build.
 End KeyComposer.
-Definition KeyComposer := KeyComposer.t.
+Definition KeyComposer := @KeyComposer.t.
 
 Module Impl_ink_primitives_key_KeyComposer_2.
   Definition Self := ink_primitives.key.KeyComposer.
@@ -258,12 +258,12 @@ Module types.
       _ : list u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End AccountId.
-  Definition AccountId := AccountId.t.
+  Definition AccountId := @AccountId.t.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
     Definition Self := ink_primitives.types.AccountId.
@@ -562,12 +562,12 @@ Module types.
       _ : list u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End Hash.
-  Definition Hash := Hash.t.
+  Definition Hash := @Hash.t.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
     Definition Self := ink_primitives.types.Hash.
@@ -928,12 +928,12 @@ Module AccountId.
     _ : list u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End AccountId.
-Definition AccountId := AccountId.t.
+Definition AccountId := @AccountId.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
   Definition Self := ink_primitives.types.AccountId.
@@ -959,12 +959,12 @@ Module Visitor.
     _ : core.marker.PhantomData unit;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Visitor.
-Definition Visitor := Visitor.t.
+Definition Visitor := @Visitor.t.
 
 Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId.
   Definition Self := ink_primitives.types.AccountId.
@@ -1392,12 +1392,12 @@ Module Hash.
     _ : list u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Hash.
-Definition Hash := Hash.t.
+Definition Hash := @Hash.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.
@@ -1423,12 +1423,12 @@ Module Visitor.
     _ : core.marker.PhantomData unit;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Visitor.
-Definition Visitor := Visitor.t.
+Definition Visitor := @Visitor.t.
 
 Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.

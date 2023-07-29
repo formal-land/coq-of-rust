@@ -2,17 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Ref.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : ref T;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Ref.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : ref T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Ref.
 End Ref.
-Definition Ref := Ref.t.
+Definition Ref := @Ref.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.

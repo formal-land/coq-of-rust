@@ -61,12 +61,12 @@ Module ext.
       _ : u32;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End ReturnCode.
-  Definition ReturnCode := ReturnCode.t.
+  Definition ReturnCode := @ReturnCode.t.
   
   Module Impl_ink_engine_ext_ReturnCode.
     Definition Self := ink_engine.ext.ReturnCode.
@@ -109,7 +109,7 @@ Module ext.
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End Engine.
-  Definition Engine : Set := Engine.t.
+  Definition Engine : Set := @Engine.t.
   
   Module ChainSpec.
     Unset Primitive Projections.
@@ -130,7 +130,7 @@ Module ext.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End ChainSpec.
-  Definition ChainSpec : Set := ChainSpec.t.
+  Definition ChainSpec : Set := @ChainSpec.t.
   
   Module Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
     Definition Self := ink_engine.ext.ChainSpec.
@@ -521,12 +521,12 @@ Module ReturnCode.
     _ : u32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End ReturnCode.
-Definition ReturnCode := ReturnCode.t.
+Definition ReturnCode := @ReturnCode.t.
 
 Module Impl_ink_engine_ext_ReturnCode_2.
   Definition Self := ink_engine.ext.ReturnCode.
@@ -567,7 +567,7 @@ Module Engine.
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
   }.
 End Engine.
-Definition Engine : Set := Engine.t.
+Definition Engine : Set := @Engine.t.
 
 Module ChainSpec.
   Unset Primitive Projections.
@@ -588,7 +588,7 @@ Module ChainSpec.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End ChainSpec.
-Definition ChainSpec : Set := ChainSpec.t.
+Definition ChainSpec : Set := @ChainSpec.t.
 
 Module Impl_core_default_Default_for_ink_engine_ext_ChainSpec.
   Definition Self := ink_engine.ext.ChainSpec.
@@ -934,7 +934,7 @@ Module test_api.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
-  Definition EmittedEvent : Set := EmittedEvent.t.
+  Definition EmittedEvent : Set := @EmittedEvent.t.
   
   Module Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
     Definition Self := ink_engine.test_api.EmittedEvent.
@@ -989,7 +989,7 @@ Module test_api.
       Notation.dot '(Build_t x0) := x0;
     }.
   End RecordedDebugMessages.
-  Definition RecordedDebugMessages : Set := RecordedDebugMessages.t.
+  Definition RecordedDebugMessages : Set := @RecordedDebugMessages.t.
   
   Module Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
     Definition Self := ink_engine.test_api.RecordedDebugMessages.
@@ -1115,7 +1115,7 @@ Module test_api.
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End DebugInfo.
-  Definition DebugInfo : Set := DebugInfo.t.
+  Definition DebugInfo : Set := @DebugInfo.t.
   
   Module Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
     Definition Self := ink_engine.test_api.DebugInfo.
@@ -1408,7 +1408,7 @@ Module EmittedEvent.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
-Definition EmittedEvent : Set := EmittedEvent.t.
+Definition EmittedEvent : Set := @EmittedEvent.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_test_api_EmittedEvent.
   Definition Self := ink_engine.test_api.EmittedEvent.
@@ -1463,7 +1463,7 @@ Module RecordedDebugMessages.
     Notation.dot '(Build_t x0) := x0;
   }.
 End RecordedDebugMessages.
-Definition RecordedDebugMessages : Set := RecordedDebugMessages.t.
+Definition RecordedDebugMessages : Set := @RecordedDebugMessages.t.
 
 Module Impl_core_clone_Clone_for_ink_engine_test_api_RecordedDebugMessages.
   Definition Self := ink_engine.test_api.RecordedDebugMessages.
@@ -1584,7 +1584,7 @@ Module DebugInfo.
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
   }.
 End DebugInfo.
-Definition DebugInfo : Set := DebugInfo.t.
+Definition DebugInfo : Set := @DebugInfo.t.
 
 Module Impl_core_default_Default_for_ink_engine_test_api_DebugInfo.
   Definition Self := ink_engine.test_api.DebugInfo.
@@ -1880,7 +1880,7 @@ Module chain_extension.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End ChainExtensionHandler.
-  Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
+  Definition ChainExtensionHandler : Set := @ChainExtensionHandler.t.
   
   Module ExtensionId.
     Unset Primitive Projections.
@@ -1888,12 +1888,12 @@ Module chain_extension.
       _ : u32;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End ExtensionId.
-  Definition ExtensionId := ExtensionId.t.
+  Definition ExtensionId := @ExtensionId.t.
   
   Module Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
     Definition Self := ink_engine.chain_extension.ExtensionId.
@@ -2130,7 +2130,7 @@ Module ChainExtensionHandler.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End ChainExtensionHandler.
-Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
+Definition ChainExtensionHandler : Set := @ChainExtensionHandler.t.
 
 Module ExtensionId.
   Unset Primitive Projections.
@@ -2138,12 +2138,12 @@ Module ExtensionId.
     _ : u32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End ExtensionId.
-Definition ExtensionId := ExtensionId.t.
+Definition ExtensionId := @ExtensionId.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
   Definition Self := ink_engine.chain_extension.ExtensionId.
@@ -2453,7 +2453,7 @@ Module database.
       Notation.dot '(Build_t x0) := x0;
     }.
   End Database.
-  Definition Database : Set := Database.t.
+  Definition Database : Set := @Database.t.
   
   Module Impl_core_default_Default_for_ink_engine_database_Database.
     Definition Self := ink_engine.database.Database.
@@ -2606,7 +2606,7 @@ Module Database.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Database.
-Definition Database : Set := Database.t.
+Definition Database : Set := @Database.t.
 
 Module Impl_core_default_Default_for_ink_engine_database_Database.
   Definition Self := ink_engine.database.Database.
@@ -2757,7 +2757,7 @@ Module exec_context.
       Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
     }.
   End ExecContext.
-  Definition ExecContext : Set := ExecContext.t.
+  Definition ExecContext : Set := @ExecContext.t.
   
   Module Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
     Definition Self := ink_engine.exec_context.ExecContext.
@@ -2855,7 +2855,7 @@ Module ExecContext.
     Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
   }.
 End ExecContext.
-Definition ExecContext : Set := ExecContext.t.
+Definition ExecContext : Set := @ExecContext.t.
 
 Module Impl_core_default_Default_for_ink_engine_exec_context_ExecContext.
   Definition Self := ink_engine.exec_context.ExecContext.
@@ -2977,12 +2977,12 @@ Module types.
       _ : alloc.vec.Vec u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End AccountId.
-  Definition AccountId := AccountId.t.
+  Definition AccountId := @AccountId.t.
   
   Module Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
     Definition Self := ink_engine.types.AccountId.
@@ -3162,12 +3162,12 @@ Module types.
       _ : alloc.vec.Vec u8;
     }.
     Global Set Primitive Projections.
-  
+    
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End Key.
-  Definition Key := Key.t.
+  Definition Key := @Key.t.
   
   Module Impl_core_default_Default_for_ink_engine_types_Key.
     Definition Self := ink_engine.types.Key.
@@ -3450,12 +3450,12 @@ Module AccountId.
     _ : alloc.vec.Vec u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End AccountId.
-Definition AccountId := AccountId.t.
+Definition AccountId := @AccountId.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
   Definition Self := ink_engine.types.AccountId.
@@ -3634,12 +3634,12 @@ Module Key.
     _ : alloc.vec.Vec u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Key.
-Definition Key := Key.t.
+Definition Key := @Key.t.
 
 Module Impl_core_default_Default_for_ink_engine_types_Key.
   Definition Self := ink_engine.types.Key.

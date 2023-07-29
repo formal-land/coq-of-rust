@@ -12,7 +12,7 @@ Module Person.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Person.
-Definition Person : Set := Person.t.
+Definition Person : Set := @Person.t.
 
 Module Job.
   Unset Primitive Projections.
@@ -27,7 +27,7 @@ Module Job.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Job.
-Definition Job : Set := Job.t.
+Definition Job : Set := @Job.t.
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
@@ -67,7 +67,7 @@ Module PhoneNumber.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End PhoneNumber.
-Definition PhoneNumber : Set := PhoneNumber.t.
+Definition PhoneNumber : Set := @PhoneNumber.t.
 
 Module
   Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.

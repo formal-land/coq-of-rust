@@ -16,7 +16,7 @@ Module Point.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point : Set := Point.t.
+Definition Point : Set := @Point.t.
 
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
@@ -67,7 +67,7 @@ Module Rectangle.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := Rectangle.t.
+Definition Rectangle : Set := @Rectangle.t.
 
 Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self := associated_functions_and_methods.Rectangle.
@@ -154,7 +154,7 @@ Module Pair.
     _ : alloc.boxed.Box i32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
@@ -162,7 +162,7 @@ Module Pair.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Pair.
-Definition Pair := Pair.t.
+Definition Pair := @Pair.t.
 
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self := associated_functions_and_methods.Pair.

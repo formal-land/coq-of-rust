@@ -62,17 +62,13 @@ examples/functions/functions.v
 examples/functions/higher_order_functions.v
 examples/generics/generics_associated_types_problem.v
 examples/generics/generics_associated_types_solution.v
-examples/generics/generics_bounds_test_case_empty_bounds.v
 examples/generics/generics_bounds.v
-examples/generics/generics_functions.v
 examples/generics/generics_implementation.v
 examples/generics/generics_multiple_bounds.v
 examples/generics/generics_new_type_idiom.v
 examples/generics/generics_phantom_type_test_case_unit_clarification.v
 examples/generics/generics_phantom_type.v
-examples/generics/generics_traits.v
 examples/generics/generics_where_clauses.v
-examples/generics/generics.v
 examples/guessing_game/guessing_game.v
 examples/hello_world/formatted_print.v
 examples/macro_rules/macro_rules_designators.v

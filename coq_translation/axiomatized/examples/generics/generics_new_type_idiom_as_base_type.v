@@ -7,12 +7,12 @@ Module Years.
     _ : i64;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Years.
-Definition Years := Years.t.
+Definition Years := @Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{H : State.Trait}, M (H := H) unit.

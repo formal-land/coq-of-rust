@@ -10,7 +10,7 @@ Module bump.
   Module BumpAllocator.
     Inductive t : Set := Build.
   End BumpAllocator.
-  Definition BumpAllocator := BumpAllocator.t.
+  Definition BumpAllocator := @BumpAllocator.t.
   
   Module
     Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
@@ -67,7 +67,7 @@ Module bump.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End InnerAlloc.
-  Definition InnerAlloc : Set := InnerAlloc.t.
+  Definition InnerAlloc : Set := @InnerAlloc.t.
   
   Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
@@ -175,7 +175,7 @@ Definition INNER `{H : State.Trait} : ink_allocator.bump.InnerAlloc :=
 Module BumpAllocator.
   Inductive t : Set := Build.
 End BumpAllocator.
-Definition BumpAllocator := BumpAllocator.t.
+Definition BumpAllocator := @BumpAllocator.t.
 
 Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   Definition Self := ink_allocator.bump.BumpAllocator.
@@ -231,7 +231,7 @@ Module InnerAlloc.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End InnerAlloc.
-Definition InnerAlloc : Set := InnerAlloc.t.
+Definition InnerAlloc : Set := @InnerAlloc.t.
 
 Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.

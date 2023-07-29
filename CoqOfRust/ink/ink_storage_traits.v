@@ -16,7 +16,7 @@ Module impls.
   Module AutoKey.
     Inductive t : Set := Build.
   End AutoKey.
-  Definition AutoKey := AutoKey.t.
+  Definition AutoKey := @AutoKey.t.
   
   Module Impl_core_default_Default_for_ink_storage_traits_impls_AutoKey.
     Definition Self := ink_storage_traits.impls.AutoKey.
@@ -178,17 +178,20 @@ Module impls.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
   
   Module ManualKey.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : core.marker.PhantomData (ParentKey);
-    }.
-    Global Set Primitive Projections.
-  
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section ManualKey.
+      Context {ParentKey : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : core.marker.PhantomData (ParentKey);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End ManualKey.
   End ManualKey.
-  Definition ManualKey := ManualKey.t.
+  Definition ManualKey := @ManualKey.t.
   
   Module
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -418,17 +421,20 @@ Module impls.
   End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   
   Module ResolverKey.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : core.marker.PhantomData ((L * R));
-    }.
-    Global Set Primitive Projections.
-  
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section ResolverKey.
+      Context {L R : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : core.marker.PhantomData ((L * R));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End ResolverKey.
   End ResolverKey.
-  Definition ResolverKey := ResolverKey.t.
+  Definition ResolverKey := @ResolverKey.t.
   
   Module Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section
@@ -742,7 +748,7 @@ End KeyType.
 Module AutoKey.
   Inductive t : Set := Build.
 End AutoKey.
-Definition AutoKey := AutoKey.t.
+Definition AutoKey := @AutoKey.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_AutoKey.
   Definition Self := ink_storage_traits.impls.AutoKey.
@@ -921,17 +927,20 @@ Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_AutoKey.
 
 Module ManualKey.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData (ParentKey);
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section ManualKey.
+    Context {ParentKey : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (ParentKey);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End ManualKey.
 End ManualKey.
-Definition ManualKey := ManualKey.t.
+Definition ManualKey := @ManualKey.t.
 
 Module
   Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1180,17 +1189,20 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
 
 Module ResolverKey.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData ((L * R));
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section ResolverKey.
+    Context {L R : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData ((L * R));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End ResolverKey.
 End ResolverKey.
-Definition ResolverKey := ResolverKey.t.
+Definition ResolverKey := @ResolverKey.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
 Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.

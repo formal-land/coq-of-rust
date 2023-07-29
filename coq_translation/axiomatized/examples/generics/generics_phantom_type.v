@@ -2,21 +2,24 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PhantomTuple.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : A;
-    _ : core.marker.PhantomData B;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section PhantomTuple.
+    Context {A B : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : A;
+      _ : core.marker.PhantomData B;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_1 : Notation.Dot 1 := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End PhantomTuple.
 End PhantomTuple.
-Definition PhantomTuple := PhantomTuple.t.
+Definition PhantomTuple := @PhantomTuple.t.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -55,21 +58,24 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
-  Unset Primitive Projections.
-  Record t : Set := {
-    first : A;
-    phantom : core.marker.PhantomData B;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_first : Notation.Dot "first" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_phantom : Notation.Dot "phantom" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section PhantomStruct.
+    Context {A B : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      first : A;
+      phantom : core.marker.PhantomData B;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_first : Notation.Dot "first" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_phantom : Notation.Dot "phantom" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End PhantomStruct.
 End PhantomStruct.
-Definition PhantomStruct : Set := PhantomStruct.t.
+Definition PhantomStruct : Set := @PhantomStruct.t.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.

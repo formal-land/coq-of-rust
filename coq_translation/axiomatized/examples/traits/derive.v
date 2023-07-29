@@ -7,12 +7,12 @@ Module Centimeters.
     _ : f64;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Centimeters.
-Definition Centimeters := Centimeters.t.
+Definition Centimeters := @Centimeters.t.
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
@@ -62,12 +62,12 @@ Module Inches.
     _ : i32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Inches.
-Definition Inches := Inches.t.
+Definition Inches := @Inches.t.
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self := derive.Inches.
@@ -105,12 +105,12 @@ Module Seconds.
     _ : i32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Seconds.
-Definition Seconds := Seconds.t.
+Definition Seconds := @Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{H : State.Trait}, M (H := H) unit.

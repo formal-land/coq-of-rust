@@ -4,17 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Module Cardinal.
   Inductive t : Set := Build.
 End Cardinal.
-Definition Cardinal := Cardinal.t.
+Definition Cardinal := @Cardinal.t.
 
 Module BlueJay.
   Inductive t : Set := Build.
 End BlueJay.
-Definition BlueJay := BlueJay.t.
+Definition BlueJay := @BlueJay.t.
 
 Module Turkey.
   Inductive t : Set := Build.
 End Turkey.
-Definition Turkey := Turkey.t.
+Definition Turkey := @Turkey.t.
 
 Module Red.
   Unset Primitive Projections.

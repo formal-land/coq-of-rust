@@ -52,29 +52,32 @@ Module client.
       (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
   
   Module InstantiationResult.
-    Unset Primitive Projections.
-    Record t : Set := {
-      account_id : ImplE.AccountId;
-      dry_run
-        :
-        pallet_contracts_primitives.ContractInstantiateResult
-          ImplC.AccountId
-          ImplE.Balance;
-      events : subxt.blocks.block_types.ExtrinsicEvents C;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_account_id : Notation.Dot "account_id" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_events : Notation.Dot "events" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
+    Section InstantiationResult.
+      Context {C E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        account_id : ImplE.AccountId;
+        dry_run
+          :
+          pallet_contracts_primitives.ContractInstantiateResult
+            ImplC.AccountId
+            ImplE.Balance;
+        events : subxt.blocks.block_types.ExtrinsicEvents C;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_account_id : Notation.Dot "account_id" := {
+        Notation.dot '(Build_t x0 _ _) := x0;
+      }.
+      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+        Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_events : Notation.Dot "events" := {
+        Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+    End InstantiationResult.
   End InstantiationResult.
-  Definition InstantiationResult : Set := InstantiationResult.t.
+  Definition InstantiationResult : Set := @InstantiationResult.t.
   
   Module Impl_ink_e2e_client_InstantiationResult_C_E.
     Definition Self := ink_e2e.client.InstantiationResult C E.
@@ -89,27 +92,30 @@ Module client.
   End Impl_ink_e2e_client_InstantiationResult_C_E.
   
   Module UploadResult.
-    Unset Primitive Projections.
-    Record t : Set := {
-      code_hash : ImplE.Hash;
-      dry_run
-        :
-        pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
-      events : subxt.blocks.block_types.ExtrinsicEvents C;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_events : Notation.Dot "events" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
+    Section UploadResult.
+      Context {C E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : ImplE.Hash;
+        dry_run
+          :
+          pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
+        events : subxt.blocks.block_types.ExtrinsicEvents C;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0 _ _) := x0;
+      }.
+      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+        Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_events : Notation.Dot "events" := {
+        Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+    End UploadResult.
   End UploadResult.
-  Definition UploadResult : Set := UploadResult.t.
+  Definition UploadResult : Set := @UploadResult.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -154,21 +160,24 @@ Module client.
   End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   
   Module CallResult.
-    Unset Primitive Projections.
-    Record t : Set := {
-      dry_run : ink_e2e.client.CallDryRunResult E V;
-      events : subxt.blocks.block_types.ExtrinsicEvents C;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_events : Notation.Dot "events" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section CallResult.
+      Context {C E V : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        dry_run : ink_e2e.client.CallDryRunResult E V;
+        events : subxt.blocks.block_types.ExtrinsicEvents C;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_events : Notation.Dot "events" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End CallResult.
   End CallResult.
-  Definition CallResult : Set := CallResult.t.
+  Definition CallResult : Set := @CallResult.t.
   
   Module Impl_ink_e2e_client_CallResult_C_E_V.
     Definition Self := ink_e2e.client.CallResult C E V.
@@ -241,23 +250,26 @@ Module client.
   End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   
   Module CallDryRunResult.
-    Unset Primitive Projections.
-    Record t : Set := {
-      exec_result
-        :
-        pallet_contracts_primitives.ContractExecResult ImplE.Balance;
-      _marker : core.marker.PhantomData V;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_exec_result : Notation.Dot "exec_result" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get__marker : Notation.Dot "_marker" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section CallDryRunResult.
+      Context {E V : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        exec_result
+          :
+          pallet_contracts_primitives.ContractExecResult ImplE.Balance;
+        _marker : core.marker.PhantomData V;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_exec_result : Notation.Dot "exec_result" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get__marker : Notation.Dot "_marker" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End CallDryRunResult.
   End CallDryRunResult.
-  Definition CallDryRunResult : Set := CallDryRunResult.t.
+  Definition CallDryRunResult : Set := @CallDryRunResult.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -382,21 +394,24 @@ Module client.
   End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   
   Module ContractInstantiatedEvent.
-    Unset Primitive Projections.
-    Record t : Set := {
-      deployer : ImplE.AccountId;
-      contract : ImplE.AccountId;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_deployer : Notation.Dot "deployer" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_contract : Notation.Dot "contract" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section ContractInstantiatedEvent.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        deployer : ImplE.AccountId;
+        contract : ImplE.AccountId;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_deployer : Notation.Dot "deployer" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_contract : Notation.Dot "contract" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ContractInstantiatedEvent.
   End ContractInstantiatedEvent.
-  Definition ContractInstantiatedEvent : Set := ContractInstantiatedEvent.t.
+  Definition ContractInstantiatedEvent : Set := @ContractInstantiatedEvent.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -513,17 +528,20 @@ Module client.
     Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
   
   Module CodeStoredEvent.
-    Unset Primitive Projections.
-    Record t : Set := {
-      code_hash : ImplE.Hash;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section CodeStoredEvent.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : ImplE.Hash;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End CodeStoredEvent.
   End CodeStoredEvent.
-  Definition CodeStoredEvent : Set := CodeStoredEvent.t.
+  Definition CodeStoredEvent : Set := @CodeStoredEvent.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
@@ -628,25 +646,28 @@ Module client.
   End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   
   Module Client.
-    Unset Primitive Projections.
-    Record t : Set := {
-      api : ink_e2e.xts.ContractsApi C E;
-      contracts
-        :
-        alloc.collections.btree.map.BTreeMap
-          alloc.string.String
-          std.path.PathBuf;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_api : Notation.Dot "api" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_contracts : Notation.Dot "contracts" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section Client.
+      Context {C E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        api : ink_e2e.xts.ContractsApi C E;
+        contracts
+          :
+          alloc.collections.btree.map.BTreeMap
+            alloc.string.String
+            std.path.PathBuf;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_api : Notation.Dot "api" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_contracts : Notation.Dot "contracts" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End Client.
   End Client.
-  Definition Client : Set := Client.t.
+  Definition Client : Set := @Client.t.
   
   Module Impl_ink_e2e_client_Client_C_E.
     Definition Self := ink_e2e.client.Client C E.
@@ -830,29 +851,32 @@ Definition CallBuilderFinal : Set :=
     (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
 
 Module InstantiationResult.
-  Unset Primitive Projections.
-  Record t : Set := {
-    account_id : ImplE.AccountId;
-    dry_run
-      :
-      pallet_contracts_primitives.ContractInstantiateResult
-        ImplC.AccountId
-        ImplE.Balance;
-    events : subxt.blocks.block_types.ExtrinsicEvents C;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_account_id : Notation.Dot "account_id" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_events : Notation.Dot "events" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
+  Section InstantiationResult.
+    Context {C E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      account_id : ImplE.AccountId;
+      dry_run
+        :
+        pallet_contracts_primitives.ContractInstantiateResult
+          ImplC.AccountId
+          ImplE.Balance;
+      events : subxt.blocks.block_types.ExtrinsicEvents C;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_account_id : Notation.Dot "account_id" := {
+      Notation.dot '(Build_t x0 _ _) := x0;
+    }.
+    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_events : Notation.Dot "events" := {
+      Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+  End InstantiationResult.
 End InstantiationResult.
-Definition InstantiationResult : Set := InstantiationResult.t.
+Definition InstantiationResult : Set := @InstantiationResult.t.
 
 Module Impl_ink_e2e_client_InstantiationResult_C_E_2.
   Definition Self := ink_e2e.client.InstantiationResult C E.
@@ -867,27 +891,30 @@ Module Impl_ink_e2e_client_InstantiationResult_C_E_2.
 End Impl_ink_e2e_client_InstantiationResult_C_E_2.
 
 Module UploadResult.
-  Unset Primitive Projections.
-  Record t : Set := {
-    code_hash : ImplE.Hash;
-    dry_run
-      :
-      pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
-    events : subxt.blocks.block_types.ExtrinsicEvents C;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_events : Notation.Dot "events" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
+  Section UploadResult.
+    Context {C E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : ImplE.Hash;
+      dry_run
+        :
+        pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
+      events : subxt.blocks.block_types.ExtrinsicEvents C;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot '(Build_t x0 _ _) := x0;
+    }.
+    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_events : Notation.Dot "events" := {
+      Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+  End UploadResult.
 End UploadResult.
-Definition UploadResult : Set := UploadResult.t.
+Definition UploadResult : Set := @UploadResult.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
@@ -932,21 +959,24 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
 
 Module CallResult.
-  Unset Primitive Projections.
-  Record t : Set := {
-    dry_run : ink_e2e.client.CallDryRunResult E V;
-    events : subxt.blocks.block_types.ExtrinsicEvents C;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_dry_run : Notation.Dot "dry_run" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_events : Notation.Dot "events" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section CallResult.
+    Context {C E V : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      dry_run : ink_e2e.client.CallDryRunResult E V;
+      events : subxt.blocks.block_types.ExtrinsicEvents C;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_dry_run : Notation.Dot "dry_run" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_events : Notation.Dot "events" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End CallResult.
 End CallResult.
-Definition CallResult : Set := CallResult.t.
+Definition CallResult : Set := @CallResult.t.
 
 Module Impl_ink_e2e_client_CallResult_C_E_V_2.
   Definition Self := ink_e2e.client.CallResult C E V.
@@ -1019,21 +1049,26 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 
 Module CallDryRunResult.
-  Unset Primitive Projections.
-  Record t : Set := {
-    exec_result : pallet_contracts_primitives.ContractExecResult ImplE.Balance;
-    _marker : core.marker.PhantomData V;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_exec_result : Notation.Dot "exec_result" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get__marker : Notation.Dot "_marker" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section CallDryRunResult.
+    Context {E V : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      exec_result
+        :
+        pallet_contracts_primitives.ContractExecResult ImplE.Balance;
+      _marker : core.marker.PhantomData V;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_exec_result : Notation.Dot "exec_result" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get__marker : Notation.Dot "_marker" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End CallDryRunResult.
 End CallDryRunResult.
-Definition CallDryRunResult : Set := CallDryRunResult.t.
+Definition CallDryRunResult : Set := @CallDryRunResult.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
@@ -1155,21 +1190,24 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 
 Module ContractInstantiatedEvent.
-  Unset Primitive Projections.
-  Record t : Set := {
-    deployer : ImplE.AccountId;
-    contract : ImplE.AccountId;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_deployer : Notation.Dot "deployer" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_contract : Notation.Dot "contract" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section ContractInstantiatedEvent.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      deployer : ImplE.AccountId;
+      contract : ImplE.AccountId;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_deployer : Notation.Dot "deployer" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_contract : Notation.Dot "contract" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End ContractInstantiatedEvent.
 End ContractInstantiatedEvent.
-Definition ContractInstantiatedEvent : Set := ContractInstantiatedEvent.t.
+Definition ContractInstantiatedEvent : Set := @ContractInstantiatedEvent.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1259,17 +1297,20 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
 
 Module Visitor.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData (E);
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Visitor.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (E);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Visitor.
 End Visitor.
-Definition Visitor := Visitor.t.
+Definition Visitor := @Visitor.t.
 
 Module
   Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1458,17 +1499,20 @@ End
   Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
 
 Module CodeStoredEvent.
-  Unset Primitive Projections.
-  Record t : Set := {
-    code_hash : ImplE.Hash;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section CodeStoredEvent.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : ImplE.Hash;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End CodeStoredEvent.
 End CodeStoredEvent.
-Definition CodeStoredEvent : Set := CodeStoredEvent.t.
+Definition CodeStoredEvent : Set := @CodeStoredEvent.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
@@ -1572,17 +1616,20 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
 
 Module Visitor.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData (E);
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Visitor.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (E);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Visitor.
 End Visitor.
-Definition Visitor := Visitor.t.
+Definition Visitor := @Visitor.t.
 
 Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
 Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
@@ -1751,23 +1798,28 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 
 Module Client.
-  Unset Primitive Projections.
-  Record t : Set := {
-    api : ink_e2e.xts.ContractsApi C E;
-    contracts
-      :
-      alloc.collections.btree.map.BTreeMap alloc.string.String std.path.PathBuf;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_api : Notation.Dot "api" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_contracts : Notation.Dot "contracts" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section Client.
+    Context {C E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      api : ink_e2e.xts.ContractsApi C E;
+      contracts
+        :
+        alloc.collections.btree.map.BTreeMap
+          alloc.string.String
+          std.path.PathBuf;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_api : Notation.Dot "api" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_contracts : Notation.Dot "contracts" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End Client.
 End Client.
-Definition Client : Set := Client.t.
+Definition Client : Set := @Client.t.
 
 Module Impl_ink_e2e_client_Client_C_E_2.
   Definition Self := ink_e2e.client.Client C E.
@@ -2103,25 +2155,28 @@ Parameter two : forall `{H : State.Trait},
 
 Module node_proc.
   Module TestNodeProcess.
-    Unset Primitive Projections.
-    Record t : Set := {
-      proc : std.process.Child;
-      client : subxt.client.online_client.OnlineClient R;
-      url : alloc.string.String;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_proc : Notation.Dot "proc" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_client : Notation.Dot "client" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_url : Notation.Dot "url" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
+    Section TestNodeProcess.
+      Context {R : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        proc : std.process.Child;
+        client : subxt.client.online_client.OnlineClient R;
+        url : alloc.string.String;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_proc : Notation.Dot "proc" := {
+        Notation.dot '(Build_t x0 _ _) := x0;
+      }.
+      Global Instance Get_client : Notation.Dot "client" := {
+        Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_url : Notation.Dot "url" := {
+        Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+    End TestNodeProcess.
   End TestNodeProcess.
-  Definition TestNodeProcess : Set := TestNodeProcess.t.
+  Definition TestNodeProcess : Set := @TestNodeProcess.t.
   
   Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
   Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -2178,25 +2233,28 @@ Module node_proc.
   End Impl_ink_e2e_node_proc_TestNodeProcess_R.
   
   Module TestNodeProcessBuilder.
-    Unset Primitive Projections.
-    Record t : Set := {
-      node_path : std.ffi.os_str.OsString;
-      authority : core.option.Option sp_keyring.sr25519.Keyring;
-      marker : core.marker.PhantomData R;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_node_path : Notation.Dot "node_path" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_authority : Notation.Dot "authority" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
+    Section TestNodeProcessBuilder.
+      Context {R : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        node_path : std.ffi.os_str.OsString;
+        authority : core.option.Option sp_keyring.sr25519.Keyring;
+        marker : core.marker.PhantomData R;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_node_path : Notation.Dot "node_path" := {
+        Notation.dot '(Build_t x0 _ _) := x0;
+      }.
+      Global Instance Get_authority : Notation.Dot "authority" := {
+        Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_marker : Notation.Dot "marker" := {
+        Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+    End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
-  Definition TestNodeProcessBuilder : Set := TestNodeProcessBuilder.t.
+  Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
   
   Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R.
     Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
@@ -2239,25 +2297,28 @@ Module node_proc.
 End node_proc.
 
 Module TestNodeProcess.
-  Unset Primitive Projections.
-  Record t : Set := {
-    proc : std.process.Child;
-    client : subxt.client.online_client.OnlineClient R;
-    url : alloc.string.String;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_proc : Notation.Dot "proc" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_client : Notation.Dot "client" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_url : Notation.Dot "url" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
+  Section TestNodeProcess.
+    Context {R : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      proc : std.process.Child;
+      client : subxt.client.online_client.OnlineClient R;
+      url : alloc.string.String;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_proc : Notation.Dot "proc" := {
+      Notation.dot '(Build_t x0 _ _) := x0;
+    }.
+    Global Instance Get_client : Notation.Dot "client" := {
+      Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_url : Notation.Dot "url" := {
+      Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+  End TestNodeProcess.
 End TestNodeProcess.
-Definition TestNodeProcess : Set := TestNodeProcess.t.
+Definition TestNodeProcess : Set := @TestNodeProcess.t.
 
 Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
 Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
@@ -2363,25 +2424,28 @@ Definition META `{H : State.Trait} : tracing_core.metadata.Metadata :=
       tracing_core.metadata.Kind::["EVENT"]).
 
 Module TestNodeProcessBuilder.
-  Unset Primitive Projections.
-  Record t : Set := {
-    node_path : std.ffi.os_str.OsString;
-    authority : core.option.Option sp_keyring.sr25519.Keyring;
-    marker : core.marker.PhantomData R;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_node_path : Notation.Dot "node_path" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_authority : Notation.Dot "authority" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_marker : Notation.Dot "marker" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
+  Section TestNodeProcessBuilder.
+    Context {R : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      node_path : std.ffi.os_str.OsString;
+      authority : core.option.Option sp_keyring.sr25519.Keyring;
+      marker : core.marker.PhantomData R;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_node_path : Notation.Dot "node_path" := {
+      Notation.dot '(Build_t x0 _ _) := x0;
+    }.
+    Global Instance Get_authority : Notation.Dot "authority" := {
+      Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_marker : Notation.Dot "marker" := {
+      Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+  End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
-Definition TestNodeProcessBuilder : Set := TestNodeProcessBuilder.t.
+Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
 
 Module Impl_ink_e2e_node_proc_TestNodeProcessBuilder_R_2.
   Definition Self := ink_e2e.node_proc.TestNodeProcessBuilder R.
@@ -2463,7 +2527,7 @@ Module xts.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End Weight.
-  Definition Weight : Set := Weight.t.
+  Definition Weight : Set := @Weight.t.
   
   Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
     Definition Self := ink_e2e.xts.Weight.
@@ -2660,38 +2724,41 @@ Module xts.
   End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   
   Module InstantiateWithCode.
-    Unset Primitive Projections.
-    Record t : Set := {
-      value : ImplE.Balance;
-      gas_limit : ink_e2e.xts.Weight;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
-      code : alloc.vec.Vec u8;
-      data : alloc.vec.Vec u8;
-      salt : alloc.vec.Vec u8;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-    }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-    }.
-    Global Instance Get_code : Notation.Dot "code" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-    }.
-    Global Instance Get_data : Notation.Dot "data" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-    }.
-    Global Instance Get_salt : Notation.Dot "salt" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-    }.
+    Section InstantiateWithCode.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        value : ImplE.Balance;
+        gas_limit : ink_e2e.xts.Weight;
+        storage_deposit_limit : core.option.Option ImplE.Balance;
+        code : alloc.vec.Vec u8;
+        data : alloc.vec.Vec u8;
+        salt : alloc.vec.Vec u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+      }.
+      Global Instance Get_storage_deposit_limit :
+          Notation.Dot "storage_deposit_limit" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+      }.
+      Global Instance Get_code : Notation.Dot "code" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+      }.
+      Global Instance Get_data : Notation.Dot "data" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+      }.
+      Global Instance Get_salt : Notation.Dot "salt" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+      }.
+    End InstantiateWithCode.
   End InstantiateWithCode.
-  Definition InstantiateWithCode : Set := InstantiateWithCode.t.
+  Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -2770,34 +2837,37 @@ Module xts.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Module Call.
-    Unset Primitive Projections.
-    Record t : Set := {
-      dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
-      value : ImplE.Balance;
-      gas_limit : ink_e2e.xts.Weight;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
-      data : alloc.vec.Vec u8;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_dest : Notation.Dot "dest" := {
-      Notation.dot '(Build_t x0 _ _ _ _) := x0;
-    }.
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t _ x1 _ _ _) := x1;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ _ x2 _ _) := x2;
-    }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
-      Notation.dot '(Build_t _ _ _ x3 _) := x3;
-    }.
-    Global Instance Get_data : Notation.Dot "data" := {
-      Notation.dot '(Build_t _ _ _ _ x4) := x4;
-    }.
+    Section Call.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
+        value : ImplE.Balance;
+        gas_limit : ink_e2e.xts.Weight;
+        storage_deposit_limit : core.option.Option ImplE.Balance;
+        data : alloc.vec.Vec u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_dest : Notation.Dot "dest" := {
+        Notation.dot '(Build_t x0 _ _ _ _) := x0;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ x1 _ _ _) := x1;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ _ x2 _ _) := x2;
+      }.
+      Global Instance Get_storage_deposit_limit :
+          Notation.Dot "storage_deposit_limit" := {
+        Notation.dot '(Build_t _ _ _ x3 _) := x3;
+      }.
+      Global Instance Get_data : Notation.Dot "data" := {
+        Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+    End Call.
   End Call.
-  Definition Call : Set := Call.t.
+  Definition Call : Set := @Call.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -2875,21 +2945,24 @@ Module xts.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   
   Module Transfer.
-    Unset Primitive Projections.
-    Record t : Set := {
-      dest : subxt.utils.static_type.Static ImplC.Address;
-      value : ImplE.Balance;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_dest : Notation.Dot "dest" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section Transfer.
+      Context {E C : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        dest : subxt.utils.static_type.Static ImplC.Address;
+        value : ImplE.Balance;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_dest : Notation.Dot "dest" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End Transfer.
   End Transfer.
-  Definition Transfer : Set := Transfer.t.
+  Definition Transfer : Set := @Transfer.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -3084,26 +3157,29 @@ Module xts.
   End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   
   Module UploadCode.
-    Unset Primitive Projections.
-    Record t : Set := {
-      code : alloc.vec.Vec u8;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
-      determinism : ink_e2e.xts.Determinism;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_code : Notation.Dot "code" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_determinism : Notation.Dot "determinism" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
+    Section UploadCode.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code : alloc.vec.Vec u8;
+        storage_deposit_limit : core.option.Option ImplE.Balance;
+        determinism : ink_e2e.xts.Determinism;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code : Notation.Dot "code" := {
+        Notation.dot '(Build_t x0 _ _) := x0;
+      }.
+      Global Instance Get_storage_deposit_limit :
+          Notation.Dot "storage_deposit_limit" := {
+        Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_determinism : Notation.Dot "determinism" := {
+        Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+    End UploadCode.
   End UploadCode.
-  Definition UploadCode : Set := UploadCode.t.
+  Definition UploadCode : Set := @UploadCode.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -3181,102 +3257,111 @@ Module xts.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   
   Module RpcInstantiateRequest.
-    Unset Primitive Projections.
-    Record t : Set := {
-      origin : ImplC.AccountId;
-      value : ImplE.Balance;
-      gas_limit : core.option.Option ink_e2e.xts.Weight;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
-      code : ink_e2e.xts.Code;
-      data : alloc.vec.Vec u8;
-      salt : alloc.vec.Vec u8;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_origin : Notation.Dot "origin" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-    }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-    }.
-    Global Instance Get_code : Notation.Dot "code" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-    }.
-    Global Instance Get_data : Notation.Dot "data" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-    }.
-    Global Instance Get_salt : Notation.Dot "salt" := {
-      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-    }.
+    Section RpcInstantiateRequest.
+      Context {C E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        origin : ImplC.AccountId;
+        value : ImplE.Balance;
+        gas_limit : core.option.Option ink_e2e.xts.Weight;
+        storage_deposit_limit : core.option.Option ImplE.Balance;
+        code : ink_e2e.xts.Code;
+        data : alloc.vec.Vec u8;
+        salt : alloc.vec.Vec u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_origin : Notation.Dot "origin" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+      }.
+      Global Instance Get_storage_deposit_limit :
+          Notation.Dot "storage_deposit_limit" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+      }.
+      Global Instance Get_code : Notation.Dot "code" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+      }.
+      Global Instance Get_data : Notation.Dot "data" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+      }.
+      Global Instance Get_salt : Notation.Dot "salt" := {
+        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+      }.
+    End RpcInstantiateRequest.
   End RpcInstantiateRequest.
-  Definition RpcInstantiateRequest : Set := RpcInstantiateRequest.t.
+  Definition RpcInstantiateRequest : Set := @RpcInstantiateRequest.t.
   
   Module RpcCodeUploadRequest.
-    Unset Primitive Projections.
-    Record t : Set := {
-      origin : ImplC.AccountId;
-      code : alloc.vec.Vec u8;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
-      determinism : ink_e2e.xts.Determinism;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_origin : Notation.Dot "origin" := {
-      Notation.dot '(Build_t x0 _ _ _) := x0;
-    }.
-    Global Instance Get_code : Notation.Dot "code" := {
-      Notation.dot '(Build_t _ x1 _ _) := x1;
-    }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
-      Notation.dot '(Build_t _ _ x2 _) := x2;
-    }.
-    Global Instance Get_determinism : Notation.Dot "determinism" := {
-      Notation.dot '(Build_t _ _ _ x3) := x3;
-    }.
+    Section RpcCodeUploadRequest.
+      Context {C E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        origin : ImplC.AccountId;
+        code : alloc.vec.Vec u8;
+        storage_deposit_limit : core.option.Option ImplE.Balance;
+        determinism : ink_e2e.xts.Determinism;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_origin : Notation.Dot "origin" := {
+        Notation.dot '(Build_t x0 _ _ _) := x0;
+      }.
+      Global Instance Get_code : Notation.Dot "code" := {
+        Notation.dot '(Build_t _ x1 _ _) := x1;
+      }.
+      Global Instance Get_storage_deposit_limit :
+          Notation.Dot "storage_deposit_limit" := {
+        Notation.dot '(Build_t _ _ x2 _) := x2;
+      }.
+      Global Instance Get_determinism : Notation.Dot "determinism" := {
+        Notation.dot '(Build_t _ _ _ x3) := x3;
+      }.
+    End RpcCodeUploadRequest.
   End RpcCodeUploadRequest.
-  Definition RpcCodeUploadRequest : Set := RpcCodeUploadRequest.t.
+  Definition RpcCodeUploadRequest : Set := @RpcCodeUploadRequest.t.
   
   Module RpcCallRequest.
-    Unset Primitive Projections.
-    Record t : Set := {
-      origin : ImplC.AccountId;
-      dest : ImplE.AccountId;
-      value : ImplE.Balance;
-      gas_limit : core.option.Option ink_e2e.xts.Weight;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
-      input_data : alloc.vec.Vec u8;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_origin : Notation.Dot "origin" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_dest : Notation.Dot "dest" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-    }.
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-    }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-    }.
-    Global Instance Get_input_data : Notation.Dot "input_data" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-    }.
+    Section RpcCallRequest.
+      Context {C E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        origin : ImplC.AccountId;
+        dest : ImplE.AccountId;
+        value : ImplE.Balance;
+        gas_limit : core.option.Option ink_e2e.xts.Weight;
+        storage_deposit_limit : core.option.Option ImplE.Balance;
+        input_data : alloc.vec.Vec u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_origin : Notation.Dot "origin" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_dest : Notation.Dot "dest" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+      }.
+      Global Instance Get_storage_deposit_limit :
+          Notation.Dot "storage_deposit_limit" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+      }.
+      Global Instance Get_input_data : Notation.Dot "input_data" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+      }.
+    End RpcCallRequest.
   End RpcCallRequest.
-  Definition RpcCallRequest : Set := RpcCallRequest.t.
+  Definition RpcCallRequest : Set := @RpcCallRequest.t.
   
   Module Code.
     Inductive t : Set :=
@@ -3286,21 +3371,24 @@ Module xts.
   Definition Code := Code.t.
   
   Module ContractsApi.
-    Unset Primitive Projections.
-    Record t : Set := {
-      client : subxt.client.online_client.OnlineClient C;
-      _phantom : core.marker.PhantomData ((C * E));
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_client : Notation.Dot "client" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section ContractsApi.
+      Context {C E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        client : subxt.client.online_client.OnlineClient C;
+        _phantom : core.marker.PhantomData ((C * E));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_client : Notation.Dot "client" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ContractsApi.
   End ContractsApi.
-  Definition ContractsApi : Set := ContractsApi.t.
+  Definition ContractsApi : Set := @ContractsApi.t.
   
   Module Impl_ink_e2e_xts_ContractsApi_C_E.
     Definition Self := ink_e2e.xts.ContractsApi C E.
@@ -3450,7 +3538,7 @@ Module Weight.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Weight.
-Definition Weight : Set := Weight.t.
+Definition Weight : Set := @Weight.t.
 
 Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
@@ -3719,7 +3807,7 @@ Definition __Field := __Field.t.
 Module __FieldVisitor.
   Inductive t : Set := Build.
 End __FieldVisitor.
-Definition __FieldVisitor := __FieldVisitor.t.
+Definition __FieldVisitor := @__FieldVisitor.t.
 
 Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   Definition Self := ink_e2e.xts._.deserialize.__FieldVisitor.
@@ -3803,7 +3891,7 @@ Module __Visitor.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End __Visitor.
-Definition __Visitor : Set := __Visitor.t.
+Definition __Visitor : Set := @__Visitor.t.
 
 Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   Definition Self := ink_e2e.xts._.deserialize.__Visitor.
@@ -3885,38 +3973,41 @@ Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 
 Module InstantiateWithCode.
-  Unset Primitive Projections.
-  Record t : Set := {
-    value : ImplE.Balance;
-    gas_limit : ink_e2e.xts.Weight;
-    storage_deposit_limit : core.option.Option ImplE.Balance;
-    code : alloc.vec.Vec u8;
-    data : alloc.vec.Vec u8;
-    salt : alloc.vec.Vec u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-  }.
-  Global Instance Get_storage_deposit_limit :
-      Notation.Dot "storage_deposit_limit" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-  }.
-  Global Instance Get_code : Notation.Dot "code" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-  }.
-  Global Instance Get_data : Notation.Dot "data" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-  }.
-  Global Instance Get_salt : Notation.Dot "salt" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-  }.
+  Section InstantiateWithCode.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      value : ImplE.Balance;
+      gas_limit : ink_e2e.xts.Weight;
+      storage_deposit_limit : core.option.Option ImplE.Balance;
+      code : alloc.vec.Vec u8;
+      data : alloc.vec.Vec u8;
+      salt : alloc.vec.Vec u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+    }.
+    Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+    }.
+    Global Instance Get_code : Notation.Dot "code" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+    }.
+    Global Instance Get_data : Notation.Dot "data" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+    }.
+    Global Instance Get_salt : Notation.Dot "salt" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+    }.
+  End InstantiateWithCode.
 End InstantiateWithCode.
-Definition InstantiateWithCode : Set := InstantiateWithCode.t.
+Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4056,34 +4147,37 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Call.
-  Unset Primitive Projections.
-  Record t : Set := {
-    dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
-    value : ImplE.Balance;
-    gas_limit : ink_e2e.xts.Weight;
-    storage_deposit_limit : core.option.Option ImplE.Balance;
-    data : alloc.vec.Vec u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_dest : Notation.Dot "dest" := {
-    Notation.dot '(Build_t x0 _ _ _ _) := x0;
-  }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t _ x1 _ _ _) := x1;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ _ x2 _ _) := x2;
-  }.
-  Global Instance Get_storage_deposit_limit :
-      Notation.Dot "storage_deposit_limit" := {
-    Notation.dot '(Build_t _ _ _ x3 _) := x3;
-  }.
-  Global Instance Get_data : Notation.Dot "data" := {
-    Notation.dot '(Build_t _ _ _ _ x4) := x4;
-  }.
+  Section Call.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
+      value : ImplE.Balance;
+      gas_limit : ink_e2e.xts.Weight;
+      storage_deposit_limit : core.option.Option ImplE.Balance;
+      data : alloc.vec.Vec u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_dest : Notation.Dot "dest" := {
+      Notation.dot '(Build_t x0 _ _ _ _) := x0;
+    }.
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ _ x2 _ _) := x2;
+    }.
+    Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+      Notation.dot '(Build_t _ _ _ x3 _) := x3;
+    }.
+    Global Instance Get_data : Notation.Dot "data" := {
+      Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+  End Call.
 End Call.
-Definition Call : Set := Call.t.
+Definition Call : Set := @Call.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
@@ -4215,21 +4309,24 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
 
 Module Transfer.
-  Unset Primitive Projections.
-  Record t : Set := {
-    dest : subxt.utils.static_type.Static ImplC.Address;
-    value : ImplE.Balance;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_dest : Notation.Dot "dest" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section Transfer.
+    Context {E C : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      dest : subxt.utils.static_type.Static ImplC.Address;
+      value : ImplE.Balance;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_dest : Notation.Dot "dest" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End Transfer.
 End Transfer.
-Definition Transfer : Set := Transfer.t.
+Definition Transfer : Set := @Transfer.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
@@ -4541,26 +4638,29 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 
 Module UploadCode.
-  Unset Primitive Projections.
-  Record t : Set := {
-    code : alloc.vec.Vec u8;
-    storage_deposit_limit : core.option.Option ImplE.Balance;
-    determinism : ink_e2e.xts.Determinism;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_code : Notation.Dot "code" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_storage_deposit_limit :
-      Notation.Dot "storage_deposit_limit" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_determinism : Notation.Dot "determinism" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
+  Section UploadCode.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code : alloc.vec.Vec u8;
+      storage_deposit_limit : core.option.Option ImplE.Balance;
+      determinism : ink_e2e.xts.Determinism;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code : Notation.Dot "code" := {
+      Notation.dot '(Build_t x0 _ _) := x0;
+    }.
+    Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+      Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_determinism : Notation.Dot "determinism" := {
+      Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+  End UploadCode.
 End UploadCode.
-Definition UploadCode : Set := UploadCode.t.
+Definition UploadCode : Set := @UploadCode.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
 Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
@@ -4694,42 +4794,45 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 
 Module RpcInstantiateRequest.
-  Unset Primitive Projections.
-  Record t : Set := {
-    origin : ImplC.AccountId;
-    value : ImplE.Balance;
-    gas_limit : core.option.Option ink_e2e.xts.Weight;
-    storage_deposit_limit : core.option.Option ImplE.Balance;
-    code : ink_e2e.xts.Code;
-    data : alloc.vec.Vec u8;
-    salt : alloc.vec.Vec u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_origin : Notation.Dot "origin" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-  }.
-  Global Instance Get_storage_deposit_limit :
-      Notation.Dot "storage_deposit_limit" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-  }.
-  Global Instance Get_code : Notation.Dot "code" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-  }.
-  Global Instance Get_data : Notation.Dot "data" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-  }.
-  Global Instance Get_salt : Notation.Dot "salt" := {
-    Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-  }.
+  Section RpcInstantiateRequest.
+    Context {C E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      origin : ImplC.AccountId;
+      value : ImplE.Balance;
+      gas_limit : core.option.Option ink_e2e.xts.Weight;
+      storage_deposit_limit : core.option.Option ImplE.Balance;
+      code : ink_e2e.xts.Code;
+      data : alloc.vec.Vec u8;
+      salt : alloc.vec.Vec u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_origin : Notation.Dot "origin" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+    }.
+    Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+    }.
+    Global Instance Get_code : Notation.Dot "code" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+    }.
+    Global Instance Get_data : Notation.Dot "data" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+    }.
+    Global Instance Get_salt : Notation.Dot "salt" := {
+      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+    }.
+  End RpcInstantiateRequest.
 End RpcInstantiateRequest.
-Definition RpcInstantiateRequest : Set := RpcInstantiateRequest.t.
+Definition RpcInstantiateRequest : Set := @RpcInstantiateRequest.t.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
 Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
@@ -4795,30 +4898,33 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
 
 Module RpcCodeUploadRequest.
-  Unset Primitive Projections.
-  Record t : Set := {
-    origin : ImplC.AccountId;
-    code : alloc.vec.Vec u8;
-    storage_deposit_limit : core.option.Option ImplE.Balance;
-    determinism : ink_e2e.xts.Determinism;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_origin : Notation.Dot "origin" := {
-    Notation.dot '(Build_t x0 _ _ _) := x0;
-  }.
-  Global Instance Get_code : Notation.Dot "code" := {
-    Notation.dot '(Build_t _ x1 _ _) := x1;
-  }.
-  Global Instance Get_storage_deposit_limit :
-      Notation.Dot "storage_deposit_limit" := {
-    Notation.dot '(Build_t _ _ x2 _) := x2;
-  }.
-  Global Instance Get_determinism : Notation.Dot "determinism" := {
-    Notation.dot '(Build_t _ _ _ x3) := x3;
-  }.
+  Section RpcCodeUploadRequest.
+    Context {C E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      origin : ImplC.AccountId;
+      code : alloc.vec.Vec u8;
+      storage_deposit_limit : core.option.Option ImplE.Balance;
+      determinism : ink_e2e.xts.Determinism;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_origin : Notation.Dot "origin" := {
+      Notation.dot '(Build_t x0 _ _ _) := x0;
+    }.
+    Global Instance Get_code : Notation.Dot "code" := {
+      Notation.dot '(Build_t _ x1 _ _) := x1;
+    }.
+    Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+      Notation.dot '(Build_t _ _ x2 _) := x2;
+    }.
+    Global Instance Get_determinism : Notation.Dot "determinism" := {
+      Notation.dot '(Build_t _ _ _ x3) := x3;
+    }.
+  End RpcCodeUploadRequest.
 End RpcCodeUploadRequest.
-Definition RpcCodeUploadRequest : Set := RpcCodeUploadRequest.t.
+Definition RpcCodeUploadRequest : Set := @RpcCodeUploadRequest.t.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
 Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
@@ -4884,38 +4990,41 @@ End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
 
 Module RpcCallRequest.
-  Unset Primitive Projections.
-  Record t : Set := {
-    origin : ImplC.AccountId;
-    dest : ImplE.AccountId;
-    value : ImplE.Balance;
-    gas_limit : core.option.Option ink_e2e.xts.Weight;
-    storage_deposit_limit : core.option.Option ImplE.Balance;
-    input_data : alloc.vec.Vec u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_origin : Notation.Dot "origin" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_dest : Notation.Dot "dest" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-  }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-  }.
-  Global Instance Get_storage_deposit_limit :
-      Notation.Dot "storage_deposit_limit" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-  }.
-  Global Instance Get_input_data : Notation.Dot "input_data" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-  }.
+  Section RpcCallRequest.
+    Context {C E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      origin : ImplC.AccountId;
+      dest : ImplE.AccountId;
+      value : ImplE.Balance;
+      gas_limit : core.option.Option ink_e2e.xts.Weight;
+      storage_deposit_limit : core.option.Option ImplE.Balance;
+      input_data : alloc.vec.Vec u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_origin : Notation.Dot "origin" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_dest : Notation.Dot "dest" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+    }.
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+    }.
+    Global Instance Get_storage_deposit_limit :
+        Notation.Dot "storage_deposit_limit" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+    }.
+    Global Instance Get_input_data : Notation.Dot "input_data" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+    }.
+  End RpcCallRequest.
 End RpcCallRequest.
-Definition RpcCallRequest : Set := RpcCallRequest.t.
+Definition RpcCallRequest : Set := @RpcCallRequest.t.
 
 Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
 Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
@@ -5027,21 +5136,24 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 
 Module ContractsApi.
-  Unset Primitive Projections.
-  Record t : Set := {
-    client : subxt.client.online_client.OnlineClient C;
-    _phantom : core.marker.PhantomData ((C * E));
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_client : Notation.Dot "client" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section ContractsApi.
+    Context {C E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      client : subxt.client.online_client.OnlineClient C;
+      _phantom : core.marker.PhantomData ((C * E));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_client : Notation.Dot "client" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End ContractsApi.
 End ContractsApi.
-Definition ContractsApi : Set := ContractsApi.t.
+Definition ContractsApi : Set := @ContractsApi.t.
 
 Module Impl_ink_e2e_xts_ContractsApi_C_E_2.
   Definition Self := ink_e2e.xts.ContractsApi C E.

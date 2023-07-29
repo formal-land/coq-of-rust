@@ -7,12 +7,12 @@ Module Choice.
     _ : u8;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Choice.
-Definition Choice := Choice.t.
+Definition Choice := @Choice.t.
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
   Definition Self := subtle.Choice.
@@ -1404,21 +1404,24 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
-  Unset Primitive Projections.
-  Record t : Set := {
-    value : T;
-    is_some : subtle.Choice;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_is_some : Notation.Dot "is_some" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section CtOption.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      value : T;
+      is_some : subtle.Choice;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_is_some : Notation.Dot "is_some" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End CtOption.
 End CtOption.
-Definition CtOption : Set := CtOption.t.
+Definition CtOption : Set := @CtOption.t.
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
 Section Impl_core_clone_Clone_for_subtle_CtOption_T.

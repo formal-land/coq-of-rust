@@ -40,7 +40,7 @@ Module codegen.
       Notation.dot '(Build_t x0) := x0;
     }.
   End InkE2ETest.
-  Definition InkE2ETest : Set := InkE2ETest.t.
+  Definition InkE2ETest : Set := @InkE2ETest.t.
   
   Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
     Definition Self := ink_e2e_macro.codegen.InkE2ETest.
@@ -89,7 +89,7 @@ Module codegen.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End ContractManifests.
-  Definition ContractManifests : Set := ContractManifests.t.
+  Definition ContractManifests : Set := @ContractManifests.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
     Definition Self := ink_e2e_macro.codegen.ContractManifests.
@@ -216,7 +216,7 @@ Module InkE2ETest.
     Notation.dot '(Build_t x0) := x0;
   }.
 End InkE2ETest.
-Definition InkE2ETest : Set := InkE2ETest.t.
+Definition InkE2ETest : Set := @InkE2ETest.t.
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.
   Definition Self := ink_e2e_macro.codegen.InkE2ETest.
@@ -268,7 +268,7 @@ Module ContractManifests.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End ContractManifests.
-Definition ContractManifests : Set := ContractManifests.t.
+Definition ContractManifests : Set := @ContractManifests.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests.
   Definition Self := ink_e2e_macro.codegen.ContractManifests.
@@ -346,7 +346,7 @@ Module config.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End E2EConfig.
-  Definition E2EConfig : Set := E2EConfig.t.
+  Definition E2EConfig : Set := @E2EConfig.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
     Definition Self := ink_e2e_macro.config.E2EConfig.
@@ -505,7 +505,7 @@ Module E2EConfig.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End E2EConfig.
-Definition E2EConfig : Set := E2EConfig.t.
+Definition E2EConfig : Set := @E2EConfig.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_macro_config_E2EConfig.
   Definition Self := ink_e2e_macro.config.E2EConfig.
@@ -657,7 +657,7 @@ Module ir.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End InkE2ETest.
-  Definition InkE2ETest : Set := InkE2ETest.t.
+  Definition InkE2ETest : Set := @InkE2ETest.t.
   
   Module E2EFn.
     Unset Primitive Projections.
@@ -670,7 +670,7 @@ Module ir.
       Notation.dot '(Build_t x0) := x0;
     }.
   End E2EFn.
-  Definition E2EFn : Set := E2EFn.t.
+  Definition E2EFn : Set := @E2EFn.t.
   
   Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
     Definition Self := ink_e2e_macro.ir.E2EFn.
@@ -719,7 +719,7 @@ Module InkE2ETest.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End InkE2ETest.
-Definition InkE2ETest : Set := InkE2ETest.t.
+Definition InkE2ETest : Set := @InkE2ETest.t.
 
 Module E2EFn.
   Unset Primitive Projections.
@@ -732,7 +732,7 @@ Module E2EFn.
     Notation.dot '(Build_t x0) := x0;
   }.
 End E2EFn.
-Definition E2EFn : Set := E2EFn.t.
+Definition E2EFn : Set := @E2EFn.t.
 
 Module Impl_core_convert_From_for_ink_e2e_macro_ir_E2EFn.
   Definition Self := ink_e2e_macro.ir.E2EFn.

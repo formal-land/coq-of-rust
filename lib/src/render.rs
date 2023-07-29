@@ -157,3 +157,64 @@ where
 {
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
+
+/// puts [doc] in a section or a module (that depends on [kind])
+pub(crate) fn enclose<'a, K, U>(kind: K, name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+    K: Into<std::borrow::Cow<'a, str>>,
+{
+    group([
+        group([text(kind), line(), text(name), text(".")]),
+        nest([
+            hardline(),
+            if ty_context.is_empty() {
+                nil()
+            } else {
+                let types: Vec<Doc<'a>> = ty_context.iter().map(|&ty| text(ty)).collect();
+                group([
+                    nest([
+                        text("Context"),
+                        line(),
+                        text("{"),
+                        intersperse(types, [line()]),
+                        line(),
+                        text(": Set}."),
+                    ]),
+                    hardline(),
+                ])
+            },
+            doc,
+        ]),
+        hardline(),
+        group([text("End"), line(), text(name), text(".")]),
+    ])
+}
+
+/// puts [doc] in a module of name [name]
+pub(crate) fn module<'a, U>(name: U, doc: Doc<'a>) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    enclose("Module", name, &vec![], doc)
+}
+
+/// puts [doc] in a section of name [name] with type parameters from [ty_context]
+pub(crate) fn section<'a, U>(name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    enclose("Section", name, ty_context, doc)
+}
+
+/// decides whether to enclose [doc] within a section
+pub(crate) fn add_section_if_necessary<'a, U>(name: U, ty_params: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    if ty_params.is_empty() {
+        doc
+    } else {
+        section(name, ty_params, doc)
+    }
+}

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module Unit.
   Inductive t : Set := Build.
 End Unit.
-Definition Unit := Unit.t.
+Definition Unit := @Unit.t.
 
 Module Impl_core_fmt_Debug_for_clone_Unit.
   Definition Self := clone.Unit.
@@ -53,7 +53,7 @@ Module Pair.
     _ : alloc.boxed.Box i32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
@@ -61,7 +61,7 @@ Module Pair.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Pair.
-Definition Pair := Pair.t.
+Definition Pair := @Pair.t.
 
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.

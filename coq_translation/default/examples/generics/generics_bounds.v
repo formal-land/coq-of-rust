@@ -42,7 +42,7 @@ Module Rectangle.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := Rectangle.t.
+Definition Rectangle : Set := @Rectangle.t.
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
@@ -94,7 +94,7 @@ Module Triangle.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Triangle.
-Definition Triangle : Set := Triangle.t.
+Definition Triangle : Set := @Triangle.t.
 
 Definition print_debug
     `{H : State.Trait}

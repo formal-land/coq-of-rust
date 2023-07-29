@@ -32,12 +32,12 @@ Module Peeled.
     _ : combinators_map.Food;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Peeled.
-Definition Peeled := Peeled.t.
+Definition Peeled := @Peeled.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self := combinators_map.Peeled.
@@ -62,12 +62,12 @@ Module Chopped.
     _ : combinators_map.Food;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Chopped.
-Definition Chopped := Chopped.t.
+Definition Chopped := @Chopped.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self := combinators_map.Chopped.
@@ -92,12 +92,12 @@ Module Cooked.
     _ : combinators_map.Food;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Cooked.
-Definition Cooked := Cooked.t.
+Definition Cooked := @Cooked.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self := combinators_map.Cooked.

@@ -21,7 +21,7 @@ Module Book.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Book.
-Definition Book : Set := Book.t.
+Definition Book : Set := @Book.t.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self := scoping_rules_borrowing_mutablity.Book.

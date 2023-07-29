@@ -1622,7 +1622,7 @@ Module backend.
       Notation.dot '(Build_t x0) := x0;
     }.
   End ReturnFlags.
-  Definition ReturnFlags : Set := ReturnFlags.t.
+  Definition ReturnFlags : Set := @ReturnFlags.t.
   
   Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
     Definition Self := ink_env.backend.ReturnFlags.
@@ -1686,7 +1686,7 @@ Module backend.
       Notation.dot '(Build_t _ _ _ x3) := x3;
     }.
   End CallFlags.
-  Definition CallFlags : Set := CallFlags.t.
+  Definition CallFlags : Set := @CallFlags.t.
   
   Module Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
     Definition Self := ink_env.backend.CallFlags.
@@ -2191,7 +2191,7 @@ Module ReturnFlags.
     Notation.dot '(Build_t x0) := x0;
   }.
 End ReturnFlags.
-Definition ReturnFlags : Set := ReturnFlags.t.
+Definition ReturnFlags : Set := @ReturnFlags.t.
 
 Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
   Definition Self := ink_env.backend.ReturnFlags.
@@ -2255,7 +2255,7 @@ Module CallFlags.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End CallFlags.
-Definition CallFlags : Set := CallFlags.t.
+Definition CallFlags : Set := @CallFlags.t.
 
 Module Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
   Definition Self := ink_env.backend.CallFlags.
@@ -2739,33 +2739,36 @@ End TypedEnvBackend.
 Module call.
   Module call_builder.
     Module CallParams.
-      Unset Primitive Projections.
-      Record t : Set := {
-        call_type : CallType;
-        call_flags : ink_env.backend.CallFlags;
-        _return_type : ink_env.call.common.ReturnType R;
-        exec_input : ink_env.call.execution_input.ExecutionInput Args;
-        _phantom : core.marker.PhantomData (E);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_call_type : Notation.Dot "call_type" := {
-        Notation.dot '(Build_t x0 _ _ _ _) := x0;
-      }.
-      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-        Notation.dot '(Build_t _ x1 _ _ _) := x1;
-      }.
-      Global Instance Get__return_type : Notation.Dot "_return_type" := {
-        Notation.dot '(Build_t _ _ x2 _ _) := x2;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ _ x3 _) := x3;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ x4) := x4;
-      }.
+      Section CallParams.
+        Context {E CallType Args R : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          call_type : CallType;
+          call_flags : ink_env.backend.CallFlags;
+          _return_type : ink_env.call.common.ReturnType R;
+          exec_input : ink_env.call.execution_input.ExecutionInput Args;
+          _phantom : core.marker.PhantomData (E);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_call_type : Notation.Dot "call_type" := {
+          Notation.dot '(Build_t x0 _ _ _ _) := x0;
+        }.
+        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+          Notation.dot '(Build_t _ x1 _ _ _) := x1;
+        }.
+        Global Instance Get__return_type : Notation.Dot "_return_type" := {
+          Notation.dot '(Build_t _ _ x2 _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _) := x3;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ x4) := x4;
+        }.
+      End CallParams.
     End CallParams.
-    Definition CallParams : Set := CallParams.t.
+    Definition CallParams : Set := @CallParams.t.
     
     Module
       Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
@@ -2954,26 +2957,29 @@ Module call.
             (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
     
     Module Call.
-      Unset Primitive Projections.
-      Record t : Set := {
-        callee : ImplE.AccountId;
-        gas_limit : ink_env.types.Gas;
-        transferred_value : ImplE.Balance;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_callee : Notation.Dot "callee" := {
-        Notation.dot '(Build_t x0 _ _) := x0;
-      }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-        Notation.dot '(Build_t _ x1 _) := x1;
-      }.
-      Global Instance Get_transferred_value :
-          Notation.Dot "transferred_value" := {
-        Notation.dot '(Build_t _ _ x2) := x2;
-      }.
+      Section Call.
+        Context {E : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          callee : ImplE.AccountId;
+          gas_limit : ink_env.types.Gas;
+          transferred_value : ImplE.Balance;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_callee : Notation.Dot "callee" := {
+          Notation.dot '(Build_t x0 _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _) := x1;
+        }.
+        Global Instance Get_transferred_value :
+            Notation.Dot "transferred_value" := {
+          Notation.dot '(Build_t _ _ x2) := x2;
+        }.
+      End Call.
     End Call.
-    Definition Call : Set := Call.t.
+    Definition Call : Set := @Call.t.
     
     Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
     Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
@@ -3034,17 +3040,20 @@ Module call.
     End Impl_ink_env_call_call_builder_Call_E_2.
     
     Module DelegateCall.
-      Unset Primitive Projections.
-      Record t : Set := {
-        code_hash : ImplE.Hash;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section DelegateCall.
+        Context {E : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : ImplE.Hash;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End DelegateCall.
     End DelegateCall.
-    Definition DelegateCall : Set := DelegateCall.t.
+    Definition DelegateCall : Set := @DelegateCall.t.
     
     Module Impl_ink_env_call_call_builder_DelegateCall_E.
       Definition Self := ink_env.call.call_builder.DelegateCall E.
@@ -3072,33 +3081,36 @@ Module call.
     End Impl_ink_env_call_call_builder_DelegateCall_E_2.
     
     Module CallBuilder.
-      Unset Primitive Projections.
-      Record t : Set := {
-        call_type : CallType;
-        call_flags : ink_env.backend.CallFlags;
-        exec_input : Args;
-        return_type : RetType;
-        _phantom : core.marker.PhantomData (E);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_call_type : Notation.Dot "call_type" := {
-        Notation.dot '(Build_t x0 _ _ _ _) := x0;
-      }.
-      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-        Notation.dot '(Build_t _ x1 _ _ _) := x1;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ x2 _ _) := x2;
-      }.
-      Global Instance Get_return_type : Notation.Dot "return_type" := {
-        Notation.dot '(Build_t _ _ _ x3 _) := x3;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ x4) := x4;
-      }.
+      Section CallBuilder.
+        Context {E CallType Args RetType : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          call_type : CallType;
+          call_flags : ink_env.backend.CallFlags;
+          exec_input : Args;
+          return_type : RetType;
+          _phantom : core.marker.PhantomData (E);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_call_type : Notation.Dot "call_type" := {
+          Notation.dot '(Build_t x0 _ _ _ _) := x0;
+        }.
+        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+          Notation.dot '(Build_t _ x1 _ _ _) := x1;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ x2 _ _) := x2;
+        }.
+        Global Instance Get_return_type : Notation.Dot "return_type" := {
+          Notation.dot '(Build_t _ _ _ x3 _) := x3;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ x4) := x4;
+        }.
+      End CallBuilder.
     End CallBuilder.
-    Definition CallBuilder : Set := CallBuilder.t.
+    Definition CallBuilder : Set := @CallBuilder.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
@@ -3583,17 +3595,20 @@ Module call.
   
   Module common.
     Module ReturnType.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _ : core.marker.PhantomData (T);
-      }.
-      Global Set Primitive Projections.
-    
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section ReturnType.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End ReturnType.
     End ReturnType.
-    Definition ReturnType := ReturnType.t.
+    Definition ReturnType := @ReturnType.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
     Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
@@ -3666,17 +3681,20 @@ Module call.
     End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
     
     Module Set.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _ : T;
-      }.
-      Global Set Primitive Projections.
-    
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section Set.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Set.
     End Set.
-    Definition Set := Set.t.
+    Definition Set := @Set.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
     Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
@@ -3743,17 +3761,20 @@ Module call.
     End Impl_ink_env_call_common_Set_T.
     
     Module Unset.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _ : core.marker.PhantomData (T);
-      }.
-      Global Set Primitive Projections.
-    
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section Unset.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Unset.
     End Unset.
-    Definition Unset := Unset.t.
+    Definition Unset := @Unset.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
     Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
@@ -4038,41 +4059,44 @@ Module call.
       Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
     
     Module CreateParams.
-      Unset Primitive Projections.
-      Record t : Set := {
-        code_hash : ImplE.Hash;
-        gas_limit : u64;
-        endowment : ImplE.Balance;
-        exec_input : ink_env.call.execution_input.ExecutionInput Args;
-        salt_bytes : Salt;
-        _return_type : ink_env.call.common.ReturnType R;
-        _phantom : core.marker.PhantomData (ContractRef);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-      }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-      }.
-      Global Instance Get_endowment : Notation.Dot "endowment" := {
-        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-      }.
-      Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
-        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-      }.
-      Global Instance Get__return_type : Notation.Dot "_return_type" := {
-        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-      }.
+      Section CreateParams.
+        Context {E ContractRef Args Salt R : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : ImplE.Hash;
+          gas_limit : u64;
+          endowment : ImplE.Balance;
+          exec_input : ink_env.call.execution_input.ExecutionInput Args;
+          salt_bytes : Salt;
+          _return_type : ink_env.call.common.ReturnType R;
+          _phantom : core.marker.PhantomData (ContractRef);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
+          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
+          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
+        Global Instance Get__return_type : Notation.Dot "_return_type" := {
+          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+      End CreateParams.
     End CreateParams.
-    Definition CreateParams : Set := CreateParams.t.
+    Definition CreateParams : Set := @CreateParams.t.
     
     Module
       Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
@@ -4206,41 +4230,53 @@ Module call.
       Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_3.
     
     Module CreateBuilder.
-      Unset Primitive Projections.
-      Record t : Set := {
-        code_hash : CodeHash;
-        gas_limit : GasLimit;
-        endowment : Endowment;
-        exec_input : Args;
-        salt : Salt;
-        return_type : RetType;
-        _phantom : core.marker.PhantomData ((E * ContractRef));
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-      }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-      }.
-      Global Instance Get_endowment : Notation.Dot "endowment" := {
-        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-      }.
-      Global Instance Get_salt : Notation.Dot "salt" := {
-        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-      }.
-      Global Instance Get_return_type : Notation.Dot "return_type" := {
-        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-      }.
+      Section CreateBuilder.
+        Context
+          {E
+          ContractRef
+          CodeHash
+          GasLimit
+          Endowment
+          Args
+          Salt
+          RetType
+          : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : CodeHash;
+          gas_limit : GasLimit;
+          endowment : Endowment;
+          exec_input : Args;
+          salt : Salt;
+          return_type : RetType;
+          _phantom : core.marker.PhantomData ((E * ContractRef));
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
+          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_salt : Notation.Dot "salt" := {
+          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
+        Global Instance Get_return_type : Notation.Dot "return_type" := {
+          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+      End CreateBuilder.
     End CreateBuilder.
-    Definition CreateBuilder : Set := CreateBuilder.t.
+    Definition CreateBuilder : Set := @CreateBuilder.t.
     
     Parameter build_create : forall `{H : State.Trait},
         forall
@@ -4553,21 +4589,24 @@ Module call.
   
   Module execution_input.
     Module ExecutionInput.
-      Unset Primitive Projections.
-      Record t : Set := {
-        selector : ink_env.call.selector.Selector;
-        args : Args;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_selector : Notation.Dot "selector" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_args : Notation.Dot "args" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
+      Section ExecutionInput.
+        Context {Args : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          selector : ink_env.call.selector.Selector;
+          args : Args;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_selector : Notation.Dot "selector" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_args : Notation.Dot "args" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ExecutionInput.
     End ExecutionInput.
-    Definition ExecutionInput : Set := ExecutionInput.t.
+    Definition ExecutionInput : Set := @ExecutionInput.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -4717,21 +4756,24 @@ Module call.
     End Impl_ink_env_call_execution_input_ExecutionInput_Args.
     
     Module ArgumentList.
-      Unset Primitive Projections.
-      Record t : Set := {
-        head : Head;
-        rest : Rest;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_head : Notation.Dot "head" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_rest : Notation.Dot "rest" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
+      Section ArgumentList.
+        Context {Head Rest : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          head : Head;
+          rest : Rest;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_head : Notation.Dot "head" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_rest : Notation.Dot "rest" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ArgumentList.
     End ArgumentList.
-    Definition ArgumentList : Set := ArgumentList.t.
+    Definition ArgumentList : Set := @ArgumentList.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
@@ -4813,17 +4855,20 @@ Module call.
         Rest.
     
     Module Argument.
-      Unset Primitive Projections.
-      Record t : Set := {
-        arg : T;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_arg : Notation.Dot "arg" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section Argument.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          arg : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_arg : Notation.Dot "arg" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Argument.
     End Argument.
-    Definition Argument : Set := Argument.t.
+    Definition Argument : Set := @Argument.t.
     
     Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
     Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -4881,7 +4926,7 @@ Module call.
     Module ArgumentListEnd.
       Inductive t : Set := Build.
     End ArgumentListEnd.
-    Definition ArgumentListEnd := ArgumentListEnd.t.
+    Definition ArgumentListEnd := @ArgumentListEnd.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
@@ -5138,7 +5183,7 @@ Module call.
         Notation.dot '(Build_t x0) := x0;
       }.
     End Selector.
-    Definition Selector : Set := Selector.t.
+    Definition Selector : Set := @Selector.t.
     
     Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
       Definition Self := ink_env.call.selector.Selector.
@@ -5298,33 +5343,36 @@ End call.
 
 Module call_builder.
   Module CallParams.
-    Unset Primitive Projections.
-    Record t : Set := {
-      call_type : CallType;
-      call_flags : ink_env.backend.CallFlags;
-      _return_type : ink_env.call.common.ReturnType R;
-      exec_input : ink_env.call.execution_input.ExecutionInput Args;
-      _phantom : core.marker.PhantomData (E);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_call_type : Notation.Dot "call_type" := {
-      Notation.dot '(Build_t x0 _ _ _ _) := x0;
-    }.
-    Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-      Notation.dot '(Build_t _ x1 _ _ _) := x1;
-    }.
-    Global Instance Get__return_type : Notation.Dot "_return_type" := {
-      Notation.dot '(Build_t _ _ x2 _ _) := x2;
-    }.
-    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-      Notation.dot '(Build_t _ _ _ x3 _) := x3;
-    }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot '(Build_t _ _ _ _ x4) := x4;
-    }.
+    Section CallParams.
+      Context {E CallType Args R : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        call_type : CallType;
+        call_flags : ink_env.backend.CallFlags;
+        _return_type : ink_env.call.common.ReturnType R;
+        exec_input : ink_env.call.execution_input.ExecutionInput Args;
+        _phantom : core.marker.PhantomData (E);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_call_type : Notation.Dot "call_type" := {
+        Notation.dot '(Build_t x0 _ _ _ _) := x0;
+      }.
+      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+        Notation.dot '(Build_t _ x1 _ _ _) := x1;
+      }.
+      Global Instance Get__return_type : Notation.Dot "_return_type" := {
+        Notation.dot '(Build_t _ _ x2 _ _) := x2;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ _ x3 _) := x3;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+    End CallParams.
   End CallParams.
-  Definition CallParams : Set := CallParams.t.
+  Definition CallParams : Set := @CallParams.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
@@ -5513,26 +5561,29 @@ Module call_builder.
           (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
   
   Module Call.
-    Unset Primitive Projections.
-    Record t : Set := {
-      callee : ImplE.AccountId;
-      gas_limit : ink_env.types.Gas;
-      transferred_value : ImplE.Balance;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_callee : Notation.Dot "callee" := {
-      Notation.dot '(Build_t x0 _ _) := x0;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ x1 _) := x1;
-    }.
-    Global Instance Get_transferred_value :
-        Notation.Dot "transferred_value" := {
-      Notation.dot '(Build_t _ _ x2) := x2;
-    }.
+    Section Call.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        callee : ImplE.AccountId;
+        gas_limit : ink_env.types.Gas;
+        transferred_value : ImplE.Balance;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_callee : Notation.Dot "callee" := {
+        Notation.dot '(Build_t x0 _ _) := x0;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_transferred_value :
+          Notation.Dot "transferred_value" := {
+        Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+    End Call.
   End Call.
-  Definition Call : Set := Call.t.
+  Definition Call : Set := @Call.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
   Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
@@ -5592,17 +5643,20 @@ Module call_builder.
   End Impl_ink_env_call_call_builder_Call_E_4.
   
   Module DelegateCall.
-    Unset Primitive Projections.
-    Record t : Set := {
-      code_hash : ImplE.Hash;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section DelegateCall.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : ImplE.Hash;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End DelegateCall.
   End DelegateCall.
-  Definition DelegateCall : Set := DelegateCall.t.
+  Definition DelegateCall : Set := @DelegateCall.t.
   
   Module Impl_ink_env_call_call_builder_DelegateCall_E_3.
     Definition Self := ink_env.call.call_builder.DelegateCall E.
@@ -5630,33 +5684,36 @@ Module call_builder.
   End Impl_ink_env_call_call_builder_DelegateCall_E_4.
   
   Module CallBuilder.
-    Unset Primitive Projections.
-    Record t : Set := {
-      call_type : CallType;
-      call_flags : ink_env.backend.CallFlags;
-      exec_input : Args;
-      return_type : RetType;
-      _phantom : core.marker.PhantomData (E);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_call_type : Notation.Dot "call_type" := {
-      Notation.dot '(Build_t x0 _ _ _ _) := x0;
-    }.
-    Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-      Notation.dot '(Build_t _ x1 _ _ _) := x1;
-    }.
-    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-      Notation.dot '(Build_t _ _ x2 _ _) := x2;
-    }.
-    Global Instance Get_return_type : Notation.Dot "return_type" := {
-      Notation.dot '(Build_t _ _ _ x3 _) := x3;
-    }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot '(Build_t _ _ _ _ x4) := x4;
-    }.
+    Section CallBuilder.
+      Context {E CallType Args RetType : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        call_type : CallType;
+        call_flags : ink_env.backend.CallFlags;
+        exec_input : Args;
+        return_type : RetType;
+        _phantom : core.marker.PhantomData (E);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_call_type : Notation.Dot "call_type" := {
+        Notation.dot '(Build_t x0 _ _ _ _) := x0;
+      }.
+      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+        Notation.dot '(Build_t _ x1 _ _ _) := x1;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ x2 _ _) := x2;
+      }.
+      Global Instance Get_return_type : Notation.Dot "return_type" := {
+        Notation.dot '(Build_t _ _ _ x3 _) := x3;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+    End CallBuilder.
   End CallBuilder.
-  Definition CallBuilder : Set := CallBuilder.t.
+  Definition CallBuilder : Set := @CallBuilder.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
@@ -6138,33 +6195,36 @@ Module call_builder.
 End call_builder.
 
 Module CallParams.
-  Unset Primitive Projections.
-  Record t : Set := {
-    call_type : CallType;
-    call_flags : ink_env.backend.CallFlags;
-    _return_type : ink_env.call.common.ReturnType R;
-    exec_input : ink_env.call.execution_input.ExecutionInput Args;
-    _phantom : core.marker.PhantomData (E);
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_call_type : Notation.Dot "call_type" := {
-    Notation.dot '(Build_t x0 _ _ _ _) := x0;
-  }.
-  Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-    Notation.dot '(Build_t _ x1 _ _ _) := x1;
-  }.
-  Global Instance Get__return_type : Notation.Dot "_return_type" := {
-    Notation.dot '(Build_t _ _ x2 _ _) := x2;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ _ x3 _) := x3;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ x4) := x4;
-  }.
+  Section CallParams.
+    Context {E CallType Args R : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      call_type : CallType;
+      call_flags : ink_env.backend.CallFlags;
+      _return_type : ink_env.call.common.ReturnType R;
+      exec_input : ink_env.call.execution_input.ExecutionInput Args;
+      _phantom : core.marker.PhantomData (E);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_call_type : Notation.Dot "call_type" := {
+      Notation.dot '(Build_t x0 _ _ _ _) := x0;
+    }.
+    Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+      Notation.dot '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get__return_type : Notation.Dot "_return_type" := {
+      Notation.dot '(Build_t _ _ x2 _ _) := x2;
+    }.
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+      Notation.dot '(Build_t _ _ _ x3 _) := x3;
+    }.
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+  End CallParams.
 End CallParams.
-Definition CallParams : Set := CallParams.t.
+Definition CallParams : Set := @CallParams.t.
 
 Module
   Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
@@ -6350,25 +6410,29 @@ Parameter build_call : forall `{H : State.Trait},
         (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
 
 Module Call.
-  Unset Primitive Projections.
-  Record t : Set := {
-    callee : ImplE.AccountId;
-    gas_limit : ink_env.types.Gas;
-    transferred_value : ImplE.Balance;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_callee : Notation.Dot "callee" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_transferred_value : Notation.Dot "transferred_value" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
+  Section Call.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      callee : ImplE.AccountId;
+      gas_limit : ink_env.types.Gas;
+      transferred_value : ImplE.Balance;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_callee : Notation.Dot "callee" := {
+      Notation.dot '(Build_t x0 _ _) := x0;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_transferred_value :
+        Notation.Dot "transferred_value" := {
+      Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+  End Call.
 End Call.
-Definition Call : Set := Call.t.
+Definition Call : Set := @Call.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
 Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
@@ -6426,17 +6490,20 @@ Module Impl_ink_env_call_call_builder_Call_E_6.
 End Impl_ink_env_call_call_builder_Call_E_6.
 
 Module DelegateCall.
-  Unset Primitive Projections.
-  Record t : Set := {
-    code_hash : ImplE.Hash;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section DelegateCall.
+    Context {E : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : ImplE.Hash;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End DelegateCall.
 End DelegateCall.
-Definition DelegateCall : Set := DelegateCall.t.
+Definition DelegateCall : Set := @DelegateCall.t.
 
 Module Impl_ink_env_call_call_builder_DelegateCall_E_5.
   Definition Self := ink_env.call.call_builder.DelegateCall E.
@@ -6464,33 +6531,36 @@ Module Impl_ink_env_call_call_builder_DelegateCall_E_6.
 End Impl_ink_env_call_call_builder_DelegateCall_E_6.
 
 Module CallBuilder.
-  Unset Primitive Projections.
-  Record t : Set := {
-    call_type : CallType;
-    call_flags : ink_env.backend.CallFlags;
-    exec_input : Args;
-    return_type : RetType;
-    _phantom : core.marker.PhantomData (E);
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_call_type : Notation.Dot "call_type" := {
-    Notation.dot '(Build_t x0 _ _ _ _) := x0;
-  }.
-  Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-    Notation.dot '(Build_t _ x1 _ _ _) := x1;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ x2 _ _) := x2;
-  }.
-  Global Instance Get_return_type : Notation.Dot "return_type" := {
-    Notation.dot '(Build_t _ _ _ x3 _) := x3;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ x4) := x4;
-  }.
+  Section CallBuilder.
+    Context {E CallType Args RetType : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      call_type : CallType;
+      call_flags : ink_env.backend.CallFlags;
+      exec_input : Args;
+      return_type : RetType;
+      _phantom : core.marker.PhantomData (E);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_call_type : Notation.Dot "call_type" := {
+      Notation.dot '(Build_t x0 _ _ _ _) := x0;
+    }.
+    Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+      Notation.dot '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+      Notation.dot '(Build_t _ _ x2 _ _) := x2;
+    }.
+    Global Instance Get_return_type : Notation.Dot "return_type" := {
+      Notation.dot '(Build_t _ _ _ x3 _) := x3;
+    }.
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+  End CallBuilder.
 End CallBuilder.
-Definition CallBuilder : Set := CallBuilder.t.
+Definition CallBuilder : Set := @CallBuilder.t.
 
 Module
   Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
@@ -6964,17 +7034,20 @@ End
 
 Module common.
   Module ReturnType.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : core.marker.PhantomData (T);
-    }.
-    Global Set Primitive Projections.
-  
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section ReturnType.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : core.marker.PhantomData (T);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End ReturnType.
   End ReturnType.
-  Definition ReturnType := ReturnType.t.
+  Definition ReturnType := @ReturnType.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
   Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
@@ -7046,17 +7119,20 @@ Module common.
   End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
   
   Module Set.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : T;
-    }.
-    Global Set Primitive Projections.
-  
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section Set.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Set.
   End Set.
-  Definition Set := Set.t.
+  Definition Set := @Set.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
   Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
@@ -7121,17 +7197,20 @@ Module common.
   End Impl_ink_env_call_common_Set_T_2.
   
   Module Unset.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : core.marker.PhantomData (T);
-    }.
-    Global Set Primitive Projections.
-  
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section Unset.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : core.marker.PhantomData (T);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Unset.
   End Unset.
-  Definition Unset := Unset.t.
+  Definition Unset := @Unset.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
   Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
@@ -7277,17 +7356,20 @@ Module common.
 End common.
 
 Module ReturnType.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData (T);
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section ReturnType.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End ReturnType.
 End ReturnType.
-Definition ReturnType := ReturnType.t.
+Definition ReturnType := @ReturnType.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
 Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
@@ -7359,17 +7441,20 @@ End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
 End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
 
 Module Set.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : T;
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Set.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Set.
 End Set.
-Definition Set := Set.t.
+Definition Set := @Set.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
 Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
@@ -7434,17 +7519,20 @@ Module Impl_ink_env_call_common_Set_T_3.
 End Impl_ink_env_call_common_Set_T_3.
 
 Module Unset.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData (T);
-  }.
-  Global Set Primitive Projections.
-
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Unset.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Unset.
 End Unset.
-Definition Unset := Unset.t.
+Definition Unset := @Unset.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
 Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
@@ -7727,41 +7815,44 @@ Module create_builder.
     Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
   
   Module CreateParams.
-    Unset Primitive Projections.
-    Record t : Set := {
-      code_hash : ImplE.Hash;
-      gas_limit : u64;
-      endowment : ImplE.Balance;
-      exec_input : ink_env.call.execution_input.ExecutionInput Args;
-      salt_bytes : Salt;
-      _return_type : ink_env.call.common.ReturnType R;
-      _phantom : core.marker.PhantomData (ContractRef);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-    }.
-    Global Instance Get_endowment : Notation.Dot "endowment" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-    }.
-    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-    }.
-    Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-    }.
-    Global Instance Get__return_type : Notation.Dot "_return_type" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-    }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-    }.
+    Section CreateParams.
+      Context {E ContractRef Args Salt R : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : ImplE.Hash;
+        gas_limit : u64;
+        endowment : ImplE.Balance;
+        exec_input : ink_env.call.execution_input.ExecutionInput Args;
+        salt_bytes : Salt;
+        _return_type : ink_env.call.common.ReturnType R;
+        _phantom : core.marker.PhantomData (ContractRef);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+      }.
+      Global Instance Get_endowment : Notation.Dot "endowment" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+      }.
+      Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+      }.
+      Global Instance Get__return_type : Notation.Dot "_return_type" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+      }.
+    End CreateParams.
   End CreateParams.
-  Definition CreateParams : Set := CreateParams.t.
+  Definition CreateParams : Set := @CreateParams.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
@@ -7891,41 +7982,53 @@ Module create_builder.
   End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_6.
   
   Module CreateBuilder.
-    Unset Primitive Projections.
-    Record t : Set := {
-      code_hash : CodeHash;
-      gas_limit : GasLimit;
-      endowment : Endowment;
-      exec_input : Args;
-      salt : Salt;
-      return_type : RetType;
-      _phantom : core.marker.PhantomData ((E * ContractRef));
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-    }.
-    Global Instance Get_endowment : Notation.Dot "endowment" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-    }.
-    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-    }.
-    Global Instance Get_salt : Notation.Dot "salt" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-    }.
-    Global Instance Get_return_type : Notation.Dot "return_type" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-    }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-    }.
+    Section CreateBuilder.
+      Context
+        {E
+        ContractRef
+        CodeHash
+        GasLimit
+        Endowment
+        Args
+        Salt
+        RetType
+        : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : CodeHash;
+        gas_limit : GasLimit;
+        endowment : Endowment;
+        exec_input : Args;
+        salt : Salt;
+        return_type : RetType;
+        _phantom : core.marker.PhantomData ((E * ContractRef));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+      }.
+      Global Instance Get_endowment : Notation.Dot "endowment" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+      }.
+      Global Instance Get_salt : Notation.Dot "salt" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+      }.
+      Global Instance Get_return_type : Notation.Dot "return_type" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+      }.
+    End CreateBuilder.
   End CreateBuilder.
-  Definition CreateBuilder : Set := CreateBuilder.t.
+  Definition CreateBuilder : Set := @CreateBuilder.t.
   
   Parameter build_create : forall `{H : State.Trait},
       forall
@@ -8375,41 +8478,44 @@ End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
 
 Module CreateParams.
-  Unset Primitive Projections.
-  Record t : Set := {
-    code_hash : ImplE.Hash;
-    gas_limit : u64;
-    endowment : ImplE.Balance;
-    exec_input : ink_env.call.execution_input.ExecutionInput Args;
-    salt_bytes : Salt;
-    _return_type : ink_env.call.common.ReturnType R;
-    _phantom : core.marker.PhantomData (ContractRef);
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-  }.
-  Global Instance Get_endowment : Notation.Dot "endowment" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-  }.
-  Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-  }.
-  Global Instance Get__return_type : Notation.Dot "_return_type" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-  }.
+  Section CreateParams.
+    Context {E ContractRef Args Salt R : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : ImplE.Hash;
+      gas_limit : u64;
+      endowment : ImplE.Balance;
+      exec_input : ink_env.call.execution_input.ExecutionInput Args;
+      salt_bytes : Salt;
+      _return_type : ink_env.call.common.ReturnType R;
+      _phantom : core.marker.PhantomData (ContractRef);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+    }.
+    Global Instance Get_endowment : Notation.Dot "endowment" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+    }.
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+    }.
+    Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+    }.
+    Global Instance Get__return_type : Notation.Dot "_return_type" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+    }.
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+    }.
+  End CreateParams.
 End CreateParams.
-Definition CreateParams : Set := CreateParams.t.
+Definition CreateParams : Set := @CreateParams.t.
 
 Module
   Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
@@ -8539,41 +8645,44 @@ Module
 End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_9.
 
 Module CreateBuilder.
-  Unset Primitive Projections.
-  Record t : Set := {
-    code_hash : CodeHash;
-    gas_limit : GasLimit;
-    endowment : Endowment;
-    exec_input : Args;
-    salt : Salt;
-    return_type : RetType;
-    _phantom : core.marker.PhantomData ((E * ContractRef));
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-  }.
-  Global Instance Get_endowment : Notation.Dot "endowment" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-  }.
-  Global Instance Get_salt : Notation.Dot "salt" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-  }.
-  Global Instance Get_return_type : Notation.Dot "return_type" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-  }.
+  Section CreateBuilder.
+    Context {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : CodeHash;
+      gas_limit : GasLimit;
+      endowment : Endowment;
+      exec_input : Args;
+      salt : Salt;
+      return_type : RetType;
+      _phantom : core.marker.PhantomData ((E * ContractRef));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+    }.
+    Global Instance Get_endowment : Notation.Dot "endowment" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+    }.
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+    }.
+    Global Instance Get_salt : Notation.Dot "salt" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+    }.
+    Global Instance Get_return_type : Notation.Dot "return_type" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+    }.
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+    }.
+  End CreateBuilder.
 End CreateBuilder.
-Definition CreateBuilder : Set := CreateBuilder.t.
+Definition CreateBuilder : Set := @CreateBuilder.t.
 
 Parameter build_create : forall `{H : State.Trait},
     forall
@@ -8884,21 +8993,24 @@ End
 
 Module execution_input.
   Module ExecutionInput.
-    Unset Primitive Projections.
-    Record t : Set := {
-      selector : ink_env.call.selector.Selector;
-      args : Args;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_selector : Notation.Dot "selector" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_args : Notation.Dot "args" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section ExecutionInput.
+      Context {Args : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        selector : ink_env.call.selector.Selector;
+        args : Args;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_selector : Notation.Dot "selector" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_args : Notation.Dot "args" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ExecutionInput.
   End ExecutionInput.
-  Definition ExecutionInput : Set := ExecutionInput.t.
+  Definition ExecutionInput : Set := @ExecutionInput.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -9045,21 +9157,24 @@ Module execution_input.
   End Impl_ink_env_call_execution_input_ExecutionInput_Args_2.
   
   Module ArgumentList.
-    Unset Primitive Projections.
-    Record t : Set := {
-      head : Head;
-      rest : Rest;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_head : Notation.Dot "head" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_rest : Notation.Dot "rest" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section ArgumentList.
+      Context {Head Rest : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        head : Head;
+        rest : Rest;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_head : Notation.Dot "head" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_rest : Notation.Dot "rest" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ArgumentList.
   End ArgumentList.
-  Definition ArgumentList : Set := ArgumentList.t.
+  Definition ArgumentList : Set := @ArgumentList.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
@@ -9140,17 +9255,20 @@ Module execution_input.
       Rest.
   
   Module Argument.
-    Unset Primitive Projections.
-    Record t : Set := {
-      arg : T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_arg : Notation.Dot "arg" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section Argument.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        arg : T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_arg : Notation.Dot "arg" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Argument.
   End Argument.
-  Definition Argument : Set := Argument.t.
+  Definition Argument : Set := @Argument.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
   Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -9207,7 +9325,7 @@ Module execution_input.
   Module ArgumentListEnd.
     Inductive t : Set := Build.
   End ArgumentListEnd.
-  Definition ArgumentListEnd := ArgumentListEnd.t.
+  Definition ArgumentListEnd := @ArgumentListEnd.t.
   
   Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
     Definition Self := ink_env.call.execution_input.ArgumentListEnd.
@@ -9451,21 +9569,24 @@ Module execution_input.
 End execution_input.
 
 Module ExecutionInput.
-  Unset Primitive Projections.
-  Record t : Set := {
-    selector : ink_env.call.selector.Selector;
-    args : Args;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_selector : Notation.Dot "selector" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_args : Notation.Dot "args" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section ExecutionInput.
+    Context {Args : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      selector : ink_env.call.selector.Selector;
+      args : Args;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_selector : Notation.Dot "selector" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_args : Notation.Dot "args" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End ExecutionInput.
 End ExecutionInput.
-Definition ExecutionInput : Set := ExecutionInput.t.
+Definition ExecutionInput : Set := @ExecutionInput.t.
 
 Module
   Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
@@ -9609,21 +9730,24 @@ Module Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
 End Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
 
 Module ArgumentList.
-  Unset Primitive Projections.
-  Record t : Set := {
-    head : Head;
-    rest : Rest;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_head : Notation.Dot "head" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_rest : Notation.Dot "rest" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section ArgumentList.
+    Context {Head Rest : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      head : Head;
+      rest : Rest;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_head : Notation.Dot "head" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_rest : Notation.Dot "rest" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End ArgumentList.
 End ArgumentList.
-Definition ArgumentList : Set := ArgumentList.t.
+Definition ArgumentList : Set := @ArgumentList.t.
 
 Module
   Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
@@ -9702,17 +9826,20 @@ Definition ArgsList : Set :=
     Rest.
 
 Module Argument.
-  Unset Primitive Projections.
-  Record t : Set := {
-    arg : T;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_arg : Notation.Dot "arg" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Argument.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      arg : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_arg : Notation.Dot "arg" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Argument.
 End Argument.
-Definition Argument : Set := Argument.t.
+Definition Argument : Set := @Argument.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
 Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
@@ -9769,7 +9896,7 @@ End Impl_ink_env_call_execution_input_Argument_T_3.
 Module ArgumentListEnd.
   Inductive t : Set := Build.
 End ArgumentListEnd.
-Definition ArgumentListEnd := ArgumentListEnd.t.
+Definition ArgumentListEnd := @ArgumentListEnd.t.
 
 Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
   Definition Self := ink_env.call.execution_input.ArgumentListEnd.
@@ -10014,7 +10141,7 @@ Module selector.
       Notation.dot '(Build_t x0) := x0;
     }.
   End Selector.
-  Definition Selector : Set := Selector.t.
+  Definition Selector : Set := @Selector.t.
   
   Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
     Definition Self := ink_env.call.selector.Selector.
@@ -10175,7 +10302,7 @@ Module Selector.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Selector.
-Definition Selector : Set := Selector.t.
+Definition Selector : Set := @Selector.t.
 
 Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
@@ -10405,21 +10532,24 @@ Module chain_extension.
   End FromStatusCode.
   
   Module ChainExtensionMethod.
-    Unset Primitive Projections.
-    Record t : Set := {
-      func_id : u32;
-      state : core.marker.PhantomData ((I * O * ErrorCode));
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_func_id : Notation.Dot "func_id" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_state : Notation.Dot "state" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section ChainExtensionMethod.
+      Context {I O ErrorCode : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        func_id : u32;
+        state : core.marker.PhantomData ((I * O * ErrorCode));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_func_id : Notation.Dot "func_id" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_state : Notation.Dot "state" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ChainExtensionMethod.
   End ChainExtensionMethod.
-  Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
+  Definition ChainExtensionMethod : Set := @ChainExtensionMethod.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
@@ -10550,17 +10680,20 @@ Module chain_extension.
     End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
     
     Module HandleErrorCode.
-      Unset Primitive Projections.
-      Record t : Set := {
-        error_code : core.marker.PhantomData (T);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_error_code : Notation.Dot "error_code" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section HandleErrorCode.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          error_code : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_error_code : Notation.Dot "error_code" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End HandleErrorCode.
     End HandleErrorCode.
-    Definition HandleErrorCode : Set := HandleErrorCode.t.
+    Definition HandleErrorCode : Set := @HandleErrorCode.t.
     
     Module
       Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
@@ -10745,21 +10878,24 @@ Module FromStatusCode.
 End FromStatusCode.
 
 Module ChainExtensionMethod.
-  Unset Primitive Projections.
-  Record t : Set := {
-    func_id : u32;
-    state : core.marker.PhantomData ((I * O * ErrorCode));
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_func_id : Notation.Dot "func_id" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_state : Notation.Dot "state" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section ChainExtensionMethod.
+    Context {I O ErrorCode : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      func_id : u32;
+      state : core.marker.PhantomData ((I * O * ErrorCode));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_func_id : Notation.Dot "func_id" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_state : Notation.Dot "state" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End ChainExtensionMethod.
 End ChainExtensionMethod.
-Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
+Definition ChainExtensionMethod : Set := @ChainExtensionMethod.t.
 
 Module
   Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
@@ -10885,17 +11021,20 @@ Module state.
   End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
   
   Module HandleErrorCode.
-    Unset Primitive Projections.
-    Record t : Set := {
-      error_code : core.marker.PhantomData (T);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_error_code : Notation.Dot "error_code" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section HandleErrorCode.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        error_code : core.marker.PhantomData (T);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_error_code : Notation.Dot "error_code" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End HandleErrorCode.
   End HandleErrorCode.
-  Definition HandleErrorCode : Set := HandleErrorCode.t.
+  Definition HandleErrorCode : Set := @HandleErrorCode.t.
   
   Module
     Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
@@ -10945,17 +11084,20 @@ Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
 
 Module HandleErrorCode.
-  Unset Primitive Projections.
-  Record t : Set := {
-    error_code : core.marker.PhantomData (T);
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_error_code : Notation.Dot "error_code" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section HandleErrorCode.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      error_code : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_error_code : Notation.Dot "error_code" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End HandleErrorCode.
 End HandleErrorCode.
-Definition HandleErrorCode : Set := HandleErrorCode.t.
+Definition HandleErrorCode : Set := @HandleErrorCode.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
 Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
@@ -11207,7 +11349,7 @@ Module engine.
           Notation.dot '(Build_t x0) := x0;
         }.
       End CallData.
-      Definition CallData : Set := CallData.t.
+      Definition CallData : Set := @CallData.t.
       
       Module
         Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
@@ -11508,7 +11650,7 @@ Module engine.
           Notation.dot '(Build_t x0) := x0;
         }.
       End TopicsBuilder.
-      Definition TopicsBuilder : Set := TopicsBuilder.t.
+      Definition TopicsBuilder : Set := @TopicsBuilder.t.
       
       Module
         Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -12127,7 +12269,7 @@ Module engine.
           Notation.dot '(Build_t _ x1) := x1;
         }.
       End EmittedEvent.
-      Definition EmittedEvent : Set := EmittedEvent.t.
+      Definition EmittedEvent : Set := @EmittedEvent.t.
       
       Module
         Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -12282,37 +12424,40 @@ Module engine.
           M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
       
       Module DefaultAccounts.
-        Unset Primitive Projections.
-        Record t : Set := {
-          alice : ImplT.AccountId;
-          bob : ImplT.AccountId;
-          charlie : ImplT.AccountId;
-          django : ImplT.AccountId;
-          eve : ImplT.AccountId;
-          frank : ImplT.AccountId;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_alice : Notation.Dot "alice" := {
-          Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-        }.
-        Global Instance Get_bob : Notation.Dot "bob" := {
-          Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-        }.
-        Global Instance Get_charlie : Notation.Dot "charlie" := {
-          Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-        }.
-        Global Instance Get_django : Notation.Dot "django" := {
-          Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-        }.
-        Global Instance Get_eve : Notation.Dot "eve" := {
-          Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-        }.
-        Global Instance Get_frank : Notation.Dot "frank" := {
-          Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-        }.
+        Section DefaultAccounts.
+          Context {T : Set}.
+          Unset Primitive Projections.
+          Record t : Set := {
+            alice : ImplT.AccountId;
+            bob : ImplT.AccountId;
+            charlie : ImplT.AccountId;
+            django : ImplT.AccountId;
+            eve : ImplT.AccountId;
+            frank : ImplT.AccountId;
+          }.
+          Global Set Primitive Projections.
+          
+          Global Instance Get_alice : Notation.Dot "alice" := {
+            Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+          }.
+          Global Instance Get_bob : Notation.Dot "bob" := {
+            Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+          }.
+          Global Instance Get_charlie : Notation.Dot "charlie" := {
+            Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+          }.
+          Global Instance Get_django : Notation.Dot "django" := {
+            Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+          }.
+          Global Instance Get_eve : Notation.Dot "eve" := {
+            Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+          }.
+          Global Instance Get_frank : Notation.Dot "frank" := {
+            Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+          }.
+        End DefaultAccounts.
       End DefaultAccounts.
-      Definition DefaultAccounts : Set := DefaultAccounts.t.
+      Definition DefaultAccounts : Set := @DefaultAccounts.t.
       
       Parameter recorded_events : forall `{H : State.Trait},
           M (H := H) OpaqueDef.
@@ -12424,7 +12569,7 @@ Module engine.
         Notation.dot '(Build_t x0) := x0;
       }.
     End EnvInstance.
-    Definition EnvInstance : Set := EnvInstance.t.
+    Definition EnvInstance : Set := @EnvInstance.t.
     
     Module
       Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
@@ -12690,7 +12835,7 @@ Module off_chain.
         Notation.dot '(Build_t x0) := x0;
       }.
     End CallData.
-    Definition CallData : Set := CallData.t.
+    Definition CallData : Set := @CallData.t.
     
     Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
       Definition Self := ink_env.engine.off_chain.call_data.CallData.
@@ -12989,7 +13134,7 @@ Module off_chain.
         Notation.dot '(Build_t x0) := x0;
       }.
     End TopicsBuilder.
-    Definition TopicsBuilder : Set := TopicsBuilder.t.
+    Definition TopicsBuilder : Set := @TopicsBuilder.t.
     
     Module
       Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -13593,7 +13738,7 @@ Module off_chain.
         Notation.dot '(Build_t _ x1) := x1;
       }.
     End EmittedEvent.
-    Definition EmittedEvent : Set := EmittedEvent.t.
+    Definition EmittedEvent : Set := @EmittedEvent.t.
     
     Module
       Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -13748,37 +13893,40 @@ Module off_chain.
         M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
     
     Module DefaultAccounts.
-      Unset Primitive Projections.
-      Record t : Set := {
-        alice : ImplT.AccountId;
-        bob : ImplT.AccountId;
-        charlie : ImplT.AccountId;
-        django : ImplT.AccountId;
-        eve : ImplT.AccountId;
-        frank : ImplT.AccountId;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_alice : Notation.Dot "alice" := {
-        Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-      }.
-      Global Instance Get_bob : Notation.Dot "bob" := {
-        Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-      }.
-      Global Instance Get_charlie : Notation.Dot "charlie" := {
-        Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-      }.
-      Global Instance Get_django : Notation.Dot "django" := {
-        Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-      }.
-      Global Instance Get_eve : Notation.Dot "eve" := {
-        Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-      }.
-      Global Instance Get_frank : Notation.Dot "frank" := {
-        Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-      }.
+      Section DefaultAccounts.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          alice : ImplT.AccountId;
+          bob : ImplT.AccountId;
+          charlie : ImplT.AccountId;
+          django : ImplT.AccountId;
+          eve : ImplT.AccountId;
+          frank : ImplT.AccountId;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_alice : Notation.Dot "alice" := {
+          Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+        }.
+        Global Instance Get_bob : Notation.Dot "bob" := {
+          Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+        }.
+        Global Instance Get_charlie : Notation.Dot "charlie" := {
+          Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+        }.
+        Global Instance Get_django : Notation.Dot "django" := {
+          Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+        }.
+        Global Instance Get_eve : Notation.Dot "eve" := {
+          Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+        }.
+        Global Instance Get_frank : Notation.Dot "frank" := {
+          Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+        }.
+      End DefaultAccounts.
     End DefaultAccounts.
-    Definition DefaultAccounts : Set := DefaultAccounts.t.
+    Definition DefaultAccounts : Set := @DefaultAccounts.t.
     
     Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
     
@@ -13885,7 +14033,7 @@ Module off_chain.
       Notation.dot '(Build_t x0) := x0;
     }.
   End EnvInstance.
-  Definition EnvInstance : Set := EnvInstance.t.
+  Definition EnvInstance : Set := @EnvInstance.t.
   
   Module
     Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
@@ -14105,7 +14253,7 @@ Module call_data.
       Notation.dot '(Build_t x0) := x0;
     }.
   End CallData.
-  Definition CallData : Set := CallData.t.
+  Definition CallData : Set := @CallData.t.
   
   Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
     Definition Self := ink_env.engine.off_chain.call_data.CallData.
@@ -14309,7 +14457,7 @@ Module CallData.
     Notation.dot '(Build_t x0) := x0;
   }.
 End CallData.
-Definition CallData : Set := CallData.t.
+Definition CallData : Set := @CallData.t.
 
 Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
   Definition Self := ink_env.engine.off_chain.call_data.CallData.
@@ -14601,7 +14749,7 @@ Module impls.
       Notation.dot '(Build_t x0) := x0;
     }.
   End TopicsBuilder.
-  Definition TopicsBuilder : Set := TopicsBuilder.t.
+  Definition TopicsBuilder : Set := @TopicsBuilder.t.
   
   Module
     Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -15494,7 +15642,7 @@ Module TopicsBuilder.
     Notation.dot '(Build_t x0) := x0;
   }.
 End TopicsBuilder.
-Definition TopicsBuilder : Set := TopicsBuilder.t.
+Definition TopicsBuilder : Set := @TopicsBuilder.t.
 
 Module
   Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
@@ -16066,7 +16214,7 @@ Module test_api.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
-  Definition EmittedEvent : Set := EmittedEvent.t.
+  Definition EmittedEvent : Set := @EmittedEvent.t.
   
   Module
     Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
@@ -16219,37 +16367,40 @@ Module test_api.
       M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
   
   Module DefaultAccounts.
-    Unset Primitive Projections.
-    Record t : Set := {
-      alice : ImplT.AccountId;
-      bob : ImplT.AccountId;
-      charlie : ImplT.AccountId;
-      django : ImplT.AccountId;
-      eve : ImplT.AccountId;
-      frank : ImplT.AccountId;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_alice : Notation.Dot "alice" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_bob : Notation.Dot "bob" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-    }.
-    Global Instance Get_charlie : Notation.Dot "charlie" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-    }.
-    Global Instance Get_django : Notation.Dot "django" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-    }.
-    Global Instance Get_eve : Notation.Dot "eve" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-    }.
-    Global Instance Get_frank : Notation.Dot "frank" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-    }.
+    Section DefaultAccounts.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        alice : ImplT.AccountId;
+        bob : ImplT.AccountId;
+        charlie : ImplT.AccountId;
+        django : ImplT.AccountId;
+        eve : ImplT.AccountId;
+        frank : ImplT.AccountId;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_alice : Notation.Dot "alice" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_bob : Notation.Dot "bob" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+      }.
+      Global Instance Get_charlie : Notation.Dot "charlie" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+      }.
+      Global Instance Get_django : Notation.Dot "django" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+      }.
+      Global Instance Get_eve : Notation.Dot "eve" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+      }.
+      Global Instance Get_frank : Notation.Dot "frank" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+      }.
+    End DefaultAccounts.
   End DefaultAccounts.
-  Definition DefaultAccounts : Set := DefaultAccounts.t.
+  Definition DefaultAccounts : Set := @DefaultAccounts.t.
   
   Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
   
@@ -16282,7 +16433,7 @@ Module EmittedEvent.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
-Definition EmittedEvent : Set := EmittedEvent.t.
+Definition EmittedEvent : Set := @EmittedEvent.t.
 
 Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
   Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
@@ -16434,37 +16585,40 @@ Parameter default_accounts : forall `{H : State.Trait},
     M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 
 Module DefaultAccounts.
-  Unset Primitive Projections.
-  Record t : Set := {
-    alice : ImplT.AccountId;
-    bob : ImplT.AccountId;
-    charlie : ImplT.AccountId;
-    django : ImplT.AccountId;
-    eve : ImplT.AccountId;
-    frank : ImplT.AccountId;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_alice : Notation.Dot "alice" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_bob : Notation.Dot "bob" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-  }.
-  Global Instance Get_charlie : Notation.Dot "charlie" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-  }.
-  Global Instance Get_django : Notation.Dot "django" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-  }.
-  Global Instance Get_eve : Notation.Dot "eve" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-  }.
-  Global Instance Get_frank : Notation.Dot "frank" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-  }.
+  Section DefaultAccounts.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      alice : ImplT.AccountId;
+      bob : ImplT.AccountId;
+      charlie : ImplT.AccountId;
+      django : ImplT.AccountId;
+      eve : ImplT.AccountId;
+      frank : ImplT.AccountId;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_alice : Notation.Dot "alice" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_bob : Notation.Dot "bob" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+    }.
+    Global Instance Get_charlie : Notation.Dot "charlie" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+    }.
+    Global Instance Get_django : Notation.Dot "django" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+    }.
+    Global Instance Get_eve : Notation.Dot "eve" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+    }.
+    Global Instance Get_frank : Notation.Dot "frank" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+    }.
+  End DefaultAccounts.
 End DefaultAccounts.
-Definition DefaultAccounts : Set := DefaultAccounts.t.
+Definition DefaultAccounts : Set := @DefaultAccounts.t.
 
 Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
 
@@ -16643,7 +16797,7 @@ Module EnvInstance.
     Notation.dot '(Build_t x0) := x0;
   }.
 End EnvInstance.
-Definition EnvInstance : Set := EnvInstance.t.
+Definition EnvInstance : Set := @EnvInstance.t.
 
 Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
   Definition Self := ink_env.engine.off_chain.EnvInstance.
@@ -18147,21 +18301,24 @@ Module topics.
   End TopicsBuilderBackend.
   
   Module TopicsBuilder.
-    Unset Primitive Projections.
-    Record t : Set := {
-      backend : B;
-      state : core.marker.PhantomData ((S * E));
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_backend : Notation.Dot "backend" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_state : Notation.Dot "state" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section TopicsBuilder.
+      Context {S E B : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        backend : B;
+        state : core.marker.PhantomData ((S * E));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_backend : Notation.Dot "backend" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_state : Notation.Dot "state" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End TopicsBuilder.
   End TopicsBuilder.
-  Definition TopicsBuilder : Set := TopicsBuilder.t.
+  Definition TopicsBuilder : Set := @TopicsBuilder.t.
   
   Module
     Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
@@ -19225,21 +19382,24 @@ Module topics.
   End Topics.
   
   Module PrefixedValue.
-    Unset Primitive Projections.
-    Record t : Set := {
-      prefix : ref (Slice u8);
-      value : ref T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_prefix : Notation.Dot "prefix" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section PrefixedValue.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        prefix : ref (Slice u8);
+        value : ref T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_prefix : Notation.Dot "prefix" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End PrefixedValue.
   End PrefixedValue.
-  Definition PrefixedValue : Set := PrefixedValue.t.
+  Definition PrefixedValue : Set := @PrefixedValue.t.
   
   Module
     Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
@@ -19304,21 +19464,24 @@ Module TopicsBuilderBackend.
 End TopicsBuilderBackend.
 
 Module TopicsBuilder.
-  Unset Primitive Projections.
-  Record t : Set := {
-    backend : B;
-    state : core.marker.PhantomData ((S * E));
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_backend : Notation.Dot "backend" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_state : Notation.Dot "state" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section TopicsBuilder.
+    Context {S E B : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      backend : B;
+      state : core.marker.PhantomData ((S * E));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_backend : Notation.Dot "backend" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_state : Notation.Dot "state" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End TopicsBuilder.
 End TopicsBuilder.
-Definition TopicsBuilder : Set := TopicsBuilder.t.
+Definition TopicsBuilder : Set := @TopicsBuilder.t.
 
 Module
   Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
@@ -20399,21 +20562,24 @@ Module Topics.
 End Topics.
 
 Module PrefixedValue.
-  Unset Primitive Projections.
-  Record t : Set := {
-    prefix : ref (Slice u8);
-    value : ref T;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_prefix : Notation.Dot "prefix" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section PrefixedValue.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      prefix : ref (Slice u8);
+      value : ref T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_prefix : Notation.Dot "prefix" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End PrefixedValue.
 End PrefixedValue.
-Definition PrefixedValue : Set := PrefixedValue.t.
+Definition PrefixedValue : Set := @PrefixedValue.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
 Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.

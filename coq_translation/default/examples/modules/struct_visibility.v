@@ -3,30 +3,36 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module my.
   Module OpenBox.
-    Unset Primitive Projections.
-    Record t : Set := {
-      contents : T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section OpenBox.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        contents : T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_contents : Notation.Dot "contents" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End OpenBox.
   End OpenBox.
-  Definition OpenBox : Set := OpenBox.t.
+  Definition OpenBox : Set := @OpenBox.t.
   
   Module ClosedBox.
-    Unset Primitive Projections.
-    Record t : Set := {
-      contents : T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_contents : Notation.Dot "contents" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section ClosedBox.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        contents : T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_contents : Notation.Dot "contents" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox : Set := ClosedBox.t.
+  Definition ClosedBox : Set := @ClosedBox.t.
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self := struct_visibility.my.ClosedBox T.
@@ -45,30 +51,36 @@ Module my.
 End my.
 
 Module OpenBox.
-  Unset Primitive Projections.
-  Record t : Set := {
-    contents : T;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section OpenBox.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      contents : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_contents : Notation.Dot "contents" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End OpenBox.
 End OpenBox.
-Definition OpenBox : Set := OpenBox.t.
+Definition OpenBox : Set := @OpenBox.t.
 
 Module ClosedBox.
-  Unset Primitive Projections.
-  Record t : Set := {
-    contents : T;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_contents : Notation.Dot "contents" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section ClosedBox.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      contents : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_contents : Notation.Dot "contents" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End ClosedBox.
 End ClosedBox.
-Definition ClosedBox : Set := ClosedBox.t.
+Definition ClosedBox : Set := @ClosedBox.t.
 
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.

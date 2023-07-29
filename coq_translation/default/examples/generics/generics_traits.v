@@ -4,12 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Module Empty.
   Inductive t : Set := Build.
 End Empty.
-Definition Empty := Empty.t.
+Definition Empty := @Empty.t.
 
 Module Null.
   Inductive t : Set := Build.
 End Null.
-Definition Null := Null.t.
+Definition Null := @Null.t.
 
 Module DoubleDrop.
   Class Trait (Self : Set) {T : Set} : Set := {

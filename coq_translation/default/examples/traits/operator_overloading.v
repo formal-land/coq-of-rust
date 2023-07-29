@@ -4,17 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Module Foo.
   Inductive t : Set := Build.
 End Foo.
-Definition Foo := Foo.t.
+Definition Foo := @Foo.t.
 
 Module Bar.
   Inductive t : Set := Build.
 End Bar.
-Definition Bar := Bar.t.
+Definition Bar := @Bar.t.
 
 Module FooBar.
   Inductive t : Set := Build.
 End FooBar.
-Definition FooBar := FooBar.t.
+Definition FooBar := @FooBar.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Definition Self := operator_overloading.FooBar.
@@ -38,7 +38,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 Module BarFoo.
   Inductive t : Set := Build.
 End BarFoo.
-Definition BarFoo := BarFoo.t.
+Definition BarFoo := @BarFoo.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Definition Self := operator_overloading.BarFoo.

@@ -8,7 +8,7 @@ Module Container.
     _ : i32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
@@ -16,7 +16,7 @@ Module Container.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Container.
-Definition Container := Container.t.
+Definition Container := @Container.t.
 
 Module Contains.
   Class Trait (Self : Set) {A : Set} {B : Set} : Set := {
