@@ -8,9 +8,7 @@ Parameter foo : forall `{H : State.Trait},
     M (H := H) unit.
 
 Module tests.
-  Parameter test_file : forall `{H : State.Trait}, M (H := H) unit.
   
-  Parameter test_file_also : forall `{H : State.Trait}, M (H := H) unit.
 End tests.
 
 Parameter test_file : forall `{H : State.Trait}, M (H := H) unit.

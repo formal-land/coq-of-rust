@@ -120,64 +120,10 @@ Parameter generate_selector_bytes_or_err : forall `{H : State.Trait},
     M (H := H) (syn.error.Result proc_macro2.TokenStream).
 
 Module storage.
-  Module storable.
-    Parameter storable_struct_derive : forall `{H : State.Trait},
-        ref synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-    
-    Parameter storable_enum_derive : forall `{H : State.Trait},
-        ref synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-    
-    Parameter storable_derive : forall `{H : State.Trait},
-        synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-  End storable.
   
-  Module storable_hint.
-    Parameter storable_hint_inner : forall `{H : State.Trait},
-        synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-    
-    Parameter storable_hint_derive : forall `{H : State.Trait},
-        synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-  End storable_hint.
-  
-  Module storage_key.
-    Parameter storage_key_derive : forall `{H : State.Trait},
-        synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-  End storage_key.
-  
-  Module storage_layout.
-    Parameter field_layout : forall `{H : State.Trait},
-        ref synstructure.VariantInfo ->
-        M (H := H) OpaqueDef.
-    
-    Parameter storage_layout_struct : forall `{H : State.Trait},
-        ref synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-    
-    Parameter storage_layout_enum : forall `{H : State.Trait},
-        ref synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-    
-    Parameter storage_layout_derive : forall `{H : State.Trait},
-        synstructure.Structure ->
-        M (H := H) proc_macro2.TokenStream.
-  End storage_layout.
 End storage.
 
 Module storable.
-  Parameter storable_struct_derive : forall `{H : State.Trait},
-      ref synstructure.Structure ->
-      M (H := H) proc_macro2.TokenStream.
-  
-  Parameter storable_enum_derive : forall `{H : State.Trait},
-      ref synstructure.Structure ->
-      M (H := H) proc_macro2.TokenStream.
-  
   Parameter storable_derive : forall `{H : State.Trait},
       synstructure.Structure ->
       M (H := H) proc_macro2.TokenStream.
@@ -196,10 +142,6 @@ Parameter storable_derive : forall `{H : State.Trait},
     M (H := H) proc_macro2.TokenStream.
 
 Module storable_hint.
-  Parameter storable_hint_inner : forall `{H : State.Trait},
-      synstructure.Structure ->
-      M (H := H) proc_macro2.TokenStream.
-  
   Parameter storable_hint_derive : forall `{H : State.Trait},
       synstructure.Structure ->
       M (H := H) proc_macro2.TokenStream.
@@ -224,18 +166,6 @@ Parameter storage_key_derive : forall `{H : State.Trait},
     M (H := H) proc_macro2.TokenStream.
 
 Module storage_layout.
-  Parameter field_layout : forall `{H : State.Trait},
-      ref synstructure.VariantInfo ->
-      M (H := H) OpaqueDef.
-  
-  Parameter storage_layout_struct : forall `{H : State.Trait},
-      ref synstructure.Structure ->
-      M (H := H) proc_macro2.TokenStream.
-  
-  Parameter storage_layout_enum : forall `{H : State.Trait},
-      ref synstructure.Structure ->
-      M (H := H) proc_macro2.TokenStream.
-  
   Parameter storage_layout_derive : forall `{H : State.Trait},
       synstructure.Structure ->
       M (H := H) proc_macro2.TokenStream.

@@ -10,12 +10,6 @@ End cool.
 Parameter function : forall `{H : State.Trait}, M (H := H) unit.
 
 Module my.
-  Parameter function : forall `{H : State.Trait}, M (H := H) unit.
-  
-  Module cool.
-    Parameter function : forall `{H : State.Trait}, M (H := H) unit.
-  End cool.
-  
   Parameter indirect_call : forall `{H : State.Trait}, M (H := H) unit.
 End my.
 
