@@ -132,7 +132,7 @@ pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<B
 }
 
 impl CoqType {
-    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
+    pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
         match self {
             CoqType::Var(path) => path.to_doc(),
             CoqType::Application { func, args } => paren(

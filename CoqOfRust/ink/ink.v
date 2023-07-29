@@ -5322,7 +5322,7 @@ Module reflect.
         Notation.dot := eq;
       }.
       
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
+      Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
         core.cmp.PartialEq.eq `{H : State.Trait} := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
@@ -5912,7 +5912,7 @@ Module dispatch.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
@@ -6392,7 +6392,7 @@ Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.

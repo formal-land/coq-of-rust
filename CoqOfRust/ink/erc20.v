@@ -751,7 +751,7 @@ Module erc20.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -1257,7 +1257,7 @@ Module erc20.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -1728,7 +1728,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
@@ -1995,7 +1996,8 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
 
@@ -2106,7 +2108,8 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
 
@@ -3920,7 +3923,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
@@ -4068,7 +4072,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
@@ -4592,7 +4596,8 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
 
@@ -4664,7 +4669,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -5797,7 +5802,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -5860,7 +5865,8 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
 

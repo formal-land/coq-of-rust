@@ -322,7 +322,7 @@ Module types.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
@@ -745,7 +745,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
@@ -5225,7 +5225,7 @@ Module call.
         Notation.dot := eq;
       }.
       
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
+      Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
         core.cmp.PartialEq.eq `{H : State.Trait} := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
@@ -10100,7 +10100,7 @@ Module selector.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
@@ -10260,7 +10260,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
@@ -10361,7 +10361,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
   Definition Self := ink_env.call.selector.Selector.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
@@ -11274,7 +11275,7 @@ Module engine.
           Notation.dot := eq;
         }.
         
-        Global Instance I : core.cmp.PartialEq.Trait Self := {
+        Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
           core.cmp.PartialEq.eq `{H : State.Trait} := eq;
         }.
       End
@@ -12508,7 +12509,7 @@ Module engine.
         Notation.dot := eq;
       }.
       
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
+      Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
         core.cmp.PartialEq.eq `{H : State.Trait} := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
@@ -12604,7 +12605,7 @@ Module engine.
         Notation.dot := eq;
       }.
       
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
+      Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
         core.cmp.PartialEq.eq `{H : State.Trait} := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
@@ -12756,7 +12757,7 @@ Module off_chain.
         Notation.dot := eq;
       }.
       
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
+      Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
         core.cmp.PartialEq.eq `{H : State.Trait} := eq;
       }.
     End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
@@ -13969,7 +13970,7 @@ Module off_chain.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
@@ -14062,7 +14063,7 @@ Module off_chain.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
@@ -14169,7 +14170,7 @@ Module call_data.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
@@ -14372,7 +14373,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
@@ -16756,7 +16757,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
@@ -16848,7 +16849,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
@@ -17000,7 +17001,7 @@ Module error.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_error_Error.
@@ -17124,7 +17125,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_error_Error.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_error_Error.
@@ -17251,7 +17252,7 @@ Module hash.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
@@ -17344,7 +17345,7 @@ Module hash.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
@@ -17437,7 +17438,7 @@ Module hash.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
@@ -17530,7 +17531,7 @@ Module hash.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
@@ -17728,7 +17729,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
@@ -17821,7 +17822,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
@@ -17914,7 +17915,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
@@ -18007,7 +18008,7 @@ Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.

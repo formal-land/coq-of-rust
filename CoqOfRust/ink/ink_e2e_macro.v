@@ -411,7 +411,7 @@ Module config.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
@@ -569,7 +569,7 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_e2e_macro_config_E2EConfig.

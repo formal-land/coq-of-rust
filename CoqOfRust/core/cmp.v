@@ -32,7 +32,7 @@ Traits
 [x] PartialOrd
 *)
 Module PartialEq.
-  Class Trait (Self : Set) (Rhs : option Set) : Set := {
+  Class Trait (Self : Set) {Rhs : option Set} : Set := {
     Rhs := defaultType Rhs Self;
 
     eq `{State.Trait} : ref Self -> ref Rhs -> M bool;

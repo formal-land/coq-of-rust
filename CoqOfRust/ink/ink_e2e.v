@@ -1250,7 +1250,8 @@ Section
   
   Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1562,7 +1563,8 @@ Section
   
   Definition Self := ink_e2e.client.CodeStoredEvent E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
@@ -2528,7 +2530,7 @@ Module xts.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -3030,7 +3032,7 @@ Module xts.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -3515,7 +3517,7 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
@@ -3581,7 +3583,8 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
 
@@ -3967,7 +3970,8 @@ Section
   
   Definition Self := ink_e2e.xts.InstantiateWithCode E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -4150,7 +4154,8 @@ Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
   
   Definition Self := ink_e2e.xts.Call E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
@@ -4297,7 +4302,8 @@ Section
   
   Definition Self := ink_e2e.xts.Transfer E C.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
@@ -4422,7 +4428,7 @@ Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
@@ -4506,7 +4512,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
   Definition Self := ink_e2e.xts.Determinism.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
 
@@ -4605,7 +4612,8 @@ Section
   
   Definition Self := ink_e2e.xts.UploadCode E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
@@ -4778,7 +4786,8 @@ Section
   
   Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
@@ -4866,7 +4875,8 @@ Section
   
   Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
@@ -4958,7 +4968,8 @@ Section
   
   Definition Self := ink_e2e.xts.RpcCallRequest C E.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
@@ -5010,7 +5021,8 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
 

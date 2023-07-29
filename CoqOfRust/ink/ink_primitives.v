@@ -98,7 +98,7 @@ Module key.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
@@ -223,7 +223,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
@@ -371,7 +371,7 @@ Module types.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
@@ -429,7 +429,7 @@ Module types.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
@@ -674,7 +674,7 @@ Module types.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
+    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
@@ -732,7 +732,7 @@ Module types.
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I : core.cmp.PartialOrd.Trait Self := {
+    Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
     }.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
@@ -1144,7 +1144,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
@@ -1202,7 +1202,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
@@ -1280,7 +1280,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
   Definition Self := ink_primitives.types.AccountId.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
@@ -1607,7 +1608,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
@@ -1665,7 +1666,7 @@ Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I : core.cmp.PartialOrd.Trait Self := {
+  Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
   }.
 End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
@@ -1743,7 +1744,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
   Definition Self := ink_primitives.types.Hash.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
@@ -1995,7 +1997,7 @@ Module Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
+  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
@@ -2044,7 +2046,8 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
   Definition Self := ink_primitives.LangError.
   
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
+  Global Instance I :
+      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
 
