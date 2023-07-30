@@ -2,14 +2,3 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter add : forall `{H : State.Trait}, i32 -> i32 -> M (H := H) i32.
-
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter bad_add : forall `{H : State.Trait}, i32 -> i32 -> M (H := H) i32.
-
-Module tests.
-  
-End tests.
-
-Parameter test_add : forall `{H : State.Trait}, M (H := H) unit.
-
-Parameter test_bad_add : forall `{H : State.Trait}, M (H := H) unit.
