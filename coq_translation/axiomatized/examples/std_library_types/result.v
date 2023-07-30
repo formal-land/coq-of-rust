@@ -10,23 +10,6 @@ Module checked.
   End MathError.
   Definition MathError := MathError.t.
   
-  Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self := result.checked.MathError.
-    
-    Parameter fmt : forall `{H : State.Trait},
-        ref Self ->
-        mut_ref core.fmt.Formatter ->
-        M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_result_checked_MathError.
-  
   Definition MathResult : Set :=
     core.result.Result f64 result.checked.MathError.
   
@@ -52,23 +35,6 @@ Module MathError.
 End MathError.
 Definition MathError := MathError.t.
 
-Module Impl_core_fmt_Debug_for_result_checked_MathError.
-  Definition Self := result.checked.MathError.
-  
-  Parameter fmt : forall `{H : State.Trait},
-      ref Self ->
-      mut_ref core.fmt.Formatter ->
-      M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_result_checked_MathError.
-
 Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
 
 Parameter div : forall `{H : State.Trait},
@@ -83,8 +49,3 @@ Parameter sqrt : forall `{H : State.Trait},
 Parameter ln : forall `{H : State.Trait},
     f64 ->
     M (H := H) result.checked.MathResult.
-
-Parameter op : forall `{H : State.Trait}, f64 -> f64 -> M (H := H) f64.
-
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H : State.Trait}, M (H := H) unit.

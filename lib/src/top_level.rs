@@ -267,6 +267,19 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
 ///   hir environment [hir]
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
     let name = item.ident.name.to_string();
+    if env.axiomatize {
+        let def_id = item.owner_id.to_def_id();
+        let is_public = tcx.visibility(def_id).is_public();
+        if !is_public {
+            // Do not generate anything if the item is not public and we are
+            // axiomatizing the definitions (for a library). Also, still
+            // generate the modules, since they may contain public items.
+            match &item.kind {
+                ItemKind::Mod(_) => {}
+                _ => return vec![],
+            }
+        }
+    }
 
     match &item.kind {
         ItemKind::ExternCrate(_) => vec![],
