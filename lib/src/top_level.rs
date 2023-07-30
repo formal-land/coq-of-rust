@@ -272,8 +272,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         let is_public = tcx.visibility(def_id).is_public();
         if !is_public {
             // Do not generate anything if the item is not public and we are
-            // axiomatizing the definitions (for a library)
-            return vec![];
+            // axiomatizing the definitions (for a library). Also, still
+            // generate the modules, since they may contain public items.
+            match &item.kind {
+                ItemKind::Mod(_) => {}
+                _ => return vec![],
+            }
         }
     }
 
