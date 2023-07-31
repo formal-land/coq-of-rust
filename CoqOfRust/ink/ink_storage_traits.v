@@ -270,10 +270,6 @@ Module AutoStorableHint.
 End AutoStorableHint.
 
 Module layout.
-  Module impls.
-    
-  End impls.
-  
   Module StorageLayout.
     Class Trait (Self : Set) : Set := {
       layout
@@ -288,10 +284,6 @@ Module layout.
     }.
   End StorageLayout.
 End layout.
-
-Module impls.
-  
-End impls.
 
 Module StorageLayout.
   Class Trait (Self : Set) : Set := {

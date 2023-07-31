@@ -356,7 +356,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let items = module
+            let items: Vec<_> = module
                 .item_ids
                 .iter()
                 .flat_map(|item_id| {
@@ -364,6 +364,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     compile_top_level_item(tcx, env, item)
                 })
                 .collect();
+            // We remove empty modules in the translation
+            if items.is_empty() {
+                return vec![];
+            }
             vec![TopLevelItem::Module {
                 name,
                 body: TopLevel(items),
