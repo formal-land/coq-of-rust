@@ -206,7 +206,14 @@ Module codegen.
     Module emit.
       Module EmitEvent.
         Class Trait (Self : Set) {C : Set} : Set := {
-          emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
+          emit_event
+            `{H : State.Trait}
+            {E: Set}
+            `{core.convert.Into.Trait
+              ink.reflect.event.ContractEventBase.Type
+              E}
+            :
+            Self -> E -> (M (H := H) unit);
         }.
         
         Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -639,7 +646,12 @@ Module event.
   Module emit.
     Module EmitEvent.
       Class Trait (Self : Set) {C : Set} : Set := {
-        emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
+        emit_event
+          `{H : State.Trait}
+          {E: Set}
+          `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+          :
+          Self -> E -> (M (H := H) unit);
       }.
       
       Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -694,7 +706,12 @@ End event.
 Module emit.
   Module EmitEvent.
     Class Trait (Self : Set) {C : Set} : Set := {
-      emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
+      emit_event
+        `{H : State.Trait}
+        {E: Set}
+        `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+        :
+        Self -> E -> (M (H := H) unit);
     }.
     
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -706,7 +723,12 @@ End emit.
 
 Module EmitEvent.
   Class Trait (Self : Set) {C : Set} : Set := {
-    emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
+    emit_event
+      `{H : State.Trait}
+      {E: Set}
+      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+      :
+      Self -> E -> (M (H := H) unit);
   }.
   
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -1447,6 +1469,8 @@ Module reflect.
       Class Trait (Self : Set) : Set := {
         decode_dispatch
           `{H : State.Trait}
+          {I: Set}
+          `{parity_scale_codec.codec.Input.Trait I}
           :
           (mut_ref I) ->
           (M (H := H)
@@ -1786,6 +1810,8 @@ Module dispatch.
     Class Trait (Self : Set) : Set := {
       decode_dispatch
         `{H : State.Trait}
+        {I: Set}
+        `{parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
         (M (H := H)
@@ -2033,6 +2059,8 @@ Module DecodeDispatch.
   Class Trait (Self : Set) : Set := {
     decode_dispatch
       `{H : State.Trait}
+      {I: Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
       (M (H := H) (core.result.Result Self ink.reflect.dispatch.DispatchError));

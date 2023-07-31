@@ -82,10 +82,15 @@ Module storage.
     Class Trait (Self : Set) : Set := {
       encode
         `{H : State.Trait}
+        {T: Set}
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
         :
         (ref Self) -> (mut_ref T) -> (M (H := H) unit);
       decode
         `{H : State.Trait}
+        {I: Set}
+        `{parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
         (M (H := H) (core.result.Result Self parity_scale_codec.error.Error));
@@ -174,9 +179,17 @@ End storage.
 
 Module Storable.
   Class Trait (Self : Set) : Set := {
-    encode `{H : State.Trait} : (ref Self) -> (mut_ref T) -> (M (H := H) unit);
+    encode
+      `{H : State.Trait}
+      {T: Set}
+      `{parity_scale_codec.codec.Output.Trait T}
+      `{core.marker.Sized.Trait T}
+      :
+      (ref Self) -> (mut_ref T) -> (M (H := H) unit);
     decode
       `{H : State.Trait}
+      {I: Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
       (M (H := H) (core.result.Result Self parity_scale_codec.error.Error));
