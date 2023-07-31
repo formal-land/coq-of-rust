@@ -1,27 +1,5 @@
 Require Import CoqOfRust.lib.lib.
 
-(* ********ENUMS******** *)
-(*
-[?] Cow
-*)
-(* 
-pub enum Cow<'a, B>
-where
-    B: 'a + ToOwned + ?Sized,
-{
-    Borrowed(&'a B),
-    Owned(<B as ToOwned>::Owned),
-}
-*)
-Module Coq.
-  Inductive t (B : Set): Set := 
-  | Borrowed : ref B -> t B
-  (* BUGGED: Cannot define the param *)
-  | Owned : B -> t B
-  .
-End Coq.
-Definition Coq := Coq.t.
-
 
 (* ********TRAITS******** *)
 (*
@@ -84,4 +62,25 @@ Module ToOwned.
   }.
 End ToOwned.
 
+
+(* ********ENUMS******** *)
+(*
+[?] Cow
+*)
+(* 
+pub enum Cow<'a, B>
+where
+    B: 'a + ToOwned + ?Sized,
+{
+    Borrowed(&'a B),
+    Owned(<B as ToOwned>::Owned),
+}
+*)
+Module Cow.
+  Inductive t (B : Set) `{ToOwned.Trait B} : Set := 
+  | Borrowed : ref B -> t B
+  | Owned : ToOwned.Owned -> t B
+  .
+End Cow.
+Definition Cow := Cow.t.
 
