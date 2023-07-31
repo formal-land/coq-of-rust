@@ -2217,10 +2217,14 @@ impl TopLevelItem {
                                                 ])
                                             },
                                             intersperse(
-                                                where_predicates
-                                                    .iter()
-                                                    .map(|predicate| predicate.to_doc())
-                                                    .collect::<Vec<Doc>>(),
+                                                [
+                                                    where_predicates
+                                                        .iter()
+                                                        .map(|predicate| predicate.to_doc())
+                                                        .collect::<Vec<Doc>>(),
+                                                    vec![nil()],
+                                                ]
+                                                .concat(),
                                                 [line()],
                                             ),
                                             concat(args.iter().map(|(name, ty)| {
