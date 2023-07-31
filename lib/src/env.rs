@@ -11,8 +11,10 @@ pub(crate) struct Env<'a> {
     pub(crate) impl_counter: HashMap<CoqType, u64>,
     pub(crate) tcx: TyCtxt<'a>,
     pub(crate) axiomatize: bool,
-    pub(crate) file: String,    // full path for the current scope
-    pub(crate) context: String, // full path for the current scope
+    /// path of the file being compiled
+    pub(crate) file: String,
+    /// context being compile, ex: [examples/foo.rs::top_level::somemod]
+    pub(crate) context: String,
 }
 
 impl<'a> Env<'a> {
