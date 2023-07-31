@@ -433,12 +433,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             vec![TopLevelItem::Error("ForeignMod".to_string())]
         }
         ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
-        ItemKind::TyAlias(ty, _) => {
-            vec![TopLevelItem::TypeAlias {
-                name,
-                ty: compile_type(env, ty),
-            }]
-        }
+        ItemKind::TyAlias(ty, _) => vec![TopLevelItem::TypeAlias {
+            name,
+            ty: compile_type(env, ty),
+        }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
             name,
