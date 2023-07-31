@@ -2088,15 +2088,18 @@ impl TopLevelItem {
                                         line(),
                                         monadic_typeclass_parameter(),
                                         line(),
-                                        group([
-                                            text("{"),
-                                            intersperse(ty_params, [line()]),
-                                            line(),
-                                            text(":"),
-                                            line(),
-                                            text("Set}"),
-                                        ]),
-                                        line(),
+                                        if ty_params.is_empty() {
+                                            nil()
+                                        } else {
+                                            concat([
+                                                group([
+                                                    text("{"),
+                                                    intersperse(ty_params, [line()]),
+                                                    text(": Set}"),
+                                                ]),
+                                                line(),
+                                            ])
+                                        },
                                         intersperse(
                                             where_predicates
                                                 .iter()
@@ -2197,14 +2200,19 @@ impl TopLevelItem {
                                         nest([
                                             text("Notation.dot"),
                                             line(),
-                                            concat([
-                                                text("("),
-                                                intersperse(ty_params, [line()]),
-                                                text(":"),
-                                                line(),
-                                                text("Set)"),
-                                            ]),
-                                            line(),
+                                            if ty_params.is_empty() {
+                                                nil()
+                                            } else {
+                                                concat([
+                                                    group([
+                                                        // change here if it doesn't work with '{}' brackets
+                                                        text("{"),
+                                                        intersperse(ty_params, [line()]),
+                                                        text(": Set}"),
+                                                    ]),
+                                                    line(),
+                                                ])
+                                            },
                                             intersperse(
                                                 where_predicates
                                                     .iter()
