@@ -1,6 +1,6 @@
 # The stderr_warnings.txt won't be removed, as this could be a good source of log
-echo "Creating error file..."
-sudo truncate -s0 stderr_warnings.txt
+# echo "Creating error file..."
+# sudo truncate -s0 stderr_warnings.txt
 
 echo "Executing make..."
 make |& tee -a stderr_warnings.txt
