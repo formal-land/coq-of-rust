@@ -2479,13 +2479,3 @@ Module EnvAccess.
   End EnvAccess.
 End EnvAccess.
 Definition EnvAccess : Set := @EnvAccess.t.
-
-Module storage.
-  Module traits.
-    
-  End traits.
-End storage.
-
-Module traits.
-  
-End traits.

@@ -2082,10 +2082,6 @@ Module call.
     End Selector.
     Definition Selector : Set := @Selector.t.
   End selector.
-  
-  Module utils.
-    
-  End utils.
 End call.
 
 Module call_builder.
@@ -2962,10 +2958,6 @@ Module Selector.
 End Selector.
 Definition Selector : Set := @Selector.t.
 
-Module utils.
-  
-End utils.
-
 Module chain_extension.
   Module FromStatusCode.
     Class Trait (Self : Set) : Set := {
@@ -3464,10 +3456,6 @@ Module engine.
           M (H := H) unit.
     End test_api.
     
-    Module types.
-      
-    End types.
-    
     Module EnvInstance.
       Unset Primitive Projections.
       Record t : Set := {
@@ -3744,10 +3732,6 @@ Module off_chain.
         ImplT.Balance ->
         M (H := H) unit.
   End test_api.
-  
-  Module types.
-    
-  End types.
   
   Module EnvInstance.
     Unset Primitive Projections.
@@ -4239,10 +4223,6 @@ Parameter assert_contract_termination : forall `{H : State.Trait},
     ImplT.AccountId ->
     ImplT.Balance ->
     M (H := H) unit.
-
-Module types.
-  
-End types.
 
 Module EnvInstance.
   Unset Primitive Projections.

@@ -2,7 +2,3 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter add : forall `{H : State.Trait}, i32 -> i32 -> M (H := H) i32.
-
-Module tests.
-  
-End tests.
