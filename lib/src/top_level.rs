@@ -2202,7 +2202,6 @@ impl TopLevelItem {
                                     } => nest([
                                         nest([
                                             text("Notation.dot"),
-                                            line(),
                                             if ty_params.is_empty() {
                                                 nil()
                                             } else {
