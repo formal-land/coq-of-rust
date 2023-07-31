@@ -197,7 +197,6 @@ impl ToName for (String, ImplItem) {
     }
 }
 
-
 #[derive(Debug)]
 pub struct TopLevel(Vec<TopLevelItem>);
 
@@ -664,10 +663,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let self_ty = compile_type(env, self_ty);
             let entry = env.impl_counter.entry(*self_ty.clone());
             let counter = if matches!(of_trait, Some(..)) {
-		*entry.and_modify(|counter| *counter += 1).or_insert(1)
-	    } else {
-		1
-	    };
+                *entry.and_modify(|counter| *counter += 1).or_insert(1)
+            } else {
+                1
+            };
             let impl_name = format!(
                 "Impl_{}{}",
                 self_ty.to_name(),

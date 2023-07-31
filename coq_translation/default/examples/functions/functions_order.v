@@ -7,12 +7,12 @@ Module SomeType.
     _ : u32;
   }.
   Global Set Primitive Projections.
-
+  
   Global Instance Get_0 : Notation.Dot 0 := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End SomeType.
-Definition SomeType := SomeType.t.
+Definition SomeType := @SomeType.t.
 
 Module Impl_core_default_Default_for_functions_order_SomeType.
   Definition Self := functions_order.SomeType.
