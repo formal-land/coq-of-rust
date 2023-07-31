@@ -2101,13 +2101,16 @@ impl TopLevelItem {
                                             ])
                                         },
                                         intersperse(
-                                            where_predicates
-                                                .iter()
-                                                .map(|predicate| predicate.to_doc())
-                                                .collect::<Vec<Doc>>(),
+                                            [
+                                                where_predicates
+                                                    .iter()
+                                                    .map(|predicate| predicate.to_doc())
+                                                    .collect::<Vec<Doc>>(),
+                                                vec![nil()],
+                                            ]
+                                            .concat(),
                                             [line()],
                                         ),
-                                        line(),
                                         text(":"),
                                         line(),
                                         ty.to_doc(false),
