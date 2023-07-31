@@ -39,29 +39,3 @@ fn main() {
 
 fn foo() {} // functions_order::foo
 
-/*
-
-- type definitions
-- fucntion definitions
-- impl definitions
-- module definitions
-- impl trait definitions
-
-{
-  "reorder": {
-    "functions_order": {
-      "top_level": [
-         "SomeType",
-         "impl_SomeType",
-         "inner_mod",
-         "foo",
-         "main"
-      ],
-      "impl_Default_for_SomeType": ["default"]
-      "impl_SomeType": ["meth2", "meth1"]
-      "inner_mod": ["tar", "bar"],
-       inner_mod::nested_mod": ["tack", "tick"],
-    },
-  }
-}
-*/
