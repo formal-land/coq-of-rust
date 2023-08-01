@@ -263,7 +263,7 @@ Module core.
 
       Parameter debug_tuple :
         forall `{State.Trait} (self : mut_ref Self) (name : ref str),
-          DebugTuple.
+          M DebugTuple.
 
       Global Instance Method_debug_tuple
         `{State.Trait} {W : Set} `{Write.Trait W} :
@@ -332,7 +332,7 @@ Module core.
       (** field(&mut self, value: &dyn Debug) -> &mut DebugTuple<'a, 'b> *)
       Parameter field :
         forall `{State.Trait} {T : Set} `{Debug.Trait T},
-          mut_ref Self -> ref T -> mut_ref DebugTuple.
+          mut_ref Self -> ref T -> M (mut_ref DebugTuple).
 
       Global Instance Method_field `{State.Trait} {T : Set} `{Debug.Trait T} :
         Notation.Dot "field" := {
@@ -340,7 +340,7 @@ Module core.
       }.
 
       (** finish(&mut self) -> Result<(), Error> *)
-      Parameter finish : forall `{State.Trait}, mut_ref Self -> Result.
+      Parameter finish : forall `{State.Trait}, mut_ref Self -> M Result.
 
       Global Instance Method_finish `{State.Trait} :
         Notation.Dot "finish" := {
@@ -1409,8 +1409,11 @@ Definition format_arguments : Set := core.fmt.Arguments.
 (** a composition of debug_tuple, field and finish *)
 (* I guess that is what debug_tuple_field1_finish means *)
 Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
-  `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :=
-  ((f.["debug_tuple"] x).["field"] y).["finish"].
+  `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :
+  M core.fmt.Result :=
+  let* dt := f.["debug_tuple"] x in
+  let* fld := dt.["field"] y in
+  fld.["finish"].
 
 
 Definition Slice := lib.slice.
