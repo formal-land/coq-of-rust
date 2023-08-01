@@ -29,16 +29,16 @@ pub(crate) fn get_configuration(configuration_file_path: &str) -> Configuration 
         Ok(configuration_file_content) => match serde_json::from_str(&configuration_file_content) {
             Ok(configuration) => return configuration,
             Err(error) => {
-                eprintln!("Could not parse configuration file: {}", error);
+                eprintln!("Warning: Could not parse configuration file: {}", error);
             }
         },
         Err(_) => {
             eprintln!(
-                "Current working directory: {}",
+                "Warnning: Current working directory: {}",
                 std::env::current_dir().unwrap().display()
             );
             eprintln!(
-                "Could not read configuration file: {}",
+                "  Could not read configuration file: {}",
                 configuration_file_path
             );
         }
