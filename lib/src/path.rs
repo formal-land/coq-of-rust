@@ -149,7 +149,10 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
             //eprintln!("-> {:?}\n", segment); // TODO: remove
             let ty = match ty.kind {
                 rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => match path.res {
-                    Res::SelfTyAlias { .. } => compile_path(env, path),
+                    Res::SelfTyAlias { alias_to, .. } => {
+                        let ty = env.tcx.type_of(alias_to).0;
+                        Path { segments: todo!() }
+                    }
                     _ => {
                         let mut path = compile_path(env, path);
                         path.prefix_last_by_impl();
