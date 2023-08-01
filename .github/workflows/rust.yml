@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Test if Python file can be executed
+      run: python test_write_file.py
     - name: Download Git submodules
       run: git submodule update --init --recursive
     - name: Install Coq
