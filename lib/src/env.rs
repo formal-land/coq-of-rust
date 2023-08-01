@@ -14,11 +14,11 @@ pub(crate) struct Env<'a> {
     pub(crate) axiomatize: bool,
     /// path of the file being compiled
     pub(crate) file: String,
-    /// context being compile, ex: [examples/foo.rs::top_level::somemod]
+    /// context being compiled, ex: [top_level::somemod]
     pub(crate) context: String,
-    /// accumulate the reordering for pringing,
+    /// accumulate the reordering for printing,
     pub(crate) reorder_map: HashMap<String, Vec<String>>,
-    /// the configuration read
+    /// the configuration read or default if no config file is found
     pub(crate) configuration: Configuration,
 }
 
