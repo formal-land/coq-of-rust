@@ -15,6 +15,7 @@ extern crate rustc_session;
 extern crate rustc_span;
 
 pub mod callbacks;
+pub mod configuration;
 pub mod core;
 pub mod env;
 pub mod expression;
