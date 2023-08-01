@@ -1415,6 +1415,10 @@ Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
   let* fld := dt.["field"] y in
   fld.["finish"].
 
+Global Instance Formatter_debug_tuple_field1_finish `{State.Trait} :
+  Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
+  Notation.double_colon := debug_tuple_field1_finish;
+}.
 
 Definition Slice := lib.slice.
 
