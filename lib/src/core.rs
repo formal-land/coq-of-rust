@@ -115,6 +115,7 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
                     &ctxt,
                     TopLevelOptions {
                         axiomatize: opts.axiomatize,
+                        configuration_file: None,
                     },
                 )
             })

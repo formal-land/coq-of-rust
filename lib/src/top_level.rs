@@ -1,3 +1,4 @@
+use crate::configuration::*;
 use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
@@ -17,6 +18,7 @@ use std::string::ToString;
 
 pub(crate) struct TopLevelOptions {
     pub axiomatize: bool,
+    pub configuration_file: Option<String>,
 }
 
 #[derive(Debug)]
@@ -781,11 +783,11 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
-fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
+fn compile_top_level(tcx: &TyCtxt, axiomatize: bool) -> TopLevel {
     let mut env = Env {
         impl_counter: HashMap::new(),
         tcx: *tcx,
-        axiomatize: opts.axiomatize,
+        axiomatize,
     };
 
     TopLevel(
@@ -802,7 +804,11 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
 const LINE_WIDTH: usize = 80;
 
 pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
-    let top_level = compile_top_level(tcx, opts);
+    let configuration = opts
+        .configuration_file
+        .map(|configuration_file| get_configuration(&configuration_file));
+    let axiomatize = opts.axiomatize || configuration.map(|c| c.axiomatize).unwrap_or(false);
+    let top_level = compile_top_level(tcx, axiomatize);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)
 }
