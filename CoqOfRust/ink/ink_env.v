@@ -24,111 +24,6 @@ Module types.
     }.
   End FromLittleEndian.
   
-  Module Impl_ink_env_types_FromLittleEndian_for_u8.
-    Definition Self := u8.
-    
-    Definition Bytes : Set := list u8.
-    
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-      Notation.DoubleColon Self "from_le_bytes" := {
-      Notation.double_colon := from_le_bytes;
-    }.
-    
-    Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-      ink_env.types.FromLittleEndian.from_le_bytes
-        `{H : State.Trait}
-        :=
-        from_le_bytes;
-    }.
-  End Impl_ink_env_types_FromLittleEndian_for_u8.
-  
-  Module Impl_ink_env_types_FromLittleEndian_for_u16.
-    Definition Self := u16.
-    
-    Definition Bytes : Set := list u8.
-    
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-      Notation.DoubleColon Self "from_le_bytes" := {
-      Notation.double_colon := from_le_bytes;
-    }.
-    
-    Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-      ink_env.types.FromLittleEndian.from_le_bytes
-        `{H : State.Trait}
-        :=
-        from_le_bytes;
-    }.
-  End Impl_ink_env_types_FromLittleEndian_for_u16.
-  
-  Module Impl_ink_env_types_FromLittleEndian_for_u32.
-    Definition Self := u32.
-    
-    Definition Bytes : Set := list u8.
-    
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-      Notation.DoubleColon Self "from_le_bytes" := {
-      Notation.double_colon := from_le_bytes;
-    }.
-    
-    Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-      ink_env.types.FromLittleEndian.from_le_bytes
-        `{H : State.Trait}
-        :=
-        from_le_bytes;
-    }.
-  End Impl_ink_env_types_FromLittleEndian_for_u32.
-  
-  Module Impl_ink_env_types_FromLittleEndian_for_u64.
-    Definition Self := u64.
-    
-    Definition Bytes : Set := list u8.
-    
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-      Notation.DoubleColon Self "from_le_bytes" := {
-      Notation.double_colon := from_le_bytes;
-    }.
-    
-    Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-      ink_env.types.FromLittleEndian.from_le_bytes
-        `{H : State.Trait}
-        :=
-        from_le_bytes;
-    }.
-  End Impl_ink_env_types_FromLittleEndian_for_u64.
-  
-  Module Impl_ink_env_types_FromLittleEndian_for_u128.
-    Definition Self := u128.
-    
-    Definition Bytes : Set := list u8.
-    
-    Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-      Notation.DoubleColon Self "from_le_bytes" := {
-      Notation.double_colon := from_le_bytes;
-    }.
-    
-    Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-      ink_env.types.FromLittleEndian.from_le_bytes
-        `{H : State.Trait}
-        :=
-        from_le_bytes;
-    }.
-  End Impl_ink_env_types_FromLittleEndian_for_u128.
-  
   Module AccountIdGuard.
     Unset Primitive Projections.
     Class Trait (Self : Set) : Set := {
@@ -136,30 +31,12 @@ Module types.
     Global Set Primitive Projections.
   End AccountIdGuard.
   
-  Module Impl_ink_env_types_AccountIdGuard_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
-    
-    Global Instance I : ink_env.types.AccountIdGuard.Trait Self :=
-      ink_env.types.AccountIdGuard.Build_Trait _.
-  End Impl_ink_env_types_AccountIdGuard_for_ink_primitives_types_AccountId.
-  
   Module CodecAsType.
     Unset Primitive Projections.
     Class Trait (Self : Set) : Set := {
     }.
     Global Set Primitive Projections.
   End CodecAsType.
-  
-  Module Impl_ink_env_types_CodecAsType_for_T.
-  Section Impl_ink_env_types_CodecAsType_for_T.
-    Context {T : Set}.
-    
-    Definition Self := T.
-    
-    Global Instance I : ink_env.types.CodecAsType.Trait Self :=
-      ink_env.types.CodecAsType.Build_Trait _.
-  End Impl_ink_env_types_CodecAsType_for_T.
-  End Impl_ink_env_types_CodecAsType_for_T.
   
   Module Environment.
     Class Trait
@@ -264,113 +141,6 @@ Module types.
   End DefaultEnvironment.
   Definition DefaultEnvironment := DefaultEnvironment.t.
   
-  Module Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
-  
-  Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.types.DefaultEnvironment.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
-  
-  Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.types.DefaultEnvironment
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
-  
-  Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
-    Definition Self := ink_env.types.DefaultEnvironment.
-    
-    Definition MAX_EVENT_TOPICS := Pure 4.
-    
-    Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H : State.Trait} :
-      Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
-      Notation.double_colon := MAX_EVENT_TOPICS;
-    }.
-    
-    Definition AccountId : Set := ink_primitives.types.AccountId.
-    
-    Definition Balance : Set := ink_env.types.Balance.
-    
-    Definition Hash : Set := ink_primitives.types.Hash.
-    
-    Definition Timestamp : Set := ink_env.types.Timestamp.
-    
-    Definition BlockNumber : Set := ink_env.types.BlockNumber.
-    
-    Definition ChainExtension : Set := ink_env.types.NoChainExtension.
-    
-    Global Instance I : ink_env.types.Environment.Trait Self := {
-      ink_env.types.Environment.MAX_EVENT_TOPICS
-        `{H : State.Trait}
-        :=
-        MAX_EVENT_TOPICS;
-    }.
-  End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
-  
   Definition Balance : Set := u128.
   
   Definition Timestamp : Set := u64.
@@ -402,111 +172,6 @@ Module FromLittleEndian.
   }.
 End FromLittleEndian.
 
-Module Impl_ink_env_types_FromLittleEndian_for_u8.
-  Definition Self := u8.
-  
-  Definition Bytes : Set := list u8.
-  
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-    Notation.DoubleColon Self "from_le_bytes" := {
-    Notation.double_colon := from_le_bytes;
-  }.
-  
-  Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-    ink_env.types.FromLittleEndian.from_le_bytes
-      `{H : State.Trait}
-      :=
-      from_le_bytes;
-  }.
-End Impl_ink_env_types_FromLittleEndian_for_u8.
-
-Module Impl_ink_env_types_FromLittleEndian_for_u16.
-  Definition Self := u16.
-  
-  Definition Bytes : Set := list u8.
-  
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-    Notation.DoubleColon Self "from_le_bytes" := {
-    Notation.double_colon := from_le_bytes;
-  }.
-  
-  Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-    ink_env.types.FromLittleEndian.from_le_bytes
-      `{H : State.Trait}
-      :=
-      from_le_bytes;
-  }.
-End Impl_ink_env_types_FromLittleEndian_for_u16.
-
-Module Impl_ink_env_types_FromLittleEndian_for_u32.
-  Definition Self := u32.
-  
-  Definition Bytes : Set := list u8.
-  
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-    Notation.DoubleColon Self "from_le_bytes" := {
-    Notation.double_colon := from_le_bytes;
-  }.
-  
-  Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-    ink_env.types.FromLittleEndian.from_le_bytes
-      `{H : State.Trait}
-      :=
-      from_le_bytes;
-  }.
-End Impl_ink_env_types_FromLittleEndian_for_u32.
-
-Module Impl_ink_env_types_FromLittleEndian_for_u64.
-  Definition Self := u64.
-  
-  Definition Bytes : Set := list u8.
-  
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-    Notation.DoubleColon Self "from_le_bytes" := {
-    Notation.double_colon := from_le_bytes;
-  }.
-  
-  Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-    ink_env.types.FromLittleEndian.from_le_bytes
-      `{H : State.Trait}
-      :=
-      from_le_bytes;
-  }.
-End Impl_ink_env_types_FromLittleEndian_for_u64.
-
-Module Impl_ink_env_types_FromLittleEndian_for_u128.
-  Definition Self := u128.
-  
-  Definition Bytes : Set := list u8.
-  
-  Parameter from_le_bytes : forall `{H : State.Trait}, ImplSelf.Bytes
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from_le_bytes `{H : State.Trait} :
-    Notation.DoubleColon Self "from_le_bytes" := {
-    Notation.double_colon := from_le_bytes;
-  }.
-  
-  Global Instance I : ink_env.types.FromLittleEndian.Trait Self := {
-    ink_env.types.FromLittleEndian.from_le_bytes
-      `{H : State.Trait}
-      :=
-      from_le_bytes;
-  }.
-End Impl_ink_env_types_FromLittleEndian_for_u128.
-
 Module AccountIdGuard.
   Unset Primitive Projections.
   Class Trait (Self : Set) : Set := {
@@ -514,30 +179,12 @@ Module AccountIdGuard.
   Global Set Primitive Projections.
 End AccountIdGuard.
 
-Module Impl_ink_env_types_AccountIdGuard_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
-  
-  Global Instance I : ink_env.types.AccountIdGuard.Trait Self :=
-    ink_env.types.AccountIdGuard.Build_Trait _.
-End Impl_ink_env_types_AccountIdGuard_for_ink_primitives_types_AccountId.
-
 Module CodecAsType.
   Unset Primitive Projections.
   Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
 End CodecAsType.
-
-Module Impl_ink_env_types_CodecAsType_for_T.
-Section Impl_ink_env_types_CodecAsType_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Global Instance I : ink_env.types.CodecAsType.Trait Self :=
-    ink_env.types.CodecAsType.Build_Trait _.
-End Impl_ink_env_types_CodecAsType_for_T.
-End Impl_ink_env_types_CodecAsType_for_T.
 
 Module Environment.
   Class Trait
@@ -636,154 +283,11 @@ Module NoChainExtension.
 End NoChainExtension.
 Definition NoChainExtension := NoChainExtension.t.
 
-Module Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
-  Definition Self := ink_env.types.NoChainExtension.
-  
-  Definition Identity : Set := Self.
-  
-  Parameter type_info : forall `{H : State.Trait}, unit
-      -> M (H := H) scale_info.ty.Type.
-  
-  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
-    Notation.DoubleColon Self "type_info" := {
-    Notation.double_colon := type_info;
-  }.
-  
-  Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
-  }.
-End Impl_scale_info_TypeInfo_for_ink_env_types_NoChainExtension.
-
 Module DefaultEnvironment.
   Inductive t : Set :=
   .
 End DefaultEnvironment.
 Definition DefaultEnvironment := DefaultEnvironment.t.
-
-Module Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Definition Identity : Set := Self.
-  
-  Parameter type_info : forall `{H : State.Trait}, unit
-      -> M (H := H) scale_info.ty.Type.
-  
-  Global Instance AssociatedFunction_type_info `{H : State.Trait} :
-    Notation.DoubleColon Self "type_info" := {
-    Notation.double_colon := type_info;
-  }.
-  
-  Global Instance I : scale_info.TypeInfo.Trait Self := {
-    scale_info.TypeInfo.type_info `{H : State.Trait} := type_info;
-  }.
-End Impl_scale_info_TypeInfo_for_ink_env_types_DefaultEnvironment.
-
-Module Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_types_DefaultEnvironment.
-
-Module Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.types.DefaultEnvironment.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_types_DefaultEnvironment.
-
-Module
-  Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End Impl_core_marker_StructuralPartialEq_for_ink_env_types_DefaultEnvironment.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.types.DefaultEnvironment
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_types_DefaultEnvironment.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_types_DefaultEnvironment.
-
-Module Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_types_DefaultEnvironment.
-
-Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
-  Definition Self := ink_env.types.DefaultEnvironment.
-  
-  Definition MAX_EVENT_TOPICS := Pure 4.
-  
-  Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H : State.Trait} :
-    Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
-    Notation.double_colon := MAX_EVENT_TOPICS;
-  }.
-  
-  Definition AccountId : Set := ink_primitives.types.AccountId.
-  
-  Definition Balance : Set := ink_env.types.Balance.
-  
-  Definition Hash : Set := ink_primitives.types.Hash.
-  
-  Definition Timestamp : Set := ink_env.types.Timestamp.
-  
-  Definition BlockNumber : Set := ink_env.types.BlockNumber.
-  
-  Definition ChainExtension : Set := ink_env.types.NoChainExtension.
-  
-  Global Instance I : ink_env.types.Environment.Trait Self := {
-    ink_env.types.Environment.MAX_EVENT_TOPICS
-      `{H : State.Trait}
-      :=
-      MAX_EVENT_TOPICS;
-  }.
-End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
 
 Definition Balance : Set := u128.
 
@@ -794,463 +298,507 @@ Definition Gas : Set := u64.
 Definition BlockNumber : Set := u32.
 
 Module api.
-  Parameter caller : forall `{H : State.Trait}, forall
+  Parameter caller : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ImplE.AccountId.
+      M (H := H) ImplE.AccountId.
   
-  Parameter transferred_value : forall `{H : State.Trait}, forall
+  Parameter transferred_value : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ImplE.Balance.
+      M (H := H) ImplE.Balance.
   
-  Parameter weight_to_fee : forall `{H : State.Trait}, forall
+  Parameter weight_to_fee : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      ink_env.types.Gas
-      -> M (H := H) ImplE.Balance.
+      ink_env.types.Gas ->
+      M (H := H) ImplE.Balance.
   
-  Parameter gas_left : forall `{H : State.Trait}, forall
+  Parameter gas_left : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ink_env.types.Gas.
+      M (H := H) ink_env.types.Gas.
   
-  Parameter block_timestamp : forall `{H : State.Trait}, forall
+  Parameter block_timestamp : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ImplE.Timestamp.
+      M (H := H) ImplE.Timestamp.
   
-  Parameter account_id : forall `{H : State.Trait}, forall
+  Parameter account_id : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ImplE.AccountId.
+      M (H := H) ImplE.AccountId.
   
-  Parameter balance : forall `{H : State.Trait}, forall
+  Parameter balance : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ImplE.Balance.
+      M (H := H) ImplE.Balance.
   
-  Parameter block_number : forall `{H : State.Trait}, forall
+  Parameter block_number : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ImplE.BlockNumber.
+      M (H := H) ImplE.BlockNumber.
   
-  Parameter minimum_balance : forall `{H : State.Trait}, forall
+  Parameter minimum_balance : forall `{H : State.Trait},
+      forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) ImplE.Balance.
+      M (H := H) ImplE.Balance.
   
-  Parameter emit_event : forall `{H : State.Trait}, forall
+  Parameter emit_event : forall `{H : State.Trait},
+      forall
       {E : Set} {Event : Set},
       `{ink_env.types.Environment.Trait E}
       `{ink_env.topics.Topics.Trait Event}
       `{parity_scale_codec.codec.Encode.Trait Event}
-      Event
-      -> M (H := H) unit.
+      Event ->
+      M (H := H) unit.
   
-  Parameter set_contract_storage : forall `{H : State.Trait}, forall
+  Parameter set_contract_storage : forall `{H : State.Trait},
+      forall
       {K : Set} {V : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait V}
-      ref K->
-      ref V
-      -> M (H := H) (core.option.Option u32).
+      ref K ->
+      ref V ->
+      M (H := H) (core.option.Option u32).
   
-  Parameter get_contract_storage : forall `{H : State.Trait}, forall
+  Parameter get_contract_storage : forall `{H : State.Trait},
+      forall
       {K : Set} {R : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait R}
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+      ref K ->
+      M (H := H) (ink_env.error.Result (core.option.Option R)).
   
-  Parameter take_contract_storage : forall `{H : State.Trait}, forall
+  Parameter take_contract_storage : forall `{H : State.Trait},
+      forall
       {K : Set} {R : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
       `{ink_storage_traits.storage.Storable.Trait R}
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+      ref K ->
+      M (H := H) (ink_env.error.Result (core.option.Option R)).
   
-  Parameter contains_contract_storage : forall `{H : State.Trait}, forall
+  Parameter contains_contract_storage : forall `{H : State.Trait},
+      forall
       {K : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
-      ref K
-      -> M (H := H) (core.option.Option u32).
+      ref K ->
+      M (H := H) (core.option.Option u32).
   
-  Parameter clear_contract_storage : forall `{H : State.Trait}, forall
+  Parameter clear_contract_storage : forall `{H : State.Trait},
+      forall
       {K : Set},
       `{parity_scale_codec.codec.Encode.Trait K}
-      ref K
-      -> M (H := H) (core.option.Option u32).
+      ref K ->
+      M (H := H) (core.option.Option u32).
   
-  Parameter invoke_contract : forall `{H : State.Trait}, forall
+  Parameter invoke_contract : forall `{H : State.Trait},
+      forall
       {E : Set} {Args : Set} {R : Set},
       `{ink_env.types.Environment.Trait E}
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{parity_scale_codec.codec.Decode.Trait R}
       ref
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.Call E)
-            Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-  
-  Parameter invoke_contract_delegate : forall `{H : State.Trait}, forall
-      {E : Set} {Args : Set} {R : Set},
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{parity_scale_codec.codec.Decode.Trait R}
-      ref
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.DelegateCall E)
-            Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-  
-  Parameter instantiate_contract : forall `{H : State.Trait}, forall
-      {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{core.convert.AsRef.Trait Slice Salt}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-      ->
-        M (H := H)
-          (ink_env.error.Result
-            (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)).
-  
-  Parameter terminate_contract : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      ImplE.AccountId
-      -> M (H := H) Empty_set.
-  
-  Parameter transfer : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      ImplE.AccountId->
-      ImplE.Balance
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Parameter decode_input : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{parity_scale_codec.codec.Decode.Trait T}
-      unit
-      -> M (H := H) (ink_env.error.Result T).
-  
-  Parameter return_value : forall `{H : State.Trait}, forall
-      {R : Set},
-      `{parity_scale_codec.codec.Encode.Trait R}
-      ink_env.backend.ReturnFlags->
-      ref R
-      -> M (H := H) Empty_set.
-  
-  Parameter debug_message : forall `{H : State.Trait}, ref str
-      -> M (H := H) unit.
-  
-  Parameter hash_bytes : forall `{H : State.Trait}, forall
-      {H : Set},
-      `{ink_env.hash.CryptoHash.Trait H}
-      ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Parameter hash_encoded : forall `{H : State.Trait}, forall
-      {H : Set} {T : Set},
-      `{ink_env.hash.CryptoHash.Trait H}
-      `{parity_scale_codec.codec.Encode.Trait T}
-      ref T->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Parameter ecdsa_recover : forall `{H : State.Trait}, ref list u8->
-      ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Parameter is_contract : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      ref ImplE.AccountId
-      -> M (H := H) bool.
-  
-  Parameter code_hash : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      ref ImplE.AccountId
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
-  
-  Parameter own_code_hash : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
-  
-  Parameter caller_is_origin : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      unit
-      -> M (H := H) bool.
-  
-  Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Parameter set_code_hash2 : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      ref ImplE.Hash
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Parameter call_runtime : forall `{H : State.Trait}, forall
-      {E : Set} {Call : Set},
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Call}
-      ref Call
-      -> M (H := H) (ink_env.error.Result unit).
-End api.
-
-Parameter caller : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ImplE.AccountId.
-
-Parameter transferred_value : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ImplE.Balance.
-
-Parameter weight_to_fee : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    ink_env.types.Gas
-    -> M (H := H) ImplE.Balance.
-
-Parameter gas_left : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ink_env.types.Gas.
-
-Parameter block_timestamp : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ImplE.Timestamp.
-
-Parameter account_id : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ImplE.AccountId.
-
-Parameter balance : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ImplE.Balance.
-
-Parameter block_number : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ImplE.BlockNumber.
-
-Parameter minimum_balance : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) ImplE.Balance.
-
-Parameter emit_event : forall `{H : State.Trait}, forall
-    {E : Set} {Event : Set},
-    `{ink_env.types.Environment.Trait E}
-    `{ink_env.topics.Topics.Trait Event}
-    `{parity_scale_codec.codec.Encode.Trait Event}
-    Event
-    -> M (H := H) unit.
-
-Parameter set_contract_storage : forall `{H : State.Trait}, forall
-    {K : Set} {V : Set},
-    `{parity_scale_codec.codec.Encode.Trait K}
-    `{ink_storage_traits.storage.Storable.Trait V}
-    ref K->
-    ref V
-    -> M (H := H) (core.option.Option u32).
-
-Parameter get_contract_storage : forall `{H : State.Trait}, forall
-    {K : Set} {R : Set},
-    `{parity_scale_codec.codec.Encode.Trait K}
-    `{ink_storage_traits.storage.Storable.Trait R}
-    ref K
-    -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-
-Parameter take_contract_storage : forall `{H : State.Trait}, forall
-    {K : Set} {R : Set},
-    `{parity_scale_codec.codec.Encode.Trait K}
-    `{ink_storage_traits.storage.Storable.Trait R}
-    ref K
-    -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-
-Parameter contains_contract_storage : forall `{H : State.Trait}, forall
-    {K : Set},
-    `{parity_scale_codec.codec.Encode.Trait K}
-    ref K
-    -> M (H := H) (core.option.Option u32).
-
-Parameter clear_contract_storage : forall `{H : State.Trait}, forall
-    {K : Set},
-    `{parity_scale_codec.codec.Encode.Trait K}
-    ref K
-    -> M (H := H) (core.option.Option u32).
-
-Parameter invoke_contract : forall `{H : State.Trait}, forall
-    {E : Set} {Args : Set} {R : Set},
-    `{ink_env.types.Environment.Trait E}
-    `{parity_scale_codec.codec.Encode.Trait Args}
-    `{parity_scale_codec.codec.Decode.Trait R}
-    ref
         (ink_env.call.call_builder.CallParams
           E
           (ink_env.call.call_builder.Call E)
           Args
-          R)
-    -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+          R) ->
+      M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Parameter invoke_contract_delegate : forall `{H : State.Trait},
+      forall
+      {E : Set} {Args : Set} {R : Set},
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
+      ref
+        (ink_env.call.call_builder.CallParams
+          E
+          (ink_env.call.call_builder.DelegateCall E)
+          Args
+          R) ->
+      M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Parameter instantiate_contract : forall `{H : State.Trait},
+      forall
+      {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait (Slice u8) Salt}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
+      ref
+        (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
+      M (H := H)
+        (ink_env.error.Result
+          (ink_primitives.ConstructorResult
+            ink_env.call.create_builder.ConstructorReturnType.Output)).
+  
+  Parameter terminate_contract : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      ImplE.AccountId ->
+      M (H := H) Empty_set.
+  
+  Parameter transfer : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      ImplE.AccountId ->
+      ImplE.Balance ->
+      M (H := H) (ink_env.error.Result unit).
+  
+  Parameter decode_input : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{parity_scale_codec.codec.Decode.Trait T}
+      M (H := H) (ink_env.error.Result T).
+  
+  Parameter return_value : forall `{H : State.Trait},
+      forall
+      {R : Set},
+      `{parity_scale_codec.codec.Encode.Trait R}
+      ink_env.backend.ReturnFlags ->
+      ref R ->
+      M (H := H) Empty_set.
+  
+  Parameter debug_message : forall `{H : State.Trait},
+      ref str ->
+      M (H := H) unit.
+  
+  Parameter hash_bytes : forall `{H : State.Trait},
+      forall
+      {H : Set},
+      `{ink_env.hash.CryptoHash.Trait H}
+      ref (Slice u8) ->
+      mut_ref ink_env.hash.HashOutput.Type ->
+      M (H := H) unit.
+  
+  Parameter hash_encoded : forall `{H : State.Trait},
+      forall
+      {H : Set} {T : Set},
+      `{ink_env.hash.CryptoHash.Trait H}
+      `{parity_scale_codec.codec.Encode.Trait T}
+      ref T ->
+      mut_ref ink_env.hash.HashOutput.Type ->
+      M (H := H) unit.
+  
+  Parameter ecdsa_recover : forall `{H : State.Trait},
+      ref list u8 ->
+      ref list u8 ->
+      mut_ref list u8 ->
+      M (H := H) (ink_env.error.Result unit).
+  
+  Parameter ecdsa_to_eth_address : forall `{H : State.Trait},
+      ref list u8 ->
+      mut_ref list u8 ->
+      M (H := H) (ink_env.error.Result unit).
+  
+  Parameter is_contract : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      ref ImplE.AccountId ->
+      M (H := H) bool.
+  
+  Parameter code_hash : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      ref ImplE.AccountId ->
+      M (H := H) (ink_env.error.Result ImplE.Hash).
+  
+  Parameter own_code_hash : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      M (H := H) (ink_env.error.Result ImplE.Hash).
+  
+  Parameter caller_is_origin : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      M (H := H) bool.
+  
+  Parameter set_code_hash : forall `{H : State.Trait},
+      ref list u8 ->
+      M (H := H) (ink_env.error.Result unit).
+  
+  Parameter set_code_hash2 : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      ref ImplE.Hash ->
+      M (H := H) (ink_env.error.Result unit).
+  
+  Parameter call_runtime : forall `{H : State.Trait},
+      forall
+      {E : Set} {Call : Set},
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Call}
+      ref Call ->
+      M (H := H) (ink_env.error.Result unit).
+End api.
 
-Parameter invoke_contract_delegate : forall `{H : State.Trait}, forall
+Parameter caller : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ImplE.AccountId.
+
+Parameter transferred_value : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ImplE.Balance.
+
+Parameter weight_to_fee : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    ink_env.types.Gas ->
+    M (H := H) ImplE.Balance.
+
+Parameter gas_left : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ink_env.types.Gas.
+
+Parameter block_timestamp : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ImplE.Timestamp.
+
+Parameter account_id : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ImplE.AccountId.
+
+Parameter balance : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ImplE.Balance.
+
+Parameter block_number : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ImplE.BlockNumber.
+
+Parameter minimum_balance : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H) ImplE.Balance.
+
+Parameter emit_event : forall `{H : State.Trait},
+    forall
+    {E : Set} {Event : Set},
+    `{ink_env.types.Environment.Trait E}
+    `{ink_env.topics.Topics.Trait Event}
+    `{parity_scale_codec.codec.Encode.Trait Event}
+    Event ->
+    M (H := H) unit.
+
+Parameter set_contract_storage : forall `{H : State.Trait},
+    forall
+    {K : Set} {V : Set},
+    `{parity_scale_codec.codec.Encode.Trait K}
+    `{ink_storage_traits.storage.Storable.Trait V}
+    ref K ->
+    ref V ->
+    M (H := H) (core.option.Option u32).
+
+Parameter get_contract_storage : forall `{H : State.Trait},
+    forall
+    {K : Set} {R : Set},
+    `{parity_scale_codec.codec.Encode.Trait K}
+    `{ink_storage_traits.storage.Storable.Trait R}
+    ref K ->
+    M (H := H) (ink_env.error.Result (core.option.Option R)).
+
+Parameter take_contract_storage : forall `{H : State.Trait},
+    forall
+    {K : Set} {R : Set},
+    `{parity_scale_codec.codec.Encode.Trait K}
+    `{ink_storage_traits.storage.Storable.Trait R}
+    ref K ->
+    M (H := H) (ink_env.error.Result (core.option.Option R)).
+
+Parameter contains_contract_storage : forall `{H : State.Trait},
+    forall
+    {K : Set},
+    `{parity_scale_codec.codec.Encode.Trait K}
+    ref K ->
+    M (H := H) (core.option.Option u32).
+
+Parameter clear_contract_storage : forall `{H : State.Trait},
+    forall
+    {K : Set},
+    `{parity_scale_codec.codec.Encode.Trait K}
+    ref K ->
+    M (H := H) (core.option.Option u32).
+
+Parameter invoke_contract : forall `{H : State.Trait},
+    forall
     {E : Set} {Args : Set} {R : Set},
     `{ink_env.types.Environment.Trait E}
     `{parity_scale_codec.codec.Encode.Trait Args}
     `{parity_scale_codec.codec.Decode.Trait R}
     ref
-        (ink_env.call.call_builder.CallParams
-          E
-          (ink_env.call.call_builder.DelegateCall E)
-          Args
-          R)
-    -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+      (ink_env.call.call_builder.CallParams
+        E
+        (ink_env.call.call_builder.Call E)
+        Args
+        R) ->
+    M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
 
-Parameter instantiate_contract : forall `{H : State.Trait}, forall
+Parameter invoke_contract_delegate : forall `{H : State.Trait},
+    forall
+    {E : Set} {Args : Set} {R : Set},
+    `{ink_env.types.Environment.Trait E}
+    `{parity_scale_codec.codec.Encode.Trait Args}
+    `{parity_scale_codec.codec.Decode.Trait R}
+    ref
+      (ink_env.call.call_builder.CallParams
+        E
+        (ink_env.call.call_builder.DelegateCall E)
+        Args
+        R) ->
+    M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+
+Parameter instantiate_contract : forall `{H : State.Trait},
+    forall
     {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
     `{ink_env.types.Environment.Trait E}
     `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
     `{parity_scale_codec.codec.Encode.Trait Args}
-    `{core.convert.AsRef.Trait Slice Salt}
+    `{core.convert.AsRef.Trait (Slice u8) Salt}
     `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-    ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-    ->
-      M (H := H)
-        (ink_env.error.Result
-          (ink_primitives.ConstructorResult
-            ink_env.call.create_builder.ConstructorReturnType.Output)).
+    ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
+    M (H := H)
+      (ink_env.error.Result
+        (ink_primitives.ConstructorResult
+          ink_env.call.create_builder.ConstructorReturnType.Output)).
 
-Parameter terminate_contract : forall `{H : State.Trait}, forall
+Parameter terminate_contract : forall `{H : State.Trait},
+    forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ImplE.AccountId
-    -> M (H := H) Empty_set.
+    ImplE.AccountId ->
+    M (H := H) Empty_set.
 
-Parameter transfer : forall `{H : State.Trait}, forall
+Parameter transfer : forall `{H : State.Trait},
+    forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ImplE.AccountId->
-    ImplE.Balance
-    -> M (H := H) (ink_env.error.Result unit).
+    ImplE.AccountId ->
+    ImplE.Balance ->
+    M (H := H) (ink_env.error.Result unit).
 
-Parameter decode_input : forall `{H : State.Trait}, forall
+Parameter decode_input : forall `{H : State.Trait},
+    forall
     {T : Set},
     `{parity_scale_codec.codec.Decode.Trait T}
-    unit
-    -> M (H := H) (ink_env.error.Result T).
+    M (H := H) (ink_env.error.Result T).
 
-Parameter return_value : forall `{H : State.Trait}, forall
+Parameter return_value : forall `{H : State.Trait},
+    forall
     {R : Set},
     `{parity_scale_codec.codec.Encode.Trait R}
-    ink_env.backend.ReturnFlags->
-    ref R
-    -> M (H := H) Empty_set.
+    ink_env.backend.ReturnFlags ->
+    ref R ->
+    M (H := H) Empty_set.
 
 Parameter debug_message : forall `{H : State.Trait}, ref str -> M (H := H) unit.
 
-Parameter hash_bytes : forall `{H : State.Trait}, forall
+Parameter hash_bytes : forall `{H : State.Trait},
+    forall
     {H : Set},
     `{ink_env.hash.CryptoHash.Trait H}
-    ref Slice->
-    mut_ref ink_env.hash.HashOutput.Type
-    -> M (H := H) unit.
+    ref (Slice u8) ->
+    mut_ref ink_env.hash.HashOutput.Type ->
+    M (H := H) unit.
 
-Parameter hash_encoded : forall `{H : State.Trait}, forall
+Parameter hash_encoded : forall `{H : State.Trait},
+    forall
     {H : Set} {T : Set},
     `{ink_env.hash.CryptoHash.Trait H}
     `{parity_scale_codec.codec.Encode.Trait T}
-    ref T->
-    mut_ref ink_env.hash.HashOutput.Type
-    -> M (H := H) unit.
+    ref T ->
+    mut_ref ink_env.hash.HashOutput.Type ->
+    M (H := H) unit.
 
-Parameter ecdsa_recover : forall `{H : State.Trait}, ref list u8->
-    ref list u8->
-    mut_ref list u8
-    -> M (H := H) (ink_env.error.Result unit).
+Parameter ecdsa_recover : forall `{H : State.Trait},
+    ref list u8 ->
+    ref list u8 ->
+    mut_ref list u8 ->
+    M (H := H) (ink_env.error.Result unit).
 
-Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, ref list u8->
-    mut_ref list u8
-    -> M (H := H) (ink_env.error.Result unit).
+Parameter ecdsa_to_eth_address : forall `{H : State.Trait},
+    ref list u8 ->
+    mut_ref list u8 ->
+    M (H := H) (ink_env.error.Result unit).
 
-Parameter is_contract : forall `{H : State.Trait}, forall
+Parameter is_contract : forall `{H : State.Trait},
+    forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ref ImplE.AccountId
-    -> M (H := H) bool.
+    ref ImplE.AccountId ->
+    M (H := H) bool.
 
-Parameter code_hash : forall `{H : State.Trait}, forall
+Parameter code_hash : forall `{H : State.Trait},
+    forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ref ImplE.AccountId
-    -> M (H := H) (ink_env.error.Result ImplE.Hash).
+    ref ImplE.AccountId ->
+    M (H := H) (ink_env.error.Result ImplE.Hash).
 
-Parameter own_code_hash : forall `{H : State.Trait}, forall
+Parameter own_code_hash : forall `{H : State.Trait},
+    forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) (ink_env.error.Result ImplE.Hash).
+    M (H := H) (ink_env.error.Result ImplE.Hash).
 
-Parameter caller_is_origin : forall `{H : State.Trait}, forall
+Parameter caller_is_origin : forall `{H : State.Trait},
+    forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    unit
-    -> M (H := H) bool.
+    M (H := H) bool.
 
-Parameter set_code_hash : forall `{H : State.Trait}, ref list u8
-    -> M (H := H) (ink_env.error.Result unit).
+Parameter set_code_hash : forall `{H : State.Trait},
+    ref list u8 ->
+    M (H := H) (ink_env.error.Result unit).
 
-Parameter set_code_hash2 : forall `{H : State.Trait}, forall
+Parameter set_code_hash2 : forall `{H : State.Trait},
+    forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    ref ImplE.Hash
-    -> M (H := H) (ink_env.error.Result unit).
+    ref ImplE.Hash ->
+    M (H := H) (ink_env.error.Result unit).
 
-Parameter call_runtime : forall `{H : State.Trait}, forall
+Parameter call_runtime : forall `{H : State.Trait},
+    forall
     {E : Set} {Call : Set},
     `{ink_env.types.Environment.Trait E}
     `{parity_scale_codec.codec.Encode.Trait Call}
-    ref Call
-    -> M (H := H) (ink_env.error.Result unit).
+    ref Call ->
+    M (H := H) (ink_env.error.Result unit).
 
 Module arithmetic.
   Module BaseArithmetic.
@@ -1260,17 +808,6 @@ Module arithmetic.
     Global Set Primitive Projections.
   End BaseArithmetic.
   
-  Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-  Section Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-    Context {T : Set}.
-    
-    Definition Self := T.
-    
-    Global Instance I : ink_env.arithmetic.BaseArithmetic.Trait Self :=
-      ink_env.arithmetic.BaseArithmetic.Build_Trait _.
-  End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-  End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-  
   Module AtLeast32Bit.
     Unset Primitive Projections.
     Class Trait (Self : Set) : Set := {
@@ -1278,34 +815,12 @@ Module arithmetic.
     Global Set Primitive Projections.
   End AtLeast32Bit.
   
-  Module Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-  Section Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-    Context {T : Set}.
-    
-    Definition Self := T.
-    
-    Global Instance I : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
-      ink_env.arithmetic.AtLeast32Bit.Build_Trait _.
-  End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-  End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-  
   Module AtLeast32BitUnsigned.
     Unset Primitive Projections.
     Class Trait (Self : Set) : Set := {
     }.
     Global Set Primitive Projections.
   End AtLeast32BitUnsigned.
-  
-  Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
-  Section Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
-    Context {T : Set}.
-    
-    Definition Self := T.
-    
-    Global Instance I : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
-      ink_env.arithmetic.AtLeast32BitUnsigned.Build_Trait _.
-  End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
-  End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
   
   Module Saturating.
     Class Trait (Self : Set) : Set := {
@@ -1332,69 +847,6 @@ Module arithmetic.
       Notation.dot := saturating_pow;
     }.
   End Saturating.
-  
-  Module Impl_ink_env_arithmetic_Saturating_for_T.
-  Section Impl_ink_env_arithmetic_Saturating_for_T.
-    Context {T : Set}.
-    
-    Definition Self := T.
-    
-    Parameter saturating_add : forall `{H : State.Trait}, Self->
-        Self
-        -> M (H := H) Self.
-    
-    Global Instance Method_saturating_add `{H : State.Trait} :
-      Notation.Dot "saturating_add" := {
-      Notation.dot := saturating_add;
-    }.
-    
-    Parameter saturating_sub : forall `{H : State.Trait}, Self->
-        Self
-        -> M (H := H) Self.
-    
-    Global Instance Method_saturating_sub `{H : State.Trait} :
-      Notation.Dot "saturating_sub" := {
-      Notation.dot := saturating_sub;
-    }.
-    
-    Parameter saturating_mul : forall `{H : State.Trait}, Self->
-        Self
-        -> M (H := H) Self.
-    
-    Global Instance Method_saturating_mul `{H : State.Trait} :
-      Notation.Dot "saturating_mul" := {
-      Notation.dot := saturating_mul;
-    }.
-    
-    Parameter saturating_pow : forall `{H : State.Trait}, Self->
-        usize
-        -> M (H := H) Self.
-    
-    Global Instance Method_saturating_pow `{H : State.Trait} :
-      Notation.Dot "saturating_pow" := {
-      Notation.dot := saturating_pow;
-    }.
-    
-    Global Instance I : ink_env.arithmetic.Saturating.Trait Self := {
-      ink_env.arithmetic.Saturating.saturating_add
-        `{H : State.Trait}
-        :=
-        saturating_add;
-      ink_env.arithmetic.Saturating.saturating_sub
-        `{H : State.Trait}
-        :=
-        saturating_sub;
-      ink_env.arithmetic.Saturating.saturating_mul
-        `{H : State.Trait}
-        :=
-        saturating_mul;
-      ink_env.arithmetic.Saturating.saturating_pow
-        `{H : State.Trait}
-        :=
-        saturating_pow;
-    }.
-  End Impl_ink_env_arithmetic_Saturating_for_T.
-  End Impl_ink_env_arithmetic_Saturating_for_T.
 End arithmetic.
 
 Module BaseArithmetic.
@@ -1404,17 +856,6 @@ Module BaseArithmetic.
   Global Set Primitive Projections.
 End BaseArithmetic.
 
-Module Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-Section Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Global Instance I : ink_env.arithmetic.BaseArithmetic.Trait Self :=
-    ink_env.arithmetic.BaseArithmetic.Build_Trait _.
-End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-End Impl_ink_env_arithmetic_BaseArithmetic_for_T.
-
 Module AtLeast32Bit.
   Unset Primitive Projections.
   Class Trait (Self : Set) : Set := {
@@ -1422,34 +863,12 @@ Module AtLeast32Bit.
   Global Set Primitive Projections.
 End AtLeast32Bit.
 
-Module Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-Section Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Global Instance I : ink_env.arithmetic.AtLeast32Bit.Trait Self :=
-    ink_env.arithmetic.AtLeast32Bit.Build_Trait _.
-End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-End Impl_ink_env_arithmetic_AtLeast32Bit_for_T.
-
 Module AtLeast32BitUnsigned.
   Unset Primitive Projections.
   Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
 End AtLeast32BitUnsigned.
-
-Module Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
-Section Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Global Instance I : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Self :=
-    ink_env.arithmetic.AtLeast32BitUnsigned.Build_Trait _.
-End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
-End Impl_ink_env_arithmetic_AtLeast32BitUnsigned_for_T.
 
 Module Saturating.
   Class Trait (Self : Set) : Set := {
@@ -1477,125 +896,29 @@ Module Saturating.
   }.
 End Saturating.
 
-Module Impl_ink_env_arithmetic_Saturating_for_T.
-Section Impl_ink_env_arithmetic_Saturating_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Parameter saturating_add : forall `{H : State.Trait}, Self->
-      Self
-      -> M (H := H) Self.
-  
-  Global Instance Method_saturating_add `{H : State.Trait} :
-    Notation.Dot "saturating_add" := {
-    Notation.dot := saturating_add;
-  }.
-  
-  Parameter saturating_sub : forall `{H : State.Trait}, Self->
-      Self
-      -> M (H := H) Self.
-  
-  Global Instance Method_saturating_sub `{H : State.Trait} :
-    Notation.Dot "saturating_sub" := {
-    Notation.dot := saturating_sub;
-  }.
-  
-  Parameter saturating_mul : forall `{H : State.Trait}, Self->
-      Self
-      -> M (H := H) Self.
-  
-  Global Instance Method_saturating_mul `{H : State.Trait} :
-    Notation.Dot "saturating_mul" := {
-    Notation.dot := saturating_mul;
-  }.
-  
-  Parameter saturating_pow : forall `{H : State.Trait}, Self->
-      usize
-      -> M (H := H) Self.
-  
-  Global Instance Method_saturating_pow `{H : State.Trait} :
-    Notation.Dot "saturating_pow" := {
-    Notation.dot := saturating_pow;
-  }.
-  
-  Global Instance I : ink_env.arithmetic.Saturating.Trait Self := {
-    ink_env.arithmetic.Saturating.saturating_add
-      `{H : State.Trait}
-      :=
-      saturating_add;
-    ink_env.arithmetic.Saturating.saturating_sub
-      `{H : State.Trait}
-      :=
-      saturating_sub;
-    ink_env.arithmetic.Saturating.saturating_mul
-      `{H : State.Trait}
-      :=
-      saturating_mul;
-    ink_env.arithmetic.Saturating.saturating_pow
-      `{H : State.Trait}
-      :=
-      saturating_pow;
-  }.
-End Impl_ink_env_arithmetic_Saturating_for_T.
-End Impl_ink_env_arithmetic_Saturating_for_T.
-
 Module backend.
   Module ReturnFlags.
+    Unset Primitive Projections.
     Record t : Set := {
       value : u32;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End ReturnFlags.
-  Definition ReturnFlags : Set := ReturnFlags.t.
-  
-  Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
-    Definition Self := ink_env.backend.ReturnFlags.
-    
-    Parameter default : forall `{H : State.Trait}, unit
-        -> M (H := H) ink_env.backend.ReturnFlags.
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
-  
-  Module Impl_ink_env_backend_ReturnFlags.
-    Definition Self := ink_env.backend.ReturnFlags.
-    
-    Parameter new_with_reverted : forall `{H : State.Trait}, bool
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_new_with_reverted `{H : State.Trait} :
-      Notation.DoubleColon Self "new_with_reverted" := {
-      Notation.double_colon := new_with_reverted;
-    }.
-    
-    Parameter set_reverted : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
-    
-    Global Instance Method_set_reverted `{H : State.Trait} :
-      Notation.Dot "set_reverted" := {
-      Notation.dot := set_reverted;
-    }.
-  End Impl_ink_env_backend_ReturnFlags.
+  Definition ReturnFlags : Set := @ReturnFlags.t.
   
   Module CallFlags.
+    Unset Primitive Projections.
     Record t : Set := {
       forward_input : bool;
       clone_input : bool;
       tail_call : bool;
       allow_reentry : bool;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_forward_input : Notation.Dot "forward_input" := {
       Notation.dot '(Build_t x0 _ _ _) := x0;
@@ -1610,156 +933,15 @@ Module backend.
       Notation.dot '(Build_t _ _ _ x3) := x3;
     }.
   End CallFlags.
-  Definition CallFlags : Set := CallFlags.t.
-  
-  Module Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
-    Definition Self := ink_env.backend.CallFlags.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
-  
-  Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
-    Definition Self := ink_env.backend.CallFlags.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.backend.CallFlags.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
-    Definition Self := ink_env.backend.CallFlags.
-    
-    Parameter debug_struct_field4_finish : core.fmt.Formatter -> string -> 
-      string -> bool -> 
-      string -> bool -> 
-      string -> bool -> 
-      string -> bool -> 
-      M (H := H) core.fmt.Result.
-    
-    Global Instance Deb_debug_struct_field4_finish : Notation.DoubleColon
-      core.fmt.Formatter "debug_struct_field4_finish" := {
-      Notation.double_colon := debug_struct_field4_finish; }.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
-  
-  Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
-    Definition Self := ink_env.backend.CallFlags.
-    
-    Parameter default : forall `{H : State.Trait}, unit
-        -> M (H := H) ink_env.backend.CallFlags.
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End Impl_core_default_Default_for_ink_env_backend_CallFlags.
-  
-  Module Impl_ink_env_backend_CallFlags.
-    Definition Self := ink_env.backend.CallFlags.
-    
-    Parameter set_forward_input : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
-    
-    Global Instance Method_set_forward_input `{H : State.Trait} :
-      Notation.Dot "set_forward_input" := {
-      Notation.dot := set_forward_input;
-    }.
-    
-    Parameter set_clone_input : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
-    
-    Global Instance Method_set_clone_input `{H : State.Trait} :
-      Notation.Dot "set_clone_input" := {
-      Notation.dot := set_clone_input;
-    }.
-    
-    Parameter set_tail_call : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
-    
-    Global Instance Method_set_tail_call `{H : State.Trait} :
-      Notation.Dot "set_tail_call" := {
-      Notation.dot := set_tail_call;
-    }.
-    
-    Parameter set_allow_reentry : forall `{H : State.Trait}, Self->
-        bool
-        -> M (H := H) Self.
-    
-    Global Instance Method_set_allow_reentry `{H : State.Trait} :
-      Notation.Dot "set_allow_reentry" := {
-      Notation.dot := set_allow_reentry;
-    }.
-    
-    Parameter into_u32 : forall `{H : State.Trait}, Self -> M (H := H) u32.
-    
-    Global Instance Method_into_u32 `{H : State.Trait} :
-      Notation.Dot "into_u32" := {
-      Notation.dot := into_u32;
-    }.
-    
-    Parameter forward_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
-    
-    Global Instance Method_forward_input `{H : State.Trait} :
-      Notation.Dot "forward_input" := {
-      Notation.dot := forward_input;
-    }.
-    
-    Parameter clone_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
-    
-    Global Instance Method_clone_input `{H : State.Trait} :
-      Notation.Dot "clone_input" := {
-      Notation.dot := clone_input;
-    }.
-    
-    Parameter tail_call : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
-    
-    Global Instance Method_tail_call `{H : State.Trait} :
-      Notation.Dot "tail_call" := {
-      Notation.dot := tail_call;
-    }.
-    
-    Parameter allow_reentry : forall `{H : State.Trait}, ref Self
-        -> M (H := H) bool.
-    
-    Global Instance Method_allow_reentry `{H : State.Trait} :
-      Notation.Dot "allow_reentry" := {
-      Notation.dot := allow_reentry;
-    }.
-  End Impl_ink_env_backend_CallFlags.
+  Definition CallFlags : Set := @CallFlags.t.
   
   Module EnvBackend.
     Class Trait (Self : Set) : Set := {
       set_contract_storage
         `{H : State.Trait}
+        {K V: Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait V}
         :
         (mut_ref Self) ->
         (ref K) ->
@@ -1767,30 +949,44 @@ Module backend.
         (M (H := H) (core.option.Option u32));
       get_contract_storage
         `{H : State.Trait}
+        {K R: Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait R}
         :
         (mut_ref Self) ->
         (ref K) ->
         (M (H := H) (ink_env.error.Result (core.option.Option R)));
       take_contract_storage
         `{H : State.Trait}
+        {K R: Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait R}
         :
         (mut_ref Self) ->
         (ref K) ->
         (M (H := H) (ink_env.error.Result (core.option.Option R)));
       contains_contract_storage
         `{H : State.Trait}
+        {K: Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         :
         (mut_ref Self) -> (ref K) -> (M (H := H) (core.option.Option u32));
       clear_contract_storage
         `{H : State.Trait}
+        {K: Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         :
         (mut_ref Self) -> (ref K) -> (M (H := H) (core.option.Option u32));
       decode_input
         `{H : State.Trait}
+        {T: Set}
+        `{parity_scale_codec.codec.Decode.Trait T}
         :
         (mut_ref Self) -> (M (H := H) (ink_env.error.Result T));
       return_value
         `{H : State.Trait}
+        {R: Set}
+        `{parity_scale_codec.codec.Encode.Trait R}
         :
         (mut_ref Self) ->
         ink_env.backend.ReturnFlags ->
@@ -1802,13 +998,18 @@ Module backend.
         (mut_ref Self) -> (ref str) -> (M (H := H) unit);
       hash_bytes
         `{H : State.Trait}
+        {H: Set}
+        `{ink_env.hash.CryptoHash.Trait H}
         :
         (mut_ref Self) ->
-        (ref Slice) ->
+        (ref (Slice u8)) ->
         (mut_ref ink_env.hash.HashOutput.Type) ->
         (M (H := H) unit);
       hash_encoded
         `{H : State.Trait}
+        {H T: Set}
+        `{ink_env.hash.CryptoHash.Trait H}
+        `{parity_scale_codec.codec.Encode.Trait T}
         :
         (mut_ref Self) ->
         (ref T) ->
@@ -1831,6 +1032,12 @@ Module backend.
         (M (H := H) (ink_env.error.Result unit));
       call_chain_extension
         `{H : State.Trait}
+        {I T E ErrorCode F D: Set}
+        `{parity_scale_codec.codec.Encode.Trait I}
+        `{parity_scale_codec.codec.Decode.Trait T}
+        `{core.convert.From.Trait ErrorCode E}
+        `{core.ops.function.FnOnce.Trait (u32) F}
+        `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
         :
         (mut_ref Self) ->
         u32 ->
@@ -1842,7 +1049,7 @@ Module backend.
         `{H : State.Trait}
         :
         (mut_ref Self) ->
-        (ref Slice) ->
+        (ref (Slice u8)) ->
         (M (H := H) (ink_env.error.Result unit));
     }.
     
@@ -1908,40 +1115,72 @@ Module backend.
     Class Trait (Self : Set) : Set := {
       caller
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (M (H := H) ImplE.AccountId);
       transferred_value
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (M (H := H) ImplE.Balance);
       weight_to_fee
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> u64 -> (M (H := H) ImplE.Balance);
-      gas_left `{H : State.Trait} : (mut_ref Self) -> (M (H := H) u64);
+      gas_left
+        `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> (M (H := H) u64);
       block_timestamp
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (M (H := H) ImplE.Timestamp);
       account_id
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (M (H := H) ImplE.AccountId);
-      balance `{H : State.Trait} : (mut_ref Self) -> (M (H := H) ImplE.Balance);
+      balance
+        `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> (M (H := H) ImplE.Balance);
       block_number
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (M (H := H) ImplE.BlockNumber);
       minimum_balance
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (M (H := H) ImplE.Balance);
       emit_event
         `{H : State.Trait}
+        {E Event: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.Topics.Trait Event}
+        `{parity_scale_codec.codec.Encode.Trait Event}
         :
         (mut_ref Self) -> Event -> (M (H := H) unit);
       invoke_contract
         `{H : State.Trait}
+        {E Args R: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
         :
         (mut_ref Self) ->
         (ref
@@ -1953,6 +1192,10 @@ Module backend.
         (M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)));
       invoke_contract_delegate
         `{H : State.Trait}
+        {E Args R: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
         :
         (mut_ref Self) ->
         (ref
@@ -1964,6 +1207,12 @@ Module backend.
         (M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)));
       instantiate_contract
         `{H : State.Trait}
+        {E ContractRef Args Salt R: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{core.convert.AsRef.Trait (Slice u8) Salt}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
         :
         (mut_ref Self) ->
         (ref
@@ -1979,10 +1228,14 @@ Module backend.
               ink_env.call.create_builder.ConstructorReturnType.Output)));
       terminate_contract
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> ImplE.AccountId -> (M (H := H) Empty_set);
       transfer
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) ->
         ImplE.AccountId ->
@@ -1990,21 +1243,35 @@ Module backend.
         (M (H := H) (ink_env.error.Result unit));
       is_contract
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (ref ImplE.AccountId) -> (M (H := H) bool);
-      caller_is_origin `{H : State.Trait} : (mut_ref Self) -> (M (H := H) bool);
+      caller_is_origin
+        `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
+        :
+        (mut_ref Self) -> (M (H := H) bool);
       code_hash
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) ->
         (ref ImplE.AccountId) ->
         (M (H := H) (ink_env.error.Result ImplE.Hash));
       own_code_hash
         `{H : State.Trait}
+        {E: Set}
+        `{ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (M (H := H) (ink_env.error.Result ImplE.Hash));
       call_runtime
         `{H : State.Trait}
+        {E Call: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Call}
         :
         (mut_ref Self) ->
         (ref Call) ->
@@ -2095,60 +1362,27 @@ Module backend.
 End backend.
 
 Module ReturnFlags.
+  Unset Primitive Projections.
   Record t : Set := {
     value : u32;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End ReturnFlags.
-Definition ReturnFlags : Set := ReturnFlags.t.
-
-Module Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
-  Definition Self := ink_env.backend.ReturnFlags.
-  
-  Parameter default : forall `{H : State.Trait}, unit
-      -> M (H := H) ink_env.backend.ReturnFlags.
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_ink_env_backend_ReturnFlags.
-
-Module Impl_ink_env_backend_ReturnFlags_2.
-  Definition Self := ink_env.backend.ReturnFlags.
-  
-  Parameter new_with_reverted : forall `{H : State.Trait}, bool
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_new_with_reverted `{H : State.Trait} :
-    Notation.DoubleColon Self "new_with_reverted" := {
-    Notation.double_colon := new_with_reverted;
-  }.
-  
-  Parameter set_reverted : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
-  
-  Global Instance Method_set_reverted `{H : State.Trait} :
-    Notation.Dot "set_reverted" := {
-    Notation.dot := set_reverted;
-  }.
-End Impl_ink_env_backend_ReturnFlags_2.
+Definition ReturnFlags : Set := @ReturnFlags.t.
 
 Module CallFlags.
+  Unset Primitive Projections.
   Record t : Set := {
     forward_input : bool;
     clone_input : bool;
     tail_call : bool;
     allow_reentry : bool;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_forward_input : Notation.Dot "forward_input" := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
@@ -2163,155 +1397,15 @@ Module CallFlags.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End CallFlags.
-Definition CallFlags : Set := CallFlags.t.
-
-Module Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
-  Definition Self := ink_env.backend.CallFlags.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_backend_CallFlags.
-
-Module Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
-  Definition Self := ink_env.backend.CallFlags.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.backend.CallFlags.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_backend_CallFlags.
-
-Module Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
-  Definition Self := ink_env.backend.CallFlags.
-  
-  Parameter debug_struct_field4_finish : core.fmt.Formatter -> string -> 
-    string -> bool -> 
-    string -> bool -> 
-    string -> bool -> 
-    string -> bool -> 
-    M (H := H) core.fmt.Result.
-  
-  Global Instance Deb_debug_struct_field4_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field4_finish" := {
-    Notation.double_colon := debug_struct_field4_finish; }.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_backend_CallFlags.
-
-Module Impl_core_default_Default_for_ink_env_backend_CallFlags.
-  Definition Self := ink_env.backend.CallFlags.
-  
-  Parameter default : forall `{H : State.Trait}, unit
-      -> M (H := H) ink_env.backend.CallFlags.
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_ink_env_backend_CallFlags.
-
-Module Impl_ink_env_backend_CallFlags_2.
-  Definition Self := ink_env.backend.CallFlags.
-  
-  Parameter set_forward_input : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
-  
-  Global Instance Method_set_forward_input `{H : State.Trait} :
-    Notation.Dot "set_forward_input" := {
-    Notation.dot := set_forward_input;
-  }.
-  
-  Parameter set_clone_input : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
-  
-  Global Instance Method_set_clone_input `{H : State.Trait} :
-    Notation.Dot "set_clone_input" := {
-    Notation.dot := set_clone_input;
-  }.
-  
-  Parameter set_tail_call : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
-  
-  Global Instance Method_set_tail_call `{H : State.Trait} :
-    Notation.Dot "set_tail_call" := {
-    Notation.dot := set_tail_call;
-  }.
-  
-  Parameter set_allow_reentry : forall `{H : State.Trait}, Self->
-      bool
-      -> M (H := H) Self.
-  
-  Global Instance Method_set_allow_reentry `{H : State.Trait} :
-    Notation.Dot "set_allow_reentry" := {
-    Notation.dot := set_allow_reentry;
-  }.
-  
-  Parameter into_u32 : forall `{H : State.Trait}, Self -> M (H := H) u32.
-  
-  Global Instance Method_into_u32 `{H : State.Trait} :
-    Notation.Dot "into_u32" := {
-    Notation.dot := into_u32;
-  }.
-  
-  Parameter forward_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) bool.
-  
-  Global Instance Method_forward_input `{H : State.Trait} :
-    Notation.Dot "forward_input" := {
-    Notation.dot := forward_input;
-  }.
-  
-  Parameter clone_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) bool.
-  
-  Global Instance Method_clone_input `{H : State.Trait} :
-    Notation.Dot "clone_input" := {
-    Notation.dot := clone_input;
-  }.
-  
-  Parameter tail_call : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
-  
-  Global Instance Method_tail_call `{H : State.Trait} :
-    Notation.Dot "tail_call" := {
-    Notation.dot := tail_call;
-  }.
-  
-  Parameter allow_reentry : forall `{H : State.Trait}, ref Self
-      -> M (H := H) bool.
-  
-  Global Instance Method_allow_reentry `{H : State.Trait} :
-    Notation.Dot "allow_reentry" := {
-    Notation.dot := allow_reentry;
-  }.
-End Impl_ink_env_backend_CallFlags_2.
+Definition CallFlags : Set := @CallFlags.t.
 
 Module EnvBackend.
   Class Trait (Self : Set) : Set := {
     set_contract_storage
       `{H : State.Trait}
+      {K V: Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait V}
       :
       (mut_ref Self) ->
       (ref K) ->
@@ -2319,30 +1413,44 @@ Module EnvBackend.
       (M (H := H) (core.option.Option u32));
     get_contract_storage
       `{H : State.Trait}
+      {K R: Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R}
       :
       (mut_ref Self) ->
       (ref K) ->
       (M (H := H) (ink_env.error.Result (core.option.Option R)));
     take_contract_storage
       `{H : State.Trait}
+      {K R: Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R}
       :
       (mut_ref Self) ->
       (ref K) ->
       (M (H := H) (ink_env.error.Result (core.option.Option R)));
     contains_contract_storage
       `{H : State.Trait}
+      {K: Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
       :
       (mut_ref Self) -> (ref K) -> (M (H := H) (core.option.Option u32));
     clear_contract_storage
       `{H : State.Trait}
+      {K: Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
       :
       (mut_ref Self) -> (ref K) -> (M (H := H) (core.option.Option u32));
     decode_input
       `{H : State.Trait}
+      {T: Set}
+      `{parity_scale_codec.codec.Decode.Trait T}
       :
       (mut_ref Self) -> (M (H := H) (ink_env.error.Result T));
     return_value
       `{H : State.Trait}
+      {R: Set}
+      `{parity_scale_codec.codec.Encode.Trait R}
       :
       (mut_ref Self) ->
       ink_env.backend.ReturnFlags ->
@@ -2354,13 +1462,18 @@ Module EnvBackend.
       (mut_ref Self) -> (ref str) -> (M (H := H) unit);
     hash_bytes
       `{H : State.Trait}
+      {H: Set}
+      `{ink_env.hash.CryptoHash.Trait H}
       :
       (mut_ref Self) ->
-      (ref Slice) ->
+      (ref (Slice u8)) ->
       (mut_ref ink_env.hash.HashOutput.Type) ->
       (M (H := H) unit);
     hash_encoded
       `{H : State.Trait}
+      {H T: Set}
+      `{ink_env.hash.CryptoHash.Trait H}
+      `{parity_scale_codec.codec.Encode.Trait T}
       :
       (mut_ref Self) ->
       (ref T) ->
@@ -2383,6 +1496,12 @@ Module EnvBackend.
       (M (H := H) (ink_env.error.Result unit));
     call_chain_extension
       `{H : State.Trait}
+      {I T E ErrorCode F D: Set}
+      `{parity_scale_codec.codec.Encode.Trait I}
+      `{parity_scale_codec.codec.Decode.Trait T}
+      `{core.convert.From.Trait ErrorCode E}
+      `{core.ops.function.FnOnce.Trait (u32) F}
+      `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
       :
       (mut_ref Self) ->
       u32 ->
@@ -2393,7 +1512,9 @@ Module EnvBackend.
     set_code_hash
       `{H : State.Trait}
       :
-      (mut_ref Self) -> (ref Slice) -> (M (H := H) (ink_env.error.Result unit));
+      (mut_ref Self) ->
+      (ref (Slice u8)) ->
+      (M (H := H) (ink_env.error.Result unit));
   }.
   
   Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
@@ -2456,39 +1577,74 @@ End EnvBackend.
 
 Module TypedEnvBackend.
   Class Trait (Self : Set) : Set := {
-    caller `{H : State.Trait} : (mut_ref Self) -> (M (H := H) ImplE.AccountId);
+    caller
+      `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H) ImplE.AccountId);
     transferred_value
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (M (H := H) ImplE.Balance);
     weight_to_fee
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> u64 -> (M (H := H) ImplE.Balance);
-    gas_left `{H : State.Trait} : (mut_ref Self) -> (M (H := H) u64);
+    gas_left
+      `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H) u64);
     block_timestamp
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (M (H := H) ImplE.Timestamp);
     account_id
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (M (H := H) ImplE.AccountId);
-    balance `{H : State.Trait} : (mut_ref Self) -> (M (H := H) ImplE.Balance);
+    balance
+      `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H) ImplE.Balance);
     block_number
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (M (H := H) ImplE.BlockNumber);
     minimum_balance
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (M (H := H) ImplE.Balance);
     emit_event
       `{H : State.Trait}
+      {E Event: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.Topics.Trait Event}
+      `{parity_scale_codec.codec.Encode.Trait Event}
       :
       (mut_ref Self) -> Event -> (M (H := H) unit);
     invoke_contract
       `{H : State.Trait}
+      {E Args R: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       :
       (mut_ref Self) ->
       (ref
@@ -2500,6 +1656,10 @@ Module TypedEnvBackend.
       (M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)));
     invoke_contract_delegate
       `{H : State.Trait}
+      {E Args R: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       :
       (mut_ref Self) ->
       (ref
@@ -2511,6 +1671,12 @@ Module TypedEnvBackend.
       (M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)));
     instantiate_contract
       `{H : State.Trait}
+      {E ContractRef Args Salt R: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait (Slice u8) Salt}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
       :
       (mut_ref Self) ->
       (ref
@@ -2521,10 +1687,14 @@ Module TypedEnvBackend.
             ink_env.call.create_builder.ConstructorReturnType.Output)));
     terminate_contract
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> ImplE.AccountId -> (M (H := H) Empty_set);
     transfer
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) ->
       ImplE.AccountId ->
@@ -2532,21 +1702,35 @@ Module TypedEnvBackend.
       (M (H := H) (ink_env.error.Result unit));
     is_contract
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (ref ImplE.AccountId) -> (M (H := H) bool);
-    caller_is_origin `{H : State.Trait} : (mut_ref Self) -> (M (H := H) bool);
+    caller_is_origin
+      `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H) bool);
     code_hash
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) ->
       (ref ImplE.AccountId) ->
       (M (H := H) (ink_env.error.Result ImplE.Hash));
     own_code_hash
       `{H : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (M (H := H) (ink_env.error.Result ImplE.Hash));
     call_runtime
       `{H : State.Trait}
+      {E Call: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Call}
       :
       (mut_ref Self) -> (ref Call) -> (M (H := H) (ink_env.error.Result unit));
   }.
@@ -2636,1061 +1820,180 @@ End TypedEnvBackend.
 Module call.
   Module call_builder.
     Module CallParams.
-      Record t : Set := {
-        call_type : CallType;
-        call_flags : ink_env.backend.CallFlags;
-        _return_type : ink_env.call.common.ReturnType R;
-        exec_input : ink_env.call.execution_input.ExecutionInput Args;
-        _phantom : core.marker.PhantomData (unit -> E);
-      }.
-      
-      Global Instance Get_call_type : Notation.Dot "call_type" := {
-        Notation.dot '(Build_t x0 _ _ _ _) := x0;
-      }.
-      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-        Notation.dot '(Build_t _ x1 _ _ _) := x1;
-      }.
-      Global Instance Get__return_type : Notation.Dot "_return_type" := {
-        Notation.dot '(Build_t _ _ x2 _ _) := x2;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ _ x3 _) := x3;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ x4) := x4;
-      }.
+      Section CallParams.
+        Context {E CallType Args R : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          call_type : CallType;
+          call_flags : ink_env.backend.CallFlags;
+          _return_type : ink_env.call.common.ReturnType R;
+          exec_input : ink_env.call.execution_input.ExecutionInput Args;
+          _phantom : core.marker.PhantomData (E);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_call_type : Notation.Dot "call_type" := {
+          Notation.dot '(Build_t x0 _ _ _ _) := x0;
+        }.
+        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+          Notation.dot '(Build_t _ x1 _ _ _) := x1;
+        }.
+        Global Instance Get__return_type : Notation.Dot "_return_type" := {
+          Notation.dot '(Build_t _ _ x2 _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _) := x3;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ x4) := x4;
+        }.
+      End CallParams.
     End CallParams.
-    Definition CallParams : Set := CallParams.t.
+    Definition CallParams : Set := @CallParams.t.
     
-    Module
-      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-    Section
-      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-      Context {E CallType Args R : Set}.
-      
-      Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-    
-    Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-      Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
-      
-      Parameter call_flags : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ink_env.backend.CallFlags).
-      
-      Global Instance Method_call_flags `{H : State.Trait} :
-        Notation.Dot "call_flags" := {
-        Notation.dot := call_flags;
-      }.
-      
-      Parameter exec_input : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
-      
-      Global Instance Method_exec_input `{H : State.Trait} :
-        Notation.Dot "exec_input" := {
-        Notation.dot := exec_input;
-      }.
-    End Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallParams
-          E
-          (ink_env.call.call_builder.Call E)
-          Args
-          R.
-      
-      Parameter callee : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.AccountId).
-      
-      Global Instance Method_callee `{H : State.Trait} :
-        Notation.Dot "callee" := {
-        Notation.dot := callee;
-      }.
-      
-      Parameter gas_limit : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.types.Gas.
-      
-      Global Instance Method_gas_limit `{H : State.Trait} :
-        Notation.Dot "gas_limit" := {
-        Notation.dot := gas_limit;
-      }.
-      
-      Parameter transferred_value : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Balance).
-      
-      Global Instance Method_transferred_value `{H : State.Trait} :
-        Notation.Dot "transferred_value" := {
-        Notation.dot := transferred_value;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallParams
-          E
-          (ink_env.call.call_builder.DelegateCall E)
-          Args
-          R.
-      
-      Parameter code_hash : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Hash).
-      
-      Global Instance Method_code_hash `{H : State.Trait} :
-        Notation.Dot "code_hash" := {
-        Notation.dot := code_hash;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_2.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallParams
-          E
-          (ink_env.call.call_builder.Call E)
-          Args
-          R.
-      
-      Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
-      
-      Global Instance Method_invoke `{H : State.Trait} :
-        Notation.Dot "invoke" := {
-        Notation.dot := invoke;
-      }.
-      
-      Parameter try_invoke : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.MessageResult R)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_invoke `{H : State.Trait} :
-        Notation.Dot "try_invoke" := {
-        Notation.dot := try_invoke;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_2.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_2.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallParams
-          E
-          (ink_env.call.call_builder.DelegateCall E)
-          Args
-          R.
-      
-      Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
-      
-      Global Instance Method_invoke `{H : State.Trait} :
-        Notation.Dot "invoke" := {
-        Notation.dot := invoke;
-      }.
-      
-      Parameter try_invoke : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.MessageResult R)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_invoke `{H : State.Trait} :
-        Notation.Dot "try_invoke" := {
-        Notation.dot := try_invoke;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_2.
-    
-    Parameter build_call : forall `{H : State.Trait}, forall
+    Parameter build_call : forall `{H : State.Trait},
+        forall
         {E : Set},
         `{ink_env.types.Environment.Trait E}
-        unit
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder
-              E
-              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-              (ink_env.call.common.Unset
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.execution_input.EmptyArgumentList))
-              (ink_env.call.common.Unset
-                (ink_env.call.common.ReturnType unit))).
+        M (H := H)
+          (ink_env.call.call_builder.CallBuilder
+            E
+            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+            (ink_env.call.common.Unset
+              (ink_env.call.execution_input.ExecutionInput
+                ink_env.call.execution_input.EmptyArgumentList))
+            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
     
     Module Call.
-      Record t : Set := {
-        callee : ImplE.AccountId;
-        gas_limit : ink_env.types.Gas;
-        transferred_value : ImplE.Balance;
-      }.
-      
-      Global Instance Get_callee : Notation.Dot "callee" := {
-        Notation.dot '(Build_t x0 _ _) := x0;
-      }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-        Notation.dot '(Build_t _ x1 _) := x1;
-      }.
-      Global Instance Get_transferred_value :
-          Notation.Dot "transferred_value" := {
-        Notation.dot '(Build_t _ _ x2) := x2;
-      }.
+      Section Call.
+        Context {E : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          callee : ImplE.AccountId;
+          gas_limit : ink_env.types.Gas;
+          transferred_value : ImplE.Balance;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_callee : Notation.Dot "callee" := {
+          Notation.dot '(Build_t x0 _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _) := x1;
+        }.
+        Global Instance Get_transferred_value :
+            Notation.Dot "transferred_value" := {
+          Notation.dot '(Build_t _ _ x2) := x2;
+        }.
+      End Call.
     End Call.
-    Definition Call : Set := Call.t.
-    
-    Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-    Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-      Context {E : Set}.
-      
-      Definition Self := ink_env.call.call_builder.Call E.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.call_builder.Call E).
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-    End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-    
-    Module Impl_ink_env_call_call_builder_Call_E.
-      Definition Self := ink_env.call.call_builder.Call E.
-      
-      Parameter new : forall `{H : State.Trait}, ImplE.AccountId
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_new `{H : State.Trait} :
-        Notation.DoubleColon Self "new" := {
-        Notation.double_colon := new;
-      }.
-    End Impl_ink_env_call_call_builder_Call_E.
-    
-    Module Impl_ink_env_call_call_builder_Call_E_2.
-      Definition Self := ink_env.call.call_builder.Call E.
-      
-      Parameter gas_limit : forall `{H : State.Trait}, Self->
-          ink_env.types.Gas
-          -> M (H := H) Self.
-      
-      Global Instance Method_gas_limit `{H : State.Trait} :
-        Notation.Dot "gas_limit" := {
-        Notation.dot := gas_limit;
-      }.
-      
-      Parameter transferred_value : forall `{H : State.Trait}, Self->
-          ImplE.Balance
-          -> M (H := H) Self.
-      
-      Global Instance Method_transferred_value `{H : State.Trait} :
-        Notation.Dot "transferred_value" := {
-        Notation.dot := transferred_value;
-      }.
-    End Impl_ink_env_call_call_builder_Call_E_2.
+    Definition Call : Set := @Call.t.
     
     Module DelegateCall.
-      Record t : Set := {
-        code_hash : ImplE.Hash;
-      }.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section DelegateCall.
+        Context {E : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : ImplE.Hash;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End DelegateCall.
     End DelegateCall.
-    Definition DelegateCall : Set := DelegateCall.t.
-    
-    Module Impl_ink_env_call_call_builder_DelegateCall_E.
-      Definition Self := ink_env.call.call_builder.DelegateCall E.
-      
-      Parameter new : forall `{H : State.Trait}, ImplE.Hash -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_new `{H : State.Trait} :
-        Notation.DoubleColon Self "new" := {
-        Notation.double_colon := new;
-      }.
-    End Impl_ink_env_call_call_builder_DelegateCall_E.
-    
-    Module Impl_ink_env_call_call_builder_DelegateCall_E_2.
-      Definition Self := ink_env.call.call_builder.DelegateCall E.
-      
-      Parameter code_hash : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          -> M (H := H) Self.
-      
-      Global Instance Method_code_hash `{H : State.Trait} :
-        Notation.Dot "code_hash" := {
-        Notation.dot := code_hash;
-      }.
-    End Impl_ink_env_call_call_builder_DelegateCall_E_2.
+    Definition DelegateCall : Set := @DelegateCall.t.
     
     Module CallBuilder.
-      Record t : Set := {
-        call_type : CallType;
-        call_flags : ink_env.backend.CallFlags;
-        exec_input : Args;
-        return_type : RetType;
-        _phantom : core.marker.PhantomData (unit -> E);
-      }.
-      
-      Global Instance Get_call_type : Notation.Dot "call_type" := {
-        Notation.dot '(Build_t x0 _ _ _ _) := x0;
-      }.
-      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-        Notation.dot '(Build_t _ x1 _ _ _) := x1;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ x2 _ _) := x2;
-      }.
-      Global Instance Get_return_type : Notation.Dot "return_type" := {
-        Notation.dot '(Build_t _ _ _ x3 _) := x3;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ x4) := x4;
-      }.
+      Section CallBuilder.
+        Context {E CallType Args RetType : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          call_type : CallType;
+          call_flags : ink_env.backend.CallFlags;
+          exec_input : Args;
+          return_type : RetType;
+          _phantom : core.marker.PhantomData (E);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_call_type : Notation.Dot "call_type" := {
+          Notation.dot '(Build_t x0 _ _ _ _) := x0;
+        }.
+        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+          Notation.dot '(Build_t _ x1 _ _ _) := x1;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ x2 _ _) := x2;
+        }.
+        Global Instance Get_return_type : Notation.Dot "return_type" := {
+          Notation.dot '(Build_t _ _ _ x3 _) := x3;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ x4) := x4;
+        }.
+      End CallBuilder.
     End CallBuilder.
-    Definition CallBuilder : Set := CallBuilder.t.
-    
-    Module
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-    Section
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-      Context {E CallType Args RetType : Set}.
-      
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder E CallType Args RetType.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Unset CallType)
-          Args
-          RetType.
-      
-      Parameter call_type : forall `{H : State.Trait}, Self->
-          NewCallType
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallBuilder
-                E
-                (ink_env.call.common.Set NewCallType)
-                Args
-                RetType).
-      
-      Global Instance Method_call_type `{H : State.Trait} :
-        Notation.Dot "call_type" := {
-        Notation.dot := call_type;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType.
-    
-    Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder E CallType Args RetType.
-      
-      Parameter call_flags : forall `{H : State.Trait}, Self->
-          ink_env.backend.CallFlags
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
-      
-      Global Instance Method_call_flags `{H : State.Trait} :
-        Notation.Dot "call_flags" := {
-        Notation.dot := call_flags;
-      }.
-    End Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          CallType
-          Args
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-      
-      Parameter returns : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallBuilder
-                E
-                CallType
-                Args
-                (ink_env.call.common.Set (ink_env.call.common.ReturnType R))).
-      
-      Global Instance Method_returns `{H : State.Trait} :
-        Notation.Dot "returns" := {
-        Notation.dot := returns;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          CallType
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          RetType.
-      
-      Parameter exec_input : forall `{H : State.Trait}, Self->
-          ink_env.call.execution_input.ExecutionInput Args
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallBuilder
-                E
-                CallType
-                (ink_env.call.common.Set
-                  (ink_env.call.execution_input.ExecutionInput Args))
-                RetType).
-      
-      Global Instance Method_exec_input `{H : State.Trait} :
-        Notation.Dot "exec_input" := {
-        Notation.dot := exec_input;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_2.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Unset CallType)
-          Args
-          RetType.
-      
-      Parameter call : forall `{H : State.Trait}, Self->
-          ImplE.AccountId
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallBuilder
-                E
-                (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-                Args
-                RetType).
-      
-      Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-        Notation.dot := call;
-      }.
-      
-      Parameter delegate : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallBuilder
-                E
-                (ink_env.call.common.Set
-                  (ink_env.call.call_builder.DelegateCall E))
-                Args
-                RetType).
-      
-      Global Instance Method_delegate `{H : State.Trait} :
-        Notation.Dot "delegate" := {
-        Notation.dot := delegate;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_2.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-          Args
-          RetType.
-      
-      Parameter gas_limit : forall `{H : State.Trait}, Self->
-          ink_env.types.Gas
-          -> M (H := H) Self.
-      
-      Global Instance Method_gas_limit `{H : State.Trait} :
-        Notation.Dot "gas_limit" := {
-        Notation.dot := gas_limit;
-      }.
-      
-      Parameter transferred_value : forall `{H : State.Trait}, Self->
-          ImplE.Balance
-          -> M (H := H) Self.
-      
-      Global Instance Method_transferred_value `{H : State.Trait} :
-        Notation.Dot "transferred_value" := {
-        Notation.dot := transferred_value;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-          Args
-          RetType.
-      
-      Parameter code_hash : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          -> M (H := H) Self.
-      
-      Global Instance Method_code_hash `{H : State.Trait} :
-        Notation.Dot "code_hash" := {
-        Notation.dot := code_hash;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput Args))
-          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-      
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallParams
-                E
-                (ink_env.call.call_builder.Call E)
-                Args
-                RetType).
-      
-      Global Instance Method_params `{H : State.Trait} :
-        Notation.Dot "params" := {
-        Notation.dot := params;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput Args))
-          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-      
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallParams
-                E
-                (ink_env.call.call_builder.DelegateCall E)
-                Args
-                RetType).
-      
-      Global Instance Method_params `{H : State.Trait} :
-        Notation.Dot "params" := {
-        Notation.dot := params;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset RetType).
-      
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallParams
-                E
-                (ink_env.call.call_builder.Call E)
-                ink_env.call.execution_input.EmptyArgumentList
-                unit).
-      
-      Global Instance Method_params `{H : State.Trait} :
-        Notation.Dot "params" := {
-        Notation.dot := params;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset RetType).
-      
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (ink_env.call.call_builder.CallParams
-                E
-                (ink_env.call.call_builder.DelegateCall E)
-                ink_env.call.execution_input.EmptyArgumentList
-                unit).
-      
-      Global Instance Method_params `{H : State.Trait} :
-        Notation.Dot "params" := {
-        Notation.dot := params;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-      
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
-      
-      Global Instance Method_invoke `{H : State.Trait} :
-        Notation.Dot "invoke" := {
-        Notation.dot := invoke;
-      }.
-      
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.MessageResult unit)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_invoke `{H : State.Trait} :
-        Notation.Dot "try_invoke" := {
-        Notation.dot := try_invoke;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-      
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
-      
-      Global Instance Method_invoke `{H : State.Trait} :
-        Notation.Dot "invoke" := {
-        Notation.dot := invoke;
-      }.
-      
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.MessageResult unit)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_invoke `{H : State.Trait} :
-        Notation.Dot "try_invoke" := {
-        Notation.dot := try_invoke;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput Args))
-          (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
-      
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
-      
-      Global Instance Method_invoke `{H : State.Trait} :
-        Notation.Dot "invoke" := {
-        Notation.dot := invoke;
-      }.
-      
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.MessageResult R)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_invoke `{H : State.Trait} :
-        Notation.Dot "try_invoke" := {
-        Notation.dot := try_invoke;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
-    
-    Module
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
-      Definition
-        Self
-        :=
-        ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput Args))
-          (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
-      
-      Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
-      
-      Global Instance Method_invoke `{H : State.Trait} :
-        Notation.Dot "invoke" := {
-        Notation.dot := invoke;
-      }.
-      
-      Parameter try_invoke : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.MessageResult R)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_invoke `{H : State.Trait} :
-        Notation.Dot "try_invoke" := {
-        Notation.dot := try_invoke;
-      }.
-    End
-      Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R.
+    Definition CallBuilder : Set := @CallBuilder.t.
   End call_builder.
   
   Module common.
     Module ReturnType.
-      Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section ReturnType.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End ReturnType.
     End ReturnType.
-    Definition ReturnType := ReturnType.t.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-    Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.ReturnType T.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-    
-    Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-    Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.ReturnType T.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-    End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-    
-    Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-    Section Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.ReturnType T.
-      
-      Global Instance I : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Trait _.
-    End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-    End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-    
-    Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-    Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.ReturnType T.
-      
-      Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
-      }.
-    End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-    End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+    Definition ReturnType := @ReturnType.t.
     
     Module Set.
-      Record t : Set := { _ : T;}.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section Set.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Set.
     End Set.
-    Definition Set := Set.t.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-    Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Set T.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-    
-    Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-    Section Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Set T.
-      
-      Global Instance I : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Trait _.
-    End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-    End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-    
-    Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-    Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Set T.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.common.Set T).
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-    End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-    
-    Module Impl_ink_env_call_common_Set_T.
-      Definition Self := ink_env.call.common.Set T.
-      
-      Parameter value : forall `{H : State.Trait}, Self -> M (H := H) T.
-      
-      Global Instance Method_value `{H : State.Trait} :
-        Notation.Dot "value" := {
-        Notation.dot := value;
-      }.
-    End Impl_ink_env_call_common_Set_T.
+    Definition Set := @Set.t.
     
     Module Unset.
-      Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section Unset.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Unset.
     End Unset.
-    Definition Unset := Unset.t.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-    Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Unset T.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-    End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-    
-    Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-    Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Unset T.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-    End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-    
-    Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-    Section Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Unset T.
-      
-      Global Instance I : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Trait _.
-    End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-    End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-    
-    Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-    Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Unset T.
-      
-      Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
-      }.
-    End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-    End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+    Definition Unset := @Unset.t.
     
     Module Unwrap.
       Class Trait (Self : Set) {Output : Set} : Set := {
         Output := Output;
         unwrap_or_else
           `{H : State.Trait}
+          {F: Set}
+          `{core.ops.function.FnOnce.Trait unit F}
           :
           Self -> F -> (M (H := H) ImplSelf.Output);
       }.
@@ -3704,58 +2007,6 @@ Module call.
         Notation.dot := unwrap_or_else;
       }.
     End Unwrap.
-    
-    Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-    Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Unset T.
-      
-      Definition Output : Set := T.
-      
-      Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-          F
-          -> M (H := H) ImplSelf.Output.
-      
-      Global Instance Method_unwrap_or_else `{H : State.Trait} :
-        Notation.Dot "unwrap_or_else" := {
-        Notation.dot := unwrap_or_else;
-      }.
-      
-      Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
-        ink_env.call.common.Unwrap.unwrap_or_else
-          `{H : State.Trait}
-          :=
-          unwrap_or_else;
-      }.
-    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-    
-    Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-    Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.common.Set T.
-      
-      Definition Output : Set := T.
-      
-      Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-          F
-          -> M (H := H) ImplSelf.Output.
-      
-      Global Instance Method_unwrap_or_else `{H : State.Trait} :
-        Notation.Dot "unwrap_or_else" := {
-        Notation.dot := unwrap_or_else;
-      }.
-      
-      Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
-        ink_env.call.common.Unwrap.unwrap_or_else
-          `{H : State.Trait}
-          :=
-          unwrap_or_else;
-      }.
-    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-    End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
   End common.
   
   Module create_builder.
@@ -3818,834 +2069,153 @@ Module call.
       }.
     End ConstructorReturnType.
     
-    Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-    Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-      Context {C : Set}.
-      
-      Definition Self := C.
-      
-      Definition Output : Set := C.
-      
-      Definition Error : Set := unit.
-      
-      Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
-      
-      Global Instance AssociatedFunction_ok `{H : State.Trait} :
-        Notation.DoubleColon Self "ok" := {
-        Notation.double_colon := ok;
-      }.
-      
-      Global Instance I :
-          ink_env.call.create_builder.ConstructorReturnType.Trait
-            Self
-            (C := C) := {
-        ink_env.call.create_builder.ConstructorReturnType.ok
-          `{H : State.Trait}
-          :=
-          ok;
-      }.
-    End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-    End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-    
-    Module
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-    Section
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-      Context {C E : Set}.
-      
-      Definition Self := core.result.Result C E.
-      
-      Definition IS_RESULT := Pure true.
-      
-      Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
-        Notation.DoubleColon Self "IS_RESULT" := {
-        Notation.double_colon := IS_RESULT;
-      }.
-      
-      Definition Output : Set := core.result.Result C E.
-      
-      Definition Error : Set := E.
-      
-      Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
-      
-      Global Instance AssociatedFunction_ok `{H : State.Trait} :
-        Notation.DoubleColon Self "ok" := {
-        Notation.double_colon := ok;
-      }.
-      
-      Parameter err : forall `{H : State.Trait}, ImplSelf.Error
-          -> M (H := H) (core.option.Option ImplSelf.Output).
-      
-      Global Instance AssociatedFunction_err `{H : State.Trait} :
-        Notation.DoubleColon Self "err" := {
-        Notation.double_colon := err;
-      }.
-      
-      Global Instance I :
-          ink_env.call.create_builder.ConstructorReturnType.Trait
-            Self
-            (C := C) := {
-        ink_env.call.create_builder.ConstructorReturnType.ok
-          `{H : State.Trait}
-          :=
-          ok;
-      }.
-    End
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-    End
-      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-    
     Module CreateParams.
-      Record t : Set := {
-        code_hash : ImplE.Hash;
-        gas_limit : u64;
-        endowment : ImplE.Balance;
-        exec_input : ink_env.call.execution_input.ExecutionInput Args;
-        salt_bytes : Salt;
-        _return_type : ink_env.call.common.ReturnType R;
-        _phantom : core.marker.PhantomData (unit -> ContractRef);
-      }.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-      }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-      }.
-      Global Instance Get_endowment : Notation.Dot "endowment" := {
-        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-      }.
-      Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
-        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-      }.
-      Global Instance Get__return_type : Notation.Dot "_return_type" := {
-        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-      }.
+      Section CreateParams.
+        Context {E ContractRef Args Salt R : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : ImplE.Hash;
+          gas_limit : u64;
+          endowment : ImplE.Balance;
+          exec_input : ink_env.call.execution_input.ExecutionInput Args;
+          salt_bytes : Salt;
+          _return_type : ink_env.call.common.ReturnType R;
+          _phantom : core.marker.PhantomData (ContractRef);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
+          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
+          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
+        Global Instance Get__return_type : Notation.Dot "_return_type" := {
+          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+      End CreateParams.
     End CreateParams.
-    Definition CreateParams : Set := CreateParams.t.
-    
-    Module
-      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-    Section
-      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-      Context {E ContractRef Args Salt R : Set}.
-      
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-      
-      Parameter code_hash : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Hash).
-      
-      Global Instance Method_code_hash `{H : State.Trait} :
-        Notation.Dot "code_hash" := {
-        Notation.dot := code_hash;
-      }.
-      
-      Parameter gas_limit : forall `{H : State.Trait}, ref Self
-          -> M (H := H) u64.
-      
-      Global Instance Method_gas_limit `{H : State.Trait} :
-        Notation.Dot "gas_limit" := {
-        Notation.dot := gas_limit;
-      }.
-      
-      Parameter endowment : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref ImplE.Balance).
-      
-      Global Instance Method_endowment `{H : State.Trait} :
-        Notation.Dot "endowment" := {
-        Notation.dot := endowment;
-      }.
-      
-      Parameter exec_input : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
-      
-      Global Instance Method_exec_input `{H : State.Trait} :
-        Notation.Dot "exec_input" := {
-        Notation.dot := exec_input;
-      }.
-      
-      Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-          ink_env.call.selector.Selector
-          -> M (H := H) unit.
-      
-      Global Instance Method_update_selector `{H : State.Trait} :
-        Notation.Dot "update_selector" := {
-        Notation.dot := update_selector;
-      }.
-    End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_2.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-      
-      Parameter salt_bytes : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref Salt).
-      
-      Global Instance Method_salt_bytes `{H : State.Trait} :
-        Notation.Dot "salt_bytes" := {
-        Notation.dot := salt_bytes;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_2.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_3.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-      
-      Parameter instantiate : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
-      
-      Global Instance Method_instantiate `{H : State.Trait} :
-        Notation.Dot "instantiate" := {
-        Notation.dot := instantiate;
-      }.
-      
-      Parameter try_instantiate : forall `{H : State.Trait}, ref Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.ConstructorResult
-                  ink_env.call.create_builder.ConstructorReturnType.Output)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_instantiate `{H : State.Trait} :
-        Notation.Dot "try_instantiate" := {
-        Notation.dot := try_instantiate;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_3.
+    Definition CreateParams : Set := @CreateParams.t.
     
     Module CreateBuilder.
-      Record t : Set := {
-        code_hash : CodeHash;
-        gas_limit : GasLimit;
-        endowment : Endowment;
-        exec_input : Args;
-        salt : Salt;
-        return_type : RetType;
-        _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
-      }.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-      }.
-      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-      }.
-      Global Instance Get_endowment : Notation.Dot "endowment" := {
-        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-      }.
-      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-      }.
-      Global Instance Get_salt : Notation.Dot "salt" := {
-        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-      }.
-      Global Instance Get_return_type : Notation.Dot "return_type" := {
-        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-      }.
-      Global Instance Get__phantom : Notation.Dot "_phantom" := {
-        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-      }.
+      Section CreateBuilder.
+        Context
+          {E
+          ContractRef
+          CodeHash
+          GasLimit
+          Endowment
+          Args
+          Salt
+          RetType
+          : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : CodeHash;
+          gas_limit : GasLimit;
+          endowment : Endowment;
+          exec_input : Args;
+          salt : Salt;
+          return_type : RetType;
+          _phantom : core.marker.PhantomData ((E * ContractRef));
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
+          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_salt : Notation.Dot "salt" := {
+          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
+        Global Instance Get_return_type : Notation.Dot "return_type" := {
+          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+      End CreateBuilder.
     End CreateBuilder.
-    Definition CreateBuilder : Set := CreateBuilder.t.
+    Definition CreateBuilder : Set := @CreateBuilder.t.
     
-    Parameter build_create : forall `{H : State.Trait}, forall
+    Parameter build_create : forall `{H : State.Trait},
+        forall
         {ContractRef : Set},
         `{ink_env.contract.ContractEnv.Trait ContractRef}
-        unit
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateBuilder
-              ink_env.contract.ContractEnv.Env
-              ContractRef
-              (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-              (ink_env.call.common.Unset u64)
-              (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-              (ink_env.call.common.Unset
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.execution_input.EmptyArgumentList))
-              (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-              (ink_env.call.common.Unset
-                (ink_env.call.common.ReturnType unit))).
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          (ink_env.call.common.Unset ImplE.Hash)
-          GasLimit
-          Endowment
-          Args
-          Salt
-          RetType.
-      
-      Parameter code_hash : forall `{H : State.Trait}, Self->
-          ImplE.Hash
-          ->
-            M (H := H)
-              (ink_env.call.create_builder.CreateBuilder
-                E
-                ContractRef
-                (ink_env.call.common.Set ImplE.Hash)
-                GasLimit
-                Endowment
-                Args
-                Salt
-                RetType).
-      
-      Global Instance Method_code_hash `{H : State.Trait} :
-        Notation.Dot "code_hash" := {
-        Notation.dot := code_hash;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          CodeHash
-          (ink_env.call.common.Unset u64)
-          Endowment
-          Args
-          Salt
-          RetType.
-      
-      Parameter gas_limit : forall `{H : State.Trait}, Self->
-          u64
-          ->
-            M (H := H)
-              (ink_env.call.create_builder.CreateBuilder
-                E
-                ContractRef
-                CodeHash
-                (ink_env.call.common.Set u64)
-                Endowment
-                Args
-                Salt
-                RetType).
-      
-      Global Instance Method_gas_limit `{H : State.Trait} :
-        Notation.Dot "gas_limit" := {
-        Notation.dot := gas_limit;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          CodeHash
-          GasLimit
-          (ink_env.call.common.Unset ImplE.Balance)
-          Args
-          Salt
-          RetType.
-      
-      Parameter endowment : forall `{H : State.Trait}, Self->
-          ImplE.Balance
-          ->
-            M (H := H)
-              (ink_env.call.create_builder.CreateBuilder
-                E
-                ContractRef
-                CodeHash
-                GasLimit
-                (ink_env.call.common.Set ImplE.Balance)
-                Args
-                Salt
-                RetType).
-      
-      Global Instance Method_endowment `{H : State.Trait} :
-        Notation.Dot "endowment" := {
-        Notation.dot := endowment;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          CodeHash
-          GasLimit
-          Endowment
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          Salt
-          RetType.
-      
-      Parameter exec_input : forall `{H : State.Trait}, Self->
-          ink_env.call.execution_input.ExecutionInput Args
-          ->
-            M (H := H)
-              (ink_env.call.create_builder.CreateBuilder
-                E
-                ContractRef
-                CodeHash
-                GasLimit
-                Endowment
-                (ink_env.call.common.Set
-                  (ink_env.call.execution_input.ExecutionInput Args))
-                Salt
-                RetType).
-      
-      Global Instance Method_exec_input `{H : State.Trait} :
-        Notation.Dot "exec_input" := {
-        Notation.dot := exec_input;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          CodeHash
-          GasLimit
-          Endowment
-          Args
-          (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-          RetType.
-      
-      Parameter salt_bytes : forall `{H : State.Trait}, Self->
-          Salt
-          ->
-            M (H := H)
-              (ink_env.call.create_builder.CreateBuilder
-                E
-                ContractRef
-                CodeHash
-                GasLimit
-                Endowment
-                Args
-                (ink_env.call.common.Set Salt)
-                RetType).
-      
-      Global Instance Method_salt_bytes `{H : State.Trait} :
-        Notation.Dot "salt_bytes" := {
-        Notation.dot := salt_bytes;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          CodeHash
-          GasLimit
-          Endowment
-          Args
-          Salt
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-      
-      Parameter returns : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (ink_env.call.create_builder.CreateBuilder
-                E
-                ContractRef
-                CodeHash
-                GasLimit
-                Endowment
-                Args
-                Salt
-                (ink_env.call.common.Set (ink_env.call.common.ReturnType R))).
-      
-      Global Instance Method_returns `{H : State.Trait} :
-        Notation.Dot "returns" := {
-        Notation.dot := returns;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple_.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          (ink_env.call.common.Set ImplE.Hash)
-          GasLimit
-          (ink_env.call.common.Set ImplE.Balance)
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput Args))
-          (ink_env.call.common.Set Salt)
-          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-      
-      Parameter params : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (ink_env.call.create_builder.CreateParams
-                E
-                ContractRef
-                Args
-                Salt
-                RetType).
-      
-      Global Instance Method_params `{H : State.Trait} :
-        Notation.Dot "params" := {
-        Notation.dot := params;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType.
-    
-    Module
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
-      Definition
-        Self
-        :=
-        ink_env.call.create_builder.CreateBuilder
-          E
-          ContractRef
-          (ink_env.call.common.Set ImplE.Hash)
-          GasLimit
-          (ink_env.call.common.Set ImplE.Balance)
-          (ink_env.call.common.Set
-            (ink_env.call.execution_input.ExecutionInput Args))
-          (ink_env.call.common.Set Salt)
-          (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-      
-      Parameter instantiate : forall `{H : State.Trait}, Self
-          ->
-            M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
-      
-      Global Instance Method_instantiate `{H : State.Trait} :
-        Notation.Dot "instantiate" := {
-        Notation.dot := instantiate;
-      }.
-      
-      Parameter try_instantiate : forall `{H : State.Trait}, Self
-          ->
-            M (H := H)
-              (core.result.Result
-                (ink_primitives.ConstructorResult
-                  ink_env.call.create_builder.ConstructorReturnType.Output)
-                ink_env.error.Error).
-      
-      Global Instance Method_try_instantiate `{H : State.Trait} :
-        Notation.Dot "try_instantiate" := {
-        Notation.dot := try_instantiate;
-      }.
-    End
-      Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
+        M (H := H)
+          (ink_env.call.create_builder.CreateBuilder
+            ink_env.contract.ContractEnv.Env
+            ContractRef
+            (ink_env.call.common.Unset ink_env.types.Environment.Hash)
+            (ink_env.call.common.Unset u64)
+            (ink_env.call.common.Unset ink_env.types.Environment.Balance)
+            (ink_env.call.common.Unset
+              (ink_env.call.execution_input.ExecutionInput
+                ink_env.call.execution_input.EmptyArgumentList))
+            (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
+            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
   End create_builder.
   
   Module execution_input.
     Module ExecutionInput.
-      Record t : Set := {
-        selector : ink_env.call.selector.Selector;
-        args : Args;
-      }.
-      
-      Global Instance Get_selector : Notation.Dot "selector" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_args : Notation.Dot "args" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
+      Section ExecutionInput.
+        Context {Args : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          selector : ink_env.call.selector.Selector;
+          args : Args;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_selector : Notation.Dot "selector" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_args : Notation.Dot "args" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ExecutionInput.
     End ExecutionInput.
-    Definition ExecutionInput : Set := ExecutionInput.t.
-    
-    Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Section
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-      Context {Args : Set}.
-      
-      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-    
-    Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Section
-      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-      Context {Args : Set}.
-      
-      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-      
-      Parameter default : forall `{H : State.Trait}, unit
-          -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
-      
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
-      }.
-    End
-      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-    End
-      Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-    
-    Module
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Section
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-      Context {Args : Set}.
-      
-      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-    
-    Module
-      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList.
-      
-      Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_new `{H : State.Trait} :
-        Notation.DoubleColon Self "new" := {
-        Notation.double_colon := new;
-      }.
-      
-      Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgumentList
-                  (ink_env.call.execution_input.Argument T)
-                  ink_env.call.execution_input.EmptyArgumentList)).
-      
-      Global Instance Method_push_arg `{H : State.Trait} :
-        Notation.Dot "push_arg" := {
-        Notation.dot := push_arg;
-      }.
-    End
-      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList.
-    
-    Module
-      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ExecutionInput
-          (ink_env.call.execution_input.ArgumentList
-            (ink_env.call.execution_input.Argument Head)
-            Rest).
-      
-      Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
-              (ink_env.call.execution_input.ExecutionInput
-                (ink_env.call.execution_input.ArgsList
-                  T
-                  (ink_env.call.execution_input.ArgsList Head Rest))).
-      
-      Global Instance Method_push_arg `{H : State.Trait} :
-        Notation.Dot "push_arg" := {
-        Notation.dot := push_arg;
-      }.
-    End
-      Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-    
-    Module Impl_ink_env_call_execution_input_ExecutionInput_Args.
-      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-      
-      Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-          ink_env.call.selector.Selector
-          -> M (H := H) unit.
-      
-      Global Instance Method_update_selector `{H : State.Trait} :
-        Notation.Dot "update_selector" := {
-        Notation.dot := update_selector;
-      }.
-    End Impl_ink_env_call_execution_input_ExecutionInput_Args.
+    Definition ExecutionInput : Set := @ExecutionInput.t.
     
     Module ArgumentList.
-      Record t : Set := {
-        head : Head;
-        rest : Rest;
-      }.
-      
-      Global Instance Get_head : Notation.Dot "head" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_rest : Notation.Dot "rest" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
+      Section ArgumentList.
+        Context {Head Rest : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          head : Head;
+          rest : Rest;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_head : Notation.Dot "head" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_rest : Notation.Dot "rest" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ArgumentList.
     End ArgumentList.
-    Definition ArgumentList : Set := ArgumentList.t.
-    
-    Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    Section
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-      Context {Head Rest : Set}.
-      
-      Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    End
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    
-    Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    Section
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-      Context {Head Rest : Set}.
-      
-      Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-      
-      Parameter default : forall `{H : State.Trait}, unit
-          -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
-      
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
-      }.
-    End
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    End
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    
-    Module
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    Section
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-      Context {Head Rest : Set}.
-      
-      Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    End
-      Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+    Definition ArgumentList : Set := @ArgumentList.t.
     
     Definition ArgsList : Set :=
       ink_env.call.execution_input.ArgumentList
@@ -4653,477 +2223,180 @@ Module call.
         Rest.
     
     Module Argument.
-      Record t : Set := {
-        arg : T;
-      }.
-      
-      Global Instance Get_arg : Notation.Dot "arg" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section Argument.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          arg : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_arg : Notation.Dot "arg" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Argument.
     End Argument.
-    Definition Argument : Set := Argument.t.
-    
-    Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-    Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.execution_input.Argument T.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ink_env.call.execution_input.Argument T).
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-    End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-    Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.execution_input.Argument T.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-    End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-    
-    Module Impl_ink_env_call_execution_input_Argument_T.
-      Definition Self := ink_env.call.execution_input.Argument T.
-      
-      Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_new `{H : State.Trait} :
-        Notation.DoubleColon Self "new" := {
-        Notation.double_colon := new;
-      }.
-    End Impl_ink_env_call_execution_input_Argument_T.
+    Definition Argument : Set := @Argument.t.
     
     Module ArgumentListEnd.
       Inductive t : Set := Build.
     End ArgumentListEnd.
-    Definition ArgumentListEnd := ArgumentListEnd.t.
-    
-    Module
-      Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
-      Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
-    
-    Module
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
-      Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-      
-      Parameter default : forall `{H : State.Trait}, unit
-          -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
-      
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
-      }.
-    End
-      Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
-      Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
+    Definition ArgumentListEnd := @ArgumentListEnd.t.
     
     Definition EmptyArgumentList : Set :=
       ink_env.call.execution_input.ArgumentList
         ink_env.call.execution_input.ArgumentListEnd
         ink_env.call.execution_input.ArgumentListEnd.
-    
-    Module Impl_ink_env_call_execution_input_EmptyArgumentList.
-      Definition Self := ink_env.call.execution_input.EmptyArgumentList.
-      
-      Parameter empty : forall `{H : State.Trait}, unit
-          -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
-      
-      Global Instance AssociatedFunction_empty `{H : State.Trait} :
-        Notation.DoubleColon Self "empty" := {
-        Notation.double_colon := empty;
-      }.
-      
-      Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
-              (ink_env.call.execution_input.ArgumentList
-                (ink_env.call.execution_input.Argument T)
-                Self).
-      
-      Global Instance Method_push_arg `{H : State.Trait} :
-        Notation.Dot "push_arg" := {
-        Notation.dot := push_arg;
-      }.
-    End Impl_ink_env_call_execution_input_EmptyArgumentList.
-    
-    Module
-      Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument Head)
-          Rest.
-      
-      Parameter push_arg : forall `{H : State.Trait}, Self->
-          T
-          ->
-            M (H := H)
-              (ink_env.call.execution_input.ArgumentList
-                (ink_env.call.execution_input.Argument T)
-                Self).
-      
-      Global Instance Method_push_arg `{H : State.Trait} :
-        Notation.Dot "push_arg" := {
-        Notation.dot := push_arg;
-      }.
-    End
-      Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-    
-    Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-    Section
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.call.execution_input.Argument T.
-      
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
-      
-      Global Instance Method_size_hint `{H : State.Trait} :
-        Notation.Dot "size_hint" := {
-        Notation.dot := size_hint;
-      }.
-      
-      Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
-      
-      Global Instance Method_encode_to `{H : State.Trait} :
-        Notation.Dot "encode_to" := {
-        Notation.dot := encode_to;
-      }.
-      
-      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-      }.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-    
-    Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
-      Definition Self := ink_env.call.execution_input.EmptyArgumentList.
-      
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
-      
-      Global Instance Method_size_hint `{H : State.Trait} :
-        Notation.Dot "size_hint" := {
-        Notation.dot := size_hint;
-      }.
-      
-      Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
-      
-      Global Instance Method_encode_to `{H : State.Trait} :
-        Notation.Dot "encode_to" := {
-        Notation.dot := encode_to;
-      }.
-      
-      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-      }.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
-    
-    Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-    Section
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-      Context {Head Rest : Set}.
-      
-      Definition
-        Self
-        :=
-        ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument Head)
-          Rest.
-      
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
-      
-      Global Instance Method_size_hint `{H : State.Trait} :
-        Notation.Dot "size_hint" := {
-        Notation.dot := size_hint;
-      }.
-      
-      Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
-      
-      Global Instance Method_encode_to `{H : State.Trait} :
-        Notation.Dot "encode_to" := {
-        Notation.dot := encode_to;
-      }.
-      
-      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-      }.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-    
-    Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Section
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-      Context {Args : Set}.
-      
-      Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-      
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
-      
-      Global Instance Method_size_hint `{H : State.Trait} :
-        Notation.Dot "size_hint" := {
-        Notation.dot := size_hint;
-      }.
-      
-      Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref O
-          -> M (H := H) unit.
-      
-      Global Instance Method_encode_to `{H : State.Trait} :
-        Notation.Dot "encode_to" := {
-        Notation.dot := encode_to;
-      }.
-      
-      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-      }.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
   End execution_input.
   
   Module selector.
     Module Selector.
+      Unset Primitive Projections.
       Record t : Set := {
         bytes : list u8;
       }.
+      Global Set Primitive Projections.
       
       Global Instance Get_bytes : Notation.Dot "bytes" := {
         Notation.dot '(Build_t x0) := x0;
       }.
     End Selector.
-    Definition Selector : Set := Selector.t.
-    
-    Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Parameter default : forall `{H : State.Trait}, unit
-          -> M (H := H) ink_env.call.selector.Selector.
-      
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
-      }.
-    End Impl_core_default_Default_for_ink_env_call_selector_Selector.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-        string -> Array_u8 -> 
-        M (H := H) core.fmt.Result.
-      
-      Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-        core.fmt.Formatter "debug_struct_field1_finish" := {
-        Notation.double_colon := debug_struct_field1_finish; }.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
-    
-    Module Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Global Instance I : core.marker.Copy.Trait Self :=
-        core.marker.Copy.Build_Trait _.
-    End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
-    
-    Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.call.selector.Selector.
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
-    
-    Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Trait _.
-    End Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
-    
-    Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.call.selector.Selector
-          -> M (H := H) bool.
-      
-      Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-        Notation.dot := eq;
-      }.
-      
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
-        core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-      }.
-    End Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
-    
-    Module Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Trait _.
-    End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
-    
-    Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
-      
-      Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-        Notation.Dot "assert_receiver_is_total_eq" := {
-        Notation.dot := assert_receiver_is_total_eq;
-      }.
-      
-      Global Instance I : core.cmp.Eq.Trait Self := {
-      }.
-    End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
-    
-    Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Parameter from : forall `{H : State.Trait}, list u8
-          -> M (H := H) ink_env.call.selector.Selector.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I : core.convert.From.Trait Self (T := list u8) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End Impl_core_convert_From_for_ink_env_call_selector_Selector.
-    
-    Module Impl_ink_env_call_selector_Selector.
-      Definition Self := ink_env.call.selector.Selector.
-      
-      Parameter new : forall `{H : State.Trait}, list u8 -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_new `{H : State.Trait} :
-        Notation.DoubleColon Self "new" := {
-        Notation.double_colon := new;
-      }.
-      
-      Parameter to_bytes : forall `{H : State.Trait}, Self
-          -> M (H := H) list u8.
-      
-      Global Instance Method_to_bytes `{H : State.Trait} :
-        Notation.Dot "to_bytes" := {
-        Notation.dot := to_bytes;
-      }.
-    End Impl_ink_env_call_selector_Selector.
+    Definition Selector : Set := @Selector.t.
   End selector.
-  
-  Module utils.
-    
-  End utils.
 End call.
 
 Module call_builder.
   Module CallParams.
+    Section CallParams.
+      Context {E CallType Args R : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        call_type : CallType;
+        call_flags : ink_env.backend.CallFlags;
+        _return_type : ink_env.call.common.ReturnType R;
+        exec_input : ink_env.call.execution_input.ExecutionInput Args;
+        _phantom : core.marker.PhantomData (E);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_call_type : Notation.Dot "call_type" := {
+        Notation.dot '(Build_t x0 _ _ _ _) := x0;
+      }.
+      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+        Notation.dot '(Build_t _ x1 _ _ _) := x1;
+      }.
+      Global Instance Get__return_type : Notation.Dot "_return_type" := {
+        Notation.dot '(Build_t _ _ x2 _ _) := x2;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ _ x3 _) := x3;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+    End CallParams.
+  End CallParams.
+  Definition CallParams : Set := @CallParams.t.
+  
+  Parameter build_call : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_env.types.Environment.Trait E}
+      M (H := H)
+        (ink_env.call.call_builder.CallBuilder
+          E
+          (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+          (ink_env.call.common.Unset
+            (ink_env.call.execution_input.ExecutionInput
+              ink_env.call.execution_input.EmptyArgumentList))
+          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+  
+  Module Call.
+    Section Call.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        callee : ImplE.AccountId;
+        gas_limit : ink_env.types.Gas;
+        transferred_value : ImplE.Balance;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_callee : Notation.Dot "callee" := {
+        Notation.dot '(Build_t x0 _ _) := x0;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_transferred_value :
+          Notation.Dot "transferred_value" := {
+        Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+    End Call.
+  End Call.
+  Definition Call : Set := @Call.t.
+  
+  Module DelegateCall.
+    Section DelegateCall.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : ImplE.Hash;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End DelegateCall.
+  End DelegateCall.
+  Definition DelegateCall : Set := @DelegateCall.t.
+  
+  Module CallBuilder.
+    Section CallBuilder.
+      Context {E CallType Args RetType : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        call_type : CallType;
+        call_flags : ink_env.backend.CallFlags;
+        exec_input : Args;
+        return_type : RetType;
+        _phantom : core.marker.PhantomData (E);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_call_type : Notation.Dot "call_type" := {
+        Notation.dot '(Build_t x0 _ _ _ _) := x0;
+      }.
+      Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+        Notation.dot '(Build_t _ x1 _ _ _) := x1;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ x2 _ _) := x2;
+      }.
+      Global Instance Get_return_type : Notation.Dot "return_type" := {
+        Notation.dot '(Build_t _ _ _ x3 _) := x3;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+    End CallBuilder.
+  End CallBuilder.
+  Definition CallBuilder : Set := @CallBuilder.t.
+End call_builder.
+
+Module CallParams.
+  Section CallParams.
+    Context {E CallType Args R : Set}.
+    Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
       call_flags : ink_env.backend.CallFlags;
       _return_type : ink_env.call.common.ReturnType R;
       exec_input : ink_env.call.execution_input.ExecutionInput Args;
-      _phantom : core.marker.PhantomData (unit -> E);
+      _phantom : core.marker.PhantomData (E);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -5141,194 +2414,32 @@ Module call_builder.
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End CallParams.
-  Definition CallParams : Set := CallParams.t.
-  
-  Module
-    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-  Section
-    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-    Context {E CallType Args R : Set}.
-    
-    Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-  
-  Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_2.
-    Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
-    
-    Parameter call_flags : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ink_env.backend.CallFlags).
-    
-    Global Instance Method_call_flags `{H : State.Trait} :
-      Notation.Dot "call_flags" := {
-      Notation.dot := call_flags;
-    }.
-    
-    Parameter exec_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
-    
-    Global Instance Method_exec_input `{H : State.Trait} :
-      Notation.Dot "exec_input" := {
-      Notation.dot := exec_input;
-    }.
-  End Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_3.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallParams
+End CallParams.
+Definition CallParams : Set := @CallParams.t.
+
+Parameter build_call : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_env.types.Environment.Trait E}
+    M (H := H)
+      (ink_env.call.call_builder.CallBuilder
         E
-        (ink_env.call.call_builder.Call E)
-        Args
-        R.
-    
-    Parameter callee : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.AccountId).
-    
-    Global Instance Method_callee `{H : State.Trait} :
-      Notation.Dot "callee" := {
-      Notation.dot := callee;
-    }.
-    
-    Parameter gas_limit : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.types.Gas.
-    
-    Global Instance Method_gas_limit `{H : State.Trait} :
-      Notation.Dot "gas_limit" := {
-      Notation.dot := gas_limit;
-    }.
-    
-    Parameter transferred_value : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Balance).
-    
-    Global Instance Method_transferred_value `{H : State.Trait} :
-      Notation.Dot "transferred_value" := {
-      Notation.dot := transferred_value;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_3.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_3.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallParams
-        E
-        (ink_env.call.call_builder.DelegateCall E)
-        Args
-        R.
-    
-    Parameter code_hash : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Hash).
-    
-    Global Instance Method_code_hash `{H : State.Trait} :
-      Notation.Dot "code_hash" := {
-      Notation.dot := code_hash;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_3.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_4.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallParams
-        E
-        (ink_env.call.call_builder.Call E)
-        Args
-        R.
-    
-    Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
-    
-    Global Instance Method_invoke `{H : State.Trait} :
-      Notation.Dot "invoke" := {
-      Notation.dot := invoke;
-    }.
-    
-    Parameter try_invoke : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.MessageResult R)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_invoke `{H : State.Trait} :
-      Notation.Dot "try_invoke" := {
-      Notation.dot := try_invoke;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_4.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_4.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallParams
-        E
-        (ink_env.call.call_builder.DelegateCall E)
-        Args
-        R.
-    
-    Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
-    
-    Global Instance Method_invoke `{H : State.Trait} :
-      Notation.Dot "invoke" := {
-      Notation.dot := invoke;
-    }.
-    
-    Parameter try_invoke : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.MessageResult R)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_invoke `{H : State.Trait} :
-      Notation.Dot "try_invoke" := {
-      Notation.dot := try_invoke;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_4.
-  
-  Parameter build_call : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      unit
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder
-            E
-            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-            (ink_env.call.common.Unset
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
-  
-  Module Call.
+        (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+        (ink_env.call.common.Unset
+          (ink_env.call.execution_input.ExecutionInput
+            ink_env.call.execution_input.EmptyArgumentList))
+        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+
+Module Call.
+  Section Call.
+    Context {E : Set}.
+    Unset Primitive Projections.
     Record t : Set := {
       callee : ImplE.AccountId;
       gas_limit : ink_env.types.Gas;
       transferred_value : ImplE.Balance;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_callee : Notation.Dot "callee" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -5341,104 +2452,37 @@ Module call_builder.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Call.
-  Definition Call : Set := Call.t.
-  
-  Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-  Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
+End Call.
+Definition Call : Set := @Call.t.
+
+Module DelegateCall.
+  Section DelegateCall.
     Context {E : Set}.
-    
-    Definition Self := ink_env.call.call_builder.Call E.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.call_builder.Call E).
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-  End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-  
-  Module Impl_ink_env_call_call_builder_Call_E_3.
-    Definition Self := ink_env.call.call_builder.Call E.
-    
-    Parameter new : forall `{H : State.Trait}, ImplE.AccountId
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-  End Impl_ink_env_call_call_builder_Call_E_3.
-  
-  Module Impl_ink_env_call_call_builder_Call_E_4.
-    Definition Self := ink_env.call.call_builder.Call E.
-    
-    Parameter gas_limit : forall `{H : State.Trait}, Self->
-        ink_env.types.Gas
-        -> M (H := H) Self.
-    
-    Global Instance Method_gas_limit `{H : State.Trait} :
-      Notation.Dot "gas_limit" := {
-      Notation.dot := gas_limit;
-    }.
-    
-    Parameter transferred_value : forall `{H : State.Trait}, Self->
-        ImplE.Balance
-        -> M (H := H) Self.
-    
-    Global Instance Method_transferred_value `{H : State.Trait} :
-      Notation.Dot "transferred_value" := {
-      Notation.dot := transferred_value;
-    }.
-  End Impl_ink_env_call_call_builder_Call_E_4.
-  
-  Module DelegateCall.
+    Unset Primitive Projections.
     Record t : Set := {
       code_hash : ImplE.Hash;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End DelegateCall.
-  Definition DelegateCall : Set := DelegateCall.t.
-  
-  Module Impl_ink_env_call_call_builder_DelegateCall_E_3.
-    Definition Self := ink_env.call.call_builder.DelegateCall E.
-    
-    Parameter new : forall `{H : State.Trait}, ImplE.Hash -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-  End Impl_ink_env_call_call_builder_DelegateCall_E_3.
-  
-  Module Impl_ink_env_call_call_builder_DelegateCall_E_4.
-    Definition Self := ink_env.call.call_builder.DelegateCall E.
-    
-    Parameter code_hash : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        -> M (H := H) Self.
-    
-    Global Instance Method_code_hash `{H : State.Trait} :
-      Notation.Dot "code_hash" := {
-      Notation.dot := code_hash;
-    }.
-  End Impl_ink_env_call_call_builder_DelegateCall_E_4.
-  
-  Module CallBuilder.
+End DelegateCall.
+Definition DelegateCall : Set := @DelegateCall.t.
+
+Module CallBuilder.
+  Section CallBuilder.
+    Context {E CallType Args RetType : Set}.
+    Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
       call_flags : ink_env.backend.CallFlags;
       exec_input : Args;
       return_type : RetType;
-      _phantom : core.marker.PhantomData (unit -> E);
+      _phantom : core.marker.PhantomData (E);
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_call_type : Notation.Dot "call_type" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
@@ -5456,1518 +2500,65 @@ Module call_builder.
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End CallBuilder.
-  Definition CallBuilder : Set := CallBuilder.t.
-  
-  Module
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-  Section
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-    Context {E CallType Args RetType : Set}.
-    
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder E CallType Args RetType.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_3.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Unset CallType)
-        Args
-        RetType.
-    
-    Parameter call_type : forall `{H : State.Trait}, Self->
-        NewCallType
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder
-              E
-              (ink_env.call.common.Set NewCallType)
-              Args
-              RetType).
-    
-    Global Instance Method_call_type `{H : State.Trait} :
-      Notation.Dot "call_type" := {
-      Notation.dot := call_type;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_3.
-  
-  Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder E CallType Args RetType.
-    
-    Parameter call_flags : forall `{H : State.Trait}, Self->
-        ink_env.backend.CallFlags
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
-    
-    Global Instance Method_call_flags `{H : State.Trait} :
-      Notation.Dot "call_flags" := {
-      Notation.dot := call_flags;
-    }.
-  End Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        CallType
-        Args
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-    
-    Parameter returns : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder
-              E
-              CallType
-              Args
-              (ink_env.call.common.Set (ink_env.call.common.ReturnType R))).
-    
-    Global Instance Method_returns `{H : State.Trait} :
-      Notation.Dot "returns" := {
-      Notation.dot := returns;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        CallType
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        RetType.
-    
-    Parameter exec_input : forall `{H : State.Trait}, Self->
-        ink_env.call.execution_input.ExecutionInput Args
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder
-              E
-              CallType
-              (ink_env.call.common.Set
-                (ink_env.call.execution_input.ExecutionInput Args))
-              RetType).
-    
-    Global Instance Method_exec_input `{H : State.Trait} :
-      Notation.Dot "exec_input" := {
-      Notation.dot := exec_input;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_4.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Unset CallType)
-        Args
-        RetType.
-    
-    Parameter call : forall `{H : State.Trait}, Self->
-        ImplE.AccountId
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder
-              E
-              (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-              Args
-              RetType).
-    
-    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-      Notation.dot := call;
-    }.
-    
-    Parameter delegate : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallBuilder
-              E
-              (ink_env.call.common.Set
-                (ink_env.call.call_builder.DelegateCall E))
-              Args
-              RetType).
-    
-    Global Instance Method_delegate `{H : State.Trait} :
-      Notation.Dot "delegate" := {
-      Notation.dot := delegate;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_4.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-        Args
-        RetType.
-    
-    Parameter gas_limit : forall `{H : State.Trait}, Self->
-        ink_env.types.Gas
-        -> M (H := H) Self.
-    
-    Global Instance Method_gas_limit `{H : State.Trait} :
-      Notation.Dot "gas_limit" := {
-      Notation.dot := gas_limit;
-    }.
-    
-    Parameter transferred_value : forall `{H : State.Trait}, Self->
-        ImplE.Balance
-        -> M (H := H) Self.
-    
-    Global Instance Method_transferred_value `{H : State.Trait} :
-      Notation.Dot "transferred_value" := {
-      Notation.dot := transferred_value;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-        Args
-        RetType.
-    
-    Parameter code_hash : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        -> M (H := H) Self.
-    
-    Global Instance Method_code_hash `{H : State.Trait} :
-      Notation.Dot "code_hash" := {
-      Notation.dot := code_hash;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput Args))
-        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-    
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallParams
-              E
-              (ink_env.call.call_builder.Call E)
-              Args
-              RetType).
-    
-    Global Instance Method_params `{H : State.Trait} :
-      Notation.Dot "params" := {
-      Notation.dot := params;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput Args))
-        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-    
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallParams
-              E
-              (ink_env.call.call_builder.DelegateCall E)
-              Args
-              RetType).
-    
-    Global Instance Method_params `{H : State.Trait} :
-      Notation.Dot "params" := {
-      Notation.dot := params;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset RetType).
-    
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallParams
-              E
-              (ink_env.call.call_builder.Call E)
-              ink_env.call.execution_input.EmptyArgumentList
-              unit).
-    
-    Global Instance Method_params `{H : State.Trait} :
-      Notation.Dot "params" := {
-      Notation.dot := params;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset RetType).
-    
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.call.call_builder.CallParams
-              E
-              (ink_env.call.call_builder.DelegateCall E)
-              ink_env.call.execution_input.EmptyArgumentList
-              unit).
-    
-    Global Instance Method_params `{H : State.Trait} :
-      Notation.Dot "params" := {
-      Notation.dot := params;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-    
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
-    
-    Global Instance Method_invoke `{H : State.Trait} :
-      Notation.Dot "invoke" := {
-      Notation.dot := invoke;
-    }.
-    
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.MessageResult unit)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_invoke `{H : State.Trait} :
-      Notation.Dot "try_invoke" := {
-      Notation.dot := try_invoke;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-    
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
-    
-    Global Instance Method_invoke `{H : State.Trait} :
-      Notation.Dot "invoke" := {
-      Notation.dot := invoke;
-    }.
-    
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.MessageResult unit)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_invoke `{H : State.Trait} :
-      Notation.Dot "try_invoke" := {
-      Notation.dot := try_invoke;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput Args))
-        (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
-    
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
-    
-    Global Instance Method_invoke `{H : State.Trait} :
-      Notation.Dot "invoke" := {
-      Notation.dot := invoke;
-    }.
-    
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.MessageResult R)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_invoke `{H : State.Trait} :
-      Notation.Dot "try_invoke" := {
-      Notation.dot := try_invoke;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
-  
-  Module
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
-    Definition
-      Self
-      :=
-      ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput Args))
-        (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
-    
-    Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
-    
-    Global Instance Method_invoke `{H : State.Trait} :
-      Notation.Dot "invoke" := {
-      Notation.dot := invoke;
-    }.
-    
-    Parameter try_invoke : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.MessageResult R)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_invoke `{H : State.Trait} :
-      Notation.Dot "try_invoke" := {
-      Notation.dot := try_invoke;
-    }.
-  End
-    Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_2.
-End call_builder.
-
-Module CallParams.
-  Record t : Set := {
-    call_type : CallType;
-    call_flags : ink_env.backend.CallFlags;
-    _return_type : ink_env.call.common.ReturnType R;
-    exec_input : ink_env.call.execution_input.ExecutionInput Args;
-    _phantom : core.marker.PhantomData (unit -> E);
-  }.
-  
-  Global Instance Get_call_type : Notation.Dot "call_type" := {
-    Notation.dot '(Build_t x0 _ _ _ _) := x0;
-  }.
-  Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-    Notation.dot '(Build_t _ x1 _ _ _) := x1;
-  }.
-  Global Instance Get__return_type : Notation.Dot "_return_type" := {
-    Notation.dot '(Build_t _ _ x2 _ _) := x2;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ _ x3 _) := x3;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ x4) := x4;
-  }.
-End CallParams.
-Definition CallParams : Set := CallParams.t.
-
-Module
-  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-Section
-  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-  Context {E CallType Args R : Set}.
-  
-  Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_call_builder_CallParams_E_CallType_Args_R.
-
-Module Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_3.
-  Definition Self := ink_env.call.call_builder.CallParams E CallType Args R.
-  
-  Parameter call_flags : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ink_env.backend.CallFlags).
-  
-  Global Instance Method_call_flags `{H : State.Trait} :
-    Notation.Dot "call_flags" := {
-    Notation.dot := call_flags;
-  }.
-  
-  Parameter exec_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
-  
-  Global Instance Method_exec_input `{H : State.Trait} :
-    Notation.Dot "exec_input" := {
-    Notation.dot := exec_input;
-  }.
-End Impl_ink_env_call_call_builder_CallParams_E_CallType_Args_R_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_5.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallParams
-      E
-      (ink_env.call.call_builder.Call E)
-      Args
-      R.
-  
-  Parameter callee : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.AccountId).
-  
-  Global Instance Method_callee `{H : State.Trait} : Notation.Dot "callee" := {
-    Notation.dot := callee;
-  }.
-  
-  Parameter gas_limit : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.types.Gas.
-  
-  Global Instance Method_gas_limit `{H : State.Trait} :
-    Notation.Dot "gas_limit" := {
-    Notation.dot := gas_limit;
-  }.
-  
-  Parameter transferred_value : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Balance).
-  
-  Global Instance Method_transferred_value `{H : State.Trait} :
-    Notation.Dot "transferred_value" := {
-    Notation.dot := transferred_value;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_5.
-
-Module
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_5.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallParams
-      E
-      (ink_env.call.call_builder.DelegateCall E)
-      Args
-      R.
-  
-  Parameter code_hash : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Hash).
-  
-  Global Instance Method_code_hash `{H : State.Trait} :
-    Notation.Dot "code_hash" := {
-    Notation.dot := code_hash;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_5.
-
-Module
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_6.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallParams
-      E
-      (ink_env.call.call_builder.Call E)
-      Args
-      R.
-  
-  Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
-  
-  Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
-    Notation.dot := invoke;
-  }.
-  
-  Parameter try_invoke : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.MessageResult R)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_invoke `{H : State.Trait} :
-    Notation.Dot "try_invoke" := {
-    Notation.dot := try_invoke;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_Call_E_Args_R_6.
-
-Module
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_6.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallParams
-      E
-      (ink_env.call.call_builder.DelegateCall E)
-      Args
-      R.
-  
-  Parameter invoke : forall `{H : State.Trait}, ref Self -> M (H := H) R.
-  
-  Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
-    Notation.dot := invoke;
-  }.
-  
-  Parameter try_invoke : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.MessageResult R)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_invoke `{H : State.Trait} :
-    Notation.Dot "try_invoke" := {
-    Notation.dot := try_invoke;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallParams_E_ink_env_call_call_builder_DelegateCall_E_Args_R_6.
-
-Parameter build_call : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    unit
-    ->
-      M (H := H)
-        (ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
-
-Module Call.
-  Record t : Set := {
-    callee : ImplE.AccountId;
-    gas_limit : ink_env.types.Gas;
-    transferred_value : ImplE.Balance;
-  }.
-  
-  Global Instance Get_callee : Notation.Dot "callee" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
-  }.
-  Global Instance Get_transferred_value : Notation.Dot "transferred_value" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
-  }.
-End Call.
-Definition Call : Set := Call.t.
-
-Module Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-Section Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-  Context {E : Set}.
-  
-  Definition Self := ink_env.call.call_builder.Call E.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.call_builder.Call E).
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-End Impl_core_clone_Clone_for_ink_env_call_call_builder_Call_E.
-
-Module Impl_ink_env_call_call_builder_Call_E_5.
-  Definition Self := ink_env.call.call_builder.Call E.
-  
-  Parameter new : forall `{H : State.Trait}, ImplE.AccountId -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-End Impl_ink_env_call_call_builder_Call_E_5.
-
-Module Impl_ink_env_call_call_builder_Call_E_6.
-  Definition Self := ink_env.call.call_builder.Call E.
-  
-  Parameter gas_limit : forall `{H : State.Trait}, Self->
-      ink_env.types.Gas
-      -> M (H := H) Self.
-  
-  Global Instance Method_gas_limit `{H : State.Trait} :
-    Notation.Dot "gas_limit" := {
-    Notation.dot := gas_limit;
-  }.
-  
-  Parameter transferred_value : forall `{H : State.Trait}, Self->
-      ImplE.Balance
-      -> M (H := H) Self.
-  
-  Global Instance Method_transferred_value `{H : State.Trait} :
-    Notation.Dot "transferred_value" := {
-    Notation.dot := transferred_value;
-  }.
-End Impl_ink_env_call_call_builder_Call_E_6.
-
-Module DelegateCall.
-  Record t : Set := {
-    code_hash : ImplE.Hash;
-  }.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End DelegateCall.
-Definition DelegateCall : Set := DelegateCall.t.
-
-Module Impl_ink_env_call_call_builder_DelegateCall_E_5.
-  Definition Self := ink_env.call.call_builder.DelegateCall E.
-  
-  Parameter new : forall `{H : State.Trait}, ImplE.Hash -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-End Impl_ink_env_call_call_builder_DelegateCall_E_5.
-
-Module Impl_ink_env_call_call_builder_DelegateCall_E_6.
-  Definition Self := ink_env.call.call_builder.DelegateCall E.
-  
-  Parameter code_hash : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      -> M (H := H) Self.
-  
-  Global Instance Method_code_hash `{H : State.Trait} :
-    Notation.Dot "code_hash" := {
-    Notation.dot := code_hash;
-  }.
-End Impl_ink_env_call_call_builder_DelegateCall_E_6.
-
-Module CallBuilder.
-  Record t : Set := {
-    call_type : CallType;
-    call_flags : ink_env.backend.CallFlags;
-    exec_input : Args;
-    return_type : RetType;
-    _phantom : core.marker.PhantomData (unit -> E);
-  }.
-  
-  Global Instance Get_call_type : Notation.Dot "call_type" := {
-    Notation.dot '(Build_t x0 _ _ _ _) := x0;
-  }.
-  Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-    Notation.dot '(Build_t _ x1 _ _ _) := x1;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ x2 _ _) := x2;
-  }.
-  Global Instance Get_return_type : Notation.Dot "return_type" := {
-    Notation.dot '(Build_t _ _ _ x3 _) := x3;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ x4) := x4;
-  }.
 End CallBuilder.
-Definition CallBuilder : Set := CallBuilder.t.
-
-Module
-  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-Section
-  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-  Context {E CallType Args RetType : Set}.
-  
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder E CallType Args RetType.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End
-  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-End
-  Impl_core_clone_Clone_for_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_5.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Unset CallType)
-      Args
-      RetType.
-  
-  Parameter call_type : forall `{H : State.Trait}, Self->
-      NewCallType
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder
-            E
-            (ink_env.call.common.Set NewCallType)
-            Args
-            RetType).
-  
-  Global Instance Method_call_type `{H : State.Trait} :
-    Notation.Dot "call_type" := {
-    Notation.dot := call_type;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_5.
-
-Module Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder E CallType Args RetType.
-  
-  Parameter call_flags : forall `{H : State.Trait}, Self->
-      ink_env.backend.CallFlags
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder E CallType Args RetType).
-  
-  Global Instance Method_call_flags `{H : State.Trait} :
-    Notation.Dot "call_flags" := {
-    Notation.dot := call_flags;
-  }.
-End Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      CallType
-      Args
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-  
-  Parameter returns : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder
-            E
-            CallType
-            Args
-            (ink_env.call.common.Set (ink_env.call.common.ReturnType R))).
-  
-  Global Instance Method_returns `{H : State.Trait} :
-    Notation.Dot "returns" := {
-    Notation.dot := returns;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_Args_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      CallType
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      RetType.
-  
-  Parameter exec_input : forall `{H : State.Trait}, Self->
-      ink_env.call.execution_input.ExecutionInput Args
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder
-            E
-            CallType
-            (ink_env.call.common.Set
-              (ink_env.call.execution_input.ExecutionInput Args))
-            RetType).
-  
-  Global Instance Method_exec_input `{H : State.Trait} :
-    Notation.Dot "exec_input" := {
-    Notation.dot := exec_input;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_CallType_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_6.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Unset CallType)
-      Args
-      RetType.
-  
-  Parameter call : forall `{H : State.Trait}, Self->
-      ImplE.AccountId
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder
-            E
-            (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-            Args
-            RetType).
-  
-  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-    Notation.dot := call;
-  }.
-  
-  Parameter delegate : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallBuilder
-            E
-            (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-            Args
-            RetType).
-  
-  Global Instance Method_delegate `{H : State.Trait} :
-    Notation.Dot "delegate" := {
-    Notation.dot := delegate;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Unset_CallType_Args_RetType_6.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-      Args
-      RetType.
-  
-  Parameter gas_limit : forall `{H : State.Trait}, Self->
-      ink_env.types.Gas
-      -> M (H := H) Self.
-  
-  Global Instance Method_gas_limit `{H : State.Trait} :
-    Notation.Dot "gas_limit" := {
-    Notation.dot := gas_limit;
-  }.
-  
-  Parameter transferred_value : forall `{H : State.Trait}, Self->
-      ImplE.Balance
-      -> M (H := H) Self.
-  
-  Global Instance Method_transferred_value `{H : State.Trait} :
-    Notation.Dot "transferred_value" := {
-    Notation.dot := transferred_value;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_Args_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-      Args
-      RetType.
-  
-  Parameter code_hash : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      -> M (H := H) Self.
-  
-  Global Instance Method_code_hash `{H : State.Trait} :
-    Notation.Dot "code_hash" := {
-    Notation.dot := code_hash;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_Args_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-  
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.Call E)
-            Args
-            RetType).
-  
-  Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
-    Notation.dot := params;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-  
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.DelegateCall E)
-            Args
-            RetType).
-  
-  Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
-    Notation.dot := params;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset RetType).
-  
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.Call E)
-            ink_env.call.execution_input.EmptyArgumentList
-            unit).
-  
-  Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
-    Notation.dot := params;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset RetType).
-  
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.DelegateCall E)
-            ink_env.call.execution_input.EmptyArgumentList
-            unit).
-  
-  Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
-    Notation.dot := params;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_RetType_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-  
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
-  
-  Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
-    Notation.dot := invoke;
-  }.
-  
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.MessageResult unit)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_invoke `{H : State.Trait} :
-    Notation.Dot "try_invoke" := {
-    Notation.dot := try_invoke;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-  
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) unit.
-  
-  Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
-    Notation.dot := invoke;
-  }.
-  
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.MessageResult unit)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_invoke `{H : State.Trait} :
-    Notation.Dot "try_invoke" := {
-    Notation.dot := try_invoke;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
-  
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
-  
-  Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
-    Notation.dot := invoke;
-  }.
-  
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.MessageResult R)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_invoke `{H : State.Trait} :
-    Notation.Dot "try_invoke" := {
-    Notation.dot := try_invoke;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_Call_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
-
-Module
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
-  Definition
-    Self
-    :=
-    ink_env.call.call_builder.CallBuilder
-      E
-      (ink_env.call.common.Set (ink_env.call.call_builder.DelegateCall E))
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
-  
-  Parameter invoke : forall `{H : State.Trait}, Self -> M (H := H) R.
-  
-  Global Instance Method_invoke `{H : State.Trait} : Notation.Dot "invoke" := {
-    Notation.dot := invoke;
-  }.
-  
-  Parameter try_invoke : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.MessageResult R)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_invoke `{H : State.Trait} :
-    Notation.Dot "try_invoke" := {
-    Notation.dot := try_invoke;
-  }.
-End
-  Impl_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_ink_env_call_call_builder_DelegateCall_E_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_R_3.
+Definition CallBuilder : Set := @CallBuilder.t.
 
 Module common.
   Module ReturnType.
-    Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section ReturnType.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : core.marker.PhantomData (T);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End ReturnType.
   End ReturnType.
-  Definition ReturnType := ReturnType.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-  Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.ReturnType T.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-  
-  Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-  Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.ReturnType T.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-  End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-  
-  Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-  Section Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.ReturnType T.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-  End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-  
-  Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-  Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.ReturnType T.
-    
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-  End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+  Definition ReturnType := @ReturnType.t.
   
   Module Set.
-    Record t : Set := { _ : T;}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section Set.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Set.
   End Set.
-  Definition Set := Set.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-  Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Set T.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-  
-  Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-  Section Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Set T.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-  End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-  
-  Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-  Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Set T.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.common.Set T).
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-  End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-  
-  Module Impl_ink_env_call_common_Set_T_2.
-    Definition Self := ink_env.call.common.Set T.
-    
-    Parameter value : forall `{H : State.Trait}, Self -> M (H := H) T.
-    
-    Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
-      Notation.dot := value;
-    }.
-  End Impl_ink_env_call_common_Set_T_2.
+  Definition Set := @Set.t.
   
   Module Unset.
-    Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section Unset.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        _ : core.marker.PhantomData (T);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Unset.
   End Unset.
-  Definition Unset := Unset.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-  Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Unset T.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-  End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-  
-  Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-  Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Unset T.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-  End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-  
-  Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-  Section Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Unset T.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-  End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-  
-  Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-  Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Unset T.
-    
-    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-  End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+  Definition Unset := @Unset.t.
   
   Module Unwrap.
     Class Trait (Self : Set) {Output : Set} : Set := {
       Output := Output;
       unwrap_or_else
         `{H : State.Trait}
+        {F: Set}
+        `{core.ops.function.FnOnce.Trait unit F}
         :
         Self -> F -> (M (H := H) ImplSelf.Output);
     }.
@@ -6981,288 +2572,63 @@ Module common.
       Notation.dot := unwrap_or_else;
     }.
   End Unwrap.
-  
-  Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-  Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Unset T.
-    
-    Definition Output : Set := T.
-    
-    Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-        F
-        -> M (H := H) ImplSelf.Output.
-    
-    Global Instance Method_unwrap_or_else `{H : State.Trait} :
-      Notation.Dot "unwrap_or_else" := {
-      Notation.dot := unwrap_or_else;
-    }.
-    
-    Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
-      ink_env.call.common.Unwrap.unwrap_or_else
-        `{H : State.Trait}
-        :=
-        unwrap_or_else;
-    }.
-  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-  
-  Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-  Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.common.Set T.
-    
-    Definition Output : Set := T.
-    
-    Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-        F
-        -> M (H := H) ImplSelf.Output.
-    
-    Global Instance Method_unwrap_or_else `{H : State.Trait} :
-      Notation.Dot "unwrap_or_else" := {
-      Notation.dot := unwrap_or_else;
-    }.
-    
-    Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
-      ink_env.call.common.Unwrap.unwrap_or_else
-        `{H : State.Trait}
-        :=
-        unwrap_or_else;
-    }.
-  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-  End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
 End common.
 
 Module ReturnType.
-  Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section ReturnType.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End ReturnType.
 End ReturnType.
-Definition ReturnType := ReturnType.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-Section Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.ReturnType T.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-End Impl_core_fmt_Debug_for_ink_env_call_common_ReturnType_T.
-
-Module Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-Section Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.ReturnType T.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-End Impl_core_clone_Clone_for_ink_env_call_common_ReturnType_T.
-
-Module Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-Section Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.ReturnType T.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-End Impl_core_marker_Copy_for_ink_env_call_common_ReturnType_T.
-
-Module Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-Section Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.ReturnType T.
-  
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
-End Impl_core_default_Default_for_ink_env_call_common_ReturnType_T.
+Definition ReturnType := @ReturnType.t.
 
 Module Set.
-  Record t : Set := { _ : T;}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Set.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Set.
 End Set.
-Definition Set := Set.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-Section Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Set T.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-End Impl_core_fmt_Debug_for_ink_env_call_common_Set_T.
-
-Module Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-Section Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Set T.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-End Impl_core_marker_Copy_for_ink_env_call_common_Set_T.
-
-Module Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-Section Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Set T.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.common.Set T).
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-End Impl_core_clone_Clone_for_ink_env_call_common_Set_T.
-
-Module Impl_ink_env_call_common_Set_T_3.
-  Definition Self := ink_env.call.common.Set T.
-  
-  Parameter value : forall `{H : State.Trait}, Self -> M (H := H) T.
-  
-  Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
-    Notation.dot := value;
-  }.
-End Impl_ink_env_call_common_Set_T_3.
+Definition Set := @Set.t.
 
 Module Unset.
-  Record t : Set := { _ : core.marker.PhantomData (unit -> T);}.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Unset.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      _ : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Unset.
 End Unset.
-Definition Unset := Unset.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-Section Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Unset T.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-End Impl_core_fmt_Debug_for_ink_env_call_common_Unset_T.
-
-Module Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-Section Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Unset T.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self -> M (H := H) Self.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-End Impl_core_clone_Clone_for_ink_env_call_common_Unset_T.
-
-Module Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-Section Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Unset T.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-End Impl_core_marker_Copy_for_ink_env_call_common_Unset_T.
-
-Module Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-Section Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Unset T.
-  
-  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
-End Impl_core_default_Default_for_ink_env_call_common_Unset_T.
+Definition Unset := @Unset.t.
 
 Module Unwrap.
   Class Trait (Self : Set) {Output : Set} : Set := {
     Output := Output;
     unwrap_or_else
       `{H : State.Trait}
+      {F: Set}
+      `{core.ops.function.FnOnce.Trait unit F}
       :
       Self -> F -> (M (H := H) ImplSelf.Output);
   }.
@@ -7276,58 +2642,6 @@ Module Unwrap.
     Notation.dot := unwrap_or_else;
   }.
 End Unwrap.
-
-Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Unset T.
-  
-  Definition Output : Set := T.
-  
-  Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-      F
-      -> M (H := H) ImplSelf.Output.
-  
-  Global Instance Method_unwrap_or_else `{H : State.Trait} :
-    Notation.Dot "unwrap_or_else" := {
-    Notation.dot := unwrap_or_else;
-  }.
-  
-  Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
-    ink_env.call.common.Unwrap.unwrap_or_else
-      `{H : State.Trait}
-      :=
-      unwrap_or_else;
-  }.
-End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Unset_T.
-
-Module Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-Section Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.common.Set T.
-  
-  Definition Output : Set := T.
-  
-  Parameter unwrap_or_else : forall `{H : State.Trait}, Self->
-      F
-      -> M (H := H) ImplSelf.Output.
-  
-  Global Instance Method_unwrap_or_else `{H : State.Trait} :
-    Notation.Dot "unwrap_or_else" := {
-    Notation.dot := unwrap_or_else;
-  }.
-  
-  Global Instance I : ink_env.call.common.Unwrap.Trait Self := {
-    ink_env.call.common.Unwrap.unwrap_or_else
-      `{H : State.Trait}
-      :=
-      unwrap_or_else;
-  }.
-End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
-End Impl_ink_env_call_common_Unwrap_for_ink_env_call_common_Set_T.
 
 Module create_builder.
   Module state.
@@ -7389,580 +2703,111 @@ Module create_builder.
     }.
   End ConstructorReturnType.
   
-  Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-  Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-    Context {C : Set}.
-    
-    Definition Self := C.
-    
-    Definition Output : Set := C.
-    
-    Definition Error : Set := unit.
-    
-    Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
-    
-    Global Instance AssociatedFunction_ok `{H : State.Trait} :
-      Notation.DoubleColon Self "ok" := {
-      Notation.double_colon := ok;
-    }.
-    
-    Global Instance I :
-        ink_env.call.create_builder.ConstructorReturnType.Trait
-          Self
-          (C := C) := {
-      ink_env.call.create_builder.ConstructorReturnType.ok
-        `{H : State.Trait}
-        :=
-        ok;
-    }.
-  End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-  End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-  
-  Module
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-  Section
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-    Context {C E : Set}.
-    
-    Definition Self := core.result.Result C E.
-    
-    Definition IS_RESULT := Pure true.
-    
-    Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
-      Notation.DoubleColon Self "IS_RESULT" := {
-      Notation.double_colon := IS_RESULT;
-    }.
-    
-    Definition Output : Set := core.result.Result C E.
-    
-    Definition Error : Set := E.
-    
-    Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
-    
-    Global Instance AssociatedFunction_ok `{H : State.Trait} :
-      Notation.DoubleColon Self "ok" := {
-      Notation.double_colon := ok;
-    }.
-    
-    Parameter err : forall `{H : State.Trait}, ImplSelf.Error
-        -> M (H := H) (core.option.Option ImplSelf.Output).
-    
-    Global Instance AssociatedFunction_err `{H : State.Trait} :
-      Notation.DoubleColon Self "err" := {
-      Notation.double_colon := err;
-    }.
-    
-    Global Instance I :
-        ink_env.call.create_builder.ConstructorReturnType.Trait
-          Self
-          (C := C) := {
-      ink_env.call.create_builder.ConstructorReturnType.ok
-        `{H : State.Trait}
-        :=
-        ok;
-    }.
-  End
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-  End
-    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-  
   Module CreateParams.
-    Record t : Set := {
-      code_hash : ImplE.Hash;
-      gas_limit : u64;
-      endowment : ImplE.Balance;
-      exec_input : ink_env.call.execution_input.ExecutionInput Args;
-      salt_bytes : Salt;
-      _return_type : ink_env.call.common.ReturnType R;
-      _phantom : core.marker.PhantomData (unit -> ContractRef);
-    }.
-    
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-    }.
-    Global Instance Get_endowment : Notation.Dot "endowment" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-    }.
-    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-    }.
-    Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-    }.
-    Global Instance Get__return_type : Notation.Dot "_return_type" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-    }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-    }.
+    Section CreateParams.
+      Context {E ContractRef Args Salt R : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : ImplE.Hash;
+        gas_limit : u64;
+        endowment : ImplE.Balance;
+        exec_input : ink_env.call.execution_input.ExecutionInput Args;
+        salt_bytes : Salt;
+        _return_type : ink_env.call.common.ReturnType R;
+        _phantom : core.marker.PhantomData (ContractRef);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+      }.
+      Global Instance Get_endowment : Notation.Dot "endowment" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+      }.
+      Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+      }.
+      Global Instance Get__return_type : Notation.Dot "_return_type" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+      }.
+    End CreateParams.
   End CreateParams.
-  Definition CreateParams : Set := CreateParams.t.
-  
-  Module
-    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-  Section
-    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-    Context {E ContractRef Args Salt R : Set}.
-    
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_4.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-    
-    Parameter code_hash : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Hash).
-    
-    Global Instance Method_code_hash `{H : State.Trait} :
-      Notation.Dot "code_hash" := {
-      Notation.dot := code_hash;
-    }.
-    
-    Parameter gas_limit : forall `{H : State.Trait}, ref Self -> M (H := H) u64.
-    
-    Global Instance Method_gas_limit `{H : State.Trait} :
-      Notation.Dot "gas_limit" := {
-      Notation.dot := gas_limit;
-    }.
-    
-    Parameter endowment : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref ImplE.Balance).
-    
-    Global Instance Method_endowment `{H : State.Trait} :
-      Notation.Dot "endowment" := {
-      Notation.dot := endowment;
-    }.
-    
-    Parameter exec_input : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
-    
-    Global Instance Method_exec_input `{H : State.Trait} :
-      Notation.Dot "exec_input" := {
-      Notation.dot := exec_input;
-    }.
-    
-    Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-        ink_env.call.selector.Selector
-        -> M (H := H) unit.
-    
-    Global Instance Method_update_selector `{H : State.Trait} :
-      Notation.Dot "update_selector" := {
-      Notation.dot := update_selector;
-    }.
-  End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_4.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_5.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-    
-    Parameter salt_bytes : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref Salt).
-    
-    Global Instance Method_salt_bytes `{H : State.Trait} :
-      Notation.Dot "salt_bytes" := {
-      Notation.dot := salt_bytes;
-    }.
-  End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_5.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_6.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-    
-    Parameter instantiate : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
-    
-    Global Instance Method_instantiate `{H : State.Trait} :
-      Notation.Dot "instantiate" := {
-      Notation.dot := instantiate;
-    }.
-    
-    Parameter try_instantiate : forall `{H : State.Trait}, ref Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.ConstructorResult
-                ink_env.call.create_builder.ConstructorReturnType.Output)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_instantiate `{H : State.Trait} :
-      Notation.Dot "try_instantiate" := {
-      Notation.dot := try_instantiate;
-    }.
-  End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_6.
+  Definition CreateParams : Set := @CreateParams.t.
   
   Module CreateBuilder.
-    Record t : Set := {
-      code_hash : CodeHash;
-      gas_limit : GasLimit;
-      endowment : Endowment;
-      exec_input : Args;
-      salt : Salt;
-      return_type : RetType;
-      _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
-    }.
-    
-    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-    }.
-    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-    }.
-    Global Instance Get_endowment : Notation.Dot "endowment" := {
-      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-    }.
-    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-    }.
-    Global Instance Get_salt : Notation.Dot "salt" := {
-      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-    }.
-    Global Instance Get_return_type : Notation.Dot "return_type" := {
-      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-    }.
-    Global Instance Get__phantom : Notation.Dot "_phantom" := {
-      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-    }.
+    Section CreateBuilder.
+      Context
+        {E
+        ContractRef
+        CodeHash
+        GasLimit
+        Endowment
+        Args
+        Salt
+        RetType
+        : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : CodeHash;
+        gas_limit : GasLimit;
+        endowment : Endowment;
+        exec_input : Args;
+        salt : Salt;
+        return_type : RetType;
+        _phantom : core.marker.PhantomData ((E * ContractRef));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+      }.
+      Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+        Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+      }.
+      Global Instance Get_endowment : Notation.Dot "endowment" := {
+        Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+      }.
+      Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+        Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+      }.
+      Global Instance Get_salt : Notation.Dot "salt" := {
+        Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+      }.
+      Global Instance Get_return_type : Notation.Dot "return_type" := {
+        Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+      }.
+      Global Instance Get__phantom : Notation.Dot "_phantom" := {
+        Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+      }.
+    End CreateBuilder.
   End CreateBuilder.
-  Definition CreateBuilder : Set := CreateBuilder.t.
+  Definition CreateBuilder : Set := @CreateBuilder.t.
   
-  Parameter build_create : forall `{H : State.Trait}, forall
+  Parameter build_create : forall `{H : State.Trait},
+      forall
       {ContractRef : Set},
       `{ink_env.contract.ContractEnv.Trait ContractRef}
-      unit
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            ink_env.contract.ContractEnv.Env
-            ContractRef
-            (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-            (ink_env.call.common.Unset u64)
-            (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-            (ink_env.call.common.Unset
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        (ink_env.call.common.Unset ImplE.Hash)
-        GasLimit
-        Endowment
-        Args
-        Salt
-        RetType.
-    
-    Parameter code_hash : forall `{H : State.Trait}, Self->
-        ImplE.Hash
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateBuilder
-              E
-              ContractRef
-              (ink_env.call.common.Set ImplE.Hash)
-              GasLimit
-              Endowment
-              Args
-              Salt
-              RetType).
-    
-    Global Instance Method_code_hash `{H : State.Trait} :
-      Notation.Dot "code_hash" := {
-      Notation.dot := code_hash;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_2.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        CodeHash
-        (ink_env.call.common.Unset u64)
-        Endowment
-        Args
-        Salt
-        RetType.
-    
-    Parameter gas_limit : forall `{H : State.Trait}, Self->
-        u64
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateBuilder
-              E
-              ContractRef
-              CodeHash
-              (ink_env.call.common.Set u64)
-              Endowment
-              Args
-              Salt
-              RetType).
-    
-    Global Instance Method_gas_limit `{H : State.Trait} :
-      Notation.Dot "gas_limit" := {
-      Notation.dot := gas_limit;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_2.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        CodeHash
-        GasLimit
-        (ink_env.call.common.Unset ImplE.Balance)
-        Args
-        Salt
-        RetType.
-    
-    Parameter endowment : forall `{H : State.Trait}, Self->
-        ImplE.Balance
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateBuilder
-              E
-              ContractRef
-              CodeHash
-              GasLimit
-              (ink_env.call.common.Set ImplE.Balance)
-              Args
-              Salt
-              RetType).
-    
-    Global Instance Method_endowment `{H : State.Trait} :
-      Notation.Dot "endowment" := {
-      Notation.dot := endowment;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_2.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        CodeHash
-        GasLimit
-        Endowment
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        Salt
-        RetType.
-    
-    Parameter exec_input : forall `{H : State.Trait}, Self->
-        ink_env.call.execution_input.ExecutionInput Args
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateBuilder
-              E
-              ContractRef
-              CodeHash
-              GasLimit
-              Endowment
-              (ink_env.call.common.Set
-                (ink_env.call.execution_input.ExecutionInput Args))
-              Salt
-              RetType).
-    
-    Global Instance Method_exec_input `{H : State.Trait} :
-      Notation.Dot "exec_input" := {
-      Notation.dot := exec_input;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_2.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_2.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        CodeHash
-        GasLimit
-        Endowment
-        Args
-        (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-        RetType.
-    
-    Parameter salt_bytes : forall `{H : State.Trait}, Self->
-        Salt
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateBuilder
-              E
-              ContractRef
-              CodeHash
-              GasLimit
-              Endowment
-              Args
-              (ink_env.call.common.Set Salt)
-              RetType).
-    
-    Global Instance Method_salt_bytes `{H : State.Trait} :
-      Notation.Dot "salt_bytes" := {
-      Notation.dot := salt_bytes;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_2.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        CodeHash
-        GasLimit
-        Endowment
-        Args
-        Salt
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-    
-    Parameter returns : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateBuilder
-              E
-              ContractRef
-              CodeHash
-              GasLimit
-              Endowment
-              Args
-              Salt
-              (ink_env.call.common.Set (ink_env.call.common.ReturnType R))).
-    
-    Global Instance Method_returns `{H : State.Trait} :
-      Notation.Dot "returns" := {
-      Notation.dot := returns;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__2.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        (ink_env.call.common.Set ImplE.Hash)
-        GasLimit
-        (ink_env.call.common.Set ImplE.Balance)
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput Args))
-        (ink_env.call.common.Set Salt)
-        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-    
-    Parameter params : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.call.create_builder.CreateParams
-              E
-              ContractRef
-              Args
-              Salt
-              RetType).
-    
-    Global Instance Method_params `{H : State.Trait} :
-      Notation.Dot "params" := {
-      Notation.dot := params;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_3.
-  
-  Module
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_4.
-    Definition
-      Self
-      :=
-      ink_env.call.create_builder.CreateBuilder
-        E
-        ContractRef
-        (ink_env.call.common.Set ImplE.Hash)
-        GasLimit
-        (ink_env.call.common.Set ImplE.Balance)
-        (ink_env.call.common.Set
-          (ink_env.call.execution_input.ExecutionInput Args))
-        (ink_env.call.common.Set Salt)
-        (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-    
-    Parameter instantiate : forall `{H : State.Trait}, Self
-        -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
-    
-    Global Instance Method_instantiate `{H : State.Trait} :
-      Notation.Dot "instantiate" := {
-      Notation.dot := instantiate;
-    }.
-    
-    Parameter try_instantiate : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (core.result.Result
-              (ink_primitives.ConstructorResult
-                ink_env.call.create_builder.ConstructorReturnType.Output)
-              ink_env.error.Error).
-    
-    Global Instance Method_try_instantiate `{H : State.Trait} :
-      Notation.Dot "try_instantiate" := {
-      Notation.dot := try_instantiate;
-    }.
-  End
-    Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_4.
+      M (H := H)
+        (ink_env.call.create_builder.CreateBuilder
+          ink_env.contract.ContractEnv.Env
+          ContractRef
+          (ink_env.call.common.Unset ink_env.types.Environment.Hash)
+          (ink_env.call.common.Unset u64)
+          (ink_env.call.common.Unset ink_env.types.Environment.Balance)
+          (ink_env.call.common.Unset
+            (ink_env.call.execution_input.ExecutionInput
+              ink_env.call.execution_input.EmptyArgumentList))
+          (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
+          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
 End create_builder.
 
 Module state.
@@ -8029,582 +2874,185 @@ Module ConstructorReturnType.
   }.
 End ConstructorReturnType.
 
-Module Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-Section Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-  Context {C : Set}.
-  
-  Definition Self := C.
-  
-  Definition Output : Set := C.
-  
-  Definition Error : Set := unit.
-  
-  Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
-  
-  Global Instance AssociatedFunction_ok `{H : State.Trait} :
-    Notation.DoubleColon Self "ok" := {
-    Notation.double_colon := ok;
-  }.
-  
-  Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
-    ink_env.call.create_builder.ConstructorReturnType.ok
-      `{H : State.Trait}
-      :=
-      ok;
-  }.
-End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-End Impl_ink_env_call_create_builder_ConstructorReturnType_for_C.
-
-Module
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-Section
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-  Context {C E : Set}.
-  
-  Definition Self := core.result.Result C E.
-  
-  Definition IS_RESULT := Pure true.
-  
-  Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
-    Notation.DoubleColon Self "IS_RESULT" := {
-    Notation.double_colon := IS_RESULT;
-  }.
-  
-  Definition Output : Set := core.result.Result C E.
-  
-  Definition Error : Set := E.
-  
-  Parameter ok : forall `{H : State.Trait}, C -> M (H := H) ImplSelf.Output.
-  
-  Global Instance AssociatedFunction_ok `{H : State.Trait} :
-    Notation.DoubleColon Self "ok" := {
-    Notation.double_colon := ok;
-  }.
-  
-  Parameter err : forall `{H : State.Trait}, ImplSelf.Error
-      -> M (H := H) (core.option.Option ImplSelf.Output).
-  
-  Global Instance AssociatedFunction_err `{H : State.Trait} :
-    Notation.DoubleColon Self "err" := {
-    Notation.double_colon := err;
-  }.
-  
-  Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait Self (C := C) := {
-    ink_env.call.create_builder.ConstructorReturnType.ok
-      `{H : State.Trait}
-      :=
-      ok;
-  }.
-End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_C_E.
-
 Module CreateParams.
-  Record t : Set := {
-    code_hash : ImplE.Hash;
-    gas_limit : u64;
-    endowment : ImplE.Balance;
-    exec_input : ink_env.call.execution_input.ExecutionInput Args;
-    salt_bytes : Salt;
-    _return_type : ink_env.call.common.ReturnType R;
-    _phantom : core.marker.PhantomData (unit -> ContractRef);
-  }.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-  }.
-  Global Instance Get_endowment : Notation.Dot "endowment" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-  }.
-  Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-  }.
-  Global Instance Get__return_type : Notation.Dot "_return_type" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-  }.
+  Section CreateParams.
+    Context {E ContractRef Args Salt R : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : ImplE.Hash;
+      gas_limit : u64;
+      endowment : ImplE.Balance;
+      exec_input : ink_env.call.execution_input.ExecutionInput Args;
+      salt_bytes : Salt;
+      _return_type : ink_env.call.common.ReturnType R;
+      _phantom : core.marker.PhantomData (ContractRef);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+    }.
+    Global Instance Get_endowment : Notation.Dot "endowment" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+    }.
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+    }.
+    Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+    }.
+    Global Instance Get__return_type : Notation.Dot "_return_type" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+    }.
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+    }.
+  End CreateParams.
 End CreateParams.
-Definition CreateParams : Set := CreateParams.t.
-
-Module
-  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-Section
-  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-  Context {E ContractRef Args Salt R : Set}.
-  
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-End
-  Impl_core_fmt_Debug_for_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R.
-
-Module
-  Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_7.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-  
-  Parameter code_hash : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Hash).
-  
-  Global Instance Method_code_hash `{H : State.Trait} :
-    Notation.Dot "code_hash" := {
-    Notation.dot := code_hash;
-  }.
-  
-  Parameter gas_limit : forall `{H : State.Trait}, ref Self -> M (H := H) u64.
-  
-  Global Instance Method_gas_limit `{H : State.Trait} :
-    Notation.Dot "gas_limit" := {
-    Notation.dot := gas_limit;
-  }.
-  
-  Parameter endowment : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref ImplE.Balance).
-  
-  Global Instance Method_endowment `{H : State.Trait} :
-    Notation.Dot "endowment" := {
-    Notation.dot := endowment;
-  }.
-  
-  Parameter exec_input : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref (ink_env.call.execution_input.ExecutionInput Args)).
-  
-  Global Instance Method_exec_input `{H : State.Trait} :
-    Notation.Dot "exec_input" := {
-    Notation.dot := exec_input;
-  }.
-  
-  Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-      ink_env.call.selector.Selector
-      -> M (H := H) unit.
-  
-  Global Instance Method_update_selector `{H : State.Trait} :
-    Notation.Dot "update_selector" := {
-    Notation.dot := update_selector;
-  }.
-End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_7.
-
-Module
-  Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_8.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-  
-  Parameter salt_bytes : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref Salt).
-  
-  Global Instance Method_salt_bytes `{H : State.Trait} :
-    Notation.Dot "salt_bytes" := {
-    Notation.dot := salt_bytes;
-  }.
-End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_8.
-
-Module
-  Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_9.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateParams E ContractRef Args Salt R.
-  
-  Parameter instantiate : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
-  
-  Global Instance Method_instantiate `{H : State.Trait} :
-    Notation.Dot "instantiate" := {
-    Notation.dot := instantiate;
-  }.
-  
-  Parameter try_instantiate : forall `{H : State.Trait}, ref Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_instantiate `{H : State.Trait} :
-    Notation.Dot "try_instantiate" := {
-    Notation.dot := try_instantiate;
-  }.
-End Impl_ink_env_call_create_builder_CreateParams_E_ContractRef_Args_Salt_R_9.
+Definition CreateParams : Set := @CreateParams.t.
 
 Module CreateBuilder.
-  Record t : Set := {
-    code_hash : CodeHash;
-    gas_limit : GasLimit;
-    endowment : Endowment;
-    exec_input : Args;
-    salt : Salt;
-    return_type : RetType;
-    _phantom : core.marker.PhantomData (unit -> (E * ContractRef));
-  }.
-  
-  Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-  }.
-  Global Instance Get_endowment : Notation.Dot "endowment" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-  }.
-  Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-  }.
-  Global Instance Get_salt : Notation.Dot "salt" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-  }.
-  Global Instance Get_return_type : Notation.Dot "return_type" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-  }.
-  Global Instance Get__phantom : Notation.Dot "_phantom" := {
-    Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-  }.
+  Section CreateBuilder.
+    Context {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      code_hash : CodeHash;
+      gas_limit : GasLimit;
+      endowment : Endowment;
+      exec_input : Args;
+      salt : Salt;
+      return_type : RetType;
+      _phantom : core.marker.PhantomData ((E * ContractRef));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+      Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+    }.
+    Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+      Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+    }.
+    Global Instance Get_endowment : Notation.Dot "endowment" := {
+      Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+    }.
+    Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+      Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+    }.
+    Global Instance Get_salt : Notation.Dot "salt" := {
+      Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+    }.
+    Global Instance Get_return_type : Notation.Dot "return_type" := {
+      Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+    }.
+    Global Instance Get__phantom : Notation.Dot "_phantom" := {
+      Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+    }.
+  End CreateBuilder.
 End CreateBuilder.
-Definition CreateBuilder : Set := CreateBuilder.t.
+Definition CreateBuilder : Set := @CreateBuilder.t.
 
-Parameter build_create : forall `{H : State.Trait}, forall
+Parameter build_create : forall `{H : State.Trait},
+    forall
     {ContractRef : Set},
     `{ink_env.contract.ContractEnv.Trait ContractRef}
-    unit
-    ->
-      M (H := H)
-        (ink_env.call.create_builder.CreateBuilder
-          ink_env.contract.ContractEnv.Env
-          ContractRef
-          (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-          (ink_env.call.common.Unset u64)
-          (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      (ink_env.call.common.Unset ImplE.Hash)
-      GasLimit
-      Endowment
-      Args
-      Salt
-      RetType.
-  
-  Parameter code_hash : forall `{H : State.Trait}, Self->
-      ImplE.Hash
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            E
-            ContractRef
-            (ink_env.call.common.Set ImplE.Hash)
-            GasLimit
-            Endowment
-            Args
-            Salt
-            RetType).
-  
-  Global Instance Method_code_hash `{H : State.Trait} :
-    Notation.Dot "code_hash" := {
-    Notation.dot := code_hash;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Unset_ImplE_Hash_GasLimit_Endowment_Args_Salt_RetType_3.
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      CodeHash
-      (ink_env.call.common.Unset u64)
-      Endowment
-      Args
-      Salt
-      RetType.
-  
-  Parameter gas_limit : forall `{H : State.Trait}, Self->
-      u64
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            E
-            ContractRef
-            CodeHash
-            (ink_env.call.common.Set u64)
-            Endowment
-            Args
-            Salt
-            RetType).
-  
-  Global Instance Method_gas_limit `{H : State.Trait} :
-    Notation.Dot "gas_limit" := {
-    Notation.dot := gas_limit;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_ink_env_call_common_Unset_u64_Endowment_Args_Salt_RetType_3.
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      CodeHash
-      GasLimit
-      (ink_env.call.common.Unset ImplE.Balance)
-      Args
-      Salt
-      RetType.
-  
-  Parameter endowment : forall `{H : State.Trait}, Self->
-      ImplE.Balance
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            E
-            ContractRef
-            CodeHash
-            GasLimit
-            (ink_env.call.common.Set ImplE.Balance)
-            Args
-            Salt
-            RetType).
-  
-  Global Instance Method_endowment `{H : State.Trait} :
-    Notation.Dot "endowment" := {
-    Notation.dot := endowment;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_ink_env_call_common_Unset_ImplE_Balance_Args_Salt_RetType_3.
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      CodeHash
-      GasLimit
-      Endowment
-      (ink_env.call.common.Unset
-        (ink_env.call.execution_input.ExecutionInput
-          ink_env.call.execution_input.EmptyArgumentList))
-      Salt
-      RetType.
-  
-  Parameter exec_input : forall `{H : State.Trait}, Self->
-      ink_env.call.execution_input.ExecutionInput Args
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            E
-            ContractRef
-            CodeHash
-            GasLimit
-            Endowment
-            (ink_env.call.common.Set
-              (ink_env.call.execution_input.ExecutionInput Args))
-            Salt
-            RetType).
-  
-  Global Instance Method_exec_input `{H : State.Trait} :
-    Notation.Dot "exec_input" := {
-    Notation.dot := exec_input;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_ink_env_call_common_Unset_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_Salt_RetType_3.
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_3.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      CodeHash
-      GasLimit
-      Endowment
-      Args
-      (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-      RetType.
-  
-  Parameter salt_bytes : forall `{H : State.Trait}, Self->
-      Salt
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            E
-            ContractRef
-            CodeHash
-            GasLimit
-            Endowment
-            Args
-            (ink_env.call.common.Set Salt)
-            RetType).
-  
-  Global Instance Method_salt_bytes `{H : State.Trait} :
-    Notation.Dot "salt_bytes" := {
-    Notation.dot := salt_bytes;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_ink_env_call_common_Unset_ink_env_call_create_builder_state_Salt_RetType_3.
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      CodeHash
-      GasLimit
-      Endowment
-      Args
-      Salt
-      (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit)).
-  
-  Parameter returns : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            E
-            ContractRef
-            CodeHash
-            GasLimit
-            Endowment
-            Args
-            Salt
-            (ink_env.call.common.Set (ink_env.call.common.ReturnType R))).
-  
-  Global Instance Method_returns `{H : State.Trait} :
-    Notation.Dot "returns" := {
-    Notation.dot := returns;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_CodeHash_GasLimit_Endowment_Args_Salt_ink_env_call_common_Unset_ink_env_call_common_ReturnType_Tuple__3.
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_5.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      (ink_env.call.common.Set ImplE.Hash)
-      GasLimit
-      (ink_env.call.common.Set ImplE.Balance)
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set Salt)
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-  
-  Parameter params : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.call.create_builder.CreateParams
-            E
-            ContractRef
-            Args
-            Salt
-            RetType).
-  
-  Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
-    Notation.dot := params;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_5.
-
-Module
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_6.
-  Definition
-    Self
-    :=
-    ink_env.call.create_builder.CreateBuilder
-      E
-      ContractRef
-      (ink_env.call.common.Set ImplE.Hash)
-      GasLimit
-      (ink_env.call.common.Set ImplE.Balance)
-      (ink_env.call.common.Set
-        (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set Salt)
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
-  
-  Parameter instantiate : forall `{H : State.Trait}, Self
-      -> M (H := H) ink_env.call.create_builder.ConstructorReturnType.Output.
-  
-  Global Instance Method_instantiate `{H : State.Trait} :
-    Notation.Dot "instantiate" := {
-    Notation.dot := instantiate;
-  }.
-  
-  Parameter try_instantiate : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (core.result.Result
-            (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)
-            ink_env.error.Error).
-  
-  Global Instance Method_try_instantiate `{H : State.Trait} :
-    Notation.Dot "try_instantiate" := {
-    Notation.dot := try_instantiate;
-  }.
-End
-  Impl_ink_env_call_create_builder_CreateBuilder_E_ContractRef_ink_env_call_common_Set_ImplE_Hash_GasLimit_ink_env_call_common_Set_ImplE_Balance_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Salt_ink_env_call_common_Set_ink_env_call_common_ReturnType_RetType_6.
+    M (H := H)
+      (ink_env.call.create_builder.CreateBuilder
+        ink_env.contract.ContractEnv.Env
+        ContractRef
+        (ink_env.call.common.Unset ink_env.types.Environment.Hash)
+        (ink_env.call.common.Unset u64)
+        (ink_env.call.common.Unset ink_env.types.Environment.Balance)
+        (ink_env.call.common.Unset
+          (ink_env.call.execution_input.ExecutionInput
+            ink_env.call.execution_input.EmptyArgumentList))
+        (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
+        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
 
 Module execution_input.
   Module ExecutionInput.
+    Section ExecutionInput.
+      Context {Args : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        selector : ink_env.call.selector.Selector;
+        args : Args;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_selector : Notation.Dot "selector" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_args : Notation.Dot "args" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ExecutionInput.
+  End ExecutionInput.
+  Definition ExecutionInput : Set := @ExecutionInput.t.
+  
+  Module ArgumentList.
+    Section ArgumentList.
+      Context {Head Rest : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        head : Head;
+        rest : Rest;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_head : Notation.Dot "head" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_rest : Notation.Dot "rest" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ArgumentList.
+  End ArgumentList.
+  Definition ArgumentList : Set := @ArgumentList.t.
+  
+  Definition ArgsList : Set :=
+    ink_env.call.execution_input.ArgumentList
+      (ink_env.call.execution_input.Argument Head)
+      Rest.
+  
+  Module Argument.
+    Section Argument.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        arg : T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_arg : Notation.Dot "arg" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Argument.
+  End Argument.
+  Definition Argument : Set := @Argument.t.
+  
+  Module ArgumentListEnd.
+    Inductive t : Set := Build.
+  End ArgumentListEnd.
+  Definition ArgumentListEnd := @ArgumentListEnd.t.
+  
+  Definition EmptyArgumentList : Set :=
+    ink_env.call.execution_input.ArgumentList
+      ink_env.call.execution_input.ArgumentListEnd
+      ink_env.call.execution_input.ArgumentListEnd.
+End execution_input.
+
+Module ExecutionInput.
+  Section ExecutionInput.
+    Context {Args : Set}.
+    Unset Primitive Projections.
     Record t : Set := {
       selector : ink_env.call.selector.Selector;
       args : Args;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_selector : Notation.Dot "selector" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -8613,153 +3061,18 @@ Module execution_input.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End ExecutionInput.
-  Definition ExecutionInput : Set := ExecutionInput.t.
-  
-  Module
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Section
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Context {Args : Set}.
-    
-    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-  
-  Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Section
-    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Context {Args : Set}.
-    
-    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-    
-    Parameter default : forall `{H : State.Trait}, unit
-        -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End
-    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-  End
-    Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-  
-  Module
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Section
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Context {Args : Set}.
-    
-    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-  
-  Module
-    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_2.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ExecutionInput
-        ink_env.call.execution_input.EmptyArgumentList.
-    
-    Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-    
-    Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
-            (ink_env.call.execution_input.ExecutionInput
-              (ink_env.call.execution_input.ArgumentList
-                (ink_env.call.execution_input.Argument T)
-                ink_env.call.execution_input.EmptyArgumentList)).
-    
-    Global Instance Method_push_arg `{H : State.Trait} :
-      Notation.Dot "push_arg" := {
-      Notation.dot := push_arg;
-    }.
-  End
-    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_2.
-  
-  Module
-    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ExecutionInput
-        (ink_env.call.execution_input.ArgumentList
-          (ink_env.call.execution_input.Argument Head)
-          Rest).
-    
-    Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
-            (ink_env.call.execution_input.ExecutionInput
-              (ink_env.call.execution_input.ArgsList
-                T
-                (ink_env.call.execution_input.ArgsList Head Rest))).
-    
-    Global Instance Method_push_arg `{H : State.Trait} :
-      Notation.Dot "push_arg" := {
-      Notation.dot := push_arg;
-    }.
-  End
-    Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
-  
-  Module Impl_ink_env_call_execution_input_ExecutionInput_Args_2.
-    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-    
-    Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-        ink_env.call.selector.Selector
-        -> M (H := H) unit.
-    
-    Global Instance Method_update_selector `{H : State.Trait} :
-      Notation.Dot "update_selector" := {
-      Notation.dot := update_selector;
-    }.
-  End Impl_ink_env_call_execution_input_ExecutionInput_Args_2.
-  
-  Module ArgumentList.
+End ExecutionInput.
+Definition ExecutionInput : Set := @ExecutionInput.t.
+
+Module ArgumentList.
+  Section ArgumentList.
+    Context {Head Rest : Set}.
+    Unset Primitive Projections.
     Record t : Set := {
       head : Head;
       rest : Rest;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_head : Notation.Dot "head" := {
       Notation.dot '(Build_t x0 _) := x0;
@@ -8768,616 +3081,8 @@ Module execution_input.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End ArgumentList.
-  Definition ArgumentList : Set := ArgumentList.t.
-  
-  Module
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  Section
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    Context {Head Rest : Set}.
-    
-    Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  End
-    Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  
-  Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  Section
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    Context {Head Rest : Set}.
-    
-    Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-    
-    Parameter default : forall `{H : State.Trait}, unit
-        -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  End
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  
-  Module
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  Section
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-    Context {Head Rest : Set}.
-    
-    Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  End
-    Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  
-  Definition ArgsList : Set :=
-    ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument Head)
-      Rest.
-  
-  Module Argument.
-    Record t : Set := {
-      arg : T;
-    }.
-    
-    Global Instance Get_arg : Notation.Dot "arg" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End Argument.
-  Definition Argument : Set := Argument.t.
-  
-  Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-  Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.execution_input.Argument T.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ink_env.call.execution_input.Argument T).
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-  End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-  Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.execution_input.Argument T.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-  
-  Module Impl_ink_env_call_execution_input_Argument_T_2.
-    Definition Self := ink_env.call.execution_input.Argument T.
-    
-    Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-  End Impl_ink_env_call_execution_input_Argument_T_2.
-  
-  Module ArgumentListEnd.
-    Inductive t : Set := Build.
-  End ArgumentListEnd.
-  Definition ArgumentListEnd := ArgumentListEnd.t.
-  
-  Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
-    Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
-  
-  Module
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
-    Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-    
-    Parameter default : forall `{H : State.Trait}, unit
-        -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End
-    Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
-    Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
-  
-  Definition EmptyArgumentList : Set :=
-    ink_env.call.execution_input.ArgumentList
-      ink_env.call.execution_input.ArgumentListEnd
-      ink_env.call.execution_input.ArgumentListEnd.
-  
-  Module Impl_ink_env_call_execution_input_EmptyArgumentList_2.
-    Definition Self := ink_env.call.execution_input.EmptyArgumentList.
-    
-    Parameter empty : forall `{H : State.Trait}, unit
-        -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
-    
-    Global Instance AssociatedFunction_empty `{H : State.Trait} :
-      Notation.DoubleColon Self "empty" := {
-      Notation.double_colon := empty;
-    }.
-    
-    Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument T)
-              Self).
-    
-    Global Instance Method_push_arg `{H : State.Trait} :
-      Notation.Dot "push_arg" := {
-      Notation.dot := push_arg;
-    }.
-  End Impl_ink_env_call_execution_input_EmptyArgumentList_2.
-  
-  Module
-    Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument Head)
-        Rest.
-    
-    Parameter push_arg : forall `{H : State.Trait}, Self->
-        T
-        ->
-          M (H := H)
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument T)
-              Self).
-    
-    Global Instance Method_push_arg `{H : State.Trait} :
-      Notation.Dot "push_arg" := {
-      Notation.dot := push_arg;
-    }.
-  End
-    Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_2.
-  
-  Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.call.execution_input.Argument T.
-    
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
-    
-    Global Instance Method_size_hint `{H : State.Trait} :
-      Notation.Dot "size_hint" := {
-      Notation.dot := size_hint;
-    }.
-    
-    Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
-    
-    Global Instance Method_encode_to `{H : State.Trait} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
-    }.
-    
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-    }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-  
-  Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
-    Definition Self := ink_env.call.execution_input.EmptyArgumentList.
-    
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
-    
-    Global Instance Method_size_hint `{H : State.Trait} :
-      Notation.Dot "size_hint" := {
-      Notation.dot := size_hint;
-    }.
-    
-    Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
-    
-    Global Instance Method_encode_to `{H : State.Trait} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
-    }.
-    
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-    }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
-  
-  Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-    Context {Head Rest : Set}.
-    
-    Definition
-      Self
-      :=
-      ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument Head)
-        Rest.
-    
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
-    
-    Global Instance Method_size_hint `{H : State.Trait} :
-      Notation.Dot "size_hint" := {
-      Notation.dot := size_hint;
-    }.
-    
-    Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
-    
-    Global Instance Method_encode_to `{H : State.Trait} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
-    }.
-    
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-    }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-  
-  Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-    Context {Args : Set}.
-    
-    Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-    
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
-    
-    Global Instance Method_size_hint `{H : State.Trait} :
-      Notation.Dot "size_hint" := {
-      Notation.dot := size_hint;
-    }.
-    
-    Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref O
-        -> M (H := H) unit.
-    
-    Global Instance Method_encode_to `{H : State.Trait} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
-    }.
-    
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-    }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-End execution_input.
-
-Module ExecutionInput.
-  Record t : Set := {
-    selector : ink_env.call.selector.Selector;
-    args : Args;
-  }.
-  
-  Global Instance Get_selector : Notation.Dot "selector" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_args : Notation.Dot "args" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-End ExecutionInput.
-Definition ExecutionInput : Set := ExecutionInput.t.
-
-Module
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-Section
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Context {Args : Set}.
-  
-  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-End Impl_core_clone_Clone_for_ink_env_call_execution_input_ExecutionInput_Args.
-
-Module
-  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-Section
-  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Context {Args : Set}.
-  
-  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-  
-  Parameter default : forall `{H : State.Trait}, unit
-      -> M (H := H) (ink_env.call.execution_input.ExecutionInput Args).
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End
-  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-End
-  Impl_core_default_Default_for_ink_env_call_execution_input_ExecutionInput_Args.
-
-Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-Section
-  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Context {Args : Set}.
-  
-  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ExecutionInput_Args.
-
-Module
-  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_3.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ExecutionInput
-      ink_env.call.execution_input.EmptyArgumentList.
-  
-  Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
-          (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgumentList
-              (ink_env.call.execution_input.Argument T)
-              ink_env.call.execution_input.EmptyArgumentList)).
-  
-  Global Instance Method_push_arg `{H : State.Trait} :
-    Notation.Dot "push_arg" := {
-    Notation.dot := push_arg;
-  }.
-End
-  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_EmptyArgumentList_3.
-
-Module
-  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ExecutionInput
-      (ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument Head)
-        Rest).
-  
-  Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
-          (ink_env.call.execution_input.ExecutionInput
-            (ink_env.call.execution_input.ArgsList
-              T
-              (ink_env.call.execution_input.ArgsList Head Rest))).
-  
-  Global Instance Method_push_arg `{H : State.Trait} :
-    Notation.Dot "push_arg" := {
-    Notation.dot := push_arg;
-  }.
-End
-  Impl_ink_env_call_execution_input_ExecutionInput_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
-
-Module Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
-  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-  
-  Parameter update_selector : forall `{H : State.Trait}, mut_ref Self->
-      ink_env.call.selector.Selector
-      -> M (H := H) unit.
-  
-  Global Instance Method_update_selector `{H : State.Trait} :
-    Notation.Dot "update_selector" := {
-    Notation.dot := update_selector;
-  }.
-End Impl_ink_env_call_execution_input_ExecutionInput_Args_3.
-
-Module ArgumentList.
-  Record t : Set := {
-    head : Head;
-    rest : Rest;
-  }.
-  
-  Global Instance Get_head : Notation.Dot "head" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_rest : Notation.Dot "rest" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
 End ArgumentList.
-Definition ArgumentList : Set := ArgumentList.t.
-
-Module
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-Section
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  Context {Head Rest : Set}.
-  
-  Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-End
-  Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-
-Module
-  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-Section
-  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  Context {Head Rest : Set}.
-  
-  Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-  
-  Parameter default : forall `{H : State.Trait}, unit
-      -> M (H := H) (ink_env.call.execution_input.ArgumentList Head Rest).
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End
-  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-End
-  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-
-Module
-  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-Section
-  Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-  Context {Head Rest : Set}.
-  
-  Definition Self := ink_env.call.execution_input.ArgumentList Head Rest.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
-End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentList_Head_Rest.
+Definition ArgumentList : Set := @ArgumentList.t.
 
 Definition ArgsList : Set :=
   ink_env.call.execution_input.ArgumentList
@@ -9385,663 +3090,58 @@ Definition ArgsList : Set :=
     Rest.
 
 Module Argument.
-  Record t : Set := {
-    arg : T;
-  }.
-  
-  Global Instance Get_arg : Notation.Dot "arg" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section Argument.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      arg : T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_arg : Notation.Dot "arg" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End Argument.
 End Argument.
-Definition Argument : Set := Argument.t.
-
-Module Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-Section Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.execution_input.Argument T.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ink_env.call.execution_input.Argument T).
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-End Impl_core_clone_Clone_for_ink_env_call_execution_input_Argument_T.
-
-Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-Section Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.execution_input.Argument T.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-End Impl_core_fmt_Debug_for_ink_env_call_execution_input_Argument_T.
-
-Module Impl_ink_env_call_execution_input_Argument_T_3.
-  Definition Self := ink_env.call.execution_input.Argument T.
-  
-  Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-End Impl_ink_env_call_execution_input_Argument_T_3.
+Definition Argument : Set := @Argument.t.
 
 Module ArgumentListEnd.
   Inductive t : Set := Build.
 End ArgumentListEnd.
-Definition ArgumentListEnd := ArgumentListEnd.t.
-
-Module Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
-  Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_execution_input_ArgumentListEnd.
-
-Module
-  Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
-  Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-  
-  Parameter default : forall `{H : State.Trait}, unit
-      -> M (H := H) ink_env.call.execution_input.ArgumentListEnd.
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_ink_env_call_execution_input_ArgumentListEnd.
-
-Module Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
-  Definition Self := ink_env.call.execution_input.ArgumentListEnd.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_execution_input_ArgumentListEnd.
+Definition ArgumentListEnd := @ArgumentListEnd.t.
 
 Definition EmptyArgumentList : Set :=
   ink_env.call.execution_input.ArgumentList
     ink_env.call.execution_input.ArgumentListEnd
     ink_env.call.execution_input.ArgumentListEnd.
 
-Module Impl_ink_env_call_execution_input_EmptyArgumentList_3.
-  Definition Self := ink_env.call.execution_input.EmptyArgumentList.
-  
-  Parameter empty : forall `{H : State.Trait}, unit
-      -> M (H := H) ink_env.call.execution_input.EmptyArgumentList.
-  
-  Global Instance AssociatedFunction_empty `{H : State.Trait} :
-    Notation.DoubleColon Self "empty" := {
-    Notation.double_colon := empty;
-  }.
-  
-  Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
-          (ink_env.call.execution_input.ArgumentList
-            (ink_env.call.execution_input.Argument T)
-            Self).
-  
-  Global Instance Method_push_arg `{H : State.Trait} :
-    Notation.Dot "push_arg" := {
-    Notation.dot := push_arg;
-  }.
-End Impl_ink_env_call_execution_input_EmptyArgumentList_3.
-
-Module
-  Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument Head)
-      Rest.
-  
-  Parameter push_arg : forall `{H : State.Trait}, Self->
-      T
-      ->
-        M (H := H)
-          (ink_env.call.execution_input.ArgumentList
-            (ink_env.call.execution_input.Argument T)
-            Self).
-  
-  Global Instance Method_push_arg `{H : State.Trait} :
-    Notation.Dot "push_arg" := {
-    Notation.dot := push_arg;
-  }.
-End
-  Impl_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest_3.
-
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-Section
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.call.execution_input.Argument T.
-  
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
-  
-  Global Instance Method_size_hint `{H : State.Trait} :
-    Notation.Dot "size_hint" := {
-    Notation.dot := size_hint;
-  }.
-  
-  Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
-  
-  Global Instance Method_encode_to `{H : State.Trait} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_Argument_T.
-
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
-  Definition Self := ink_env.call.execution_input.EmptyArgumentList.
-  
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
-  
-  Global Instance Method_size_hint `{H : State.Trait} :
-    Notation.Dot "size_hint" := {
-    Notation.dot := size_hint;
-  }.
-  
-  Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
-  
-  Global Instance Method_encode_to `{H : State.Trait} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_EmptyArgumentList.
-
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-Section
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-  Context {Head Rest : Set}.
-  
-  Definition
-    Self
-    :=
-    ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument Head)
-      Rest.
-  
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
-  
-  Global Instance Method_size_hint `{H : State.Trait} :
-    Notation.Dot "size_hint" := {
-    Notation.dot := size_hint;
-  }.
-  
-  Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
-  
-  Global Instance Method_encode_to `{H : State.Trait} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ArgumentList_ink_env_call_execution_input_Argument_Head_Rest.
-
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-Section
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-  Context {Args : Set}.
-  
-  Definition Self := ink_env.call.execution_input.ExecutionInput Args.
-  
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
-  
-  Global Instance Method_size_hint `{H : State.Trait} :
-    Notation.Dot "size_hint" := {
-    Notation.dot := size_hint;
-  }.
-  
-  Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref O
-      -> M (H := H) unit.
-  
-  Global Instance Method_encode_to `{H : State.Trait} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_call_execution_input_ExecutionInput_Args.
-
 Module selector.
   Module Selector.
+    Unset Primitive Projections.
     Record t : Set := {
       bytes : list u8;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_bytes : Notation.Dot "bytes" := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End Selector.
-  Definition Selector : Set := Selector.t.
-  
-  Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Parameter default : forall `{H : State.Trait}, unit
-        -> M (H := H) ink_env.call.selector.Selector.
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End Impl_core_default_Default_for_ink_env_call_selector_Selector.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-      string -> Array_u8 -> 
-      M (H := H) core.fmt.Result.
-    
-    Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-      core.fmt.Formatter "debug_struct_field1_finish" := {
-      Notation.double_colon := debug_struct_field1_finish; }.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
-  
-  Module Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
-  
-  Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.selector.Selector.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
-  
-  Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.call.selector.Selector
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
-  
-  Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Parameter from : forall `{H : State.Trait}, list u8
-        -> M (H := H) ink_env.call.selector.Selector.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I : core.convert.From.Trait Self (T := list u8) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_call_selector_Selector.
-  
-  Module Impl_ink_env_call_selector_Selector_2.
-    Definition Self := ink_env.call.selector.Selector.
-    
-    Parameter new : forall `{H : State.Trait}, list u8 -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-    
-    Parameter to_bytes : forall `{H : State.Trait}, Self -> M (H := H) list u8.
-    
-    Global Instance Method_to_bytes `{H : State.Trait} :
-      Notation.Dot "to_bytes" := {
-      Notation.dot := to_bytes;
-    }.
-  End Impl_ink_env_call_selector_Selector_2.
+  Definition Selector : Set := @Selector.t.
 End selector.
 
 Module Selector.
+  Unset Primitive Projections.
   Record t : Set := {
     bytes : list u8;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_bytes : Notation.Dot "bytes" := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Selector.
-Definition Selector : Set := Selector.t.
-
-Module Impl_core_default_Default_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter default : forall `{H : State.Trait}, unit
-      -> M (H := H) ink_env.call.selector.Selector.
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_ink_env_call_selector_Selector.
-
-Module Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-    string -> Array_u8 -> 
-    M (H := H) core.fmt.Result.
-  
-  Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field1_finish" := {
-    Notation.double_colon := debug_struct_field1_finish; }.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_call_selector_Selector.
-
-Module Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_call_selector_Selector.
-
-Module Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.selector.Selector.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_call_selector_Selector.
-
-Module Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End Impl_core_marker_StructuralPartialEq_for_ink_env_call_selector_Selector.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.call.selector.Selector
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_call_selector_Selector.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_call_selector_Selector.
-
-Module Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_call_selector_Selector.
-
-Module Impl_core_convert_From_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter from : forall `{H : State.Trait}, list u8
-      -> M (H := H) ink_env.call.selector.Selector.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I : core.convert.From.Trait Self (T := list u8) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_call_selector_Selector.
-
-Module Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter decode : forall `{H : State.Trait}, mut_ref __CodecInputEdqy
-      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
-  
-  Global Instance AssociatedFunction_decode `{H : State.Trait} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
-  }.
-End Impl_parity_scale_codec_codec_Decode_for_ink_env_call_selector_Selector.
-
-Module Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref __CodecOutputEdqy
-      -> M (H := H) unit.
-  
-  Global Instance Method_encode_to `{H : State.Trait} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
-  }.
-  
-  Parameter encode : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (alloc.vec.Vec Root.core.primitive.u8).
-  
-  Global Instance Method_encode `{H : State.Trait} : Notation.Dot "encode" := {
-    Notation.dot := encode;
-  }.
-  
-  Parameter using_encoded : forall `{H : State.Trait}, ref Self->
-      F
-      -> M (H := H) R.
-  
-  Global Instance Method_using_encoded `{H : State.Trait} :
-    Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-End Impl_parity_scale_codec_codec_Encode_for_ink_env_call_selector_Selector.
-
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_env_call_selector_Selector.
-
-Module Impl_ink_env_call_selector_Selector_3.
-  Definition Self := ink_env.call.selector.Selector.
-  
-  Parameter new : forall `{H : State.Trait}, list u8 -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Parameter to_bytes : forall `{H : State.Trait}, Self -> M (H := H) list u8.
-  
-  Global Instance Method_to_bytes `{H : State.Trait} :
-    Notation.Dot "to_bytes" := {
-    Notation.dot := to_bytes;
-  }.
-End Impl_ink_env_call_selector_Selector_3.
-
-Module utils.
-  
-End utils.
+Definition Selector : Set := @Selector.t.
 
 Module chain_extension.
   Module FromStatusCode.
@@ -10059,123 +3159,24 @@ Module chain_extension.
   End FromStatusCode.
   
   Module ChainExtensionMethod.
-    Record t : Set := {
-      func_id : u32;
-      state : core.marker.PhantomData (unit -> (I * O * ErrorCode));
-    }.
-    
-    Global Instance Get_func_id : Notation.Dot "func_id" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_state : Notation.Dot "state" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section ChainExtensionMethod.
+      Context {I O ErrorCode : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        func_id : u32;
+        state : core.marker.PhantomData ((I * O * ErrorCode));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_func_id : Notation.Dot "func_id" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_state : Notation.Dot "state" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End ChainExtensionMethod.
   End ChainExtensionMethod.
-  Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
-  
-  Module
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-  Section
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-    Context {I O ErrorCode : Set}.
-    
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-  End
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-  
-  Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple_.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod unit unit unit.
-    
-    Parameter build : forall `{H : State.Trait}, u32 -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_build `{H : State.Trait} :
-      Notation.DoubleColon Self "build" := {
-      Notation.double_colon := build;
-    }.
-  End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple_.
-  
-  Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
-    
-    Parameter input : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
-    
-    Global Instance Method_input `{H : State.Trait} : Notation.Dot "input" := {
-      Notation.dot := input;
-    }.
-  End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode.
-  
-  Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
-    
-    Parameter output : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
-    
-    Global Instance Method_output `{H : State.Trait} :
-      Notation.Dot "output" := {
-      Notation.dot := output;
-    }.
-  End Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode.
-  
-  Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple_.
-    Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
-    
-    Parameter ignore_error_code : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.chain_extension.ChainExtensionMethod
-              I
-              O
-              ink_env.chain_extension.state.IgnoreErrorCode).
-    
-    Global Instance Method_ignore_error_code `{H : State.Trait} :
-      Notation.Dot "ignore_error_code" := {
-      Notation.dot := ignore_error_code;
-    }.
-    
-    Parameter handle_error_code : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.chain_extension.ChainExtensionMethod
-              I
-              O
-              (ink_env.chain_extension.state.HandleErrorCode ErrorCode)).
-    
-    Global Instance Method_handle_error_code `{H : State.Trait} :
-      Notation.Dot "handle_error_code" := {
-      Notation.dot := handle_error_code;
-    }.
-  End Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple_.
+  Definition ChainExtensionMethod : Set := @ChainExtensionMethod.t.
   
   Module state.
     Module IgnoreErrorCode.
@@ -10184,142 +3185,22 @@ Module chain_extension.
     End IgnoreErrorCode.
     Definition IgnoreErrorCode := IgnoreErrorCode.t.
     
-    Module
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
-      Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
-    
     Module HandleErrorCode.
-      Record t : Set := {
-        error_code : core.marker.PhantomData (unit -> T);
-      }.
-      
-      Global Instance Get_error_code : Notation.Dot "error_code" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+      Section HandleErrorCode.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          error_code : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_error_code : Notation.Dot "error_code" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End HandleErrorCode.
     End HandleErrorCode.
-    Definition HandleErrorCode : Set := HandleErrorCode.t.
-    
-    Module
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-    Section
-      Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-      Context {T : Set}.
-      
-      Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-    End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+    Definition HandleErrorCode : Set := @HandleErrorCode.t.
   End state.
-  
-  Module
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod
-        I
-        O
-        (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
-    
-    Parameter call : forall `{H : State.Trait}, Self->
-        ref I
-        ->
-          M (H := H)
-            (core.result.Result
-              ink_env.chain_extension.IsResultType.Ok
-              ink_env.chain_extension.IsResultType.Err).
-    
-    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-      Notation.dot := call;
-    }.
-  End
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode.
-  
-  Module
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod
-        I
-        O
-        ink_env.chain_extension.state.IgnoreErrorCode.
-    
-    Parameter call : forall `{H : State.Trait}, Self->
-        ref I
-        ->
-          M (H := H)
-            (core.result.Result
-              ink_env.chain_extension.IsResultType.Ok
-              ink_env.chain_extension.IsResultType.Err).
-    
-    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-      Notation.dot := call;
-    }.
-  End
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode.
-  
-  Module
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_2.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod
-        I
-        O
-        (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
-    
-    Parameter call : forall `{H : State.Trait}, Self->
-        ref I
-        -> M (H := H) (core.result.Result O ErrorCode).
-    
-    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-      Notation.dot := call;
-    }.
-  End
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_2.
-  
-  Module
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_2.
-    Definition
-      Self
-      :=
-      ink_env.chain_extension.ChainExtensionMethod
-        I
-        O
-        ink_env.chain_extension.state.IgnoreErrorCode.
-    
-    Parameter call : forall `{H : State.Trait}, Self-> ref I -> M (H := H) O.
-    
-    Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-      Notation.dot := call;
-    }.
-  End
-    Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_2.
   
   Module IsResultType.
     Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
@@ -10336,37 +3217,6 @@ Module chain_extension.
       Notation.double_colon_type := Err;
     }.
   End IsResultType.
-  
-  Module
-    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-  Section
-    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-    Context {T E : Set}.
-    
-    Definition Self := core.result.Result T E.
-    
-    Global Instance I :
-        ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
-      ink_env.chain_extension.private.IsResultTypeSealed.Build_Trait _.
-  End
-    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-  End
-    Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-  
-  Module Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
-  Section Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
-    Context {T E : Set}.
-    
-    Definition Self := core.result.Result T E.
-    
-    Definition Ok : Set := T.
-    
-    Definition Err : Set := E.
-    
-    Global Instance I : ink_env.chain_extension.IsResultType.Trait Self := {
-    }.
-  End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
-  End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
   
   Module private.
     Module IsResultTypeSealed.
@@ -10393,117 +3243,24 @@ Module FromStatusCode.
 End FromStatusCode.
 
 Module ChainExtensionMethod.
-  Record t : Set := {
-    func_id : u32;
-    state : core.marker.PhantomData (unit -> (I * O * ErrorCode));
-  }.
-  
-  Global Instance Get_func_id : Notation.Dot "func_id" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_state : Notation.Dot "state" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section ChainExtensionMethod.
+    Context {I O ErrorCode : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      func_id : u32;
+      state : core.marker.PhantomData ((I * O * ErrorCode));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_func_id : Notation.Dot "func_id" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_state : Notation.Dot "state" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End ChainExtensionMethod.
 End ChainExtensionMethod.
-Definition ChainExtensionMethod : Set := ChainExtensionMethod.t.
-
-Module
-  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-Section
-  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-  Context {I O ErrorCode : Set}.
-  
-  Definition Self := ink_env.chain_extension.ChainExtensionMethod I O ErrorCode.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End
-  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-End
-  Impl_core_fmt_Debug_for_ink_env_chain_extension_ChainExtensionMethod_I_O_ErrorCode.
-
-Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple__2.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod unit unit unit.
-  
-  Parameter build : forall `{H : State.Trait}, u32 -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_build `{H : State.Trait} :
-    Notation.DoubleColon Self "build" := {
-    Notation.double_colon := build;
-  }.
-End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__Tuple__Tuple__2.
-
-Module Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode_2.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod unit O ErrorCode.
-  
-  Parameter input : forall `{H : State.Trait}, Self
-      ->
-        M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
-  
-  Global Instance Method_input `{H : State.Trait} : Notation.Dot "input" := {
-    Notation.dot := input;
-  }.
-End Impl_ink_env_chain_extension_ChainExtensionMethod_Tuple__O_ErrorCode_2.
-
-Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod I unit ErrorCode.
-  
-  Parameter output : forall `{H : State.Trait}, Self
-      ->
-        M (H := H) (ink_env.chain_extension.ChainExtensionMethod I O ErrorCode).
-  
-  Global Instance Method_output `{H : State.Trait} : Notation.Dot "output" := {
-    Notation.dot := output;
-  }.
-End Impl_ink_env_chain_extension_ChainExtensionMethod_I_Tuple__ErrorCode_2.
-
-Module Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
-  Definition Self := ink_env.chain_extension.ChainExtensionMethod I O unit.
-  
-  Parameter ignore_error_code : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.chain_extension.ChainExtensionMethod
-            I
-            O
-            ink_env.chain_extension.state.IgnoreErrorCode).
-  
-  Global Instance Method_ignore_error_code `{H : State.Trait} :
-    Notation.Dot "ignore_error_code" := {
-    Notation.dot := ignore_error_code;
-  }.
-  
-  Parameter handle_error_code : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.chain_extension.ChainExtensionMethod
-            I
-            O
-            (ink_env.chain_extension.state.HandleErrorCode ErrorCode)).
-  
-  Global Instance Method_handle_error_code `{H : State.Trait} :
-    Notation.Dot "handle_error_code" := {
-    Notation.dot := handle_error_code;
-  }.
-End Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_Tuple__2.
+Definition ChainExtensionMethod : Set := @ChainExtensionMethod.t.
 
 Module state.
   Module IgnoreErrorCode.
@@ -10512,54 +3269,21 @@ Module state.
   End IgnoreErrorCode.
   Definition IgnoreErrorCode := IgnoreErrorCode.t.
   
-  Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
-    Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
-  
   Module HandleErrorCode.
-    Record t : Set := {
-      error_code : core.marker.PhantomData (unit -> T);
-    }.
-    
-    Global Instance Get_error_code : Notation.Dot "error_code" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
+    Section HandleErrorCode.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        error_code : core.marker.PhantomData (T);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_error_code : Notation.Dot "error_code" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End HandleErrorCode.
   End HandleErrorCode.
-  Definition HandleErrorCode : Set := HandleErrorCode.t.
-  
-  Module
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-  Section
-    Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-    Context {T : Set}.
-    
-    Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-  End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
+  Definition HandleErrorCode : Set := @HandleErrorCode.t.
 End state.
 
 Module IgnoreErrorCode.
@@ -10568,138 +3292,21 @@ Module IgnoreErrorCode.
 End IgnoreErrorCode.
 Definition IgnoreErrorCode := IgnoreErrorCode.t.
 
-Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
-  Definition Self := ink_env.chain_extension.state.IgnoreErrorCode.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_IgnoreErrorCode.
-
 Module HandleErrorCode.
-  Record t : Set := {
-    error_code : core.marker.PhantomData (unit -> T);
-  }.
-  
-  Global Instance Get_error_code : Notation.Dot "error_code" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
+  Section HandleErrorCode.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      error_code : core.marker.PhantomData (T);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_error_code : Notation.Dot "error_code" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End HandleErrorCode.
 End HandleErrorCode.
-Definition HandleErrorCode : Set := HandleErrorCode.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-Section Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-  Context {T : Set}.
-  
-  Definition Self := ink_env.chain_extension.state.HandleErrorCode T.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-End Impl_core_fmt_Debug_for_ink_env_chain_extension_state_HandleErrorCode_T.
-
-Module
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_3.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod
-      I
-      O
-      (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
-  
-  Parameter call : forall `{H : State.Trait}, Self->
-      ref I
-      ->
-        M (H := H)
-          (core.result.Result
-            ink_env.chain_extension.IsResultType.Ok
-            ink_env.chain_extension.IsResultType.Err).
-  
-  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-    Notation.dot := call;
-  }.
-End
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_3.
-
-Module
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_3.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod
-      I
-      O
-      ink_env.chain_extension.state.IgnoreErrorCode.
-  
-  Parameter call : forall `{H : State.Trait}, Self->
-      ref I
-      ->
-        M (H := H)
-          (core.result.Result
-            ink_env.chain_extension.IsResultType.Ok
-            ink_env.chain_extension.IsResultType.Err).
-  
-  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-    Notation.dot := call;
-  }.
-End
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_3.
-
-Module
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_4.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod
-      I
-      O
-      (ink_env.chain_extension.state.HandleErrorCode ErrorCode).
-  
-  Parameter call : forall `{H : State.Trait}, Self->
-      ref I
-      -> M (H := H) (core.result.Result O ErrorCode).
-  
-  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-    Notation.dot := call;
-  }.
-End
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_HandleErrorCode_ErrorCode_4.
-
-Module
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_4.
-  Definition
-    Self
-    :=
-    ink_env.chain_extension.ChainExtensionMethod
-      I
-      O
-      ink_env.chain_extension.state.IgnoreErrorCode.
-  
-  Parameter call : forall `{H : State.Trait}, Self-> ref I -> M (H := H) O.
-  
-  Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
-    Notation.dot := call;
-  }.
-End
-  Impl_ink_env_chain_extension_ChainExtensionMethod_I_O_ink_env_chain_extension_state_IgnoreErrorCode_4.
+Definition HandleErrorCode : Set := @HandleErrorCode.t.
 
 Module IsResultType.
   Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
@@ -10716,37 +3323,6 @@ Module IsResultType.
     Notation.double_colon_type := Err;
   }.
 End IsResultType.
-
-Module
-  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-Section
-  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-  Context {T E : Set}.
-  
-  Definition Self := core.result.Result T E.
-  
-  Global Instance I :
-      ink_env.chain_extension.private.IsResultTypeSealed.Trait Self :=
-    ink_env.chain_extension.private.IsResultTypeSealed.Build_Trait _.
-End
-  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-End
-  Impl_ink_env_chain_extension_private_IsResultTypeSealed_for_core_result_Result_T_E.
-
-Module Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
-Section Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
-  Context {T E : Set}.
-  
-  Definition Self := core.result.Result T E.
-  
-  Definition Ok : Set := T.
-  
-  Definition Err : Set := E.
-  
-  Global Instance I : ink_env.chain_extension.IsResultType.Trait Self := {
-  }.
-End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
-End Impl_ink_env_chain_extension_IsResultType_for_core_result_Result_T_E.
 
 Module private.
   Module IsResultTypeSealed.
@@ -10821,7 +3397,12 @@ End ContractReference.
 Module engine.
   Module OnInstance.
     Class Trait (Self : Set) : Set := {
-      on_instance `{H : State.Trait} : F -> (M (H := H) R);
+      on_instance
+        `{H : State.Trait}
+        {F R: Set}
+        `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+        :
+        F -> (M (H := H) R);
     }.
     
     Global Instance Method_on_instance `{H : State.Trait} `(Trait)
@@ -10833,884 +3414,42 @@ Module engine.
   Module off_chain.
     Module call_data.
       Module CallData.
+        Unset Primitive Projections.
         Record t : Set := {
           bytes : alloc.vec.Vec u8;
         }.
+        Global Set Primitive Projections.
         
         Global Instance Get_bytes : Notation.Dot "bytes" := {
           Notation.dot '(Build_t x0) := x0;
         }.
       End CallData.
-      Definition CallData : Set := CallData.t.
-      
-      Module
-        Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-          string -> alloc_vec_Vec_u8 -> 
-          M (H := H) core.fmt.Result.
-        
-        Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-          core.fmt.Formatter "debug_struct_field1_finish" := {
-          Notation.double_colon := debug_struct_field1_finish; }.
-        
-        Parameter fmt : forall `{H : State.Trait}, ref Self->
-            mut_ref core.fmt.Formatter
-            -> M (H := H) core.fmt.Result.
-        
-        Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-          Notation.dot := fmt;
-        }.
-        
-        Global Instance I : core.fmt.Debug.Trait Self := {
-          core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-        }.
-      End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module
-        Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Parameter clone : forall `{H : State.Trait}, ref Self
-            -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
-        
-        Global Instance Method_clone `{H : State.Trait} :
-          Notation.Dot "clone" := {
-          Notation.dot := clone;
-        }.
-        
-        Global Instance I : core.clone.Clone.Trait Self := {
-          core.clone.Clone.clone `{H : State.Trait} := clone;
-        }.
-      End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module
-        Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-          core.marker.StructuralPartialEq.Build_Trait _.
-      End
-        Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module
-        Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Parameter eq : forall `{H : State.Trait}, ref Self->
-            ref ink_env.engine.off_chain.call_data.CallData
-            -> M (H := H) bool.
-        
-        Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-          Notation.dot := eq;
-        }.
-        
-        Global Instance I : core.cmp.PartialEq.Trait Self := {
-          core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-        }.
-      End
-        Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module
-        Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Global Instance I : core.marker.StructuralEq.Trait Self :=
-          core.marker.StructuralEq.Build_Trait _.
-      End
-        Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-                Self
-            -> M (H := H) unit.
-        
-        Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-          Notation.Dot "assert_receiver_is_total_eq" := {
-          Notation.dot := assert_receiver_is_total_eq;
-        }.
-        
-        Global Instance I : core.cmp.Eq.Trait Self := {
-        }.
-      End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module Impl_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Parameter new : forall
-              `{H : State.Trait},
-              ink_env.call.selector.Selector
-            -> M (H := H) Self.
-        
-        Global Instance AssociatedFunction_new `{H : State.Trait} :
-          Notation.DoubleColon Self "new" := {
-          Notation.double_colon := new;
-        }.
-        
-        Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-            ref A
-            -> M (H := H) unit.
-        
-        Global Instance Method_push_arg `{H : State.Trait} :
-          Notation.Dot "push_arg" := {
-          Notation.dot := push_arg;
-        }.
-        
-        Parameter selector : forall `{H : State.Trait}, ref Self
-            -> M (H := H) ink_env.call.selector.Selector.
-        
-        Global Instance Method_selector `{H : State.Trait} :
-          Notation.Dot "selector" := {
-          Notation.dot := selector;
-        }.
-        
-        Parameter params : forall `{H : State.Trait}, ref Self
-            -> M (H := H) (ref Slice).
-        
-        Global Instance Method_params `{H : State.Trait} :
-          Notation.Dot "params" := {
-          Notation.dot := params;
-        }.
-        
-        Parameter to_bytes : forall `{H : State.Trait}, ref Self
-            -> M (H := H) (ref Slice).
-        
-        Global Instance Method_to_bytes `{H : State.Trait} :
-          Notation.Dot "to_bytes" := {
-          Notation.dot := to_bytes;
-        }.
-      End Impl_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Parameter size_hint : forall `{H : State.Trait}, ref Self
-            -> M (H := H) usize.
-        
-        Global Instance Method_size_hint `{H : State.Trait} :
-          Notation.Dot "size_hint" := {
-          Notation.dot := size_hint;
-        }.
-        
-        Parameter encode_to : forall `{H : State.Trait}, ref Self->
-            mut_ref T
-            -> M (H := H) unit.
-        
-        Global Instance Method_encode_to `{H : State.Trait} :
-          Notation.Dot "encode_to" := {
-          Notation.dot := encode_to;
-        }.
-        
-        Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-        }.
-      End
-        Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-      
-      Module
-        Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
-        Definition Self := ink_env.engine.off_chain.call_data.CallData.
-        
-        Parameter decode : forall `{H : State.Trait}, mut_ref I
-            ->
-              M (H := H)
-                (core.result.Result Self parity_scale_codec.error.Error).
-        
-        Global Instance AssociatedFunction_decode `{H : State.Trait} :
-          Notation.DoubleColon Self "decode" := {
-          Notation.double_colon := decode;
-        }.
-        
-        Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-          parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
-        }.
-      End
-        Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
+      Definition CallData : Set := @CallData.t.
     End call_data.
     
     Module impls.
-      Definition BUFFER_SIZE `{H : State.Trait} : usize := run (1.["shl"] 14).
-      
-      Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-        Definition Self := ink_env.hash.Blake2x128.
-        
-        Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
-        
-        Global Instance AssociatedFunction_hash `{H : State.Trait} :
-          Notation.DoubleColon Self "hash" := {
-          Notation.double_colon := hash;
-        }.
-        
-        Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-          ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-        }.
-      End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-      
-      Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-        Definition Self := ink_env.hash.Blake2x256.
-        
-        Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
-        
-        Global Instance AssociatedFunction_hash `{H : State.Trait} :
-          Notation.DoubleColon Self "hash" := {
-          Notation.double_colon := hash;
-        }.
-        
-        Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-          ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-        }.
-      End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-      
-      Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-        Definition Self := ink_env.hash.Sha2x256.
-        
-        Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
-        
-        Global Instance AssociatedFunction_hash `{H : State.Trait} :
-          Notation.DoubleColon Self "hash" := {
-          Notation.double_colon := hash;
-        }.
-        
-        Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-          ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-        }.
-      End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-      
-      Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-        Definition Self := ink_env.hash.Keccak256.
-        
-        Parameter hash : forall `{H : State.Trait}, ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
-        
-        Global Instance AssociatedFunction_hash `{H : State.Trait} :
-          Notation.DoubleColon Self "hash" := {
-          Notation.double_colon := hash;
-        }.
-        
-        Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-          ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-        }.
-      End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-      
-      Module Impl_core_convert_From_for_ink_env_error_Error.
-        Definition Self := ink_env.error.Error.
-        
-        Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-            -> M (H := H) Self.
-        
-        Global Instance AssociatedFunction_from `{H : State.Trait} :
-          Notation.DoubleColon Self "from" := {
-          Notation.double_colon := from;
-        }.
-        
-        Global Instance I :
-            core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
-          core.convert.From.from `{H : State.Trait} := from;
-        }.
-      End Impl_core_convert_From_for_ink_env_error_Error.
-      
       Module TopicsBuilder.
+        Unset Primitive Projections.
         Record t : Set := {
           topics : alloc.vec.Vec (alloc.vec.Vec u8);
         }.
+        Global Set Primitive Projections.
         
         Global Instance Get_topics : Notation.Dot "topics" := {
           Notation.dot '(Build_t x0) := x0;
         }.
       End TopicsBuilder.
-      Definition TopicsBuilder : Set := TopicsBuilder.t.
-      
-      Module
-        Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-        Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-        
-        Parameter default : forall `{H : State.Trait}, unit
-            -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
-        
-        Global Instance AssociatedFunction_default `{H : State.Trait} :
-          Notation.DoubleColon Self "default" := {
-          Notation.double_colon := default;
-        }.
-        
-        Global Instance I : core.default.Default.Trait Self := {
-          core.default.Default.default `{H : State.Trait} := default;
-        }.
-      End
-        Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-      
-      Module
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-      Section
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-        Context {E : Set}.
-        
-        Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-        
-        Definition Output : Set := alloc.vec.Vec u8.
-        
-        Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-            usize
-            -> M (H := H) unit.
-        
-        Global Instance Method_expect `{H : State.Trait} :
-          Notation.Dot "expect" := {
-          Notation.dot := expect;
-        }.
-        
-        Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-            ref T
-            -> M (H := H) unit.
-        
-        Global Instance Method_push_topic `{H : State.Trait} :
-          Notation.Dot "push_topic" := {
-          Notation.dot := push_topic;
-        }.
-        
-        Parameter output : forall `{H : State.Trait}, Self
-            -> M (H := H) ImplSelf.Output.
-        
-        Global Instance Method_output `{H : State.Trait} :
-          Notation.Dot "output" := {
-          Notation.dot := output;
-        }.
-        
-        Global Instance I :
-            ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
-          ink_env.topics.TopicsBuilderBackend.expect
-            `{H : State.Trait}
-            :=
-            expect;
-          ink_env.topics.TopicsBuilderBackend.push_topic
-            `{H : State.Trait}
-            :=
-            push_topic;
-          ink_env.topics.TopicsBuilderBackend.output
-            `{H : State.Trait}
-            :=
-            output;
-        }.
-      End
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-      End
-        Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-      
-      Module Impl_ink_env_engine_off_chain_EnvInstance.
-        Definition Self := ink_env.engine.off_chain.EnvInstance.
-        
-        Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-            (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-            -> M (H := H) (ink_env.error.Result T).
-        
-        Global Instance Method_get_property `{H : State.Trait} :
-          Notation.Dot "get_property" := {
-          Notation.dot := get_property;
-        }.
-      End Impl_ink_env_engine_off_chain_EnvInstance.
-      
-      Module
-        Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-        Definition Self := ink_env.engine.off_chain.EnvInstance.
-        
-        Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref K->
-            ref V
-            -> M (H := H) (core.option.Option u32).
-        
-        Global Instance Method_set_contract_storage `{H : State.Trait} :
-          Notation.Dot "set_contract_storage" := {
-          Notation.dot := set_contract_storage;
-        }.
-        
-        Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref K
-            -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-        
-        Global Instance Method_get_contract_storage `{H : State.Trait} :
-          Notation.Dot "get_contract_storage" := {
-          Notation.dot := get_contract_storage;
-        }.
-        
-        Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref K
-            -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-        
-        Global Instance Method_take_contract_storage `{H : State.Trait} :
-          Notation.Dot "take_contract_storage" := {
-          Notation.dot := take_contract_storage;
-        }.
-        
-        Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref K
-            -> M (H := H) (core.option.Option u32).
-        
-        Global Instance Method_contains_contract_storage `{H : State.Trait} :
-          Notation.Dot "contains_contract_storage" := {
-          Notation.dot := contains_contract_storage;
-        }.
-        
-        Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref K
-            -> M (H := H) (core.option.Option u32).
-        
-        Global Instance Method_clear_contract_storage `{H : State.Trait} :
-          Notation.Dot "clear_contract_storage" := {
-          Notation.dot := clear_contract_storage;
-        }.
-        
-        Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) (ink_env.error.Result T).
-        
-        Global Instance Method_decode_input `{H : State.Trait} :
-          Notation.Dot "decode_input" := {
-          Notation.dot := decode_input;
-        }.
-        
-        Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
-            ink_env.backend.ReturnFlags->
-            ref R
-            -> M (H := H) Empty_set.
-        
-        Global Instance Method_return_value `{H : State.Trait} :
-          Notation.Dot "return_value" := {
-          Notation.dot := return_value;
-        }.
-        
-        Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-            ref str
-            -> M (H := H) unit.
-        
-        Global Instance Method_debug_message `{H : State.Trait} :
-          Notation.Dot "debug_message" := {
-          Notation.dot := debug_message;
-        }.
-        
-        Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
-            ref Slice->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
-        
-        Global Instance Method_hash_bytes `{H : State.Trait} :
-          Notation.Dot "hash_bytes" := {
-          Notation.dot := hash_bytes;
-        }.
-        
-        Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
-            ref T->
-            mut_ref ink_env.hash.HashOutput.Type
-            -> M (H := H) unit.
-        
-        Global Instance Method_hash_encoded `{H : State.Trait} :
-          Notation.Dot "hash_encoded" := {
-          Notation.dot := hash_encoded;
-        }.
-        
-        Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
-            ref list u8->
-            ref list u8->
-            mut_ref list u8
-            -> M (H := H) (ink_env.error.Result unit).
-        
-        Global Instance Method_ecdsa_recover `{H : State.Trait} :
-          Notation.Dot "ecdsa_recover" := {
-          Notation.dot := ecdsa_recover;
-        }.
-        
-        Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref list u8->
-            mut_ref list u8
-            -> M (H := H) (ink_env.error.Result unit).
-        
-        Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
-          Notation.Dot "ecdsa_to_eth_address" := {
-          Notation.dot := ecdsa_to_eth_address;
-        }.
-        
-        Parameter call_chain_extension : forall `{H : State.Trait}, mut_ref
-                Self->
-            u32->
-            ref I->
-            F->
-            D
-            -> M (H := H) (core.result.Result T E).
-        
-        Global Instance Method_call_chain_extension `{H : State.Trait} :
-          Notation.Dot "call_chain_extension" := {
-          Notation.dot := call_chain_extension;
-        }.
-        
-        Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-            ref Slice
-            -> M (H := H) (ink_env.error.Result unit).
-        
-        Global Instance Method_set_code_hash `{H : State.Trait} :
-          Notation.Dot "set_code_hash" := {
-          Notation.dot := set_code_hash;
-        }.
-        
-        Global Instance I : ink_env.backend.EnvBackend.Trait Self := {
-          ink_env.backend.EnvBackend.set_contract_storage
-            `{H : State.Trait}
-            :=
-            set_contract_storage;
-          ink_env.backend.EnvBackend.get_contract_storage
-            `{H : State.Trait}
-            :=
-            get_contract_storage;
-          ink_env.backend.EnvBackend.take_contract_storage
-            `{H : State.Trait}
-            :=
-            take_contract_storage;
-          ink_env.backend.EnvBackend.contains_contract_storage
-            `{H : State.Trait}
-            :=
-            contains_contract_storage;
-          ink_env.backend.EnvBackend.clear_contract_storage
-            `{H : State.Trait}
-            :=
-            clear_contract_storage;
-          ink_env.backend.EnvBackend.decode_input
-            `{H : State.Trait}
-            :=
-            decode_input;
-          ink_env.backend.EnvBackend.return_value
-            `{H : State.Trait}
-            :=
-            return_value;
-          ink_env.backend.EnvBackend.debug_message
-            `{H : State.Trait}
-            :=
-            debug_message;
-          ink_env.backend.EnvBackend.hash_bytes
-            `{H : State.Trait}
-            :=
-            hash_bytes;
-          ink_env.backend.EnvBackend.hash_encoded
-            `{H : State.Trait}
-            :=
-            hash_encoded;
-          ink_env.backend.EnvBackend.ecdsa_recover
-            `{H : State.Trait}
-            :=
-            ecdsa_recover;
-          ink_env.backend.EnvBackend.ecdsa_to_eth_address
-            `{H : State.Trait}
-            :=
-            ecdsa_to_eth_address;
-          ink_env.backend.EnvBackend.call_chain_extension
-            `{H : State.Trait}
-            :=
-            call_chain_extension;
-          ink_env.backend.EnvBackend.set_code_hash
-            `{H : State.Trait}
-            :=
-            set_code_hash;
-        }.
-      End
-        Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-      
-      Module
-        Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-        Definition Self := ink_env.engine.off_chain.EnvInstance.
-        
-        Parameter caller : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.AccountId.
-        
-        Global Instance Method_caller `{H : State.Trait} :
-          Notation.Dot "caller" := {
-          Notation.dot := caller;
-        }.
-        
-        Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Balance.
-        
-        Global Instance Method_transferred_value `{H : State.Trait} :
-          Notation.Dot "transferred_value" := {
-          Notation.dot := transferred_value;
-        }.
-        
-        Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) u64.
-        
-        Global Instance Method_gas_left `{H : State.Trait} :
-          Notation.Dot "gas_left" := {
-          Notation.dot := gas_left;
-        }.
-        
-        Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Timestamp.
-        
-        Global Instance Method_block_timestamp `{H : State.Trait} :
-          Notation.Dot "block_timestamp" := {
-          Notation.dot := block_timestamp;
-        }.
-        
-        Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.AccountId.
-        
-        Global Instance Method_account_id `{H : State.Trait} :
-          Notation.Dot "account_id" := {
-          Notation.dot := account_id;
-        }.
-        
-        Parameter balance : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Balance.
-        
-        Global Instance Method_balance `{H : State.Trait} :
-          Notation.Dot "balance" := {
-          Notation.dot := balance;
-        }.
-        
-        Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.BlockNumber.
-        
-        Global Instance Method_block_number `{H : State.Trait} :
-          Notation.Dot "block_number" := {
-          Notation.dot := block_number;
-        }.
-        
-        Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) ImplE.Balance.
-        
-        Global Instance Method_minimum_balance `{H : State.Trait} :
-          Notation.Dot "minimum_balance" := {
-          Notation.dot := minimum_balance;
-        }.
-        
-        Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-            Event
-            -> M (H := H) unit.
-        
-        Global Instance Method_emit_event `{H : State.Trait} :
-          Notation.Dot "emit_event" := {
-          Notation.dot := emit_event;
-        }.
-        
-        Parameter invoke_contract : forall `{H : State.Trait}, mut_ref Self->
-            ref
-                (ink_env.call.call_builder.CallParams
-                  E
-                  (ink_env.call.call_builder.Call E)
-                  Args
-                  R)
-            ->
-              M (H := H)
-                (ink_env.error.Result (ink_primitives.MessageResult R)).
-        
-        Global Instance Method_invoke_contract `{H : State.Trait} :
-          Notation.Dot "invoke_contract" := {
-          Notation.dot := invoke_contract;
-        }.
-        
-        Parameter invoke_contract_delegate : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref
-                (ink_env.call.call_builder.CallParams
-                  E
-                  (ink_env.call.call_builder.DelegateCall E)
-                  Args
-                  R)
-            ->
-              M (H := H)
-                (ink_env.error.Result (ink_primitives.MessageResult R)).
-        
-        Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
-          Notation.Dot "invoke_contract_delegate" := {
-          Notation.dot := invoke_contract_delegate;
-        }.
-        
-        Parameter instantiate_contract : forall `{H : State.Trait}, mut_ref
-                Self->
-            ref
-                (ink_env.call.create_builder.CreateParams
-                  E
-                  ContractRef
-                  Args
-                  Salt
-                  R)
-            ->
-              M (H := H)
-                (ink_env.error.Result
-                  (ink_primitives.ConstructorResult
-                    ink_env.call.create_builder.ConstructorReturnType.Output)).
-        
-        Global Instance Method_instantiate_contract `{H : State.Trait} :
-          Notation.Dot "instantiate_contract" := {
-          Notation.dot := instantiate_contract;
-        }.
-        
-        Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-            ImplE.AccountId
-            -> M (H := H) Empty_set.
-        
-        Global Instance Method_terminate_contract `{H : State.Trait} :
-          Notation.Dot "terminate_contract" := {
-          Notation.dot := terminate_contract;
-        }.
-        
-        Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
-            ImplE.AccountId->
-            ImplE.Balance
-            -> M (H := H) (ink_env.error.Result unit).
-        
-        Global Instance Method_transfer `{H : State.Trait} :
-          Notation.Dot "transfer" := {
-          Notation.dot := transfer;
-        }.
-        
-        Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-            u64
-            -> M (H := H) ImplE.Balance.
-        
-        Global Instance Method_weight_to_fee `{H : State.Trait} :
-          Notation.Dot "weight_to_fee" := {
-          Notation.dot := weight_to_fee;
-        }.
-        
-        Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-            ref ImplE.AccountId
-            -> M (H := H) bool.
-        
-        Global Instance Method_is_contract `{H : State.Trait} :
-          Notation.Dot "is_contract" := {
-          Notation.dot := is_contract;
-        }.
-        
-        Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) bool.
-        
-        Global Instance Method_caller_is_origin `{H : State.Trait} :
-          Notation.Dot "caller_is_origin" := {
-          Notation.dot := caller_is_origin;
-        }.
-        
-        Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-            ref ImplE.AccountId
-            -> M (H := H) (ink_env.error.Result ImplE.Hash).
-        
-        Global Instance Method_code_hash `{H : State.Trait} :
-          Notation.Dot "code_hash" := {
-          Notation.dot := code_hash;
-        }.
-        
-        Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-            -> M (H := H) (ink_env.error.Result ImplE.Hash).
-        
-        Global Instance Method_own_code_hash `{H : State.Trait} :
-          Notation.Dot "own_code_hash" := {
-          Notation.dot := own_code_hash;
-        }.
-        
-        Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-            ref Call
-            -> M (H := H) (ink_env.error.Result unit).
-        
-        Global Instance Method_call_runtime `{H : State.Trait} :
-          Notation.Dot "call_runtime" := {
-          Notation.dot := call_runtime;
-        }.
-        
-        Global Instance I : ink_env.backend.TypedEnvBackend.Trait Self := {
-          ink_env.backend.TypedEnvBackend.caller `{H : State.Trait} := caller;
-          ink_env.backend.TypedEnvBackend.transferred_value
-            `{H : State.Trait}
-            :=
-            transferred_value;
-          ink_env.backend.TypedEnvBackend.weight_to_fee
-            `{H : State.Trait}
-            :=
-            weight_to_fee;
-          ink_env.backend.TypedEnvBackend.gas_left
-            `{H : State.Trait}
-            :=
-            gas_left;
-          ink_env.backend.TypedEnvBackend.block_timestamp
-            `{H : State.Trait}
-            :=
-            block_timestamp;
-          ink_env.backend.TypedEnvBackend.account_id
-            `{H : State.Trait}
-            :=
-            account_id;
-          ink_env.backend.TypedEnvBackend.balance `{H : State.Trait} := balance;
-          ink_env.backend.TypedEnvBackend.block_number
-            `{H : State.Trait}
-            :=
-            block_number;
-          ink_env.backend.TypedEnvBackend.minimum_balance
-            `{H : State.Trait}
-            :=
-            minimum_balance;
-          ink_env.backend.TypedEnvBackend.emit_event
-            `{H : State.Trait}
-            :=
-            emit_event;
-          ink_env.backend.TypedEnvBackend.invoke_contract
-            `{H : State.Trait}
-            :=
-            invoke_contract;
-          ink_env.backend.TypedEnvBackend.invoke_contract_delegate
-            `{H : State.Trait}
-            :=
-            invoke_contract_delegate;
-          ink_env.backend.TypedEnvBackend.instantiate_contract
-            `{H : State.Trait}
-            :=
-            instantiate_contract;
-          ink_env.backend.TypedEnvBackend.terminate_contract
-            `{H : State.Trait}
-            :=
-            terminate_contract;
-          ink_env.backend.TypedEnvBackend.transfer
-            `{H : State.Trait}
-            :=
-            transfer;
-          ink_env.backend.TypedEnvBackend.is_contract
-            `{H : State.Trait}
-            :=
-            is_contract;
-          ink_env.backend.TypedEnvBackend.caller_is_origin
-            `{H : State.Trait}
-            :=
-            caller_is_origin;
-          ink_env.backend.TypedEnvBackend.code_hash
-            `{H : State.Trait}
-            :=
-            code_hash;
-          ink_env.backend.TypedEnvBackend.own_code_hash
-            `{H : State.Trait}
-            :=
-            own_code_hash;
-          ink_env.backend.TypedEnvBackend.call_runtime
-            `{H : State.Trait}
-            :=
-            call_runtime;
-        }.
-      End
-        Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
+      Definition TopicsBuilder : Set := @TopicsBuilder.t.
     End impls.
     
     Module test_api.
       Module EmittedEvent.
+        Unset Primitive Projections.
         Record t : Set := {
           topics : alloc.vec.Vec (alloc.vec.Vec u8);
           data : alloc.vec.Vec u8;
         }.
+        Global Set Primitive Projections.
         
         Global Instance Get_topics : Notation.Dot "topics" := {
           Notation.dot '(Build_t x0 _) := x0;
@@ -11719,145 +3458,428 @@ Module engine.
           Notation.dot '(Build_t _ x1) := x1;
         }.
       End EmittedEvent.
-      Definition EmittedEvent : Set := EmittedEvent.t.
+      Definition EmittedEvent : Set := @EmittedEvent.t.
       
-      Module
-        Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-        Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-        
-        Parameter clone : forall `{H : State.Trait}, ref Self
-            -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
-        
-        Global Instance Method_clone `{H : State.Trait} :
-          Notation.Dot "clone" := {
-          Notation.dot := clone;
-        }.
-        
-        Global Instance I : core.clone.Clone.Trait Self := {
-          core.clone.Clone.clone `{H : State.Trait} := clone;
-        }.
-      End
-        Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-      
-      Parameter set_account_balance : forall `{H : State.Trait}, forall
+      Parameter set_account_balance : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.AccountId->
-          ImplT.Balance
-          -> M (H := H) unit.
+          ImplT.AccountId ->
+          ImplT.Balance ->
+          M (H := H) unit.
       
-      Parameter get_account_balance : forall `{H : State.Trait}, forall
+      Parameter get_account_balance : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.AccountId
-          -> M (H := H) (ink_env.error.Result ImplT.Balance).
+          ImplT.AccountId ->
+          M (H := H) (ink_env.error.Result ImplT.Balance).
       
-      Parameter register_chain_extension : forall `{H : State.Trait}, forall
+      Parameter register_chain_extension : forall `{H : State.Trait},
+          forall
           {E : Set},
           `{ink_engine.chain_extension.ChainExtension.Trait E}
-          E
-          -> M (H := H) unit.
+          E ->
+          M (H := H) unit.
       
-      Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
-          -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
+      Parameter recorded_debug_messages : forall `{H : State.Trait},
+          M (H := H) ink_engine.test_api.RecordedDebugMessages.
       
-      Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-          -> M (H := H) unit.
+      Parameter set_clear_storage_disabled : forall `{H : State.Trait},
+          bool ->
+          M (H := H) unit.
       
-      Parameter advance_block : forall `{H : State.Trait}, forall
+      Parameter advance_block : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          unit
-          -> M (H := H) unit.
+          M (H := H) unit.
       
-      Parameter set_caller : forall `{H : State.Trait}, forall
-          {T : Set},
-          `{ink_env.types.Environment.Trait T}
-          `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) unit.
-      
-      Parameter set_callee : forall `{H : State.Trait}, forall
+      Parameter set_caller : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) unit.
+          ImplT.AccountId ->
+          M (H := H) unit.
       
-      Parameter set_contract : forall `{H : State.Trait}, forall
+      Parameter set_callee : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) unit.
+          ImplT.AccountId ->
+          M (H := H) unit.
       
-      Parameter is_contract : forall `{H : State.Trait}, forall
+      Parameter set_contract : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          ImplT.AccountId
-          -> M (H := H) bool.
+          ImplT.AccountId ->
+          M (H := H) unit.
       
-      Parameter callee : forall `{H : State.Trait}, forall
+      Parameter is_contract : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          unit
-          -> M (H := H) ImplT.AccountId.
+          `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+          ImplT.AccountId ->
+          M (H := H) bool.
       
-      Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
+      Parameter callee : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ref ImplT.AccountId
-          -> M (H := H) (usize * usize).
+          M (H := H) ImplT.AccountId.
       
-      Parameter set_value_transferred : forall `{H : State.Trait}, forall
+      Parameter get_contract_storage_rw : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.Balance
-          -> M (H := H) unit.
+          ref ImplT.AccountId ->
+          M (H := H) (usize * usize).
       
-      Parameter transfer_in : forall `{H : State.Trait}, forall
+      Parameter set_value_transferred : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.Balance
-          -> M (H := H) unit.
+          ImplT.Balance ->
+          M (H := H) unit.
       
-      Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
+      Parameter transfer_in : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ref ImplT.AccountId
-          -> M (H := H) (ink_env.error.Result usize).
+          ImplT.Balance ->
+          M (H := H) unit.
       
-      Parameter set_block_timestamp : forall `{H : State.Trait}, forall
+      Parameter count_used_storage_cells : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.Timestamp
-          -> M (H := H) unit.
+          ref ImplT.AccountId ->
+          M (H := H) (ink_env.error.Result usize).
       
-      Parameter set_block_number : forall `{H : State.Trait}, forall
+      Parameter set_block_timestamp : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
-          ImplT.BlockNumber
-          -> M (H := H) unit.
+          ImplT.Timestamp ->
+          M (H := H) unit.
       
-      Parameter run_test : forall `{H : State.Trait}, forall
+      Parameter set_block_number : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          `{ink_env.types.Environment.Trait T}
+          ImplT.BlockNumber ->
+          M (H := H) unit.
+      
+      Parameter run_test : forall `{H : State.Trait},
+          forall
           {T : Set} {F : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.ops.function.FnOnce.Trait
             ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
             F}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          F
-          -> M (H := H) (ink_env.error.Result unit).
+          F ->
+          M (H := H) (ink_env.error.Result unit).
       
-      Parameter default_accounts : forall `{H : State.Trait}, forall
+      Parameter default_accounts : forall `{H : State.Trait},
+          forall
           {T : Set},
           `{ink_env.types.Environment.Trait T}
           `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-          unit
-          -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+          M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
       
       Module DefaultAccounts.
+        Section DefaultAccounts.
+          Context {T : Set}.
+          Unset Primitive Projections.
+          Record t : Set := {
+            alice : ImplT.AccountId;
+            bob : ImplT.AccountId;
+            charlie : ImplT.AccountId;
+            django : ImplT.AccountId;
+            eve : ImplT.AccountId;
+            frank : ImplT.AccountId;
+          }.
+          Global Set Primitive Projections.
+          
+          Global Instance Get_alice : Notation.Dot "alice" := {
+            Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+          }.
+          Global Instance Get_bob : Notation.Dot "bob" := {
+            Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+          }.
+          Global Instance Get_charlie : Notation.Dot "charlie" := {
+            Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+          }.
+          Global Instance Get_django : Notation.Dot "django" := {
+            Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+          }.
+          Global Instance Get_eve : Notation.Dot "eve" := {
+            Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+          }.
+          Global Instance Get_frank : Notation.Dot "frank" := {
+            Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+          }.
+        End DefaultAccounts.
+      End DefaultAccounts.
+      Definition DefaultAccounts : Set := @DefaultAccounts.t.
+      
+      Parameter recorded_events : forall `{H : State.Trait},
+          M (H := H) OpaqueDef.
+      
+      Parameter assert_contract_termination : forall `{H : State.Trait},
+          forall
+          {T : Set} {F : Set},
+          `{ink_env.types.Environment.Trait T}
+          `{core.ops.function.FnMut.Trait unit F}
+          `{core.panic.unwind_safe.UnwindSafe.Trait F}
+          `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
+          `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
+          F ->
+          ImplT.AccountId ->
+          ImplT.Balance ->
+          M (H := H) unit.
+    End test_api.
+    
+    Module EnvInstance.
+      Unset Primitive Projections.
+      Record t : Set := {
+        engine : ink_engine.ext.Engine;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_engine : Notation.Dot "engine" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End EnvInstance.
+    Definition EnvInstance : Set := @EnvInstance.t.
+    
+    Module OffChainError.
+      Inductive t : Set :=
+      | Account (_ : ink_env.engine.off_chain.AccountError)
+      | UninitializedBlocks
+      | UninitializedExecutionContext
+      | UnregisteredChainExtension.
+    End OffChainError.
+    Definition OffChainError := OffChainError.t.
+    
+    Module AccountError.
+      Inductive t : Set :=
+      | Decoding (_ : parity_scale_codec.error.Error)
+      | UnexpectedUserAccount
+      | NoAccountForId (_ : alloc.vec.Vec u8).
+    End AccountError.
+    Definition AccountError := AccountError.t.
+  End off_chain.
+End engine.
+
+Module OnInstance.
+  Class Trait (Self : Set) : Set := {
+    on_instance
+      `{H : State.Trait}
+      {F R: Set}
+      `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+      :
+      F -> (M (H := H) R);
+  }.
+  
+  Global Instance Method_on_instance `{H : State.Trait} `(Trait)
+    : Notation.Dot "on_instance" := {
+    Notation.dot := on_instance;
+  }.
+End OnInstance.
+
+Module off_chain.
+  Module call_data.
+    Module CallData.
+      Unset Primitive Projections.
+      Record t : Set := {
+        bytes : alloc.vec.Vec u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_bytes : Notation.Dot "bytes" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End CallData.
+    Definition CallData : Set := @CallData.t.
+  End call_data.
+  
+  Module impls.
+    Module TopicsBuilder.
+      Unset Primitive Projections.
+      Record t : Set := {
+        topics : alloc.vec.Vec (alloc.vec.Vec u8);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_topics : Notation.Dot "topics" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End TopicsBuilder.
+    Definition TopicsBuilder : Set := @TopicsBuilder.t.
+  End impls.
+  
+  Module test_api.
+    Module EmittedEvent.
+      Unset Primitive Projections.
+      Record t : Set := {
+        topics : alloc.vec.Vec (alloc.vec.Vec u8);
+        data : alloc.vec.Vec u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_topics : Notation.Dot "topics" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_data : Notation.Dot "data" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End EmittedEvent.
+    Definition EmittedEvent : Set := @EmittedEvent.t.
+    
+    Parameter set_account_balance : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ImplT.AccountId ->
+        ImplT.Balance ->
+        M (H := H) unit.
+    
+    Parameter get_account_balance : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ImplT.AccountId ->
+        M (H := H) (ink_env.error.Result ImplT.Balance).
+    
+    Parameter register_chain_extension : forall `{H : State.Trait},
+        forall
+        {E : Set},
+        `{ink_engine.chain_extension.ChainExtension.Trait E}
+        E ->
+        M (H := H) unit.
+    
+    Parameter recorded_debug_messages : forall `{H : State.Trait},
+        M (H := H) ink_engine.test_api.RecordedDebugMessages.
+    
+    Parameter set_clear_storage_disabled : forall `{H : State.Trait},
+        bool ->
+        M (H := H) unit.
+    
+    Parameter advance_block : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        M (H := H) unit.
+    
+    Parameter set_caller : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+        ImplT.AccountId ->
+        M (H := H) unit.
+    
+    Parameter set_callee : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+        ImplT.AccountId ->
+        M (H := H) unit.
+    
+    Parameter set_contract : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+        ImplT.AccountId ->
+        M (H := H) unit.
+    
+    Parameter is_contract : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+        ImplT.AccountId ->
+        M (H := H) bool.
+    
+    Parameter callee : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        M (H := H) ImplT.AccountId.
+    
+    Parameter get_contract_storage_rw : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ref ImplT.AccountId ->
+        M (H := H) (usize * usize).
+    
+    Parameter set_value_transferred : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ImplT.Balance ->
+        M (H := H) unit.
+    
+    Parameter transfer_in : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ImplT.Balance ->
+        M (H := H) unit.
+    
+    Parameter count_used_storage_cells : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ref ImplT.AccountId ->
+        M (H := H) (ink_env.error.Result usize).
+    
+    Parameter set_block_timestamp : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ImplT.Timestamp ->
+        M (H := H) unit.
+    
+    Parameter set_block_number : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        ImplT.BlockNumber ->
+        M (H := H) unit.
+    
+    Parameter run_test : forall `{H : State.Trait},
+        forall
+        {T : Set} {F : Set},
+        `{ink_env.types.Environment.Trait T}
+        `{core.ops.function.FnOnce.Trait
+          ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+          F}
+        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+        F ->
+        M (H := H) (ink_env.error.Result unit).
+    
+    Parameter default_accounts : forall `{H : State.Trait},
+        forall
+        {T : Set},
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+        M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+    
+    Module DefaultAccounts.
+      Section DefaultAccounts.
+        Context {T : Set}.
+        Unset Primitive Projections.
         Record t : Set := {
           alice : ImplT.AccountId;
           bob : ImplT.AccountId;
@@ -11866,6 +3888,7 @@ Module engine.
           eve : ImplT.AccountId;
           frank : ImplT.AccountId;
         }.
+        Global Set Primitive Projections.
         
         Global Instance Get_alice : Notation.Dot "alice" := {
           Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -11886,1365 +3909,267 @@ Module engine.
           Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
         }.
       End DefaultAccounts.
-      Definition DefaultAccounts : Set := DefaultAccounts.t.
-      
-      Parameter recorded_events : forall `{H : State.Trait}, unit
-          -> M (H := H) OpaqueDef.
-      
-      Parameter assert_contract_termination : forall `{H : State.Trait}, forall
-          {T : Set} {F : Set},
-          `{ink_env.types.Environment.Trait T}
-          `{core.ops.function.FnMut.Trait unit F}
-          `{core.panic.unwind_safe.UnwindSafe.Trait F}
-          `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
-          `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-          F->
-          ImplT.AccountId->
-          ImplT.Balance
-          -> M (H := H) unit.
-    End test_api.
+    End DefaultAccounts.
+    Definition DefaultAccounts : Set := @DefaultAccounts.t.
     
-    Module types.
-      Module
-        Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-        Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-        
-        Parameter from : forall
-              `{H : State.Trait},
-              ink_engine.test_api.EmittedEvent
-            -> M (H := H) Self.
-        
-        Global Instance AssociatedFunction_from `{H : State.Trait} :
-          Notation.DoubleColon Self "from" := {
-          Notation.double_colon := from;
-        }.
-        
-        Global Instance I :
-            core.convert.From.Trait
-              Self
-              (T := ink_engine.test_api.EmittedEvent) := {
-          core.convert.From.from `{H : State.Trait} := from;
-        }.
-      End
-        Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-      
-      Module Impl_core_convert_From_for_ink_env_error_Error.
-        Definition Self := ink_env.error.Error.
-        
-        Parameter from : forall `{H : State.Trait}, ink_engine.Error
-            -> M (H := H) Self.
-        
-        Global Instance AssociatedFunction_from `{H : State.Trait} :
-          Notation.DoubleColon Self "from" := {
-          Notation.double_colon := from;
-        }.
-        
-        Global Instance I :
-            core.convert.From.Trait Self (T := ink_engine.Error) := {
-          core.convert.From.from `{H : State.Trait} := from;
-        }.
-      End Impl_core_convert_From_for_ink_env_error_Error.
-      
-      Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-        Definition Self := ink_env.engine.off_chain.AccountError.
-        
-        Parameter from : forall
-              `{H : State.Trait},
-              ink_engine.types.AccountError
-            -> M (H := H) Self.
-        
-        Global Instance AssociatedFunction_from `{H : State.Trait} :
-          Notation.DoubleColon Self "from" := {
-          Notation.double_colon := from;
-        }.
-        
-        Global Instance I :
-            core.convert.From.Trait
-              Self
-              (T := ink_engine.types.AccountError) := {
-          core.convert.From.from `{H : State.Trait} := from;
-        }.
-      End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-      
-      Module Impl_core_convert_From_for_ink_env_error_Error.
-        Definition Self := ink_env.error.Error.
-        
-        Parameter from : forall
-              `{H : State.Trait},
-              ink_engine.types.AccountError
-            -> M (H := H) Self.
-        
-        Global Instance AssociatedFunction_from `{H : State.Trait} :
-          Notation.DoubleColon Self "from" := {
-          Notation.double_colon := from;
-        }.
-        
-        Global Instance I :
-            core.convert.From.Trait
-              Self
-              (T := ink_engine.types.AccountError) := {
-          core.convert.From.from `{H : State.Trait} := from;
-        }.
-      End Impl_core_convert_From_for_ink_env_error_Error.
-    End types.
+    Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
     
-    Module EnvInstance.
-      Record t : Set := {
-        engine : ink_engine.ext.Engine;
-      }.
-      
-      Global Instance Get_engine : Notation.Dot "engine" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End EnvInstance.
-    Definition EnvInstance : Set := EnvInstance.t.
-    
-    Module
-      Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-      Definition Self := ink_env.engine.off_chain.EnvInstance.
-      
-      Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
-      
-      Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
-        Notation.DoubleColon Self "on_instance" := {
-        Notation.double_colon := on_instance;
-      }.
-      
-      Global Instance I : ink_env.engine.OnInstance.Trait Self := {
-        ink_env.engine.OnInstance.on_instance `{H : State.Trait} := on_instance;
-      }.
-    End Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-    
-    Module OffChainError.
-      Inductive t : Set :=
-      | Account (_ : ink_env.engine.off_chain.AccountError)
-      | UninitializedBlocks
-      | UninitializedExecutionContext
-      | UnregisteredChainExtension.
-    End OffChainError.
-    Definition OffChainError := OffChainError.t.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
-      Definition Self := ink_env.engine.off_chain.OffChainError.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
-    
-    Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
-      Definition Self := ink_env.engine.off_chain.OffChainError.
-      
-      Parameter from : forall
-            `{H : State.Trait},
-            ink_env.engine.off_chain.AccountError
-          -> M (H := H) ink_env.engine.off_chain.OffChainError.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I :
-          core.convert.From.Trait
-            Self
-            (T := ink_env.engine.off_chain.AccountError) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
-    
-    Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
-      Definition Self := ink_env.engine.off_chain.OffChainError.
-      
-      Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Trait _.
-    End
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
-    
-    Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
-      Definition Self := ink_env.engine.off_chain.OffChainError.
-      
-      Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.engine.off_chain.OffChainError
-          -> M (H := H) bool.
-      
-      Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-        Notation.dot := eq;
-      }.
-      
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
-        core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-      }.
-    End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
-    
-    Module
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
-      Definition Self := ink_env.engine.off_chain.OffChainError.
-      
-      Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Trait _.
-    End
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
-    
-    Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
-      Definition Self := ink_env.engine.off_chain.OffChainError.
-      
-      Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
-      
-      Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-        Notation.Dot "assert_receiver_is_total_eq" := {
-        Notation.dot := assert_receiver_is_total_eq;
-      }.
-      
-      Global Instance I : core.cmp.Eq.Trait Self := {
-      }.
-    End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
-    
-    Module AccountError.
-      Inductive t : Set :=
-      | Decoding (_ : parity_scale_codec.error.Error)
-      | UnexpectedUserAccount
-      | NoAccountForId (_ : alloc.vec.Vec u8).
-    End AccountError.
-    Definition AccountError := AccountError.t.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
-      Definition Self := ink_env.engine.off_chain.AccountError.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
-    
-    Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-      Definition Self := ink_env.engine.off_chain.AccountError.
-      
-      Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-          -> M (H := H) ink_env.engine.off_chain.AccountError.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I :
-          core.convert.From.Trait
-            Self
-            (T := parity_scale_codec.error.Error) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-    
-    Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
-      Definition Self := ink_env.engine.off_chain.AccountError.
-      
-      Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Trait _.
-    End
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
-    
-    Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
-      Definition Self := ink_env.engine.off_chain.AccountError.
-      
-      Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.engine.off_chain.AccountError
-          -> M (H := H) bool.
-      
-      Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-        Notation.dot := eq;
-      }.
-      
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
-        core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-      }.
-    End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
-    
-    Module
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
-      Definition Self := ink_env.engine.off_chain.AccountError.
-      
-      Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Trait _.
-    End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
-    
-    Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
-      Definition Self := ink_env.engine.off_chain.AccountError.
-      
-      Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
-      
-      Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-        Notation.Dot "assert_receiver_is_total_eq" := {
-        Notation.dot := assert_receiver_is_total_eq;
-      }.
-      
-      Global Instance I : core.cmp.Eq.Trait Self := {
-      }.
-    End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
-  End off_chain.
-  
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter decode_instantiate_result : forall `{H : State.Trait}, forall
-      {I : Set} {E : Set} {ContractRef : Set} {R : Set},
-      `{parity_scale_codec.codec.Input.Trait I}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-      ink_env.error.Result unit->
-      mut_ref I->
-      mut_ref I
-      ->
-        M (H := H)
-          (ink_env.error.Result
-            (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)).
-  
-  (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter decode_instantiate_err : forall `{H : State.Trait}, forall
-      {I : Set} {E : Set} {ContractRef : Set} {R : Set},
-      `{parity_scale_codec.codec.Input.Trait I}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-      mut_ref I
-      ->
-        M (H := H)
-          (ink_env.error.Result
-            (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)).
-End engine.
-
-Module OnInstance.
-  Class Trait (Self : Set) : Set := {
-    on_instance `{H : State.Trait} : F -> (M (H := H) R);
-  }.
-  
-  Global Instance Method_on_instance `{H : State.Trait} `(Trait)
-    : Notation.Dot "on_instance" := {
-    Notation.dot := on_instance;
-  }.
-End OnInstance.
-
-Module off_chain.
-  Module call_data.
-    Module CallData.
-      Record t : Set := {
-        bytes : alloc.vec.Vec u8;
-      }.
-      
-      Global Instance Get_bytes : Notation.Dot "bytes" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End CallData.
-    Definition CallData : Set := CallData.t.
-    
-    Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-        string -> alloc_vec_Vec_u8 -> 
-        M (H := H) core.fmt.Result.
-      
-      Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-        core.fmt.Formatter "debug_struct_field1_finish" := {
-        Notation.double_colon := debug_struct_field1_finish; }.
-      
-      Parameter fmt : forall `{H : State.Trait}, ref Self->
-          mut_ref core.fmt.Formatter
-          -> M (H := H) core.fmt.Result.
-      
-      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-        Notation.dot := fmt;
-      }.
-      
-      Global Instance I : core.fmt.Debug.Trait Self := {
-        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-      }.
-    End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-    
-    Module
-      Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-    
-    Module
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-        core.marker.StructuralPartialEq.Build_Trait _.
-    End
-      Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-    
-    Module
-      Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Parameter eq : forall `{H : State.Trait}, ref Self->
-          ref ink_env.engine.off_chain.call_data.CallData
-          -> M (H := H) bool.
-      
-      Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-        Notation.dot := eq;
-      }.
-      
-      Global Instance I : core.cmp.PartialEq.Trait Self := {
-        core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-      }.
-    End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-    
-    Module
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Global Instance I : core.marker.StructuralEq.Trait Self :=
-        core.marker.StructuralEq.Build_Trait _.
-    End
-      Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-    
-    Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
-              Self
-          -> M (H := H) unit.
-      
-      Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-        Notation.Dot "assert_receiver_is_total_eq" := {
-        Notation.dot := assert_receiver_is_total_eq;
-      }.
-      
-      Global Instance I : core.cmp.Eq.Trait Self := {
-      }.
-    End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-    
-    Module Impl_ink_env_engine_off_chain_call_data_CallData_2.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_new `{H : State.Trait} :
-        Notation.DoubleColon Self "new" := {
-        Notation.double_colon := new;
-      }.
-      
-      Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-          ref A
-          -> M (H := H) unit.
-      
-      Global Instance Method_push_arg `{H : State.Trait} :
-        Notation.Dot "push_arg" := {
-        Notation.dot := push_arg;
-      }.
-      
-      Parameter selector : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.call.selector.Selector.
-      
-      Global Instance Method_selector `{H : State.Trait} :
-        Notation.Dot "selector" := {
-        Notation.dot := selector;
-      }.
-      
-      Parameter params : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref Slice).
-      
-      Global Instance Method_params `{H : State.Trait} :
-        Notation.Dot "params" := {
-        Notation.dot := params;
-      }.
-      
-      Parameter to_bytes : forall `{H : State.Trait}, ref Self
-          -> M (H := H) (ref Slice).
-      
-      Global Instance Method_to_bytes `{H : State.Trait} :
-        Notation.Dot "to_bytes" := {
-        Notation.dot := to_bytes;
-      }.
-    End Impl_ink_env_engine_off_chain_call_data_CallData_2.
-    
-    Module
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Parameter size_hint : forall `{H : State.Trait}, ref Self
-          -> M (H := H) usize.
-      
-      Global Instance Method_size_hint `{H : State.Trait} :
-        Notation.Dot "size_hint" := {
-        Notation.dot := size_hint;
-      }.
-      
-      Parameter encode_to : forall `{H : State.Trait}, ref Self->
-          mut_ref T
-          -> M (H := H) unit.
-      
-      Global Instance Method_encode_to `{H : State.Trait} :
-        Notation.Dot "encode_to" := {
-        Notation.dot := encode_to;
-      }.
-      
-      Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-      }.
-    End
-      Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-    
-    Module
-      Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
-      Definition Self := ink_env.engine.off_chain.call_data.CallData.
-      
-      Parameter decode : forall `{H : State.Trait}, mut_ref I
-          ->
-            M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
-      
-      Global Instance AssociatedFunction_decode `{H : State.Trait} :
-        Notation.DoubleColon Self "decode" := {
-        Notation.double_colon := decode;
-      }.
-      
-      Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-        parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
-      }.
-    End
-      Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
-  End call_data.
-  
-  Module impls.
-    Definition BUFFER_SIZE `{H : State.Trait} : usize := run (1.["shl"] 14).
-    
-    Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-      Definition Self := ink_env.hash.Blake2x128.
-      
-      Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
-      
-      Global Instance AssociatedFunction_hash `{H : State.Trait} :
-        Notation.DoubleColon Self "hash" := {
-        Notation.double_colon := hash;
-      }.
-      
-      Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-        ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-      }.
-    End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-    
-    Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-      Definition Self := ink_env.hash.Blake2x256.
-      
-      Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
-      
-      Global Instance AssociatedFunction_hash `{H : State.Trait} :
-        Notation.DoubleColon Self "hash" := {
-        Notation.double_colon := hash;
-      }.
-      
-      Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-        ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-      }.
-    End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-    
-    Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-      Definition Self := ink_env.hash.Sha2x256.
-      
-      Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
-      
-      Global Instance AssociatedFunction_hash `{H : State.Trait} :
-        Notation.DoubleColon Self "hash" := {
-        Notation.double_colon := hash;
-      }.
-      
-      Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-        ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-      }.
-    End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-    
-    Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-      Definition Self := ink_env.hash.Keccak256.
-      
-      Parameter hash : forall `{H : State.Trait}, ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
-      
-      Global Instance AssociatedFunction_hash `{H : State.Trait} :
-        Notation.DoubleColon Self "hash" := {
-        Notation.double_colon := hash;
-      }.
-      
-      Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-        ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-      }.
-    End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-    
-    Module Impl_core_convert_From_for_ink_env_error_Error.
-      Definition Self := ink_env.error.Error.
-      
-      Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I :
-          core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End Impl_core_convert_From_for_ink_env_error_Error.
-    
-    Module TopicsBuilder.
-      Record t : Set := {
-        topics : alloc.vec.Vec (alloc.vec.Vec u8);
-      }.
-      
-      Global Instance Get_topics : Notation.Dot "topics" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End TopicsBuilder.
-    Definition TopicsBuilder : Set := TopicsBuilder.t.
-    
-    Module
-      Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-      Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-      
-      Parameter default : forall `{H : State.Trait}, unit
-          -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
-      
-      Global Instance AssociatedFunction_default `{H : State.Trait} :
-        Notation.DoubleColon Self "default" := {
-        Notation.double_colon := default;
-      }.
-      
-      Global Instance I : core.default.Default.Trait Self := {
-        core.default.Default.default `{H : State.Trait} := default;
-      }.
-    End
-      Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-    
-    Module
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-    Section
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-      Context {E : Set}.
-      
-      Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-      
-      Definition Output : Set := alloc.vec.Vec u8.
-      
-      Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-          usize
-          -> M (H := H) unit.
-      
-      Global Instance Method_expect `{H : State.Trait} :
-        Notation.Dot "expect" := {
-        Notation.dot := expect;
-      }.
-      
-      Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-          ref T
-          -> M (H := H) unit.
-      
-      Global Instance Method_push_topic `{H : State.Trait} :
-        Notation.Dot "push_topic" := {
-        Notation.dot := push_topic;
-      }.
-      
-      Parameter output : forall `{H : State.Trait}, Self
-          -> M (H := H) ImplSelf.Output.
-      
-      Global Instance Method_output `{H : State.Trait} :
-        Notation.Dot "output" := {
-        Notation.dot := output;
-      }.
-      
-      Global Instance I :
-          ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
-        ink_env.topics.TopicsBuilderBackend.expect `{H : State.Trait} := expect;
-        ink_env.topics.TopicsBuilderBackend.push_topic
-          `{H : State.Trait}
-          :=
-          push_topic;
-        ink_env.topics.TopicsBuilderBackend.output `{H : State.Trait} := output;
-      }.
-    End
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-    End
-      Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-    
-    Module Impl_ink_env_engine_off_chain_EnvInstance_2.
-      Definition Self := ink_env.engine.off_chain.EnvInstance.
-      
-      Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-          (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-          -> M (H := H) (ink_env.error.Result T).
-      
-      Global Instance Method_get_property `{H : State.Trait} :
-        Notation.Dot "get_property" := {
-        Notation.dot := get_property;
-      }.
-    End Impl_ink_env_engine_off_chain_EnvInstance_2.
-    
-    Module
-      Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-      Definition Self := ink_env.engine.off_chain.EnvInstance.
-      
-      Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-          ref K->
-          ref V
-          -> M (H := H) (core.option.Option u32).
-      
-      Global Instance Method_set_contract_storage `{H : State.Trait} :
-        Notation.Dot "set_contract_storage" := {
-        Notation.dot := set_contract_storage;
-      }.
-      
-      Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-          ref K
-          -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-      
-      Global Instance Method_get_contract_storage `{H : State.Trait} :
-        Notation.Dot "get_contract_storage" := {
-        Notation.dot := get_contract_storage;
-      }.
-      
-      Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref
-              Self->
-          ref K
-          -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-      
-      Global Instance Method_take_contract_storage `{H : State.Trait} :
-        Notation.Dot "take_contract_storage" := {
-        Notation.dot := take_contract_storage;
-      }.
-      
-      Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
-              Self->
-          ref K
-          -> M (H := H) (core.option.Option u32).
-      
-      Global Instance Method_contains_contract_storage `{H : State.Trait} :
-        Notation.Dot "contains_contract_storage" := {
-        Notation.dot := contains_contract_storage;
-      }.
-      
-      Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref
-              Self->
-          ref K
-          -> M (H := H) (core.option.Option u32).
-      
-      Global Instance Method_clear_contract_storage `{H : State.Trait} :
-        Notation.Dot "clear_contract_storage" := {
-        Notation.dot := clear_contract_storage;
-      }.
-      
-      Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) (ink_env.error.Result T).
-      
-      Global Instance Method_decode_input `{H : State.Trait} :
-        Notation.Dot "decode_input" := {
-        Notation.dot := decode_input;
-      }.
-      
-      Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
-          ink_env.backend.ReturnFlags->
-          ref R
-          -> M (H := H) Empty_set.
-      
-      Global Instance Method_return_value `{H : State.Trait} :
-        Notation.Dot "return_value" := {
-        Notation.dot := return_value;
-      }.
-      
-      Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-          ref str
-          -> M (H := H) unit.
-      
-      Global Instance Method_debug_message `{H : State.Trait} :
-        Notation.Dot "debug_message" := {
-        Notation.dot := debug_message;
-      }.
-      
-      Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
-          ref Slice->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
-      
-      Global Instance Method_hash_bytes `{H : State.Trait} :
-        Notation.Dot "hash_bytes" := {
-        Notation.dot := hash_bytes;
-      }.
-      
-      Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
-          ref T->
-          mut_ref ink_env.hash.HashOutput.Type
-          -> M (H := H) unit.
-      
-      Global Instance Method_hash_encoded `{H : State.Trait} :
-        Notation.Dot "hash_encoded" := {
-        Notation.dot := hash_encoded;
-      }.
-      
-      Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
-          ref list u8->
-          ref list u8->
-          mut_ref list u8
-          -> M (H := H) (ink_env.error.Result unit).
-      
-      Global Instance Method_ecdsa_recover `{H : State.Trait} :
-        Notation.Dot "ecdsa_recover" := {
-        Notation.dot := ecdsa_recover;
-      }.
-      
-      Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref Self->
-          ref list u8->
-          mut_ref list u8
-          -> M (H := H) (ink_env.error.Result unit).
-      
-      Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
-        Notation.Dot "ecdsa_to_eth_address" := {
-        Notation.dot := ecdsa_to_eth_address;
-      }.
-      
-      Parameter call_chain_extension : forall `{H : State.Trait}, mut_ref Self->
-          u32->
-          ref I->
-          F->
-          D
-          -> M (H := H) (core.result.Result T E).
-      
-      Global Instance Method_call_chain_extension `{H : State.Trait} :
-        Notation.Dot "call_chain_extension" := {
-        Notation.dot := call_chain_extension;
-      }.
-      
-      Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-          ref Slice
-          -> M (H := H) (ink_env.error.Result unit).
-      
-      Global Instance Method_set_code_hash `{H : State.Trait} :
-        Notation.Dot "set_code_hash" := {
-        Notation.dot := set_code_hash;
-      }.
-      
-      Global Instance I : ink_env.backend.EnvBackend.Trait Self := {
-        ink_env.backend.EnvBackend.set_contract_storage
-          `{H : State.Trait}
-          :=
-          set_contract_storage;
-        ink_env.backend.EnvBackend.get_contract_storage
-          `{H : State.Trait}
-          :=
-          get_contract_storage;
-        ink_env.backend.EnvBackend.take_contract_storage
-          `{H : State.Trait}
-          :=
-          take_contract_storage;
-        ink_env.backend.EnvBackend.contains_contract_storage
-          `{H : State.Trait}
-          :=
-          contains_contract_storage;
-        ink_env.backend.EnvBackend.clear_contract_storage
-          `{H : State.Trait}
-          :=
-          clear_contract_storage;
-        ink_env.backend.EnvBackend.decode_input
-          `{H : State.Trait}
-          :=
-          decode_input;
-        ink_env.backend.EnvBackend.return_value
-          `{H : State.Trait}
-          :=
-          return_value;
-        ink_env.backend.EnvBackend.debug_message
-          `{H : State.Trait}
-          :=
-          debug_message;
-        ink_env.backend.EnvBackend.hash_bytes `{H : State.Trait} := hash_bytes;
-        ink_env.backend.EnvBackend.hash_encoded
-          `{H : State.Trait}
-          :=
-          hash_encoded;
-        ink_env.backend.EnvBackend.ecdsa_recover
-          `{H : State.Trait}
-          :=
-          ecdsa_recover;
-        ink_env.backend.EnvBackend.ecdsa_to_eth_address
-          `{H : State.Trait}
-          :=
-          ecdsa_to_eth_address;
-        ink_env.backend.EnvBackend.call_chain_extension
-          `{H : State.Trait}
-          :=
-          call_chain_extension;
-        ink_env.backend.EnvBackend.set_code_hash
-          `{H : State.Trait}
-          :=
-          set_code_hash;
-      }.
-    End
-      Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-    
-    Module
-      Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-      Definition Self := ink_env.engine.off_chain.EnvInstance.
-      
-      Parameter caller : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.AccountId.
-      
-      Global Instance Method_caller `{H : State.Trait} :
-        Notation.Dot "caller" := {
-        Notation.dot := caller;
-      }.
-      
-      Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Balance.
-      
-      Global Instance Method_transferred_value `{H : State.Trait} :
-        Notation.Dot "transferred_value" := {
-        Notation.dot := transferred_value;
-      }.
-      
-      Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) u64.
-      
-      Global Instance Method_gas_left `{H : State.Trait} :
-        Notation.Dot "gas_left" := {
-        Notation.dot := gas_left;
-      }.
-      
-      Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Timestamp.
-      
-      Global Instance Method_block_timestamp `{H : State.Trait} :
-        Notation.Dot "block_timestamp" := {
-        Notation.dot := block_timestamp;
-      }.
-      
-      Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.AccountId.
-      
-      Global Instance Method_account_id `{H : State.Trait} :
-        Notation.Dot "account_id" := {
-        Notation.dot := account_id;
-      }.
-      
-      Parameter balance : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Balance.
-      
-      Global Instance Method_balance `{H : State.Trait} :
-        Notation.Dot "balance" := {
-        Notation.dot := balance;
-      }.
-      
-      Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.BlockNumber.
-      
-      Global Instance Method_block_number `{H : State.Trait} :
-        Notation.Dot "block_number" := {
-        Notation.dot := block_number;
-      }.
-      
-      Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) ImplE.Balance.
-      
-      Global Instance Method_minimum_balance `{H : State.Trait} :
-        Notation.Dot "minimum_balance" := {
-        Notation.dot := minimum_balance;
-      }.
-      
-      Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-          Event
-          -> M (H := H) unit.
-      
-      Global Instance Method_emit_event `{H : State.Trait} :
-        Notation.Dot "emit_event" := {
-        Notation.dot := emit_event;
-      }.
-      
-      Parameter invoke_contract : forall `{H : State.Trait}, mut_ref Self->
-          ref
-              (ink_env.call.call_builder.CallParams
-                E
-                (ink_env.call.call_builder.Call E)
-                Args
-                R)
-          -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-      
-      Global Instance Method_invoke_contract `{H : State.Trait} :
-        Notation.Dot "invoke_contract" := {
-        Notation.dot := invoke_contract;
-      }.
-      
-      Parameter invoke_contract_delegate : forall `{H : State.Trait}, mut_ref
-              Self->
-          ref
-              (ink_env.call.call_builder.CallParams
-                E
-                (ink_env.call.call_builder.DelegateCall E)
-                Args
-                R)
-          -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-      
-      Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
-        Notation.Dot "invoke_contract_delegate" := {
-        Notation.dot := invoke_contract_delegate;
-      }.
-      
-      Parameter instantiate_contract : forall `{H : State.Trait}, mut_ref Self->
-          ref
-              (ink_env.call.create_builder.CreateParams
-                E
-                ContractRef
-                Args
-                Salt
-                R)
-          ->
-            M (H := H)
-              (ink_env.error.Result
-                (ink_primitives.ConstructorResult
-                  ink_env.call.create_builder.ConstructorReturnType.Output)).
-      
-      Global Instance Method_instantiate_contract `{H : State.Trait} :
-        Notation.Dot "instantiate_contract" := {
-        Notation.dot := instantiate_contract;
-      }.
-      
-      Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-          ImplE.AccountId
-          -> M (H := H) Empty_set.
-      
-      Global Instance Method_terminate_contract `{H : State.Trait} :
-        Notation.Dot "terminate_contract" := {
-        Notation.dot := terminate_contract;
-      }.
-      
-      Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
-          ImplE.AccountId->
-          ImplE.Balance
-          -> M (H := H) (ink_env.error.Result unit).
-      
-      Global Instance Method_transfer `{H : State.Trait} :
-        Notation.Dot "transfer" := {
-        Notation.dot := transfer;
-      }.
-      
-      Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-          u64
-          -> M (H := H) ImplE.Balance.
-      
-      Global Instance Method_weight_to_fee `{H : State.Trait} :
-        Notation.Dot "weight_to_fee" := {
-        Notation.dot := weight_to_fee;
-      }.
-      
-      Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-          ref ImplE.AccountId
-          -> M (H := H) bool.
-      
-      Global Instance Method_is_contract `{H : State.Trait} :
-        Notation.Dot "is_contract" := {
-        Notation.dot := is_contract;
-      }.
-      
-      Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) bool.
-      
-      Global Instance Method_caller_is_origin `{H : State.Trait} :
-        Notation.Dot "caller_is_origin" := {
-        Notation.dot := caller_is_origin;
-      }.
-      
-      Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-          ref ImplE.AccountId
-          -> M (H := H) (ink_env.error.Result ImplE.Hash).
-      
-      Global Instance Method_code_hash `{H : State.Trait} :
-        Notation.Dot "code_hash" := {
-        Notation.dot := code_hash;
-      }.
-      
-      Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-          -> M (H := H) (ink_env.error.Result ImplE.Hash).
-      
-      Global Instance Method_own_code_hash `{H : State.Trait} :
-        Notation.Dot "own_code_hash" := {
-        Notation.dot := own_code_hash;
-      }.
-      
-      Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-          ref Call
-          -> M (H := H) (ink_env.error.Result unit).
-      
-      Global Instance Method_call_runtime `{H : State.Trait} :
-        Notation.Dot "call_runtime" := {
-        Notation.dot := call_runtime;
-      }.
-      
-      Global Instance I : ink_env.backend.TypedEnvBackend.Trait Self := {
-        ink_env.backend.TypedEnvBackend.caller `{H : State.Trait} := caller;
-        ink_env.backend.TypedEnvBackend.transferred_value
-          `{H : State.Trait}
-          :=
-          transferred_value;
-        ink_env.backend.TypedEnvBackend.weight_to_fee
-          `{H : State.Trait}
-          :=
-          weight_to_fee;
-        ink_env.backend.TypedEnvBackend.gas_left `{H : State.Trait} := gas_left;
-        ink_env.backend.TypedEnvBackend.block_timestamp
-          `{H : State.Trait}
-          :=
-          block_timestamp;
-        ink_env.backend.TypedEnvBackend.account_id
-          `{H : State.Trait}
-          :=
-          account_id;
-        ink_env.backend.TypedEnvBackend.balance `{H : State.Trait} := balance;
-        ink_env.backend.TypedEnvBackend.block_number
-          `{H : State.Trait}
-          :=
-          block_number;
-        ink_env.backend.TypedEnvBackend.minimum_balance
-          `{H : State.Trait}
-          :=
-          minimum_balance;
-        ink_env.backend.TypedEnvBackend.emit_event
-          `{H : State.Trait}
-          :=
-          emit_event;
-        ink_env.backend.TypedEnvBackend.invoke_contract
-          `{H : State.Trait}
-          :=
-          invoke_contract;
-        ink_env.backend.TypedEnvBackend.invoke_contract_delegate
-          `{H : State.Trait}
-          :=
-          invoke_contract_delegate;
-        ink_env.backend.TypedEnvBackend.instantiate_contract
-          `{H : State.Trait}
-          :=
-          instantiate_contract;
-        ink_env.backend.TypedEnvBackend.terminate_contract
-          `{H : State.Trait}
-          :=
-          terminate_contract;
-        ink_env.backend.TypedEnvBackend.transfer `{H : State.Trait} := transfer;
-        ink_env.backend.TypedEnvBackend.is_contract
-          `{H : State.Trait}
-          :=
-          is_contract;
-        ink_env.backend.TypedEnvBackend.caller_is_origin
-          `{H : State.Trait}
-          :=
-          caller_is_origin;
-        ink_env.backend.TypedEnvBackend.code_hash
-          `{H : State.Trait}
-          :=
-          code_hash;
-        ink_env.backend.TypedEnvBackend.own_code_hash
-          `{H : State.Trait}
-          :=
-          own_code_hash;
-        ink_env.backend.TypedEnvBackend.call_runtime
-          `{H : State.Trait}
-          :=
-          call_runtime;
-      }.
-    End
-      Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-  End impls.
-  
-  Module test_api.
-    Module EmittedEvent.
-      Record t : Set := {
-        topics : alloc.vec.Vec (alloc.vec.Vec u8);
-        data : alloc.vec.Vec u8;
-      }.
-      
-      Global Instance Get_topics : Notation.Dot "topics" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_data : Notation.Dot "data" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
-    End EmittedEvent.
-    Definition EmittedEvent : Set := EmittedEvent.t.
-    
-    Module
-      Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-      Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-      
-      Parameter clone : forall `{H : State.Trait}, ref Self
-          -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
-      
-      Global Instance Method_clone `{H : State.Trait} :
-        Notation.Dot "clone" := {
-        Notation.dot := clone;
-      }.
-      
-      Global Instance I : core.clone.Clone.Trait Self := {
-        core.clone.Clone.clone `{H : State.Trait} := clone;
-      }.
-    End
-      Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-    
-    Parameter set_account_balance : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ImplT.AccountId->
-        ImplT.Balance
-        -> M (H := H) unit.
-    
-    Parameter get_account_balance : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ImplT.AccountId
-        -> M (H := H) (ink_env.error.Result ImplT.Balance).
-    
-    Parameter register_chain_extension : forall `{H : State.Trait}, forall
-        {E : Set},
-        `{ink_engine.chain_extension.ChainExtension.Trait E}
-        E
-        -> M (H := H) unit.
-    
-    Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
-        -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
-    
-    Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-        -> M (H := H) unit.
-    
-    Parameter advance_block : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        unit
-        -> M (H := H) unit.
-    
-    Parameter set_caller : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) unit.
-    
-    Parameter set_callee : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) unit.
-    
-    Parameter set_contract : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) unit.
-    
-    Parameter is_contract : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        ImplT.AccountId
-        -> M (H := H) bool.
-    
-    Parameter callee : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        unit
-        -> M (H := H) ImplT.AccountId.
-    
-    Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ref ImplT.AccountId
-        -> M (H := H) (usize * usize).
-    
-    Parameter set_value_transferred : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ImplT.Balance
-        -> M (H := H) unit.
-    
-    Parameter transfer_in : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ImplT.Balance
-        -> M (H := H) unit.
-    
-    Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ref ImplT.AccountId
-        -> M (H := H) (ink_env.error.Result usize).
-    
-    Parameter set_block_timestamp : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ImplT.Timestamp
-        -> M (H := H) unit.
-    
-    Parameter set_block_number : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        ImplT.BlockNumber
-        -> M (H := H) unit.
-    
-    Parameter run_test : forall `{H : State.Trait}, forall
+    Parameter assert_contract_termination : forall `{H : State.Trait},
+        forall
         {T : Set} {F : Set},
         `{ink_env.types.Environment.Trait T}
-        `{core.ops.function.FnOnce.Trait
-          ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
-          F}
-        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        F
-        -> M (H := H) (ink_env.error.Result unit).
+        `{core.ops.function.FnMut.Trait unit F}
+        `{core.panic.unwind_safe.UnwindSafe.Trait F}
+        `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
+        `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
+        F ->
+        ImplT.AccountId ->
+        ImplT.Balance ->
+        M (H := H) unit.
+  End test_api.
+  
+  Module EnvInstance.
+    Unset Primitive Projections.
+    Record t : Set := {
+      engine : ink_engine.ext.Engine;
+    }.
+    Global Set Primitive Projections.
     
-    Parameter default_accounts : forall `{H : State.Trait}, forall
-        {T : Set},
-        `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-        unit
-        -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+    Global Instance Get_engine : Notation.Dot "engine" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End EnvInstance.
+  Definition EnvInstance : Set := @EnvInstance.t.
+  
+  Module OffChainError.
+    Inductive t : Set :=
+    | Account (_ : ink_env.engine.off_chain.AccountError)
+    | UninitializedBlocks
+    | UninitializedExecutionContext
+    | UnregisteredChainExtension.
+  End OffChainError.
+  Definition OffChainError := OffChainError.t.
+  
+  Module AccountError.
+    Inductive t : Set :=
+    | Decoding (_ : parity_scale_codec.error.Error)
+    | UnexpectedUserAccount
+    | NoAccountForId (_ : alloc.vec.Vec u8).
+  End AccountError.
+  Definition AccountError := AccountError.t.
+End off_chain.
+
+Module call_data.
+  Module CallData.
+    Unset Primitive Projections.
+    Record t : Set := {
+      bytes : alloc.vec.Vec u8;
+    }.
+    Global Set Primitive Projections.
     
-    Module DefaultAccounts.
+    Global Instance Get_bytes : Notation.Dot "bytes" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End CallData.
+  Definition CallData : Set := @CallData.t.
+End call_data.
+
+Module CallData.
+  Unset Primitive Projections.
+  Record t : Set := {
+    bytes : alloc.vec.Vec u8;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_bytes : Notation.Dot "bytes" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
+End CallData.
+Definition CallData : Set := @CallData.t.
+
+Module impls.
+  Module TopicsBuilder.
+    Unset Primitive Projections.
+    Record t : Set := {
+      topics : alloc.vec.Vec (alloc.vec.Vec u8);
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_topics : Notation.Dot "topics" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End TopicsBuilder.
+  Definition TopicsBuilder : Set := @TopicsBuilder.t.
+End impls.
+
+Module TopicsBuilder.
+  Unset Primitive Projections.
+  Record t : Set := {
+    topics : alloc.vec.Vec (alloc.vec.Vec u8);
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_topics : Notation.Dot "topics" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
+End TopicsBuilder.
+Definition TopicsBuilder : Set := @TopicsBuilder.t.
+
+Module test_api.
+  Module EmittedEvent.
+    Unset Primitive Projections.
+    Record t : Set := {
+      topics : alloc.vec.Vec (alloc.vec.Vec u8);
+      data : alloc.vec.Vec u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_topics : Notation.Dot "topics" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_data : Notation.Dot "data" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End EmittedEvent.
+  Definition EmittedEvent : Set := @EmittedEvent.t.
+  
+  Parameter set_account_balance : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ImplT.AccountId ->
+      ImplT.Balance ->
+      M (H := H) unit.
+  
+  Parameter get_account_balance : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ImplT.AccountId ->
+      M (H := H) (ink_env.error.Result ImplT.Balance).
+  
+  Parameter register_chain_extension : forall `{H : State.Trait},
+      forall
+      {E : Set},
+      `{ink_engine.chain_extension.ChainExtension.Trait E}
+      E ->
+      M (H := H) unit.
+  
+  Parameter recorded_debug_messages : forall `{H : State.Trait},
+      M (H := H) ink_engine.test_api.RecordedDebugMessages.
+  
+  Parameter set_clear_storage_disabled : forall `{H : State.Trait},
+      bool ->
+      M (H := H) unit.
+  
+  Parameter advance_block : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      M (H := H) unit.
+  
+  Parameter set_caller : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+      ImplT.AccountId ->
+      M (H := H) unit.
+  
+  Parameter set_callee : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+      ImplT.AccountId ->
+      M (H := H) unit.
+  
+  Parameter set_contract : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+      ImplT.AccountId ->
+      M (H := H) unit.
+  
+  Parameter is_contract : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+      ImplT.AccountId ->
+      M (H := H) bool.
+  
+  Parameter callee : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      M (H := H) ImplT.AccountId.
+  
+  Parameter get_contract_storage_rw : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ref ImplT.AccountId ->
+      M (H := H) (usize * usize).
+  
+  Parameter set_value_transferred : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ImplT.Balance ->
+      M (H := H) unit.
+  
+  Parameter transfer_in : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ImplT.Balance ->
+      M (H := H) unit.
+  
+  Parameter count_used_storage_cells : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ref ImplT.AccountId ->
+      M (H := H) (ink_env.error.Result usize).
+  
+  Parameter set_block_timestamp : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ImplT.Timestamp ->
+      M (H := H) unit.
+  
+  Parameter set_block_number : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      ImplT.BlockNumber ->
+      M (H := H) unit.
+  
+  Parameter run_test : forall `{H : State.Trait},
+      forall
+      {T : Set} {F : Set},
+      `{ink_env.types.Environment.Trait T}
+      `{core.ops.function.FnOnce.Trait
+        ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+        F}
+      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+      F ->
+      M (H := H) (ink_env.error.Result unit).
+  
+  Parameter default_accounts : forall `{H : State.Trait},
+      forall
+      {T : Set},
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+      M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+  
+  Module DefaultAccounts.
+    Section DefaultAccounts.
+      Context {T : Set}.
+      Unset Primitive Projections.
       Record t : Set := {
         alice : ImplT.AccountId;
         bob : ImplT.AccountId;
@@ -13253,6 +4178,7 @@ Module off_chain.
         eve : ImplT.AccountId;
         frank : ImplT.AccountId;
       }.
+      Global Set Primitive Projections.
       
       Global Instance Get_alice : Notation.Dot "alice" := {
         Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -13273,2296 +4199,179 @@ Module off_chain.
         Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
       }.
     End DefaultAccounts.
-    Definition DefaultAccounts : Set := DefaultAccounts.t.
-    
-    Parameter recorded_events : forall `{H : State.Trait}, unit
-        -> M (H := H) OpaqueDef.
-    
-    Parameter assert_contract_termination : forall `{H : State.Trait}, forall
-        {T : Set} {F : Set},
-        `{ink_env.types.Environment.Trait T}
-        `{core.ops.function.FnMut.Trait unit F}
-        `{core.panic.unwind_safe.UnwindSafe.Trait F}
-        `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
-        `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-        F->
-        ImplT.AccountId->
-        ImplT.Balance
-        -> M (H := H) unit.
-  End test_api.
+  End DefaultAccounts.
+  Definition DefaultAccounts : Set := @DefaultAccounts.t.
   
-  Module types.
-    Module
-      Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-      Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-      
-      Parameter from : forall
-            `{H : State.Trait},
-            ink_engine.test_api.EmittedEvent
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I :
-          core.convert.From.Trait
-            Self
-            (T := ink_engine.test_api.EmittedEvent) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End
-      Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-    
-    Module Impl_core_convert_From_for_ink_env_error_Error.
-      Definition Self := ink_env.error.Error.
-      
-      Parameter from : forall `{H : State.Trait}, ink_engine.Error
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I :
-          core.convert.From.Trait Self (T := ink_engine.Error) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End Impl_core_convert_From_for_ink_env_error_Error.
-    
-    Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-      Definition Self := ink_env.engine.off_chain.AccountError.
-      
-      Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I :
-          core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-    
-    Module Impl_core_convert_From_for_ink_env_error_Error.
-      Definition Self := ink_env.error.Error.
-      
-      Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-          -> M (H := H) Self.
-      
-      Global Instance AssociatedFunction_from `{H : State.Trait} :
-        Notation.DoubleColon Self "from" := {
-        Notation.double_colon := from;
-      }.
-      
-      Global Instance I :
-          core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
-        core.convert.From.from `{H : State.Trait} := from;
-      }.
-    End Impl_core_convert_From_for_ink_env_error_Error.
-  End types.
+  Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
   
-  Module EnvInstance.
-    Record t : Set := {
-      engine : ink_engine.ext.Engine;
-    }.
-    
-    Global Instance Get_engine : Notation.Dot "engine" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End EnvInstance.
-  Definition EnvInstance : Set := EnvInstance.t.
-  
-  Module
-    Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-    Definition Self := ink_env.engine.off_chain.EnvInstance.
-    
-    Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
-    
-    Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
-      Notation.DoubleColon Self "on_instance" := {
-      Notation.double_colon := on_instance;
-    }.
-    
-    Global Instance I : ink_env.engine.OnInstance.Trait Self := {
-      ink_env.engine.OnInstance.on_instance `{H : State.Trait} := on_instance;
-    }.
-  End Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-  
-  Module OffChainError.
-    Inductive t : Set :=
-    | Account (_ : ink_env.engine.off_chain.AccountError)
-    | UninitializedBlocks
-    | UninitializedExecutionContext
-    | UnregisteredChainExtension.
-  End OffChainError.
-  Definition OffChainError := OffChainError.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
-    Definition Self := ink_env.engine.off_chain.OffChainError.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
-  
-  Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
-    Definition Self := ink_env.engine.off_chain.OffChainError.
-    
-    Parameter from : forall
-          `{H : State.Trait},
-          ink_env.engine.off_chain.AccountError
-        -> M (H := H) ink_env.engine.off_chain.OffChainError.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait
-          Self
-          (T := ink_env.engine.off_chain.AccountError) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
-  
-  Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
-    Definition Self := ink_env.engine.off_chain.OffChainError.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
-    Definition Self := ink_env.engine.off_chain.OffChainError.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.engine.off_chain.OffChainError
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
-  
-  Module
-    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
-    Definition Self := ink_env.engine.off_chain.OffChainError.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
-    Definition Self := ink_env.engine.off_chain.OffChainError.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
-  
-  Module AccountError.
-    Inductive t : Set :=
-    | Decoding (_ : parity_scale_codec.error.Error)
-    | UnexpectedUserAccount
-    | NoAccountForId (_ : alloc.vec.Vec u8).
-  End AccountError.
-  Definition AccountError := AccountError.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
-    Definition Self := ink_env.engine.off_chain.AccountError.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
-  
-  Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-    Definition Self := ink_env.engine.off_chain.AccountError.
-    
-    Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-        -> M (H := H) ink_env.engine.off_chain.AccountError.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-  
-  Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
-    Definition Self := ink_env.engine.off_chain.AccountError.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
-    Definition Self := ink_env.engine.off_chain.AccountError.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.engine.off_chain.AccountError
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
-  
-  Module
-    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
-    Definition Self := ink_env.engine.off_chain.AccountError.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
-    Definition Self := ink_env.engine.off_chain.AccountError.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
-End off_chain.
-
-Module call_data.
-  Module CallData.
-    Record t : Set := {
-      bytes : alloc.vec.Vec u8;
-    }.
-    
-    Global Instance Get_bytes : Notation.Dot "bytes" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End CallData.
-  Definition CallData : Set := CallData.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-      string -> alloc_vec_Vec_u8 -> 
-      M (H := H) core.fmt.Result.
-    
-    Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-      core.fmt.Formatter "debug_struct_field1_finish" := {
-      Notation.double_colon := debug_struct_field1_finish; }.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-  
-  Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-  
-  Module
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End
-    Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-  
-  Module
-    Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.engine.off_chain.call_data.CallData
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-  
-  Module
-    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End
-    Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-  
-  Module Impl_ink_env_engine_off_chain_call_data_CallData_3.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_new `{H : State.Trait} :
-      Notation.DoubleColon Self "new" := {
-      Notation.double_colon := new;
-    }.
-    
-    Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-        ref A
-        -> M (H := H) unit.
-    
-    Global Instance Method_push_arg `{H : State.Trait} :
-      Notation.Dot "push_arg" := {
-      Notation.dot := push_arg;
-    }.
-    
-    Parameter selector : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.call.selector.Selector.
-    
-    Global Instance Method_selector `{H : State.Trait} :
-      Notation.Dot "selector" := {
-      Notation.dot := selector;
-    }.
-    
-    Parameter params : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref Slice).
-    
-    Global Instance Method_params `{H : State.Trait} :
-      Notation.Dot "params" := {
-      Notation.dot := params;
-    }.
-    
-    Parameter to_bytes : forall `{H : State.Trait}, ref Self
-        -> M (H := H) (ref Slice).
-    
-    Global Instance Method_to_bytes `{H : State.Trait} :
-      Notation.Dot "to_bytes" := {
-      Notation.dot := to_bytes;
-    }.
-  End Impl_ink_env_engine_off_chain_call_data_CallData_3.
-  
-  Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
-    
-    Global Instance Method_size_hint `{H : State.Trait} :
-      Notation.Dot "size_hint" := {
-      Notation.dot := size_hint;
-    }.
-    
-    Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref T
-        -> M (H := H) unit.
-    
-    Global Instance Method_encode_to `{H : State.Trait} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
-    }.
-    
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-    }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-  
-  Module
-    Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
-    Definition Self := ink_env.engine.off_chain.call_data.CallData.
-    
-    Parameter decode : forall `{H : State.Trait}, mut_ref I
-        -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
-    
-    Global Instance AssociatedFunction_decode `{H : State.Trait} :
-      Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
-    }.
-    
-    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
-    }.
-  End
-    Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
-End call_data.
-
-Module CallData.
-  Record t : Set := {
-    bytes : alloc.vec.Vec u8;
-  }.
-  
-  Global Instance Get_bytes : Notation.Dot "bytes" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End CallData.
-Definition CallData : Set := CallData.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-    string -> alloc_vec_Vec_u8 -> 
-    M (H := H) core.fmt.Result.
-  
-  Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field1_finish" := {
-    Notation.double_colon := debug_struct_field1_finish; }.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.engine.off_chain.call_data.CallData.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module
-  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End
-  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.engine.off_chain.call_data.CallData
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module
-  Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End
-  Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module Impl_ink_env_engine_off_chain_call_data_CallData_4.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Parameter new : forall `{H : State.Trait}, ink_env.call.selector.Selector
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_new `{H : State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Parameter push_arg : forall `{H : State.Trait}, mut_ref Self->
-      ref A
-      -> M (H := H) unit.
-  
-  Global Instance Method_push_arg `{H : State.Trait} :
-    Notation.Dot "push_arg" := {
-    Notation.dot := push_arg;
-  }.
-  
-  Parameter selector : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.call.selector.Selector.
-  
-  Global Instance Method_selector `{H : State.Trait} :
-    Notation.Dot "selector" := {
-    Notation.dot := selector;
-  }.
-  
-  Parameter params : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref Slice).
-  
-  Global Instance Method_params `{H : State.Trait} : Notation.Dot "params" := {
-    Notation.dot := params;
-  }.
-  
-  Parameter to_bytes : forall `{H : State.Trait}, ref Self
-      -> M (H := H) (ref Slice).
-  
-  Global Instance Method_to_bytes `{H : State.Trait} :
-    Notation.Dot "to_bytes" := {
-    Notation.dot := to_bytes;
-  }.
-End Impl_ink_env_engine_off_chain_call_data_CallData_4.
-
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
-  
-  Global Instance Method_size_hint `{H : State.Trait} :
-    Notation.Dot "size_hint" := {
-    Notation.dot := size_hint;
-  }.
-  
-  Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref T
-      -> M (H := H) unit.
-  
-  Global Instance Method_encode_to `{H : State.Trait} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module
-  Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
-  Definition Self := ink_env.engine.off_chain.call_data.CallData.
-  
-  Parameter decode : forall `{H : State.Trait}, mut_ref I
-      -> M (H := H) (core.result.Result Self parity_scale_codec.error.Error).
-  
-  Global Instance AssociatedFunction_decode `{H : State.Trait} :
-    Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H : State.Trait} := decode;
-  }.
-End
-  Impl_parity_scale_codec_codec_Decode_for_ink_env_engine_off_chain_call_data_CallData.
-
-Module impls.
-  Definition BUFFER_SIZE `{H : State.Trait} : usize := run (1.["shl"] 14).
-  
-  Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
-    
-    Global Instance AssociatedFunction_hash `{H : State.Trait} :
-      Notation.DoubleColon Self "hash" := {
-      Notation.double_colon := hash;
-    }.
-    
-    Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-      ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-    }.
-  End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
-    
-    Global Instance AssociatedFunction_hash `{H : State.Trait} :
-      Notation.DoubleColon Self "hash" := {
-      Notation.double_colon := hash;
-    }.
-    
-    Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-      ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-    }.
-  End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
-    
-    Global Instance AssociatedFunction_hash `{H : State.Trait} :
-      Notation.DoubleColon Self "hash" := {
-      Notation.double_colon := hash;
-    }.
-    
-    Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-      ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-    }.
-  End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Parameter hash : forall `{H : State.Trait}, ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
-    
-    Global Instance AssociatedFunction_hash `{H : State.Trait} :
-      Notation.DoubleColon Self "hash" := {
-      Notation.double_colon := hash;
-    }.
-    
-    Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-      ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-    }.
-  End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_convert_From_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_error_Error.
-  
-  Module TopicsBuilder.
-    Record t : Set := {
-      topics : alloc.vec.Vec (alloc.vec.Vec u8);
-    }.
-    
-    Global Instance Get_topics : Notation.Dot "topics" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End TopicsBuilder.
-  Definition TopicsBuilder : Set := TopicsBuilder.t.
-  
-  Module
-    Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-    Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-    
-    Parameter default : forall `{H : State.Trait}, unit
-        -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
-    
-    Global Instance AssociatedFunction_default `{H : State.Trait} :
-      Notation.DoubleColon Self "default" := {
-      Notation.double_colon := default;
-    }.
-    
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H : State.Trait} := default;
-    }.
-  End
-    Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-  
-  Module
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-  Section
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-    Context {E : Set}.
-    
-    Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-    
-    Definition Output : Set := alloc.vec.Vec u8.
-    
-    Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-        usize
-        -> M (H := H) unit.
-    
-    Global Instance Method_expect `{H : State.Trait} :
-      Notation.Dot "expect" := {
-      Notation.dot := expect;
-    }.
-    
-    Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-        ref T
-        -> M (H := H) unit.
-    
-    Global Instance Method_push_topic `{H : State.Trait} :
-      Notation.Dot "push_topic" := {
-      Notation.dot := push_topic;
-    }.
-    
-    Parameter output : forall `{H : State.Trait}, Self
-        -> M (H := H) ImplSelf.Output.
-    
-    Global Instance Method_output `{H : State.Trait} :
-      Notation.Dot "output" := {
-      Notation.dot := output;
-    }.
-    
-    Global Instance I :
-        ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
-      ink_env.topics.TopicsBuilderBackend.expect `{H : State.Trait} := expect;
-      ink_env.topics.TopicsBuilderBackend.push_topic
-        `{H : State.Trait}
-        :=
-        push_topic;
-      ink_env.topics.TopicsBuilderBackend.output `{H : State.Trait} := output;
-    }.
-  End
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-  End
-    Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-  
-  Module Impl_ink_env_engine_off_chain_EnvInstance_3.
-    Definition Self := ink_env.engine.off_chain.EnvInstance.
-    
-    Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-        (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-        -> M (H := H) (ink_env.error.Result T).
-    
-    Global Instance Method_get_property `{H : State.Trait} :
-      Notation.Dot "get_property" := {
-      Notation.dot := get_property;
-    }.
-  End Impl_ink_env_engine_off_chain_EnvInstance_3.
-  
-  Module
-    Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-    Definition Self := ink_env.engine.off_chain.EnvInstance.
-    
-    Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-        ref K->
-        ref V
-        -> M (H := H) (core.option.Option u32).
-    
-    Global Instance Method_set_contract_storage `{H : State.Trait} :
-      Notation.Dot "set_contract_storage" := {
-      Notation.dot := set_contract_storage;
-    }.
-    
-    Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-        ref K
-        -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-    
-    Global Instance Method_get_contract_storage `{H : State.Trait} :
-      Notation.Dot "get_contract_storage" := {
-      Notation.dot := get_contract_storage;
-    }.
-    
-    Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-        ref K
-        -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-    
-    Global Instance Method_take_contract_storage `{H : State.Trait} :
-      Notation.Dot "take_contract_storage" := {
-      Notation.dot := take_contract_storage;
-    }.
-    
-    Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
-            Self->
-        ref K
-        -> M (H := H) (core.option.Option u32).
-    
-    Global Instance Method_contains_contract_storage `{H : State.Trait} :
-      Notation.Dot "contains_contract_storage" := {
-      Notation.dot := contains_contract_storage;
-    }.
-    
-    Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-        ref K
-        -> M (H := H) (core.option.Option u32).
-    
-    Global Instance Method_clear_contract_storage `{H : State.Trait} :
-      Notation.Dot "clear_contract_storage" := {
-      Notation.dot := clear_contract_storage;
-    }.
-    
-    Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) (ink_env.error.Result T).
-    
-    Global Instance Method_decode_input `{H : State.Trait} :
-      Notation.Dot "decode_input" := {
-      Notation.dot := decode_input;
-    }.
-    
-    Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
-        ink_env.backend.ReturnFlags->
-        ref R
-        -> M (H := H) Empty_set.
-    
-    Global Instance Method_return_value `{H : State.Trait} :
-      Notation.Dot "return_value" := {
-      Notation.dot := return_value;
-    }.
-    
-    Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-        ref str
-        -> M (H := H) unit.
-    
-    Global Instance Method_debug_message `{H : State.Trait} :
-      Notation.Dot "debug_message" := {
-      Notation.dot := debug_message;
-    }.
-    
-    Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
-        ref Slice->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
-    
-    Global Instance Method_hash_bytes `{H : State.Trait} :
-      Notation.Dot "hash_bytes" := {
-      Notation.dot := hash_bytes;
-    }.
-    
-    Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
-        ref T->
-        mut_ref ink_env.hash.HashOutput.Type
-        -> M (H := H) unit.
-    
-    Global Instance Method_hash_encoded `{H : State.Trait} :
-      Notation.Dot "hash_encoded" := {
-      Notation.dot := hash_encoded;
-    }.
-    
-    Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
-        ref list u8->
-        ref list u8->
-        mut_ref list u8
-        -> M (H := H) (ink_env.error.Result unit).
-    
-    Global Instance Method_ecdsa_recover `{H : State.Trait} :
-      Notation.Dot "ecdsa_recover" := {
-      Notation.dot := ecdsa_recover;
-    }.
-    
-    Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref Self->
-        ref list u8->
-        mut_ref list u8
-        -> M (H := H) (ink_env.error.Result unit).
-    
-    Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
-      Notation.Dot "ecdsa_to_eth_address" := {
-      Notation.dot := ecdsa_to_eth_address;
-    }.
-    
-    Parameter call_chain_extension : forall `{H : State.Trait}, mut_ref Self->
-        u32->
-        ref I->
-        F->
-        D
-        -> M (H := H) (core.result.Result T E).
-    
-    Global Instance Method_call_chain_extension `{H : State.Trait} :
-      Notation.Dot "call_chain_extension" := {
-      Notation.dot := call_chain_extension;
-    }.
-    
-    Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-        ref Slice
-        -> M (H := H) (ink_env.error.Result unit).
-    
-    Global Instance Method_set_code_hash `{H : State.Trait} :
-      Notation.Dot "set_code_hash" := {
-      Notation.dot := set_code_hash;
-    }.
-    
-    Global Instance I : ink_env.backend.EnvBackend.Trait Self := {
-      ink_env.backend.EnvBackend.set_contract_storage
-        `{H : State.Trait}
-        :=
-        set_contract_storage;
-      ink_env.backend.EnvBackend.get_contract_storage
-        `{H : State.Trait}
-        :=
-        get_contract_storage;
-      ink_env.backend.EnvBackend.take_contract_storage
-        `{H : State.Trait}
-        :=
-        take_contract_storage;
-      ink_env.backend.EnvBackend.contains_contract_storage
-        `{H : State.Trait}
-        :=
-        contains_contract_storage;
-      ink_env.backend.EnvBackend.clear_contract_storage
-        `{H : State.Trait}
-        :=
-        clear_contract_storage;
-      ink_env.backend.EnvBackend.decode_input
-        `{H : State.Trait}
-        :=
-        decode_input;
-      ink_env.backend.EnvBackend.return_value
-        `{H : State.Trait}
-        :=
-        return_value;
-      ink_env.backend.EnvBackend.debug_message
-        `{H : State.Trait}
-        :=
-        debug_message;
-      ink_env.backend.EnvBackend.hash_bytes `{H : State.Trait} := hash_bytes;
-      ink_env.backend.EnvBackend.hash_encoded
-        `{H : State.Trait}
-        :=
-        hash_encoded;
-      ink_env.backend.EnvBackend.ecdsa_recover
-        `{H : State.Trait}
-        :=
-        ecdsa_recover;
-      ink_env.backend.EnvBackend.ecdsa_to_eth_address
-        `{H : State.Trait}
-        :=
-        ecdsa_to_eth_address;
-      ink_env.backend.EnvBackend.call_chain_extension
-        `{H : State.Trait}
-        :=
-        call_chain_extension;
-      ink_env.backend.EnvBackend.set_code_hash
-        `{H : State.Trait}
-        :=
-        set_code_hash;
-    }.
-  End Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-  
-  Module
-    Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-    Definition Self := ink_env.engine.off_chain.EnvInstance.
-    
-    Parameter caller : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.AccountId.
-    
-    Global Instance Method_caller `{H : State.Trait} :
-      Notation.Dot "caller" := {
-      Notation.dot := caller;
-    }.
-    
-    Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Balance.
-    
-    Global Instance Method_transferred_value `{H : State.Trait} :
-      Notation.Dot "transferred_value" := {
-      Notation.dot := transferred_value;
-    }.
-    
-    Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) u64.
-    
-    Global Instance Method_gas_left `{H : State.Trait} :
-      Notation.Dot "gas_left" := {
-      Notation.dot := gas_left;
-    }.
-    
-    Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Timestamp.
-    
-    Global Instance Method_block_timestamp `{H : State.Trait} :
-      Notation.Dot "block_timestamp" := {
-      Notation.dot := block_timestamp;
-    }.
-    
-    Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.AccountId.
-    
-    Global Instance Method_account_id `{H : State.Trait} :
-      Notation.Dot "account_id" := {
-      Notation.dot := account_id;
-    }.
-    
-    Parameter balance : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Balance.
-    
-    Global Instance Method_balance `{H : State.Trait} :
-      Notation.Dot "balance" := {
-      Notation.dot := balance;
-    }.
-    
-    Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.BlockNumber.
-    
-    Global Instance Method_block_number `{H : State.Trait} :
-      Notation.Dot "block_number" := {
-      Notation.dot := block_number;
-    }.
-    
-    Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) ImplE.Balance.
-    
-    Global Instance Method_minimum_balance `{H : State.Trait} :
-      Notation.Dot "minimum_balance" := {
-      Notation.dot := minimum_balance;
-    }.
-    
-    Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-        Event
-        -> M (H := H) unit.
-    
-    Global Instance Method_emit_event `{H : State.Trait} :
-      Notation.Dot "emit_event" := {
-      Notation.dot := emit_event;
-    }.
-    
-    Parameter invoke_contract : forall `{H : State.Trait}, mut_ref Self->
-        ref
-            (ink_env.call.call_builder.CallParams
-              E
-              (ink_env.call.call_builder.Call E)
-              Args
-              R)
-        -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-    
-    Global Instance Method_invoke_contract `{H : State.Trait} :
-      Notation.Dot "invoke_contract" := {
-      Notation.dot := invoke_contract;
-    }.
-    
-    Parameter invoke_contract_delegate : forall `{H : State.Trait}, mut_ref
-            Self->
-        ref
-            (ink_env.call.call_builder.CallParams
-              E
-              (ink_env.call.call_builder.DelegateCall E)
-              Args
-              R)
-        -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-    
-    Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
-      Notation.Dot "invoke_contract_delegate" := {
-      Notation.dot := invoke_contract_delegate;
-    }.
-    
-    Parameter instantiate_contract : forall `{H : State.Trait}, mut_ref Self->
-        ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-        ->
-          M (H := H)
-            (ink_env.error.Result
-              (ink_primitives.ConstructorResult
-                ink_env.call.create_builder.ConstructorReturnType.Output)).
-    
-    Global Instance Method_instantiate_contract `{H : State.Trait} :
-      Notation.Dot "instantiate_contract" := {
-      Notation.dot := instantiate_contract;
-    }.
-    
-    Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-        ImplE.AccountId
-        -> M (H := H) Empty_set.
-    
-    Global Instance Method_terminate_contract `{H : State.Trait} :
-      Notation.Dot "terminate_contract" := {
-      Notation.dot := terminate_contract;
-    }.
-    
-    Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
-        ImplE.AccountId->
-        ImplE.Balance
-        -> M (H := H) (ink_env.error.Result unit).
-    
-    Global Instance Method_transfer `{H : State.Trait} :
-      Notation.Dot "transfer" := {
-      Notation.dot := transfer;
-    }.
-    
-    Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-        u64
-        -> M (H := H) ImplE.Balance.
-    
-    Global Instance Method_weight_to_fee `{H : State.Trait} :
-      Notation.Dot "weight_to_fee" := {
-      Notation.dot := weight_to_fee;
-    }.
-    
-    Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-        ref ImplE.AccountId
-        -> M (H := H) bool.
-    
-    Global Instance Method_is_contract `{H : State.Trait} :
-      Notation.Dot "is_contract" := {
-      Notation.dot := is_contract;
-    }.
-    
-    Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) bool.
-    
-    Global Instance Method_caller_is_origin `{H : State.Trait} :
-      Notation.Dot "caller_is_origin" := {
-      Notation.dot := caller_is_origin;
-    }.
-    
-    Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-        ref ImplE.AccountId
-        -> M (H := H) (ink_env.error.Result ImplE.Hash).
-    
-    Global Instance Method_code_hash `{H : State.Trait} :
-      Notation.Dot "code_hash" := {
-      Notation.dot := code_hash;
-    }.
-    
-    Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-        -> M (H := H) (ink_env.error.Result ImplE.Hash).
-    
-    Global Instance Method_own_code_hash `{H : State.Trait} :
-      Notation.Dot "own_code_hash" := {
-      Notation.dot := own_code_hash;
-    }.
-    
-    Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-        ref Call
-        -> M (H := H) (ink_env.error.Result unit).
-    
-    Global Instance Method_call_runtime `{H : State.Trait} :
-      Notation.Dot "call_runtime" := {
-      Notation.dot := call_runtime;
-    }.
-    
-    Global Instance I : ink_env.backend.TypedEnvBackend.Trait Self := {
-      ink_env.backend.TypedEnvBackend.caller `{H : State.Trait} := caller;
-      ink_env.backend.TypedEnvBackend.transferred_value
-        `{H : State.Trait}
-        :=
-        transferred_value;
-      ink_env.backend.TypedEnvBackend.weight_to_fee
-        `{H : State.Trait}
-        :=
-        weight_to_fee;
-      ink_env.backend.TypedEnvBackend.gas_left `{H : State.Trait} := gas_left;
-      ink_env.backend.TypedEnvBackend.block_timestamp
-        `{H : State.Trait}
-        :=
-        block_timestamp;
-      ink_env.backend.TypedEnvBackend.account_id
-        `{H : State.Trait}
-        :=
-        account_id;
-      ink_env.backend.TypedEnvBackend.balance `{H : State.Trait} := balance;
-      ink_env.backend.TypedEnvBackend.block_number
-        `{H : State.Trait}
-        :=
-        block_number;
-      ink_env.backend.TypedEnvBackend.minimum_balance
-        `{H : State.Trait}
-        :=
-        minimum_balance;
-      ink_env.backend.TypedEnvBackend.emit_event
-        `{H : State.Trait}
-        :=
-        emit_event;
-      ink_env.backend.TypedEnvBackend.invoke_contract
-        `{H : State.Trait}
-        :=
-        invoke_contract;
-      ink_env.backend.TypedEnvBackend.invoke_contract_delegate
-        `{H : State.Trait}
-        :=
-        invoke_contract_delegate;
-      ink_env.backend.TypedEnvBackend.instantiate_contract
-        `{H : State.Trait}
-        :=
-        instantiate_contract;
-      ink_env.backend.TypedEnvBackend.terminate_contract
-        `{H : State.Trait}
-        :=
-        terminate_contract;
-      ink_env.backend.TypedEnvBackend.transfer `{H : State.Trait} := transfer;
-      ink_env.backend.TypedEnvBackend.is_contract
-        `{H : State.Trait}
-        :=
-        is_contract;
-      ink_env.backend.TypedEnvBackend.caller_is_origin
-        `{H : State.Trait}
-        :=
-        caller_is_origin;
-      ink_env.backend.TypedEnvBackend.code_hash `{H : State.Trait} := code_hash;
-      ink_env.backend.TypedEnvBackend.own_code_hash
-        `{H : State.Trait}
-        :=
-        own_code_hash;
-      ink_env.backend.TypedEnvBackend.call_runtime
-        `{H : State.Trait}
-        :=
-        call_runtime;
-    }.
-  End
-    Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-End impls.
-
-Definition BUFFER_SIZE `{H : State.Trait} : usize := run (1.["shl"] 14).
-
-Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Global Instance AssociatedFunction_hash `{H : State.Trait} :
-    Notation.DoubleColon Self "hash" := {
-    Notation.double_colon := hash;
-  }.
-  
-  Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-    ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-  }.
-End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x128.
-
-Definition OutputType : Set := list u8.
-
-Definition _ `{H : State.Trait} : unit -> unit :=
-  run
-    (Pure
-      (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
-        Pure tt)).
-
-Module TypeEq.
-  Class Trait
-      (Self : Set)
-      {This : Set}
-      `{core.marker.Sized.Trait This} :
-      Set := {
-    This := This;
-  }.
-  
-  Global Instance Method_This `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "This" := {
-    Notation.double_colon_type := This;
-  }.
-End TypeEq.
-
-Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Definition This : Set := Self.
-  
-  Global Instance I :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
-  }.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-
-Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
-    {T : Set} {U : Set},
-    `{core.marker.Sized.Trait T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
-    `{core.marker.Sized.Trait U}
-    unit
-    -> M (H := H) unit.
-
-Parameter as_array : forall `{H : State.Trait}, forall
-    {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
-
-Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Global Instance AssociatedFunction_hash `{H : State.Trait} :
-    Notation.DoubleColon Self "hash" := {
-    Notation.double_colon := hash;
-  }.
-  
-  Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-    ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-  }.
-End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Blake2x256.
-
-Definition OutputType : Set := list u8.
-
-Definition _ `{H : State.Trait} : unit -> unit :=
-  run
-    (Pure
-      (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
-        Pure tt)).
-
-Module TypeEq.
-  Class Trait
-      (Self : Set)
-      {This : Set}
-      `{core.marker.Sized.Trait This} :
-      Set := {
-    This := This;
-  }.
-  
-  Global Instance Method_This `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "This" := {
-    Notation.double_colon_type := This;
-  }.
-End TypeEq.
-
-Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Definition This : Set := Self.
-  
-  Global Instance I :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
-  }.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-
-Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
-    {T : Set} {U : Set},
-    `{core.marker.Sized.Trait T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
-    `{core.marker.Sized.Trait U}
-    unit
-    -> M (H := H) unit.
-
-Parameter as_array : forall `{H : State.Trait}, forall
-    {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
-
-Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Global Instance AssociatedFunction_hash `{H : State.Trait} :
-    Notation.DoubleColon Self "hash" := {
-    Notation.double_colon := hash;
-  }.
-  
-  Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-    ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-  }.
-End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Sha2x256.
-
-Definition OutputType : Set := list u8.
-
-Definition _ `{H : State.Trait} : unit -> unit :=
-  run
-    (Pure
-      (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
-        Pure tt)).
-
-Module TypeEq.
-  Class Trait
-      (Self : Set)
-      {This : Set}
-      `{core.marker.Sized.Trait This} :
-      Set := {
-    This := This;
-  }.
-  
-  Global Instance Method_This `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "This" := {
-    Notation.double_colon_type := This;
-  }.
-End TypeEq.
-
-Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Definition This : Set := Self.
-  
-  Global Instance I :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
-  }.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-
-Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
-    {T : Set} {U : Set},
-    `{core.marker.Sized.Trait T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
-    `{core.marker.Sized.Trait U}
-    unit
-    -> M (H := H) unit.
-
-Parameter as_array : forall `{H : State.Trait}, forall
-    {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
-
-Module Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Parameter hash : forall `{H : State.Trait}, ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Global Instance AssociatedFunction_hash `{H : State.Trait} :
-    Notation.DoubleColon Self "hash" := {
-    Notation.double_colon := hash;
-  }.
-  
-  Global Instance I : ink_env.hash.CryptoHash.Trait Self := {
-    ink_env.hash.CryptoHash.hash `{H : State.Trait} := hash;
-  }.
-End Impl_ink_env_hash_CryptoHash_for_ink_env_hash_Keccak256.
-
-Definition OutputType : Set := list u8.
-
-Definition _ `{H : State.Trait} : unit -> unit :=
-  run
-    (Pure
-      (fun  =>
-        let* _ := ink_env.engine.off_chain.impls.hash._.assert_type_eq_all tt in
-        Pure tt)).
-
-Module TypeEq.
-  Class Trait
-      (Self : Set)
-      {This : Set}
-      `{core.marker.Sized.Trait This} :
-      Set := {
-    This := This;
-  }.
-  
-  Global Instance Method_This `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "This" := {
-    Notation.double_colon_type := This;
-  }.
-End TypeEq.
-
-Module Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-Section Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Definition This : Set := Self.
-  
-  Global Instance I :
-      ink_env.engine.off_chain.impls.hash._.TypeEq.Trait Self := {
-  }.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-End Impl_ink_env_engine_off_chain_impls_hash___TypeEq_for_T.
-
-Parameter assert_type_eq_all : forall `{H : State.Trait}, forall
-    {T : Set} {U : Set},
-    `{core.marker.Sized.Trait T}
-    `{ink_env.engine.off_chain.impls.hash._.TypeEq.Trait T}
-    `{core.marker.Sized.Trait U}
-    unit
-    -> M (H := H) unit.
-
-Parameter as_array : forall `{H : State.Trait}, forall
-    {T : Set},
-    mut_ref Slice
-    -> M (H := H) (mut_ref list T).
-
-Module Impl_core_convert_From_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter from : forall `{H : State.Trait}, ink_engine.ext.Error
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait Self (T := ink_engine.ext.Error) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_error_Error.
-
-Module TopicsBuilder.
-  Record t : Set := {
-    topics : alloc.vec.Vec (alloc.vec.Vec u8);
-  }.
-  
-  Global Instance Get_topics : Notation.Dot "topics" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End TopicsBuilder.
-Definition TopicsBuilder : Set := TopicsBuilder.t.
-
-Module
-  Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-  Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-  
-  Parameter default : forall `{H : State.Trait}, unit
-      -> M (H := H) ink_env.engine.off_chain.impls.TopicsBuilder.
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-
-Module
-  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-Section
-  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-  Context {E : Set}.
-  
-  Definition Self := ink_env.engine.off_chain.impls.TopicsBuilder.
-  
-  Definition Output : Set := alloc.vec.Vec u8.
-  
-  Parameter expect : forall `{H : State.Trait}, mut_ref Self->
-      usize
-      -> M (H := H) unit.
-  
-  Global Instance Method_expect `{H : State.Trait} : Notation.Dot "expect" := {
-    Notation.dot := expect;
-  }.
-  
-  Parameter push_topic : forall `{H : State.Trait}, mut_ref Self->
-      ref T
-      -> M (H := H) unit.
-  
-  Global Instance Method_push_topic `{H : State.Trait} :
-    Notation.Dot "push_topic" := {
-    Notation.dot := push_topic;
-  }.
-  
-  Parameter output : forall `{H : State.Trait}, Self
-      -> M (H := H) ImplSelf.Output.
-  
-  Global Instance Method_output `{H : State.Trait} : Notation.Dot "output" := {
-    Notation.dot := output;
-  }.
-  
-  Global Instance I :
-      ink_env.topics.TopicsBuilderBackend.Trait Self (E := E) := {
-    ink_env.topics.TopicsBuilderBackend.expect `{H : State.Trait} := expect;
-    ink_env.topics.TopicsBuilderBackend.push_topic
-      `{H : State.Trait}
-      :=
-      push_topic;
-    ink_env.topics.TopicsBuilderBackend.output `{H : State.Trait} := output;
-  }.
-End
-  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-End
-  Impl_ink_env_topics_TopicsBuilderBackend_for_ink_env_engine_off_chain_impls_TopicsBuilder.
-
-Module Impl_ink_env_engine_off_chain_EnvInstance_4.
-  Definition Self := ink_env.engine.off_chain.EnvInstance.
-  
-  Parameter get_property : forall `{H : State.Trait}, mut_ref Self->
-      (ref ink_engine.ext.Engine) -> (mut_ref (mut_ref Slice)) -> unit
-      -> M (H := H) (ink_env.error.Result T).
-  
-  Global Instance Method_get_property `{H : State.Trait} :
-    Notation.Dot "get_property" := {
-    Notation.dot := get_property;
-  }.
-End Impl_ink_env_engine_off_chain_EnvInstance_4.
-
-Module Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-  Definition Self := ink_env.engine.off_chain.EnvInstance.
-  
-  Parameter set_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-      ref K->
-      ref V
-      -> M (H := H) (core.option.Option u32).
-  
-  Global Instance Method_set_contract_storage `{H : State.Trait} :
-    Notation.Dot "set_contract_storage" := {
-    Notation.dot := set_contract_storage;
-  }.
-  
-  Parameter get_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-  
-  Global Instance Method_get_contract_storage `{H : State.Trait} :
-    Notation.Dot "get_contract_storage" := {
-    Notation.dot := get_contract_storage;
-  }.
-  
-  Parameter take_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-      ref K
-      -> M (H := H) (ink_env.error.Result (core.option.Option R)).
-  
-  Global Instance Method_take_contract_storage `{H : State.Trait} :
-    Notation.Dot "take_contract_storage" := {
-    Notation.dot := take_contract_storage;
-  }.
-  
-  Parameter contains_contract_storage : forall `{H : State.Trait}, mut_ref
-          Self->
-      ref K
-      -> M (H := H) (core.option.Option u32).
-  
-  Global Instance Method_contains_contract_storage `{H : State.Trait} :
-    Notation.Dot "contains_contract_storage" := {
-    Notation.dot := contains_contract_storage;
-  }.
-  
-  Parameter clear_contract_storage : forall `{H : State.Trait}, mut_ref Self->
-      ref K
-      -> M (H := H) (core.option.Option u32).
-  
-  Global Instance Method_clear_contract_storage `{H : State.Trait} :
-    Notation.Dot "clear_contract_storage" := {
-    Notation.dot := clear_contract_storage;
-  }.
-  
-  Parameter decode_input : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) (ink_env.error.Result T).
-  
-  Global Instance Method_decode_input `{H : State.Trait} :
-    Notation.Dot "decode_input" := {
-    Notation.dot := decode_input;
-  }.
-  
-  Parameter return_value : forall `{H : State.Trait}, mut_ref Self->
-      ink_env.backend.ReturnFlags->
-      ref R
-      -> M (H := H) Empty_set.
-  
-  Global Instance Method_return_value `{H : State.Trait} :
-    Notation.Dot "return_value" := {
-    Notation.dot := return_value;
-  }.
-  
-  Parameter debug_message : forall `{H : State.Trait}, mut_ref Self->
-      ref str
-      -> M (H := H) unit.
-  
-  Global Instance Method_debug_message `{H : State.Trait} :
-    Notation.Dot "debug_message" := {
-    Notation.dot := debug_message;
-  }.
-  
-  Parameter hash_bytes : forall `{H : State.Trait}, mut_ref Self->
-      ref Slice->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Global Instance Method_hash_bytes `{H : State.Trait} :
-    Notation.Dot "hash_bytes" := {
-    Notation.dot := hash_bytes;
-  }.
-  
-  Parameter hash_encoded : forall `{H : State.Trait}, mut_ref Self->
-      ref T->
-      mut_ref ink_env.hash.HashOutput.Type
-      -> M (H := H) unit.
-  
-  Global Instance Method_hash_encoded `{H : State.Trait} :
-    Notation.Dot "hash_encoded" := {
-    Notation.dot := hash_encoded;
-  }.
-  
-  Parameter ecdsa_recover : forall `{H : State.Trait}, mut_ref Self->
-      ref list u8->
-      ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Global Instance Method_ecdsa_recover `{H : State.Trait} :
-    Notation.Dot "ecdsa_recover" := {
-    Notation.dot := ecdsa_recover;
-  }.
-  
-  Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, mut_ref Self->
-      ref list u8->
-      mut_ref list u8
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
-    Notation.Dot "ecdsa_to_eth_address" := {
-    Notation.dot := ecdsa_to_eth_address;
-  }.
-  
-  Parameter call_chain_extension : forall `{H : State.Trait}, mut_ref Self->
-      u32->
-      ref I->
-      F->
-      D
-      -> M (H := H) (core.result.Result T E).
-  
-  Global Instance Method_call_chain_extension `{H : State.Trait} :
-    Notation.Dot "call_chain_extension" := {
-    Notation.dot := call_chain_extension;
-  }.
-  
-  Parameter set_code_hash : forall `{H : State.Trait}, mut_ref Self->
-      ref Slice
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Global Instance Method_set_code_hash `{H : State.Trait} :
-    Notation.Dot "set_code_hash" := {
-    Notation.dot := set_code_hash;
-  }.
-  
-  Global Instance I : ink_env.backend.EnvBackend.Trait Self := {
-    ink_env.backend.EnvBackend.set_contract_storage
-      `{H : State.Trait}
-      :=
-      set_contract_storage;
-    ink_env.backend.EnvBackend.get_contract_storage
-      `{H : State.Trait}
-      :=
-      get_contract_storage;
-    ink_env.backend.EnvBackend.take_contract_storage
-      `{H : State.Trait}
-      :=
-      take_contract_storage;
-    ink_env.backend.EnvBackend.contains_contract_storage
-      `{H : State.Trait}
-      :=
-      contains_contract_storage;
-    ink_env.backend.EnvBackend.clear_contract_storage
-      `{H : State.Trait}
-      :=
-      clear_contract_storage;
-    ink_env.backend.EnvBackend.decode_input `{H : State.Trait} := decode_input;
-    ink_env.backend.EnvBackend.return_value `{H : State.Trait} := return_value;
-    ink_env.backend.EnvBackend.debug_message
-      `{H : State.Trait}
-      :=
-      debug_message;
-    ink_env.backend.EnvBackend.hash_bytes `{H : State.Trait} := hash_bytes;
-    ink_env.backend.EnvBackend.hash_encoded `{H : State.Trait} := hash_encoded;
-    ink_env.backend.EnvBackend.ecdsa_recover
-      `{H : State.Trait}
-      :=
-      ecdsa_recover;
-    ink_env.backend.EnvBackend.ecdsa_to_eth_address
-      `{H : State.Trait}
-      :=
-      ecdsa_to_eth_address;
-    ink_env.backend.EnvBackend.call_chain_extension
-      `{H : State.Trait}
-      :=
-      call_chain_extension;
-    ink_env.backend.EnvBackend.set_code_hash
-      `{H : State.Trait}
-      :=
-      set_code_hash;
-  }.
-End Impl_ink_env_backend_EnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-
-Module
-  Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-  Definition Self := ink_env.engine.off_chain.EnvInstance.
-  
-  Parameter caller : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.AccountId.
-  
-  Global Instance Method_caller `{H : State.Trait} : Notation.Dot "caller" := {
-    Notation.dot := caller;
-  }.
-  
-  Parameter transferred_value : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Balance.
-  
-  Global Instance Method_transferred_value `{H : State.Trait} :
-    Notation.Dot "transferred_value" := {
-    Notation.dot := transferred_value;
-  }.
-  
-  Parameter gas_left : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) u64.
-  
-  Global Instance Method_gas_left `{H : State.Trait} :
-    Notation.Dot "gas_left" := {
-    Notation.dot := gas_left;
-  }.
-  
-  Parameter block_timestamp : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Timestamp.
-  
-  Global Instance Method_block_timestamp `{H : State.Trait} :
-    Notation.Dot "block_timestamp" := {
-    Notation.dot := block_timestamp;
-  }.
-  
-  Parameter account_id : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.AccountId.
-  
-  Global Instance Method_account_id `{H : State.Trait} :
-    Notation.Dot "account_id" := {
-    Notation.dot := account_id;
-  }.
-  
-  Parameter balance : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Balance.
-  
-  Global Instance Method_balance `{H : State.Trait} :
-    Notation.Dot "balance" := {
-    Notation.dot := balance;
-  }.
-  
-  Parameter block_number : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.BlockNumber.
-  
-  Global Instance Method_block_number `{H : State.Trait} :
-    Notation.Dot "block_number" := {
-    Notation.dot := block_number;
-  }.
-  
-  Parameter minimum_balance : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) ImplE.Balance.
-  
-  Global Instance Method_minimum_balance `{H : State.Trait} :
-    Notation.Dot "minimum_balance" := {
-    Notation.dot := minimum_balance;
-  }.
-  
-  Parameter emit_event : forall `{H : State.Trait}, mut_ref Self->
-      Event
-      -> M (H := H) unit.
-  
-  Global Instance Method_emit_event `{H : State.Trait} :
-    Notation.Dot "emit_event" := {
-    Notation.dot := emit_event;
-  }.
-  
-  Parameter invoke_contract : forall `{H : State.Trait}, mut_ref Self->
-      ref
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.Call E)
-            Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-  
-  Global Instance Method_invoke_contract `{H : State.Trait} :
-    Notation.Dot "invoke_contract" := {
-    Notation.dot := invoke_contract;
-  }.
-  
-  Parameter invoke_contract_delegate : forall `{H : State.Trait}, mut_ref Self->
-      ref
-          (ink_env.call.call_builder.CallParams
-            E
-            (ink_env.call.call_builder.DelegateCall E)
-            Args
-            R)
-      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-  
-  Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
-    Notation.Dot "invoke_contract_delegate" := {
-    Notation.dot := invoke_contract_delegate;
-  }.
-  
-  Parameter instantiate_contract : forall `{H : State.Trait}, mut_ref Self->
-      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
-      ->
-        M (H := H)
-          (ink_env.error.Result
-            (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)).
-  
-  Global Instance Method_instantiate_contract `{H : State.Trait} :
-    Notation.Dot "instantiate_contract" := {
-    Notation.dot := instantiate_contract;
-  }.
-  
-  Parameter terminate_contract : forall `{H : State.Trait}, mut_ref Self->
-      ImplE.AccountId
-      -> M (H := H) Empty_set.
-  
-  Global Instance Method_terminate_contract `{H : State.Trait} :
-    Notation.Dot "terminate_contract" := {
-    Notation.dot := terminate_contract;
-  }.
-  
-  Parameter transfer : forall `{H : State.Trait}, mut_ref Self->
-      ImplE.AccountId->
-      ImplE.Balance
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Global Instance Method_transfer `{H : State.Trait} :
-    Notation.Dot "transfer" := {
-    Notation.dot := transfer;
-  }.
-  
-  Parameter weight_to_fee : forall `{H : State.Trait}, mut_ref Self->
-      u64
-      -> M (H := H) ImplE.Balance.
-  
-  Global Instance Method_weight_to_fee `{H : State.Trait} :
-    Notation.Dot "weight_to_fee" := {
-    Notation.dot := weight_to_fee;
-  }.
-  
-  Parameter is_contract : forall `{H : State.Trait}, mut_ref Self->
-      ref ImplE.AccountId
-      -> M (H := H) bool.
-  
-  Global Instance Method_is_contract `{H : State.Trait} :
-    Notation.Dot "is_contract" := {
-    Notation.dot := is_contract;
-  }.
-  
-  Parameter caller_is_origin : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) bool.
-  
-  Global Instance Method_caller_is_origin `{H : State.Trait} :
-    Notation.Dot "caller_is_origin" := {
-    Notation.dot := caller_is_origin;
-  }.
-  
-  Parameter code_hash : forall `{H : State.Trait}, mut_ref Self->
-      ref ImplE.AccountId
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
-  
-  Global Instance Method_code_hash `{H : State.Trait} :
-    Notation.Dot "code_hash" := {
-    Notation.dot := code_hash;
-  }.
-  
-  Parameter own_code_hash : forall `{H : State.Trait}, mut_ref Self
-      -> M (H := H) (ink_env.error.Result ImplE.Hash).
-  
-  Global Instance Method_own_code_hash `{H : State.Trait} :
-    Notation.Dot "own_code_hash" := {
-    Notation.dot := own_code_hash;
-  }.
-  
-  Parameter call_runtime : forall `{H : State.Trait}, mut_ref Self->
-      ref Call
-      -> M (H := H) (ink_env.error.Result unit).
-  
-  Global Instance Method_call_runtime `{H : State.Trait} :
-    Notation.Dot "call_runtime" := {
-    Notation.dot := call_runtime;
-  }.
-  
-  Global Instance I : ink_env.backend.TypedEnvBackend.Trait Self := {
-    ink_env.backend.TypedEnvBackend.caller `{H : State.Trait} := caller;
-    ink_env.backend.TypedEnvBackend.transferred_value
-      `{H : State.Trait}
-      :=
-      transferred_value;
-    ink_env.backend.TypedEnvBackend.weight_to_fee
-      `{H : State.Trait}
-      :=
-      weight_to_fee;
-    ink_env.backend.TypedEnvBackend.gas_left `{H : State.Trait} := gas_left;
-    ink_env.backend.TypedEnvBackend.block_timestamp
-      `{H : State.Trait}
-      :=
-      block_timestamp;
-    ink_env.backend.TypedEnvBackend.account_id `{H : State.Trait} := account_id;
-    ink_env.backend.TypedEnvBackend.balance `{H : State.Trait} := balance;
-    ink_env.backend.TypedEnvBackend.block_number
-      `{H : State.Trait}
-      :=
-      block_number;
-    ink_env.backend.TypedEnvBackend.minimum_balance
-      `{H : State.Trait}
-      :=
-      minimum_balance;
-    ink_env.backend.TypedEnvBackend.emit_event `{H : State.Trait} := emit_event;
-    ink_env.backend.TypedEnvBackend.invoke_contract
-      `{H : State.Trait}
-      :=
-      invoke_contract;
-    ink_env.backend.TypedEnvBackend.invoke_contract_delegate
-      `{H : State.Trait}
-      :=
-      invoke_contract_delegate;
-    ink_env.backend.TypedEnvBackend.instantiate_contract
-      `{H : State.Trait}
-      :=
-      instantiate_contract;
-    ink_env.backend.TypedEnvBackend.terminate_contract
-      `{H : State.Trait}
-      :=
-      terminate_contract;
-    ink_env.backend.TypedEnvBackend.transfer `{H : State.Trait} := transfer;
-    ink_env.backend.TypedEnvBackend.is_contract
-      `{H : State.Trait}
-      :=
-      is_contract;
-    ink_env.backend.TypedEnvBackend.caller_is_origin
-      `{H : State.Trait}
-      :=
-      caller_is_origin;
-    ink_env.backend.TypedEnvBackend.code_hash `{H : State.Trait} := code_hash;
-    ink_env.backend.TypedEnvBackend.own_code_hash
-      `{H : State.Trait}
-      :=
-      own_code_hash;
-    ink_env.backend.TypedEnvBackend.call_runtime
-      `{H : State.Trait}
-      :=
-      call_runtime;
-  }.
-End
-  Impl_ink_env_backend_TypedEnvBackend_for_ink_env_engine_off_chain_EnvInstance.
-
-Module test_api.
-  Module EmittedEvent.
-    Record t : Set := {
-      topics : alloc.vec.Vec (alloc.vec.Vec u8);
-      data : alloc.vec.Vec u8;
-    }.
-    
-    Global Instance Get_topics : Notation.Dot "topics" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_data : Notation.Dot "data" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
-  End EmittedEvent.
-  Definition EmittedEvent : Set := EmittedEvent.t.
-  
-  Module
-    Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-    Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-  
-  Parameter set_account_balance : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ImplT.AccountId->
-      ImplT.Balance
-      -> M (H := H) unit.
-  
-  Parameter get_account_balance : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ImplT.AccountId
-      -> M (H := H) (ink_env.error.Result ImplT.Balance).
-  
-  Parameter register_chain_extension : forall `{H : State.Trait}, forall
-      {E : Set},
-      `{ink_engine.chain_extension.ChainExtension.Trait E}
-      E
-      -> M (H := H) unit.
-  
-  Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
-      -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
-  
-  Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-      -> M (H := H) unit.
-  
-  Parameter advance_block : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      unit
-      -> M (H := H) unit.
-  
-  Parameter set_caller : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) unit.
-  
-  Parameter set_callee : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) unit.
-  
-  Parameter set_contract : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) unit.
-  
-  Parameter is_contract : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      ImplT.AccountId
-      -> M (H := H) bool.
-  
-  Parameter callee : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      unit
-      -> M (H := H) ImplT.AccountId.
-  
-  Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ref ImplT.AccountId
-      -> M (H := H) (usize * usize).
-  
-  Parameter set_value_transferred : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ImplT.Balance
-      -> M (H := H) unit.
-  
-  Parameter transfer_in : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ImplT.Balance
-      -> M (H := H) unit.
-  
-  Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ref ImplT.AccountId
-      -> M (H := H) (ink_env.error.Result usize).
-  
-  Parameter set_block_timestamp : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ImplT.Timestamp
-      -> M (H := H) unit.
-  
-  Parameter set_block_number : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      ImplT.BlockNumber
-      -> M (H := H) unit.
-  
-  Parameter run_test : forall `{H : State.Trait}, forall
+  Parameter assert_contract_termination : forall `{H : State.Trait},
+      forall
       {T : Set} {F : Set},
       `{ink_env.types.Environment.Trait T}
-      `{core.ops.function.FnOnce.Trait
-        ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
-        F}
-      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      F
-      -> M (H := H) (ink_env.error.Result unit).
+      `{core.ops.function.FnMut.Trait unit F}
+      `{core.panic.unwind_safe.UnwindSafe.Trait F}
+      `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
+      `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
+      F ->
+      ImplT.AccountId ->
+      ImplT.Balance ->
+      M (H := H) unit.
+End test_api.
+
+Module EmittedEvent.
+  Unset Primitive Projections.
+  Record t : Set := {
+    topics : alloc.vec.Vec (alloc.vec.Vec u8);
+    data : alloc.vec.Vec u8;
+  }.
+  Global Set Primitive Projections.
   
-  Parameter default_accounts : forall `{H : State.Trait}, forall
-      {T : Set},
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-      unit
-      -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
-  
-  Module DefaultAccounts.
+  Global Instance Get_topics : Notation.Dot "topics" := {
+    Notation.dot '(Build_t x0 _) := x0;
+  }.
+  Global Instance Get_data : Notation.Dot "data" := {
+    Notation.dot '(Build_t _ x1) := x1;
+  }.
+End EmittedEvent.
+Definition EmittedEvent : Set := @EmittedEvent.t.
+
+Parameter set_account_balance : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ImplT.AccountId ->
+    ImplT.Balance ->
+    M (H := H) unit.
+
+Parameter get_account_balance : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ImplT.AccountId ->
+    M (H := H) (ink_env.error.Result ImplT.Balance).
+
+Parameter register_chain_extension : forall `{H : State.Trait},
+    forall
+    {E : Set},
+    `{ink_engine.chain_extension.ChainExtension.Trait E}
+    E ->
+    M (H := H) unit.
+
+Parameter recorded_debug_messages : forall `{H : State.Trait},
+    M (H := H) ink_engine.test_api.RecordedDebugMessages.
+
+Parameter set_clear_storage_disabled : forall `{H : State.Trait},
+    bool ->
+    M (H := H) unit.
+
+Parameter advance_block : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    M (H := H) unit.
+
+Parameter set_caller : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+    ImplT.AccountId ->
+    M (H := H) unit.
+
+Parameter set_callee : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+    ImplT.AccountId ->
+    M (H := H) unit.
+
+Parameter set_contract : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+    ImplT.AccountId ->
+    M (H := H) unit.
+
+Parameter is_contract : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+    ImplT.AccountId ->
+    M (H := H) bool.
+
+Parameter callee : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    M (H := H) ImplT.AccountId.
+
+Parameter get_contract_storage_rw : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ref ImplT.AccountId ->
+    M (H := H) (usize * usize).
+
+Parameter set_value_transferred : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ImplT.Balance ->
+    M (H := H) unit.
+
+Parameter transfer_in : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ImplT.Balance ->
+    M (H := H) unit.
+
+Parameter count_used_storage_cells : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ref ImplT.AccountId ->
+    M (H := H) (ink_env.error.Result usize).
+
+Parameter set_block_timestamp : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ImplT.Timestamp ->
+    M (H := H) unit.
+
+Parameter set_block_number : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    ImplT.BlockNumber ->
+    M (H := H) unit.
+
+Parameter run_test : forall `{H : State.Trait},
+    forall
+    {T : Set} {F : Set},
+    `{ink_env.types.Environment.Trait T}
+    `{core.ops.function.FnOnce.Trait
+      ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+      F}
+    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+    F ->
+    M (H := H) (ink_env.error.Result unit).
+
+Parameter default_accounts : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    `{ink_env.types.Environment.Trait T}
+    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
+    M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+
+Module DefaultAccounts.
+  Section DefaultAccounts.
+    Context {T : Set}.
+    Unset Primitive Projections.
     Record t : Set := {
       alice : ImplT.AccountId;
       bob : ImplT.AccountId;
@@ -15571,6 +4380,7 @@ Module test_api.
       eve : ImplT.AccountId;
       frank : ImplT.AccountId;
     }.
+    Global Set Primitive Projections.
     
     Global Instance Get_alice : Notation.Dot "alice" := {
       Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
@@ -15591,417 +4401,36 @@ Module test_api.
       Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
     }.
   End DefaultAccounts.
-  Definition DefaultAccounts : Set := DefaultAccounts.t.
-  
-  Parameter recorded_events : forall `{H : State.Trait}, unit
-      -> M (H := H) OpaqueDef.
-  
-  Parameter assert_contract_termination : forall `{H : State.Trait}, forall
-      {T : Set} {F : Set},
-      `{ink_env.types.Environment.Trait T}
-      `{core.ops.function.FnMut.Trait unit F}
-      `{core.panic.unwind_safe.UnwindSafe.Trait F}
-      `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
-      `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-      F->
-      ImplT.AccountId->
-      ImplT.Balance
-      -> M (H := H) unit.
-End test_api.
-
-Module EmittedEvent.
-  Record t : Set := {
-    topics : alloc.vec.Vec (alloc.vec.Vec u8);
-    data : alloc.vec.Vec u8;
-  }.
-  
-  Global Instance Get_topics : Notation.Dot "topics" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_data : Notation.Dot "data" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
-End EmittedEvent.
-Definition EmittedEvent : Set := EmittedEvent.t.
-
-Module Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-  Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.engine.off_chain.test_api.EmittedEvent.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-
-Parameter set_account_balance : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ImplT.AccountId->
-    ImplT.Balance
-    -> M (H := H) unit.
-
-Parameter get_account_balance : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ImplT.AccountId
-    -> M (H := H) (ink_env.error.Result ImplT.Balance).
-
-Parameter register_chain_extension : forall `{H : State.Trait}, forall
-    {E : Set},
-    `{ink_engine.chain_extension.ChainExtension.Trait E}
-    E
-    -> M (H := H) unit.
-
-Parameter recorded_debug_messages : forall `{H : State.Trait}, unit
-    -> M (H := H) ink_engine.test_api.RecordedDebugMessages.
-
-Parameter set_clear_storage_disabled : forall `{H : State.Trait}, bool
-    -> M (H := H) unit.
-
-Parameter advance_block : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    unit
-    -> M (H := H) unit.
-
-Parameter set_caller : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) unit.
-
-Parameter set_callee : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) unit.
-
-Parameter set_contract : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) unit.
-
-Parameter is_contract : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    ImplT.AccountId
-    -> M (H := H) bool.
-
-Parameter callee : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    unit
-    -> M (H := H) ImplT.AccountId.
-
-Parameter get_contract_storage_rw : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ref ImplT.AccountId
-    -> M (H := H) (usize * usize).
-
-Parameter set_value_transferred : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ImplT.Balance
-    -> M (H := H) unit.
-
-Parameter transfer_in : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ImplT.Balance
-    -> M (H := H) unit.
-
-Parameter count_used_storage_cells : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ref ImplT.AccountId
-    -> M (H := H) (ink_env.error.Result usize).
-
-Parameter set_block_timestamp : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ImplT.Timestamp
-    -> M (H := H) unit.
-
-Parameter set_block_number : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    ImplT.BlockNumber
-    -> M (H := H) unit.
-
-Parameter run_test : forall `{H : State.Trait}, forall
-    {T : Set} {F : Set},
-    `{ink_env.types.Environment.Trait T}
-    `{core.ops.function.FnOnce.Trait
-      ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
-      F}
-    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    F
-    -> M (H := H) (ink_env.error.Result unit).
-
-Parameter default_accounts : forall `{H : State.Trait}, forall
-    {T : Set},
-    `{ink_env.types.Environment.Trait T}
-    `{core.convert.From.Trait list u8 ink_env.types.Environment.AccountId}
-    unit
-    -> M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
-
-Module DefaultAccounts.
-  Record t : Set := {
-    alice : ImplT.AccountId;
-    bob : ImplT.AccountId;
-    charlie : ImplT.AccountId;
-    django : ImplT.AccountId;
-    eve : ImplT.AccountId;
-    frank : ImplT.AccountId;
-  }.
-  
-  Global Instance Get_alice : Notation.Dot "alice" := {
-    Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-  }.
-  Global Instance Get_bob : Notation.Dot "bob" := {
-    Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-  }.
-  Global Instance Get_charlie : Notation.Dot "charlie" := {
-    Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-  }.
-  Global Instance Get_django : Notation.Dot "django" := {
-    Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-  }.
-  Global Instance Get_eve : Notation.Dot "eve" := {
-    Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-  }.
-  Global Instance Get_frank : Notation.Dot "frank" := {
-    Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-  }.
 End DefaultAccounts.
-Definition DefaultAccounts : Set := DefaultAccounts.t.
+Definition DefaultAccounts : Set := @DefaultAccounts.t.
 
-Parameter recorded_events : forall `{H : State.Trait}, unit
-    -> M (H := H) OpaqueDef.
+Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
 
-Error OpaqueTy.
-
-Parameter assert_contract_termination : forall `{H : State.Trait}, forall
+Parameter assert_contract_termination : forall `{H : State.Trait},
+    forall
     {T : Set} {F : Set},
     `{ink_env.types.Environment.Trait T}
     `{core.ops.function.FnMut.Trait unit F}
     `{core.panic.unwind_safe.UnwindSafe.Trait F}
     `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
     `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}
-    F->
-    ImplT.AccountId->
-    ImplT.Balance
-    -> M (H := H) unit.
-
-Module types.
-  Module
-    Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-    Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-    
-    Parameter from : forall `{H : State.Trait}, ink_engine.test_api.EmittedEvent
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait
-          Self
-          (T := ink_engine.test_api.EmittedEvent) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-  
-  Module Impl_core_convert_From_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter from : forall `{H : State.Trait}, ink_engine.Error
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait Self (T := ink_engine.Error) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_error_Error.
-  
-  Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-    Definition Self := ink_env.engine.off_chain.AccountError.
-    
-    Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-  
-  Module Impl_core_convert_From_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-        -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_error_Error.
-End types.
-
-Module
-  Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-  Definition Self := ink_env.engine.off_chain.test_api.EmittedEvent.
-  
-  Parameter from : forall `{H : State.Trait}, ink_engine.test_api.EmittedEvent
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait Self (T := ink_engine.test_api.EmittedEvent) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_engine_off_chain_test_api_EmittedEvent.
-
-Module Impl_core_convert_From_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter from : forall `{H : State.Trait}, ink_engine.Error
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I : core.convert.From.Trait Self (T := ink_engine.Error) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_error_Error.
-
-Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-  Definition Self := ink_env.engine.off_chain.AccountError.
-  
-  Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-
-Module Impl_core_convert_From_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter from : forall `{H : State.Trait}, ink_engine.types.AccountError
-      -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait Self (T := ink_engine.types.AccountError) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_error_Error.
+    F ->
+    ImplT.AccountId ->
+    ImplT.Balance ->
+    M (H := H) unit.
 
 Module EnvInstance.
+  Unset Primitive Projections.
   Record t : Set := {
     engine : ink_engine.ext.Engine;
   }.
+  Global Set Primitive Projections.
   
   Global Instance Get_engine : Notation.Dot "engine" := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End EnvInstance.
-Definition EnvInstance : Set := EnvInstance.t.
-
-Module Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-  Definition Self := ink_env.engine.off_chain.EnvInstance.
-  
-  Parameter on_instance : forall `{H : State.Trait}, F -> M (H := H) R.
-  
-  Global Instance AssociatedFunction_on_instance `{H : State.Trait} :
-    Notation.DoubleColon Self "on_instance" := {
-    Notation.double_colon := on_instance;
-  }.
-  
-  Global Instance I : ink_env.engine.OnInstance.Trait Self := {
-    ink_env.engine.OnInstance.on_instance `{H : State.Trait} := on_instance;
-  }.
-End Impl_ink_env_engine_OnInstance_for_ink_env_engine_off_chain_EnvInstance.
-
-Definition
-    INSTANCE
-    `{H : State.Trait} :
-    std.thread.local.LocalKey
-      (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
-  run
-    (std.thread.local.LocalKey::["new"]
-      ink_env.engine.off_chain.on_instance.INSTANCE.__getit).
-
-Parameter __init : forall `{H : State.Trait}, unit
-    -> M (H := H) (core.cell.RefCell ink_env.engine.off_chain.EnvInstance).
-
-Parameter __getit : forall `{H : State.Trait}, core.option.Option
-        (mut_ref
-          (core.option.Option
-            (core.cell.RefCell ink_env.engine.off_chain.EnvInstance)))
-    ->
-      M (H := H)
-        (core.option.Option
-          (ref (core.cell.RefCell ink_env.engine.off_chain.EnvInstance))).
-
-Definition
-    __KEY
-    `{H : State.Trait} :
-    std.sys.common.thread_local.fast_local.Key
-      (core.cell.RefCell ink_env.engine.off_chain.EnvInstance) :=
-  run
-    ((std.sys.common.thread_local.fast_local.Key
-          (core.cell.RefCell ink_env.engine.off_chain.EnvInstance))::["new"]
-      tt).
+Definition EnvInstance : Set := @EnvInstance.t.
 
 Module OffChainError.
   Inductive t : Set :=
@@ -16012,90 +4441,6 @@ Module OffChainError.
 End OffChainError.
 Definition OffChainError := OffChainError.t.
 
-Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
-  Definition Self := ink_env.engine.off_chain.OffChainError.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_OffChainError.
-
-Module Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
-  Definition Self := ink_env.engine.off_chain.OffChainError.
-  
-  Parameter from : forall
-        `{H : State.Trait},
-        ink_env.engine.off_chain.AccountError
-      -> M (H := H) ink_env.engine.off_chain.OffChainError.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait
-        Self
-        (T := ink_env.engine.off_chain.AccountError) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_engine_off_chain_OffChainError.
-
-Module
-  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
-  Definition Self := ink_env.engine.off_chain.OffChainError.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End
-  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_OffChainError.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
-  Definition Self := ink_env.engine.off_chain.OffChainError.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.engine.off_chain.OffChainError
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_OffChainError.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
-  Definition Self := ink_env.engine.off_chain.OffChainError.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_OffChainError.
-
-Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
-  Definition Self := ink_env.engine.off_chain.OffChainError.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_OffChainError.
-
 Module AccountError.
   Inductive t : Set :=
   | Decoding (_ : parity_scale_codec.error.Error)
@@ -16103,116 +4448,6 @@ Module AccountError.
   | NoAccountForId (_ : alloc.vec.Vec u8).
 End AccountError.
 Definition AccountError := AccountError.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
-  Definition Self := ink_env.engine.off_chain.AccountError.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_engine_off_chain_AccountError.
-
-Module Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-  Definition Self := ink_env.engine.off_chain.AccountError.
-  
-  Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-      -> M (H := H) ink_env.engine.off_chain.AccountError.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_engine_off_chain_AccountError.
-
-Module
-  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
-  Definition Self := ink_env.engine.off_chain.AccountError.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End
-  Impl_core_marker_StructuralPartialEq_for_ink_env_engine_off_chain_AccountError.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
-  Definition Self := ink_env.engine.off_chain.AccountError.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.engine.off_chain.AccountError
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_engine_off_chain_AccountError.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
-  Definition Self := ink_env.engine.off_chain.AccountError.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_engine_off_chain_AccountError.
-
-Module Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
-  Definition Self := ink_env.engine.off_chain.AccountError.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_engine_off_chain_AccountError.
-
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter decode_instantiate_result : forall `{H : State.Trait}, forall
-    {I : Set} {E : Set} {ContractRef : Set} {R : Set},
-    `{parity_scale_codec.codec.Input.Trait I}
-    `{ink_env.types.Environment.Trait E}
-    `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
-    `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-    ink_env.error.Result unit->
-    mut_ref I->
-    mut_ref I
-    ->
-      M (H := H)
-        (ink_env.error.Result
-          (ink_primitives.ConstructorResult
-            ink_env.call.create_builder.ConstructorReturnType.Output)).
-
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter decode_instantiate_err : forall `{H : State.Trait}, forall
-    {I : Set} {E : Set} {ContractRef : Set} {R : Set},
-    `{parity_scale_codec.codec.Input.Trait I}
-    `{ink_env.types.Environment.Trait E}
-    `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
-    `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
-    mut_ref I
-    ->
-      M (H := H)
-        (ink_env.error.Result
-          (ink_primitives.ConstructorResult
-            ink_env.call.create_builder.ConstructorReturnType.Output)).
 
 Module error.
   Module Error.
@@ -16233,105 +4468,6 @@ Module error.
     | EcdsaRecoveryFailed.
   End Error.
   Definition Error := Error.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_error_Error.
-  
-  Module Impl_core_convert_From_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-        -> M (H := H) ink_env.error.Error.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_error_Error.
-  
-  Module Impl_core_convert_From_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter from : forall
-          `{H : State.Trait},
-          ink_env.engine.off_chain.OffChainError
-        -> M (H := H) ink_env.error.Error.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I :
-        core.convert.From.Trait
-          Self
-          (T := ink_env.engine.off_chain.OffChainError) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End Impl_core_convert_From_for_ink_env_error_Error.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.error.Error
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_error_Error.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_error_Error.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_error_Error.
-    Definition Self := ink_env.error.Error.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_error_Error.
   
   Definition Result : Set := core.result.Result T ink_env.error.Error.
 End error.
@@ -16354,105 +4490,6 @@ Module Error.
   | EcdsaRecoveryFailed.
 End Error.
 Definition Error := Error.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_error_Error.
-
-Module Impl_core_convert_From_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter from : forall `{H : State.Trait}, parity_scale_codec.error.Error
-      -> M (H := H) ink_env.error.Error.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait Self (T := parity_scale_codec.error.Error) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_error_Error.
-
-Module Impl_core_convert_From_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter from : forall
-        `{H : State.Trait},
-        ink_env.engine.off_chain.OffChainError
-      -> M (H := H) ink_env.error.Error.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I :
-      core.convert.From.Trait
-        Self
-        (T := ink_env.engine.off_chain.OffChainError) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_ink_env_error_Error.
-
-Module Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End Impl_core_marker_StructuralPartialEq_for_ink_env_error_Error.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.error.Error
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_error_Error.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_error_Error.
-
-Module Impl_core_cmp_Eq_for_ink_env_error_Error.
-  Definition Self := ink_env.error.Error.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_error_Error.
 
 Definition Result : Set := core.result.Result T ink_env.error.Error.
 
@@ -16477,7 +4514,7 @@ Module hash.
       hash
         `{H : State.Trait}
         :
-        (ref Slice) ->
+        (ref (Slice u8)) ->
         (mut_ref ink_env.hash.HashOutput.Type) ->
         (M (H := H) unit);
     }.
@@ -16494,177 +4531,11 @@ Module hash.
   End Sha2x256.
   Definition Sha2x256 := Sha2x256.t.
   
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Sha2x256.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Sha2x256
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-  
   Module Keccak256.
     Inductive t : Set :=
     .
   End Keccak256.
   Definition Keccak256 := Keccak256.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Keccak256.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Keccak256
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
   
   Module Blake2x256.
     Inductive t : Set :=
@@ -16672,177 +4543,11 @@ Module hash.
   End Blake2x256.
   Definition Blake2x256 := Blake2x256.t.
   
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Blake2x256.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Blake2x256
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-  
   Module Blake2x128.
     Inductive t : Set :=
     .
   End Blake2x128.
   Definition Blake2x128 := Blake2x128.t.
-  
-  Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Parameter fmt : forall `{H : State.Trait}, ref Self->
-        mut_ref core.fmt.Formatter
-        -> M (H := H) core.fmt.Result.
-    
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-    }.
-  End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
-  End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Parameter clone : forall `{H : State.Trait}, ref Self
-        -> M (H := H) ink_env.hash.Blake2x128.
-    
-    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
-    }.
-    
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H : State.Trait} := clone;
-    }.
-  End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
-  End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Parameter eq : forall `{H : State.Trait}, ref Self->
-        ref ink_env.hash.Blake2x128
-        -> M (H := H) bool.
-    
-    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-      Notation.dot := eq;
-    }.
-    
-    Global Instance I : core.cmp.PartialEq.Trait Self := {
-      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-    }.
-  End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
-  End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-        -> M (H := H) unit.
-    
-    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-      Notation.Dot "assert_receiver_is_total_eq" := {
-      Notation.dot := assert_receiver_is_total_eq;
-    }.
-    
-    Global Instance I : core.cmp.Eq.Trait Self := {
-    }.
-  End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
   
   Module private.
     Module Sealed.
@@ -16852,70 +4557,6 @@ Module hash.
       Global Set Primitive Projections.
     End Sealed.
   End private.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Trait _.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Trait _.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Trait _.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-      ink_env.hash.private.Sealed.Build_Trait _.
-  End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-    Definition Self := ink_env.hash.Sha2x256.
-    
-    Definition Type : Set := list u8.
-    
-    Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-    }.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-    Definition Self := ink_env.hash.Keccak256.
-    
-    Definition Type : Set := list u8.
-    
-    Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-    }.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-    Definition Self := ink_env.hash.Blake2x256.
-    
-    Definition Type : Set := list u8.
-    
-    Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-    }.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-  
-  Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
-    Definition Self := ink_env.hash.Blake2x128.
-    
-    Definition Type : Set := list u8.
-    
-    Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-    }.
-  End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
 End hash.
 
 Module HashOutput.
@@ -16938,7 +4579,7 @@ Module CryptoHash.
     hash
       `{H : State.Trait}
       :
-      (ref Slice) ->
+      (ref (Slice u8)) ->
       (mut_ref ink_env.hash.HashOutput.Type) ->
       (M (H := H) unit);
   }.
@@ -16955,177 +4596,11 @@ Module Sha2x256.
 End Sha2x256.
 Definition Sha2x256 := Sha2x256.t.
 
-Module Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_hash_Sha2x256.
-
-Module Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_hash_Sha2x256.
-
-Module Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Sha2x256.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_hash_Sha2x256.
-
-Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Sha2x256.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Sha2x256
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_hash_Sha2x256.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_hash_Sha2x256.
-
-Module Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_hash_Sha2x256.
-
 Module Keccak256.
   Inductive t : Set :=
   .
 End Keccak256.
 Definition Keccak256 := Keccak256.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_hash_Keccak256.
-
-Module Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_hash_Keccak256.
-
-Module Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Keccak256.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_hash_Keccak256.
-
-Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Keccak256.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Keccak256
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_hash_Keccak256.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_hash_Keccak256.
-
-Module Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_hash_Keccak256.
 
 Module Blake2x256.
   Inductive t : Set :=
@@ -17133,177 +4608,11 @@ Module Blake2x256.
 End Blake2x256.
 Definition Blake2x256 := Blake2x256.t.
 
-Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x256.
-
-Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_hash_Blake2x256.
-
-Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Blake2x256.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_hash_Blake2x256.
-
-Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x256.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Blake2x256
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x256.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x256.
-
-Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x256.
-
 Module Blake2x128.
   Inductive t : Set :=
   .
 End Blake2x128.
 Definition Blake2x128 := Blake2x128.t.
-
-Module Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Parameter fmt : forall `{H : State.Trait}, ref Self->
-      mut_ref core.fmt.Formatter
-      -> M (H := H) core.fmt.Result.
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_ink_env_hash_Blake2x128.
-
-Module Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_ink_env_hash_Blake2x128.
-
-Module Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Parameter clone : forall `{H : State.Trait}, ref Self
-      -> M (H := H) ink_env.hash.Blake2x128.
-  
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_ink_env_hash_Blake2x128.
-
-Module Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
-End Impl_core_marker_StructuralPartialEq_for_ink_env_hash_Blake2x128.
-
-Module Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Parameter eq : forall `{H : State.Trait}, ref Self->
-      ref ink_env.hash.Blake2x128
-      -> M (H := H) bool.
-  
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I : core.cmp.PartialEq.Trait Self := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
-  }.
-End Impl_core_cmp_PartialEq_for_ink_env_hash_Blake2x128.
-
-Module Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
-End Impl_core_marker_StructuralEq_for_ink_env_hash_Blake2x128.
-
-Module Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
-      -> M (H := H) unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I : core.cmp.Eq.Trait Self := {
-  }.
-End Impl_core_cmp_Eq_for_ink_env_hash_Blake2x128.
 
 Module private.
   Module Sealed.
@@ -17321,70 +4630,6 @@ Module Sealed.
   Global Set Primitive Projections.
 End Sealed.
 
-Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Trait _.
-End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Sha2x256.
-
-Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Trait _.
-End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Keccak256.
-
-Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Trait _.
-End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x256.
-
-Module Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Global Instance I : ink_env.hash.private.Sealed.Trait Self :=
-    ink_env.hash.private.Sealed.Build_Trait _.
-End Impl_ink_env_hash_private_Sealed_for_ink_env_hash_Blake2x128.
-
-Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-  Definition Self := ink_env.hash.Sha2x256.
-  
-  Definition Type : Set := list u8.
-  
-  Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-  }.
-End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Sha2x256.
-
-Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-  Definition Self := ink_env.hash.Keccak256.
-  
-  Definition Type : Set := list u8.
-  
-  Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-  }.
-End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Keccak256.
-
-Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-  Definition Self := ink_env.hash.Blake2x256.
-  
-  Definition Type : Set := list u8.
-  
-  Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-  }.
-End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x256.
-
-Module Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
-  Definition Self := ink_env.hash.Blake2x128.
-  
-  Definition Type : Set := list u8.
-  
-  Global Instance I : ink_env.hash.HashOutput.Trait Self := {
-  }.
-End Impl_ink_env_hash_HashOutput_for_ink_env_hash_Blake2x128.
-
 Module topics.
   Module TopicsBuilderBackend.
     Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
@@ -17392,6 +4637,8 @@ Module topics.
       expect `{H : State.Trait} : (mut_ref Self) -> usize -> (M (H := H) unit);
       push_topic
         `{H : State.Trait}
+        {T: Set}
+        `{parity_scale_codec.codec.Encode.Trait T}
         :
         (mut_ref Self) -> (ref T) -> (M (H := H) unit);
       output `{H : State.Trait} : Self -> (M (H := H) ImplSelf.Output);
@@ -17416,45 +4663,24 @@ Module topics.
   End TopicsBuilderBackend.
   
   Module TopicsBuilder.
-    Record t : Set := {
-      backend : B;
-      state : core.marker.PhantomData (unit -> (S * E));
-    }.
-    
-    Global Instance Get_backend : Notation.Dot "backend" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_state : Notation.Dot "state" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section TopicsBuilder.
+      Context {S E B : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        backend : B;
+        state : core.marker.PhantomData ((S * E));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_backend : Notation.Dot "backend" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_state : Notation.Dot "state" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End TopicsBuilder.
   End TopicsBuilder.
-  Definition TopicsBuilder : Set := TopicsBuilder.t.
-  
-  Module
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-  Section
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-    Context {E B : Set}.
-    
-    Definition
-      Self
-      :=
-      ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
-    
-    Parameter from : forall `{H : State.Trait}, B -> M (H := H) Self.
-    
-    Global Instance AssociatedFunction_from `{H : State.Trait} :
-      Notation.DoubleColon Self "from" := {
-      Notation.double_colon := from;
-    }.
-    
-    Global Instance I : core.convert.From.Trait Self (T := B) := {
-      core.convert.From.from `{H : State.Trait} := from;
-    }.
-  End
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-  End
-    Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+  Definition TopicsBuilder : Set := @TopicsBuilder.t.
   
   Module state.
     Module Uninit.
@@ -17475,60 +4701,6 @@ Module topics.
     End NoRemainingTopics.
     Definition NoRemainingTopics := NoRemainingTopics.t.
   End state.
-  
-  Module Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-    Definition
-      Self
-      :=
-      ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
-    
-    Parameter build : forall `{H : State.Trait}, Self
-        ->
-          M (H := H)
-            (ink_env.topics.TopicsBuilder
-              ink_env.topics.Topics.RemainingTopics
-              E
-              B).
-    
-    Global Instance Method_build `{H : State.Trait} : Notation.Dot "build" := {
-      Notation.dot := build;
-    }.
-  End Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-  
-  Module Impl_ink_env_topics_TopicsBuilder_S_E_B.
-    Definition Self := ink_env.topics.TopicsBuilder S E B.
-    
-    Parameter push_topic : forall `{H : State.Trait}, Self->
-        ref T
-        ->
-          M (H := H)
-            (ink_env.topics.TopicsBuilder
-              ink_env.topics.SomeRemainingTopics.Next
-              E
-              B).
-    
-    Global Instance Method_push_topic `{H : State.Trait} :
-      Notation.Dot "push_topic" := {
-      Notation.dot := push_topic;
-    }.
-  End Impl_ink_env_topics_TopicsBuilder_S_E_B.
-  
-  Module
-    Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B.
-    Definition
-      Self
-      :=
-      ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
-    
-    Parameter finish : forall `{H : State.Trait}, Self
-        -> M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
-    
-    Global Instance Method_finish `{H : State.Trait} :
-      Notation.Dot "finish" := {
-      Notation.dot := finish;
-    }.
-  End
-    Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B.
   
   Module SomeRemainingTopics.
     Class Trait (Self : Set) {Next : Set} : Set := {
@@ -17552,919 +4724,6 @@ Module topics.
     }.
   End EventTopicsAmount.
   
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 2.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 3.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 4.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 5.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 6.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 7.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 8.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 9.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 10.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 11.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 12.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 13.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 14.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 15.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 16.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 17.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 18.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 19.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 20.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 21.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 22.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 23.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 24.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 25.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 26.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 27.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 28.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 29.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 30.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 31.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 32.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition Next : Set := ink_env.topics.state.NoRemainingTopics.
-    
-    Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-    }.
-  End
-    Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-    Definition Self := list ink_env.topics.state.HasRemainingTopics.
-    
-    Definition AMOUNT := Pure 1.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  
-  Module
-    Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
-    Definition Self := ink_env.topics.state.NoRemainingTopics.
-    
-    Definition AMOUNT := Pure 0.
-    
-    Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-      Notation.DoubleColon Self "AMOUNT" := {
-      Notation.double_colon := AMOUNT;
-    }.
-    
-    Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-      ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-    }.
-  End
-    Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
-  
   Module Topics.
     Class Trait
         (Self : Set)
@@ -18474,6 +4733,9 @@ Module topics.
       RemainingTopics := RemainingTopics;
       topics
         `{H : State.Trait}
+        {E B: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.TopicsBuilderBackend.Trait E B}
         :
         (ref Self) ->
         (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
@@ -18491,49 +4753,24 @@ Module topics.
   End Topics.
   
   Module PrefixedValue.
-    Record t : Set := {
-      prefix : ref Slice;
-      value : ref T;
-    }.
-    
-    Global Instance Get_prefix : Notation.Dot "prefix" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
+    Section PrefixedValue.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        prefix : ref (Slice u8);
+        value : ref T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_prefix : Notation.Dot "prefix" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End PrefixedValue.
   End PrefixedValue.
-  Definition PrefixedValue : Set := PrefixedValue.t.
-  
-  Module
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
-    Context {X : Set}.
-    
-    Definition Self := ink_env.topics.PrefixedValue X.
-    
-    Parameter size_hint : forall `{H : State.Trait}, ref Self
-        -> M (H := H) usize.
-    
-    Global Instance Method_size_hint `{H : State.Trait} :
-      Notation.Dot "size_hint" := {
-      Notation.dot := size_hint;
-    }.
-    
-    Parameter encode_to : forall `{H : State.Trait}, ref Self->
-        mut_ref T
-        -> M (H := H) unit.
-    
-    Global Instance Method_encode_to `{H : State.Trait} :
-      Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
-    }.
-    
-    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-    }.
-  End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
-  End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+  Definition PrefixedValue : Set := @PrefixedValue.t.
 End topics.
 
 Module TopicsBuilderBackend.
@@ -18542,6 +4779,8 @@ Module TopicsBuilderBackend.
     expect `{H : State.Trait} : (mut_ref Self) -> usize -> (M (H := H) unit);
     push_topic
       `{H : State.Trait}
+      {T: Set}
+      `{parity_scale_codec.codec.Encode.Trait T}
       :
       (mut_ref Self) -> (ref T) -> (M (H := H) unit);
     output `{H : State.Trait} : Self -> (M (H := H) ImplSelf.Output);
@@ -18566,45 +4805,24 @@ Module TopicsBuilderBackend.
 End TopicsBuilderBackend.
 
 Module TopicsBuilder.
-  Record t : Set := {
-    backend : B;
-    state : core.marker.PhantomData (unit -> (S * E));
-  }.
-  
-  Global Instance Get_backend : Notation.Dot "backend" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_state : Notation.Dot "state" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section TopicsBuilder.
+    Context {S E B : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      backend : B;
+      state : core.marker.PhantomData ((S * E));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_backend : Notation.Dot "backend" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_state : Notation.Dot "state" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End TopicsBuilder.
 End TopicsBuilder.
-Definition TopicsBuilder : Set := TopicsBuilder.t.
-
-Module
-  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-Section
-  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-  Context {E B : Set}.
-  
-  Definition
-    Self
-    :=
-    ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
-  
-  Parameter from : forall `{H : State.Trait}, B -> M (H := H) Self.
-  
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I : core.convert.From.Trait Self (T := B) := {
-    core.convert.From.from `{H : State.Trait} := from;
-  }.
-End
-  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
-End
-  Impl_core_convert_From_for_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B.
+Definition TopicsBuilder : Set := @TopicsBuilder.t.
 
 Module state.
   Module Uninit.
@@ -18644,59 +4862,6 @@ Module NoRemainingTopics.
 End NoRemainingTopics.
 Definition NoRemainingTopics := NoRemainingTopics.t.
 
-Module Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B_2.
-  Definition
-    Self
-    :=
-    ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B.
-  
-  Parameter build : forall `{H : State.Trait}, Self
-      ->
-        M (H := H)
-          (ink_env.topics.TopicsBuilder
-            ink_env.topics.Topics.RemainingTopics
-            E
-            B).
-  
-  Global Instance Method_build `{H : State.Trait} : Notation.Dot "build" := {
-    Notation.dot := build;
-  }.
-End Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_Uninit_E_B_2.
-
-Module Impl_ink_env_topics_TopicsBuilder_S_E_B_2.
-  Definition Self := ink_env.topics.TopicsBuilder S E B.
-  
-  Parameter push_topic : forall `{H : State.Trait}, Self->
-      ref T
-      ->
-        M (H := H)
-          (ink_env.topics.TopicsBuilder
-            ink_env.topics.SomeRemainingTopics.Next
-            E
-            B).
-  
-  Global Instance Method_push_topic `{H : State.Trait} :
-    Notation.Dot "push_topic" := {
-    Notation.dot := push_topic;
-  }.
-End Impl_ink_env_topics_TopicsBuilder_S_E_B_2.
-
-Module
-  Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B_2.
-  Definition
-    Self
-    :=
-    ink_env.topics.TopicsBuilder ink_env.topics.state.NoRemainingTopics E B.
-  
-  Parameter finish : forall `{H : State.Trait}, Self
-      -> M (H := H) ink_env.topics.TopicsBuilderBackend.Output.
-  
-  Global Instance Method_finish `{H : State.Trait} : Notation.Dot "finish" := {
-    Notation.dot := finish;
-  }.
-End
-  Impl_ink_env_topics_TopicsBuilder_ink_env_topics_state_NoRemainingTopics_E_B_2.
-
 Module SomeRemainingTopics.
   Class Trait (Self : Set) {Next : Set} : Set := {
     Next := Next;
@@ -18719,919 +4884,6 @@ Module EventTopicsAmount.
   }.
 End EventTopicsAmount.
 
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 2.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 3.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 4.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 5.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 6.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 7.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 8.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 9.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 10.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 11.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 12.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 13.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 14.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 15.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 16.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 17.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 18.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 19.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 20.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 21.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 22.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 23.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 24.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 25.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 26.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 27.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 28.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 29.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 30.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 31.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := list ink_env.topics.state.HasRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 32.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition Next : Set := ink_env.topics.state.NoRemainingTopics.
-  
-  Global Instance I : ink_env.topics.SomeRemainingTopics.Trait Self := {
-  }.
-End
-  Impl_ink_env_topics_SomeRemainingTopics_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-  Definition Self := list ink_env.topics.state.HasRemainingTopics.
-  
-  Definition AMOUNT := Pure 1.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_Array_ink_env_topics_state_HasRemainingTopics.
-
-Module
-  Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
-  Definition Self := ink_env.topics.state.NoRemainingTopics.
-  
-  Definition AMOUNT := Pure 0.
-  
-  Global Instance AssociatedFunction_AMOUNT `{H : State.Trait} :
-    Notation.DoubleColon Self "AMOUNT" := {
-    Notation.double_colon := AMOUNT;
-  }.
-  
-  Global Instance I : ink_env.topics.EventTopicsAmount.Trait Self := {
-    ink_env.topics.EventTopicsAmount.AMOUNT `{H : State.Trait} := AMOUNT;
-  }.
-End
-  Impl_ink_env_topics_EventTopicsAmount_for_ink_env_topics_state_NoRemainingTopics.
-
 Module Topics.
   Class Trait
       (Self : Set)
@@ -19641,6 +4893,9 @@ Module Topics.
     RemainingTopics := RemainingTopics;
     topics
       `{H : State.Trait}
+      {E B: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       :
       (ref Self) ->
       (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
@@ -19658,43 +4913,21 @@ Module Topics.
 End Topics.
 
 Module PrefixedValue.
-  Record t : Set := {
-    prefix : ref Slice;
-    value : ref T;
-  }.
-  
-  Global Instance Get_prefix : Notation.Dot "prefix" := {
-    Notation.dot '(Build_t x0 _) := x0;
-  }.
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t _ x1) := x1;
-  }.
+  Section PrefixedValue.
+    Context {T : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      prefix : ref (Slice u8);
+      value : ref T;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_prefix : Notation.Dot "prefix" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_value : Notation.Dot "value" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End PrefixedValue.
 End PrefixedValue.
-Definition PrefixedValue : Set := PrefixedValue.t.
-
-Module Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
-Section Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
-  Context {X : Set}.
-  
-  Definition Self := ink_env.topics.PrefixedValue X.
-  
-  Parameter size_hint : forall `{H : State.Trait}, ref Self -> M (H := H) usize.
-  
-  Global Instance Method_size_hint `{H : State.Trait} :
-    Notation.Dot "size_hint" := {
-    Notation.dot := size_hint;
-  }.
-  
-  Parameter encode_to : forall `{H : State.Trait}, ref Self->
-      mut_ref T
-      -> M (H := H) unit.
-  
-  Global Instance Method_encode_to `{H : State.Trait} :
-    Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
-  }.
-  
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
-  }.
-End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
-End Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X.
+Definition PrefixedValue : Set := @PrefixedValue.t.
