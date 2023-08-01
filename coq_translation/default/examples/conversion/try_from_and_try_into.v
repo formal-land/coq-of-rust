@@ -71,7 +71,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   Definition try_from
       `{H : State.Trait}
       (value : i32)
-      : M (H := H) (core.result.Result Self .Error) :=
+      : M (H := H) (core.result.Result Self Self.Error) :=
     let* α0 := value.["rem"] 2 in
     let* α1 := α0.["eq"] 0 in
     if (α1 : bool) then
