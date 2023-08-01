@@ -89,7 +89,7 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
         let crate_name: String = env.tcx.crate_name(def_if.krate).to_string();
         let path_items = env.tcx.def_path(def_if);
         let mut segments = vec![crate_name];
-        eprintln!("##> {:?}\n", segments); // TODO: remove
+        //eprintln!("##> {:?}\n", segments); // TODO: remove
         segments.extend(
             path_items
                 .data
