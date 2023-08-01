@@ -32,7 +32,7 @@ Module Impl_generics_new_type_idiom_Years.
   
   Definition to_days
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) generics_new_type_idiom.Days :=
     let* α0 := (self.[0]).["mul"] 365 in
     Pure (generics_new_type_idiom.Days.Build_t α0).
@@ -48,7 +48,7 @@ Module Impl_generics_new_type_idiom_Days.
   
   Definition to_years
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) generics_new_type_idiom.Years :=
     let* α0 := (self.[0]).["div"] 365 in
     Pure (generics_new_type_idiom.Years.Build_t α0).

@@ -17,7 +17,7 @@ Definition Foo := @Foo.t.
 Module Impl_example05_Foo.
   Definition Self := example05.Foo.
   
-  Definition plus1 `{H : State.Trait} (s : Self) : M (H := H) u32 :=
+  Definition plus1 `{H : State.Trait} (s : It_is_here!) : M (H := H) u32 :=
     (s.[0]).["add"] 1.
   
   Global Instance AssociatedFunction_plus1 `{H : State.Trait} :

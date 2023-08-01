@@ -11,7 +11,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "Unit".
@@ -30,7 +30,7 @@ Module Impl_core_clone_Clone_for_clone_Unit.
   
   Definition clone
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) clone.Unit :=
     self.["deref"].
   
@@ -72,7 +72,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
   
   Definition clone
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) clone.Pair :=
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
@@ -92,7 +92,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field2_finish"]

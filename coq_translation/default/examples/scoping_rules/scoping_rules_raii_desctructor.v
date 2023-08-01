@@ -9,7 +9,10 @@ Definition ToDrop := @ToDrop.t.
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Definition Self := scoping_rules_raii_desctructor.ToDrop.
   
-  Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
+  Definition drop
+      `{H : State.Trait}
+      (self : mut_ref It_is_here!)
+      : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 :=

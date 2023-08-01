@@ -19,13 +19,13 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   
   Definition run
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (x : i32)
       (y : i32)
       : M (H := H) i32 :=
     match self with
-    | ImplSelf.Add => x.["add"] y
-    | ImplSelf.Subtract => x.["sub"] y
+    | ImplIt_is_here!.Add => x.["add"] y
+    | ImplIt_is_here!.Subtract => x.["sub"] y
     end.
   
   Global Instance Method_run `{H : State.Trait} : Notation.Dot "run" := {

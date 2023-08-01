@@ -74,6 +74,9 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
                 }
             }
         }
+        Res::SelfTyAlias { .. } => Path {
+            segments: vec!["It_is_here!".to_string()],
+        },
         _ => compile_path_without_env(path),
     }
     /*

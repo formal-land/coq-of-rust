@@ -14,7 +14,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "DoubleError".
@@ -33,7 +33,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   
   Definition clone
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) defining_an_error_type.DoubleError :=
     Pure defining_an_error_type.DoubleError.Build.
   
@@ -51,7 +51,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=

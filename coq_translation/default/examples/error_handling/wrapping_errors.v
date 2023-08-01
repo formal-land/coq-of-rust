@@ -15,7 +15,7 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     match self with
@@ -42,7 +42,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 := self.["deref"] in
@@ -73,7 +73,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   
   Definition source
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) (core.option.Option (ref TraitObject)) :=
     let* α0 := self.["deref"] in
     match α0 with

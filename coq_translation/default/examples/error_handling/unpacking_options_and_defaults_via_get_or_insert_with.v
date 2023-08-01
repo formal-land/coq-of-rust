@@ -20,7 +20,7 @@ Module
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=

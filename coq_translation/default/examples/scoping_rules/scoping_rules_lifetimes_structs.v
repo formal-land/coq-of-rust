@@ -19,7 +19,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
@@ -67,7 +67,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
@@ -99,7 +99,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     match self with

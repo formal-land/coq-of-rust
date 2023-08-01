@@ -29,7 +29,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
       `{H : State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (state : mut_ref __H)
       : M (H := H) unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in

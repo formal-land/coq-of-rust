@@ -32,7 +32,7 @@ Module
   
   Definition noise
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) (ref str) :=
     Pure "baaaaah!".
   
@@ -50,7 +50,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   
   Definition noise
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) (ref str) :=
     Pure "moooooo!".
   

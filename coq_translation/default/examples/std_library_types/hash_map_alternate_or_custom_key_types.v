@@ -33,7 +33,7 @@ Module
   
   Definition eq
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (other : ref hash_map_alternate_or_custom_key_types.Account)
       : M (H := H) bool :=
     let* α0 := self.["username"].["eq"] other.["username"] in
@@ -63,7 +63,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   
   Definition assert_receiver_is_total_eq
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) unit :=
     let _ := tt in
     let _ := tt in
@@ -85,7 +85,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       `{H : State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (state : mut_ref __H)
       : M (H := H) unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["username"]) state in

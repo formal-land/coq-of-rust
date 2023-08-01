@@ -74,7 +74,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Definition get_p1
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       : M (H := H) associated_functions_and_methods.Point :=
     Pure self.["p1"].
   
@@ -82,7 +82,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
     Notation.dot := get_p1;
   }.
   
-  Definition area `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
+  Definition area
+      `{H : State.Trait}
+      (self : ref It_is_here!)
+      : M (H := H) f64 :=
     let
         '{|
           associated_functions_and_methods.Point.x := x1;
@@ -104,7 +107,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
     Notation.dot := area;
   }.
   
-  Definition perimeter `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
+  Definition perimeter
+      `{H : State.Trait}
+      (self : ref It_is_here!)
+      : M (H := H) f64 :=
     let
         '{|
           associated_functions_and_methods.Point.x := x1;
@@ -131,7 +137,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Definition translate
       `{H : State.Trait}
-      (self : mut_ref Self)
+      (self : mut_ref It_is_here!)
       (x : f64)
       (y : f64)
       : M (H := H) unit :=
@@ -167,7 +173,10 @@ Definition Pair := @Pair.t.
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self := associated_functions_and_methods.Pair.
   
-  Definition destroy `{H : State.Trait} (self : Self) : M (H := H) unit :=
+  Definition destroy
+      `{H : State.Trait}
+      (self : It_is_here!)
+      : M (H := H) unit :=
     let 'associated_functions_and_methods.Pair.Build_t first second := self in
     let* _ :=
       let* _ :=

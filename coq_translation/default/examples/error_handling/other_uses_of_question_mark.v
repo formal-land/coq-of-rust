@@ -13,7 +13,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["write_str"] f "EmptyVec".
@@ -32,7 +32,7 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=

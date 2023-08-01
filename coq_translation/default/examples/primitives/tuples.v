@@ -38,7 +38,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref Self)
+      (self : ref It_is_here!)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field4_finish"]

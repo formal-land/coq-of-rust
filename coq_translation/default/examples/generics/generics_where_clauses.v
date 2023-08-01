@@ -20,7 +20,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   
   Definition print_in_option
       `{H : State.Trait}
-      (self : Self)
+      (self : It_is_here!)
       : M (H := H) unit :=
     let* _ :=
       let* _ :=
