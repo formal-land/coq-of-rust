@@ -15,10 +15,7 @@ End HasArea.
 Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Definition area
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) f64 :=
+  Definition area `{H : State.Trait} (self : ref Self) : M (H := H) f64 :=
     self.["length"].["mul"] self.["height"].
   
   Global Instance Method_area `{H : State.Trait} : Notation.Dot "area" := {
@@ -61,7 +58,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]

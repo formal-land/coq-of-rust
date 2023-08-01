@@ -14,7 +14,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=
@@ -52,7 +52,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
@@ -87,7 +87,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
@@ -122,7 +122,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]

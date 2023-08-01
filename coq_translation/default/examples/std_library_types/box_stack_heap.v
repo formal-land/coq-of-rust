@@ -34,7 +34,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
@@ -60,7 +60,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) box_stack_heap.Point :=
     let _ := tt in
     self.["deref"].

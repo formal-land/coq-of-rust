@@ -13,7 +13,7 @@ Module
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.intrinsics.unreachable.
@@ -34,7 +34,7 @@ Module
   
   Definition clone
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) generics_phantom_type_test_case_unit_clarification.Inch :=
     self.["deref"].
   
@@ -69,7 +69,7 @@ Module
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.intrinsics.unreachable.
@@ -90,7 +90,7 @@ Module
   
   Definition clone
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) generics_phantom_type_test_case_unit_clarification.Mm :=
     self.["deref"].
   
@@ -146,7 +146,7 @@ Section
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field2_finish"]
@@ -180,7 +180,7 @@ Section
   
   Definition clone
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       :
         M (H := H)
           (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
@@ -235,7 +235,7 @@ Section
   
   Definition add
       `{H : State.Trait}
-      (self : It_is_here!)
+      (self : Self)
       (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
       :
         M (H := H)

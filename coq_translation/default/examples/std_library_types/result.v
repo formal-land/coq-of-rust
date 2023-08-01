@@ -15,7 +15,7 @@ Module checked.
     
     Definition fmt
         `{H : State.Trait}
-        (self : ref It_is_here!)
+        (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M (H := H) core.fmt.Result :=
       let* α0 :=
@@ -89,7 +89,7 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=

@@ -25,7 +25,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]

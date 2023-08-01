@@ -19,7 +19,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   
   Definition add_one
       `{H : State.Trait}
-      (self : mut_ref It_is_here!)
+      (self : mut_ref Self)
       : M (H := H) unit :=
     let* _ := (self.[0]).["add_assign"] 1 in
     Pure tt.
@@ -29,10 +29,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     Notation.dot := add_one;
   }.
   
-  Definition print
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) unit :=
+  Definition print `{H : State.Trait} (self : ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of (self.[0])) in

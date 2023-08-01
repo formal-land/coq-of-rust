@@ -16,7 +16,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=

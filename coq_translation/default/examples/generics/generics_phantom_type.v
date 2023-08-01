@@ -44,7 +44,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   
   Definition eq
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (other : ref (generics_phantom_type.PhantomTuple A B))
       : M (H := H) bool :=
     let* α0 := (self.[0]).["eq"] (other.[0]) in
@@ -104,7 +104,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   
   Definition eq
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (other : ref (generics_phantom_type.PhantomStruct A B))
       : M (H := H) bool :=
     let* α0 := self.["first"].["eq"] other.["first"] in

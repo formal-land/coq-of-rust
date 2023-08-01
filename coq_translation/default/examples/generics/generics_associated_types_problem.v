@@ -48,7 +48,7 @@ Module
   
   Definition contains
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (number_1 : ref i32)
       (number_2 : ref i32)
       : M (H := H) bool :=
@@ -61,20 +61,14 @@ Module
     Notation.dot := contains;
   }.
   
-  Definition first
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) i32 :=
+  Definition first `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
     Pure (self.[0]).
   
   Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) i32 :=
+  Definition last `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
     Pure (self.[1]).
   
   Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {

@@ -14,7 +14,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=
@@ -47,7 +47,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     let* α0 :=

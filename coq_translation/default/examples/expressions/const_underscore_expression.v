@@ -44,7 +44,7 @@ Module
   
   Definition show
       `{H : State.Trait}
-      (self : It_is_here!)
+      (self : Self)
       : M (H := H) alloc.string.String :=
     Pure self.["test"].
   

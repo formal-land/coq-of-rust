@@ -29,7 +29,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) scoping_rules_borrowing_mutablity.Book :=
     let _ := tt in
     let _ := tt in

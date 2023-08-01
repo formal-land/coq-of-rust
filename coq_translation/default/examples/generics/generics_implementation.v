@@ -35,7 +35,7 @@ Module Impl_generics_implementation_Val.
   
   Definition value
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) (ref f64) :=
     Pure (addr_of self.["val"]).
   
@@ -47,10 +47,7 @@ End Impl_generics_implementation_Val.
 Module Impl_generics_implementation_GenVal_T.
   Definition Self := generics_implementation.GenVal T.
   
-  Definition value
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) (ref T) :=
+  Definition value `{H : State.Trait} (self : ref Self) : M (H := H) (ref T) :=
     Pure (addr_of self.["gen_val"]).
   
   Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {

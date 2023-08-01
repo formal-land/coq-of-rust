@@ -46,7 +46,7 @@ Module
   
   Definition get
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) alloc.string.String :=
     self.["username"].["clone"].
   
@@ -68,7 +68,7 @@ Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
-  Definition get `{H : State.Trait} (self : ref It_is_here!) : M (H := H) u8 :=
+  Definition get `{H : State.Trait} (self : ref Self) : M (H := H) u8 :=
     Pure self.["age"].
   
   Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {

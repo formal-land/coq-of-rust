@@ -17,10 +17,7 @@ Definition Droppable : Set := @Droppable.t.
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Definition Self := drop.Droppable.
   
-  Definition drop
-      `{H : State.Trait}
-      (self : mut_ref It_is_here!)
-      : M (H := H) unit :=
+  Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in

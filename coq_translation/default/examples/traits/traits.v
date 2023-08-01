@@ -61,10 +61,7 @@ End Animal.
 Module Impl_traits_Sheep.
   Definition Self := traits.Sheep.
   
-  Definition is_naked
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) bool :=
+  Definition is_naked `{H : State.Trait} (self : ref Self) : M (H := H) bool :=
     Pure self.["naked"].
   
   Global Instance Method_is_naked `{H : State.Trait} :
@@ -87,10 +84,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     Notation.double_colon := new;
   }.
   
-  Definition name
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) (ref str) :=
+  Definition name `{H : State.Trait} (self : ref Self) : M (H := H) (ref str) :=
     Pure self.["name"].
   
   Global Instance Method_name `{H : State.Trait} : Notation.Dot "name" := {
@@ -99,7 +93,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   
   Definition noise
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) (ref str) :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
@@ -111,10 +105,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     Notation.dot := noise;
   }.
   
-  Definition talk
-      `{H : State.Trait}
-      (self : ref It_is_here!)
-      : M (H := H) unit :=
+  Definition talk `{H : State.Trait} (self : ref Self) : M (H := H) unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
@@ -143,10 +134,7 @@ End Impl_traits_Animal_for_traits_Sheep.
 Module Impl_traits_Sheep_2.
   Definition Self := traits.Sheep.
   
-  Definition shear
-      `{H : State.Trait}
-      (self : mut_ref It_is_here!)
-      : M (H := H) unit :=
+  Definition shear `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
     let* α0 := self.["is_naked"] in
     if (α0 : bool) then
       let* _ :=

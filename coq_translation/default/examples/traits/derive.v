@@ -26,7 +26,7 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   
   Definition eq
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (other : ref derive.Centimeters)
       : M (H := H) bool :=
     (self.[0]).["eq"] (other.[0]).
@@ -45,7 +45,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   
   Definition partial_cmp
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (other : ref derive.Centimeters)
       : M (H := H) (core.option.Option core.cmp.Ordering) :=
     core.cmp.PartialOrd.partial_cmp (addr_of (self.[0])) (addr_of (other.[0])).
@@ -78,7 +78,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
@@ -100,7 +100,7 @@ Module Impl_derive_Inches.
   
   Definition to_centimeters
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) derive.Centimeters :=
     let 'derive.Inches.Build_t inches := self in
     let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in

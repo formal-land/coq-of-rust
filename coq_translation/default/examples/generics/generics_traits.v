@@ -30,7 +30,7 @@ Section Impl_generics_traits_DoubleDrop_for_U.
   
   Definition double_drop
       `{H : State.Trait}
-      (self : It_is_here!)
+      (self : Self)
       (Pattern : T)
       : M (H := H) unit :=
     Pure tt.

@@ -19,7 +19,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
@@ -49,7 +49,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   
   Definition eq
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (other : ref try_from_and_try_into.EvenNumber)
       : M (H := H) bool :=
     (self.[0]).["eq"] (other.[0]).
@@ -71,7 +71,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   Definition try_from
       `{H : State.Trait}
       (value : i32)
-      : M (H := H) (core.result.Result It_is_here! ImplIt_is_here!.Error) :=
+      : M (H := H) (core.result.Result Self Self.Error) :=
     let* α0 := value.["rem"] 2 in
     let* α1 := α0.["eq"] 0 in
     if (α1 : bool) then

@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_into_Number.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field1_finish"]
@@ -48,7 +48,7 @@ End Impl_core_fmt_Debug_for_into_Number.
 Module Impl_core_convert_From_for_into_Number.
   Definition Self := into.Number.
   
-  Definition from `{H : State.Trait} (item : i32) : M (H := H) It_is_here! :=
+  Definition from `{H : State.Trait} (item : i32) : M (H := H) Self :=
     Pure {| into.Number.value := item; |}.
   
   Global Instance AssociatedFunction_from `{H : State.Trait} :

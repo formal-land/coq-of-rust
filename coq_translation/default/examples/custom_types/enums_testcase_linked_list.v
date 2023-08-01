@@ -23,7 +23,7 @@ Module Impl_enums_testcase_linked_list_List.
   
   Definition prepend
       `{H : State.Trait}
-      (self : It_is_here!)
+      (self : Self)
       (elem : u32)
       : M (H := H) enums_testcase_linked_list.List :=
     let* α0 := alloc.boxed.Box::["new"] self in
@@ -34,7 +34,7 @@ Module Impl_enums_testcase_linked_list_List.
     Notation.dot := prepend;
   }.
   
-  Definition len `{H : State.Trait} (self : ref It_is_here!) : M (H := H) u32 :=
+  Definition len `{H : State.Trait} (self : ref Self) : M (H := H) u32 :=
     let* α0 := self.["deref"] in
     match α0 with
     | enums_testcase_linked_list.List.Cons _ tail =>
@@ -49,7 +49,7 @@ Module Impl_enums_testcase_linked_list_List.
   
   Definition stringify
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) alloc.string.String :=
     let* α0 := self.["deref"] in
     match α0 with

@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   
   Definition fmt
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H) core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field1_finish"]
@@ -48,8 +48,8 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Definition default `{H : State.Trait} : M (H := H) It_is_here! :=
-    Pure {| It_is_here!.x := addr_of 10; |}.
+  Definition default `{H : State.Trait} : M (H := H) Self :=
+    Pure {| Self.x := addr_of 10; |}.
   
   Global Instance AssociatedFunction_default `{H : State.Trait} :
     Notation.DoubleColon Self "default" := {

@@ -34,7 +34,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   
   Definition clone
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) unpacking_options_via_question_mark.Job :=
     let _ := tt in
     self.["deref"].
@@ -78,7 +78,7 @@ Module
   
   Definition clone
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) unpacking_options_via_question_mark.PhoneNumber :=
     let _ := tt in
     let _ := tt in
@@ -106,7 +106,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
   
   Definition work_phone_area_code
       `{H : State.Trait}
-      (self : ref It_is_here!)
+      (self : ref Self)
       : M (H := H) (core.option.Option u8) :=
     let* α0 := self.["job"].["branch"] in
     let* α1 :=
