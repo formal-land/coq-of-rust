@@ -1,9 +1,7 @@
-# The stderr_warnings.txt won't be removed, as this could be a good source of log
-# echo "Creating error file..."
-# sudo truncate -s0 stderr_warnings.txt
+# The coqc_logs.txt won't be removed, as this could be a good source of log
 
 echo "Executing make..."
-make |& tee -a stderr_warnings.txt
+make |& tee -a coqc_logs.txt
 
 # Ignore lines produced by make
 # IGNORE_IDENTIFIER="COQC"
@@ -22,6 +20,6 @@ do
   else
     continue
   fi
-done <stderr_warnings.txt
+done <coqc_logs.txt
 
 echo "Checking complete"
