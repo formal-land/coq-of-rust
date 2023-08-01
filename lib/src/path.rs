@@ -54,7 +54,7 @@ fn compile_path_without_env(path: &rustc_hir::Path) -> Path {
 pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
     //eprintln!("{:?}\n", path); // TODO: remove
 
-    match path.res {
+    /*match path.res {
         Res::Def(def_kind, def_id) => {
             match def_kind {
                 DefKind::TyParam => compile_path_without_env(path),
@@ -78,8 +78,8 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
             segments: vec!["It_is_here!".to_string()],
         },
         _ => compile_path_without_env(path),
-    }
-    /*
+    }*/
+
     if let Some(def_if) = path.res.opt_def_id() {
         // The type parameters should not have an absolute name, as they are not
         // not declared at top-level.
@@ -98,7 +98,8 @@ pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
                 .map(|name| to_valid_coq_name(name.to_string())),
         );
         return Path { segments };
-    }*/
+    }
+    compile_path_without_env(path)
 }
 
 /// compilation of [QPath] in [LangItem] variant
@@ -147,11 +148,14 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
         QPath::TypeRelative(ty, segment) => {
             //eprintln!("-> {:?}\n", segment); // TODO: remove
             let ty = match ty.kind {
-                rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => {
-                    let mut path = compile_path(env, path);
-                    path.prefix_last_by_impl();
-                    path
-                }
+                rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => match path.res {
+                    Res::SelfTyAlias { .. } => compile_path(env, path),
+                    _ => {
+                        let mut path = compile_path(env, path);
+                        path.prefix_last_by_impl();
+                        path
+                    }
+                },
                 _ => Path::local("ComplexTypePath".to_string()),
             };
             Path {
