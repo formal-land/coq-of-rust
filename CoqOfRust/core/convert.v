@@ -93,10 +93,10 @@ pub trait TryFrom<T>: Sized {
 }
 *)
 Module TryFrom.
-  Class Trait (Self T Error : Set) : Set := { 
+  Class Trait (Self : Set) {T Error : Set} : Set := {
     Error := Error;
 
-    try_from : T -> Result Self Error;
+    try_from `{State.Trait} : T -> M (Result Self Error);
   }.
 End TryFrom.
 
