@@ -29,13 +29,11 @@ Module erc20.
     run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
   
   Module Erc20.
-    Unset Primitive Projections.
     Record t : Set := {
       total_supply : ink_storage_traits.storage.AutoStorableHint.Type;
       balances : ink_storage_traits.storage.AutoStorableHint.Type;
       allowances : ink_storage_traits.storage.AutoStorableHint.Type;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_total_supply : Notation.Dot "total_supply" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -47,15 +45,18 @@ Module erc20.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Erc20.
-  Definition Erc20 : Set := @Erc20.t.
+  Definition Erc20 : Set := Erc20.t.
   
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
     
-    Definition default `{H : State.Trait} : M (H := H) erc20.erc20.Erc20 :=
-      let* α0 := core.default.Default.default in
-      let* α1 := core.default.Default.default in
-      let* α2 := core.default.Default.default in
+    Definition default
+        `{H : State.Trait}
+        (_ : unit)
+        : M (H := H) erc20.erc20.Erc20 :=
+      let* α0 := core.default.Default.default tt in
+      let* α1 := core.default.Default.default tt in
+      let* α2 := core.default.Default.default tt in
       Pure
         {|
           erc20.erc20.Erc20.total_supply := α0;
@@ -99,13 +100,11 @@ Module erc20.
   End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
   
   Module Transfer.
-    Unset Primitive Projections.
     Record t : Set := {
       from : core.option.Option erc20.erc20.AccountId;
       to : core.option.Option erc20.erc20.AccountId;
       value : erc20.erc20.Balance;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_from : Notation.Dot "from" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -117,16 +116,14 @@ Module erc20.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Transfer.
-  Definition Transfer : Set := @Transfer.t.
+  Definition Transfer : Set := Transfer.t.
   
   Module Approval.
-    Unset Primitive Projections.
     Record t : Set := {
       owner : erc20.erc20.AccountId;
       spender : erc20.erc20.AccountId;
       value : erc20.erc20.Balance;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_owner : Notation.Dot "owner" := {
       Notation.dot '(Build_t x0 _ _) := x0;
@@ -138,7 +135,7 @@ Module erc20.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Approval.
-  Definition Approval : Set := @Approval.t.
+  Definition Approval : Set := Approval.t.
   
   Module
     Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
@@ -668,17 +665,15 @@ Module erc20.
   End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Module Erc20Ref.
-    Unset Primitive Projections.
     Record t : Set := {
       inner : ink.codegen.dispatch.info.ContractCallBuilder.Type;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_inner : Notation.Dot "inner" := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End Erc20Ref.
-  Definition Erc20Ref : Set := @Erc20Ref.t.
+  Definition Erc20Ref : Set := Erc20Ref.t.
   
   Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
@@ -716,8 +711,6 @@ Module erc20.
     
     Definition hash
         `{H : State.Trait}
-        {__H : Set}
-        `{core.hash.Hasher.Trait __H}
         (self : ref Self)
         (state : mut_ref __H)
         : M (H := H) unit :=
@@ -753,7 +746,7 @@ Module erc20.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+    Global Instance I : core.cmp.PartialEq.Trait Self := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -825,7 +818,7 @@ Module erc20.
               (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
               (ink_env.call.common.Set
                 (ink_env.call.common.ReturnType Self))) :=
-      let* α0 := ink_env.call.create_builder.build_create in
+      let* α0 := ink_env.call.create_builder.build_create tt in
       let* α1 :=
         ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
       let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
@@ -1259,7 +1252,7 @@ Module erc20.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+    Global Instance I : core.cmp.PartialEq.Trait Self := {
       core.cmp.PartialEq.eq `{H : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -1319,7 +1312,6 @@ Definition MAX_EVENT_TOPICS `{H : State.Trait} : usize :=
   run (Pure ink_env.types.Environment.MAX_EVENT_TOPICS).
 
 Module Check.
-  Unset Primitive Projections.
   Record t : Set := {
     salt : unit;
     field_0 : erc20.erc20.Balance;
@@ -1334,7 +1326,6 @@ Module Check.
         (erc20.erc20.AccountId * erc20.erc20.AccountId)
         erc20.erc20.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_salt : Notation.Dot "salt" := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
@@ -1349,16 +1340,14 @@ Module Check.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End Check.
-Definition Check : Set := @Check.t.
+Definition Check : Set := Check.t.
 
 Module Erc20.
-  Unset Primitive Projections.
   Record t : Set := {
     total_supply : ink_storage_traits.storage.AutoStorableHint.Type;
     balances : ink_storage_traits.storage.AutoStorableHint.Type;
     allowances : ink_storage_traits.storage.AutoStorableHint.Type;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -1370,7 +1359,7 @@ Module Erc20.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Erc20.
-Definition Erc20 : Set := @Erc20.t.
+Definition Erc20 : Set := Erc20.t.
 
 Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
@@ -1410,36 +1399,34 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   
   Definition decode
       `{H : State.Trait}
-      {__ink_I : Set}
-      `{parity_scale_codec.codec.Input.Trait __ink_I}
       (__input : mut_ref __ink_I)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink_storage_traits.storage.Storable.decode __input in
-    let* α1 := α0.["branch"] in
+    let* α1 := LangItem α0 in
     let* α2 :=
       match α1 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     let* α3 := ink_storage_traits.storage.Storable.decode __input in
-    let* α4 := α3.["branch"] in
+    let* α4 := LangItem α3 in
     let* α5 :=
       match α4 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     let* α6 := ink_storage_traits.storage.Storable.decode __input in
-    let* α7 := α6.["branch"] in
+    let* α7 := LangItem α6 in
     let* α8 :=
       match α7 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     Pure
       (core.result.Result.Ok
@@ -1456,9 +1443,6 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   
   Definition encode
       `{H : State.Trait}
-      {__ink_O : Set}
-      `{parity_scale_codec.codec.Output.Trait __ink_O}
-      `{core.marker.Sized.Trait __ink_O}
       (self : ref Self)
       (__dest : mut_ref __ink_O)
       : M (H := H) unit :=
@@ -1497,14 +1481,17 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := alloc.vec.Vec::["new"] tt in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := scale_info.build.Fields::["named"] tt in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -1585,10 +1572,13 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
 Module Impl_core_default_Default_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
-  Definition default `{H : State.Trait} : M (H := H) erc20.erc20.Erc20 :=
-    let* α0 := core.default.Default.default in
-    let* α1 := core.default.Default.default in
-    let* α2 := core.default.Default.default in
+  Definition default
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) erc20.erc20.Erc20 :=
+    let* α0 := core.default.Default.default tt in
+    let* α1 := core.default.Default.default tt in
+    let* α2 := core.default.Default.default tt in
     Pure
       {|
         erc20.erc20.Erc20.total_supply := α0;
@@ -1631,7 +1621,7 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
       `{H : State.Trait}
       (self : Self)
       : M (H := H) ImplSelf.EnvAccess :=
-    core.default.Default.default.
+    core.default.Default.default tt.
   
   Global Instance Method_env `{H : State.Trait} : Notation.Dot "env" := {
     Notation.dot := env;
@@ -1648,8 +1638,11 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env `{H : State.Trait} : M (H := H) ImplSelf.EnvAccess :=
-    core.default.Default.default.
+  Definition env
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) ImplSelf.EnvAccess :=
+    core.default.Default.default tt.
   
   Global Instance AssociatedFunction_env `{H : State.Trait} :
     Notation.DoubleColon Self "env" := {
@@ -1667,8 +1660,6 @@ Module
   
   Definition emit_event
       `{H : State.Trait}
-      {E : Set}
-      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
       (self : Self)
       (event : E)
       : M (H := H) unit :=
@@ -1704,9 +1695,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
   
   Definition encode_to
       `{H : State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -1740,8 +1728,7 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
+  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
@@ -1751,8 +1738,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
   
   Definition decode
       `{H : State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
@@ -1761,13 +1746,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
         (fun e =>
           e.["chain"]
             "Could not decode `__ink_EventBase`, failed to read variant byte") in
-    let* α2 := α1.["branch"] in
+    let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>
@@ -1788,7 +1773,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 end in
               Pure
                 (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Transfer α0))) in
+                  (erc20.erc20.__ink_EventBase.Transfer α0)))
+            tt in
         Return α0 in
       Pure tt
     | __codec_x_edqy =>
@@ -1809,7 +1795,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
                 end in
               Pure
                 (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Approval α0))) in
+                  (erc20.erc20.__ink_EventBase.Approval α0)))
+            tt in
         Return α0 in
       Pure tt
     | _ =>
@@ -1819,7 +1806,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
               let* α0 :=
                 core.convert.Into.into
                   "Could not decode `__ink_EventBase`, variant doesn't exist" in
-              Pure (core.result.Result.Err α0)) in
+              Pure (core.result.Result.Err α0))
+            tt in
         Return α0 in
       Pure tt
     end.
@@ -1914,9 +1902,6 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
   
   Definition topics
       `{H : State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -1959,13 +1944,11 @@ Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
 End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
 
 Module Transfer.
-  Unset Primitive Projections.
   Record t : Set := {
     from : core.option.Option erc20.erc20.AccountId;
     to : core.option.Option erc20.erc20.AccountId;
     value : erc20.erc20.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_from : Notation.Dot "from" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -1977,16 +1960,13 @@ Module Transfer.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Transfer.
-Definition Transfer : Set := @Transfer.t.
+Definition Transfer : Set := Transfer.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
   Definition encode_to
       `{H : State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -2016,8 +1996,7 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
+  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
 
@@ -2026,8 +2005,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
   
   Definition decode
       `{H : State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -2076,13 +2053,11 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
 
 Module Approval.
-  Unset Primitive Projections.
   Record t : Set := {
     owner : erc20.erc20.AccountId;
     spender : erc20.erc20.AccountId;
     value : erc20.erc20.Balance;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_owner : Notation.Dot "owner" := {
     Notation.dot '(Build_t x0 _ _) := x0;
@@ -2094,16 +2069,13 @@ Module Approval.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Approval.
-Definition Approval : Set := @Approval.t.
+Definition Approval : Set := Approval.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
   Definition encode_to
       `{H : State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -2133,8 +2105,7 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
+  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
 
@@ -2143,8 +2114,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
   
   Definition decode
       `{H : State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -2200,9 +2169,6 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
   
   Definition topics
       `{H : State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2250,9 +2216,6 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
   
   Definition topics
       `{H : State.Trait}
-      {E B : Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2820,8 +2783,6 @@ Module
   
   Definition decode_dispatch
       `{H : State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       :
         M (H := H)
@@ -2830,13 +2791,13 @@ Module
     let* α1 :=
       α0.["map_err"]
         (fun _ => Pure ink.reflect.dispatch.DispatchError.InvalidSelector) in
-    let* α2 := α1.["branch"] in
+    let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     match α3 with
     | erc20.erc20._.decode_dispatch.CONSTRUCTOR_0 =>
@@ -2845,13 +2806,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := α1.["branch"] in
+      let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       let* α4 := Self::["Constructor0"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -2884,8 +2845,6 @@ Module
   
   Definition decode
       `{H : State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
@@ -2924,13 +2883,13 @@ Module
         let* α2 := α0.["andb"] α1 in
         if (α2 : bool) then
           let* _ :=
-            let* α0 := ink.codegen.dispatch.execution.deny_payment in
-            let* α1 := α0.["branch"] in
+            let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+            let* α1 := LangItem α0 in
             match α1 with
-            | LanguageItem.Break residual =>
-              let* α0 := residual.["from_residual"] in
+            | Break {| Break.0 := residual; |} =>
+              let* α0 := LangItem residual in
               Return α0
-            | LanguageItem.Continue val => Pure val
+            | Continue {| Continue.0 := val; |} => Pure val
             end in
           Pure tt
         else
@@ -2944,15 +2903,15 @@ Module
           (addr_of output_value) in
       let* _ :=
         let* α0 := output_result.["as_ref"] in
-        match α0 with
-        | core.result.Result.Ok contract =>
+        let* α1 := let_if core.result.Result.Ok contract := α0 in
+        if (α1 : bool) then
           let* _ :=
             ink_env.api.set_contract_storage
               (addr_of ink_storage_traits.storage.StorageKey.KEY)
               contract in
           Pure tt
-        | _ => Pure tt
-        end in
+        else
+          Pure tt in
       let* _ :=
         let* α0 := output_result.["is_err"] in
         let* α1 := ink_env.backend.ReturnFlags::["new_with_reverted"] α0 in
@@ -3004,8 +2963,6 @@ Module
   
   Definition decode_dispatch
       `{H : State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       :
         M (H := H)
@@ -3014,13 +2971,13 @@ Module
     let* α1 :=
       α0.["map_err"]
         (fun _ => Pure ink.reflect.dispatch.DispatchError.InvalidSelector) in
-    let* α2 := α1.["branch"] in
+    let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     match α3 with
     | erc20.erc20._.decode_dispatch.MESSAGE_0 =>
@@ -3029,13 +2986,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := α1.["branch"] in
+      let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       let* α4 := Self::["Message0"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3045,13 +3002,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := α1.["branch"] in
+      let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       let* α4 := Self::["Message1"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3061,13 +3018,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := α1.["branch"] in
+      let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       let* α4 := Self::["Message2"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3077,13 +3034,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := α1.["branch"] in
+      let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       let* α4 := Self::["Message3"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3093,13 +3050,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := α1.["branch"] in
+      let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       let* α4 := Self::["Message4"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3109,13 +3066,13 @@ Module
         α0.["map_err"]
           (fun _ =>
             Pure ink.reflect.dispatch.DispatchError.InvalidParameters) in
-      let* α2 := α1.["branch"] in
+      let* α2 := LangItem α1 in
       let* α3 :=
         match α2 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       let* α4 := Self::["Message5"] α3 in
       Pure (core.result.Result.Ok α4)
@@ -3163,8 +3120,6 @@ Module
   
   Definition decode
       `{H : State.Trait}
-      {I : Set}
-      `{parity_scale_codec.codec.Input.Trait I}
       (input : mut_ref I)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := ink.reflect.dispatch.DecodeDispatch.decode_dispatch input in
@@ -3255,13 +3210,13 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := α0.["branch"] in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α1 := LangItem α0 in
               match α1 with
-              | LanguageItem.Break residual =>
-                let* α0 := residual.["from_residual"] in
+              | Break {| Break.0 := residual; |} =>
+                let* α0 := LangItem residual in
                 Return α0
-              | LanguageItem.Continue val => Pure val
+              | Continue {| Continue.0 := val; |} => Pure val
               end in
             Pure tt
           else
@@ -3321,13 +3276,13 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := α0.["branch"] in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α1 := LangItem α0 in
               match α1 with
-              | LanguageItem.Break residual =>
-                let* α0 := residual.["from_residual"] in
+              | Break {| Break.0 := residual; |} =>
+                let* α0 := LangItem residual in
                 Return α0
-              | LanguageItem.Continue val => Pure val
+              | Continue {| Continue.0 := val; |} => Pure val
               end in
             Pure tt
           else
@@ -3387,13 +3342,13 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := α0.["branch"] in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α1 := LangItem α0 in
               match α1 with
-              | LanguageItem.Break residual =>
-                let* α0 := residual.["from_residual"] in
+              | Break {| Break.0 := residual; |} =>
+                let* α0 := LangItem residual in
                 Return α0
-              | LanguageItem.Continue val => Pure val
+              | Continue {| Continue.0 := val; |} => Pure val
               end in
             Pure tt
           else
@@ -3453,13 +3408,13 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := α0.["branch"] in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α1 := LangItem α0 in
               match α1 with
-              | LanguageItem.Break residual =>
-                let* α0 := residual.["from_residual"] in
+              | Break {| Break.0 := residual; |} =>
+                let* α0 := LangItem residual in
                 Return α0
-              | LanguageItem.Continue val => Pure val
+              | Continue {| Continue.0 := val; |} => Pure val
               end in
             Pure tt
           else
@@ -3519,13 +3474,13 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := α0.["branch"] in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α1 := LangItem α0 in
               match α1 with
-              | LanguageItem.Break residual =>
-                let* α0 := residual.["from_residual"] in
+              | Break {| Break.0 := residual; |} =>
+                let* α0 := LangItem residual in
                 Return α0
-              | LanguageItem.Continue val => Pure val
+              | Continue {| Continue.0 := val; |} => Pure val
               end in
             Pure tt
           else
@@ -3585,13 +3540,13 @@ Module
           let* α2 := α0.["andb"] α1 in
           if (α2 : bool) then
             let* _ :=
-              let* α0 := ink.codegen.dispatch.execution.deny_payment in
-              let* α1 := α0.["branch"] in
+              let* α0 := ink.codegen.dispatch.execution.deny_payment tt in
+              let* α1 := LangItem α0 in
               match α1 with
-              | LanguageItem.Break residual =>
-                let* α0 := residual.["from_residual"] in
+              | Break {| Break.0 := residual; |} =>
+                let* α0 := LangItem residual in
                 Return α0
-              | LanguageItem.Continue val => Pure val
+              | Continue {| Continue.0 := val; |} => Pure val
               end in
             Pure tt
           else
@@ -3651,7 +3606,7 @@ Definition
     _
     `{H : State.Trait} :
     ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
-  run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
+  run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"] tt).
 
 Module Impl_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
@@ -3660,20 +3615,20 @@ Module Impl_erc20_erc20_Erc20.
       `{H : State.Trait}
       (total_supply : erc20.erc20.Balance)
       : M (H := H) Self :=
-    let* balances := ink_storage.lazy.mapping.Mapping::["default"] in
+    let* balances := ink_storage.lazy.mapping.Mapping::["default"] tt in
     let* caller :=
-      let* α0 := Self::["env"] in
+      let* α0 := Self::["env"] tt in
       α0.["caller"] in
     let* _ := balances.["insert"] caller (addr_of total_supply) in
     let* _ :=
-      let* α0 := Self::["env"] in
+      let* α0 := Self::["env"] tt in
       α0.["emit_event"]
         {|
           erc20.erc20.Transfer.from := core.option.Option.None;
           erc20.erc20.Transfer.to := core.option.Option.Some caller;
           erc20.erc20.Transfer.value := total_supply;
         |} in
-    let* α0 := core.default.Default.default in
+    let* α0 := core.default.Default.default tt in
     Pure
       {|
         Self.total_supply := total_supply;
@@ -3785,12 +3740,12 @@ Module Impl_erc20_erc20_Erc20.
         Pure tt in
     let* _ :=
       let* α0 := self.["transfer_from_to"] (addr_of from) (addr_of to) value in
-      let* α1 := α0.["branch"] in
+      let* α1 := LangItem α0 in
       match α1 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     let* _ :=
       let* α0 := allowance.["sub"] value in
@@ -3871,17 +3826,15 @@ Module Impl_erc20_erc20_Erc20.
 End Impl_erc20_erc20_Erc20.
 
 Module CallBuilder.
-  Unset Primitive Projections.
   Record t : Set := {
     account_id : erc20.erc20.AccountId;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_account_id : Notation.Dot "account_id" := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End CallBuilder.
-Definition CallBuilder : Set := @CallBuilder.t.
+Definition CallBuilder : Set := CallBuilder.t.
 
 Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
@@ -3919,9 +3872,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   
   Definition encode_to
       `{H : State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -3947,8 +3897,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   
   Definition using_encoded
       `{H : State.Trait}
-      {R F : Set}
-      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -3969,8 +3917,7 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
+  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
@@ -3980,8 +3927,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   
   Definition decode
       `{H : State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -4003,8 +3948,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   
   Definition decode_into
       `{H : State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       (dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self))
       :
@@ -4013,8 +3956,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
             parity_scale_codec.decode_finished.DecodeFinished
             parity_scale_codec.error.Error) :=
     let* _ :=
-      let* α0 := core.mem.size_of in
-      let* α1 := core.mem.size_of in
+      let* α0 := core.mem.size_of tt in
+      let* α1 := core.mem.size_of tt in
       match (addr_of α0, addr_of α1) with
       | (left_val, right_val) =>
         let* α0 := left_val.["deref"] in
@@ -4036,7 +3979,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
           Pure tt
       end in
     let* _ :=
-      let* α0 := core.mem.size_of in
+      let* α0 := core.mem.size_of tt in
       let* α1 := α0.["gt"] 0 in
       let* α2 :=
         if (α1 : bool) then
@@ -4060,16 +4003,17 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       let* _ :=
         let* α0 :=
           parity_scale_codec.codec.Decode.decode_into __codec_input_edqy dst_ in
-        let* α1 := α0.["branch"] in
+        let* α1 := LangItem α0 in
         match α1 with
-        | LanguageItem.Break residual =>
-          let* α0 := residual.["from_residual"] in
+        | Break {| Break.0 := residual; |} =>
+          let* α0 := LangItem residual in
           Return α0
-        | LanguageItem.Continue val => Pure val
+        | Continue {| Continue.0 := val; |} => Pure val
         end in
       Pure tt in
     let* α0 :=
-      parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
+      parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"]
+        tt in
     Pure (core.result.Result.Ok α0).
   
   Global Instance AssociatedFunction_decode_into `{H : State.Trait} :
@@ -4087,8 +4031,6 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
   
   Definition hash
       `{H : State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
       : M (H := H) unit :=
@@ -4124,7 +4066,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+  Global Instance I : core.cmp.PartialEq.Trait Self := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
@@ -4179,11 +4121,14 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := alloc.vec.Vec::["new"] tt in
     let* α4 := α2.["type_params"] α3 in
     let* α5 :=
       α4.["docs"]
@@ -4194,7 +4139,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
             "Implements the underlying on-chain calling of the ink! smart contract";
             "messages and trait implementations in a type safe way."
           ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := scale_info.build.Fields::["named"] tt in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -4362,7 +4307,7 @@ Module Impl_erc20_erc20___CallBuilder.
                 ink_env.call.execution_input.EmptyArgumentList))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.call.call_builder.build_call in
+    let* α0 := ink_env.call.call_builder.build_call tt in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 219; 99; 117; 168 ] in
@@ -4392,7 +4337,7 @@ Module Impl_erc20_erc20___CallBuilder.
                   ink_env.call.execution_input.EmptyArgumentList)))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.call.call_builder.build_call in
+    let* α0 := ink_env.call.call_builder.build_call tt in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 15; 117; 90; 86 ] in
@@ -4427,7 +4372,7 @@ Module Impl_erc20_erc20___CallBuilder.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.call.call_builder.build_call in
+    let* α0 := ink_env.call.call_builder.build_call tt in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 106; 0; 22; 94 ] in
@@ -4463,7 +4408,7 @@ Module Impl_erc20_erc20___CallBuilder.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.call.call_builder.build_call in
+    let* α0 := ink_env.call.call_builder.build_call tt in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 132; 161; 93; 161 ] in
@@ -4499,7 +4444,7 @@ Module Impl_erc20_erc20___CallBuilder.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.call.call_builder.build_call in
+    let* α0 := ink_env.call.call_builder.build_call tt in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 104; 18; 102; 160 ] in
@@ -4539,7 +4484,7 @@ Module Impl_erc20_erc20___CallBuilder.
                       ink_env.call.execution_input.EmptyArgumentList)))))
             (ink_env.call.common.Set
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.call.call_builder.build_call in
+    let* α0 := ink_env.call.call_builder.build_call tt in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 11; 57; 111; 24 ] in
@@ -4557,17 +4502,15 @@ Module Impl_erc20_erc20___CallBuilder.
 End Impl_erc20_erc20___CallBuilder.
 
 Module Erc20Ref.
-  Unset Primitive Projections.
   Record t : Set := {
     inner : ink.codegen.dispatch.info.ContractCallBuilder.Type;
   }.
-  Global Set Primitive Projections.
   
   Global Instance Get_inner : Notation.Dot "inner" := {
     Notation.dot '(Build_t x0) := x0;
   }.
 End Erc20Ref.
-Definition Erc20Ref : Set := @Erc20Ref.t.
+Definition Erc20Ref : Set := Erc20Ref.t.
 
 Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
@@ -4605,9 +4548,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   
   Definition encode_to
       `{H : State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -4632,8 +4572,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   
   Definition using_encoded
       `{H : State.Trait}
-      {R F : Set}
-      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -4653,8 +4591,7 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
+  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
 
@@ -4663,8 +4600,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
   
   Definition decode
       `{H : State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
@@ -4693,8 +4628,6 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
   
   Definition hash
       `{H : State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
       : M (H := H) unit :=
@@ -4730,7 +4663,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+  Global Instance I : core.cmp.PartialEq.Trait Self := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
@@ -4785,14 +4718,17 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := alloc.vec.Vec::["new"] tt in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := scale_info.build.Fields::["named"] tt in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -4938,7 +4874,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 
-Module Impl_erc20_erc20_Erc20Ref.
+Module Impl_erc20_erc20_Erc20Ref_2.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition new
@@ -4959,7 +4895,7 @@ Module Impl_erc20_erc20_Erc20Ref.
                   ink_env.call.execution_input.EmptyArgumentList)))
             (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
             (ink_env.call.common.Set (ink_env.call.common.ReturnType Self))) :=
-    let* α0 := ink_env.call.create_builder.build_create in
+    let* α0 := ink_env.call.create_builder.build_create tt in
     let* α1 := ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
     let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
     let* α3 := α2.["push_arg"] __ink_binding_0 in
@@ -5237,7 +5173,7 @@ Module Impl_erc20_erc20_Erc20Ref.
     Notation.Dot "try_transfer_from" := {
     Notation.dot := try_transfer_from;
   }.
-End Impl_erc20_erc20_Erc20Ref.
+End Impl_erc20_erc20_Erc20Ref_2.
 
 Module
   Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
@@ -5373,6 +5309,7 @@ End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
 
 Definition __ink_generate_metadata
     `{H : State.Trait}
+    (_ : unit)
     : M (H := H) ink_metadata.InkProject :=
   let* layout :=
     let* α0 :=
@@ -5394,7 +5331,7 @@ Definition __ink_generate_metadata
             (addr_of [ "metadata ink! generation failed: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1) in
-  let* α0 := ink_metadata.specs.ContractSpec::["new"] in
+  let* α0 := ink_metadata.specs.ContractSpec::["new"] tt in
   let* α1 := ink_metadata.specs.ConstructorSpec::["from_label"] "new" in
   let* α2 := α1.["selector"] [ 155; 174; 157; 94 ] in
   let* α3 := ink_metadata.specs.MessageParamSpec::["new"] "total_supply" in
@@ -5723,7 +5660,7 @@ Definition __ink_generate_metadata
     core.iter.traits.iterator.Iterator.map α215 core.convert.AsRef.as_ref in
   let* α217 := ink_metadata.specs.TypeSpec::["with_name_segs"] α216 in
   let* α218 := α214.["lang_error"] α217 in
-  let* α219 := ink_metadata.specs.EnvironmentSpec::["new"] in
+  let* α219 := ink_metadata.specs.EnvironmentSpec::["new"] tt in
   let* α220 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α221 :=
@@ -5776,14 +5713,17 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info
+      `{H : State.Trait}
+      (_ : unit)
+      : M (H := H) scale_info.ty.Type :=
+    let* α0 := scale_info.ty.Type::["builder"] tt in
     let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := alloc.vec.Vec::["new"] tt in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "The ERC-20 error types." ]) in
-    let* α6 := scale_info.build.Variants::["new"] in
+    let* α6 := scale_info.build.Variants::["new"] tt in
     let* α7 :=
       α6.["variant"]
         "InsufficientBalance"
@@ -5863,7 +5803,7 @@ Module Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+  Global Instance I : core.cmp.PartialEq.Trait Self := {
     core.cmp.PartialEq.eq `{H : State.Trait} := eq;
   }.
 End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
@@ -5898,9 +5838,6 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
   
   Definition encode_to
       `{H : State.Trait}
-      {__CodecOutputEdqy : Set}
-      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
-      `{core.marker.Sized.Trait __CodecOutputEdqy}
       (self : ref Self)
       (__codec_dest_edqy : mut_ref __CodecOutputEdqy)
       : M (H := H) unit :=
@@ -5929,8 +5866,7 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
+  Global Instance I : parity_scale_codec.encode_like.EncodeLike.Trait Self :=
     parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
 
@@ -5939,8 +5875,6 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   
   Definition decode
       `{H : State.Trait}
-      {__CodecInputEdqy : Set}
-      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       (__codec_input_edqy : mut_ref __CodecInputEdqy)
       : M (H := H) (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 := __codec_input_edqy.["read_byte"] in
@@ -5949,13 +5883,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         (fun e =>
           e.["chain"]
             "Could not decode `Error`, failed to read variant byte") in
-    let* α2 := α1.["branch"] in
+    let* α2 := LangItem α1 in
     let* α3 :=
       match α2 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
+      | Break {| Break.0 := residual; |} =>
+        let* α0 := LangItem residual in
         Return α0
-      | LanguageItem.Continue val => Pure val
+      | Continue {| Continue.0 := val; |} => Pure val
       end in
     match α3 with
     | __codec_x_edqy =>
@@ -5963,8 +5897,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         let* α0 :=
           (fun  =>
               Pure
-                (core.result.Result.Ok
-                  erc20.erc20.Error.InsufficientBalance)) in
+                (core.result.Result.Ok erc20.erc20.Error.InsufficientBalance))
+            tt in
         Return α0 in
       Pure tt
     | __codec_x_edqy =>
@@ -5972,8 +5906,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
         let* α0 :=
           (fun  =>
               Pure
-                (core.result.Result.Ok
-                  erc20.erc20.Error.InsufficientAllowance)) in
+                (core.result.Result.Ok erc20.erc20.Error.InsufficientAllowance))
+            tt in
         Return α0 in
       Pure tt
     | _ =>
@@ -5983,7 +5917,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
               let* α0 :=
                 core.convert.Into.into
                   "Could not decode `Error`, variant doesn't exist" in
-              Pure (core.result.Result.Err α0)) in
+              Pure (core.result.Result.Err α0))
+            tt in
         Return α0 in
       Pure tt
     end.

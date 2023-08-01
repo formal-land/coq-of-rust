@@ -3,20 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module result_info.
   Module IsResultType.
-    Section IsResultType.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        marker : core.marker.PhantomData (T);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End IsResultType.
+    Record t : Set := {
+      marker : core.marker.PhantomData (unit -> T);
+    }.
+    
+    Global Instance Get_marker : Notation.Dot "marker" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End IsResultType.
-  Definition IsResultType : Set := @IsResultType.t.
+  Definition IsResultType : Set := IsResultType.t.
+  
+  Module Impl_ink_result_info_IsResultType_core_result_Result_T_E.
+    Definition Self := ink.result_info.IsResultType (core.result.Result T E).
+    
+    Definition VALUE := Pure true.
+    
+    Global Instance AssociatedFunction_VALUE `{H : State.Trait} :
+      Notation.DoubleColon Self "VALUE" := {
+      Notation.double_colon := VALUE;
+    }.
+  End Impl_ink_result_info_IsResultType_core_result_Result_T_E.
   
   Module IsResultTypeFallback.
     Class Trait (Self : Set) : Set := {
@@ -29,21 +35,39 @@ Module result_info.
     }.
   End IsResultTypeFallback.
   
+  Module
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+  Section
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+    Context {T : Set}.
+    
+    Definition Self := ink.result_info.IsResultType T.
+    
+    Global Instance I : ink.result_info.IsResultTypeFallback.Trait Self :=
+      ink.result_info.IsResultTypeFallback.Build_Trait _.
+  End
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+  End
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+  
   Module IsResultErr.
-    Section IsResultErr.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _ : ref T;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End IsResultErr.
+    Record t : Set := { _ : ref T;}.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End IsResultErr.
-  Definition IsResultErr := @IsResultErr.t.
+  Definition IsResultErr := IsResultErr.t.
+  
+  Module Impl_ink_result_info_IsResultErr_core_result_Result_T_E.
+    Definition Self := ink.result_info.IsResultErr (core.result.Result T E).
+    
+    Parameter value : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
+    
+    Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
+      Notation.dot := value;
+    }.
+  End Impl_ink_result_info_IsResultErr_core_result_Result_T_E.
   
   Module IsResultErrFallback.
     Class Trait (Self : Set) : Set := {
@@ -54,23 +78,44 @@ Module result_info.
       Notation.dot (self : ref Self) := (Pure false : M (H := H) bool);
     }.
   End IsResultErrFallback.
+  
+  Module
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+  Section
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+    Context {T : Set}.
+    
+    Definition Self := ink.result_info.IsResultErr T.
+    
+    Global Instance I : ink.result_info.IsResultErrFallback.Trait Self :=
+      ink.result_info.IsResultErrFallback.Build_Trait _.
+  End
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+  End
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
 End result_info.
 
 Module IsResultType.
-  Section IsResultType.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      marker : core.marker.PhantomData (T);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End IsResultType.
+  Record t : Set := {
+    marker : core.marker.PhantomData (unit -> T);
+  }.
+  
+  Global Instance Get_marker : Notation.Dot "marker" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End IsResultType.
-Definition IsResultType : Set := @IsResultType.t.
+Definition IsResultType : Set := IsResultType.t.
+
+Module Impl_ink_result_info_IsResultType_core_result_Result_T_E_2.
+  Definition Self := ink.result_info.IsResultType (core.result.Result T E).
+  
+  Definition VALUE := Pure true.
+  
+  Global Instance AssociatedFunction_VALUE `{H : State.Trait} :
+    Notation.DoubleColon Self "VALUE" := {
+    Notation.double_colon := VALUE;
+  }.
+End Impl_ink_result_info_IsResultType_core_result_Result_T_E_2.
 
 Module IsResultTypeFallback.
   Class Trait (Self : Set) : Set := {
@@ -83,21 +128,39 @@ Module IsResultTypeFallback.
   }.
 End IsResultTypeFallback.
 
+Module
+  Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+Section
+  Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+  Context {T : Set}.
+  
+  Definition Self := ink.result_info.IsResultType T.
+  
+  Global Instance I : ink.result_info.IsResultTypeFallback.Trait Self :=
+    ink.result_info.IsResultTypeFallback.Build_Trait _.
+End
+  Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+End
+  Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+
 Module IsResultErr.
-  Section IsResultErr.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : ref T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End IsResultErr.
+  Record t : Set := { _ : ref T;}.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End IsResultErr.
-Definition IsResultErr := @IsResultErr.t.
+Definition IsResultErr := IsResultErr.t.
+
+Module Impl_ink_result_info_IsResultErr_core_result_Result_T_E_2.
+  Definition Self := ink.result_info.IsResultErr (core.result.Result T E).
+  
+  Parameter value : forall `{H : State.Trait}, ref Self -> M (H := H) bool.
+  
+  Global Instance Method_value `{H : State.Trait} : Notation.Dot "value" := {
+    Notation.dot := value;
+  }.
+End Impl_ink_result_info_IsResultErr_core_result_Result_T_E_2.
 
 Module IsResultErrFallback.
   Class Trait (Self : Set) : Set := {
@@ -109,15 +172,29 @@ Module IsResultErrFallback.
   }.
 End IsResultErrFallback.
 
+Module
+  Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+Section
+  Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+  Context {T : Set}.
+  
+  Definition Self := ink.result_info.IsResultErr T.
+  
+  Global Instance I : ink.result_info.IsResultErrFallback.Trait Self :=
+    ink.result_info.IsResultErrFallback.Build_Trait _.
+End Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+End Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+
 Module codegen.
   Module dispatch.
     Module execution.
-      Parameter deny_payment : forall `{H : State.Trait},
-          forall
+      Parameter deny_payment : forall `{H : State.Trait}, forall
           {E : Set},
           `{ink_env.types.Environment.Trait E}
-          M (H := H)
-            (core.result.Result unit ink.reflect.dispatch.DispatchError).
+          unit
+          ->
+            M (H := H)
+              (core.result.Result unit ink.reflect.dispatch.DispatchError).
     End execution.
     
     Module info.
@@ -135,36 +212,22 @@ Module codegen.
     
     Module type_check.
       Module DispatchInput.
-        Section DispatchInput.
-          Context {T : Set}.
-          Unset Primitive Projections.
-          Record t : Set := {
-            _ : T;
-          }.
-          Global Set Primitive Projections.
-          
-          Global Instance Get_0 : Notation.Dot 0 := {
-            Notation.dot '(Build_t x0) := x0;
-          }.
-        End DispatchInput.
+        Record t : Set := { _ : T;}.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
       End DispatchInput.
-      Definition DispatchInput := @DispatchInput.t.
+      Definition DispatchInput := DispatchInput.t.
       
       Module DispatchOutput.
-        Section DispatchOutput.
-          Context {T : Set}.
-          Unset Primitive Projections.
-          Record t : Set := {
-            _ : T;
-          }.
-          Global Set Primitive Projections.
-          
-          Global Instance Get_0 : Notation.Dot 0 := {
-            Notation.dot '(Build_t x0) := x0;
-          }.
-        End DispatchOutput.
+        Record t : Set := { _ : T;}.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
       End DispatchOutput.
-      Definition DispatchOutput := @DispatchOutput.t.
+      Definition DispatchOutput := DispatchOutput.t.
     End type_check.
   End dispatch.
   
@@ -188,7 +251,7 @@ Module codegen.
     Module StaticEnv.
       Class Trait (Self : Set) {EnvAccess : Set} : Set := {
         EnvAccess := EnvAccess;
-        env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+        env `{H : State.Trait} : unit -> (M (H := H) ImplSelf.EnvAccess);
       }.
       
       Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -206,14 +269,7 @@ Module codegen.
     Module emit.
       Module EmitEvent.
         Class Trait (Self : Set) {C : Set} : Set := {
-          emit_event
-            `{H : State.Trait}
-            {E: Set}
-            `{core.convert.Into.Trait
-              ink.reflect.event.ContractEventBase.Type
-              E}
-            :
-            Self -> E -> (M (H := H) unit);
+          emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
         }.
         
         Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -225,20 +281,15 @@ Module codegen.
     
     Module topics.
       Module EventRespectsTopicLimit.
-        Section EventRespectsTopicLimit.
-          Context {Event : Set}.
-          Unset Primitive Projections.
-          Record t : Set := {
-            marker : core.marker.PhantomData (Event);
-          }.
-          Global Set Primitive Projections.
-          
-          Global Instance Get_marker : Notation.Dot "marker" := {
-            Notation.dot '(Build_t x0) := x0;
-          }.
-        End EventRespectsTopicLimit.
+        Record t : Set := {
+          marker : core.marker.PhantomData (unit -> Event);
+        }.
+        
+        Global Instance Get_marker : Notation.Dot "marker" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
       End EventRespectsTopicLimit.
-      Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+      Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
       
       Module RespectTopicLimit.
         Unset Primitive Projections.
@@ -250,7 +301,917 @@ Module codegen.
       Module EventTopics.
         Inductive t : Set := Build.
       End EventTopics.
-      Definition EventTopics := @EventTopics.t.
+      Definition EventTopics := EventTopics.t.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I :
+            ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+          ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
       
       Module EventLenTopics.
         Class Trait (Self : Set) {LenTopics : Set} : Set := {
@@ -272,6 +1233,66 @@ Module codegen.
       }.
       Global Set Primitive Projections.
     End ImpliesReturn.
+    
+    Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+      Context {T : Set}.
+      
+      Definition Self := T.
+      
+      Global Instance I :
+          ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) :=
+        ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+    End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    
+    Module
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+    Section
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+      Context {T E CallType Args : Set}.
+      
+      Definition
+        Self
+        :=
+        ink_env.call.call_builder.CallBuilder
+          E
+          (ink_env.call.common.Set CallType)
+          (ink_env.call.common.Set
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set (ink_env.call.common.ReturnType T)).
+      
+      Global Instance I :
+          ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) :=
+        ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+    
+    Module
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+    Section
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+      Context {E CallType Args : Set}.
+      
+      Definition
+        Self
+        :=
+        ink_env.call.call_builder.CallBuilder
+          E
+          (ink_env.call.common.Set CallType)
+          (ink_env.call.common.Set
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set unit).
+      
+      Global Instance I :
+          ink.codegen.implies_return.ImpliesReturn.Trait Self (T := unit) :=
+        ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
   End implies_return.
   
   Module trait_def.
@@ -378,50 +1399,58 @@ Module codegen.
       Module TraitMessagePayable.
         Inductive t : Set := Build.
       End TraitMessagePayable.
-      Definition TraitMessagePayable := @TraitMessagePayable.t.
+      Definition TraitMessagePayable := TraitMessagePayable.t.
       
       Module TraitMessageSelector.
         Inductive t : Set := Build.
       End TraitMessageSelector.
-      Definition TraitMessageSelector := @TraitMessageSelector.t.
+      Definition TraitMessageSelector := TraitMessageSelector.t.
     End trait_message.
   End trait_def.
   
   Module utils.
     Module identity_type.
-      Parameter consume_type : forall `{H : State.Trait},
-          forall
+      Parameter consume_type : forall `{H : State.Trait}, forall
           {T : Set},
-          M (H := H) unit.
+          unit
+          -> M (H := H) unit.
     End identity_type.
     
     Module same_type.
       Module IsSameType.
-        Section IsSameType.
-          Context {T : Set}.
-          Unset Primitive Projections.
-          Record t : Set := {
-            _marker : core.marker.PhantomData T;
-          }.
-          Global Set Primitive Projections.
-          
-          Global Instance Get__marker : Notation.Dot "_marker" := {
-            Notation.dot '(Build_t x0) := x0;
-          }.
-        End IsSameType.
+        Record t : Set := {
+          _marker : core.marker.PhantomData T;
+        }.
+        
+        Global Instance Get__marker : Notation.Dot "_marker" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
       End IsSameType.
-      Definition IsSameType : Set := @IsSameType.t.
+      Definition IsSameType : Set := IsSameType.t.
+      
+      Module Impl_ink_codegen_utils_same_type_IsSameType_T.
+        Definition Self := ink.codegen.utils.same_type.IsSameType T.
+        
+        Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+        
+        Global Instance AssociatedFunction_new `{H : State.Trait} :
+          Notation.DoubleColon Self "new" := {
+          Notation.double_colon := new;
+        }.
+      End Impl_ink_codegen_utils_same_type_IsSameType_T.
     End same_type.
   End utils.
 End codegen.
 
 Module dispatch.
   Module execution.
-    Parameter deny_payment : forall `{H : State.Trait},
-        forall
+    Parameter deny_payment : forall `{H : State.Trait}, forall
         {E : Set},
         `{ink_env.types.Environment.Trait E}
-        M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+        unit
+        ->
+          M (H := H)
+            (core.result.Result unit ink.reflect.dispatch.DispatchError).
   End execution.
   
   Module info.
@@ -439,52 +1468,39 @@ Module dispatch.
   
   Module type_check.
     Module DispatchInput.
-      Section DispatchInput.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End DispatchInput.
+      Record t : Set := { _ : T;}.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End DispatchInput.
-    Definition DispatchInput := @DispatchInput.t.
+    Definition DispatchInput := DispatchInput.t.
     
     Module DispatchOutput.
-      Section DispatchOutput.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End DispatchOutput.
+      Record t : Set := { _ : T;}.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End DispatchOutput.
-    Definition DispatchOutput := @DispatchOutput.t.
+    Definition DispatchOutput := DispatchOutput.t.
   End type_check.
 End dispatch.
 
 Module execution.
-  Parameter deny_payment : forall `{H : State.Trait},
-      forall
+  Parameter deny_payment : forall `{H : State.Trait}, forall
       {E : Set},
       `{ink_env.types.Environment.Trait E}
-      M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+      unit
+      ->
+        M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
 End execution.
 
-Parameter deny_payment : forall `{H : State.Trait},
-    forall
+Parameter deny_payment : forall `{H : State.Trait}, forall
     {E : Set},
     `{ink_env.types.Environment.Trait E}
-    M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+    unit
+    -> M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
 
 Module info.
   Module ContractCallBuilder.
@@ -512,69 +1528,41 @@ End ContractCallBuilder.
 
 Module type_check.
   Module DispatchInput.
-    Section DispatchInput.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _ : T;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End DispatchInput.
+    Record t : Set := { _ : T;}.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End DispatchInput.
-  Definition DispatchInput := @DispatchInput.t.
+  Definition DispatchInput := DispatchInput.t.
   
   Module DispatchOutput.
-    Section DispatchOutput.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _ : T;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End DispatchOutput.
+    Record t : Set := { _ : T;}.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End DispatchOutput.
-  Definition DispatchOutput := @DispatchOutput.t.
+  Definition DispatchOutput := DispatchOutput.t.
 End type_check.
 
 Module DispatchInput.
-  Section DispatchInput.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End DispatchInput.
+  Record t : Set := { _ : T;}.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End DispatchInput.
-Definition DispatchInput := @DispatchInput.t.
+Definition DispatchInput := DispatchInput.t.
 
 Module DispatchOutput.
-  Section DispatchOutput.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End DispatchOutput.
+  Record t : Set := { _ : T;}.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End DispatchOutput.
-Definition DispatchOutput := @DispatchOutput.t.
+Definition DispatchOutput := DispatchOutput.t.
 
 Module env.
   Module Env.
@@ -596,7 +1584,7 @@ Module env.
   Module StaticEnv.
     Class Trait (Self : Set) {EnvAccess : Set} : Set := {
       EnvAccess := EnvAccess;
-      env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+      env `{H : State.Trait} : unit -> (M (H := H) ImplSelf.EnvAccess);
     }.
     
     Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -629,7 +1617,7 @@ End Env.
 Module StaticEnv.
   Class Trait (Self : Set) {EnvAccess : Set} : Set := {
     EnvAccess := EnvAccess;
-    env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+    env `{H : State.Trait} : unit -> (M (H := H) ImplSelf.EnvAccess);
   }.
   
   Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -646,12 +1634,7 @@ Module event.
   Module emit.
     Module EmitEvent.
       Class Trait (Self : Set) {C : Set} : Set := {
-        emit_event
-          `{H : State.Trait}
-          {E: Set}
-          `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
-          :
-          Self -> E -> (M (H := H) unit);
+        emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
       }.
       
       Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -663,20 +1646,15 @@ Module event.
   
   Module topics.
     Module EventRespectsTopicLimit.
-      Section EventRespectsTopicLimit.
-        Context {Event : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          marker : core.marker.PhantomData (Event);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_marker : Notation.Dot "marker" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End EventRespectsTopicLimit.
+      Record t : Set := {
+        marker : core.marker.PhantomData (unit -> Event);
+      }.
+      
+      Global Instance Get_marker : Notation.Dot "marker" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End EventRespectsTopicLimit.
-    Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+    Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
     
     Module RespectTopicLimit.
       Unset Primitive Projections.
@@ -688,7 +1666,917 @@ Module event.
     Module EventTopics.
       Inductive t : Set := Build.
     End EventTopics.
-    Definition EventTopics := @EventTopics.t.
+    Definition EventTopics := EventTopics.t.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I :
+          ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+        ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
     
     Module EventLenTopics.
       Class Trait (Self : Set) {LenTopics : Set} : Set := {
@@ -706,12 +2594,7 @@ End event.
 Module emit.
   Module EmitEvent.
     Class Trait (Self : Set) {C : Set} : Set := {
-      emit_event
-        `{H : State.Trait}
-        {E: Set}
-        `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
-        :
-        Self -> E -> (M (H := H) unit);
+      emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
     }.
     
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -723,12 +2606,7 @@ End emit.
 
 Module EmitEvent.
   Class Trait (Self : Set) {C : Set} : Set := {
-    emit_event
-      `{H : State.Trait}
-      {E: Set}
-      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
-      :
-      Self -> E -> (M (H := H) unit);
+    emit_event `{H : State.Trait} : Self -> E -> (M (H := H) unit);
   }.
   
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
@@ -739,20 +2617,15 @@ End EmitEvent.
 
 Module topics.
   Module EventRespectsTopicLimit.
-    Section EventRespectsTopicLimit.
-      Context {Event : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        marker : core.marker.PhantomData (Event);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End EventRespectsTopicLimit.
+    Record t : Set := {
+      marker : core.marker.PhantomData (unit -> Event);
+    }.
+    
+    Global Instance Get_marker : Notation.Dot "marker" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End EventRespectsTopicLimit.
-  Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+  Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
   
   Module RespectTopicLimit.
     Unset Primitive Projections.
@@ -764,7 +2637,826 @@ Module topics.
   Module EventTopics.
     Inductive t : Set := Build.
   End EventTopics.
-  Definition EventTopics := @EventTopics.t.
+  Definition EventTopics := EventTopics.t.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+      ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
   
   Module EventLenTopics.
     Class Trait (Self : Set) {LenTopics : Set} : Set := {
@@ -779,20 +3471,15 @@ Module topics.
 End topics.
 
 Module EventRespectsTopicLimit.
-  Section EventRespectsTopicLimit.
-    Context {Event : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      marker : core.marker.PhantomData (Event);
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End EventRespectsTopicLimit.
+  Record t : Set := {
+    marker : core.marker.PhantomData (unit -> Event);
+  }.
+  
+  Global Instance Get_marker : Notation.Dot "marker" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End EventRespectsTopicLimit.
-Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+Definition EventRespectsTopicLimit : Set := EventRespectsTopicLimit.t.
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
@@ -804,7 +3491,826 @@ End RespectTopicLimit.
 Module EventTopics.
   Inductive t : Set := Build.
 End EventTopics.
-Definition EventTopics := @EventTopics.t.
+Definition EventTopics := EventTopics.t.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self :=
+    ink.codegen.event.topics.RespectTopicLimit.Build_Trait _.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
 
 Module EventLenTopics.
   Class Trait (Self : Set) {LenTopics : Set} : Set := {
@@ -824,6 +4330,66 @@ Module implies_return.
     }.
     Global Set Primitive Projections.
   End ImpliesReturn.
+  
+  Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    Context {T : Set}.
+    
+    Definition Self := T.
+    
+    Global Instance I :
+        ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) :=
+      ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+  End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  
+  Module
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+  Section
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+    Context {T E CallType Args : Set}.
+    
+    Definition
+      Self
+      :=
+      ink_env.call.call_builder.CallBuilder
+        E
+        (ink_env.call.common.Set CallType)
+        (ink_env.call.common.Set
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set (ink_env.call.common.ReturnType T)).
+    
+    Global Instance I :
+        ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) :=
+      ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+  
+  Module
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+  Section
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+    Context {E CallType Args : Set}.
+    
+    Definition
+      Self
+      :=
+      ink_env.call.call_builder.CallBuilder
+        E
+        (ink_env.call.common.Set CallType)
+        (ink_env.call.common.Set
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set unit).
+    
+    Global Instance I :
+        ink.codegen.implies_return.ImpliesReturn.Trait Self (T := unit) :=
+      ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
 End implies_return.
 
 Module ImpliesReturn.
@@ -832,6 +4398,66 @@ Module ImpliesReturn.
   }.
   Global Set Primitive Projections.
 End ImpliesReturn.
+
+Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  Context {T : Set}.
+  
+  Definition Self := T.
+  
+  Global Instance I :
+      ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) :=
+    ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+
+Module
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+Section
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+  Context {T E CallType Args : Set}.
+  
+  Definition
+    Self
+    :=
+    ink_env.call.call_builder.CallBuilder
+      E
+      (ink_env.call.common.Set CallType)
+      (ink_env.call.common.Set
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType T)).
+  
+  Global Instance I :
+      ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) :=
+    ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+End
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+End
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_ink_env_call_common_ReturnType_T.
+
+Module
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+Section
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+  Context {E CallType Args : Set}.
+  
+  Definition
+    Self
+    :=
+    ink_env.call.call_builder.CallBuilder
+      E
+      (ink_env.call.common.Set CallType)
+      (ink_env.call.common.Set
+        (ink_env.call.execution_input.ExecutionInput Args))
+      (ink_env.call.common.Set unit).
+  
+  Global Instance I :
+      ink.codegen.implies_return.ImpliesReturn.Trait Self (T := unit) :=
+    ink.codegen.implies_return.ImpliesReturn.Build_Trait _.
+End
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
+End
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_call_call_builder_CallBuilder_E_ink_env_call_common_Set_CallType_ink_env_call_common_Set_ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set_Tuple_.
 
 Module trait_def.
   Module call_builder.
@@ -936,12 +4562,12 @@ Module trait_def.
     Module TraitMessagePayable.
       Inductive t : Set := Build.
     End TraitMessagePayable.
-    Definition TraitMessagePayable := @TraitMessagePayable.t.
+    Definition TraitMessagePayable := TraitMessagePayable.t.
     
     Module TraitMessageSelector.
       Inductive t : Set := Build.
     End TraitMessageSelector.
-    Definition TraitMessageSelector := @TraitMessageSelector.t.
+    Definition TraitMessageSelector := TraitMessageSelector.t.
   End trait_message.
 End trait_def.
 
@@ -1135,96 +4761,114 @@ Module trait_message.
   Module TraitMessagePayable.
     Inductive t : Set := Build.
   End TraitMessagePayable.
-  Definition TraitMessagePayable := @TraitMessagePayable.t.
+  Definition TraitMessagePayable := TraitMessagePayable.t.
   
   Module TraitMessageSelector.
     Inductive t : Set := Build.
   End TraitMessageSelector.
-  Definition TraitMessageSelector := @TraitMessageSelector.t.
+  Definition TraitMessageSelector := TraitMessageSelector.t.
 End trait_message.
 
 Module TraitMessagePayable.
   Inductive t : Set := Build.
 End TraitMessagePayable.
-Definition TraitMessagePayable := @TraitMessagePayable.t.
+Definition TraitMessagePayable := TraitMessagePayable.t.
 
 Module TraitMessageSelector.
   Inductive t : Set := Build.
 End TraitMessageSelector.
-Definition TraitMessageSelector := @TraitMessageSelector.t.
+Definition TraitMessageSelector := TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
-    Parameter consume_type : forall `{H : State.Trait},
-        forall
+    Parameter consume_type : forall `{H : State.Trait}, forall
         {T : Set},
-        M (H := H) unit.
+        unit
+        -> M (H := H) unit.
   End identity_type.
   
   Module same_type.
     Module IsSameType.
-      Section IsSameType.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _marker : core.marker.PhantomData T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get__marker : Notation.Dot "_marker" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End IsSameType.
-    End IsSameType.
-    Definition IsSameType : Set := @IsSameType.t.
-  End same_type.
-End utils.
-
-Module identity_type.
-  Parameter consume_type : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      M (H := H) unit.
-End identity_type.
-
-Parameter consume_type : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    M (H := H) unit.
-
-Module same_type.
-  Module IsSameType.
-    Section IsSameType.
-      Context {T : Set}.
-      Unset Primitive Projections.
       Record t : Set := {
         _marker : core.marker.PhantomData T;
       }.
-      Global Set Primitive Projections.
       
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
     End IsSameType.
-  End IsSameType.
-  Definition IsSameType : Set := @IsSameType.t.
-End same_type.
+    Definition IsSameType : Set := IsSameType.t.
+    
+    Module Impl_ink_codegen_utils_same_type_IsSameType_T_2.
+      Definition Self := ink.codegen.utils.same_type.IsSameType T.
+      
+      Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+      
+      Global Instance AssociatedFunction_new `{H : State.Trait} :
+        Notation.DoubleColon Self "new" := {
+        Notation.double_colon := new;
+      }.
+    End Impl_ink_codegen_utils_same_type_IsSameType_T_2.
+  End same_type.
+End utils.
 
-Module IsSameType.
-  Section IsSameType.
-    Context {T : Set}.
-    Unset Primitive Projections.
+Module identity_type.
+  Parameter consume_type : forall `{H : State.Trait}, forall
+      {T : Set},
+      unit
+      -> M (H := H) unit.
+End identity_type.
+
+Parameter consume_type : forall `{H : State.Trait}, forall
+    {T : Set},
+    unit
+    -> M (H := H) unit.
+
+Module same_type.
+  Module IsSameType.
     Record t : Set := {
       _marker : core.marker.PhantomData T;
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End IsSameType.
+  Definition IsSameType : Set := IsSameType.t.
+  
+  Module Impl_ink_codegen_utils_same_type_IsSameType_T_3.
+    Definition Self := ink.codegen.utils.same_type.IsSameType T.
+    
+    Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
+      Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+  End Impl_ink_codegen_utils_same_type_IsSameType_T_3.
+End same_type.
+
+Module IsSameType.
+  Record t : Set := {
+    _marker : core.marker.PhantomData T;
+  }.
+  
+  Global Instance Get__marker : Notation.Dot "_marker" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End IsSameType.
-Definition IsSameType : Set := @IsSameType.t.
+Definition IsSameType : Set := IsSameType.t.
+
+Module Impl_ink_codegen_utils_same_type_IsSameType_T_4.
+  Definition Self := ink.codegen.utils.same_type.IsSameType T.
+  
+  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
+    Notation.double_colon := new;
+  }.
+End Impl_ink_codegen_utils_same_type_IsSameType_T_4.
 
 Module reflect.
   Module contract.
@@ -1392,20 +5036,109 @@ Module reflect.
     End ConstructorOutput.
     
     Module ConstructorOutputValue.
-      Section ConstructorOutputValue.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End ConstructorOutputValue.
+      Record t : Set := { _ : T;}.
+      
+      Global Instance Get_0 : Notation.Dot 0 := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End ConstructorOutputValue.
-    Definition ConstructorOutputValue := @ConstructorOutputValue.t.
+    Definition ConstructorOutputValue := ConstructorOutputValue.t.
+    
+    Module Impl_ink_reflect_dispatch_ConstructorOutputValue_T.
+      Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+      
+      Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
+      
+      Global Instance AssociatedFunction_new `{H : State.Trait} :
+        Notation.DoubleColon Self "new" := {
+        Notation.double_colon := new;
+      }.
+    End Impl_ink_reflect_dispatch_ConstructorOutputValue_T.
+    
+    Module
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+    Section
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+      Context {T : Set}.
+      
+      Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+      
+      Global Instance I : ink.reflect.dispatch.private.Sealed.Trait Self :=
+        ink.reflect.dispatch.private.Sealed.Build_Trait _.
+    End
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+    End
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+    
+    Module
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    Section
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Context {C : Set}.
+      
+      Definition Self := ink.reflect.dispatch.ConstructorOutputValue C.
+      
+      Definition Error : Set := ref unit.
+      
+      Parameter as_result : forall `{H : State.Trait}, ref Self
+          -> M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)).
+      
+      Global Instance Method_as_result `{H : State.Trait} :
+        Notation.Dot "as_result" := {
+        Notation.dot := as_result;
+      }.
+      
+      Global Instance I :
+          ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+        ink.reflect.dispatch.ConstructorOutput.as_result
+          `{H : State.Trait}
+          :=
+          as_result;
+      }.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    
+    Module
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    Section
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Context {C E : Set}.
+      
+      Definition
+        Self
+        :=
+        ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
+      
+      Definition IS_RESULT := Pure true.
+      
+      Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
+        Notation.DoubleColon Self "IS_RESULT" := {
+        Notation.double_colon := IS_RESULT;
+      }.
+      
+      Definition Error : Set := E.
+      
+      Parameter as_result : forall `{H : State.Trait}, ref Self
+          -> M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)).
+      
+      Global Instance Method_as_result `{H : State.Trait} :
+        Notation.Dot "as_result" := {
+        Notation.dot := as_result;
+      }.
+      
+      Global Instance I :
+          ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+        ink.reflect.dispatch.ConstructorOutput.as_result
+          `{H : State.Trait}
+          :=
+          as_result;
+      }.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
     
     Module ContractMessageDecoder.
       Class Trait
@@ -1465,12 +5198,146 @@ Module reflect.
     End DispatchError.
     Definition DispatchError := DispatchError.t.
     
+    Module Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter fmt : forall `{H : State.Trait}, ref Self->
+          mut_ref core.fmt.Formatter
+          -> M (H := H) core.fmt.Result.
+      
+      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.Copy.Trait Self :=
+        core.marker.Copy.Build_Trait _.
+    End Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter clone : forall `{H : State.Trait}, ref Self
+          -> M (H := H) ink.reflect.dispatch.DispatchError.
+      
+      Global Instance Method_clone `{H : State.Trait} :
+        Notation.Dot "clone" := {
+        Notation.dot := clone;
+      }.
+      
+      Global Instance I : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone `{H : State.Trait} := clone;
+      }.
+    End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+    
+    Module
+      Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
+        core.marker.StructuralPartialEq.Build_Trait _.
+    End
+      Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter eq : forall `{H : State.Trait}, ref Self->
+          ref ink.reflect.dispatch.DispatchError
+          -> M (H := H) bool.
+      
+      Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
+        Notation.dot := eq;
+      }.
+      
+      Global Instance I : core.cmp.PartialEq.Trait Self := {
+        core.cmp.PartialEq.eq `{H : State.Trait} := eq;
+      }.
+    End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.StructuralEq.Trait Self :=
+        core.marker.StructuralEq.Build_Trait _.
+    End Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref
+              Self
+          -> M (H := H) unit.
+      
+      Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
+        Notation.Dot "assert_receiver_is_total_eq" := {
+        Notation.dot := assert_receiver_is_total_eq;
+      }.
+      
+      Global Instance I : core.cmp.Eq.Trait Self := {
+      }.
+    End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter fmt : forall `{H : State.Trait}, ref Self->
+          mut_ref core.fmt.Formatter
+          -> M (H := H) core.fmt.Result.
+      
+      Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Display.Trait Self := {
+        core.fmt.Display.fmt `{H : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter as_str : forall `{H : State.Trait}, ref Self
+          -> M (H := H) (ref str).
+      
+      Global Instance Method_as_str `{H : State.Trait} :
+        Notation.Dot "as_str" := {
+        Notation.dot := as_str;
+      }.
+    End Impl_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
+      Definition Self := parity_scale_codec.error.Error.
+      
+      Parameter from : forall
+            `{H : State.Trait},
+            ink.reflect.dispatch.DispatchError
+          -> M (H := H) Self.
+      
+      Global Instance AssociatedFunction_from `{H : State.Trait} :
+        Notation.DoubleColon Self "from" := {
+        Notation.double_colon := from;
+      }.
+      
+      Global Instance I :
+          core.convert.From.Trait
+            Self
+            (T := ink.reflect.dispatch.DispatchError) := {
+        core.convert.From.from `{H : State.Trait} := from;
+      }.
+    End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+    
     Module DecodeDispatch.
       Class Trait (Self : Set) : Set := {
         decode_dispatch
           `{H : State.Trait}
-          {I: Set}
-          `{parity_scale_codec.codec.Input.Trait I}
           :
           (mut_ref I) ->
           (M (H := H)
@@ -1539,20 +5406,35 @@ Module reflect.
     
     Module registry.
       Module TraitDefinitionRegistry.
-        Section TraitDefinitionRegistry.
-          Context {E : Set}.
-          Unset Primitive Projections.
-          Record t : Set := {
-            marker : core.marker.PhantomData (E);
-          }.
-          Global Set Primitive Projections.
-          
-          Global Instance Get_marker : Notation.Dot "marker" := {
-            Notation.dot '(Build_t x0) := x0;
-          }.
-        End TraitDefinitionRegistry.
+        Record t : Set := {
+          marker : core.marker.PhantomData (unit -> E);
+        }.
+        
+        Global Instance Get_marker : Notation.Dot "marker" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+      Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+      
+      Module
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+      Section
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+        Context {E : Set}.
+        
+        Definition
+          Self
+          :=
+          ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+        
+        Definition Env : Set := E.
+        
+        Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+        }.
+      End
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+      End
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
     End registry.
   End trait_def.
 End reflect.
@@ -1733,20 +5615,109 @@ Module dispatch.
   End ConstructorOutput.
   
   Module ConstructorOutputValue.
-    Section ConstructorOutputValue.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        _ : T;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End ConstructorOutputValue.
+    Record t : Set := { _ : T;}.
+    
+    Global Instance Get_0 : Notation.Dot 0 := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
   End ConstructorOutputValue.
-  Definition ConstructorOutputValue := @ConstructorOutputValue.t.
+  Definition ConstructorOutputValue := ConstructorOutputValue.t.
+  
+  Module Impl_ink_reflect_dispatch_ConstructorOutputValue_T_2.
+    Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+    
+    Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
+    
+    Global Instance AssociatedFunction_new `{H : State.Trait} :
+      Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+  End Impl_ink_reflect_dispatch_ConstructorOutputValue_T_2.
+  
+  Module
+    Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+  Section
+    Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+    Context {T : Set}.
+    
+    Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+    
+    Global Instance I : ink.reflect.dispatch.private.Sealed.Trait Self :=
+      ink.reflect.dispatch.private.Sealed.Build_Trait _.
+  End
+    Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+  End
+    Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+  
+  Module
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  Section
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    Context {C : Set}.
+    
+    Definition Self := ink.reflect.dispatch.ConstructorOutputValue C.
+    
+    Definition Error : Set := ref unit.
+    
+    Parameter as_result : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)).
+    
+    Global Instance Method_as_result `{H : State.Trait} :
+      Notation.Dot "as_result" := {
+      Notation.dot := as_result;
+    }.
+    
+    Global Instance I :
+        ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+      ink.reflect.dispatch.ConstructorOutput.as_result
+        `{H : State.Trait}
+        :=
+        as_result;
+    }.
+  End
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  End
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  
+  Module
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+  Section
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    Context {C E : Set}.
+    
+    Definition
+      Self
+      :=
+      ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
+    
+    Definition IS_RESULT := Pure true.
+    
+    Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
+      Notation.DoubleColon Self "IS_RESULT" := {
+      Notation.double_colon := IS_RESULT;
+    }.
+    
+    Definition Error : Set := E.
+    
+    Parameter as_result : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)).
+    
+    Global Instance Method_as_result `{H : State.Trait} :
+      Notation.Dot "as_result" := {
+      Notation.dot := as_result;
+    }.
+    
+    Global Instance I :
+        ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+      ink.reflect.dispatch.ConstructorOutput.as_result
+        `{H : State.Trait}
+        :=
+        as_result;
+    }.
+  End
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+  End
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
   
   Module ContractMessageDecoder.
     Class Trait
@@ -1806,12 +5777,144 @@ Module dispatch.
   End DispatchError.
   Definition DispatchError := DispatchError.t.
   
+  Module Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
+    
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+  
+  Module Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Global Instance I : core.marker.Copy.Trait Self :=
+      core.marker.Copy.Build_Trait _.
+  End Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+  
+  Module Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Parameter clone : forall `{H : State.Trait}, ref Self
+        -> M (H := H) ink.reflect.dispatch.DispatchError.
+    
+    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
+      Notation.dot := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone `{H : State.Trait} := clone;
+    }.
+  End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+  
+  Module
+    Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
+      core.marker.StructuralPartialEq.Build_Trait _.
+  End
+    Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+  
+  Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Parameter eq : forall `{H : State.Trait}, ref Self->
+        ref ink.reflect.dispatch.DispatchError
+        -> M (H := H) bool.
+    
+    Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
+      Notation.dot := eq;
+    }.
+    
+    Global Instance I : core.cmp.PartialEq.Trait Self := {
+      core.cmp.PartialEq.eq `{H : State.Trait} := eq;
+    }.
+  End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+  
+  Module Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self :=
+      core.marker.StructuralEq.Build_Trait _.
+  End Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+  
+  Module Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+        -> M (H := H) unit.
+    
+    Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
+      Notation.Dot "assert_receiver_is_total_eq" := {
+      Notation.dot := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+  End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+  
+  Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
+    
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Display.Trait Self := {
+      core.fmt.Display.fmt `{H : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+  
+  Module Impl_ink_reflect_dispatch_DispatchError_2.
+    Definition Self := ink.reflect.dispatch.DispatchError.
+    
+    Parameter as_str : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (ref str).
+    
+    Global Instance Method_as_str `{H : State.Trait} :
+      Notation.Dot "as_str" := {
+      Notation.dot := as_str;
+    }.
+  End Impl_ink_reflect_dispatch_DispatchError_2.
+  
+  Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
+    Definition Self := parity_scale_codec.error.Error.
+    
+    Parameter from : forall
+          `{H : State.Trait},
+          ink.reflect.dispatch.DispatchError
+        -> M (H := H) Self.
+    
+    Global Instance AssociatedFunction_from `{H : State.Trait} :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I :
+        core.convert.From.Trait
+          Self
+          (T := ink.reflect.dispatch.DispatchError) := {
+      core.convert.From.from `{H : State.Trait} := from;
+    }.
+  End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+  
   Module DecodeDispatch.
     Class Trait (Self : Set) : Set := {
       decode_dispatch
         `{H : State.Trait}
-        {I: Set}
-        `{parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
         (M (H := H)
@@ -1983,20 +6086,109 @@ Module ConstructorOutput.
 End ConstructorOutput.
 
 Module ConstructorOutputValue.
-  Section ConstructorOutputValue.
-    Context {T : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      _ : T;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End ConstructorOutputValue.
+  Record t : Set := { _ : T;}.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End ConstructorOutputValue.
-Definition ConstructorOutputValue := @ConstructorOutputValue.t.
+Definition ConstructorOutputValue := ConstructorOutputValue.t.
+
+Module Impl_ink_reflect_dispatch_ConstructorOutputValue_T_3.
+  Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+  
+  Parameter new : forall `{H : State.Trait}, T -> M (H := H) Self.
+  
+  Global Instance AssociatedFunction_new `{H : State.Trait} :
+    Notation.DoubleColon Self "new" := {
+    Notation.double_colon := new;
+  }.
+End Impl_ink_reflect_dispatch_ConstructorOutputValue_T_3.
+
+Module
+  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+Section
+  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+  Context {T : Set}.
+  
+  Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+  
+  Global Instance I : ink.reflect.dispatch.private.Sealed.Trait Self :=
+    ink.reflect.dispatch.private.Sealed.Build_Trait _.
+End
+  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+End
+  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+
+Module
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+Section
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  Context {C : Set}.
+  
+  Definition Self := ink.reflect.dispatch.ConstructorOutputValue C.
+  
+  Definition Error : Set := ref unit.
+  
+  Parameter as_result : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)).
+  
+  Global Instance Method_as_result `{H : State.Trait} :
+    Notation.Dot "as_result" := {
+    Notation.dot := as_result;
+  }.
+  
+  Global Instance I :
+      ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+    ink.reflect.dispatch.ConstructorOutput.as_result
+      `{H : State.Trait}
+      :=
+      as_result;
+  }.
+End
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+End
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+
+Module
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+Section
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+  Context {C E : Set}.
+  
+  Definition
+    Self
+    :=
+    ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
+  
+  Definition IS_RESULT := Pure true.
+  
+  Global Instance AssociatedFunction_IS_RESULT `{H : State.Trait} :
+    Notation.DoubleColon Self "IS_RESULT" := {
+    Notation.double_colon := IS_RESULT;
+  }.
+  
+  Definition Error : Set := E.
+  
+  Parameter as_result : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)).
+  
+  Global Instance Method_as_result `{H : State.Trait} :
+    Notation.Dot "as_result" := {
+    Notation.dot := as_result;
+  }.
+  
+  Global Instance I :
+      ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+    ink.reflect.dispatch.ConstructorOutput.as_result
+      `{H : State.Trait}
+      :=
+      as_result;
+  }.
+End
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+End
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
 
 Module ContractMessageDecoder.
   Class Trait
@@ -2055,12 +6247,140 @@ Module DispatchError.
 End DispatchError.
 Definition DispatchError := DispatchError.t.
 
+Module Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
+  
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+    Notation.dot := fmt;
+  }.
+  
+  Global Instance I : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+  }.
+End Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Global Instance I : core.marker.Copy.Trait Self :=
+    core.marker.Copy.Build_Trait _.
+End Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) ink.reflect.dispatch.DispatchError.
+  
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
+    Notation.dot := clone;
+  }.
+  
+  Global Instance I : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone `{H : State.Trait} := clone;
+  }.
+End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+
+Module
+  Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
+    core.marker.StructuralPartialEq.Build_Trait _.
+End Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter eq : forall `{H : State.Trait}, ref Self->
+      ref ink.reflect.dispatch.DispatchError
+      -> M (H := H) bool.
+  
+  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
+    Notation.dot := eq;
+  }.
+  
+  Global Instance I : core.cmp.PartialEq.Trait Self := {
+    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
+  }.
+End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Global Instance I : core.marker.StructuralEq.Trait Self :=
+    core.marker.StructuralEq.Build_Trait _.
+End Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter assert_receiver_is_total_eq : forall `{H : State.Trait}, ref Self
+      -> M (H := H) unit.
+  
+  Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
+    Notation.Dot "assert_receiver_is_total_eq" := {
+    Notation.dot := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance I : core.cmp.Eq.Trait Self := {
+  }.
+End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
+  
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+    Notation.dot := fmt;
+  }.
+  
+  Global Instance I : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt `{H : State.Trait} := fmt;
+  }.
+End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_ink_reflect_dispatch_DispatchError_3.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter as_str : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (ref str).
+  
+  Global Instance Method_as_str `{H : State.Trait} : Notation.Dot "as_str" := {
+    Notation.dot := as_str;
+  }.
+End Impl_ink_reflect_dispatch_DispatchError_3.
+
+Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
+  Definition Self := parity_scale_codec.error.Error.
+  
+  Parameter from : forall `{H : State.Trait}, ink.reflect.dispatch.DispatchError
+      -> M (H := H) Self.
+  
+  Global Instance AssociatedFunction_from `{H : State.Trait} :
+    Notation.DoubleColon Self "from" := {
+    Notation.double_colon := from;
+  }.
+  
+  Global Instance I :
+      core.convert.From.Trait
+        Self
+        (T := ink.reflect.dispatch.DispatchError) := {
+    core.convert.From.from `{H : State.Trait} := from;
+  }.
+End Impl_core_convert_From_for_parity_scale_codec_error_Error.
+
 Module DecodeDispatch.
   Class Trait (Self : Set) : Set := {
     decode_dispatch
       `{H : State.Trait}
-      {I: Set}
-      `{parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
       (M (H := H) (core.result.Result Self ink.reflect.dispatch.DispatchError));
@@ -2138,20 +6458,35 @@ Module trait_def.
   
   Module registry.
     Module TraitDefinitionRegistry.
-      Section TraitDefinitionRegistry.
-        Context {E : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          marker : core.marker.PhantomData (E);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_marker : Notation.Dot "marker" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End TraitDefinitionRegistry.
+      Record t : Set := {
+        marker : core.marker.PhantomData (unit -> E);
+      }.
+      
+      Global Instance Get_marker : Notation.Dot "marker" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
     End TraitDefinitionRegistry.
-    Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+    Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+    
+    Module
+      Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+    Section
+      Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+      Context {E : Set}.
+      
+      Definition
+        Self
+        :=
+        ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+      
+      Definition Env : Set := E.
+      
+      Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+      }.
+    End
+      Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+    End
+      Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
   End registry.
 End trait_def.
 
@@ -2232,43 +6567,67 @@ End TraitInfo.
 
 Module registry.
   Module TraitDefinitionRegistry.
-    Section TraitDefinitionRegistry.
-      Context {E : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        marker : core.marker.PhantomData (E);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End TraitDefinitionRegistry.
-  End TraitDefinitionRegistry.
-  Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
-End registry.
-
-Module TraitDefinitionRegistry.
-  Section TraitDefinitionRegistry.
-    Context {E : Set}.
-    Unset Primitive Projections.
     Record t : Set := {
-      marker : core.marker.PhantomData (E);
+      marker : core.marker.PhantomData (unit -> E);
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End TraitDefinitionRegistry.
+  Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+  
+  Module
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+  Section
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+    Context {E : Set}.
+    
+    Definition Self := ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+    
+    Definition Env : Set := E.
+    
+    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+    }.
+  End
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+  End
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+End registry.
+
+Module TraitDefinitionRegistry.
+  Record t : Set := {
+    marker : core.marker.PhantomData (unit -> E);
+  }.
+  
+  Global Instance Get_marker : Notation.Dot "marker" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End TraitDefinitionRegistry.
-Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+Definition TraitDefinitionRegistry : Set := TraitDefinitionRegistry.t.
+
+Module
+  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+Section
+  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+  Context {E : Set}.
+  
+  Definition Self := ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+  
+  Definition Env : Set := E.
+  
+  Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+  }.
+End
+  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+End
+  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
 
 Module chain_extension.
   Module ChainExtensionInstance.
     Class Trait (Self : Set) {Instance : Set} : Set := {
       Instance := Instance;
-      instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
+      instantiate `{H : State.Trait} : unit -> (M (H := H) ImplSelf.Instance);
     }.
     
     Global Instance Method_Instance `{H : State.Trait} `(Trait)
@@ -2312,6 +6671,36 @@ Module chain_extension.
     }.
   End IsResultType.
   
+  Module
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+  Section
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+    Context {T E : Set}.
+    
+    Definition Self := core.result.Result T E.
+    
+    Global Instance I : ink.chain_extension.private.IsResultSealed.Trait Self :=
+      ink.chain_extension.private.IsResultSealed.Build_Trait _.
+  End
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+  End
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+  
+  Module Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+  Section Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+    Context {T E : Set}.
+    
+    Definition Self := core.result.Result T E.
+    
+    Definition Ok : Set := T.
+    
+    Definition Err : Set := E.
+    
+    Global Instance I : ink.chain_extension.IsResultType.Trait Self := {
+    }.
+  End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+  End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+  
   Module Output.
     Class Trait
         (Self : Set) {IS_RESULT HANDLE_STATUS T E : Set}
@@ -2329,7 +6718,72 @@ Module chain_extension.
   Module ValueReturned.
     Inductive t : Set := Build.
   End ValueReturned.
-  Definition ValueReturned := @ValueReturned.t.
+  Definition ValueReturned := ValueReturned.t.
+  
+  Module
+    Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Global Instance I : ink.chain_extension.private.OutputSealed.Trait Self :=
+      ink.chain_extension.private.OutputSealed.Build_Trait _.
+  End
+    Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+  
+  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Context {T E : Set}.
+    
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Definition ReturnType : Set := T.
+    
+    Global Instance I :
+        ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+    }.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  
+  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Context {T E : Set}.
+    
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Definition ReturnType : Set := core.result.Result T E.
+    
+    Global Instance I :
+        ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+    }.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  
+  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Context {T E : Set}.
+    
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Definition ReturnType : Set := T.
+    
+    Global Instance I :
+        ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+    }.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  
+  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Context {T E : Set}.
+    
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Definition ReturnType : Set := T.
+    
+    Global Instance I :
+        ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+    }.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
   
   Module private.
     Module IsResultSealed.
@@ -2351,7 +6805,7 @@ End chain_extension.
 Module ChainExtensionInstance.
   Class Trait (Self : Set) {Instance : Set} : Set := {
     Instance := Instance;
-    instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
+    instantiate `{H : State.Trait} : unit -> (M (H := H) ImplSelf.Instance);
   }.
   
   Global Instance Method_Instance `{H : State.Trait} `(Trait)
@@ -2395,6 +6849,34 @@ Module IsResultType.
   }.
 End IsResultType.
 
+Module
+  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+Section
+  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+  Context {T E : Set}.
+  
+  Definition Self := core.result.Result T E.
+  
+  Global Instance I : ink.chain_extension.private.IsResultSealed.Trait Self :=
+    ink.chain_extension.private.IsResultSealed.Build_Trait _.
+End Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+End Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+
+Module Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+Section Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+  Context {T E : Set}.
+  
+  Definition Self := core.result.Result T E.
+  
+  Definition Ok : Set := T.
+  
+  Definition Err : Set := E.
+  
+  Global Instance I : ink.chain_extension.IsResultType.Trait Self := {
+  }.
+End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+
 Module Output.
   Class Trait
       (Self : Set) {IS_RESULT HANDLE_STATUS T E : Set}
@@ -2412,7 +6894,72 @@ End Output.
 Module ValueReturned.
   Inductive t : Set := Build.
 End ValueReturned.
-Definition ValueReturned := @ValueReturned.t.
+Definition ValueReturned := ValueReturned.t.
+
+Module
+  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+  Definition Self := ink.chain_extension.ValueReturned.
+  
+  Global Instance I : ink.chain_extension.private.OutputSealed.Trait Self :=
+    ink.chain_extension.private.OutputSealed.Build_Trait _.
+End
+  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+
+Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Context {T E : Set}.
+  
+  Definition Self := ink.chain_extension.ValueReturned.
+  
+  Definition ReturnType : Set := T.
+  
+  Global Instance I :
+      ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+  }.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+
+Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Context {T E : Set}.
+  
+  Definition Self := ink.chain_extension.ValueReturned.
+  
+  Definition ReturnType : Set := core.result.Result T E.
+  
+  Global Instance I :
+      ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+  }.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+
+Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Context {T E : Set}.
+  
+  Definition Self := ink.chain_extension.ValueReturned.
+  
+  Definition ReturnType : Set := T.
+  
+  Global Instance I :
+      ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+  }.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+
+Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Context {T E : Set}.
+  
+  Definition Self := ink.chain_extension.ValueReturned.
+  
+  Definition ReturnType : Set := T.
+  
+  Global Instance I :
+      ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+  }.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
 
 Module private.
   Module IsResultSealed.
@@ -2476,34 +7023,645 @@ End ToAccountId.
 
 Module env_access.
   Module EnvAccess.
-    Section EnvAccess.
-      Context {E : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        marker : core.marker.PhantomData ((ref E));
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End EnvAccess.
-  End EnvAccess.
-  Definition EnvAccess : Set := @EnvAccess.t.
-End env_access.
-
-Module EnvAccess.
-  Section EnvAccess.
-    Context {E : Set}.
-    Unset Primitive Projections.
     Record t : Set := {
-      marker : core.marker.PhantomData ((ref E));
+      marker : core.marker.PhantomData (unit -> (ref E));
     }.
-    Global Set Primitive Projections.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
     }.
   End EnvAccess.
+  Definition EnvAccess : Set := EnvAccess.t.
+  
+  Module Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Global Instance I : core.marker.Copy.Trait Self :=
+      core.marker.Copy.Build_Trait _.
+  End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+  End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+  
+  Module Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter clone : forall `{H : State.Trait}, ref Self
+        -> M (H := H) (ink.env_access.EnvAccess E).
+    
+    Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
+      Notation.dot := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone `{H : State.Trait} := clone;
+    }.
+  End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+  End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+  
+  Module Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+    
+    Global Instance AssociatedFunction_default `{H : State.Trait} :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    Global Instance I : core.default.Default.Trait Self := {
+      core.default.Default.default `{H : State.Trait} := default;
+    }.
+  End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+  End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+  
+  Module Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter fmt : forall `{H : State.Trait}, ref Self->
+        mut_ref core.fmt.Formatter
+        -> M (H := H) core.fmt.Result.
+    
+    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+  End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+  
+  Module Impl_ink_env_access_EnvAccess_E.
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter extension : forall `{H : State.Trait}, Self
+        -> M (H := H) ink.chain_extension.ChainExtensionInstance.Instance.
+    
+    Global Instance Method_extension `{H : State.Trait} :
+      Notation.Dot "extension" := {
+      Notation.dot := extension;
+    }.
+  End Impl_ink_env_access_EnvAccess_E.
+  
+  Module Impl_ink_env_access_EnvAccess_E_2.
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter caller : forall `{H : State.Trait}, Self
+        -> M (H := H) ImplE.AccountId.
+    
+    Global Instance Method_caller `{H : State.Trait} :
+      Notation.Dot "caller" := {
+      Notation.dot := caller;
+    }.
+    
+    Parameter transferred_value : forall `{H : State.Trait}, Self
+        -> M (H := H) ImplE.Balance.
+    
+    Global Instance Method_transferred_value `{H : State.Trait} :
+      Notation.Dot "transferred_value" := {
+      Notation.dot := transferred_value;
+    }.
+    
+    Parameter weight_to_fee : forall `{H : State.Trait}, Self->
+        u64
+        -> M (H := H) ImplE.Balance.
+    
+    Global Instance Method_weight_to_fee `{H : State.Trait} :
+      Notation.Dot "weight_to_fee" := {
+      Notation.dot := weight_to_fee;
+    }.
+    
+    Parameter gas_left : forall `{H : State.Trait}, Self -> M (H := H) u64.
+    
+    Global Instance Method_gas_left `{H : State.Trait} :
+      Notation.Dot "gas_left" := {
+      Notation.dot := gas_left;
+    }.
+    
+    Parameter block_timestamp : forall `{H : State.Trait}, Self
+        -> M (H := H) ImplE.Timestamp.
+    
+    Global Instance Method_block_timestamp `{H : State.Trait} :
+      Notation.Dot "block_timestamp" := {
+      Notation.dot := block_timestamp;
+    }.
+    
+    Parameter account_id : forall `{H : State.Trait}, Self
+        -> M (H := H) ImplE.AccountId.
+    
+    Global Instance Method_account_id `{H : State.Trait} :
+      Notation.Dot "account_id" := {
+      Notation.dot := account_id;
+    }.
+    
+    Parameter balance : forall `{H : State.Trait}, Self
+        -> M (H := H) ImplE.Balance.
+    
+    Global Instance Method_balance `{H : State.Trait} :
+      Notation.Dot "balance" := {
+      Notation.dot := balance;
+    }.
+    
+    Parameter block_number : forall `{H : State.Trait}, Self
+        -> M (H := H) ImplE.BlockNumber.
+    
+    Global Instance Method_block_number `{H : State.Trait} :
+      Notation.Dot "block_number" := {
+      Notation.dot := block_number;
+    }.
+    
+    Parameter minimum_balance : forall `{H : State.Trait}, Self
+        -> M (H := H) ImplE.Balance.
+    
+    Global Instance Method_minimum_balance `{H : State.Trait} :
+      Notation.Dot "minimum_balance" := {
+      Notation.dot := minimum_balance;
+    }.
+    
+    Parameter instantiate_contract : forall `{H : State.Trait}, Self->
+        ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
+        ->
+          M (H := H)
+            (ink_env.error.Result
+              (ink_primitives.ConstructorResult
+                ink_env.call.create_builder.ConstructorReturnType.Output)).
+    
+    Global Instance Method_instantiate_contract `{H : State.Trait} :
+      Notation.Dot "instantiate_contract" := {
+      Notation.dot := instantiate_contract;
+    }.
+    
+    Parameter invoke_contract : forall `{H : State.Trait}, Self->
+        ref
+            (ink_env.call.call_builder.CallParams
+              E
+              (ink_env.call.call_builder.Call E)
+              Args
+              R)
+        -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+    
+    Global Instance Method_invoke_contract `{H : State.Trait} :
+      Notation.Dot "invoke_contract" := {
+      Notation.dot := invoke_contract;
+    }.
+    
+    Parameter invoke_contract_delegate : forall `{H : State.Trait}, Self->
+        ref
+            (ink_env.call.call_builder.CallParams
+              E
+              (ink_env.call.call_builder.DelegateCall E)
+              Args
+              R)
+        -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+    
+    Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
+      Notation.Dot "invoke_contract_delegate" := {
+      Notation.dot := invoke_contract_delegate;
+    }.
+    
+    Parameter terminate_contract : forall `{H : State.Trait}, Self->
+        ImplE.AccountId
+        -> M (H := H) Empty_set.
+    
+    Global Instance Method_terminate_contract `{H : State.Trait} :
+      Notation.Dot "terminate_contract" := {
+      Notation.dot := terminate_contract;
+    }.
+    
+    Parameter transfer : forall `{H : State.Trait}, Self->
+        ImplE.AccountId->
+        ImplE.Balance
+        -> M (H := H) (ink_env.error.Result unit).
+    
+    Global Instance Method_transfer `{H : State.Trait} :
+      Notation.Dot "transfer" := {
+      Notation.dot := transfer;
+    }.
+    
+    Parameter hash_bytes : forall `{H : State.Trait}, Self->
+        ref Slice
+        -> M (H := H) ink_env.hash.HashOutput.Type.
+    
+    Global Instance Method_hash_bytes `{H : State.Trait} :
+      Notation.Dot "hash_bytes" := {
+      Notation.dot := hash_bytes;
+    }.
+    
+    Parameter hash_encoded : forall `{H : State.Trait}, Self->
+        ref V
+        -> M (H := H) ink_env.hash.HashOutput.Type.
+    
+    Global Instance Method_hash_encoded `{H : State.Trait} :
+      Notation.Dot "hash_encoded" := {
+      Notation.dot := hash_encoded;
+    }.
+    
+    Parameter ecdsa_recover : forall `{H : State.Trait}, Self->
+        ref list u8->
+        ref list u8
+        -> M (H := H) (ink_env.error.Result list u8).
+    
+    Global Instance Method_ecdsa_recover `{H : State.Trait} :
+      Notation.Dot "ecdsa_recover" := {
+      Notation.dot := ecdsa_recover;
+    }.
+    
+    Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, Self->
+        ref list u8
+        -> M (H := H) (ink_env.error.Result list u8).
+    
+    Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
+      Notation.Dot "ecdsa_to_eth_address" := {
+      Notation.dot := ecdsa_to_eth_address;
+    }.
+    
+    Parameter is_contract : forall `{H : State.Trait}, Self->
+        ref ImplE.AccountId
+        -> M (H := H) bool.
+    
+    Global Instance Method_is_contract `{H : State.Trait} :
+      Notation.Dot "is_contract" := {
+      Notation.dot := is_contract;
+    }.
+    
+    Parameter caller_is_origin : forall `{H : State.Trait}, Self
+        -> M (H := H) bool.
+    
+    Global Instance Method_caller_is_origin `{H : State.Trait} :
+      Notation.Dot "caller_is_origin" := {
+      Notation.dot := caller_is_origin;
+    }.
+    
+    Parameter code_hash : forall `{H : State.Trait}, Self->
+        ref ImplE.AccountId
+        -> M (H := H) (ink_env.error.Result ImplE.Hash).
+    
+    Global Instance Method_code_hash `{H : State.Trait} :
+      Notation.Dot "code_hash" := {
+      Notation.dot := code_hash;
+    }.
+    
+    Parameter own_code_hash : forall `{H : State.Trait}, Self
+        -> M (H := H) (ink_env.error.Result ImplE.Hash).
+    
+    Global Instance Method_own_code_hash `{H : State.Trait} :
+      Notation.Dot "own_code_hash" := {
+      Notation.dot := own_code_hash;
+    }.
+    
+    Parameter set_code_hash : forall `{H : State.Trait}, Self->
+        ref ImplE.Hash
+        -> M (H := H) (ink_env.error.Result unit).
+    
+    Global Instance Method_set_code_hash `{H : State.Trait} :
+      Notation.Dot "set_code_hash" := {
+      Notation.dot := set_code_hash;
+    }.
+    
+    Parameter call_runtime : forall `{H : State.Trait}, Self->
+        ref Call
+        -> M (H := H) (ink_env.error.Result unit).
+    
+    Global Instance Method_call_runtime `{H : State.Trait} :
+      Notation.Dot "call_runtime" := {
+      Notation.dot := call_runtime;
+    }.
+  End Impl_ink_env_access_EnvAccess_E_2.
+End env_access.
+
+Module EnvAccess.
+  Record t : Set := {
+    marker : core.marker.PhantomData (unit -> (ref E));
+  }.
+  
+  Global Instance Get_marker : Notation.Dot "marker" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
 End EnvAccess.
-Definition EnvAccess : Set := @EnvAccess.t.
+Definition EnvAccess : Set := EnvAccess.t.
+
+Module Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+  Context {E : Set}.
+  
+  Definition Self := ink.env_access.EnvAccess E.
+  
+  Global Instance I : core.marker.Copy.Trait Self :=
+    core.marker.Copy.Build_Trait _.
+End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+
+Module Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+Section Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+  Context {E : Set}.
+  
+  Definition Self := ink.env_access.EnvAccess E.
+  
+  Parameter clone : forall `{H : State.Trait}, ref Self
+      -> M (H := H) (ink.env_access.EnvAccess E).
+  
+  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
+    Notation.dot := clone;
+  }.
+  
+  Global Instance I : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone `{H : State.Trait} := clone;
+  }.
+End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+
+Module Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+Section Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+  Context {E : Set}.
+  
+  Definition Self := ink.env_access.EnvAccess E.
+  
+  Parameter default : forall `{H : State.Trait}, unit -> M (H := H) Self.
+  
+  Global Instance AssociatedFunction_default `{H : State.Trait} :
+    Notation.DoubleColon Self "default" := {
+    Notation.double_colon := default;
+  }.
+  
+  Global Instance I : core.default.Default.Trait Self := {
+    core.default.Default.default `{H : State.Trait} := default;
+  }.
+End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+
+Module Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+Section Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+  Context {E : Set}.
+  
+  Definition Self := ink.env_access.EnvAccess E.
+  
+  Parameter fmt : forall `{H : State.Trait}, ref Self->
+      mut_ref core.fmt.Formatter
+      -> M (H := H) core.fmt.Result.
+  
+  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+    Notation.dot := fmt;
+  }.
+  
+  Global Instance I : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+  }.
+End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+
+Module Impl_ink_env_access_EnvAccess_E_3.
+  Definition Self := ink.env_access.EnvAccess E.
+  
+  Parameter extension : forall `{H : State.Trait}, Self
+      -> M (H := H) ink.chain_extension.ChainExtensionInstance.Instance.
+  
+  Global Instance Method_extension `{H : State.Trait} :
+    Notation.Dot "extension" := {
+    Notation.dot := extension;
+  }.
+End Impl_ink_env_access_EnvAccess_E_3.
+
+Module Impl_ink_env_access_EnvAccess_E_4.
+  Definition Self := ink.env_access.EnvAccess E.
+  
+  Parameter caller : forall `{H : State.Trait}, Self
+      -> M (H := H) ImplE.AccountId.
+  
+  Global Instance Method_caller `{H : State.Trait} : Notation.Dot "caller" := {
+    Notation.dot := caller;
+  }.
+  
+  Parameter transferred_value : forall `{H : State.Trait}, Self
+      -> M (H := H) ImplE.Balance.
+  
+  Global Instance Method_transferred_value `{H : State.Trait} :
+    Notation.Dot "transferred_value" := {
+    Notation.dot := transferred_value;
+  }.
+  
+  Parameter weight_to_fee : forall `{H : State.Trait}, Self->
+      u64
+      -> M (H := H) ImplE.Balance.
+  
+  Global Instance Method_weight_to_fee `{H : State.Trait} :
+    Notation.Dot "weight_to_fee" := {
+    Notation.dot := weight_to_fee;
+  }.
+  
+  Parameter gas_left : forall `{H : State.Trait}, Self -> M (H := H) u64.
+  
+  Global Instance Method_gas_left `{H : State.Trait} :
+    Notation.Dot "gas_left" := {
+    Notation.dot := gas_left;
+  }.
+  
+  Parameter block_timestamp : forall `{H : State.Trait}, Self
+      -> M (H := H) ImplE.Timestamp.
+  
+  Global Instance Method_block_timestamp `{H : State.Trait} :
+    Notation.Dot "block_timestamp" := {
+    Notation.dot := block_timestamp;
+  }.
+  
+  Parameter account_id : forall `{H : State.Trait}, Self
+      -> M (H := H) ImplE.AccountId.
+  
+  Global Instance Method_account_id `{H : State.Trait} :
+    Notation.Dot "account_id" := {
+    Notation.dot := account_id;
+  }.
+  
+  Parameter balance : forall `{H : State.Trait}, Self
+      -> M (H := H) ImplE.Balance.
+  
+  Global Instance Method_balance `{H : State.Trait} :
+    Notation.Dot "balance" := {
+    Notation.dot := balance;
+  }.
+  
+  Parameter block_number : forall `{H : State.Trait}, Self
+      -> M (H := H) ImplE.BlockNumber.
+  
+  Global Instance Method_block_number `{H : State.Trait} :
+    Notation.Dot "block_number" := {
+    Notation.dot := block_number;
+  }.
+  
+  Parameter minimum_balance : forall `{H : State.Trait}, Self
+      -> M (H := H) ImplE.Balance.
+  
+  Global Instance Method_minimum_balance `{H : State.Trait} :
+    Notation.Dot "minimum_balance" := {
+    Notation.dot := minimum_balance;
+  }.
+  
+  Parameter instantiate_contract : forall `{H : State.Trait}, Self->
+      ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)
+      ->
+        M (H := H)
+          (ink_env.error.Result
+            (ink_primitives.ConstructorResult
+              ink_env.call.create_builder.ConstructorReturnType.Output)).
+  
+  Global Instance Method_instantiate_contract `{H : State.Trait} :
+    Notation.Dot "instantiate_contract" := {
+    Notation.dot := instantiate_contract;
+  }.
+  
+  Parameter invoke_contract : forall `{H : State.Trait}, Self->
+      ref
+          (ink_env.call.call_builder.CallParams
+            E
+            (ink_env.call.call_builder.Call E)
+            Args
+            R)
+      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Global Instance Method_invoke_contract `{H : State.Trait} :
+    Notation.Dot "invoke_contract" := {
+    Notation.dot := invoke_contract;
+  }.
+  
+  Parameter invoke_contract_delegate : forall `{H : State.Trait}, Self->
+      ref
+          (ink_env.call.call_builder.CallParams
+            E
+            (ink_env.call.call_builder.DelegateCall E)
+            Args
+            R)
+      -> M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Global Instance Method_invoke_contract_delegate `{H : State.Trait} :
+    Notation.Dot "invoke_contract_delegate" := {
+    Notation.dot := invoke_contract_delegate;
+  }.
+  
+  Parameter terminate_contract : forall `{H : State.Trait}, Self->
+      ImplE.AccountId
+      -> M (H := H) Empty_set.
+  
+  Global Instance Method_terminate_contract `{H : State.Trait} :
+    Notation.Dot "terminate_contract" := {
+    Notation.dot := terminate_contract;
+  }.
+  
+  Parameter transfer : forall `{H : State.Trait}, Self->
+      ImplE.AccountId->
+      ImplE.Balance
+      -> M (H := H) (ink_env.error.Result unit).
+  
+  Global Instance Method_transfer `{H : State.Trait} :
+    Notation.Dot "transfer" := {
+    Notation.dot := transfer;
+  }.
+  
+  Parameter hash_bytes : forall `{H : State.Trait}, Self->
+      ref Slice
+      -> M (H := H) ink_env.hash.HashOutput.Type.
+  
+  Global Instance Method_hash_bytes `{H : State.Trait} :
+    Notation.Dot "hash_bytes" := {
+    Notation.dot := hash_bytes;
+  }.
+  
+  Parameter hash_encoded : forall `{H : State.Trait}, Self->
+      ref V
+      -> M (H := H) ink_env.hash.HashOutput.Type.
+  
+  Global Instance Method_hash_encoded `{H : State.Trait} :
+    Notation.Dot "hash_encoded" := {
+    Notation.dot := hash_encoded;
+  }.
+  
+  Parameter ecdsa_recover : forall `{H : State.Trait}, Self->
+      ref list u8->
+      ref list u8
+      -> M (H := H) (ink_env.error.Result list u8).
+  
+  Global Instance Method_ecdsa_recover `{H : State.Trait} :
+    Notation.Dot "ecdsa_recover" := {
+    Notation.dot := ecdsa_recover;
+  }.
+  
+  Parameter ecdsa_to_eth_address : forall `{H : State.Trait}, Self->
+      ref list u8
+      -> M (H := H) (ink_env.error.Result list u8).
+  
+  Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} :
+    Notation.Dot "ecdsa_to_eth_address" := {
+    Notation.dot := ecdsa_to_eth_address;
+  }.
+  
+  Parameter is_contract : forall `{H : State.Trait}, Self->
+      ref ImplE.AccountId
+      -> M (H := H) bool.
+  
+  Global Instance Method_is_contract `{H : State.Trait} :
+    Notation.Dot "is_contract" := {
+    Notation.dot := is_contract;
+  }.
+  
+  Parameter caller_is_origin : forall `{H : State.Trait}, Self
+      -> M (H := H) bool.
+  
+  Global Instance Method_caller_is_origin `{H : State.Trait} :
+    Notation.Dot "caller_is_origin" := {
+    Notation.dot := caller_is_origin;
+  }.
+  
+  Parameter code_hash : forall `{H : State.Trait}, Self->
+      ref ImplE.AccountId
+      -> M (H := H) (ink_env.error.Result ImplE.Hash).
+  
+  Global Instance Method_code_hash `{H : State.Trait} :
+    Notation.Dot "code_hash" := {
+    Notation.dot := code_hash;
+  }.
+  
+  Parameter own_code_hash : forall `{H : State.Trait}, Self
+      -> M (H := H) (ink_env.error.Result ImplE.Hash).
+  
+  Global Instance Method_own_code_hash `{H : State.Trait} :
+    Notation.Dot "own_code_hash" := {
+    Notation.dot := own_code_hash;
+  }.
+  
+  Parameter set_code_hash : forall `{H : State.Trait}, Self->
+      ref ImplE.Hash
+      -> M (H := H) (ink_env.error.Result unit).
+  
+  Global Instance Method_set_code_hash `{H : State.Trait} :
+    Notation.Dot "set_code_hash" := {
+    Notation.dot := set_code_hash;
+  }.
+  
+  Parameter call_runtime : forall `{H : State.Trait}, Self->
+      ref Call
+      -> M (H := H) (ink_env.error.Result unit).
+  
+  Global Instance Method_call_runtime `{H : State.Trait} :
+    Notation.Dot "call_runtime" := {
+    Notation.dot := call_runtime;
+  }.
+End Impl_ink_env_access_EnvAccess_E_4.
+
+Module storage.
+  Module traits.
+    
+  End traits.
+End storage.
+
+Module traits.
+  
+End traits.

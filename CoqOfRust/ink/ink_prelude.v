@@ -3,3 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition IIP2_WILDCARD_COMPLEMENT_SELECTOR `{H : State.Trait} : list u8 :=
   run (Pure [ 155; 174; 157; 94 ]).
+
+Module collections.
+  
+End collections.
