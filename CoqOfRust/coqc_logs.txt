@@ -1,4 +1,0 @@
-NOTE: This is an empty file supposed to record logs and check for warnings
-generated from CoqOfRust/make_and_detect_warnings.sh. Please do not modify
-the file content.
-----------------

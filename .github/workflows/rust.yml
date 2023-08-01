@@ -50,5 +50,5 @@ jobs:
       run: |
         cd CoqOfRust
         ./configure.sh
-        ./make_and_detect_warnings.sh
+        python ./make_and_detect_warnings.py
         cd ..
