@@ -119,17 +119,20 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
         QPath::TypeRelative(ty, segment) => {
             let ty = match ty.kind {
                 rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => match path.res {
-                    Res::SelfTyAlias { .. } => compile_path(env, path),
+                    Res::SelfTyAlias { .. } => vec![],
                     _ => {
                         let mut path = compile_path(env, path);
                         path.prefix_last_by_impl();
-                        path
+                        vec![path]
                     }
                 },
-                _ => Path::local("ComplexTypePath".to_string()),
+                _ => vec![Path::local("ComplexTypePath".to_string())],
             };
+            let ty = ty.into_iter().map(|path| path.to_string()).collect();
+            let segment = vec![segment.ident.name.to_string()];
             Path {
-                segments: vec![ty.to_string(), segment.ident.name.to_string()]
+                segments: vec![ty, segment]
+                    .concat()
                     .iter()
                     .map(|segment| to_valid_coq_name(segment.to_string()))
                     .collect(),
