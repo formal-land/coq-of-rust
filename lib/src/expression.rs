@@ -883,7 +883,6 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     };
                 }
             }
-            eprintln!("{:?}\n", qpath);
             compile_qpath(env, qpath)
         }
         ExprKind::AddrOf(_, _, expr) => Expr::AddrOf(Box::new(compile_expr(env, expr))),
