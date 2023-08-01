@@ -12,13 +12,14 @@ use rustc_hir::{
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
 use std::cmp::Ordering;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::iter::repeat;
 use std::string::ToString;
 
 pub(crate) struct TopLevelOptions {
     pub(crate) filename: String,
     pub(crate) axiomatize: bool,
+    pub(crate) generate_reorder: bool,
 }
 
 /// Trait for getting a name of an AST node. Used
@@ -416,7 +417,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     compile_top_level_item(tcx, env, item)
                 })
                 .collect();
-            reorder_definitions_inplace(&env.file, &env.context, &mut items);
+            reorder_definitions_inplace(env, &mut items);
             env.pop_context();
             // We remove empty modules in the translation
             if items.is_empty() {
@@ -776,7 +777,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     (item.ident.name.to_string(), value)
                 })
                 .collect();
-            reorder_definitions_inplace(&env.file, &env.context, &mut items);
+            reorder_definitions_inplace(env, &mut items);
             env.pop_context();
             match of_trait {
                 Some(trait_ref) => {
@@ -885,13 +886,14 @@ fn configfile_get_as_vec_string(index: &str) -> Vec<String> {
 }
 
 #[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
-fn reorder_definitions_inplace(file: &str, context: &str, definitions: &mut Vec<impl ToName>) {
-    // JSON pointers need / in JSON keys to be espabed to ~1.
-    // See https://datatracker.ietf.org/doc/html/rfc6901#section-3
+fn reorder_definitions_inplace(env: &mut Env, definitions: &mut Vec<impl ToName>) {
+    let file = &env.file;
+    let context = &env.context;
+
     // The context here is the path of the file name with / so we need
     // to escape it
-    let file = file.replace('/', "~1");
-    let pointer = format!("/reorder/{}/{}", file, context);
+    let file_escaped = file.replace('/', "~1");
+    let pointer = format!("/reorder/{}/{}", file_escaped, context);
     let order = configfile_get_as_vec_string(pointer.as_str());
     definitions.sort_by(|a, b| {
         let a_name = a.to_name();
@@ -908,6 +910,9 @@ fn reorder_definitions_inplace(file: &str, context: &str, definitions: &mut Vec<
 
         a_position.cmp(&b_position)
     });
+
+    let identifiers: HashSet<String> = HashSet::from_iter(definitions.iter().map(ToName::to_name));
+    env.reorder_map.insert(context.to_string(), identifiers);
 }
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
@@ -917,6 +922,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         axiomatize: opts.axiomatize,
         file: opts.filename,
         context: "top_level".to_string(),
+        reorder_map: HashMap::new(),
     };
 
     let mut results: Vec<TopLevelItem> = tcx
@@ -928,7 +934,11 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         })
         .collect();
 
-    reorder_definitions_inplace(&env.file, &env.context, &mut results);
+    reorder_definitions_inplace(&mut env, &mut results);
+    if opts.generate_reorder {
+        let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});
+        println!("{}", serde_json::to_string_pretty(&json).expect("json"));
+    }
     TopLevel(results)
 }
 

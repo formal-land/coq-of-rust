@@ -1,7 +1,7 @@
 use crate::ty::*;
 
 use rustc_middle::ty::TyCtxt;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 /// The environment used for the translation steps, holding various state
 /// information
@@ -15,6 +15,8 @@ pub(crate) struct Env<'a> {
     pub(crate) file: String,
     /// context being compile, ex: [examples/foo.rs::top_level::somemod]
     pub(crate) context: String,
+    /// accumulate the reordering for pringing,
+    pub(crate) reorder_map: HashMap<String, HashSet<String>>,
 }
 
 impl<'a> Env<'a> {

@@ -37,6 +37,7 @@ impl Callbacks for ToCoq {
                     TopLevelOptions {
                         axiomatize,
                         filename: current_crate_name_string,
+                        generate_reorder: self.opts.generate_reorder,
                     },
                 ),
             )

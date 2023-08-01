@@ -10,6 +10,7 @@ pub struct CliOptions {
     pub path: path::PathBuf,
     pub output: path::PathBuf,
     pub axiomatize: bool,
+    pub generate_reorder: bool,
 }
 
 pub const LINE_WIDTH: usize = 80;
@@ -77,6 +78,7 @@ pub fn run(opts: CliOptions) {
 }
 
 fn create_translation_to_coq(opts: &CliOptions) -> String {
+    let generate_reorder = opts.generate_reorder;
     let input_file_name: PathBuf = PathBuf::from(&opts.path);
     let filename = input_file_name.clone();
     let out = process::Command::new("rustc")
@@ -116,6 +118,7 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
                     TopLevelOptions {
                         axiomatize: opts.axiomatize,
                         filename: filename.as_os_str().to_str().unwrap().to_string(),
+                        generate_reorder,
                     },
                 )
             })
