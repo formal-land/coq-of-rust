@@ -4938,7 +4938,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 
-Module Impl_erc20_erc20_Erc20Ref_2.
+Module Impl_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition new
@@ -5237,7 +5237,7 @@ Module Impl_erc20_erc20_Erc20Ref_2.
     Notation.Dot "try_transfer_from" := {
     Notation.dot := try_transfer_from;
   }.
-End Impl_erc20_erc20_Erc20Ref_2.
+End Impl_erc20_erc20_Erc20Ref.
 
 Module
   Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
