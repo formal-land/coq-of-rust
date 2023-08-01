@@ -27,7 +27,6 @@ class tout(threading.Thread):
           lines += [line]
           print(line)
         lock += 1
-        # print(lines)
         check_warnings()
 
 class terr(threading.Thread):
@@ -48,7 +47,6 @@ class terr(threading.Thread):
           errorlines += [line]
           print(line)
         lock += 1
-        # print("errorlines ", errorlines)
         check_warnings()
 
 ttout = tout("ttout", 1000)
@@ -60,12 +58,9 @@ def check_warnings():
   if lock < 2:
     return
   else:
-    print("Lock = ", lock)
     print("Checking warnings...")
-    # print(errorlines)
     for line in errorlines:
-      # print("errline: ", line)
       if line.startswith("Warning: "):
         print("Warnings detected from coqc. Abort.")
         exit(1)
-    print("Checking complete, no warnings detected")
+    print("Check complete, no warnings detected")
