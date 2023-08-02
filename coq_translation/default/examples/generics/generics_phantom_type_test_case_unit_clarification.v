@@ -261,13 +261,15 @@ End
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let
-      one_foot: generics_phantom_type_test_case_unit_clarification.Length
+      one_foot :
+      generics_phantom_type_test_case_unit_clarification.Length
         generics_phantom_type_test_case_unit_clarification.Inch :=
     generics_phantom_type_test_case_unit_clarification.Length.Build_t
       12 (* 12.0 *)
       core.marker.PhantomData.Build in
   let
-      one_meter: generics_phantom_type_test_case_unit_clarification.Length
+      one_meter :
+      generics_phantom_type_test_case_unit_clarification.Length
         generics_phantom_type_test_case_unit_clarification.Mm :=
     generics_phantom_type_test_case_unit_clarification.Length.Build_t
       1000 (* 1000.0 *)

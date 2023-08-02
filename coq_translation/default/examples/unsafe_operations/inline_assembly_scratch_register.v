@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let x: u64 := 4 in
+  let x : u64 := 4 in
   let _ :=
     let _ := InlineAsm in
     tt in

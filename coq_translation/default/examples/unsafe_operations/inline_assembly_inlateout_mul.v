@@ -5,8 +5,8 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H : State.Trait} : M (H := H) unit := Pure tt.
 
 Definition mul `{H : State.Trait} (a : u64) (b : u64) : M (H := H) u128 :=
-  let lo: u64 := tt in
-  let hi: u64 := tt in
+  let lo : u64 := tt in
+  let hi : u64 := tt in
   let _ :=
     let _ := InlineAsm in
     tt in

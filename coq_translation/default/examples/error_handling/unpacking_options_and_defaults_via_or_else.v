@@ -44,8 +44,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     core.option.Option.Some
       unpacking_options_and_defaults_via_or_else.Fruit.Apple in
   let
-      no_fruit: core.option.Option
-        unpacking_options_and_defaults_via_or_else.Fruit :=
+      no_fruit :
+      core.option.Option unpacking_options_and_defaults_via_or_else.Fruit :=
     core.option.Option.None in
   let get_kiwi_as_fallback :=
     fun  =>

@@ -153,8 +153,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           (addr_of [ ]) in
       std.io.stdio._print α0 in
     Pure tt in
-  let number: f64 := 1 (* 1.0 *) in
-  let width: usize := 5 in
+  let number : f64 := 1 (* 1.0 *) in
+  let width : usize := 5 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of number) in

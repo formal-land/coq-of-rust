@@ -25,7 +25,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) scoping_rules_borrowing_the_ref_pattern.Point :=
-    let _: core.clone.AssertParamIsClone i32 := tt in
+    let _ : core.clone.AssertParamIsClone i32 := tt in
     self.["deref"].
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
