@@ -1,0 +1,19 @@
+{
+  "axiomatize": false,
+  "reorder": {
+    "examples/functions/functions_order.rs": {
+      "top_level": [
+        "SomeType",
+        "Impl_core_default_Default_for_functions_order_SomeType",
+        "Impl_functions_order_SomeType",
+        "inner_mod",
+        "foo",
+        "main"
+      ],
+      "top_level::Impl_core_default_Default_for_functions_order_SomeType": ["default"],
+      "top_level::Impl_functions_order_SomeType": ["meth2", "meth1"],
+      "top_level::inner_mod": ["tar", "bar"],
+      "top_level::inner_mod::nested_mod": ["tack", "tick"]
+    }
+  }
+}

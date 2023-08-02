@@ -131,7 +131,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
   }.
 End Impl_traits_Animal_for_traits_Sheep.
 
-Module Impl_traits_Sheep_2.
+Module Impl_traits_Sheep.
   Definition Self := traits.Sheep.
   
   Definition shear `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
@@ -166,7 +166,7 @@ Module Impl_traits_Sheep_2.
   Global Instance Method_shear `{H : State.Trait} : Notation.Dot "shear" := {
     Notation.dot := shear;
   }.
-End Impl_traits_Sheep_2.
+End Impl_traits_Sheep.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
