@@ -1429,10 +1429,12 @@ Definition Slice := lib.slice.
 (* TODO: define the instance *)
 Module Impl_PartialEq_for_Result.
   Parameter eq :
-    forall `{State.Trait} {T E : Set},
+    forall `{State.Trait} {T E : Set}
+      `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E},
       ref (core.result.Result T E) -> ref (core.result.Result T E) -> M bool.
 
-  Global Instance Method_eq `{State.Trait} {T E : Set} :
+  Global Instance Method_eq `{State.Trait} {T E : Set}
+    `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E} :
     Notation.Dot "eq" := {|
     Notation.dot := eq (T := T) (E := E);
   |}.
