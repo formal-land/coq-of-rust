@@ -9,8 +9,8 @@ Definition U64 : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let nanoseconds := cast 5 aliasing.U64 in
-  let inches := cast 2 aliasing.U64 in
+  let nanoseconds: aliasing.NanoSecond := cast 5 aliasing.U64 in
+  let inches: aliasing.Inch := cast 2 aliasing.U64 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of nanoseconds) in

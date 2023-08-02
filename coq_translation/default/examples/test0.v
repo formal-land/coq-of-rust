@@ -14,8 +14,8 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
       std.io.stdio._print α1 in
     Pure tt in
   let number := core.option.Option.Some 7 in
-  let letter := core.option.Option.None in
-  let emoticon := core.option.Option.None in
+  let letter: core.option.Option i32 := core.option.Option.None in
+  let emoticon: core.option.Option i32 := core.option.Option.None in
   let* _ :=
     match number with
     | core.option.Option.Some i =>

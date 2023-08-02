@@ -1303,7 +1303,7 @@ impl Stmt {
                         }),
                         pattern.to_doc(),
                         match ty {
-                            Some(ty) => concat([text(": "), ty.to_doc(false)]),
+                            Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
                             None => nil(),
                         },
                         text(" :="),

@@ -123,21 +123,21 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let _tuple1 :=
+  let _tuple1: generics_phantom_type.PhantomTuple char f32 :=
     generics_phantom_type.PhantomTuple.Build_t
       "Q"%char
       core.marker.PhantomData.Build in
-  let _tuple2 :=
+  let _tuple2: generics_phantom_type.PhantomTuple char f64 :=
     generics_phantom_type.PhantomTuple.Build_t
       "Q"%char
       core.marker.PhantomData.Build in
-  let _struct1 :=
+  let _struct1: generics_phantom_type.PhantomStruct char f32 :=
     {|
       generics_phantom_type.PhantomStruct.first := "Q"%char;
       generics_phantom_type.PhantomStruct.phantom :=
         core.marker.PhantomData.Build;
     |} in
-  let _struct2 :=
+  let _struct2: generics_phantom_type.PhantomStruct char f64 :=
     {|
       generics_phantom_type.PhantomStruct.first := "Q"%char;
       generics_phantom_type.PhantomStruct.phantom :=

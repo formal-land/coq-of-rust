@@ -28,7 +28,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) subtle.Choice :=
-    let _ := tt in
+    let _: core.clone.AssertParamIsClone u8 := tt in
     self.["deref"].
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
