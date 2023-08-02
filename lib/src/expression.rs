@@ -959,7 +959,7 @@ fn compile_stmts(env: &mut Env, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_h
         [stmt, stmts @ ..] => match stmt.kind {
             rustc_hir::StmtKind::Local(rustc_hir::Local { pat, ty, init, .. }) => {
                 let pattern = Box::new(compile_pattern(env, pat));
-                let ty = ty.map(|ty| compile_type(env, &ty));
+                let ty = ty.map(|ty| compile_type(env, ty));
                 let init = match init {
                     Some(init) => Box::new(compile_expr(env, init)),
                     None => Box::new(tt()),
@@ -1303,10 +1303,7 @@ impl Stmt {
                         }),
                         pattern.to_doc(),
                         match ty {
-                            Some(ty) => concat([
-                                text(": "),
-                                ty.to_doc(false),
-                            ]),
+                            Some(ty) => concat([text(": "), ty.to_doc(false)]),
                             None => nil(),
                         },
                         text(" :="),
