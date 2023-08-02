@@ -53,6 +53,7 @@ Notation "e (||)" :=
   (at level 0,
     only parsing).
 
+(*
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
       methods, or access to named or indexed fields of structures.
@@ -77,6 +78,9 @@ Module Notation.
   }.
   Arguments double_colon_type {Kind} type name {DoubleColonType}.
 End Notation.
+*)
+Require CoqOfRust.lib.lib.
+Module Notation := CoqOfRust.lib.lib.Notation.
 
 (** Note that we revert the arguments in this notation. *)
 Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
@@ -1421,6 +1425,34 @@ Global Instance Formatter_debug_tuple_field1_finish `{State.Trait} :
 }.
 
 Definition Slice := lib.slice.
+
+(* TODO: define the instance *)
+Module Impl_PartialEq_for_Result.
+  Parameter eq :
+    forall `{State.Trait} {T E : Set},
+      ref (core.result.Result T E) -> ref (core.result.Result T E) -> M bool.
+
+  Global Instance Method_eq `{State.Trait} {T E : Set} :
+    Notation.Dot "eq" := {|
+    Notation.dot := eq (T := T) (E := E);
+  |}.
+End Impl_PartialEq_for_Result.
+
+Module Impl_Debug_for_Result.
+  Section Impl_Debug_for_Result.
+    Context {T E : Set}.
+    Context `{core.fmt.Debug.Trait T}.
+    Context `{core.fmt.Debug.Trait E}.
+
+    Parameter fmt :
+      forall `{State.Trait}, ref (core.result.Result T E) ->
+        mut_ref core.fmt.Formatter -> M core.fmt.Result.
+
+    Global Instance I : core.fmt.Debug.Trait (core.result.Result T E) := {
+      fmt `{State.Trait} := fmt;
+    }.
+  End Impl_Debug_for_Result.
+End Impl_Debug_for_Result.
 
 Module Impl_RangeInclusive.
   Section Impl_RangeInclusive.
