@@ -1426,6 +1426,16 @@ Global Instance Formatter_debug_tuple_field1_finish `{State.Trait} :
 
 Definition Slice := lib.slice.
 
+Module Impl_PartialEq_for_unit.
+  Definition eq `{State.Trait} (x y : unit) : M bool := Pure true.
+  (* because there is only one unit *)
+
+  Global Instance I_Eq_unit :
+    core.cmp.PartialEq.Trait unit (Rhs := Some unit) := {
+    eq `{State.Trait} := eq;
+  }.
+End Impl_PartialEq_for_unit.
+
 (* TODO: define the instance *)
 Module Impl_PartialEq_for_Result.
   Parameter eq :
