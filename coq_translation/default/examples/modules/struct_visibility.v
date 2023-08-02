@@ -82,7 +82,7 @@ Module ClosedBox.
 End ClosedBox.
 Definition ClosedBox : Set := @ClosedBox.t.
 
-Module Impl_struct_visibility_my_ClosedBox_T.
+Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.
   
   Definition new
@@ -95,7 +95,7 @@ Module Impl_struct_visibility_my_ClosedBox_T.
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
-End Impl_struct_visibility_my_ClosedBox_T.
+End Impl_struct_visibility_my_ClosedBox_T_2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
