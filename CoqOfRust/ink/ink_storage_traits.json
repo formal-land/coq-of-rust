@@ -1,0 +1,6 @@
+{
+  "axiomatize": true,
+  "requires": [
+    "parity_scale_codec"
+  ]
+}

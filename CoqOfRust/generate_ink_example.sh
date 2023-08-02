@@ -9,6 +9,7 @@ time cargo coq-of-rust --axiomatize --configuration-file $CONFIG_FILE
 rm ink_codegen.v ink_ir.v ink_metadata.v
 mv *.v ../CoqOfRust/ink/
 
+echo "Generating integration-tests/erc20"
 cd integration-tests/erc20
 touch lib.rs
 time cargo coq-of-rust --configuration-file $CONFIG_FILE
