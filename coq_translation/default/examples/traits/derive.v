@@ -95,7 +95,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   }.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
-Module Impl_derive_Inches.
+Module Impl_derive_Inches_2.
   Definition Self := derive.Inches.
   
   Definition to_centimeters
@@ -110,7 +110,7 @@ Module Impl_derive_Inches.
     Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
   }.
-End Impl_derive_Inches.
+End Impl_derive_Inches_2.
 
 Module Seconds.
   Unset Primitive Projections.

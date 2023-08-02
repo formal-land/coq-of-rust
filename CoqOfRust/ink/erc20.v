@@ -803,7 +803,7 @@ Module erc20.
     }.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   
-  Module Impl_erc20_erc20_Erc20Ref.
+  Module Impl_erc20_erc20_Erc20Ref_8.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition new
@@ -1109,7 +1109,7 @@ Module erc20.
       Notation.Dot "try_transfer_from" := {
       Notation.dot := try_transfer_from;
     }.
-  End Impl_erc20_erc20_Erc20Ref.
+  End Impl_erc20_erc20_Erc20Ref_8.
   
   Module
     Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
@@ -3653,7 +3653,7 @@ Definition
     ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
   run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
 
-Module Impl_erc20_erc20_Erc20.
+Module Impl_erc20_erc20_Erc20_29.
   Definition Self := erc20.erc20.Erc20.
   
   Definition new
@@ -3868,7 +3868,7 @@ Module Impl_erc20_erc20_Erc20.
     Notation.Dot "transfer_from_to" := {
     Notation.dot := transfer_from_to;
   }.
-End Impl_erc20_erc20_Erc20.
+End Impl_erc20_erc20_Erc20_29.
 
 Module CallBuilder.
   Unset Primitive Projections.
@@ -4345,7 +4345,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
 
-Module Impl_erc20_erc20___CallBuilder.
+Module Impl_erc20_erc20___CallBuilder_18.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition total_supply
@@ -4554,7 +4554,7 @@ Module Impl_erc20_erc20___CallBuilder.
     Notation.Dot "transfer_from" := {
     Notation.dot := transfer_from;
   }.
-End Impl_erc20_erc20___CallBuilder.
+End Impl_erc20_erc20___CallBuilder_18.
 
 Module Erc20Ref.
   Unset Primitive Projections.
@@ -4938,7 +4938,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 
-Module Impl_erc20_erc20_Erc20Ref.
+Module Impl_erc20_erc20_Erc20Ref_26.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition new
@@ -5237,7 +5237,7 @@ Module Impl_erc20_erc20_Erc20Ref.
     Notation.Dot "try_transfer_from" := {
     Notation.dot := try_transfer_from;
   }.
-End Impl_erc20_erc20_Erc20Ref.
+End Impl_erc20_erc20_Erc20Ref_26.
 
 Module
   Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
