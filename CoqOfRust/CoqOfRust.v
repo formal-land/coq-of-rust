@@ -27,8 +27,6 @@ Require Export Coq.Strings.Ascii.
 Require Export Coq.Strings.String.
 Require Export Coq.ZArith.ZArith.
 
-Goal False. Proof. Qed.             (* testing the CI *)
-
 (* Global settings for files importing this file *)
 Global Set Primitive Projections.
 Global Set Printing Projections.
