@@ -312,6 +312,11 @@ Module core.
         forall `{State.Trait} (fmt : mut_ref Formatter) (name : ref str),
           M DebugTuple.
 
+      Global Instance Method_debug_tuple `{State.Trait} :
+        Notation.Dot "debug_tuple_new" := {
+        Notation.dot := debug_tuple_new;
+      }.
+
       (*
       pub fn debug_tuple_field1_finish<'b>(&'b mut self, name: &str, value1: &dyn Debug) -> Result {
           let mut builder = builders::debug_tuple_new(self, name);
@@ -320,17 +325,12 @@ Module core.
       }
       *)
       Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
-        `{core.fmt.Debug.Trait T} (self : mut_ref Self) (x : ref str) (y : T) :
+        `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :
         M core.fmt.Result :=
-        let* dt := debug_tuple_new self x in
+        let* dt := f.["debug_tuple_new"] x in
         let* fld := dt.["field"] y in
         fld.["finish"].
     End ImplFormatter.
-
-      Global Instance Formatter_debug_tuple_field1_finish :
-        Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
-        Notation.double_colon := @ImplFormatter.debug_tuple_field1_finish;
-      }.
 
     Module Octal.
       Class Trait (Self : Set) : Set := {
@@ -1130,6 +1130,10 @@ Module bool_Instances.
   Global Instance IDebug : core.fmt.Debug.Trait bool.
   Admitted.
 End bool_Instances.
+Global Instance Formatter_debug_tuple_field1_finish `{State.Trait} {T : Set} `{core.fmt.Debug.Trait T} :
+  Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
+  Notation.double_colon := core.fmt.ImplFormatter.debug_tuple_field1_finish (T := T);
+}.
 
 Module char_Instances.
   Global Instance IDisplay : core.fmt.Display.Trait char.
