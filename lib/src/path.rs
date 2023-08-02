@@ -41,7 +41,6 @@ impl Path {
 }
 
 fn compile_path_without_env(path: &rustc_hir::Path) -> Path {
-    //eprintln!("++> {:?}\n", path); // TODO: remove
     Path {
         segments: path
             .segments
