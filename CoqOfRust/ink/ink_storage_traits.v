@@ -142,18 +142,18 @@ Module storage.
   Module StorableHint.
     Class Trait
         (Self : Set) {Key : Set}
-        {Type : Set}
-        `{ink_storage_traits.storage.Storable.Trait Type}
+        {Type_ : Set}
+        `{ink_storage_traits.storage.Storable.Trait Type_}
         {PreferredKey : Set}
         `{ink_storage_traits.storage.StorageKey.Trait PreferredKey} :
         Set := {
-      Type := Type;
+      Type_ := Type_;
       PreferredKey := PreferredKey;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
     Global Instance Method_PreferredKey `{H : State.Trait} `(Trait)
       : Notation.DoubleColonType Self "PreferredKey" := {
@@ -164,15 +164,15 @@ Module storage.
   Module AutoStorableHint.
     Class Trait
         (Self : Set) {Key : Set}
-        {Type : Set}
-        `{ink_storage_traits.storage.Storable.Trait Type} :
+        {Type_ : Set}
+        `{ink_storage_traits.storage.Storable.Trait Type_} :
         Set := {
-      Type := Type;
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End AutoStorableHint.
 End storage.
@@ -248,18 +248,18 @@ End StorageKey.
 Module StorableHint.
   Class Trait
       (Self : Set) {Key : Set}
-      {Type : Set}
-      `{ink_storage_traits.storage.Storable.Trait Type}
+      {Type_ : Set}
+      `{ink_storage_traits.storage.Storable.Trait Type_}
       {PreferredKey : Set}
       `{ink_storage_traits.storage.StorageKey.Trait PreferredKey} :
       Set := {
-    Type := Type;
+    Type_ := Type_;
     PreferredKey := PreferredKey;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
   Global Instance Method_PreferredKey `{H : State.Trait} `(Trait)
     : Notation.DoubleColonType Self "PreferredKey" := {
@@ -270,15 +270,15 @@ End StorableHint.
 Module AutoStorableHint.
   Class Trait
       (Self : Set) {Key : Set}
-      {Type : Set}
-      `{ink_storage_traits.storage.Storable.Trait Type} :
+      {Type_ : Set}
+      `{ink_storage_traits.storage.Storable.Trait Type_} :
       Set := {
-    Type := Type;
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End AutoStorableHint.
 
