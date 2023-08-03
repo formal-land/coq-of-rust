@@ -1419,34 +1419,7 @@ Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
   Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
     core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
 
-Module Impl_PartialEq_for_unit.
-  Definition eq `{State.Trait} (x y : unit) : M bool := Pure true.
-  (* because there is only one unit *)
-
-  Global Instance I : core.cmp.PartialEq.Trait unit (Rhs := Some unit) := {
-    eq `{State.Trait} := eq;
-  }.
-End Impl_PartialEq_for_unit.
-
-Module Impl_PartialEq_for_Result.
-  Parameter eq :
-    forall `{State.Trait} {T E : Set}
-      `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E},
-      ref (core.result.Result T E) -> ref (core.result.Result T E) -> M bool.
-
-    Global Instance I
-      {T E : Set} `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E} :
-      core.cmp.PartialEq.Trait (core.result.Result T E) (Rhs := None) := {
-      eq `{State.Trait} := eq (T := T) (E := E);
-    }.
-
-    Global Instance Method_eq `{State.Trait} {T E : Set}
-    `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E} :
-    Notation.Dot "eq" := {|
-    Notation.dot := eq (T := T) (E := E);
-  |}.
-End Impl_PartialEq_for_Result.
-
+(* derived implementation of Debug for Result *)
 Module Impl_Debug_for_Result.
   Section Impl_Debug_for_Result.
     Context {T E : Set}.
