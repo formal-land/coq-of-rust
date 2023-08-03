@@ -40,7 +40,7 @@ Module SomeTrait.
   }.
   Global Instance Method_some_fn `{H : State.Trait} `(Trait)
     : Notation.Dot "some_fn" := {
-    Notation.dot := some_fn;
+    Notation.dot := @some_fn;
   }.
 End SomeTrait.
 

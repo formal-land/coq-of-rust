@@ -2291,6 +2291,7 @@ impl TopLevelItem {
                                         line(),
                                         text(":="),
                                         line(),
+                                        text("@"),
                                         text(name),
                                         text(";"),
                                     ]),

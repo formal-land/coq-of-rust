@@ -24,7 +24,7 @@ Module ConstantTimeEq.
   
   Global Instance Method_ct_eq `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
+    Notation.dot := @ct_eq;
   }.
   Global Instance Method_ct_ne `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_ne" := {
@@ -45,7 +45,7 @@ Module ConditionallySelectable.
   
   Global Instance Method_conditional_select `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_select" := {
-    Notation.dot := conditional_select;
+    Notation.dot := @conditional_select;
   }.
   Global Instance Method_conditional_assign `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_assign" := {
@@ -84,7 +84,7 @@ Module ConditionallyNegatable.
   
   Global Instance Method_conditional_negate `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_negate" := {
-    Notation.dot := conditional_negate;
+    Notation.dot := @conditional_negate;
   }.
 End ConditionallyNegatable.
 
@@ -118,7 +118,7 @@ Module ConstantTimeGreater.
   
   Global Instance Method_ct_gt `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_gt" := {
-    Notation.dot := ct_gt;
+    Notation.dot := @ct_gt;
   }.
 End ConstantTimeGreater.
 
