@@ -775,7 +775,7 @@ Module erc20.
       let
           _ :
           core.cmp.AssertParamIsEq
-            ink.codegen.dispatch.info.ContractCallBuilder.Type :=
+            ink.codegen.dispatch.info.ContractCallBuilder.Type_ :=
         tt in
       Pure tt.
     
@@ -4751,7 +4751,7 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
     let
         _ :
         core.cmp.AssertParamIsEq
-          ink.codegen.dispatch.info.ContractCallBuilder.Type :=
+          ink.codegen.dispatch.info.ContractCallBuilder.Type_ :=
       tt in
     Pure tt.
   
