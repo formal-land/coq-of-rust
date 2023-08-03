@@ -30,15 +30,15 @@ Module Contains.
   
   Global Instance Method_contains `{H : State.Trait} `(Trait)
     : Notation.Dot "contains" := {
-    Notation.dot := contains;
+    Notation.dot := @contains;
   }.
   Global Instance Method_first `{H : State.Trait} `(Trait)
     : Notation.Dot "first" := {
-    Notation.dot := first;
+    Notation.dot := @first;
   }.
   Global Instance Method_last `{H : State.Trait} `(Trait)
     : Notation.Dot "last" := {
-    Notation.dot := last;
+    Notation.dot := @last;
   }.
 End Contains.
 
