@@ -1414,7 +1414,11 @@ Definition format_arguments : Set := core.fmt.Arguments.
 
 Definition Slice := lib.slice.
 
-(* this is a specialized instance to make try_from_and_into.v work *)
+(* This is a specialized instance to make try_from_and_into.v work.
+ * It is necessary because Coq has a problem with inferring the correct value of
+ * the parameter T of core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish
+ * and in result does not use this instance at all.
+ *)
 Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
   Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
     core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
