@@ -330,6 +330,12 @@ Module core.
         let* dt := f.["debug_tuple_new"] x in
         let* fld := dt.["field"] y in
         fld.["finish"].
+
+      Global Instance Formatter_debug_tuple_field1_finish `{State.Trait}
+        {T : Set} `{core.fmt.Debug.Trait T} :
+        Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
+        Notation.double_colon := debug_tuple_field1_finish (T := T);
+      }.
     End ImplFormatter.
 
     Module Octal.
@@ -1130,10 +1136,6 @@ Module bool_Instances.
   Global Instance IDebug : core.fmt.Debug.Trait bool.
   Admitted.
 End bool_Instances.
-Global Instance Formatter_debug_tuple_field1_finish `{State.Trait} {T : Set} `{core.fmt.Debug.Trait T} :
-  Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
-  Notation.double_colon := core.fmt.ImplFormatter.debug_tuple_field1_finish (T := T);
-}.
 
 Module char_Instances.
   Global Instance IDisplay : core.fmt.Display.Trait char.
@@ -1447,6 +1449,11 @@ Module Impl_PartialEq_for_unit.
     eq `{State.Trait} := eq;
   }.
 End Impl_PartialEq_for_unit.
+
+(* this is a specialized instance to make try_from_and_into.v work *)
+Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
+  Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
+    core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
 
 (* TODO: define the instance *)
 Module Impl_PartialEq_for_Result.
