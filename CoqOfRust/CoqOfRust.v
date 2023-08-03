@@ -53,32 +53,6 @@ Notation "e (||)" :=
   (at level 0,
     only parsing).
 
-(*
-Module Notation.
-  (** A class to represent the notation [e1.e2]. This is mainly used to call
-      methods, or access to named or indexed fields of structures.
-      The kind is either a string or an integer. *)
-  Class Dot {Kind : Set} (name : Kind) {T : Set} : Set := {
-    dot : T;
-  }.
-  Arguments dot {Kind} name {T Dot}.
-
-  (** A class to represent associated functions (the notation [e1::e2]). The
-      kind might be [Set] functions associated to a type, or [Set -> Set] for
-      functions associated to a trait. *)
-  Class DoubleColon {Kind : Type} (type : Kind) (name : string) {T : Set} :
-    Set := {
-    double_colon : T;
-  }.
-  Arguments double_colon {Kind} type name {T DoubleColon}.
-
-  (* A class to represent types in a trait. *)
-  Class DoubleColonType {Kind : Type} (type : Kind) (name : string) : Type := {
-    double_colon_type : Set;
-  }.
-  Arguments double_colon_type {Kind} type name {DoubleColonType}.
-End Notation.
-*)
 Require CoqOfRust.lib.lib.
 Module Notation := CoqOfRust.lib.lib.Notation.
 
@@ -1440,29 +1414,33 @@ Definition format_arguments : Set := core.fmt.Arguments.
 
 Definition Slice := lib.slice.
 
-Module Impl_PartialEq_for_unit.
-  Definition eq `{State.Trait} (x y : unit) : M bool := Pure true.
-  (* because there is only one unit *)
-
-  Global Instance I_Eq_unit :
-    core.cmp.PartialEq.Trait unit (Rhs := Some unit) := {
-    eq `{State.Trait} := eq;
-  }.
-End Impl_PartialEq_for_unit.
-
 (* this is a specialized instance to make try_from_and_into.v work *)
 Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
   Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
     core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
 
-(* TODO: define the instance *)
+Module Impl_PartialEq_for_unit.
+  Definition eq `{State.Trait} (x y : unit) : M bool := Pure true.
+  (* because there is only one unit *)
+
+  Global Instance I : core.cmp.PartialEq.Trait unit (Rhs := Some unit) := {
+    eq `{State.Trait} := eq;
+  }.
+End Impl_PartialEq_for_unit.
+
 Module Impl_PartialEq_for_Result.
   Parameter eq :
     forall `{State.Trait} {T E : Set}
       `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E},
       ref (core.result.Result T E) -> ref (core.result.Result T E) -> M bool.
 
-  Global Instance Method_eq `{State.Trait} {T E : Set}
+    Global Instance I
+      {T E : Set} `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E} :
+      core.cmp.PartialEq.Trait (core.result.Result T E) (Rhs := None) := {
+      eq `{State.Trait} := eq (T := T) (E := E);
+    }.
+
+    Global Instance Method_eq `{State.Trait} {T E : Set}
     `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E} :
     Notation.Dot "eq" := {|
     Notation.dot := eq (T := T) (E := E);
