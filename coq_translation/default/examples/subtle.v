@@ -62,7 +62,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   }.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
-Module Impl_subtle_Choice.
+Module Impl_subtle_Choice_4.
   Definition Self := subtle.Choice.
   
   Definition unwrap_u8 `{H : State.Trait} (self : ref Self) : M (H := H) u8 :=
@@ -72,7 +72,7 @@ Module Impl_subtle_Choice.
     Notation.Dot "unwrap_u8" := {
     Notation.dot := unwrap_u8;
   }.
-End Impl_subtle_Choice.
+End Impl_subtle_Choice_4.
 
 Module Impl_core_convert_From_for_bool.
   Definition Self := bool.
@@ -1516,7 +1516,7 @@ Section Impl_core_convert_From_for_core_option_Option_T.
 End Impl_core_convert_From_for_core_option_Option_T.
 End Impl_core_convert_From_for_core_option_Option_T.
 
-Module Impl_subtle_CtOption_T.
+Module Impl_subtle_CtOption_T_4.
   Definition Self := subtle.CtOption T.
   
   Definition new
@@ -1717,7 +1717,7 @@ Module Impl_subtle_CtOption_T.
     Notation.Dot "or_else" := {
     Notation.dot := or_else;
   }.
-End Impl_subtle_CtOption_T.
+End Impl_subtle_CtOption_T_4.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.

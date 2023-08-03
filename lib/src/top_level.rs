@@ -1,3 +1,4 @@
+use crate::configuration::*;
 use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
@@ -11,12 +12,24 @@ use rustc_hir::{
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
+use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::iter::repeat;
 use std::string::ToString;
 
 pub(crate) struct TopLevelOptions {
-    pub axiomatize: bool,
+    pub(crate) configuration_file: String,
+    pub(crate) filename: String,
+    pub(crate) axiomatize: bool,
+    pub(crate) generate_reorder: bool,
+}
+
+/// Trait for getting a name of an AST node. Used
+/// for ordering the nodes based on a list of names
+trait ToName {
+    /// We return [String] instead of [&String] because
+    /// some AST nodes need their names to be constructed.
+    fn to_name(&self) -> String;
 }
 
 #[derive(Debug)]
@@ -139,6 +152,37 @@ enum TopLevelItem {
     Error(String),
 }
 
+impl ToName for TopLevelItem {
+    fn to_name(&self) -> String {
+        match self {
+            TopLevelItem::Definition { name, .. } => name.clone(),
+            TopLevelItem::Const { name, .. } => name.clone(),
+            TopLevelItem::TypeAlias { name, .. } => name.clone(),
+            TopLevelItem::TypeEnum { name, .. } => name.clone(),
+            TopLevelItem::TypeStructStruct { name, .. } => name.clone(),
+            TopLevelItem::TypeStructTuple { name, .. } => name.clone(),
+            TopLevelItem::TypeStructUnit { name, .. } => name.clone(),
+            TopLevelItem::Module { name, .. } => name.clone(),
+            TopLevelItem::Impl {
+                self_ty, counter, ..
+            } => format!(
+                "Impl_{}{}",
+                self_ty.to_name(),
+                if *counter != 1 {
+                    format!("_{counter}")
+                } else {
+                    "".to_string()
+                }
+            ),
+            TopLevelItem::Trait { name, .. } => name.to_string(),
+            TopLevelItem::TraitImpl {
+                of_trait, self_ty, ..
+            } => format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name()),
+            TopLevelItem::Error(msg) => msg.clone(),
+        }
+    }
+}
+
 /// The actual value of the type parameter of the trait implementation
 #[derive(Clone, Debug)]
 enum TraitImplTyParam {
@@ -148,6 +192,12 @@ enum TraitImplTyParam {
     ValWithDef { name: String, ty: Box<CoqType> },
     /// means the default value of the type parameter is used
     JustDefault { name: String },
+}
+
+impl ToName for (String, ImplItem) {
+    fn to_name(&self) -> String {
+        self.0.clone()
+    }
 }
 
 #[derive(Debug)]
@@ -270,7 +320,7 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
-    let name = item.ident.name.to_string();
+    let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize {
         let def_id = item.owner_id.to_def_id();
         let is_public = tcx.visibility(def_id).is_public();
@@ -318,7 +368,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     .iter()
                     .filter_map(|param| match param.kind {
                         rustc_hir::GenericParamKind::Type { .. } => {
-                            Some(param.name.ident().to_string())
+                            Some(to_valid_coq_name(param.name.ident().to_string()))
                         }
                         _ => None,
                     })
@@ -360,7 +410,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let items: Vec<_> = module
+            env.push_context(&name);
+            let mut items = module
                 .item_ids
                 .iter()
                 .flat_map(|item_id| {
@@ -368,6 +419,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     compile_top_level_item(tcx, env, item)
                 })
                 .collect();
+            reorder_definitions_inplace(env, &mut items);
+            env.pop_context();
             // We remove empty modules in the translation
             if items.is_empty() {
                 return vec![];
@@ -488,7 +541,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 None
                             }
                         };
-                        let name = param.name.ident().to_string();
+                        let name = to_valid_coq_name(param.name.ident().to_string());
                         (name, default)
                     })
                     .collect(),
@@ -502,7 +555,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                             .iter()
                             .filter_map(|param| match param.kind {
                                 rustc_hir::GenericParamKind::Type { .. } => {
-                                    Some(param.name.ident().to_string())
+                                    Some(to_valid_coq_name(param.name.ident().to_string()))
                                 }
                                 _ => None,
                             })
@@ -588,7 +641,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 TraitItem::Type(generic_bounds)
                             }
                         };
-                        (item.ident.name.to_string(), body)
+                        (to_valid_coq_name(item.ident.name.to_string()), body)
                     })
                     .collect(),
             }]
@@ -610,7 +663,20 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 .filter(|param| matches!(param.kind, rustc_hir::GenericParamKind::Type { .. }))
                 .map(|param| param.name.ident().to_string())
                 .collect();
-            let items = items
+            let self_ty = compile_type(env, self_ty);
+            let entry = env.impl_counter.entry(*self_ty.clone());
+            let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
+            let impl_name = format!(
+                "Impl_{}{}",
+                self_ty.to_name(),
+                if counter != 1 {
+                    format!("_{counter}")
+                } else {
+                    "".to_string()
+                }
+            );
+            env.push_context(&impl_name);
+            let mut items = items
                 .iter()
                 .map(|item| {
                     let is_method = match item.kind {
@@ -709,7 +775,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     (item.ident.name.to_string(), value)
                 })
                 .collect();
-            let self_ty = compile_type(env, self_ty);
+            reorder_definitions_inplace(env, &mut items);
+            env.pop_context();
             match of_trait {
                 Some(trait_ref) => {
                     let trait_non_default_items = tcx
@@ -767,9 +834,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     }]
                 }
                 None => {
-                    let entry = env.impl_counter.entry(*self_ty.clone());
-                    let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
-
                     vec![TopLevelItem::Impl {
                         self_ty,
                         counter,
@@ -781,27 +845,72 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
+#[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
+fn reorder_definitions_inplace(env: &mut Env, definitions: &mut Vec<impl ToName>) {
+    let context = &env.context;
+
+    // The context here is the path of the file name with / so we need
+    // to escape it
+    let order = config_get_reorder(env);
+    definitions.sort_by(|a, b| {
+        let a_name = a.to_name();
+        let b_name = b.to_name();
+        let a_position = order.iter().position(|elm| *elm == a_name);
+        if a_position.is_none() {
+            return Ordering::Equal;
+        }
+
+        let b_position = order.iter().position(|elm| *elm == b_name);
+        if b_position.is_none() {
+            return Ordering::Equal;
+        };
+
+        a_position.cmp(&b_position)
+    });
+
+    let identifiers: Vec<String> = definitions.iter().map(ToName::to_name).collect();
+    env.reorder_map.insert(context.to_string(), identifiers);
+}
+
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
     let mut env = Env {
         impl_counter: HashMap::new(),
         tcx: *tcx,
         axiomatize: opts.axiomatize,
+        file: opts.filename,
+        context: "top_level".to_string(),
+        reorder_map: HashMap::new(),
+        configuration: get_configuration(&opts.configuration_file),
     };
 
-    TopLevel(
-        tcx.hir()
-            .items()
-            .flat_map(|item_id| {
-                let item = tcx.hir().item(item_id);
-                compile_top_level_item(tcx, &mut env, item)
-            })
-            .collect(),
-    )
+    let mut results: Vec<TopLevelItem> = tcx
+        .hir()
+        .items()
+        .flat_map(|item_id| {
+            let item = tcx.hir().item(item_id);
+            compile_top_level_item(tcx, &mut env, item)
+        })
+        .collect();
+
+    reorder_definitions_inplace(&mut env, &mut results);
+    if opts.generate_reorder {
+        let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});
+        println!("{}", serde_json::to_string_pretty(&json).expect("json"));
+    }
+    TopLevel(results)
 }
 
 const LINE_WIDTH: usize = 80;
 
 pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
+    let configuration = get_configuration(&opts.configuration_file);
+    let opts = TopLevelOptions {
+        // @TODO create a function to read configuration file and
+        // merge command line options and return a single Configuration
+        // object instead of using TopLevelOptions + Configuration
+        axiomatize: opts.axiomatize || configuration.axiomatize,
+        ..opts
+    };
     let top_level = compile_top_level(tcx, opts);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH)

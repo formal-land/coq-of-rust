@@ -31,9 +31,9 @@ Module erc20.
   Module Erc20.
     Unset Primitive Projections.
     Record t : Set := {
-      total_supply : ink_storage_traits.storage.AutoStorableHint.Type;
-      balances : ink_storage_traits.storage.AutoStorableHint.Type;
-      allowances : ink_storage_traits.storage.AutoStorableHint.Type;
+      total_supply : ink_storage_traits.storage.AutoStorableHint.Type_;
+      balances : ink_storage_traits.storage.AutoStorableHint.Type_;
+      allowances : ink_storage_traits.storage.AutoStorableHint.Type_;
     }.
     Global Set Primitive Projections.
     
@@ -670,7 +670,7 @@ Module erc20.
   Module Erc20Ref.
     Unset Primitive Projections.
     Record t : Set := {
-      inner : ink.codegen.dispatch.info.ContractCallBuilder.Type;
+      inner : ink.codegen.dispatch.info.ContractCallBuilder.Type_;
     }.
     Global Set Primitive Projections.
     
@@ -684,7 +684,7 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-      string -> ink_codegen_dispatch_info_ContractCallBuilder_Type -> 
+      string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> 
       M (H := H) core.fmt.Result.
     
     Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
@@ -807,7 +807,7 @@ Module erc20.
     }.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   
-  Module Impl_erc20_erc20_Erc20Ref.
+  Module Impl_erc20_erc20_Erc20Ref_8.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Definition new
@@ -1113,7 +1113,7 @@ Module erc20.
       Notation.Dot "try_transfer_from" := {
       Notation.dot := try_transfer_from;
     }.
-  End Impl_erc20_erc20_Erc20Ref.
+  End Impl_erc20_erc20_Erc20Ref_8.
   
   Module
     Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
@@ -1358,9 +1358,9 @@ Definition Check : Set := @Check.t.
 Module Erc20.
   Unset Primitive Projections.
   Record t : Set := {
-    total_supply : ink_storage_traits.storage.AutoStorableHint.Type;
-    balances : ink_storage_traits.storage.AutoStorableHint.Type;
-    allowances : ink_storage_traits.storage.AutoStorableHint.Type;
+    total_supply : ink_storage_traits.storage.AutoStorableHint.Type_;
+    balances : ink_storage_traits.storage.AutoStorableHint.Type_;
+    allowances : ink_storage_traits.storage.AutoStorableHint.Type_;
   }.
   Global Set Primitive Projections.
   
@@ -1501,8 +1501,8 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type_ :=
+    let* α0 := scale_info.ty.Type_::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
     let* α3 := alloc.vec.Vec::["new"] in
@@ -1669,7 +1669,7 @@ Module
   Definition emit_event
       `{H : State.Trait}
       {E : Set}
-      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
       (self : Self)
       (event : E)
       : M (H := H) unit :=
@@ -3652,7 +3652,7 @@ Definition
     ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
   run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
 
-Module Impl_erc20_erc20_Erc20.
+Module Impl_erc20_erc20_Erc20_29.
   Definition Self := erc20.erc20.Erc20.
   
   Definition new
@@ -3867,7 +3867,7 @@ Module Impl_erc20_erc20_Erc20.
     Notation.Dot "transfer_from_to" := {
     Notation.dot := transfer_from_to;
   }.
-End Impl_erc20_erc20_Erc20.
+End Impl_erc20_erc20_Erc20_29.
 
 Module CallBuilder.
   Unset Primitive Projections.
@@ -4178,8 +4178,8 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type_ :=
+    let* α0 := scale_info.ty.Type_::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
     let* α3 := alloc.vec.Vec::["new"] in
@@ -4344,7 +4344,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
   }.
 End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
 
-Module Impl_erc20_erc20___CallBuilder.
+Module Impl_erc20_erc20___CallBuilder_18.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition total_supply
@@ -4553,12 +4553,12 @@ Module Impl_erc20_erc20___CallBuilder.
     Notation.Dot "transfer_from" := {
     Notation.dot := transfer_from;
   }.
-End Impl_erc20_erc20___CallBuilder.
+End Impl_erc20_erc20___CallBuilder_18.
 
 Module Erc20Ref.
   Unset Primitive Projections.
   Record t : Set := {
-    inner : ink.codegen.dispatch.info.ContractCallBuilder.Type;
+    inner : ink.codegen.dispatch.info.ContractCallBuilder.Type_;
   }.
   Global Set Primitive Projections.
   
@@ -4572,7 +4572,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-    string -> ink_codegen_dispatch_info_ContractCallBuilder_Type -> 
+    string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> 
     M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
@@ -4788,8 +4788,8 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type_ :=
+    let* α0 := scale_info.ty.Type_::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
     let* α3 := alloc.vec.Vec::["new"] in
@@ -4941,7 +4941,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   }.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 
-Module Impl_erc20_erc20_Erc20Ref_2.
+Module Impl_erc20_erc20_Erc20Ref_26.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition new
@@ -5240,14 +5240,14 @@ Module Impl_erc20_erc20_Erc20Ref_2.
     Notation.Dot "try_transfer_from" := {
     Notation.dot := try_transfer_from;
   }.
-End Impl_erc20_erc20_Erc20Ref_2.
+End Impl_erc20_erc20_Erc20Ref_26.
 
 Module
   Impl_ink_codegen_trait_def_call_builder_TraitCallBuilder_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition Builder : Set :=
-    ink.codegen.dispatch.info.ContractCallBuilder.Type.
+    ink.codegen.dispatch.info.ContractCallBuilder.Type_.
   
   Definition call
       `{H : State.Trait}
@@ -5779,8 +5779,8 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type :=
-    let* α0 := scale_info.ty.Type::["builder"] in
+  Definition type_info `{H : State.Trait} : M (H := H) scale_info.ty.Type_ :=
+    let* α0 := scale_info.ty.Type_::["builder"] in
     let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
     let* α3 := alloc.vec.Vec::["new"] in

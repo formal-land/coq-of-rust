@@ -6,6 +6,12 @@ pub struct CoqOfRustArgs {
     /// Axiomatize the definitions
     #[arg(long)]
     axiomatize: bool,
+    /// Path to a configuration file
+    #[arg(long, default_value = "coq-of-rust-config.json")]
+    configuration_file: String,
+    /// Generate the reoder section of configuration file in the stdout
+    #[arg(long)]
+    generate_reorder: bool,
 }
 
 #[derive(Parser)]
@@ -20,6 +26,8 @@ pub struct Args {
 pub struct Options {
     pub(crate) in_cargo: bool,
     pub(crate) axiomatize: bool,
+    pub(crate) configuration_file: String,
+    pub(crate) generate_reorder: bool,
 }
 
 impl Options {
@@ -29,6 +37,8 @@ impl Options {
         Options {
             in_cargo: cargo_coq_of_rust,
             axiomatize: coq_of_rust.axiomatize,
+            configuration_file: coq_of_rust.configuration_file,
+            generate_reorder: coq_of_rust.generate_reorder,
         }
     }
 }

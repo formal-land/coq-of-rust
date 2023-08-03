@@ -482,7 +482,7 @@ Module api.
       {H : Set},
       `{ink_env.hash.CryptoHash.Trait H}
       ref (Slice u8) ->
-      mut_ref ink_env.hash.HashOutput.Type ->
+      mut_ref ink_env.hash.HashOutput.Type_ ->
       M (H := H) unit.
   
   Parameter hash_encoded : forall `{H : State.Trait},
@@ -491,7 +491,7 @@ Module api.
       `{ink_env.hash.CryptoHash.Trait H}
       `{parity_scale_codec.codec.Encode.Trait T}
       ref T ->
-      mut_ref ink_env.hash.HashOutput.Type ->
+      mut_ref ink_env.hash.HashOutput.Type_ ->
       M (H := H) unit.
   
   Parameter ecdsa_recover : forall `{H : State.Trait},
@@ -732,7 +732,7 @@ Parameter hash_bytes : forall `{H : State.Trait},
     {H : Set},
     `{ink_env.hash.CryptoHash.Trait H}
     ref (Slice u8) ->
-    mut_ref ink_env.hash.HashOutput.Type ->
+    mut_ref ink_env.hash.HashOutput.Type_ ->
     M (H := H) unit.
 
 Parameter hash_encoded : forall `{H : State.Trait},
@@ -741,7 +741,7 @@ Parameter hash_encoded : forall `{H : State.Trait},
     `{ink_env.hash.CryptoHash.Trait H}
     `{parity_scale_codec.codec.Encode.Trait T}
     ref T ->
-    mut_ref ink_env.hash.HashOutput.Type ->
+    mut_ref ink_env.hash.HashOutput.Type_ ->
     M (H := H) unit.
 
 Parameter ecdsa_recover : forall `{H : State.Trait},
@@ -1003,7 +1003,7 @@ Module backend.
         :
         (mut_ref Self) ->
         (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type) ->
+        (mut_ref ink_env.hash.HashOutput.Type_) ->
         (M (H := H) unit);
       hash_encoded
         `{H : State.Trait}
@@ -1013,7 +1013,7 @@ Module backend.
         :
         (mut_ref Self) ->
         (ref T) ->
-        (mut_ref ink_env.hash.HashOutput.Type) ->
+        (mut_ref ink_env.hash.HashOutput.Type_) ->
         (M (H := H) unit);
       ecdsa_recover
         `{H : State.Trait}
@@ -1467,7 +1467,7 @@ Module EnvBackend.
       :
       (mut_ref Self) ->
       (ref (Slice u8)) ->
-      (mut_ref ink_env.hash.HashOutput.Type) ->
+      (mut_ref ink_env.hash.HashOutput.Type_) ->
       (M (H := H) unit);
     hash_encoded
       `{H : State.Trait}
@@ -1477,7 +1477,7 @@ Module EnvBackend.
       :
       (mut_ref Self) ->
       (ref T) ->
-      (mut_ref ink_env.hash.HashOutput.Type) ->
+      (mut_ref ink_env.hash.HashOutput.Type_) ->
       (M (H := H) unit);
     ecdsa_recover
       `{H : State.Trait}
@@ -3357,13 +3357,13 @@ Module contract.
   End ContractEnv.
   
   Module ContractReference.
-    Class Trait (Self : Set) {Type : Set} : Set := {
-      Type := Type;
+    Class Trait (Self : Set) {Type_ : Set} : Set := {
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractReference.
 End contract.
@@ -3384,13 +3384,13 @@ Module ContractEnv.
 End ContractEnv.
 
 Module ContractReference.
-  Class Trait (Self : Set) {Type : Set} : Set := {
-    Type := Type;
+  Class Trait (Self : Set) {Type_ : Set} : Set := {
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractReference.
 
@@ -4497,15 +4497,15 @@ Module hash.
   Module HashOutput.
     Class Trait
         (Self : Set)
-        {Type : Set}
-        `{core.default.Default.Trait Type} :
+        {Type_ : Set}
+        `{core.default.Default.Trait Type_} :
         Set := {
-      Type := Type;
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End HashOutput.
   
@@ -4515,7 +4515,7 @@ Module hash.
         `{H : State.Trait}
         :
         (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type) ->
+        (mut_ref ink_env.hash.HashOutput.Type_) ->
         (M (H := H) unit);
     }.
     
@@ -4562,15 +4562,15 @@ End hash.
 Module HashOutput.
   Class Trait
       (Self : Set)
-      {Type : Set}
-      `{core.default.Default.Trait Type} :
+      {Type_ : Set}
+      `{core.default.Default.Trait Type_} :
       Set := {
-    Type := Type;
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End HashOutput.
 
@@ -4580,7 +4580,7 @@ Module CryptoHash.
       `{H : State.Trait}
       :
       (ref (Slice u8)) ->
-      (mut_ref ink_env.hash.HashOutput.Type) ->
+      (mut_ref ink_env.hash.HashOutput.Type_) ->
       (M (H := H) unit);
   }.
   

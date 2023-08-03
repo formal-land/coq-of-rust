@@ -122,13 +122,13 @@ Module codegen.
     
     Module info.
       Module ContractCallBuilder.
-        Class Trait (Self : Set) {Type : Set} : Set := {
-          Type := Type;
+        Class Trait (Self : Set) {Type_ : Set} : Set := {
+          Type_ := Type_;
         }.
         
-        Global Instance Method_Type `{H : State.Trait} `(Trait)
-          : Notation.DoubleColonType Self "Type" := {
-          Notation.double_colon_type := Type;
+        Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+          : Notation.DoubleColonType Self "Type_" := {
+          Notation.double_colon_type := Type_;
         }.
       End ContractCallBuilder.
     End info.
@@ -210,7 +210,7 @@ Module codegen.
             `{H : State.Trait}
             {E: Set}
             `{core.convert.Into.Trait
-              ink.reflect.event.ContractEventBase.Type
+              ink.reflect.event.ContractEventBase.Type_
               E}
             :
             Self -> E -> (M (H := H) unit);
@@ -426,13 +426,13 @@ Module dispatch.
   
   Module info.
     Module ContractCallBuilder.
-      Class Trait (Self : Set) {Type : Set} : Set := {
-        Type := Type;
+      Class Trait (Self : Set) {Type_ : Set} : Set := {
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractCallBuilder.
   End info.
@@ -488,25 +488,25 @@ Parameter deny_payment : forall `{H : State.Trait},
 
 Module info.
   Module ContractCallBuilder.
-    Class Trait (Self : Set) {Type : Set} : Set := {
-      Type := Type;
+    Class Trait (Self : Set) {Type_ : Set} : Set := {
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractCallBuilder.
 End info.
 
 Module ContractCallBuilder.
-  Class Trait (Self : Set) {Type : Set} : Set := {
-    Type := Type;
+  Class Trait (Self : Set) {Type_ : Set} : Set := {
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractCallBuilder.
 
@@ -649,7 +649,7 @@ Module event.
         emit_event
           `{H : State.Trait}
           {E: Set}
-          `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+          `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
           :
           Self -> E -> (M (H := H) unit);
       }.
@@ -709,7 +709,7 @@ Module emit.
       emit_event
         `{H : State.Trait}
         {E: Set}
-        `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+        `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
         :
         Self -> E -> (M (H := H) unit);
     }.
@@ -726,7 +726,7 @@ Module EmitEvent.
     emit_event
       `{H : State.Trait}
       {E: Set}
-      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
       :
       Self -> E -> (M (H := H) unit);
   }.
@@ -1410,32 +1410,32 @@ Module reflect.
     Module ContractMessageDecoder.
       Class Trait
           (Self : Set)
-          {Type : Set}
-          `{parity_scale_codec.codec.Decode.Trait Type}
-          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+          {Type_ : Set}
+          `{parity_scale_codec.codec.Decode.Trait Type_}
+          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
           Set := {
-        Type := Type;
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractMessageDecoder.
     
     Module ContractConstructorDecoder.
       Class Trait
           (Self : Set)
-          {Type : Set}
-          `{ink.reflect.dispatch.DecodeDispatch.Trait Type}
-          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+          {Type_ : Set}
+          `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
+          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
           Set := {
-        Type := Type;
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractConstructorDecoder.
     
@@ -1486,13 +1486,13 @@ Module reflect.
   
   Module event.
     Module ContractEventBase.
-      Class Trait (Self : Set) {Type : Set} : Set := {
-        Type := Type;
+      Class Trait (Self : Set) {Type_ : Set} : Set := {
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractEventBase.
   End event.
@@ -1751,32 +1751,32 @@ Module dispatch.
   Module ContractMessageDecoder.
     Class Trait
         (Self : Set)
-        {Type : Set}
-        `{parity_scale_codec.codec.Decode.Trait Type}
-        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+        {Type_ : Set}
+        `{parity_scale_codec.codec.Decode.Trait Type_}
+        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
         Set := {
-      Type := Type;
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractMessageDecoder.
   
   Module ContractConstructorDecoder.
     Class Trait
         (Self : Set)
-        {Type : Set}
-        `{ink.reflect.dispatch.DecodeDispatch.Trait Type}
-        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+        {Type_ : Set}
+        `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
+        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
         Set := {
-      Type := Type;
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractConstructorDecoder.
   
@@ -2001,32 +2001,32 @@ Definition ConstructorOutputValue := @ConstructorOutputValue.t.
 Module ContractMessageDecoder.
   Class Trait
       (Self : Set)
-      {Type : Set}
-      `{parity_scale_codec.codec.Decode.Trait Type}
-      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+      {Type_ : Set}
+      `{parity_scale_codec.codec.Decode.Trait Type_}
+      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
       Set := {
-    Type := Type;
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractMessageDecoder.
 
 Module ContractConstructorDecoder.
   Class Trait
       (Self : Set)
-      {Type : Set}
-      `{ink.reflect.dispatch.DecodeDispatch.Trait Type}
-      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+      {Type_ : Set}
+      `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
+      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
       Set := {
-    Type := Type;
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractConstructorDecoder.
 
@@ -2074,25 +2074,25 @@ End DecodeDispatch.
 
 Module event.
   Module ContractEventBase.
-    Class Trait (Self : Set) {Type : Set} : Set := {
-      Type := Type;
+    Class Trait (Self : Set) {Type_ : Set} : Set := {
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractEventBase.
 End event.
 
 Module ContractEventBase.
-  Class Trait (Self : Set) {Type : Set} : Set := {
-    Type := Type;
+  Class Trait (Self : Set) {Type_ : Set} : Set := {
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractEventBase.
 
