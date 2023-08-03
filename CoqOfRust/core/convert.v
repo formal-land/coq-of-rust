@@ -99,7 +99,7 @@ Module TryFrom.
     try_from `{State.Trait} : T -> M (Result Self Error);
   }.
 
-  Local Instance AssociatedFunction_try_from {Self : Set} `{Trait Self} :
+  Global Instance AssociatedFunction_try_from {Self : Set} `{Trait Self} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon `{State.Trait} := try_from;
   }.
@@ -119,7 +119,7 @@ Module TryInto.
     try_into `{State.Trait} : Self -> M (Result T Error);
   }.
 
-  Local Instance Method_try_into {Self : Set} `{Trait Self} :
+  Global Instance Method_try_into {Self : Set} `{Trait Self} :
     Notation.Dot "try_into" := {
     Notation.dot `{State.Trait} := try_into;
   }.
