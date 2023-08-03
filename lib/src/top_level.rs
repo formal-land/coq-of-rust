@@ -320,7 +320,7 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
-    let name = item.ident.name.to_string();
+    let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize {
         let def_id = item.owner_id.to_def_id();
         let is_public = tcx.visibility(def_id).is_public();
@@ -368,7 +368,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     .iter()
                     .filter_map(|param| match param.kind {
                         rustc_hir::GenericParamKind::Type { .. } => {
-                            Some(param.name.ident().to_string())
+                            Some(to_valid_coq_name(param.name.ident().to_string()))
                         }
                         _ => None,
                     })
@@ -541,7 +541,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 None
                             }
                         };
-                        let name = param.name.ident().to_string();
+                        let name = to_valid_coq_name(param.name.ident().to_string());
                         (name, default)
                     })
                     .collect(),
@@ -555,7 +555,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                             .iter()
                             .filter_map(|param| match param.kind {
                                 rustc_hir::GenericParamKind::Type { .. } => {
-                                    Some(param.name.ident().to_string())
+                                    Some(to_valid_coq_name(param.name.ident().to_string()))
                                 }
                                 _ => None,
                             })
@@ -641,7 +641,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 TraitItem::Type(generic_bounds)
                             }
                         };
-                        (item.ident.name.to_string(), body)
+                        (to_valid_coq_name(item.ident.name.to_string()), body)
                     })
                     .collect(),
             }]
