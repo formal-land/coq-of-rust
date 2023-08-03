@@ -40,6 +40,40 @@ Module DebugTuple.
 End DebugTuple.
 Definition DebugTuple := DebugTuple.t.
 
+Module Display.
+  Class Trait (Self : Set) : Set := {
+    fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+  }.
+End Display.
+
+Module Debug.
+  Class Trait (Self : Set) : Set := {
+    fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+  }.
+End Debug.
+
+Module ImplDebugTuple.
+  Definition Self := DebugTuple.
+
+  (** field(&mut self, value: &dyn Debug) -> &mut DebugTuple<'a, 'b> *)
+  Parameter field :
+    forall `{State.Trait} {T : Set} `{Debug.Trait T},
+      mut_ref Self -> ref T -> M (mut_ref DebugTuple).
+
+  Global Instance Method_field `{State.Trait} {T : Set} `{Debug.Trait T} :
+    Notation.Dot "field" := {
+    Notation.dot := field;
+  }.
+
+  (** finish(&mut self) -> Result<(), Error> *)
+  Parameter finish : forall `{State.Trait}, mut_ref Self -> M Result.
+
+  Global Instance Method_finish `{State.Trait} :
+    Notation.Dot "finish" := {
+    Notation.dot := finish;
+  }.
+End ImplDebugTuple.
+
 Module ImplFormatter.
   Parameter new : forall `{State.Trait} {W : Set} `{Write.Trait W},
     mut_ref W -> M Formatter.
@@ -75,30 +109,17 @@ Module ImplFormatter.
     }
   *)
   Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
-    `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :
-    M core.fmt.Result :=
+    `{Debug.Trait T} (f : Formatter) (x : ref str) (y : T) : M Result :=
     let* dt := f.["debug_tuple_new"] x in
     let* fld := dt.["field"] y in
     fld.["finish"].
 
   Global Instance Formatter_debug_tuple_field1_finish `{State.Trait}
-    {T : Set} `{core.fmt.Debug.Trait T} :
-    Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
+    {T : Set} `{Debug.Trait T} :
+    Notation.DoubleColon Formatter "debug_tuple_field1_finish" := {
     Notation.double_colon := debug_tuple_field1_finish (T := T);
   }.
 End ImplFormatter.
-
-Module Display.
-  Class Trait (Self : Set) : Set := {
-    fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-  }.
-End Display.
-
-Module Debug.
-  Class Trait (Self : Set) : Set := {
-    fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-  }.
-End Debug.
 
 Module Octal.
   Class Trait (Self : Set) : Set := {
