@@ -136,7 +136,7 @@ pub(crate) enum Stmt {
     Let {
         is_monadic: bool,
         pattern: Box<Pattern>,
-        /// optional type annotation (should be None for monadic lets)
+        /// Optional type annotation to avoid type inference errors (should be None for monadic lets)
         ty: Option<Box<CoqType>>,
         init: Box<Expr>,
         body: Box<Stmt>,
