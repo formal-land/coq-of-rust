@@ -149,8 +149,8 @@ Module LangError.
 End LangError.
 Definition LangError := LangError.t.
 
-Definition MessageResult (T : Set ) : Set :=
+Definition MessageResult (T : Set) : Set :=
   core.result.Result T ink_primitives.LangError.
 
-Definition ConstructorResult (T : Set ) : Set :=
+Definition ConstructorResult (T : Set) : Set :=
   core.result.Result T ink_primitives.LangError.

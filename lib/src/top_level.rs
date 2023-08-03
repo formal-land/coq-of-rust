@@ -1666,9 +1666,7 @@ impl TopLevelItem {
                             concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
                             text(":"),
                             line(),
-                            text("Set"),
-                            line(),
-                            text(")"),
+                            text("Set)"),
                         ])
                     },
                     line(),
@@ -2112,7 +2110,6 @@ impl TopLevelItem {
                         nil()
                     },
                 ]);
-
                 group([
                     nest([text("Module"), line(), module_name.clone(), text(".")]),
                     nest([
