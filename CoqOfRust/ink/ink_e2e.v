@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module builders.
-  Definition CreateBuilderPartial : Set :=
+  Definition CreateBuilderPartial (E ContractRef Args R : Set ) : Set :=
     ink_env.call.create_builder.CreateBuilder
       E
       ContractRef
@@ -23,7 +23,7 @@ Module builders.
       M (H := H) (alloc.vec.Vec u8).
 End builders.
 
-Definition CreateBuilderPartial : Set :=
+Definition CreateBuilderPartial (E ContractRef Args R : Set ) : Set :=
   ink_env.call.create_builder.CreateBuilder
     E
     ContractRef
@@ -43,7 +43,7 @@ Parameter constructor_exec_input : forall `{H : State.Trait},
     M (H := H) (alloc.vec.Vec u8).
 
 Module client.
-  Definition CallBuilderFinal : Set :=
+  Definition CallBuilderFinal (E Args RetType : Set ) : Set :=
     ink_env.call.call_builder.CallBuilder
       E
       (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
@@ -198,7 +198,7 @@ Module client.
   Definition Client : Set := @Client.t.
 End client.
 
-Definition CallBuilderFinal : Set :=
+Definition CallBuilderFinal (E Args RetType : Set ) : Set :=
   ink_env.call.call_builder.CallBuilder
     E
     (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
@@ -916,7 +916,7 @@ Definition PolkadotConfig : Set :=
     ink_e2e.SubstrateConfig
     (subxt.config.polkadot.PolkadotExtrinsicParams ink_e2e.SubstrateConfig).
 
-Definition Signer : Set :=
+Definition Signer (C : Set ) : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
 Definition INIT `{H : State.Trait} : std.sync.once.Once :=

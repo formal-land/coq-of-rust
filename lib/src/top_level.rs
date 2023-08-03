@@ -439,15 +439,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::TyAlias(ty, generics) => vec![TopLevelItem::TypeAlias {
             name,
             ty: compile_type(env, ty),
-            ty_params: generics.params.iter().filter_map(|param| {
-              match param.kind {
-                rustc_hir::GenericParamKind::Type { .. } => {
-                    Some(param.name.ident().to_string())
-                }
-                _ => None
-              }
-            })
-            .collect()
+            ty_params: generics
+                .params
+                .iter()
+                .filter_map(|param| match param.kind {
+                    rustc_hir::GenericParamKind::Type { .. } => {
+                        Some(param.name.ident().to_string())
+                    }
+                    _ => None,
+                })
+                .collect(),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
@@ -1344,7 +1345,15 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 is_axiomatized,
             }
         }
-        TopLevelItem::TypeAlias { name, ty, ty_params } => TopLevelItem::TypeAlias { name, ty, ty_params },
+        TopLevelItem::TypeAlias {
+            name,
+            ty,
+            ty_params,
+        } => TopLevelItem::TypeAlias {
+            name,
+            ty,
+            ty_params,
+        },
         TopLevelItem::TypeEnum { name, variants } => TopLevelItem::TypeEnum { name, variants },
         TopLevelItem::TypeStructStruct {
             name,
@@ -1639,24 +1648,28 @@ impl TopLevelItem {
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),
             ]),
-            TopLevelItem::TypeAlias { name, ty, ty_params } => nest([
+            TopLevelItem::TypeAlias {
+                name,
+                ty,
+                ty_params,
+            } => nest([
                 nest([
                     text("Definition"),
                     line(),
                     text(name),
-                    if ty_params.is_empty(){
-                      nil()
+                    if ty_params.is_empty() {
+                        nil()
                     } else {
-                      concat([
-                        line(),
-                        text("("),
-                        concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
-                        text(":"),
-                        line(),
-                        text("Set"),
-                        line(),
-                        text(")")
-                      ])
+                        concat([
+                            line(),
+                            text("("),
+                            concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
+                            text(":"),
+                            line(),
+                            text("Set"),
+                            line(),
+                            text(")"),
+                        ])
                     },
                     line(),
                     text(":"),

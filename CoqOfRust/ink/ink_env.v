@@ -2217,7 +2217,7 @@ Module call.
     End ArgumentList.
     Definition ArgumentList : Set := @ArgumentList.t.
     
-    Definition ArgsList : Set :=
+    Definition ArgsList (Head Rest : Set ) : Set :=
       ink_env.call.execution_input.ArgumentList
         (ink_env.call.execution_input.Argument Head)
         Rest.
@@ -3012,7 +3012,7 @@ Module execution_input.
   End ArgumentList.
   Definition ArgumentList : Set := @ArgumentList.t.
   
-  Definition ArgsList : Set :=
+  Definition ArgsList (Head Rest : Set ) : Set :=
     ink_env.call.execution_input.ArgumentList
       (ink_env.call.execution_input.Argument Head)
       Rest.
@@ -3084,7 +3084,7 @@ Module ArgumentList.
 End ArgumentList.
 Definition ArgumentList : Set := @ArgumentList.t.
 
-Definition ArgsList : Set :=
+Definition ArgsList (Head Rest : Set ) : Set :=
   ink_env.call.execution_input.ArgumentList
     (ink_env.call.execution_input.Argument Head)
     Rest.
@@ -4469,7 +4469,8 @@ Module error.
   End Error.
   Definition Error := Error.t.
   
-  Definition Result : Set := core.result.Result T ink_env.error.Error.
+  Definition Result (T : Set ) : Set :=
+    core.result.Result T ink_env.error.Error.
 End error.
 
 Module Error.
@@ -4491,7 +4492,7 @@ Module Error.
 End Error.
 Definition Error := Error.t.
 
-Definition Result : Set := core.result.Result T ink_env.error.Error.
+Definition Result (T : Set ) : Set := core.result.Result T ink_env.error.Error.
 
 Module hash.
   Module HashOutput.
