@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.core.result.
+Require Import CoqOfRust.core.result_types.
 
 (* ********ENUMS******** *)
 (* 
@@ -93,10 +93,15 @@ pub trait TryFrom<T>: Sized {
 }
 *)
 Module TryFrom.
-  Class Trait (Self T Error : Set) : Set := { 
+  Class Trait (Self : Set) {T Error : Set} : Set := {
     Error := Error;
 
-    try_from : T -> Result Self Error;
+    try_from `{State.Trait} : T -> M (Result Self Error);
+  }.
+
+  Global Instance AssociatedFunction_try_from {Self : Set} `{Trait Self} :
+    Notation.DoubleColon Self "try_from" := {
+    Notation.double_colon `{State.Trait} := try_from;
   }.
 End TryFrom.
 
@@ -111,9 +116,46 @@ pub trait TryInto<T>: Sized {
 Module TryInto.
   Class Trait (Self T Error : Set) : Set := { 
     Error := Error;
-    try_into : Self -> Result T Error;
+    try_into `{State.Trait} : Self -> M (Result T Error);
+  }.
+
+  Global Instance Method_try_into {Self : Set} `{Trait Self} :
+    Notation.Dot "try_into" := {
+    Notation.dot `{State.Trait} := try_into;
   }.
 End TryInto.
+
+(*
+impl<T, U> TryInto<U> for T
+where
+    U: TryFrom<T>,
+{
+    type Error = U::Error;
+
+    #[inline]
+    fn try_into(self) -> Result<U, U::Error> {
+        U::try_from(self)
+    }
+}
+*)
+Module Impl_TryInto_for_T.
+  Section Impl_TryInto_for_T.
+    Context {T U : Set}.
+    Context `{TryFrom.Trait U (T := T)}.
+
+    Definition Self := T.
+
+    Definition try_into `{State.Trait} : Self -> M (Result U Error) := TryFrom.try_from.
+
+    Global Instance Method_try_into `{State.Trait} : Notation.Dot "try_into" := {
+      Notation.dot := try_into;
+    }.
+
+    Global Instance TryInto_for_T : TryInto.Trait T U Error := {
+      TryInto.try_into `{State.Trait} := try_into;
+    }.
+  End Impl_TryInto_for_T.
+End Impl_TryInto_for_T.
 
 (* ********FUNCTIONS******** *)
 (* 

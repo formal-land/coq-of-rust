@@ -3,7 +3,7 @@ Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust._std.fmt.
 Require Import CoqOfRust._std.vec.
-Require Import CoqOfRust.core.result.
+Require CoqOfRust.core.result_types.
 
 (* ********STRUCTS******** *)
 (* 
@@ -40,7 +40,7 @@ Module Error.
 End Error.
 Definition Error := Error.t.
 
-Definition Result (T : Set) := core.result.Result T Error.t.
+Definition Result (T : Set) := core.result_types.Result T Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.

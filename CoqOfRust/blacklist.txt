@@ -3,7 +3,6 @@ examples/conversion/from.v
 examples/conversion/into.v
 examples/conversion/converting_to_string.v
 examples/conversion/parsing_a_string.v
-examples/conversion/try_from_and_try_into.v
 examples/custom_types/constants.v
 examples/custom_types/enums_c_like.v
 examples/custom_types/enums_testcase_linked_list.v

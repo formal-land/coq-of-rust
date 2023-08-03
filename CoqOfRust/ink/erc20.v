@@ -772,7 +772,11 @@ Module erc20.
         `{H : State.Trait}
         (self : ref Self)
         : M (H := H) unit :=
-      let _ := tt in
+      let
+          _ :
+          core.cmp.AssertParamIsEq
+            ink.codegen.dispatch.info.ContractCallBuilder.Type_ :=
+        tt in
       Pure tt.
     
     Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
@@ -1627,10 +1631,7 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env
-      `{H : State.Trait}
-      (self : Self)
-      : M (H := H) ImplSelf.EnvAccess :=
+  Definition env `{H : State.Trait} (self : Self) : M (H := H) EnvAccess :=
     core.default.Default.default.
   
   Global Instance Method_env `{H : State.Trait} : Notation.Dot "env" := {
@@ -1648,7 +1649,7 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
   
-  Definition env `{H : State.Trait} : M (H := H) ImplSelf.EnvAccess :=
+  Definition env `{H : State.Trait} : M (H := H) EnvAccess :=
     core.default.Default.default.
   
   Global Instance AssociatedFunction_env `{H : State.Trait} :
@@ -1921,10 +1922,8 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
     match self with
-    | ImplSelf.Transfer.Build_t event =>
-      ink_env.topics.Topics.topics event builder
-    | ImplSelf.Approval.Build_t event =>
-      ink_env.topics.Topics.topics event builder
+    | Transfer.Build_t event => ink_env.topics.Topics.topics event builder
+    | Approval.Build_t event => ink_env.topics.Topics.topics event builder
     | _ =>
       let* α0 :=
         format_arguments::["new_const"] (addr_of [ "Event does not exist!" ]) in
@@ -2913,7 +2912,7 @@ Module
         M (H := H)
           (core.result.Result unit ink.reflect.dispatch.DispatchError) :=
     match self with
-    | ImplSelf.Constructor0.Build_t input =>
+    | Constructor0.Build_t input =>
       let* _ :=
         let constructor_0 := false in
         let constructor_0 :=
@@ -3224,7 +3223,7 @@ Module
       core.mem.manually_drop.ManuallyDrop::["new"] α1 in
     let* _ :=
       match self with
-      | ImplSelf.Message0.Build_t input =>
+      | Message0.Build_t input =>
         let* _ :=
           let message_0 := false in
           let message_0 :=
@@ -3290,7 +3289,7 @@ Module
           ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
-      | ImplSelf.Message1.Build_t input =>
+      | Message1.Build_t input =>
         let* _ :=
           let message_0 := false in
           let message_0 :=
@@ -3356,7 +3355,7 @@ Module
           ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
-      | ImplSelf.Message2.Build_t input =>
+      | Message2.Build_t input =>
         let* _ :=
           let message_0 := false in
           let message_0 :=
@@ -3422,7 +3421,7 @@ Module
           ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
-      | ImplSelf.Message3.Build_t input =>
+      | Message3.Build_t input =>
         let* _ :=
           let message_0 := false in
           let message_0 :=
@@ -3488,7 +3487,7 @@ Module
           ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
-      | ImplSelf.Message4.Build_t input =>
+      | Message4.Build_t input =>
         let* _ :=
           let message_0 := false in
           let message_0 :=
@@ -3554,7 +3553,7 @@ Module
           ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
-      | ImplSelf.Message5.Build_t input =>
+      | Message5.Build_t input =>
         let* _ :=
           let message_0 := false in
           let message_0 :=
@@ -4051,7 +4050,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       else
         Pure tt in
     let* _ :=
-      let dst_ := dst_ in
+      let dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self) := dst_ in
       let* dst_ :=
         let* α0 := dst_.["as_mut_ptr"] in
         let* α1 := α0.["cast"] in
@@ -4143,7 +4142,7 @@ Module Impl_core_cmp_Eq_for_erc20_erc20___CallBuilder.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) unit :=
-    let _ := tt in
+    let _ : core.cmp.AssertParamIsEq erc20.erc20.AccountId := tt in
     Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
@@ -4749,7 +4748,11 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) unit :=
-    let _ := tt in
+    let
+        _ :
+        core.cmp.AssertParamIsEq
+          ink.codegen.dispatch.info.ContractCallBuilder.Type_ :=
+      tt in
     Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :
@@ -4854,7 +4857,7 @@ Module
   Definition ok
       `{H : State.Trait}
       (value : erc20.erc20.Erc20Ref)
-      : M (H := H) ImplSelf.Output :=
+      : M (H := H) Output :=
     Pure value.
   
   Global Instance AssociatedFunction_ok `{H : State.Trait} :
@@ -4896,7 +4899,7 @@ Section
   Definition ok
       `{H : State.Trait}
       (value : erc20.erc20.Erc20Ref)
-      : M (H := H) ImplSelf.Output :=
+      : M (H := H) Output :=
     Pure (core.result.Result.Ok value).
   
   Global Instance AssociatedFunction_ok `{H : State.Trait} :
@@ -4906,8 +4909,8 @@ Section
   
   Definition err
       `{H : State.Trait}
-      (err : ImplSelf.Error)
-      : M (H := H) (core.option.Option ImplSelf.Output) :=
+      (err : Error)
+      : M (H := H) (core.option.Option Output) :=
     Pure (core.option.Option.Some (core.result.Result.Err err)).
   
   Global Instance AssociatedFunction_err `{H : State.Trait} :
@@ -5249,7 +5252,7 @@ Module
   Definition call
       `{H : State.Trait}
       (self : ref Self)
-      : M (H := H) (ref ImplSelf.Builder) :=
+      : M (H := H) (ref Builder) :=
     Pure (addr_of self.["inner"]).
   
   Global Instance Method_call `{H : State.Trait} : Notation.Dot "call" := {
@@ -5259,7 +5262,7 @@ Module
   Definition call_mut
       `{H : State.Trait}
       (self : mut_ref Self)
-      : M (H := H) (mut_ref ImplSelf.Builder) :=
+      : M (H := H) (mut_ref Builder) :=
     Pure (addr_of self.["inner"]).
   
   Global Instance Method_call_mut `{H : State.Trait} :

@@ -53,30 +53,8 @@ Notation "e (||)" :=
   (at level 0,
     only parsing).
 
-Module Notation.
-  (** A class to represent the notation [e1.e2]. This is mainly used to call
-      methods, or access to named or indexed fields of structures.
-      The kind is either a string or an integer. *)
-  Class Dot {Kind : Set} (name : Kind) {T : Set} : Set := {
-    dot : T;
-  }.
-  Arguments dot {Kind} name {T Dot}.
-
-  (** A class to represent associated functions (the notation [e1::e2]). The
-      kind might be [Set] functions associated to a type, or [Set -> Set] for
-      functions associated to a trait. *)
-  Class DoubleColon {Kind : Type} (type : Kind) (name : string) {T : Set} :
-    Set := {
-    double_colon : T;
-  }.
-  Arguments double_colon {Kind} type name {T DoubleColon}.
-
-  (* A class to represent types in a trait. *)
-  Class DoubleColonType {Kind : Type} (type : Kind) (name : string) : Type := {
-    double_colon_type : Set;
-  }.
-  Arguments double_colon_type {Kind} type name {DoubleColonType}.
-End Notation.
+Require CoqOfRust.lib.lib.
+Module Notation := CoqOfRust.lib.lib.Notation.
 
 (** Note that we revert the arguments in this notation. *)
 Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
@@ -245,15 +223,10 @@ Module core.
     End Formatter.
     Definition Formatter := Formatter.t.
 
-    Module ImplFormatter.
-      Parameter new : forall `{State.Trait} {W : Set} `{Write.Trait W},
-        mut_ref W -> M Formatter.
-
-      Global Instance Formatter_new `{State.Trait} {W : Set} `{Write.Trait W} :
-        Notation.DoubleColon Formatter "new" := {
-        Notation.double_colon := new;
-      }.
-    End ImplFormatter.
+    Module DebugTuple.
+      Parameter t : Set.
+    End DebugTuple.
+    Definition DebugTuple := DebugTuple.t.
 
     Module Display.
       Class Trait (Self : Set) : Set := {
@@ -266,6 +239,78 @@ Module core.
         fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
       }.
     End Debug.
+
+    Module ImplDebugTuple.
+      Definition Self := DebugTuple.
+
+      (** field(&mut self, value: &dyn Debug) -> &mut DebugTuple<'a, 'b> *)
+      Parameter field :
+        forall `{State.Trait} {T : Set} `{Debug.Trait T},
+          mut_ref Self -> ref T -> M (mut_ref DebugTuple).
+
+      Global Instance Method_field `{State.Trait} {T : Set} `{Debug.Trait T} :
+        Notation.Dot "field" := {
+        Notation.dot := field;
+      }.
+
+      (** finish(&mut self) -> Result<(), Error> *)
+      Parameter finish : forall `{State.Trait}, mut_ref Self -> M Result.
+
+      Global Instance Method_finish `{State.Trait} :
+        Notation.Dot "finish" := {
+        Notation.dot := finish;
+      }.
+    End ImplDebugTuple.
+
+    Module ImplFormatter.
+      Definition Self := Formatter.
+
+      Parameter new : forall `{State.Trait} {W : Set} `{Write.Trait W},
+        mut_ref W -> M Formatter.
+
+      Global Instance Formatter_new `{State.Trait} {W : Set} `{Write.Trait W} :
+        Notation.DoubleColon Formatter "new" := {
+        Notation.double_colon := new;
+      }.
+
+      (*
+      pub(super) fn debug_tuple_new<'a, 'b>(
+          fmt: &'a mut fmt::Formatter<'b>,
+          name: &str,
+      ) -> DebugTuple<'a, 'b> {
+          let result = fmt.write_str(name);
+          DebugTuple { fmt, result, fields: 0, empty_name: name.is_empty() }
+      }
+      *)
+      Parameter debug_tuple_new :
+        forall `{State.Trait} (fmt : mut_ref Formatter) (name : ref str),
+          M DebugTuple.
+
+      Global Instance Method_debug_tuple `{State.Trait} :
+        Notation.Dot "debug_tuple_new" := {
+        Notation.dot := debug_tuple_new;
+      }.
+
+      (*
+      pub fn debug_tuple_field1_finish<'b>(&'b mut self, name: &str, value1: &dyn Debug) -> Result {
+          let mut builder = builders::debug_tuple_new(self, name);
+          builder.field(value1);
+          builder.finish()
+      }
+      *)
+      Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
+        `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :
+        M core.fmt.Result :=
+        let* dt := f.["debug_tuple_new"] x in
+        let* fld := dt.["field"] y in
+        fld.["finish"].
+
+      Global Instance Formatter_debug_tuple_field1_finish `{State.Trait}
+        {T : Set} `{core.fmt.Debug.Trait T} :
+        Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
+        Notation.double_colon := debug_tuple_field1_finish (T := T);
+      }.
+    End ImplFormatter.
 
     Module Octal.
       Class Trait (Self : Set) : Set := {
@@ -1368,6 +1413,32 @@ Definition format_argument : Set := core.fmt.ArgumentV1.
 Definition format_arguments : Set := core.fmt.Arguments.
 
 Definition Slice := lib.slice.
+
+(* This is a specialized instance to make try_from_and_into.v work.
+ * It is necessary because Coq has a problem with inferring the correct value of
+ * the parameter T of core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish
+ * and in result does not use this instance at all.
+ *)
+Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
+  Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
+    core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
+
+(* derived implementation of Debug for Result *)
+Module Impl_Debug_for_Result.
+  Section Impl_Debug_for_Result.
+    Context {T E : Set}.
+    Context `{core.fmt.Debug.Trait T}.
+    Context `{core.fmt.Debug.Trait E}.
+
+    Parameter fmt :
+      forall `{State.Trait}, ref (core.result.Result T E) ->
+        mut_ref core.fmt.Formatter -> M core.fmt.Result.
+
+    Global Instance I : core.fmt.Debug.Trait (core.result.Result T E) := {
+      fmt `{State.Trait} := fmt;
+    }.
+  End Impl_Debug_for_Result.
+End Impl_Debug_for_Result.
 
 Module Impl_RangeInclusive.
   Section Impl_RangeInclusive.

@@ -24,8 +24,8 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
       (y : i32)
       : M (H := H) i32 :=
     match self with
-    | ImplSelf.Add => x.["add"] y
-    | ImplSelf.Subtract => x.["sub"] y
+    | Add => x.["add"] y
+    | Subtract => x.["sub"] y
     end.
   
   Global Instance Method_run `{H : State.Trait} : Notation.Dot "run" := {

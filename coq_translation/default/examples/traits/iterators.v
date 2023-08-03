@@ -26,7 +26,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Definition next
       `{H : State.Trait}
       (self : mut_ref Self)
-      : M (H := H) (core.option.Option ImplSelf.Item) :=
+      : M (H := H) (core.option.Option Item) :=
     let current := self.["curr"] in
     let* _ := assign self.["curr"] self.["next"] in
     let* _ :=

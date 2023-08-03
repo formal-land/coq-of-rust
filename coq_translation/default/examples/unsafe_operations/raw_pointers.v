@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let raw_p := addr_of 10 in
+  let raw_p : ref u32 := addr_of 10 in
   let* _ :=
     let* α0 := raw_p.["deref"] in
     let* α1 := α0.["eq"] 10 in
