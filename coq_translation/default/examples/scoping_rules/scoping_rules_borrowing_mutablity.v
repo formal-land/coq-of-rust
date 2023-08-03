@@ -31,9 +31,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) scoping_rules_borrowing_mutablity.Book :=
-    let _ := tt in
-    let _ := tt in
-    let _ := tt in
+    let _ : core.clone.AssertParamIsClone (ref str) := tt in
+    let _ : core.clone.AssertParamIsClone (ref str) := tt in
+    let _ : core.clone.AssertParamIsClone u32 := tt in
     self.["deref"].
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {

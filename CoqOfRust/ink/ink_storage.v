@@ -18,7 +18,7 @@ Module lazy.
         }.
       End Mapping.
     End Mapping.
-    Definition Mapping : Set := @Mapping.t.
+    Definition Mapping := @Mapping.t.
   End mapping.
   
   Module Lazy.
@@ -35,7 +35,7 @@ Module lazy.
       }.
     End Lazy.
   End Lazy.
-  Definition Lazy : Set := @Lazy.t.
+  Definition Lazy := @Lazy.t.
 End lazy.
 
 Module mapping.
@@ -53,7 +53,7 @@ Module mapping.
       }.
     End Mapping.
   End Mapping.
-  Definition Mapping : Set := @Mapping.t.
+  Definition Mapping := @Mapping.t.
 End mapping.
 
 Module Mapping.
@@ -70,7 +70,7 @@ Module Mapping.
     }.
   End Mapping.
 End Mapping.
-Definition Mapping : Set := @Mapping.t.
+Definition Mapping := @Mapping.t.
 
 Module Lazy.
   Section Lazy.
@@ -86,4 +86,4 @@ Module Lazy.
     }.
   End Lazy.
 End Lazy.
-Definition Lazy : Set := @Lazy.t.
+Definition Lazy := @Lazy.t.

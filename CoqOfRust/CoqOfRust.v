@@ -53,30 +53,8 @@ Notation "e (||)" :=
   (at level 0,
     only parsing).
 
-Module Notation.
-  (** A class to represent the notation [e1.e2]. This is mainly used to call
-      methods, or access to named or indexed fields of structures.
-      The kind is either a string or an integer. *)
-  Class Dot {Kind : Set} (name : Kind) {T : Set} : Set := {
-    dot : T;
-  }.
-  Arguments dot {Kind} name {T Dot}.
-
-  (** A class to represent associated functions (the notation [e1::e2]). The
-      kind might be [Set] functions associated to a type, or [Set -> Set] for
-      functions associated to a trait. *)
-  Class DoubleColon {Kind : Type} (type : Kind) (name : string) {T : Set} :
-    Set := {
-    double_colon : T;
-  }.
-  Arguments double_colon {Kind} type name {T DoubleColon}.
-
-  (* A class to represent types in a trait. *)
-  Class DoubleColonType {Kind : Type} (type : Kind) (name : string) : Type := {
-    double_colon_type : Set;
-  }.
-  Arguments double_colon_type {Kind} type name {DoubleColonType}.
-End Notation.
+Require CoqOfRust.lib.lib.
+Module Notation := CoqOfRust.lib.lib.Notation.
 
 (** Note that we revert the arguments in this notation. *)
 Notation "e1 .[ e2 ]" := (Notation.dot e2 e1)
@@ -210,7 +188,251 @@ Module core.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.option.
   Export CoqOfRust.core.result.
-  Export CoqOfRust.core.fmt.
+
+  Module fmt.
+    Parameter Alignment : Set.
+
+    Parameter Error : Set.
+
+    Definition Result : Set := result.Result unit Error.
+
+    Module Arguments.
+      Parameter t : Set.
+    End Arguments.
+    Definition Arguments := Arguments.t.
+
+    Module Write.
+      Class Trait (Self : Set) : Set := {
+        write_str `{State.Trait} : mut_ref Self -> ref str -> M Result;
+        write_char `{State.Trait} : mut_ref Self -> char -> M Result;
+        write_fmt `{State.Trait} : mut_ref Self -> Arguments -> M Result;
+      }.
+
+      Global Instance Method_write_str `{State.Trait} `(Trait) : Notation.Dot "write_str" := {
+        Notation.dot := write_str;
+      }.
+      Global Instance Method_write_char `{State.Trait} `(Trait) : Notation.Dot "write_char" := {
+        Notation.dot := write_char;
+      }.
+      Global Instance Method_write_fmt `{State.Trait} `(Trait) : Notation.Dot "write_fmt" := {
+        Notation.dot := write_fmt;
+      }.
+    End Write.
+
+    Module Formatter.
+      Parameter t : Set.
+    End Formatter.
+    Definition Formatter := Formatter.t.
+
+    Module Display.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End Display.
+
+    Module Debug.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End Debug.
+
+    Module ImplDebugTuple.
+      Definition Self := DebugTuple.
+
+      (** field(&mut self, value: &dyn Debug) -> &mut DebugTuple<'a, 'b> *)
+      Parameter field :
+        forall `{State.Trait} {T : Set} `{Debug.Trait T},
+          mut_ref Self -> ref T -> M (mut_ref DebugTuple).
+
+      Global Instance Method_field `{State.Trait} {T : Set} `{Debug.Trait T} :
+        Notation.Dot "field" := {
+        Notation.dot := field;
+      }.
+
+      (** finish(&mut self) -> Result<(), Error> *)
+      Parameter finish : forall `{State.Trait}, mut_ref Self -> M Result.
+
+      Global Instance Method_finish `{State.Trait} :
+        Notation.Dot "finish" := {
+        Notation.dot := finish;
+      }.
+    End ImplDebugTuple.
+
+    Module ImplFormatter.
+      Definition Self := Formatter.
+
+      Parameter new : forall `{State.Trait} {W : Set} `{Write.Trait W},
+        mut_ref W -> M Formatter.
+
+      Global Instance Formatter_new `{State.Trait} {W : Set} `{Write.Trait W} :
+        Notation.DoubleColon Formatter "new" := {
+        Notation.double_colon := new;
+      }.
+    End ImplFormatter.
+
+    Module Octal.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End Octal.
+
+    Module LowerHex.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End LowerHex.
+
+    Module UpperHex.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End UpperHex.
+
+    Module Pointer.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End Pointer.
+
+    Module Binary.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End Binary.
+
+    Module LowerExp.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End LowerExp.
+
+    Module UpperExp.
+      Class Trait (Self : Set) : Set := {
+        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+      }.
+    End UpperExp.
+
+    Module ArgumentV1.
+      Parameter t : Set.
+    End ArgumentV1.
+    Definition ArgumentV1 := ArgumentV1.t.
+
+    Module ImplArgumentV1.
+      Definition Self := ArgumentV1.
+
+      Parameter new :
+        forall `{State.Trait} {T : Set},
+        ref T -> (ref T -> mut_ref Formatter -> M Result) -> M Self.
+
+      Global Instance ArgumentV1_new `{State.Trait} {T : Set} :
+        Notation.DoubleColon ArgumentV1 "new" := {
+        Notation.double_colon := new (T := T);
+      }.
+
+      Parameter new_display :
+        forall `{State.Trait} {T : Set} `{Display.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_display
+        `{State.Trait} {T : Set} `{Display.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_display" := {
+        Notation.double_colon := new_display (T := T);
+      }.
+
+      Parameter new_debug :
+        forall `{State.Trait} {T : Set} `{Debug.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_debug
+        `{State.Trait} {T : Set} `{Debug.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_debug" := {
+        Notation.double_colon := new_debug (T := T);
+      }.
+
+      Parameter new_octal :
+        forall `{State.Trait} {T : Set} `{Octal.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_octal
+        `{State.Trait} {T : Set} `{Octal.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_octal" := {
+        Notation.double_colon := new_octal (T := T);
+      }.
+
+      Parameter new_lower_hex :
+        forall `{State.Trait} {T : Set} `{LowerHex.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_lower_hex
+        `{State.Trait} {T : Set} `{LowerHex.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_lower_hex" := {
+        Notation.double_colon := new_lower_hex (T := T);
+      }.
+
+      Parameter new_upper_hex :
+        forall `{State.Trait} {T : Set} `{UpperHex.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_upper_hex
+        `{State.Trait} {T : Set} `{UpperHex.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_upper_hex" := {
+        Notation.double_colon := new_upper_hex (T := T);
+      }.
+
+      Parameter new_pointer :
+        forall `{State.Trait} {T : Set} `{Pointer.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_pointer
+        `{State.Trait} {T : Set} `{Pointer.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_pointer" := {
+        Notation.double_colon := new_pointer (T := T);
+      }.
+
+      Parameter new_binary :
+        forall `{State.Trait} {T : Set} `{Binary.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_binary
+        `{State.Trait} {T : Set} `{Binary.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_binary" := {
+        Notation.double_colon := new_binary (T := T);
+      }.
+
+      Parameter new_lower_exp :
+        forall `{State.Trait} {T : Set} `{LowerExp.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_lower_exp
+        `{State.Trait} {T : Set} `{LowerExp.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_lower_exp" := {
+        Notation.double_colon := new_lower_exp (T := T);
+      }.
+
+      Parameter new_upper_exp :
+        forall `{State.Trait} {T : Set} `{UpperExp.Trait T}, ref T -> M Self.
+
+      Global Instance ArgumentV1_new_upper_exp
+        `{State.Trait} {T : Set} `{UpperExp.Trait T} :
+        Notation.DoubleColon ArgumentV1 "new_upper_exp" := {
+        Notation.double_colon := new_upper_exp (T := T);
+      }.
+    End ImplArgumentV1.
+
+    Module ImplArguments.
+      Parameter new_const :
+        forall `{State.Trait}, ref (list (ref str)) -> M Arguments.
+
+      Global Instance Arguments_new_const `{State.Trait} :
+        Notation.DoubleColon Arguments "new_const" := {
+        Notation.double_colon := new_const;
+      }.
+
+      Parameter new_v1 :
+        forall `{State.Trait},
+          ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
+
+      Global Instance Arguments_new_v1 `{State.Trait} :
+        Notation.DoubleColon Arguments "new_v1" := {
+        Notation.double_colon := new_v1;
+      }.
+    End ImplArguments.
+
+    Global Instance Write_for_Formatter : Write.Trait Formatter.
+    Admitted.
+  End fmt.
 
   Module panicking.
     Module AssertKind.
@@ -1149,6 +1371,32 @@ Definition format_argument : Set := core.fmt.ArgumentV1.
 Definition format_arguments : Set := core.fmt.Arguments.
 
 Definition Slice := lib.slice.
+
+(* This is a specialized instance to make try_from_and_into.v work.
+ * It is necessary because Coq has a problem with inferring the correct value of
+ * the parameter T of core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish
+ * and in result does not use this instance at all.
+ *)
+Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
+  Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
+    core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
+
+(* derived implementation of Debug for Result *)
+Module Impl_Debug_for_Result.
+  Section Impl_Debug_for_Result.
+    Context {T E : Set}.
+    Context `{core.fmt.Debug.Trait T}.
+    Context `{core.fmt.Debug.Trait E}.
+
+    Parameter fmt :
+      forall `{State.Trait}, ref (core.result.Result T E) ->
+        mut_ref core.fmt.Formatter -> M core.fmt.Result.
+
+    Global Instance I : core.fmt.Debug.Trait (core.result.Result T E) := {
+      fmt `{State.Trait} := fmt;
+    }.
+  End Impl_Debug_for_Result.
+End Impl_Debug_for_Result.
 
 Module Impl_RangeInclusive.
   Section Impl_RangeInclusive.

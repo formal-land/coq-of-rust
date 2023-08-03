@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.core.result.
+Require Import CoqOfRust.core.result_types.
 
 (* ********STRUCTS******** *)
 (*

@@ -35,6 +35,11 @@ Module Formatter.
 End Formatter.
 Definition Formatter := Formatter.t.
 
+Module DebugTuple.
+  Parameter t : Set.
+End DebugTuple.
+Definition DebugTuple := DebugTuple.t.
+
 Module ImplFormatter.
   Parameter new : forall `{State.Trait} {W : Set} `{Write.Trait W},
     mut_ref W -> M Formatter.
@@ -42,6 +47,44 @@ Module ImplFormatter.
   Global Instance Formatter_new `{State.Trait} {W : Set} `{Write.Trait W} :
     Notation.DoubleColon Formatter "new" := {
     Notation.double_colon := new;
+  }.
+
+  (*
+    pub(super) fn debug_tuple_new<'a, 'b>(
+        fmt: &'a mut fmt::Formatter<'b>,
+        name: &str,
+    ) -> DebugTuple<'a, 'b> {
+        let result = fmt.write_str(name);
+        DebugTuple { fmt, result, fields: 0, empty_name: name.is_empty() }
+    }
+  *)
+  Parameter debug_tuple_new :
+    forall `{State.Trait} (fmt : mut_ref Formatter) (name : ref str),
+      M DebugTuple.
+
+  Global Instance Method_debug_tuple `{State.Trait} :
+    Notation.Dot "debug_tuple_new" := {
+    Notation.dot := debug_tuple_new;
+  }.
+
+  (*
+    pub fn debug_tuple_field1_finish<'b>(&'b mut self, name: &str, value1: &dyn Debug) -> Result {
+        let mut builder = builders::debug_tuple_new(self, name);
+        builder.field(value1);
+        builder.finish()
+    }
+  *)
+  Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
+    `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :
+    M core.fmt.Result :=
+    let* dt := f.["debug_tuple_new"] x in
+    let* fld := dt.["field"] y in
+    fld.["finish"].
+
+  Global Instance Formatter_debug_tuple_field1_finish `{State.Trait}
+    {T : Set} `{core.fmt.Debug.Trait T} :
+    Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
+    Notation.double_colon := debug_tuple_field1_finish (T := T);
   }.
 End ImplFormatter.
 

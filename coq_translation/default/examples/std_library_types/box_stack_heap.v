@@ -62,7 +62,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) box_stack_heap.Point :=
-    let _ := tt in
+    let _ : core.clone.AssertParamIsClone f64 := tt in
     self.["deref"].
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {

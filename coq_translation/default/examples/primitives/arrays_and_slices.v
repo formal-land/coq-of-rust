@@ -30,7 +30,7 @@ Definition analyze_slice
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let xs := [ 1; 2; 3; 4; 5 ] in
+  let xs : list i32 := [ 1; 2; 3; 4; 5 ] in
   let* ys := repeat 0 in
   let* _ :=
     let* _ :=
@@ -94,7 +94,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     arrays_and_slices.analyze_slice
       (addr_of ys[{| std.ops.Range.start := 1; std.ops.Range._end := 4; |}]) in
-  let empty_array := [ ] in
+  let empty_array : list u32 := [ ] in
   let* _ :=
     match (addr_of (addr_of empty_array), addr_of (addr_of [ ])) with
     | (left_val, right_val) =>

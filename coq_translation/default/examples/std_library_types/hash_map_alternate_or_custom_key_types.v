@@ -65,8 +65,8 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) unit :=
-    let _ := tt in
-    let _ := tt in
+    let _ : core.cmp.AssertParamIsEq (ref str) := tt in
+    let _ : core.cmp.AssertParamIsEq (ref str) := tt in
     Pure tt.
   
   Global Instance Method_assert_receiver_is_total_eq `{H : State.Trait} :

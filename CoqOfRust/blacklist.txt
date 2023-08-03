@@ -3,7 +3,6 @@ examples/conversion/from.v
 examples/conversion/into.v
 examples/conversion/converting_to_string.v
 examples/conversion/parsing_a_string.v
-examples/conversion/try_from_and_try_into.v
 examples/custom_types/constants.v
 examples/custom_types/enums_c_like.v
 examples/custom_types/enums_testcase_linked_list.v
@@ -134,6 +133,7 @@ examples/traits/impl_trait_as_return_type.v
 examples/traits/iterators.v
 examples/traits/returning_traits_with_dyn.v
 examples/traits/supertraits.v
+examples/traits/traits.v
 examples/types/casting.v
 examples/types/inference.v
 examples/types/literals.v
@@ -236,9 +236,6 @@ ink/ink_e2e_macro.v
 ink/ink_engine.v
 ink/ink_env.v
 ink/ink_macro.v
-ink/ink_primitives.v
-ink/ink_storage.v
-ink/ink_storage_traits.v
 # _std/error.v
 # _std/io.v
 _std/iter_type.v

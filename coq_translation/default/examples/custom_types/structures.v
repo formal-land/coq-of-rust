@@ -122,7 +122,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
 " ]) (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
-  let point :=
+  let point : structures.Point :=
     {| structures.Point.x := 10 (* 10.3 *); structures.Point.y := 0 (* 0.4 *);
     |} in
   let* _ :=

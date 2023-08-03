@@ -8,7 +8,7 @@ Module UsernameWidget.
   
   Global Instance Method_get `{H : State.Trait} `(Trait)
     : Notation.Dot "get" := {
-    Notation.dot := get;
+    Notation.dot := @get;
   }.
 End UsernameWidget.
 
@@ -19,7 +19,7 @@ Module AgeWidget.
   
   Global Instance Method_get `{H : State.Trait} `(Trait)
     : Notation.Dot "get" := {
-    Notation.dot := get;
+    Notation.dot := @get;
   }.
 End AgeWidget.
 

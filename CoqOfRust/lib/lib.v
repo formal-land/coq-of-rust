@@ -32,6 +32,12 @@ Module Notation.
     double_colon : T;
   }.
   Arguments double_colon {Kind} type name {T DoubleColon}.
+
+  (* A class to represent types in a trait. *)
+  Class DoubleColonType {Kind : Type} (type : Kind) (name : string) : Type := {
+    double_colon_type : Set;
+  }.
+  Arguments double_colon_type {Kind} type name {DoubleColonType}.
 End Notation.
 
 (** Note that we revert the arguments in this notation. *)

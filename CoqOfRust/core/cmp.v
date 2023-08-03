@@ -122,3 +122,29 @@ End Ord.
 [ ] min_by
 [ ] min_by_key
 *)
+
+(* **********IMPLS********** *)
+(*
+// Implementation of PartialEq, Eq, PartialOrd and Ord for primitive types
+*)
+Module Impls.
+  (*
+  impl PartialEq for () {
+      #[inline]
+      fn eq(&self, _other: &()) -> bool {
+          true
+      }
+      #[inline]
+      fn ne(&self, _other: &()) -> bool {
+          false
+      }
+  }
+  *)
+  Module Impl_PartialEq_for_unit.
+    Definition eq `{State.Trait} (x y : unit) : M bool := Pure true.
+
+    Global Instance I : PartialEq.Trait unit (Rhs := None) := {
+      eq `{State.Trait} := eq;
+    }.
+  End Impl_PartialEq_for_unit.
+End Impls.
