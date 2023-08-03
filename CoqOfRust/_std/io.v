@@ -3,12 +3,7 @@ Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust._std.fmt.
 Require Import CoqOfRust._std.vec.
-
 Require CoqOfRust.core.result_types.
-(*Module core.
-  Module result := CoqOfRust.core.result_types.
-End core.*)
-
 
 (* ********STRUCTS******** *)
 (* 

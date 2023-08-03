@@ -6,10 +6,6 @@ Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.core.result_types.
 Require CoqOfRust.core.cmp.
 
-(*Module core.
-    Module result := result_types.
-End core.*)
-
 (* derived implementation of PartialEq *)
 Module Impl_PartialEq_for_Result.
   Parameter eq :
