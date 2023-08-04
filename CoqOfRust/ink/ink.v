@@ -172,7 +172,7 @@ Module codegen.
     Module Env.
       Class Trait (Self : Set) {EnvAccess : Set} : Set := {
         EnvAccess := EnvAccess;
-        env `{H : State.Trait} : Self -> (M (H := H) ImplSelf.EnvAccess);
+        env `{H : State.Trait} : Self -> (M (H := H) EnvAccess);
       }.
       
       Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -188,7 +188,7 @@ Module codegen.
     Module StaticEnv.
       Class Trait (Self : Set) {EnvAccess : Set} : Set := {
         EnvAccess := EnvAccess;
-        env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+        env `{H : State.Trait} : (M (H := H) EnvAccess);
       }.
       
       Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -279,14 +279,11 @@ Module codegen.
       Module TraitCallBuilder.
         Class Trait (Self : Set) {Builder : Set} : Set := {
           Builder := Builder;
-          call
-            `{H : State.Trait}
-            :
-            (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+          call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
           call_mut
             `{H : State.Trait}
             :
-            (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+            (mut_ref Self) -> (M (H := H) (mut_ref Builder));
         }.
         
         Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -330,11 +327,11 @@ Module codegen.
           forward
             `{H : State.Trait}
             :
-            (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+            (ref Self) -> (M (H := H) (ref Forwarder));
           forward_mut
             `{H : State.Trait}
             :
-            (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+            (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
           build
             `{H : State.Trait}
             :
@@ -580,7 +577,7 @@ Module env.
   Module Env.
     Class Trait (Self : Set) {EnvAccess : Set} : Set := {
       EnvAccess := EnvAccess;
-      env `{H : State.Trait} : Self -> (M (H := H) ImplSelf.EnvAccess);
+      env `{H : State.Trait} : Self -> (M (H := H) EnvAccess);
     }.
     
     Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -596,7 +593,7 @@ Module env.
   Module StaticEnv.
     Class Trait (Self : Set) {EnvAccess : Set} : Set := {
       EnvAccess := EnvAccess;
-      env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+      env `{H : State.Trait} : (M (H := H) EnvAccess);
     }.
     
     Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -613,7 +610,7 @@ End env.
 Module Env.
   Class Trait (Self : Set) {EnvAccess : Set} : Set := {
     EnvAccess := EnvAccess;
-    env `{H : State.Trait} : Self -> (M (H := H) ImplSelf.EnvAccess);
+    env `{H : State.Trait} : Self -> (M (H := H) EnvAccess);
   }.
   
   Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -629,7 +626,7 @@ End Env.
 Module StaticEnv.
   Class Trait (Self : Set) {EnvAccess : Set} : Set := {
     EnvAccess := EnvAccess;
-    env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+    env `{H : State.Trait} : (M (H := H) EnvAccess);
   }.
   
   Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -838,14 +835,11 @@ Module trait_def.
     Module TraitCallBuilder.
       Class Trait (Self : Set) {Builder : Set} : Set := {
         Builder := Builder;
-        call
-          `{H : State.Trait}
-          :
-          (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+        call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
         call_mut
           `{H : State.Trait}
           :
-          (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+          (mut_ref Self) -> (M (H := H) (mut_ref Builder));
       }.
       
       Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -886,14 +880,11 @@ Module trait_def.
             Forwarder} :
           Set := {
         Forwarder := Forwarder;
-        forward
-          `{H : State.Trait}
-          :
-          (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+        forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
         forward_mut
           `{H : State.Trait}
           :
-          (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+          (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
         build
           `{H : State.Trait}
           :
@@ -949,14 +940,11 @@ Module call_builder.
   Module TraitCallBuilder.
     Class Trait (Self : Set) {Builder : Set} : Set := {
       Builder := Builder;
-      call
-        `{H : State.Trait}
-        :
-        (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+      call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
       call_mut
         `{H : State.Trait}
         :
-        (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+        (mut_ref Self) -> (M (H := H) (mut_ref Builder));
     }.
     
     Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -995,14 +983,11 @@ Module call_builder.
         `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
         Set := {
       Forwarder := Forwarder;
-      forward
-        `{H : State.Trait}
-        :
-        (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+      forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
       forward_mut
         `{H : State.Trait}
         :
-        (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+        (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
       build
         `{H : State.Trait}
         :
@@ -1044,11 +1029,11 @@ End call_builder.
 Module TraitCallBuilder.
   Class Trait (Self : Set) {Builder : Set} : Set := {
     Builder := Builder;
-    call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+    call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
     call_mut
       `{H : State.Trait}
       :
-      (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+      (mut_ref Self) -> (M (H := H) (mut_ref Builder));
   }.
   
   Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -1087,14 +1072,11 @@ Module TraitCallForwarderFor.
       `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
       Set := {
     Forwarder := Forwarder;
-    forward
-      `{H : State.Trait}
-      :
-      (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+    forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
     forward_mut
       `{H : State.Trait}
       :
-      (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+      (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
     build
       `{H : State.Trait}
       :
@@ -1254,9 +1236,7 @@ Module reflect.
         CALLABLE
           `{H : State.Trait}
           :
-          (mut_ref ImplSelf.Storage) ->
-          ImplSelf.Input ->
-          (M (H := H) ImplSelf.Output);
+          (mut_ref Storage) -> Input -> (M (H := H) Output);
         MUTATES `{H : State.Trait} : bool;
         PAYABLE `{H : State.Trait} : bool;
         SELECTOR `{H : State.Trait} : list u8;
@@ -1310,10 +1290,7 @@ Module reflect.
         Output := Output;
         Error := Error;
         IS_RESULT `{H : State.Trait} : bool;
-        CALLABLE
-          `{H : State.Trait}
-          :
-          ImplSelf.Input -> (M (H := H) ImplSelf.Output);
+        CALLABLE `{H : State.Trait} : Input -> (M (H := H) Output);
         PAYABLE `{H : State.Trait} : bool;
         SELECTOR `{H : State.Trait} : list u8;
         LABEL `{H : State.Trait} : ref str;
@@ -1373,8 +1350,7 @@ Module reflect.
         as_result
           `{H : State.Trait}
           :
-          (ref Self) ->
-          (M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)));
+          (ref Self) -> (M (H := H) (core.result.Result (ref C) (ref Error)));
       }.
       
       Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
@@ -1595,9 +1571,7 @@ Module dispatch.
       CALLABLE
         `{H : State.Trait}
         :
-        (mut_ref ImplSelf.Storage) ->
-        ImplSelf.Input ->
-        (M (H := H) ImplSelf.Output);
+        (mut_ref Storage) -> Input -> (M (H := H) Output);
       MUTATES `{H : State.Trait} : bool;
       PAYABLE `{H : State.Trait} : bool;
       SELECTOR `{H : State.Trait} : list u8;
@@ -1651,10 +1625,7 @@ Module dispatch.
       Output := Output;
       Error := Error;
       IS_RESULT `{H : State.Trait} : bool;
-      CALLABLE
-        `{H : State.Trait}
-        :
-        ImplSelf.Input -> (M (H := H) ImplSelf.Output);
+      CALLABLE `{H : State.Trait} : Input -> (M (H := H) Output);
       PAYABLE `{H : State.Trait} : bool;
       SELECTOR `{H : State.Trait} : list u8;
       LABEL `{H : State.Trait} : ref str;
@@ -1714,8 +1685,7 @@ Module dispatch.
       as_result
         `{H : State.Trait}
         :
-        (ref Self) ->
-        (M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)));
+        (ref Self) -> (M (H := H) (core.result.Result (ref C) (ref Error)));
     }.
     
     Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
@@ -1838,9 +1808,7 @@ Module DispatchableMessageInfo.
     CALLABLE
       `{H : State.Trait}
       :
-      (mut_ref ImplSelf.Storage) ->
-      ImplSelf.Input ->
-      (M (H := H) ImplSelf.Output);
+      (mut_ref Storage) -> Input -> (M (H := H) Output);
     MUTATES `{H : State.Trait} : bool;
     PAYABLE `{H : State.Trait} : bool;
     SELECTOR `{H : State.Trait} : list u8;
@@ -1894,10 +1862,7 @@ Module DispatchableConstructorInfo.
     Output := Output;
     Error := Error;
     IS_RESULT `{H : State.Trait} : bool;
-    CALLABLE
-      `{H : State.Trait}
-      :
-      ImplSelf.Input -> (M (H := H) ImplSelf.Output);
+    CALLABLE `{H : State.Trait} : Input -> (M (H := H) Output);
     PAYABLE `{H : State.Trait} : bool;
     SELECTOR `{H : State.Trait} : list u8;
     LABEL `{H : State.Trait} : ref str;
@@ -1964,8 +1929,7 @@ Module ConstructorOutput.
     as_result
       `{H : State.Trait}
       :
-      (ref Self) ->
-      (M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)));
+      (ref Self) -> (M (H := H) (core.result.Result (ref C) (ref Error)));
   }.
   
   Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
@@ -2268,7 +2232,7 @@ Module chain_extension.
   Module ChainExtensionInstance.
     Class Trait (Self : Set) {Instance : Set} : Set := {
       Instance := Instance;
-      instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
+      instantiate `{H : State.Trait} : (M (H := H) Instance);
     }.
     
     Global Instance Method_Instance `{H : State.Trait} `(Trait)
@@ -2351,7 +2315,7 @@ End chain_extension.
 Module ChainExtensionInstance.
   Class Trait (Self : Set) {Instance : Set} : Set := {
     Instance := Instance;
-    instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
+    instantiate `{H : State.Trait} : (M (H := H) Instance);
   }.
   
   Global Instance Method_Instance `{H : State.Trait} `(Trait)

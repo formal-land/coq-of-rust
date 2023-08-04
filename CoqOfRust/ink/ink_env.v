@@ -11,7 +11,7 @@ Module types.
         `{core.convert.AsMut.Trait Bytes} :
         Set := {
       Bytes := Bytes;
-      from_le_bytes `{H : State.Trait} : ImplSelf.Bytes -> (M (H := H) Self);
+      from_le_bytes `{H : State.Trait} : Bytes -> (M (H := H) Self);
     }.
     
     Global Instance Method_Bytes `{H : State.Trait} `(Trait)
@@ -159,7 +159,7 @@ Module FromLittleEndian.
       `{core.convert.AsMut.Trait Bytes} :
       Set := {
     Bytes := Bytes;
-    from_le_bytes `{H : State.Trait} : ImplSelf.Bytes -> (M (H := H) Self);
+    from_le_bytes `{H : State.Trait} : Bytes -> (M (H := H) Self);
   }.
   
   Global Instance Method_Bytes `{H : State.Trait} `(Trait)
@@ -1995,7 +1995,7 @@ Module call.
           {F: Set}
           `{core.ops.function.FnOnce.Trait unit F}
           :
-          Self -> F -> (M (H := H) ImplSelf.Output);
+          Self -> F -> (M (H := H) Output);
       }.
       
       Global Instance Method_Output `{H : State.Trait} `(Trait)
@@ -2042,7 +2042,7 @@ Module call.
         IS_RESULT `{H : State.Trait} : bool;
         Output := Output;
         Error := Error;
-        ok `{H : State.Trait} : C -> (M (H := H) ImplSelf.Output);
+        ok `{H : State.Trait} : C -> (M (H := H) Output);
       }.
       
       Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
@@ -2063,9 +2063,9 @@ Module call.
       }.
       Global Instance Method_err `{H : State.Trait} `(Trait)
         : Notation.Dot "err" := {
-        Notation.dot (_err : ImplSelf.Error) :=
+        Notation.dot (_err : Error) :=
           (Pure core.option.Option.None
-          : M (H := H) (core.option.Option ImplSelf.Output));
+          : M (H := H) (core.option.Option Output));
       }.
     End ConstructorReturnType.
     
@@ -2560,7 +2560,7 @@ Module common.
         {F: Set}
         `{core.ops.function.FnOnce.Trait unit F}
         :
-        Self -> F -> (M (H := H) ImplSelf.Output);
+        Self -> F -> (M (H := H) Output);
     }.
     
     Global Instance Method_Output `{H : State.Trait} `(Trait)
@@ -2630,7 +2630,7 @@ Module Unwrap.
       {F: Set}
       `{core.ops.function.FnOnce.Trait unit F}
       :
-      Self -> F -> (M (H := H) ImplSelf.Output);
+      Self -> F -> (M (H := H) Output);
   }.
   
   Global Instance Method_Output `{H : State.Trait} `(Trait)
@@ -2676,7 +2676,7 @@ Module create_builder.
       IS_RESULT `{H : State.Trait} : bool;
       Output := Output;
       Error := Error;
-      ok `{H : State.Trait} : C -> (M (H := H) ImplSelf.Output);
+      ok `{H : State.Trait} : C -> (M (H := H) Output);
     }.
     
     Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
@@ -2697,9 +2697,9 @@ Module create_builder.
     }.
     Global Instance Method_err `{H : State.Trait} `(Trait)
       : Notation.Dot "err" := {
-      Notation.dot (_err : ImplSelf.Error) :=
+      Notation.dot (_err : Error) :=
         (Pure core.option.Option.None
-        : M (H := H) (core.option.Option ImplSelf.Output));
+        : M (H := H) (core.option.Option Output));
     }.
   End ConstructorReturnType.
   
@@ -2848,7 +2848,7 @@ Module ConstructorReturnType.
     IS_RESULT `{H : State.Trait} : bool;
     Output := Output;
     Error := Error;
-    ok `{H : State.Trait} : C -> (M (H := H) ImplSelf.Output);
+    ok `{H : State.Trait} : C -> (M (H := H) Output);
   }.
   
   Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
@@ -2868,9 +2868,9 @@ Module ConstructorReturnType.
   }.
   Global Instance Method_err `{H : State.Trait} `(Trait)
     : Notation.Dot "err" := {
-    Notation.dot (_err : ImplSelf.Error) :=
+    Notation.dot (_err : Error) :=
       (Pure core.option.Option.None
-      : M (H := H) (core.option.Option ImplSelf.Output));
+      : M (H := H) (core.option.Option Output));
   }.
 End ConstructorReturnType.
 
@@ -4653,7 +4653,7 @@ Module topics.
         `{parity_scale_codec.codec.Encode.Trait T}
         :
         (mut_ref Self) -> (ref T) -> (M (H := H) unit);
-      output `{H : State.Trait} : Self -> (M (H := H) ImplSelf.Output);
+      output `{H : State.Trait} : Self -> (M (H := H) Output);
     }.
     
     Global Instance Method_Output `{H : State.Trait} `(Trait)
@@ -4795,7 +4795,7 @@ Module TopicsBuilderBackend.
       `{parity_scale_codec.codec.Encode.Trait T}
       :
       (mut_ref Self) -> (ref T) -> (M (H := H) unit);
-    output `{H : State.Trait} : Self -> (M (H := H) ImplSelf.Output);
+    output `{H : State.Trait} : Self -> (M (H := H) Output);
   }.
   
   Global Instance Method_Output `{H : State.Trait} `(Trait)
