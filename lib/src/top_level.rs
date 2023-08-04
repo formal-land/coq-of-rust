@@ -82,7 +82,7 @@ enum TopLevelItem {
     Const {
         name: String,
         ty: Box<CoqType>,
-        value: Box<Expr>,
+        value: Option<Box<Expr>>,
     },
     Definition {
         name: String,
@@ -312,11 +312,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 return vec![];
             }
 
-            let value = tcx.hir().body(*body_id).value;
+            let value = if env.axiomatize {
+                None
+            } else {
+                let value = tcx.hir().body(*body_id).value;
+                Some(Box::new(compile_expr(env, value)))
+            };
             vec![TopLevelItem::Const {
                 name,
                 ty: compile_type(env, ty),
-                value: Box::new(compile_expr(env, value)),
+                value,
             }]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
@@ -1347,14 +1352,17 @@ fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
 /// Monad transform for [TopLevelItem]
 fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
     match item {
-        TopLevelItem::Const { name, ty, value } => {
-            let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
-            TopLevelItem::Const {
-                name,
-                ty,
-                value: Box::new(Expr::Block(Box::new(value))),
-            }
-        }
+        TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
+            name,
+            ty,
+            value: match value {
+                None => value,
+                Some(value) => {
+                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
+                    Some(Box::new(Expr::Block(Box::new(value))))
+                }
+            },
+        },
         TopLevelItem::Definition {
             name,
             ty_params,
@@ -1585,30 +1593,42 @@ impl WherePredicate {
 impl TopLevelItem {
     fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
-            TopLevelItem::Const { name, ty, value } => nest([
-                nest([
-                    text("Definition"),
+            TopLevelItem::Const { name, ty, value } => match value {
+                None => nest([
+                    nest([text("Parameter"), line(), text(name), text(" :")]),
                     line(),
-                    text(name),
-                    line(),
+                    text("forall "),
                     monadic_typeclass_parameter(),
-                    text(" :"),
+                    text(","),
                     line(),
                     ty.to_doc(false),
-                    text(" :="),
+                    text("."),
                 ]),
-                line(),
-                nest([
-                    text("run"),
+                Some(value) => nest([
+                    nest([
+                        text("Definition"),
+                        line(),
+                        text(name),
+                        line(),
+                        monadic_typeclass_parameter(),
+                        text(" :"),
+                        line(),
+                        ty.to_doc(false),
+                        text(" :="),
+                    ]),
                     line(),
-                    // We have to force the parenthesis because otherwise they
-                    // are lost when printing a statement in the expression
-                    text("("),
-                    value.to_doc(true),
-                    text(")"),
+                    nest([
+                        text("run"),
+                        line(),
+                        // We have to force the parenthesis because otherwise they
+                        // are lost when printing a statement in the expression
+                        text("("),
+                        value.to_doc(true),
+                        text(")"),
+                    ]),
+                    text("."),
                 ]),
-                text("."),
-            ]),
+            },
             TopLevelItem::Definition {
                 name,
                 ty_params,
