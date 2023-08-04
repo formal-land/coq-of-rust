@@ -290,6 +290,7 @@ where
                     concat(bounds.iter().map(|x| {
                         concat([
                             line(),
+                            // @TODO: include default parameters
                             nest([
                                 text("`{"),
                                 x.clone(),
