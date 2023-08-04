@@ -1,1 +1,2 @@
 (* the translation of codec.rs form parity-scale-codec *)
+Require CoqOfRust.core.fmt.
