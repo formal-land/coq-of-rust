@@ -118,7 +118,11 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
         QPath::TypeRelative(ty, segment) => {
             let ty = match ty.kind {
                 rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => match path.res {
-                    Res::SelfTyAlias { .. } => None,
+                    // SelfTyAlias and SelfTyParam are only local aliases (named `Self`)
+                    // and cannot be used directly in qualified paths in Coq
+                    Res::SelfTyAlias { .. } | Res::SelfTyParam { .. } => None,
+                    // the rest of paths should refer to implementations of types,
+                    // so we prepend their names with `Impl_`
                     _ => {
                         let mut path = compile_path(env, path);
                         path.prefix_last_by_impl();
