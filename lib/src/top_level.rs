@@ -2109,80 +2109,30 @@ impl TopLevelItem {
                         body.is_empty(),
                         group([
                             nest([
-                                nest([
-                                    text("Class Trait"),
-                                    line(),
-                                    nest([
-                                        text("("),
-                                        text("Self"),
-                                        line(),
-                                        text(":"),
-                                        line(),
-                                        text("Set"),
-                                        text(")"),
-                                        if ty_params.is_empty() {
-                                            nil()
-                                        } else {
-                                            concat([
-                                                line(),
-                                                nest([
-                                                    text("{"),
-                                                    concat(ty_params.iter().map(
-                                                        |(ty, default)| {
-                                                            match default {
-                                                                // @TODO: implement translation of type parameters with default
-                                                                Some(_default) => concat([
-                                                                    text("(* TODO *)"),
-                                                                    line(),
-                                                                    text(ty),
-                                                                    line(),
-                                                                ]),
-                                                                None => concat([text(ty), line()]),
-                                                            }
-                                                        },
-                                                    )),
-                                                    text(":"),
-                                                    line(),
-                                                    text("Set"),
-                                                    text("}"),
-                                                ]),
-                                            ])
-                                        },
-                                    ]),
-                                    intersperse(
-                                        body.iter().map(|(item_name, item)| match item {
-                                            TraitItem::Definition { .. } => nil(),
-                                            TraitItem::DefinitionWithDefault { .. } => nil(),
-                                            TraitItem::Type(bounds) => concat([
-                                                line(),
-                                                nest([
-                                                    text("{"),
-                                                    text(item_name),
-                                                    text(" : "),
-                                                    text("Set"),
-                                                    text("}"),
-                                                ]),
-                                                concat(bounds.iter().map(|x| {
-                                                    concat([
-                                                        line(),
-                                                        nest([
-                                                            text("`{"),
-                                                            x.to_doc(),
-                                                            text(".Trait"),
-                                                            line(),
-                                                            text(item_name),
-                                                            text("}"),
-                                                        ]),
-                                                    ])
-                                                })),
-                                            ]),
-                                        }),
-                                        [nil()],
-                                    ),
-                                    text(" :"),
-                                    line(),
-                                    text("Set := {"),
-                                ]),
+                                new_trait_typeclass_header(
+                                    &ty_params
+                                        .iter()
+                                        .map(|(ty, default)| {
+                                            (
+                                                ty,
+                                                default
+                                                    .as_ref()
+                                                    .map(|default| default.to_doc(true)),
+                                            )
+                                        })
+                                        .collect(),
+                                    &body
+                                        .iter()
+                                        .filter_map(|(item_name, item)| match item {
+                                            TraitItem::Definition { .. } => None,
+                                            TraitItem::DefinitionWithDefault { .. } => None,
+                                            TraitItem::Type(bounds) => Some((
+                                                item_name,
+                                                bounds.iter().map(|x| x.to_doc()).collect(),
+                                            )),
+                                        })
+                                        .collect::<Vec<(&String, Vec<Doc>)>>(),
+                                ),
                                 intersperse(
                                     body.iter().map(|(name, item)| match item {
                                         TraitItem::Definition {
