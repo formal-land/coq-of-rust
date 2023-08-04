@@ -231,3 +231,81 @@ where
         section(name, ty_params, doc)
     }
 }
+
+/// creates a definition of a typeclass corresponding
+/// to a trait with the given type parameters and bounds
+pub(crate) fn new_trait_typeclass_header<'a, U>(
+    ty_params: &Vec<(U, Option<Doc>)>,
+    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    nest([
+        text("Class Trait"),
+        line(),
+        nest([
+            text("("),
+            text("Self"),
+            line(),
+            text(":"),
+            line(),
+            text("Set"),
+            text(")"),
+            if ty_params.is_empty() {
+                nil()
+            } else {
+                concat([
+                    line(),
+                    nest([
+                        text("{"),
+                        concat(ty_params.iter().map(|(ty, default)| {
+                            match default {
+                                // @TODO: implement the translation of type parameters with default
+                                Some(_default) => {
+                                    concat([text("(* TODO *)"), line(), text(*ty), line()])
+                                }
+                                None => concat([text(*ty), line()]),
+                            }
+                        })),
+                        text(":"),
+                        line(),
+                        text("Set"),
+                        text("}"),
+                    ]),
+                ])
+            },
+        ]),
+        intersperse(
+            types_with_bounds.iter().map(|(item_name, bounds)| {
+                concat([
+                    line(),
+                    nest([
+                        text("{"),
+                        text(*item_name),
+                        text(" : "),
+                        text("Set"),
+                        text("}"),
+                    ]),
+                    concat(bounds.iter().map(|x| {
+                        concat([
+                            line(),
+                            nest([
+                                text("`{"),
+                                x.clone(),
+                                text(".Trait"),
+                                line(),
+                                text(*item_name),
+                                text("}"),
+                            ]),
+                        ])
+                    })),
+                ])
+            }),
+            [nil()],
+        ),
+        text(" :"),
+        line(),
+        text("Set := {"),
+    ])
+}
