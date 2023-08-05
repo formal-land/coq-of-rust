@@ -25,7 +25,7 @@ Module Contains.
     contains
       `{H : State.Trait}
       :
-      (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M (H := H) bool);
+      (ref Self) -> (ref A) -> (ref B) -> (M (H := H) bool);
     first `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
     last `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
   }.
@@ -40,15 +40,15 @@ Module Contains.
   }.
   Global Instance Method_contains `{H : State.Trait} `(Trait)
     : Notation.Dot "contains" := {
-    Notation.dot := contains;
+    Notation.dot := @contains;
   }.
   Global Instance Method_first `{H : State.Trait} `(Trait)
     : Notation.Dot "first" := {
-    Notation.dot := first;
+    Notation.dot := @first;
   }.
   Global Instance Method_last `{H : State.Trait} `(Trait)
     : Notation.Dot "last" := {
-    Notation.dot := last;
+    Notation.dot := @last;
   }.
 End Contains.
 

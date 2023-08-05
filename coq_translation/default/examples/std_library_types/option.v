@@ -49,7 +49,7 @@ Definition try_division
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ := option.try_division 4 2 in
   let* _ := option.try_division 1 0 in
-  let none := core.option.Option.None in
+  let none : core.option.Option i32 := core.option.Option.None in
   let _equivalent_none := core.option.Option.None in
   let optional_float := core.option.Option.Some 0 (* 0 *) in
   let* _ :=

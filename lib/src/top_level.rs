@@ -321,7 +321,7 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
-    let name = item.ident.name.to_string();
+    let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize {
         let def_id = item.owner_id.to_def_id();
         let is_public = tcx.visibility(def_id).is_public();
@@ -369,7 +369,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     .iter()
                     .filter_map(|param| match param.kind {
                         rustc_hir::GenericParamKind::Type { .. } => {
-                            Some(param.name.ident().to_string())
+                            Some(to_valid_coq_name(param.name.ident().to_string()))
                         }
                         _ => None,
                     })
@@ -552,7 +552,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 None
                             }
                         };
-                        let name = param.name.ident().to_string();
+                        let name = to_valid_coq_name(param.name.ident().to_string());
                         (name, default)
                     })
                     .collect(),
@@ -566,7 +566,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                             .iter()
                             .filter_map(|param| match param.kind {
                                 rustc_hir::GenericParamKind::Type { .. } => {
-                                    Some(param.name.ident().to_string())
+                                    Some(to_valid_coq_name(param.name.ident().to_string()))
                                 }
                                 _ => None,
                             })
@@ -652,7 +652,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 TraitItem::Type(generic_bounds)
                             }
                         };
-                        (item.ident.name.to_string(), body)
+                        (to_valid_coq_name(item.ident.name.to_string()), body)
                     })
                     .collect(),
             }]
@@ -2136,153 +2136,99 @@ impl TopLevelItem {
                 name,
                 ty_params,
                 body,
-            } => group([
-                nest([text("Module"), line(), text(name), text(".")]),
-                nest([
-                    hardline(),
-                    if body.is_empty() {
-                        group([text("Unset Primitive Projections."), hardline()])
-                    } else {
-                        nil()
-                    },
-                    nest([
-                        nest([
-                            text("Class Trait"),
-                            line(),
+            } => module(
+                name,
+                group([
+                    locally_unset_primitive_projections(
+                        body.is_empty(),
+                        group([
                             nest([
-                                text("("),
-                                text("Self"),
-                                line(),
-                                text(":"),
-                                line(),
-                                text("Set"),
-                                text(")"),
-                                if ty_params.is_empty() {
-                                    nil()
-                                } else {
-                                    concat([
-                                        line(),
-                                        nest([
-                                            text("{"),
-                                            concat(ty_params.iter().map(|(ty, default)| {
-                                                match default {
-                                                    // @TODO: implement translation of type parameters with default
-                                                    Some(_default) => concat([
-                                                        text("(* TODO *)"),
+                                new_trait_typeclass_header(
+                                    &ty_params
+                                        .iter()
+                                        .map(|(ty, default)| {
+                                            (
+                                                ty,
+                                                default
+                                                    .as_ref()
+                                                    .map(|default| default.to_doc(true)),
+                                            )
+                                        })
+                                        .collect(),
+                                    &body
+                                        .iter()
+                                        .filter_map(|(item_name, item)| match item {
+                                            TraitItem::Definition { .. } => None,
+                                            TraitItem::DefinitionWithDefault { .. } => None,
+                                            TraitItem::Type(bounds) => Some((
+                                                item_name,
+                                                bounds.iter().map(|x| x.to_doc()).collect(),
+                                            )),
+                                        })
+                                        .collect::<Vec<(&String, Vec<Doc>)>>(),
+                                ),
+                                intersperse(
+                                    body.iter().map(|(name, item)| match item {
+                                        TraitItem::Definition {
+                                            ty_params,
+                                            where_predicates,
+                                            ty,
+                                        } => group([
+                                            hardline(),
+                                            nest([
+                                                text(name),
+                                                line(),
+                                                monadic_typeclass_parameter(),
+                                                line(),
+                                                if ty_params.is_empty() {
+                                                    nil()
+                                                } else {
+                                                    concat([
+                                                        group([
+                                                            text("{"),
+                                                            intersperse(ty_params, [line()]),
+                                                            text(": Set}"),
+                                                        ]),
                                                         line(),
-                                                        text(ty),
-                                                        line(),
-                                                    ]),
-                                                    None => concat([text(ty), line()]),
-                                                }
-                                            })),
-                                            text(":"),
-                                            line(),
-                                            text("Set"),
-                                            text("}"),
+                                                    ])
+                                                },
+                                                intersperse(
+                                                    [
+                                                        where_predicates
+                                                            .iter()
+                                                            .map(|predicate| predicate.to_doc())
+                                                            .collect::<Vec<Doc>>(),
+                                                        vec![nil()],
+                                                    ]
+                                                    .concat(),
+                                                    [line()],
+                                                ),
+                                                text(":"),
+                                                line(),
+                                                ty.to_doc(false),
+                                                text(";"),
+                                            ]),
                                         ]),
-                                    ])
-                                },
+                                        TraitItem::DefinitionWithDefault { .. } => nil(),
+                                        TraitItem::Type { .. } => group([
+                                            hardline(),
+                                            nest([
+                                                text(name),
+                                                line(),
+                                                text(":="),
+                                                line(),
+                                                text(name),
+                                                text(";"),
+                                            ]),
+                                        ]),
+                                    }),
+                                    [nil()],
+                                ),
                             ]),
-                            intersperse(
-                                body.iter().map(|(item_name, item)| match item {
-                                    TraitItem::Definition { .. } => nil(),
-                                    TraitItem::DefinitionWithDefault { .. } => nil(),
-                                    TraitItem::Type(bounds) => concat([
-                                        line(),
-                                        nest([
-                                            text("{"),
-                                            text(item_name),
-                                            text(" : "),
-                                            text("Set"),
-                                            text("}"),
-                                        ]),
-                                        concat(bounds.iter().map(|x| {
-                                            concat([
-                                                line(),
-                                                nest([
-                                                    text("`{"),
-                                                    x.to_doc(),
-                                                    text(".Trait"),
-                                                    line(),
-                                                    text(item_name),
-                                                    text("}"),
-                                                ]),
-                                            ])
-                                        })),
-                                    ]),
-                                }),
-                                [nil()],
-                            ),
-                            text(" :"),
-                            line(),
-                            text("Set := {"),
+                            hardline(),
+                            text("}."),
                         ]),
-                        intersperse(
-                            body.iter().map(|(name, item)| match item {
-                                TraitItem::Definition {
-                                    ty_params,
-                                    where_predicates,
-                                    ty,
-                                } => group([
-                                    hardline(),
-                                    nest([
-                                        text(name),
-                                        line(),
-                                        monadic_typeclass_parameter(),
-                                        line(),
-                                        if ty_params.is_empty() {
-                                            nil()
-                                        } else {
-                                            concat([
-                                                group([
-                                                    text("{"),
-                                                    intersperse(ty_params, [line()]),
-                                                    text(": Set}"),
-                                                ]),
-                                                line(),
-                                            ])
-                                        },
-                                        intersperse(
-                                            [
-                                                where_predicates
-                                                    .iter()
-                                                    .map(|predicate| predicate.to_doc())
-                                                    .collect::<Vec<Doc>>(),
-                                                vec![nil()],
-                                            ]
-                                            .concat(),
-                                            [line()],
-                                        ),
-                                        text(":"),
-                                        line(),
-                                        ty.to_doc(false),
-                                        text(";"),
-                                    ]),
-                                ]),
-                                TraitItem::DefinitionWithDefault { .. } => nil(),
-                                TraitItem::Type { .. } => group([
-                                    hardline(),
-                                    nest([
-                                        text(name),
-                                        line(),
-                                        text(":="),
-                                        line(),
-                                        text(name),
-                                        text(";"),
-                                    ]),
-                                ]),
-                            }),
-                            [nil()],
-                        ),
-                    ]),
-                    hardline(),
-                    text("}."),
-                    if body.is_empty() {
-                        group([hardline(), text("Global Set Primitive Projections.")])
-                    } else {
-                        hardline()
-                    },
+                    ),
                     concat(body.iter().map(|(name, item)| {
                         concat([
                             hardline(),
@@ -2325,6 +2271,7 @@ impl TopLevelItem {
                                         line(),
                                         text(":="),
                                         line(),
+                                        text("@"),
                                         text(name),
                                         text(";"),
                                     ]),
@@ -2398,9 +2345,7 @@ impl TopLevelItem {
                         ])
                     })),
                 ]),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
-            ]),
+            ),
             TopLevelItem::TraitImpl {
                 generic_tys,
                 ty_params,

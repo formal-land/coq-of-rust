@@ -45,7 +45,10 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let orange :=
     core.option.Option.Some
       unpacking_options_and_defaults_via_or.Fruit.Orange in
-  let no_fruit := core.option.Option.None in
+  let
+      no_fruit :
+      core.option.Option unpacking_options_and_defaults_via_or.Fruit :=
+    core.option.Option.None in
   let* first_available_fruit :=
     let* α0 := no_fruit.["or"] orange in
     α0.["or"] apple in

@@ -50,7 +50,11 @@ End
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let my_fruit := core.option.Option.None in
+  let
+      my_fruit :
+      core.option.Option
+        unpacking_options_and_defaults_via_get_or_insert_with.Fruit :=
+    core.option.Option.None in
   let get_lemon_as_fallback :=
     fun  =>
       let* _ :=

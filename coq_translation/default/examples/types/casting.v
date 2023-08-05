@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let decimal := 65 (* 65.4321 *) in
-  let integer := decimal in
+  let integer : u8 := decimal in
   let integer := cast decimal u8 in
   let character := cast integer char in
   let character := cast decimal char in
