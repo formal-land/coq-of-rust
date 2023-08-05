@@ -26,7 +26,7 @@ impl FreshVars {
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct MatchArm {
     pat: Pattern,
     body: Expr,
@@ -34,14 +34,14 @@ pub struct MatchArm {
 
 /// [LoopControlFlow] represents the expressions responsible for
 /// the flow of control in a loop
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum LoopControlFlow {
     Continue,
     Break,
 }
 
 /// Enum [Expr] represents the AST of rust terms.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Expr {
     Pure(Box<Expr>),
     LocalVar(String),
@@ -130,7 +130,7 @@ pub(crate) enum Expr {
     },
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Stmt {
     Expr(Box<Expr>),
     Let {

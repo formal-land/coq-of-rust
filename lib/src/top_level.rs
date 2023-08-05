@@ -5,6 +5,7 @@ use crate::header::*;
 use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
+use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
     GenericBound, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn,
@@ -32,7 +33,7 @@ trait ToName {
     fn to_name(&self) -> String;
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TraitItem {
     Definition {
         ty_params: Vec<String>,
@@ -49,7 +50,7 @@ enum TraitItem {
     Type(Vec<Path>),
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum ImplItem {
     Const {
         body: Box<Expr>,
@@ -70,14 +71,14 @@ enum ImplItem {
     },
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct WherePredicate {
     name: Path,
     ty_params: Vec<Box<CoqType>>,
     ty: Box<CoqType>,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum VariantItem {
     Struct { fields: Vec<(String, Box<CoqType>)> },
     Tuple { tys: Vec<Box<CoqType>> },
@@ -85,7 +86,7 @@ enum VariantItem {
 
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TopLevelItem {
     Const {
         name: String,
@@ -184,7 +185,7 @@ impl ToName for TopLevelItem {
 }
 
 /// The actual value of the type parameter of the trait implementation
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TraitImplTyParam {
     /// the value of the parameter that has no default
     JustValue { name: String, ty: Box<CoqType> },
@@ -200,7 +201,7 @@ impl ToName for (String, ImplItem) {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct TopLevel(Vec<TopLevelItem>);
 
 struct FnSigAndBody {
@@ -312,6 +313,12 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
     false
 }
 
+/// We deduplicate items while keeping there order. Often, items are duplicated
+/// due to module imports or such.
+fn deduplicate_top_level_items(items: Vec<TopLevelItem>) -> Vec<TopLevelItem> {
+    items.into_iter().unique().collect()
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -411,14 +418,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             env.push_context(&name);
-            let mut items = module
-                .item_ids
-                .iter()
-                .flat_map(|item_id| {
-                    let item = tcx.hir().item(*item_id);
-                    compile_top_level_item(tcx, env, item)
-                })
-                .collect();
+            let mut items = deduplicate_top_level_items(
+                module
+                    .item_ids
+                    .iter()
+                    .flat_map(|item_id| {
+                        let item = tcx.hir().item(*item_id);
+                        compile_top_level_item(tcx, env, item)
+                    })
+                    .collect(),
+            );
             reorder_definitions_inplace(env, &mut items);
             env.pop_context();
             // We remove empty modules in the translation
@@ -883,14 +892,15 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         configuration: get_configuration(&opts.configuration_file),
     };
 
-    let mut results: Vec<TopLevelItem> = tcx
-        .hir()
-        .items()
-        .flat_map(|item_id| {
-            let item = tcx.hir().item(item_id);
-            compile_top_level_item(tcx, &mut env, item)
-        })
-        .collect();
+    let mut results: Vec<TopLevelItem> = deduplicate_top_level_items(
+        tcx.hir()
+            .items()
+            .flat_map(|item_id| {
+                let item = tcx.hir().item(item_id);
+                compile_top_level_item(tcx, &mut env, item)
+            })
+            .collect(),
+    );
 
     reorder_definitions_inplace(&mut env, &mut results);
     if opts.generate_reorder {

@@ -29,12 +29,6 @@ def update_ink_primitives():
         content = f.read()
     content = \
         sub_exactly_once(
-            r"Definition Hash := @Hash\.t\.\n\nModule Visitor\..*Definition Visitor := @Visitor\.t\.",
-            "Definition Hash := @Hash.t.",
-            content,
-        )
-    content = \
-        sub_exactly_once(
             "Definition MessageResult",
             "Definition MessageResult (T : Set)",
             content,
