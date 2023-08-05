@@ -25,7 +25,7 @@ Module Contains.
     contains
       `{H : State.Trait}
       :
-      (ref Self) -> (ref ImplSelf.A) -> (ref ImplSelf.B) -> (M (H := H) bool);
+      (ref Self) -> (ref A) -> (ref B) -> (M (H := H) bool);
     first `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
     last `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
   }.
