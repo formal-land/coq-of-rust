@@ -53,16 +53,6 @@ Module contract.
       M (H := H) (syn.error.Result proc_macro2.TokenStream).
 End contract.
 
-Parameter generate : forall `{H : State.Trait},
-    proc_macro2.TokenStream ->
-    proc_macro2.TokenStream ->
-    M (H := H) proc_macro2.TokenStream.
-
-Parameter generate_or_err : forall `{H : State.Trait},
-    proc_macro2.TokenStream ->
-    proc_macro2.TokenStream ->
-    M (H := H) (syn.error.Result proc_macro2.TokenStream).
-
 Module ink_test.
   Parameter generate : forall `{H : State.Trait},
       proc_macro2.TokenStream ->
@@ -74,16 +64,6 @@ Module ink_test.
       proc_macro2.TokenStream ->
       M (H := H) (syn.error.Result proc_macro2.TokenStream).
 End ink_test.
-
-Parameter generate : forall `{H : State.Trait},
-    proc_macro2.TokenStream ->
-    proc_macro2.TokenStream ->
-    M (H := H) proc_macro2.TokenStream.
-
-Parameter generate_or_err : forall `{H : State.Trait},
-    proc_macro2.TokenStream ->
-    proc_macro2.TokenStream ->
-    M (H := H) (syn.error.Result proc_macro2.TokenStream).
 
 Module selector.
   Parameter generate_selector_id : forall `{H : State.Trait},
