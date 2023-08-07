@@ -5,6 +5,7 @@ use crate::header::*;
 use crate::path::*;
 use crate::render::*;
 use crate::ty::*;
+use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
     GenericBound, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn,
@@ -32,7 +33,7 @@ trait ToName {
     fn to_name(&self) -> String;
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TraitItem {
     Definition {
         ty_params: Vec<String>,
@@ -44,12 +45,12 @@ enum TraitItem {
         where_predicates: Vec<WherePredicate>,
         args: Vec<(String, Box<CoqType>)>,
         ret_ty: Box<CoqType>,
-        body: Box<Expr>,
+        body: Option<Box<Expr>>,
     },
     Type(Vec<Path>),
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum ImplItem {
     Const {
         body: Box<Expr>,
@@ -60,24 +61,23 @@ enum ImplItem {
         where_predicates: Vec<WherePredicate>,
         args: Vec<(String, Box<CoqType>)>,
         ret_ty: Box<CoqType>,
-        body: Box<Expr>,
+        body: Option<Box<Expr>>,
         is_method: bool,
         is_dead_code: bool,
-        is_axiomatized: bool,
     },
     Type {
         ty: Box<CoqType>,
     },
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct WherePredicate {
     name: Path,
     ty_params: Vec<Box<CoqType>>,
     ty: Box<CoqType>,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum VariantItem {
     Struct { fields: Vec<(String, Box<CoqType>)> },
     Tuple { tys: Vec<Box<CoqType>> },
@@ -85,7 +85,7 @@ enum VariantItem {
 
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TopLevelItem {
     Const {
         name: String,
@@ -98,9 +98,8 @@ enum TopLevelItem {
         where_predicates: Vec<WherePredicate>,
         args: Vec<(String, Box<CoqType>)>,
         ret_ty: Box<CoqType>,
-        body: Box<Expr>,
+        body: Option<Box<Expr>>,
         is_dead_code: bool,
-        is_axiomatized: bool,
     },
     TypeAlias {
         name: String,
@@ -184,7 +183,7 @@ impl ToName for TopLevelItem {
 }
 
 /// The actual value of the type parameter of the trait implementation
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TraitImplTyParam {
     /// the value of the parameter that has no default
     JustValue { name: String, ty: Box<CoqType> },
@@ -200,13 +199,13 @@ impl ToName for (String, ImplItem) {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct TopLevel(Vec<TopLevelItem>);
 
 struct FnSigAndBody {
     args: Vec<(String, Box<CoqType>)>,
     ret_ty: Box<CoqType>,
-    body: Box<Expr>,
+    body: Option<Box<Expr>>,
 }
 
 fn compile_fn_sig_and_body_id(
@@ -233,7 +232,11 @@ fn compile_fn_sig_and_body_id(
             rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
             rustc_hir::FnRetTy::Return(ty) => compile_type(env, ty),
         },
-        body: Box::new(compile_expr(env, expr)),
+        body: if env.axiomatize {
+            None
+        } else {
+            Some(Box::new(compile_expr(env, expr)))
+        },
     }
 }
 
@@ -310,6 +313,12 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
         }
     }
     false
+}
+
+/// We deduplicate items while keeping there order. Often, items are duplicated
+/// due to module imports or such.
+fn deduplicate_top_level_items(items: Vec<TopLevelItem>) -> Vec<TopLevelItem> {
+    items.into_iter().unique().collect()
 }
 
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
@@ -404,21 +413,22 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 ret_ty,
                 body,
                 is_dead_code: if_marked_as_dead_code,
-                is_axiomatized: env.axiomatize,
             }]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             env.push_context(&name);
-            let mut items = module
-                .item_ids
-                .iter()
-                .flat_map(|item_id| {
-                    let item = tcx.hir().item(*item_id);
-                    compile_top_level_item(tcx, env, item)
-                })
-                .collect();
+            let mut items = deduplicate_top_level_items(
+                module
+                    .item_ids
+                    .iter()
+                    .flat_map(|item_id| {
+                        let item = tcx.hir().item(*item_id);
+                        compile_top_level_item(tcx, env, item)
+                    })
+                    .collect(),
+            );
             reorder_definitions_inplace(env, &mut items);
             env.pop_context();
             // We remove empty modules in the translation
@@ -762,10 +772,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 where_predicates,
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
-                                body: Box::new(compile_expr(env, expr)),
+                                body: if env.axiomatize {None} else {Some(Box::new(compile_expr(env, expr)))},
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
-                                is_axiomatized: env.axiomatize,
                             }
                         }
                         ImplItemKind::Type(ty) => ImplItem::Type {
@@ -883,14 +892,15 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         configuration: get_configuration(&opts.configuration_file),
     };
 
-    let mut results: Vec<TopLevelItem> = tcx
-        .hir()
-        .items()
-        .flat_map(|item_id| {
-            let item = tcx.hir().item(item_id);
-            compile_top_level_item(tcx, &mut env, item)
-        })
-        .collect();
+    let mut results: Vec<TopLevelItem> = deduplicate_top_level_items(
+        tcx.hir()
+            .items()
+            .flat_map(|item_id| {
+                let item = tcx.hir().item(item_id);
+                compile_top_level_item(tcx, &mut env, item)
+            })
+            .collect(),
+    );
 
     reorder_definitions_inplace(&mut env, &mut results);
     if opts.generate_reorder {
@@ -988,9 +998,8 @@ struct ArgumentsForFnToDoc<'a> {
     where_predicates: Option<&'a Vec<WherePredicate>>,
     args: &'a Vec<(String, Box<CoqType>)>,
     ret_ty: &'a CoqType,
-    body: &'a Expr,
+    body: &'a Option<Box<Expr>>,
     is_dead_code: bool,
-    is_axiomatized: bool,
     extra_data: Option<&'a TopLevelItem>,
 }
 
@@ -1009,62 +1018,65 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
-            group([
-                nest([
-                    text("Parameter "),
-                    strct_args.body.parameter_name_for_fmt(),
-                    text(" : "),
-                    // get type of argument named f
-                    // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                    concat(strct_args.args.iter().map(|(name, ty)| {
-                        if name == "f" {
-                            ty.to_doc_tuning(false)
-                        } else {
-                            nil()
-                        }
-                    })),
-                    text(" -> "),
-                    types_for_f,
-                    strct_args.ret_ty.to_doc(false),
-                    text("."),
-                ]),
-                hardline(),
-                hardline(),
-                nest([
-                    text("Global Instance Deb_"),
-                    strct_args.body.parameter_name_for_fmt(),
-                    text(" : "),
-                    text("Notation.DoubleColon"),
-                    line(),
-                    concat(strct_args.args.iter().map(|(name, ty)| {
-                        if name == "f" {
-                            ty.to_doc_tuning(false)
-                        } else {
-                            nil()
-                        }
-                    })),
-                    text(" \""),
-                    strct_args.body.parameter_name_for_fmt(),
-                    text("\""),
-                    text(" := "),
-                    text("{"),
-                    line(),
+            match strct_args.body {
+                Some(body) => group([
                     nest([
-                        text("Notation.double_colon := "),
-                        strct_args.body.parameter_name_for_fmt(),
-                        text(";"),
-                        line(),
+                        text("Parameter "),
+                        body.parameter_name_for_fmt(),
+                        text(" : "),
+                        // get type of argument named f
+                        // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                        concat(strct_args.args.iter().map(|(name, ty)| {
+                            if name == "f" {
+                                ty.to_doc_tuning(false)
+                            } else {
+                                nil()
+                            }
+                        })),
+                        text(" -> "),
+                        types_for_f,
+                        strct_args.ret_ty.to_doc(false),
+                        text("."),
                     ]),
-                    text("}."),
+                    hardline(),
+                    hardline(),
+                    nest([
+                        text("Global Instance Deb_"),
+                        body.parameter_name_for_fmt(),
+                        text(" : "),
+                        text("Notation.DoubleColon"),
+                        line(),
+                        concat(strct_args.args.iter().map(|(name, ty)| {
+                            if name == "f" {
+                                ty.to_doc_tuning(false)
+                            } else {
+                                nil()
+                            }
+                        })),
+                        text(" \""),
+                        body.parameter_name_for_fmt(),
+                        text("\""),
+                        text(" := "),
+                        text("{"),
+                        line(),
+                        nest([
+                            text("Notation.double_colon := "),
+                            body.parameter_name_for_fmt(),
+                            text(";"),
+                            line(),
+                        ]),
+                        text("}."),
+                    ]),
+                    hardline(),
+                    hardline(),
                 ]),
-                hardline(),
-                hardline(),
-            ])
+                None => nil(),
+            }
         } else {
             nil()
         },
-        if strct_args.is_axiomatized {
-            nest([nest([
+        match strct_args.body {
+            None => nest([nest([
                 nest([
                     text("Parameter"),
                     line(),
@@ -1140,9 +1152,8 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                 // return type
                 strct_args.ret_ty.to_doc(false),
                 text("."),
-            ])])
-        } else {
-            nest([
+            ])]),
+            Some(body) => nest([
                 nest([
                     nest([text("Definition"), line(), text(strct_args.name)]),
                     line(),
@@ -1215,9 +1226,9 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     ]),
                 ]),
                 line(),
-                strct_args.body.to_doc(false),
+                body.to_doc(false),
                 text("."),
-            ])
+            ]),
         },
     ])
 }
@@ -1239,20 +1250,21 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             body,
             is_method,
             is_dead_code,
-            is_axiomatized,
-        } => {
-            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-            ImplItem::Definition {
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty: CoqType::monad(mt_ty(ret_ty)),
-                body: Box::new(Expr::Block(Box::new(body))),
-                is_method,
-                is_dead_code,
-                is_axiomatized,
-            }
-        }
+        } => ImplItem::Definition {
+            ty_params,
+            where_predicates,
+            args,
+            ret_ty: CoqType::monad(mt_ty(ret_ty)),
+            body: match body {
+                None => body,
+                Some(body) => {
+                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                    Some(Box::new(Expr::Block(Box::new(body))))
+                }
+            },
+            is_method,
+            is_dead_code,
+        },
         ImplItem::Type { .. } => item,
     }
 }
@@ -1282,16 +1294,19 @@ fn mt_trait_item(body: TraitItem) -> TraitItem {
             args,
             ret_ty,
             body,
-        } => {
-            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-            TraitItem::DefinitionWithDefault {
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty: CoqType::monad(mt_ty(ret_ty)),
-                body: Box::new(Expr::Block(Box::new(body))),
-            }
-        }
+        } => TraitItem::DefinitionWithDefault {
+            ty_params,
+            where_predicates,
+            args,
+            ret_ty: CoqType::monad(mt_ty(ret_ty)),
+            body: match body {
+                None => body,
+                Some(body) => {
+                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                    Some(Box::new(Expr::Block(Box::new(body))))
+                }
+            },
+        },
     }
 }
 
@@ -1320,45 +1335,26 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             ret_ty,
             body,
             is_dead_code,
-            is_axiomatized,
-        } => {
-            let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-            TopLevelItem::Definition {
-                name,
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty: CoqType::monad(mt_ty(ret_ty)),
-                body: Box::new(Expr::Block(Box::new(body))),
-                is_dead_code,
-                is_axiomatized,
-            }
-        }
-        TopLevelItem::TypeAlias { name, ty } => TopLevelItem::TypeAlias { name, ty },
-        TopLevelItem::TypeEnum { name, variants } => TopLevelItem::TypeEnum { name, variants },
-        TopLevelItem::TypeStructStruct {
+        } => TopLevelItem::Definition {
             name,
             ty_params,
-            fields,
-            is_dead_code,
-        } => TopLevelItem::TypeStructStruct {
-            name,
-            ty_params,
-            fields,
+            where_predicates,
+            args,
+            ret_ty: CoqType::monad(mt_ty(ret_ty)),
+            body: match body {
+                None => body,
+                Some(body) => {
+                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                    Some(Box::new(Expr::Block(Box::new(body))))
+                }
+            },
             is_dead_code,
         },
-        TopLevelItem::TypeStructTuple {
-            name,
-            ty_params,
-            fields,
-        } => TopLevelItem::TypeStructTuple {
-            name,
-            ty_params,
-            fields,
-        },
-        TopLevelItem::TypeStructUnit { name, ty_params } => {
-            TopLevelItem::TypeStructUnit { name, ty_params }
-        }
+        TopLevelItem::TypeAlias { .. } => item,
+        TopLevelItem::TypeEnum { .. } => item,
+        TopLevelItem::TypeStructStruct { .. } => item,
+        TopLevelItem::TypeStructTuple { .. } => item,
+        TopLevelItem::TypeStructUnit { .. } => item,
         TopLevelItem::Module {
             name,
             body,
@@ -1401,7 +1397,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             items: mt_impl_items(items),
             trait_non_default_items,
         },
-        TopLevelItem::Error(err) => TopLevelItem::Error(err),
+        TopLevelItem::Error(_) => item,
     }
 }
 
@@ -1486,7 +1482,6 @@ impl ImplItem {
                 body,
                 is_method,
                 is_dead_code,
-                is_axiomatized,
             } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
@@ -1496,7 +1491,6 @@ impl ImplItem {
                     ret_ty,
                     body,
                     is_dead_code: *is_dead_code,
-                    is_axiomatized: *is_axiomatized,
                     extra_data: *extra_data,
                 };
 
@@ -1595,7 +1589,6 @@ impl TopLevelItem {
                 ret_ty,
                 body,
                 is_dead_code,
-                is_axiomatized,
             } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
@@ -1605,7 +1598,6 @@ impl TopLevelItem {
                     ret_ty,
                     body,
                     is_dead_code: *is_dead_code,
-                    is_axiomatized: *is_axiomatized,
                     extra_data: *extra_data,
                 };
 
@@ -2299,7 +2291,10 @@ impl TopLevelItem {
                                         ]),
                                         line(),
                                         text("("),
-                                        body.to_doc(false),
+                                        match body {
+                                            None => text("axiom"),
+                                            Some(body) => body.to_doc(false),
+                                        },
                                         line(),
                                         nest([text(":"), line(), ret_ty.to_doc(false), text(")")]),
                                         text(";"),

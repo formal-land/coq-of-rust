@@ -29,8 +29,7 @@ Module ConstantTimeEq.
   Global Instance Method_ct_ne `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_ne" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
-      (let* α0 := self.["ct_eq"] other in
-      α0.["not"]
+      (axiom
       : M (H := H) subtle.Choice);
   }.
 End ConstantTimeEq.
@@ -53,11 +52,7 @@ Module ConditionallySelectable.
         (self : mut_ref Self)
         (other : ref Self)
         (choice : subtle.Choice) :=
-      (let* _ :=
-        let* α0 := self.["deref"] in
-        let* α1 := Self::["conditional_select"] self other choice in
-        assign α0 α1 in
-      Pure tt
+      (axiom
       : M (H := H) unit);
   }.
   Global Instance Method_conditional_swap `{H : State.Trait} `(Trait)
@@ -66,10 +61,7 @@ Module ConditionallySelectable.
         (a : mut_ref Self)
         (b : mut_ref Self)
         (choice : subtle.Choice) :=
-      (let* t := a.["deref"] in
-      let* _ := a.["conditional_assign"] (addr_of b) choice in
-      let* _ := b.["conditional_assign"] (addr_of t) choice in
-      Pure tt
+      (axiom
       : M (H := H) unit);
   }.
 End ConditionallySelectable.
@@ -129,11 +121,7 @@ Module ConstantTimeLess.
   Global Instance Method_ct_lt `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_lt" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
-      (let* α0 := self.["ct_gt"] other in
-      let* α1 := α0.["not"] in
-      let* α2 := self.["ct_eq"] other in
-      let* α3 := α2.["not"] in
-      α1.["bitand"] α3
+      (axiom
       : M (H := H) subtle.Choice);
   }.
 End ConstantTimeLess.

@@ -31,8 +31,6 @@ Definition create_fnmut `{H : State.Trait} : M (H := H) OpaqueDef :=
         std.io.stdio._print α1 in
       Pure tt).
 
-Error OpaqueTy.
-
 Definition create_fnonce `{H : State.Trait} : M (H := H) OpaqueDef :=
   let* text := "FnOnce".["to_owned"] in
   Pure
@@ -46,8 +44,6 @@ Definition create_fnonce `{H : State.Trait} : M (H := H) OpaqueDef :=
             (addr_of [ α0 ]) in
         std.io.stdio._print α1 in
       Pure tt).
-
-Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=

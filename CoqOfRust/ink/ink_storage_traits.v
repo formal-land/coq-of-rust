@@ -137,7 +137,7 @@ Module storage.
     (* Global Instance Method_key `{H : State.Trait} `(Trait)
       : Notation.Dot "key" := {
       Notation.dot (self : ref Self) :=
-        (Pure Self::["KEY"]
+        (axiom
         : M (H := H) ink_primitives.key.Key);
     }.
   *) End StorageKey.
@@ -243,7 +243,7 @@ Module StorageKey.
   (* Global Instance Method_key `{H : State.Trait} `(Trait)
     : Notation.Dot "key" := {
     Notation.dot (self : ref Self) :=
-      (Pure Self::["KEY"]
+      (axiom
       : M (H := H) ink_primitives.key.Key);
   }.
 *) End StorageKey.
