@@ -240,6 +240,8 @@ where
     }
 }
 
+/// creates a definition of a typeclass corresponding
+/// to a trait with the given type parameters and bounds
 pub(crate) fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
     types_with_bounds: &[(U, Vec<Doc<'a>>)],
@@ -411,7 +413,20 @@ where
     ])
 }
 
-// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
+/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
+pub(crate) fn new_instance<'a, U>(name: U, kind: Doc<'a>, field: Doc<'a>, value: Doc<'a>) -> Doc<'a>
+where
+    U: std::fmt::Display,
+{
+    concat([
+        new_instance_header(name, kind),
+        nest([hardline(), new_instance_body(field, value)]),
+        hardline(),
+        text("}."),
+    ])
+}
+
+/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
 pub(crate) fn new_instance_header<U>(name: U, kind: Doc) -> Doc
 where
     U: std::fmt::Display,
@@ -438,22 +453,56 @@ where
     ])
 }
 
+/// produces the body of an instance of [Notation.Dot] or [Notation.DoubleColonType]
 pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
     nest([field, text(" :="), line(), value, text(";")])
 }
 
-#[allow(dead_code)]
-pub(crate) fn notation_dot_instance<'a, U>(name: U) -> Doc<'a>
+/// produces a definition of the given function
+pub(crate) fn function_header<'a, U, V, W, X>(
+    name: U,
+    ty_params: &'a Vec<V>,
+    bounds: Vec<W>,
+    args: &[(X, Doc<'a>)],
+) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>>,
+    &'a V: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    W: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    X: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    nest([
-        text("Notation.dot"),
-        line(),
-        text(":="),
-        line(),
-        text("@"),
+    group([
         text(name),
-        text(";"),
+        if ty_params.is_empty() {
+            nil()
+        } else {
+            group([
+                group([
+                    // change here if it doesn't work with '{}' brackets
+                    text("{"),
+                    intersperse(ty_params, [line()]),
+                    text(": Set}"),
+                ]),
+                line(),
+            ])
+        },
+        if bounds.is_empty() {
+            nil()
+        } else {
+            group([intersperse(bounds, [line()]), line()])
+        },
+        concat(args.iter().map(|(name, ty)| {
+            concat([
+                line(),
+                nest([
+                    text("("),
+                    text(*name),
+                    line(),
+                    text(": "),
+                    ty.clone(),
+                    text(")"),
+                ]),
+            ])
+        })),
     ])
 }

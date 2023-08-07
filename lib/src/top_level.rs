@@ -2132,92 +2132,50 @@ impl TopLevelItem {
                         concat([
                             hardline(),
                             match item {
-                                TraitItem::Definition { .. }
-                                | TraitItem::DefinitionWithDefault { .. } => {
-                                    new_instance_header(name, text("Notation.Dot"))
-                                }
-                                TraitItem::Type { .. } => new_instance_header(
+                                TraitItem::Definition { .. } => new_instance(
+                                    name,
+                                    text("Notation.Dot"),
+                                    text("Notation.dot"),
+                                    concat([text("@"), text(name)]),
+                                ),
+                                TraitItem::Type { .. } => new_instance(
                                     name,
                                     group([text("Notation.DoubleColonType"), line(), text("Self")]),
+                                    text("Notation.double_colon_type"),
+                                    text(name),
+                                ),
+                                TraitItem::DefinitionWithDefault {
+                                    ty_params,
+                                    where_predicates,
+                                    args,
+                                    ret_ty,
+                                    body,
+                                } => new_instance(
+                                    name,
+                                    text("Notation.Dot"),
+                                    nest([function_header(
+                                        "Notation.dot",
+                                        ty_params,
+                                        where_predicates
+                                            .iter()
+                                            .map(|predicate| predicate.to_doc())
+                                            .collect(),
+                                        &args
+                                            .iter()
+                                            .map(|(name, ty)| (name, ty.to_doc(false)))
+                                            .collect::<Vec<_>>(),
+                                    )]),
+                                    group([
+                                        text("("),
+                                        match body {
+                                            None => text("axiom"),
+                                            Some(body) => body.to_doc(false),
+                                        },
+                                        line(),
+                                        nest([text(":"), line(), ret_ty.to_doc(false), text(")")]),
+                                    ]),
                                 ),
                             },
-                            nest([
-                                hardline(),
-                                match item {
-                                    TraitItem::Definition { .. } => new_instance_body(
-                                        text("Notation.dot"),
-                                        concat([text("@"), text(name)]),
-                                    ),
-                                    TraitItem::Type { .. } => new_instance_body(
-                                        text("Notation.double_colon_type"),
-                                        text(name),
-                                    ),
-                                    TraitItem::DefinitionWithDefault {
-                                        ty_params,
-                                        where_predicates,
-                                        args,
-                                        ret_ty,
-                                        body,
-                                    } => new_instance_body(
-                                        nest([
-                                            text("Notation.dot"),
-                                            if ty_params.is_empty() {
-                                                nil()
-                                            } else {
-                                                group([
-                                                    group([
-                                                        // change here if it doesn't work with '{}' brackets
-                                                        text("{"),
-                                                        intersperse(ty_params, [line()]),
-                                                        text(": Set}"),
-                                                    ]),
-                                                    line(),
-                                                ])
-                                            },
-                                            intersperse(
-                                                [
-                                                    where_predicates
-                                                        .iter()
-                                                        .map(|predicate| predicate.to_doc())
-                                                        .collect::<Vec<Doc>>(),
-                                                    vec![nil()],
-                                                ]
-                                                .concat(),
-                                                [line()],
-                                            ),
-                                            concat(args.iter().map(|(name, ty)| {
-                                                concat([
-                                                    line(),
-                                                    nest([
-                                                        text("("),
-                                                        text(name),
-                                                        line(),
-                                                        text(": "),
-                                                        ty.to_doc(false),
-                                                        text(")"),
-                                                    ]),
-                                                ])
-                                            })),
-                                        ]),
-                                        group([
-                                            text("("),
-                                            match body {
-                                                None => text("axiom"),
-                                                Some(body) => body.to_doc(false),
-                                            },
-                                            line(),
-                                            nest([
-                                                text(":"),
-                                                line(),
-                                                ret_ty.to_doc(false),
-                                                text(")"),
-                                            ]),
-                                        ]),
-                                    ),
-                                },
-                            ]),
-                            hardline(),
-                            text("}."),
                         ])
                     })),
                 ]),
