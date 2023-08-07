@@ -311,9 +311,8 @@ where
     ])
 }
 
-/// creates a body of a typeclass corresponding
-/// to a trait with the given body
-pub(crate) fn trait_typeclass_body<'a, I>(items: I) -> Doc<'a>
+/// creates a body of a typeclass with the given items
+pub(crate) fn new_typeclass_body<'a, I>(items: I) -> Doc<'a>
 where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,

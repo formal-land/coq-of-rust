@@ -2125,7 +2125,7 @@ impl TopLevelItem {
                                         })
                                         .collect::<Vec<(&String, Vec<Doc>)>>(),
                                 ),
-                                trait_typeclass_body(body.iter().map(|(name, item)| {
+                                new_typeclass_body(body.iter().map(|(name, item)| {
                                     match item {
                                         TraitItem::Definition {
                                             ty_params,
