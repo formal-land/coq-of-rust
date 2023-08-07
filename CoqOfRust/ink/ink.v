@@ -51,7 +51,7 @@ Module result_info.
     
     Global Instance Method_value `{H : State.Trait} `(Trait)
       : Notation.Dot "value" := {
-      Notation.dot (self : ref Self) := (Pure false : M (H := H) bool);
+      Notation.dot (self : ref Self) := (axiom : M (H := H) bool);
     }.
   End IsResultErrFallback.
 End result_info.
@@ -105,7 +105,7 @@ Module IsResultErrFallback.
   
   Global Instance Method_value `{H : State.Trait} `(Trait)
     : Notation.Dot "value" := {
-    Notation.dot (self : ref Self) := (Pure false : M (H := H) bool);
+    Notation.dot (self : ref Self) := (axiom : M (H := H) bool);
   }.
 End IsResultErrFallback.
 

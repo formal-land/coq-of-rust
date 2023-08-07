@@ -2074,7 +2074,7 @@ Module call.
       Global Instance Method_err `{H : State.Trait} `(Trait)
         : Notation.Dot "err" := {
         Notation.dot (_err : Error) :=
-          (Pure core.option.Option.None
+          (axiom
           : M (H := H) (core.option.Option Output));
       }.
     End ConstructorReturnType.
@@ -2708,7 +2708,7 @@ Module create_builder.
     Global Instance Method_err `{H : State.Trait} `(Trait)
       : Notation.Dot "err" := {
       Notation.dot (_err : Error) :=
-        (Pure core.option.Option.None
+        (axiom
         : M (H := H) (core.option.Option Output));
     }.
   End ConstructorReturnType.
@@ -2923,7 +2923,7 @@ Module ConstructorReturnType.
   Global Instance Method_err `{H : State.Trait} `(Trait)
     : Notation.Dot "err" := {
     Notation.dot (_err : Error) :=
-      (Pure core.option.Option.None
+      (axiom
       : M (H := H) (core.option.Option Output));
   }.
 End ConstructorReturnType.
