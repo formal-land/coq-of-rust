@@ -319,3 +319,20 @@ where
 {
     intersperse(items, [nil()])
 }
+
+pub(crate) fn type_item<'a, U>(name: U) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    group([
+        hardline(),
+        nest([
+            text(name),
+            line(),
+            text(":="),
+            line(),
+            text(name),
+            text(";"),
+        ]),
+    ])
+}

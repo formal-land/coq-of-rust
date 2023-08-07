@@ -2168,17 +2168,7 @@ impl TopLevelItem {
                                             ]),
                                         ]),
                                         TraitItem::DefinitionWithDefault { .. } => nil(),
-                                        TraitItem::Type { .. } => group([
-                                            hardline(),
-                                            nest([
-                                                text(name),
-                                                line(),
-                                                text(":="),
-                                                line(),
-                                                text(name),
-                                                text(";"),
-                                            ]),
-                                        ]),
+                                        TraitItem::Type { .. } => type_item(name),
                                     }
                                 })),
                             ]),
