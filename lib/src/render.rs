@@ -310,3 +310,13 @@ where
         text("Set := {"),
     ])
 }
+
+/// creates a body of a typeclass corresponding
+/// to a trait with the given body
+pub(crate) fn trait_typeclass_body<'a, I>(items: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    intersperse(items, [nil()])
+}

@@ -2125,8 +2125,8 @@ impl TopLevelItem {
                                         })
                                         .collect::<Vec<(&String, Vec<Doc>)>>(),
                                 ),
-                                intersperse(
-                                    body.iter().map(|(name, item)| match item {
+                                trait_typeclass_body(body.iter().map(|(name, item)| {
+                                    match item {
                                         TraitItem::Definition {
                                             ty_params,
                                             where_predicates,
@@ -2179,9 +2179,8 @@ impl TopLevelItem {
                                                 text(";"),
                                             ]),
                                         ]),
-                                    }),
-                                    [nil()],
-                                ),
+                                    }
+                                })),
                             ]),
                             hardline(),
                             text("}."),
