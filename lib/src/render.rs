@@ -240,6 +240,34 @@ where
     }
 }
 
+/// creates a module with the translation of the given trait
+pub(crate) fn trait_module<'a, U>(
+    name: U,
+    ty_params: &Vec<(U, Option<Doc>)>,
+    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+    items: Vec<Doc<'a>>,
+    instances: Vec<Doc<'a>>,
+) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    module(
+        name,
+        group([
+            locally_unset_primitive_projections(
+                items.is_empty(),
+                trait_typeclass(ty_params, types_with_bounds, items),
+            ),
+            if instances.is_empty() {
+                nil()
+            } else {
+                hardline()
+            },
+            trait_notation_instances(instances),
+        ]),
+    )
+}
+
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
 pub(crate) fn trait_typeclass<'a, U, I>(
@@ -411,6 +439,11 @@ where
             text(";"),
         ]),
     ])
+}
+
+/// separates definitions of instances with [hardline]s
+pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
+    intersperse(instances, [hardline()])
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]

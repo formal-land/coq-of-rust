@@ -2086,99 +2086,90 @@ impl TopLevelItem {
                 name,
                 ty_params,
                 body,
-            } => module(
+            } => trait_module(
                 name,
-                group([
-                    locally_unset_primitive_projections(
-                        body.is_empty(),
-                        trait_typeclass(
-                            &ty_params
+                &ty_params
+                    .iter()
+                    .map(|(ty, default)| (ty, default.as_ref().map(|default| default.to_doc(true))))
+                    .collect(),
+                &body
+                    .iter()
+                    .filter_map(|(item_name, item)| match item {
+                        TraitItem::Definition { .. } => None,
+                        TraitItem::DefinitionWithDefault { .. } => None,
+                        TraitItem::Type(bounds) => {
+                            Some((item_name, bounds.iter().map(|x| x.to_doc()).collect()))
+                        }
+                    })
+                    .collect::<Vec<(&String, Vec<Doc>)>>(),
+                body.iter()
+                    .map(|(name, item)| match item {
+                        TraitItem::Definition {
+                            ty_params,
+                            where_predicates,
+                            ty,
+                        } => typeclass_definition_item(
+                            name,
+                            ty_params,
+                            where_predicates
                                 .iter()
-                                .map(|(ty, default)| {
-                                    (ty, default.as_ref().map(|default| default.to_doc(true)))
-                                })
-                                .collect(),
-                            &body
-                                .iter()
-                                .filter_map(|(item_name, item)| match item {
-                                    TraitItem::Definition { .. } => None,
-                                    TraitItem::DefinitionWithDefault { .. } => None,
-                                    TraitItem::Type(bounds) => Some((
-                                        item_name,
-                                        bounds.iter().map(|x| x.to_doc()).collect(),
-                                    )),
-                                })
-                                .collect::<Vec<(&String, Vec<Doc>)>>(),
-                            body.iter().map(|(name, item)| match item {
-                                TraitItem::Definition {
-                                    ty_params,
-                                    where_predicates,
-                                    ty,
-                                } => typeclass_definition_item(
-                                    name,
+                                .map(|predicate| predicate.to_doc())
+                                .collect::<Vec<Doc>>(),
+                            ty.to_doc(false),
+                        ),
+                        TraitItem::DefinitionWithDefault { .. } => nil(),
+                        TraitItem::Type { .. } => typeclass_type_item(name),
+                    })
+                    .collect(),
+                body.iter()
+                    .map(|(name, item)| {
+                        concat([match item {
+                            TraitItem::Definition { .. } => new_instance(
+                                name,
+                                text("Notation.Dot"),
+                                text("Notation.dot"),
+                                concat([text("@"), text(name)]),
+                            ),
+                            TraitItem::Type { .. } => new_instance(
+                                name,
+                                group([text("Notation.DoubleColonType"), line(), text("Self")]),
+                                text("Notation.double_colon_type"),
+                                text(name),
+                            ),
+                            TraitItem::DefinitionWithDefault {
+                                ty_params,
+                                where_predicates,
+                                args,
+                                ret_ty,
+                                body,
+                            } => new_instance(
+                                name,
+                                text("Notation.Dot"),
+                                nest([function_header(
+                                    "Notation.dot",
                                     ty_params,
                                     where_predicates
                                         .iter()
                                         .map(|predicate| predicate.to_doc())
-                                        .collect::<Vec<Doc>>(),
-                                    ty.to_doc(false),
-                                ),
-                                TraitItem::DefinitionWithDefault { .. } => nil(),
-                                TraitItem::Type { .. } => typeclass_type_item(name),
-                            }),
-                        ),
-                    ),
-                    concat(body.iter().map(|(name, item)| {
-                        concat([
-                            hardline(),
-                            match item {
-                                TraitItem::Definition { .. } => new_instance(
-                                    name,
-                                    text("Notation.Dot"),
-                                    text("Notation.dot"),
-                                    concat([text("@"), text(name)]),
-                                ),
-                                TraitItem::Type { .. } => new_instance(
-                                    name,
-                                    group([text("Notation.DoubleColonType"), line(), text("Self")]),
-                                    text("Notation.double_colon_type"),
-                                    text(name),
-                                ),
-                                TraitItem::DefinitionWithDefault {
-                                    ty_params,
-                                    where_predicates,
-                                    args,
-                                    ret_ty,
-                                    body,
-                                } => new_instance(
-                                    name,
-                                    text("Notation.Dot"),
-                                    nest([function_header(
-                                        "Notation.dot",
-                                        ty_params,
-                                        where_predicates
-                                            .iter()
-                                            .map(|predicate| predicate.to_doc())
-                                            .collect(),
-                                        &args
-                                            .iter()
-                                            .map(|(name, ty)| (name, ty.to_doc(false)))
-                                            .collect::<Vec<_>>(),
-                                    )]),
-                                    group([
-                                        text("("),
-                                        match body {
-                                            None => text("axiom"),
-                                            Some(body) => body.to_doc(false),
-                                        },
-                                        line(),
-                                        nest([text(":"), line(), ret_ty.to_doc(false), text(")")]),
-                                    ]),
-                                ),
-                            },
-                        ])
-                    })),
-                ]),
+                                        .collect(),
+                                    &args
+                                        .iter()
+                                        .map(|(name, ty)| (name, ty.to_doc(false)))
+                                        .collect::<Vec<_>>(),
+                                )]),
+                                group([
+                                    text("("),
+                                    match body {
+                                        None => text("axiom"),
+                                        Some(body) => body.to_doc(false),
+                                    },
+                                    line(),
+                                    nest([text(":"), line(), ret_ty.to_doc(false), text(")")]),
+                                ]),
+                            ),
+                        }])
+                    })
+                    .collect(),
             ),
             TopLevelItem::TraitImpl {
                 generic_tys,
