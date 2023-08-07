@@ -2,6 +2,14 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
+/// provides the instance of the Struct.Trait typeclass
+/// for definitions of functions and constants
+/// which types utilize the M monad constructor
+pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
+    // TODO: check whether the name of the parameter is necessary
+    text("`{H : State.Trait}")
+}
+
 pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     if with_paren {
         RcDoc::concat([RcDoc::text("("), doc, RcDoc::text(")")])
@@ -232,6 +240,26 @@ where
     }
 }
 
+pub(crate) fn trait_typeclass<'a, U, I>(
+    ty_params: &Vec<(U, Option<Doc>)>,
+    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+    items: I,
+) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    group([
+        nest([
+            new_trait_typeclass_header(ty_params, types_with_bounds),
+            new_typeclass_body(items),
+        ]),
+        hardline(),
+        text("}."),
+    ])
+}
+
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
 pub(crate) fn new_trait_typeclass_header<'a, U>(
@@ -320,7 +348,8 @@ where
     intersperse(items, [nil()])
 }
 
-pub(crate) fn type_item<'a, U>(name: U) -> Doc<'a>
+/// creates a type parameter as a field of a typeclass
+pub(crate) fn typeclass_type_item<'a, U>(name: U) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
@@ -334,5 +363,97 @@ where
             text(name),
             text(";"),
         ]),
+    ])
+}
+
+/// creates a field with the given name of a typeclass of the given type,
+/// with the given type parameters and satisfying the given typeclass bounds
+pub(crate) fn typeclass_definition_item<'a, U, V, W>(
+    name: U,
+    ty_params: &'a Vec<V>,
+    bounds: Vec<W>,
+    ty: Doc<'a>,
+) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>>,
+    &'a V: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    W: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    group([
+        hardline(),
+        nest([
+            text(name),
+            line(),
+            monadic_typeclass_parameter(),
+            line(),
+            if ty_params.is_empty() {
+                nil()
+            } else {
+                concat([
+                    group([
+                        text("{"),
+                        intersperse(ty_params.iter(), [line()]),
+                        text(": Set}"),
+                    ]),
+                    line(),
+                ])
+            },
+            if bounds.is_empty() {
+                nil()
+            } else {
+                concat([intersperse(bounds, [line()]), line()])
+            },
+            text(":"),
+            line(),
+            ty,
+            text(";"),
+        ]),
+    ])
+}
+
+// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
+pub(crate) fn new_instance_header<U>(name: U, kind: Doc) -> Doc
+where
+    U: std::fmt::Display,
+{
+    nest([
+        nest([
+            text("Global Instance"),
+            line(),
+            text(format!("Method_{name}")),
+            line(),
+            monadic_typeclass_parameter(),
+            line(),
+            text("`(Trait)"),
+        ]),
+        line(),
+        nest([
+            text(": "),
+            kind,
+            line(),
+            text(format!("\"{name}\"")),
+            line(),
+            text(":= {"),
+        ]),
+    ])
+}
+
+pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
+    nest([field, text(" :="), line(), value, text(";")])
+}
+
+#[allow(dead_code)]
+pub(crate) fn notation_dot_instance<'a, U>(name: U) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>>,
+{
+    nest([
+        text("Notation.dot"),
+        line(),
+        text(":="),
+        line(),
+        text("@"),
+        text(name),
+        text(";"),
     ])
 }
