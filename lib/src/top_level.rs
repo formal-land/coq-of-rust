@@ -8,8 +8,8 @@ use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn,
-    TraitItemKind, Ty, TyKind, VariantData,
+    GenericBound, GenericParamKind, HirId, Impl, ImplItemId, ImplItemKind, ImplItemRef, Item,
+    ItemId, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -31,6 +31,22 @@ trait ToName {
     /// We return [String] instead of [&String] because
     /// some AST nodes need their names to be constructed.
     fn to_name(&self) -> String;
+}
+
+trait GetHirId {
+    fn hir_id(&self) -> HirId;
+}
+
+impl GetHirId for ItemId {
+    fn hir_id(&self) -> HirId {
+        self.hir_id()
+    }
+}
+
+impl GetHirId for ImplItemRef {
+    fn hir_id(&self) -> HirId {
+        self.id.hir_id()
+    }
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -418,10 +434,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            env.push_context(&name);
-            let mut items = deduplicate_top_level_items(
-                module
-                    .item_ids
+            let mut items: Vec<ItemId> = module.item_ids.to_vec();
+            reorder_definitions_inplace(tcx, env, &mut items);
+            let items = deduplicate_top_level_items(
+                items
                     .iter()
                     .flat_map(|item_id| {
                         let item = tcx.hir().item(*item_id);
@@ -429,8 +445,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     })
                     .collect(),
             );
-            reorder_definitions_inplace(env, &mut items);
-            env.pop_context();
             // We remove empty modules in the translation
             if items.is_empty() {
                 return vec![];
@@ -676,17 +690,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let self_ty = compile_type(env, self_ty);
             let entry = env.impl_counter.entry(*self_ty.clone());
             let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
-            let impl_name = format!(
-                "Impl_{}{}",
-                self_ty.to_name(),
-                if counter != 1 {
-                    format!("_{counter}")
-                } else {
-                    "".to_string()
-                }
-            );
-            env.push_context(&impl_name);
-            let mut items = items
+            let mut items: Vec<ImplItemRef> = items.to_vec();
+            reorder_definitions_inplace(tcx, env, &mut items);
+
+            let items = items
                 .iter()
                 .map(|item| {
                     let is_method = match item.kind {
@@ -784,8 +791,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     (item.ident.name.to_string(), value)
                 })
                 .collect();
-            reorder_definitions_inplace(env, &mut items);
-            env.pop_context();
             match of_trait {
                 Some(trait_ref) => {
                     let trait_non_default_items = tcx
@@ -855,15 +860,33 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
 }
 
 #[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
-fn reorder_definitions_inplace(env: &mut Env, definitions: &mut Vec<impl ToName>) {
+fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Vec<impl GetHirId>) {
     let context = &env.context;
 
     // The context here is the path of the file name with / so we need
     // to escape it
-    let order = config_get_reorder(env);
     definitions.sort_by(|a, b| {
-        let a_name = a.to_name();
-        let b_name = b.to_name();
+        let a_id = a.hir_id();
+        let b_id = b.hir_id();
+        let a_context = get_context_name(tcx, &a_id);
+        let b_context = get_context_name(tcx, &b_id);
+
+        if a_context != b_context {
+            return Ordering::Equal;
+        }
+
+        let order = config_get_reorder(env, &a_context);
+        let a_name = tcx.hir().ident(a_id).as_str().to_string();
+        let b_name = tcx.hir().ident(b_id).as_str().to_string();
+
+        if a_name == "" || b_name == "" {
+            return Ordering::Equal;
+        }
+
+        eprintln!("order config for {}: {:?}", a_context, order);
+        eprintln!("order a_name {}::{}", a_context, a_name);
+        eprintln!("order b_name {}::{}", b_context, b_name);
+
         let a_position = order.iter().position(|elm| *elm == a_name);
         if a_position.is_none() {
             return Ordering::Equal;
@@ -877,8 +900,32 @@ fn reorder_definitions_inplace(env: &mut Env, definitions: &mut Vec<impl ToName>
         a_position.cmp(&b_position)
     });
 
-    let identifiers: Vec<String> = definitions.iter().map(ToName::to_name).collect();
-    env.reorder_map.insert(context.to_string(), identifiers);
+    // @TODO fix --generate-reorder
+
+    // let identifiers: Vec<String> = definitions
+    //     .iter()
+    //     .map(|def| tcx.hir().ident(def.hir_id()).as_str().to_string())
+    //     .collect();
+    // env.reorder_map.insert(context.to_string(), identifiers);
+}
+
+/// Given a HirId returns the name of the context/scope
+/// where such item is. Example top_level::inner_mod::other_mod
+fn get_context_name(tcx: &TyCtxt, id: &HirId) -> String {
+    let name = tcx
+        .hir()
+        .parent_iter(*id)
+        .filter_map(|(_, node)| node.ident().map(|x| x.as_str().to_string()))
+        .collect::<Vec<String>>()
+        .into_iter()
+        .rev()
+        .collect::<Vec<String>>()
+        .join("::");
+    if name == "" {
+        "top_level".to_string()
+    } else {
+        format!("top_level::{}", name)
+    }
 }
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
@@ -892,17 +939,19 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         configuration: get_configuration(&opts.configuration_file),
     };
 
-    let mut results: Vec<TopLevelItem> = deduplicate_top_level_items(
-        tcx.hir()
-            .items()
+    let mut results: Vec<ItemId> = tcx.hir().items().collect();
+    reorder_definitions_inplace(tcx, &mut env, &mut results);
+
+    let results = deduplicate_top_level_items(
+        results
+            .iter()
             .flat_map(|item_id| {
-                let item = tcx.hir().item(item_id);
+                let item = tcx.hir().item(*item_id);
                 compile_top_level_item(tcx, &mut env, item)
             })
             .collect(),
     );
 
-    reorder_definitions_inplace(&mut env, &mut results);
     if opts.generate_reorder {
         let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});
         println!("{}", serde_json::to_string_pretty(&json).expect("json"));
