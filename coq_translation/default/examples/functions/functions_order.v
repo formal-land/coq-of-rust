@@ -14,6 +14,78 @@ Module SomeType.
 End SomeType.
 Definition SomeType := @SomeType.t.
 
+Module Impl_functions_order_SomeType.
+  Definition Self := functions_order.SomeType.
+  
+  Definition meth2 `{H : State.Trait} (self : Self) : M (H := H) unit :=
+    Pure tt.
+  
+  Global Instance Method_meth2 `{H : State.Trait} : Notation.Dot "meth2" := {
+    Notation.dot := meth2;
+  }.
+  
+  Definition meth1 `{H : State.Trait} (self : Self) : M (H := H) unit :=
+    let* _ := self.["meth2"] in
+    Pure tt.
+  
+  Global Instance Method_meth1 `{H : State.Trait} : Notation.Dot "meth1" := {
+    Notation.dot := meth1;
+  }.
+End Impl_functions_order_SomeType.
+
+Module SomeTrait.
+  Class Trait (Self : Set) : Set := {
+    some_trait_foo `{H : State.Trait} : (ref Self) -> (M (H := H) unit);
+    some_trait_bar `{H : State.Trait} : (ref Self) -> (M (H := H) unit);
+  }.
+  
+  Global Instance Method_some_trait_foo `{H : State.Trait} `(Trait)
+    : Notation.Dot "some_trait_foo" := {
+    Notation.dot := @some_trait_foo;
+  }.
+  Global Instance Method_some_trait_bar `{H : State.Trait} `(Trait)
+    : Notation.Dot "some_trait_bar" := {
+    Notation.dot := @some_trait_bar;
+  }.
+End SomeTrait.
+
+Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+  Definition Self := functions_order.SomeType.
+  
+  Definition some_trait_bar
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
+    Pure tt.
+  
+  Global Instance Method_some_trait_bar `{H : State.Trait} :
+    Notation.Dot "some_trait_bar" := {
+    Notation.dot := some_trait_bar;
+  }.
+  
+  Definition some_trait_foo
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
+    self.["some_trait_bar"].
+  
+  Global Instance Method_some_trait_foo `{H : State.Trait} :
+    Notation.Dot "some_trait_foo" := {
+    Notation.dot := some_trait_foo;
+  }.
+  
+  Global Instance I : functions_order.SomeTrait.Trait Self := {
+    functions_order.SomeTrait.some_trait_foo
+      `{H : State.Trait}
+      :=
+      some_trait_foo;
+    functions_order.SomeTrait.some_trait_bar
+      `{H : State.Trait}
+      :=
+      some_trait_bar;
+  }.
+End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+
 Module inner_mod.
   Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
   

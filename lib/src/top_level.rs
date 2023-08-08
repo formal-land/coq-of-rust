@@ -8,8 +8,8 @@ use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, GenericParamKind, HirId, Impl, ImplItemId, ImplItemKind, ImplItemRef, Item,
-    ItemId, ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
+    GenericBound, GenericParamKind, HirId, Impl, ImplItemKind, ImplItemRef, Item, ItemId, ItemKind,
+    Node, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -33,6 +33,7 @@ trait ToName {
     fn to_name(&self) -> String;
 }
 
+// Replace this by a native trait if there is such thing
 trait GetHirId {
     fn hir_id(&self) -> HirId;
 }
@@ -861,10 +862,22 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
 
 #[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
 fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Vec<impl GetHirId>) {
-    let context = &env.context;
-
     // The context here is the path of the file name with / so we need
     // to escape it
+
+    let definitions_names = definitions
+        .iter()
+        .map(|def| tcx.hir().ident(def.hir_id()).as_str().to_string())
+        .filter(|x| !x.is_empty())
+        .collect::<Vec<String>>()
+        .join(", ");
+
+    eprintln!("Reordering: {definitions_names:?}");
+
+    if definitions.is_empty() {
+        return;
+    }
+
     definitions.sort_by(|a, b| {
         let a_id = a.hir_id();
         let b_id = b.hir_id();
@@ -873,19 +886,16 @@ fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Ve
 
         if a_context != b_context {
             return Ordering::Equal;
-        }
+        };
 
         let order = config_get_reorder(env, &a_context);
+        eprintln!("Order for {a_context} : {order:?}");
         let a_name = tcx.hir().ident(a_id).as_str().to_string();
         let b_name = tcx.hir().ident(b_id).as_str().to_string();
 
         if a_name == "" || b_name == "" {
             return Ordering::Equal;
         }
-
-        eprintln!("order config for {}: {:?}", a_context, order);
-        eprintln!("order a_name {}::{}", a_context, a_name);
-        eprintln!("order b_name {}::{}", b_context, b_name);
 
         let a_position = order.iter().position(|elm| *elm == a_name);
         if a_position.is_none() {
@@ -900,32 +910,80 @@ fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Ve
         a_position.cmp(&b_position)
     });
 
-    // @TODO fix --generate-reorder
+    let definitions_names = definitions
+        .iter()
+        .map(|def| tcx.hir().ident(def.hir_id()).as_str().to_string())
+        .filter(|x| !x.is_empty() && x != "test" && x != "std")
+        .collect::<Vec<String>>()
+        .join(", ");
+    eprintln!("Reordered: {definitions_names:?}");
 
-    // let identifiers: Vec<String> = definitions
-    //     .iter()
-    //     .map(|def| tcx.hir().ident(def.hir_id()).as_str().to_string())
-    //     .collect();
-    // env.reorder_map.insert(context.to_string(), identifiers);
+    let identifiers = definitions
+        .iter()
+        .map(|def| tcx.hir().ident(def.hir_id()).as_str().to_string())
+        .filter(|x| !x.is_empty() && x != "test" && x != "std")
+        .unique()
+        .collect::<Vec<String>>();
+    let context = get_context_name(tcx, &definitions[0].hir_id());
+    env.reorder_map.insert(context.to_string(), identifiers);
+}
+
+/// Extract the type name for a node if is a trait
+/// implementation, otherwise returns None
+fn get_impl_type_opt(node: Node) -> Option<String> {
+    match node {
+        Node::Item(Item { kind, .. }) => match kind {
+            ItemKind::Impl(Impl {
+                self_ty:
+                    Ty {
+                        kind: TyKind::Path(QPath::Resolved(_, rustc_hir::Path { segments, .. })),
+                        ..
+                    },
+                of_trait,
+                ..
+            }) => {
+                let ty_name: String = segments.into_iter().map(|x| x.ident.as_str()).join("::");
+                match of_trait {
+                    Some(rustc_hir::TraitRef { path, .. }) => {
+                        let trait_name = path
+                            .segments
+                            .into_iter()
+                            .map(|x| x.ident.as_str())
+                            .join("::");
+                        Some(format!("Impl_{trait_name}_for_{ty_name}"))
+                    }
+                    None => Some(format!("Impl_{ty_name}")),
+                }
+            }
+            _ => None,
+        },
+        _ => None,
+    }
 }
 
 /// Given a HirId returns the name of the context/scope
 /// where such item is. Example top_level::inner_mod::other_mod
 fn get_context_name(tcx: &TyCtxt, id: &HirId) -> String {
+    let current_node_name = tcx.hir().ident(*id).as_str().to_string();
     let name = tcx
         .hir()
         .parent_iter(*id)
-        .filter_map(|(_, node)| node.ident().map(|x| x.as_str().to_string()))
+        .filter_map(|(_, parent)| match get_impl_type_opt(parent) {
+            Some(typ) => Some(typ),
+            None => parent.ident().map(|ident| ident.as_str().to_string()),
+        })
         .collect::<Vec<String>>()
         .into_iter()
         .rev()
         .collect::<Vec<String>>()
         .join("::");
-    if name == "" {
+    let result = if name.is_empty() {
         "top_level".to_string()
     } else {
         format!("top_level::{}", name)
-    }
+    };
+    eprintln!("--> {result}::{current_node_name}");
+    result
 }
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {

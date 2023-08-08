@@ -1,17 +1,24 @@
 pub struct SomeType(u32); // functions_order::SomeType
 
-// impl SomeType {
-//     pub fn meth1(self) {
-//         self.meth2();
-//     } // functions_order::impl_SomeType::meth1
-//     fn meth2(self) {} // functions_order::impl_SomeType::meth2
-// }
+impl SomeType {
+    pub fn meth1(self) {
+        self.meth2();
+    } // functions_order::impl_SomeType::meth1
+    fn meth2(self) {} // functions_order::impl_SomeType::meth2
+}
 
-// impl Default for SomeType {
-//     fn default() -> SomeType {
-//         SomeType(42)
-//     }
-// }
+trait SomeTrait {
+    fn some_trait_foo(&self);
+    fn some_trait_bar(&self);
+}
+
+impl SomeTrait for SomeType {
+    fn some_trait_foo(&self) {
+        self.some_trait_bar()
+    }
+
+    fn some_trait_bar(&self) {}
+}
 
 mod inner_mod {
     // functions_order::inner_mod
