@@ -627,7 +627,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                     TraitItem::DefinitionWithDefault { ty_params, where_predicates, args, ret_ty, body }
                                 }
                             },
-                            TraitItemKind::Type(generic_bounds, ..) => {
+                            TraitItemKind::Type(generic_bounds, concrete_type) => {
+                                if concrete_type.is_some() {
+                                    env.tcx.sess
+                                        .struct_span_warn(
+                                            item.span,
+                                            "Concrete value of associated types is not supported yet.",
+                                        )
+                                        .note("It should change in future versions.")
+                                        .emit();
+                                }
                                 let generic_bounds = generic_bounds
                                     .iter()
                                     .filter_map(|generic_bound| match generic_bound {
