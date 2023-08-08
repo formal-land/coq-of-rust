@@ -2159,42 +2159,21 @@ impl TopLevelItem {
                                                 let ty_param = *ty_param.clone();
                                                 match ty_param {
                                                     TraitTyParamValue::ValWithDef { name, ty } => {
-                                                        nest([
-                                                            text("("),
-                                                            text(name),
-                                                            line(),
-                                                            text(":="),
-                                                            line(),
-                                                            nest([
+                                                        apply_argument(
+                                                            name,
+                                                            concat([
                                                                 text("(Some"),
                                                                 line(),
                                                                 ty.to_doc(false),
                                                                 text(")"),
-                                                                text(")"),
                                                             ]),
-                                                        ])
+                                                        )
                                                     }
                                                     TraitTyParamValue::JustValue { name, ty } => {
-                                                        nest([
-                                                            text("("),
-                                                            text(name),
-                                                            line(),
-                                                            text(":="),
-                                                            line(),
-                                                            ty.to_doc(false),
-                                                            text(")"),
-                                                        ])
+                                                        apply_argument(name, ty.to_doc(false))
                                                     }
                                                     TraitTyParamValue::JustDefault { name } => {
-                                                        nest([
-                                                            text("("),
-                                                            text(name),
-                                                            line(),
-                                                            text(":="),
-                                                            line(),
-                                                            text("None"),
-                                                            text(")"),
-                                                        ])
+                                                        apply_argument(name, text("None"))
                                                     }
                                                 }
                                             })

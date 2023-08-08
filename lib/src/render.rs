@@ -547,3 +547,18 @@ where
         })),
     ])
 }
+
+pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>>,
+{
+    nest([
+        text("("),
+        text(name),
+        line(),
+        text(":="),
+        line(),
+        arg,
+        text(")"),
+    ])
+}
