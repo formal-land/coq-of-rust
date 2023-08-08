@@ -29,8 +29,7 @@ Module ConstantTimeEq.
   Global Instance Method_ct_ne `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_ne" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
-      (axiom
-      : M (H := H) subtle.Choice);
+      (axiom : M (H := H) subtle.Choice);
   }.
 End ConstantTimeEq.
 
@@ -52,8 +51,7 @@ Module ConditionallySelectable.
         (self : mut_ref Self)
         (other : ref Self)
         (choice : subtle.Choice) :=
-      (axiom
-      : M (H := H) unit);
+      (axiom : M (H := H) unit);
   }.
   Global Instance Method_conditional_swap `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_swap" := {
@@ -61,8 +59,7 @@ Module ConditionallySelectable.
         (a : mut_ref Self)
         (b : mut_ref Self)
         (choice : subtle.Choice) :=
-      (axiom
-      : M (H := H) unit);
+      (axiom : M (H := H) unit);
   }.
 End ConditionallySelectable.
 
@@ -121,7 +118,6 @@ Module ConstantTimeLess.
   Global Instance Method_ct_lt `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_lt" := {
     Notation.dot (self : ref Self) (other : ref Self) :=
-      (axiom
-      : M (H := H) subtle.Choice);
+      (axiom : M (H := H) subtle.Choice);
   }.
 End ConstantTimeLess.
