@@ -58,8 +58,8 @@ Module types.
         (Self : Set)
         {Bytes : Set}
         `{core.default.Default.Trait Bytes}
-        `{core.convert.AsRef.Trait Bytes}
-        `{core.convert.AsMut.Trait Bytes} :
+        `{core.convert.AsRef.Trait Bytes (T := Slice u8)}
+        `{core.convert.AsMut.Trait Bytes (T := Slice u8)} :
         Set := {
       Bytes := Bytes;
       from_le_bytes `{H : State.Trait} : Bytes -> (M (H := H) Self);
@@ -96,17 +96,17 @@ Module types.
         `{parity_scale_codec.codec.Codec.Trait AccountId}
         `{ink_env.types.CodecAsType.Trait AccountId}
         `{core.clone.Clone.Trait AccountId}
-        `{core.cmp.PartialEq.Trait AccountId}
+        `{core.cmp.PartialEq.Trait AccountId (Rhs := None)}
         `{core.cmp.Eq.Trait AccountId}
         `{core.cmp.Ord.Trait AccountId}
-        `{core.convert.AsRef.Trait AccountId}
-        `{core.convert.AsMut.Trait AccountId}
+        `{core.convert.AsRef.Trait AccountId (T := Slice u8)}
+        `{core.convert.AsMut.Trait AccountId (T := Slice u8)}
         {Balance : Set}
         `{parity_scale_codec.codec.Codec.Trait Balance}
         `{ink_env.types.CodecAsType.Trait Balance}
         `{core.marker.Copy.Trait Balance}
         `{core.clone.Clone.Trait Balance}
-        `{core.cmp.PartialEq.Trait Balance}
+        `{core.cmp.PartialEq.Trait Balance (Rhs := None)}
         `{core.cmp.Eq.Trait Balance}
         `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance}
         `{ink_env.types.FromLittleEndian.Trait Balance}
@@ -116,17 +116,17 @@ Module types.
         `{core.marker.Copy.Trait Hash}
         `{core.clone.Clone.Trait Hash}
         `{ink_primitives.types.Clear.Trait Hash}
-        `{core.cmp.PartialEq.Trait Hash}
+        `{core.cmp.PartialEq.Trait Hash (Rhs := None)}
         `{core.cmp.Eq.Trait Hash}
         `{core.cmp.Ord.Trait Hash}
-        `{core.convert.AsRef.Trait Hash}
-        `{core.convert.AsMut.Trait Hash}
+        `{core.convert.AsRef.Trait Hash (T := Slice u8)}
+        `{core.convert.AsMut.Trait Hash (T := Slice u8)}
         {Timestamp : Set}
         `{parity_scale_codec.codec.Codec.Trait Timestamp}
         `{ink_env.types.CodecAsType.Trait Timestamp}
         `{core.marker.Copy.Trait Timestamp}
         `{core.clone.Clone.Trait Timestamp}
-        `{core.cmp.PartialEq.Trait Timestamp}
+        `{core.cmp.PartialEq.Trait Timestamp (Rhs := None)}
         `{core.cmp.Eq.Trait Timestamp}
         `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp}
         `{ink_env.types.FromLittleEndian.Trait Timestamp}
@@ -135,7 +135,7 @@ Module types.
         `{ink_env.types.CodecAsType.Trait BlockNumber}
         `{core.marker.Copy.Trait BlockNumber}
         `{core.clone.Clone.Trait BlockNumber}
-        `{core.cmp.PartialEq.Trait BlockNumber}
+        `{core.cmp.PartialEq.Trait BlockNumber (Rhs := None)}
         `{core.cmp.Eq.Trait BlockNumber}
         `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber}
         `{ink_env.types.FromLittleEndian.Trait BlockNumber}
@@ -206,8 +206,8 @@ Module FromLittleEndian.
       (Self : Set)
       {Bytes : Set}
       `{core.default.Default.Trait Bytes}
-      `{core.convert.AsRef.Trait Bytes}
-      `{core.convert.AsMut.Trait Bytes} :
+      `{core.convert.AsRef.Trait Bytes (T := Slice u8)}
+      `{core.convert.AsMut.Trait Bytes (T := Slice u8)} :
       Set := {
     Bytes := Bytes;
     from_le_bytes `{H : State.Trait} : Bytes -> (M (H := H) Self);
@@ -244,17 +244,17 @@ Module Environment.
       `{parity_scale_codec.codec.Codec.Trait AccountId}
       `{ink_env.types.CodecAsType.Trait AccountId}
       `{core.clone.Clone.Trait AccountId}
-      `{core.cmp.PartialEq.Trait AccountId}
+      `{core.cmp.PartialEq.Trait AccountId (Rhs := None)}
       `{core.cmp.Eq.Trait AccountId}
       `{core.cmp.Ord.Trait AccountId}
-      `{core.convert.AsRef.Trait AccountId}
-      `{core.convert.AsMut.Trait AccountId}
+      `{core.convert.AsRef.Trait AccountId (T := Slice u8)}
+      `{core.convert.AsMut.Trait AccountId (T := Slice u8)}
       {Balance : Set}
       `{parity_scale_codec.codec.Codec.Trait Balance}
       `{ink_env.types.CodecAsType.Trait Balance}
       `{core.marker.Copy.Trait Balance}
       `{core.clone.Clone.Trait Balance}
-      `{core.cmp.PartialEq.Trait Balance}
+      `{core.cmp.PartialEq.Trait Balance (Rhs := None)}
       `{core.cmp.Eq.Trait Balance}
       `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance}
       `{ink_env.types.FromLittleEndian.Trait Balance}
@@ -264,17 +264,17 @@ Module Environment.
       `{core.marker.Copy.Trait Hash}
       `{core.clone.Clone.Trait Hash}
       `{ink_primitives.types.Clear.Trait Hash}
-      `{core.cmp.PartialEq.Trait Hash}
+      `{core.cmp.PartialEq.Trait Hash (Rhs := None)}
       `{core.cmp.Eq.Trait Hash}
       `{core.cmp.Ord.Trait Hash}
-      `{core.convert.AsRef.Trait Hash}
-      `{core.convert.AsMut.Trait Hash}
+      `{core.convert.AsRef.Trait Hash (T := Slice u8)}
+      `{core.convert.AsMut.Trait Hash (T := Slice u8)}
       {Timestamp : Set}
       `{parity_scale_codec.codec.Codec.Trait Timestamp}
       `{ink_env.types.CodecAsType.Trait Timestamp}
       `{core.marker.Copy.Trait Timestamp}
       `{core.clone.Clone.Trait Timestamp}
-      `{core.cmp.PartialEq.Trait Timestamp}
+      `{core.cmp.PartialEq.Trait Timestamp (Rhs := None)}
       `{core.cmp.Eq.Trait Timestamp}
       `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp}
       `{ink_env.types.FromLittleEndian.Trait Timestamp}
@@ -283,7 +283,7 @@ Module Environment.
       `{ink_env.types.CodecAsType.Trait BlockNumber}
       `{core.marker.Copy.Trait BlockNumber}
       `{core.clone.Clone.Trait BlockNumber}
-      `{core.cmp.PartialEq.Trait BlockNumber}
+      `{core.cmp.PartialEq.Trait BlockNumber (Rhs := None)}
       `{core.cmp.Eq.Trait BlockNumber}
       `{ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber}
       `{ink_env.types.FromLittleEndian.Trait BlockNumber}

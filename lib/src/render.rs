@@ -240,11 +240,14 @@ where
     }
 }
 
+/// a trait bound with parameters
+type TraitBound<'a> = (Doc<'a>, Vec<Doc<'a>>);
+
 /// creates a module with the translation of the given trait
 pub(crate) fn trait_module<'a, U>(
     name: U,
     ty_params: &Vec<(U, Option<Doc>)>,
-    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+    types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
     items: Vec<Doc<'a>>,
     instances: Vec<Doc<'a>>,
 ) -> Doc<'a>
@@ -272,7 +275,7 @@ where
 /// to a trait with the given type parameters and bounds
 pub(crate) fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
-    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+    types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
     items: I,
 ) -> Doc<'a>
 where
@@ -294,7 +297,7 @@ where
 /// to a trait with the given type parameters and bounds
 pub(crate) fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
-    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+    types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
 ) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -345,16 +348,21 @@ where
                         text("Set"),
                         text("}"),
                     ]),
-                    concat(bounds.iter().map(|x| {
+                    concat(bounds.iter().map(|(trait_bound, ty_params)| {
                         concat([
                             line(),
                             // @TODO: include default parameters
                             nest([
                                 text("`{"),
-                                x.clone(),
+                                trait_bound.clone(),
                                 text(".Trait"),
                                 line(),
                                 text(*item_name),
+                                if ty_params.is_empty() {
+                                    nil()
+                                } else {
+                                    concat([line(), intersperse(ty_params.clone(), [line()])])
+                                },
                                 text("}"),
                             ]),
                         ])
