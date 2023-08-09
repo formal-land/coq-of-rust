@@ -738,6 +738,16 @@ fn compile_trait(
     generics: &rustc_hir::Generics,
     items: &[rustc_hir::TraitItemRef],
 ) -> TopLevelItem {
+    if !generics.predicates.is_empty() {
+        env.tcx
+            .sess
+            .struct_span_warn(
+                generics.span,
+                "Type parameter bounds are not supported in traits yet.",
+            )
+            .note("It may change in future versions.")
+            .emit();
+    };
     TopLevelItem::Trait {
         name,
         ty_params: get_ty_params(env, generics),
@@ -792,7 +802,7 @@ fn compile_trait(
     }
 }
 
-/// extracts type parameters from the generics
+/// extracts type parameters with their optional default value from the generics
 fn get_ty_params(
     env: &mut Env,
     generics: &rustc_hir::Generics,
