@@ -760,6 +760,7 @@ fn compile_trait(
     }
 }
 
+/// filters out type parameters and compiles them with the given function
 fn compile_ty_params<T>(
     env: &mut Env,
     generics: &rustc_hir::Generics,
