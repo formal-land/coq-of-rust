@@ -383,7 +383,7 @@ where
     I: IntoIterator,
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
 {
-    intersperse(items, [nil()])
+    concat(items)
 }
 
 /// creates a type parameter as a field of a typeclass
