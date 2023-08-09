@@ -8,8 +8,8 @@ use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind, QPath, TraitFn,
-    TraitItemKind, Ty, TyKind, VariantData,
+    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind,
+    QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -528,7 +528,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
-        ItemKind::Trait(_, _, generics, _, items) => compile_trait(tcx, env, name, generics, items),
+        ItemKind::Trait(_, _, generics, _, items) => {
+            vec![compile_trait(tcx, env, name, generics, items)]
+        }
         ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
         }
@@ -728,93 +730,23 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
+/// [compile_trait] is responsible for compiling traits in [compile_top_level_item]
 fn compile_trait(
     tcx: &TyCtxt,
     env: &mut Env,
     name: String,
     generics: &rustc_hir::Generics,
     items: &[rustc_hir::TraitItemRef],
-) -> Vec<TopLevelItem> {
-    vec![TopLevelItem::Trait {
+) -> TopLevelItem {
+    TopLevelItem::Trait {
         name,
-        ty_params: generics
-            .params
-            .iter()
-            .map(|param| {
-                let default = match param.kind {
-                    GenericParamKind::Type { default, .. } => {
-                        default.map(|default| compile_type(env, default))
-                    }
-                    _ => {
-                        env.tcx
-                            .sess
-                            .struct_span_warn(
-                                param.span,
-                                "Only type parameters are currently supported.",
-                            )
-                            .note("It should be supported in future versions.")
-                            .emit();
-                        None
-                    }
-                };
-                let name = to_valid_coq_name(param.name.ident().to_string());
-                (name, default)
-            })
-            .collect(),
+        ty_params: get_ty_params(env, generics),
         body: items
             .iter()
             .map(|item| {
                 let item = tcx.hir().trait_item(item.id);
-                let ty_params = item
-                    .generics
-                    .params
-                    .iter()
-                    .filter_map(|param| match param.kind {
-                        rustc_hir::GenericParamKind::Type { .. } => {
-                            Some(to_valid_coq_name(param.name.ident().to_string()))
-                        }
-                        _ => None,
-                    })
-                    .collect();
-                let where_predicates = item
-                    .generics
-                    .predicates
-                    .iter()
-                    .flat_map(|predicate| match predicate {
-                        rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                            let names_and_ty_params =
-                                predicate.bounds.iter().filter_map(|bound| match bound {
-                                    rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
-                                        let path = trait_ref.trait_ref.path;
-                                        Some((
-                                            compile_path(env, path),
-                                            compile_path_ty_params(env, path),
-                                        ))
-                                    }
-                                    GenericBound::LangItemTrait { .. } => {
-                                        env.tcx
-                                            .sess
-                                            .struct_span_warn(
-                                                predicate.span,
-                                                "LangItem trait bounds are not supported yet.",
-                                            )
-                                            .note("It will change in the future.")
-                                            .emit();
-                                        None
-                                    }
-                                    GenericBound::Outlives { .. } => None,
-                                });
-                            names_and_ty_params
-                                .map(|(name, ty_params)| WherePredicate {
-                                    name,
-                                    ty_params,
-                                    ty: compile_type(env, predicate.bounded_ty),
-                                })
-                                .collect()
-                        }
-                        _ => vec![],
-                    })
-                    .collect();
+                let ty_params = get_ty_params_names(item.generics);
+                let where_predicates = get_where_predicates(env, item.generics);
                 let body = match &item.kind {
                     TraitItemKind::Const(ty, _) => TraitItem::Definition {
                         ty_params,
@@ -850,77 +782,164 @@ fn compile_trait(
                                 .note("It may change in future versions.")
                                 .emit();
                         }
-                        let generic_bounds = generic_bounds
-                            .iter()
-                            .filter_map(|generic_bound| match generic_bound {
-                                GenericBound::Trait(ptraitref, _) => {
-                                    let trait_ref = ptraitref.trait_ref;
-                                    // Get the generics for the trait
-                                    let generics =
-                                        tcx.generics_of(trait_ref.trait_def_id().unwrap());
-
-                                    // Get the list of type parameters default status (true if it has a default)
-                                    let mut type_params_name_and_default_status: Vec<(
-                                        String,
-                                        bool,
-                                    )> = generics
-                                        .params
-                                        .iter()
-                                        .filter_map(|param| match param.kind {
-                                            rustc_middle::ty::GenericParamDefKind::Type {
-                                                has_default,
-                                                ..
-                                            } => Some((param.name.to_string(), has_default)),
-                                            _ => None,
-                                        })
-                                        .collect();
-                                    // The first type parameter is always the Self type, that we do not consider as
-                                    // part of the list of type parameters.
-                                    type_params_name_and_default_status.remove(0);
-
-                                    let ty_params = compile_path_ty_params(env, trait_ref.path);
-                                    let ty_params: Vec<Box<TraitTyParamValue>> = ty_params
-                                        .into_iter()
-                                        .map(Some)
-                                        .chain(repeat(None))
-                                        .zip(type_params_name_and_default_status)
-                                        .map(|(ty, (name, has_default))| {
-                                            Box::new(match ty {
-                                                Some(ty) => {
-                                                    if has_default {
-                                                        TraitTyParamValue::ValWithDef { name, ty }
-                                                    } else {
-                                                        TraitTyParamValue::JustValue { name, ty }
-                                                    }
-                                                }
-                                                None => TraitTyParamValue::JustDefault { name },
-                                            })
-                                        })
-                                        .collect();
-
-                                    Some((compile_path(env, ptraitref.trait_ref.path), ty_params))
-                                }
-                                GenericBound::LangItemTrait { .. } => {
-                                    env.tcx
-                                        .sess
-                                        .struct_span_warn(
-                                            generic_bound.span(),
-                                            "LangItem trait bounds are not supported yet.",
-                                        )
-                                        .note("It will change in the future.")
-                                        .emit();
-                                    None
-                                }
-                                GenericBound::Outlives { .. } => None,
-                            })
-                            .collect();
+                        let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
                         TraitItem::Type(generic_bounds)
                     }
                 };
                 (to_valid_coq_name(item.ident.name.to_string()), body)
             })
             .collect(),
-    }]
+    }
+}
+
+/// extracts type parameters from the generics
+fn get_ty_params(
+    env: &mut Env,
+    generics: &rustc_hir::Generics,
+) -> Vec<(String, Option<Box<CoqType>>)> {
+    generics
+        .params
+        .iter()
+        .map(|param| {
+            let default = match param.kind {
+                GenericParamKind::Type { default, .. } => {
+                    default.map(|default| compile_type(env, default))
+                }
+                _ => {
+                    env.tcx
+                        .sess
+                        .struct_span_warn(
+                            param.span,
+                            "Only type parameters are currently supported.",
+                        )
+                        .note("It should be supported in future versions.")
+                        .emit();
+                    None
+                }
+            };
+            let name = to_valid_coq_name(param.name.ident().to_string());
+            (name, default)
+        })
+        .collect()
+}
+
+/// extracts the names of type parameters from the generics
+fn get_ty_params_names(generics: &rustc_hir::Generics) -> Vec<String> {
+    generics
+        .params
+        .iter()
+        .filter_map(|param| match param.kind {
+            rustc_hir::GenericParamKind::Type { .. } => {
+                Some(to_valid_coq_name(param.name.ident().to_string()))
+            }
+            _ => None,
+        })
+        .collect()
+}
+
+/// extracts where predicates from the generics
+fn get_where_predicates(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<WherePredicate> {
+    generics
+        .predicates
+        .iter()
+        .flat_map(|predicate| match predicate {
+            rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+                let names_and_ty_params = predicate.bounds.iter().filter_map(|bound| match bound {
+                    rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
+                        let path = trait_ref.trait_ref.path;
+                        Some((compile_path(env, path), compile_path_ty_params(env, path)))
+                    }
+                    GenericBound::LangItemTrait { .. } => {
+                        env.tcx
+                            .sess
+                            .struct_span_warn(
+                                predicate.span,
+                                "LangItem trait bounds are not supported yet.",
+                            )
+                            .note("It will change in the future.")
+                            .emit();
+                        None
+                    }
+                    GenericBound::Outlives { .. } => None,
+                });
+                names_and_ty_params
+                    .map(|(name, ty_params)| WherePredicate {
+                        name,
+                        ty_params,
+                        ty: compile_type(env, predicate.bounded_ty),
+                    })
+                    .collect()
+            }
+            _ => vec![],
+        })
+        .collect()
+}
+
+/// [compile_generic_bounds] compiles generic bounds in [compile_trait]
+fn compile_generic_bounds(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    generic_bounds: GenericBounds,
+) -> Vec<(Path, Vec<Box<TraitTyParamValue>>)> {
+    generic_bounds
+        .iter()
+        .filter_map(|generic_bound| match generic_bound {
+            GenericBound::Trait(ptraitref, _) => {
+                let trait_ref = ptraitref.trait_ref;
+                // Get the generics for the trait
+                let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
+
+                // Get the list of type parameters default status (true if it has a default)
+                let mut type_params_name_and_default_status: Vec<(String, bool)> = generics
+                    .params
+                    .iter()
+                    .filter_map(|param| match param.kind {
+                        rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
+                            Some((param.name.to_string(), has_default))
+                        }
+                        _ => None,
+                    })
+                    .collect();
+                // The first type parameter is always the Self type, that we do not consider as
+                // part of the list of type parameters.
+                type_params_name_and_default_status.remove(0);
+
+                let ty_params = compile_path_ty_params(env, trait_ref.path);
+                let ty_params: Vec<Box<TraitTyParamValue>> = ty_params
+                    .into_iter()
+                    .map(Some)
+                    .chain(repeat(None))
+                    .zip(type_params_name_and_default_status)
+                    .map(|(ty, (name, has_default))| {
+                        Box::new(match ty {
+                            Some(ty) => {
+                                if has_default {
+                                    TraitTyParamValue::ValWithDef { name, ty }
+                                } else {
+                                    TraitTyParamValue::JustValue { name, ty }
+                                }
+                            }
+                            None => TraitTyParamValue::JustDefault { name },
+                        })
+                    })
+                    .collect();
+
+                Some((compile_path(env, ptraitref.trait_ref.path), ty_params))
+            }
+            GenericBound::LangItemTrait { .. } => {
+                env.tcx
+                    .sess
+                    .struct_span_warn(
+                        generic_bound.span(),
+                        "LangItem trait bounds are not supported yet.",
+                    )
+                    .note("It will change in the future.")
+                    .emit();
+                None
+            }
+            GenericBound::Outlives { .. } => None,
+        })
+        .collect()
 }
 
 #[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
