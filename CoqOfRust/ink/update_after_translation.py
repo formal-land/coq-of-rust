@@ -27,18 +27,19 @@ def update_ink_primitives():
     file_name = "ink_primitives.v"
     with open(file_name, "r") as f:
         content = f.read()
-    content = \
-        sub_exactly_once(
-            "Definition MessageResult",
-            "Definition MessageResult (T : Set)",
-            content,
-        )
-    content = \
-        sub_exactly_once(
-            "Definition ConstructorResult",
-            "Definition ConstructorResult (T : Set)",
-            content,
-        )
+    # NOTE: Commented out because the generics are being satisfied in newer commits. 
+    # content = \
+    #     sub_exactly_once(
+    #         "Definition MessageResult",
+    #         "Definition MessageResult (T : Set)",
+    #         content,
+    #     )
+    # content = \
+    #     sub_exactly_once(
+    #         "Definition ConstructorResult",
+    #         "Definition ConstructorResult (T : Set)",
+    #         content,
+    #     )
     with open(file_name, "w") as f:
         f.write(content)
 
