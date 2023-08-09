@@ -83,7 +83,7 @@ pub trait Eq: PartialEq<Self> { }
  *)
 Module Eq.
   Unset Primitive Projections.
-  Class Trait (Self : Set) `{PartialEq.Trait Self} : Set := { }.
+  Class Trait (Self : Set) `{PartialEq.Trait Self (Rhs := None)} : Set := { }.
   Set Primitive Projections.
 End Eq.
 
