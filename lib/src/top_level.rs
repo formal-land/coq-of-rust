@@ -757,45 +757,7 @@ fn compile_trait(
                 let item = tcx.hir().trait_item(item.id);
                 let ty_params = get_ty_params_names(item.generics);
                 let where_predicates = get_where_predicates(env, item.generics);
-                let body = match &item.kind {
-                    TraitItemKind::Const(ty, _) => TraitItem::Definition {
-                        ty_params,
-                        where_predicates,
-                        ty: compile_type(env, ty),
-                    },
-                    TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
-                        TraitFn::Required(_) => TraitItem::Definition {
-                            ty_params,
-                            where_predicates,
-                            ty: compile_fn_decl(env, fn_sig.decl),
-                        },
-                        TraitFn::Provided(body_id) => {
-                            let FnSigAndBody { args, ret_ty, body } =
-                                compile_fn_sig_and_body_id(env, fn_sig, body_id);
-                            TraitItem::DefinitionWithDefault {
-                                ty_params,
-                                where_predicates,
-                                args,
-                                ret_ty,
-                                body,
-                            }
-                        }
-                    },
-                    TraitItemKind::Type(generic_bounds, concrete_type) => {
-                        if concrete_type.is_some() {
-                            env.tcx
-                                .sess
-                                .struct_span_warn(
-                                    item.span,
-                                    "Concrete value of associated types is not supported yet.",
-                                )
-                                .note("It may change in future versions.")
-                                .emit();
-                        }
-                        let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
-                        TraitItem::Type(generic_bounds)
-                    }
-                };
+                let body = compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
                 (to_valid_coq_name(item.ident.name.to_string()), body)
             })
             .collect(),
@@ -887,7 +849,7 @@ fn get_where_predicates(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<Wh
 fn compile_generic_bounds(
     tcx: &TyCtxt,
     env: &mut Env,
-    generic_bounds: GenericBounds,
+    generic_bounds: &GenericBounds,
 ) -> Vec<(Path, Vec<Box<TraitTyParamValue>>)> {
     generic_bounds
         .iter()
@@ -948,6 +910,55 @@ fn compile_generic_bounds(
             GenericBound::Outlives { .. } => None,
         })
         .collect()
+}
+
+/// [compile_trait_item_body] compiles the body of the trait item in [compile_trait]
+fn compile_trait_item_body(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    ty_params: Vec<String>,
+    where_predicates: Vec<WherePredicate>,
+    item: &rustc_hir::TraitItem,
+) -> TraitItem {
+    match &item.kind {
+        TraitItemKind::Const(ty, _) => TraitItem::Definition {
+            ty_params,
+            where_predicates,
+            ty: compile_type(env, ty),
+        },
+        TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
+            TraitFn::Required(_) => TraitItem::Definition {
+                ty_params,
+                where_predicates,
+                ty: compile_fn_decl(env, fn_sig.decl),
+            },
+            TraitFn::Provided(body_id) => {
+                let FnSigAndBody { args, ret_ty, body } =
+                    compile_fn_sig_and_body_id(env, fn_sig, body_id);
+                TraitItem::DefinitionWithDefault {
+                    ty_params,
+                    where_predicates,
+                    args,
+                    ret_ty,
+                    body,
+                }
+            }
+        },
+        TraitItemKind::Type(generic_bounds, concrete_type) => {
+            if concrete_type.is_some() {
+                env.tcx
+                    .sess
+                    .struct_span_warn(
+                        item.span,
+                        "Concrete value of associated types is not supported yet.",
+                    )
+                    .note("It may change in future versions.")
+                    .emit();
+            }
+            let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
+            TraitItem::Type(generic_bounds)
+        }
+    }
 }
 
 #[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
