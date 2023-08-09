@@ -27,8 +27,6 @@ Module nested.
   Parameter function : forall `{H : State.Trait}, M (H := H) unit.
 End nested.
 
-Parameter function : forall `{H : State.Trait}, M (H := H) unit.
-
 Parameter call_public_function_in_my_mod : forall `{H : State.Trait},
     M (H := H) unit.
 

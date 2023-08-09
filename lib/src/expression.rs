@@ -26,7 +26,7 @@ impl FreshVars {
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct MatchArm {
     pat: Pattern,
     body: Expr,
@@ -34,14 +34,14 @@ pub struct MatchArm {
 
 /// [LoopControlFlow] represents the expressions responsible for
 /// the flow of control in a loop
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum LoopControlFlow {
     Continue,
     Break,
 }
 
 /// Enum [Expr] represents the AST of rust terms.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Expr {
     Pure(Box<Expr>),
     LocalVar(String),
@@ -130,12 +130,14 @@ pub(crate) enum Expr {
     },
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Stmt {
     Expr(Box<Expr>),
     Let {
         is_monadic: bool,
         pattern: Box<Pattern>,
+        /// Optional type annotation to avoid type inference errors (should be None for monadic lets)
+        ty: Option<Box<CoqType>>,
         init: Box<Expr>,
         body: Box<Stmt>,
     },
@@ -208,6 +210,8 @@ fn pure(e: Expr) -> Stmt {
     Stmt::Expr(Box::new(Expr::Pure(Box::new(e))))
 }
 
+/// creates a monadic let statement with [e1] as the initializer
+/// and the result of [f] as the body
 fn monadic_let_in_stmt(
     fresh_vars: FreshVars,
     e1: Stmt,
@@ -223,6 +227,7 @@ fn monadic_let_in_stmt(
                     Stmt::Let {
                         is_monadic: true,
                         pattern: Box::new(Pattern::Variable(var_name)),
+                        ty: None,
                         init: e,
                         body: Box::new(body),
                     },
@@ -233,6 +238,7 @@ fn monadic_let_in_stmt(
         Stmt::Let {
             is_monadic,
             pattern,
+            ty,
             init,
             body,
         } => {
@@ -241,6 +247,7 @@ fn monadic_let_in_stmt(
                 Stmt::Let {
                     is_monadic,
                     pattern,
+                    ty,
                     init,
                     body: Box::new(body),
                 },
@@ -544,12 +551,14 @@ fn get_pure_from_stmt_as_stmt(statement: Stmt) -> Option<Box<Stmt>> {
         Stmt::Let {
             is_monadic: false,
             pattern,
+            ty,
             init,
             body,
         } => get_pure_from_stmt_as_stmt(*body).map(|body| {
             Box::new(Stmt::Let {
                 is_monadic: false,
                 pattern,
+                ty,
                 init,
                 body,
             })
@@ -567,6 +576,7 @@ fn mt_stmt(stmt: Stmt) -> Stmt {
         Stmt::Let {
             is_monadic,
             pattern,
+            ty,
             init,
             body,
         } => {
@@ -580,12 +590,15 @@ fn mt_stmt(stmt: Stmt) -> Stmt {
                 Some(pure_init) => Stmt::Let {
                     is_monadic: false,
                     pattern,
+                    ty,
                     init: pure_init,
                     body,
                 },
                 None => Stmt::Let {
                     is_monadic: true,
                     pattern,
+                    // type annotations do not work in monadic let
+                    ty: None,
                     init: Box::new(Expr::Block(Box::new(init))),
                     body,
                 },
@@ -943,8 +956,9 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
 fn compile_stmts(env: &mut Env, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_hir::Expr>) -> Stmt {
     match stmts {
         [stmt, stmts @ ..] => match stmt.kind {
-            rustc_hir::StmtKind::Local(rustc_hir::Local { pat, init, .. }) => {
+            rustc_hir::StmtKind::Local(rustc_hir::Local { pat, ty, init, .. }) => {
                 let pattern = Box::new(compile_pattern(env, pat));
+                let ty = ty.map(|ty| compile_type(env, ty));
                 let init = match init {
                     Some(init) => Box::new(compile_expr(env, init)),
                     None => Box::new(tt()),
@@ -952,6 +966,7 @@ fn compile_stmts(env: &mut Env, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_h
                 let body = Box::new(compile_stmts(env, stmts, expr));
                 Stmt::Let {
                     is_monadic: false,
+                    ty,
                     pattern,
                     init,
                     body,
@@ -965,6 +980,7 @@ fn compile_stmts(env: &mut Env, stmts: &[rustc_hir::Stmt], expr: Option<&rustc_h
                 Stmt::Let {
                     is_monadic: false,
                     pattern: Box::new(Pattern::Wild),
+                    ty: None,
                     init: first,
                     body: second,
                 }
@@ -1270,6 +1286,7 @@ impl Stmt {
             Stmt::Let {
                 is_monadic,
                 pattern,
+                ty,
                 init,
                 body,
             } => group([
@@ -1284,6 +1301,10 @@ impl Stmt {
                             nil()
                         }),
                         pattern.to_doc(),
+                        match ty {
+                            Some(ty) => concat([text(" :"), line(), ty.to_doc(false)]),
+                            None => nil(),
+                        },
                         text(" :="),
                     ]),
                     line(),

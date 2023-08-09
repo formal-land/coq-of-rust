@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let pangram := "the quick brown fox jumps over the lazy dog" in
+  let pangram : ref str := "the quick brown fox jumps over the lazy dog" in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of pangram) in
@@ -69,7 +69,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
           end in
         Pure tt)
     end in
-  let chars_to_trim := addr_of [ " "%char; ","%char ] in
+  let chars_to_trim : ref (Slice char) := addr_of [ " "%char; ","%char ] in
   let* trimmed_str := string.["trim_matches"] chars_to_trim in
   let* _ :=
     let* _ :=

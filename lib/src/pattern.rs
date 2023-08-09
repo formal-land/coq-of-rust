@@ -7,7 +7,7 @@ use rustc_hir::{ExprKind, Pat, PatKind, RangeEnd};
 use rustc_span::source_map::Spanned;
 
 /// The enum [Pat] represents the patterns which can be matched
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Pattern {
     Wild,
     Variable(String),

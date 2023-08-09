@@ -166,7 +166,7 @@ impl CoqType {
                     )
                 }
             }
-            CoqType::Array(ty) => nest([text("list"), line(), ty.to_doc(true)]),
+            CoqType::Array(ty) => paren(with_paren, nest([text("list"), line(), ty.to_doc(true)])),
             CoqType::Ref(ty, mutbl) => paren(
                 with_paren,
                 match mutbl {

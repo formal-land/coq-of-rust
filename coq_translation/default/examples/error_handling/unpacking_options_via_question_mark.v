@@ -36,7 +36,12 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) unpacking_options_via_question_mark.Job :=
-    let _ := tt in
+    let
+        _ :
+        core.clone.AssertParamIsClone
+          (core.option.Option
+            unpacking_options_via_question_mark.PhoneNumber) :=
+      tt in
     self.["deref"].
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
@@ -80,8 +85,8 @@ Module
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) unpacking_options_via_question_mark.PhoneNumber :=
-    let _ := tt in
-    let _ := tt in
+    let _ : core.clone.AssertParamIsClone (core.option.Option u8) := tt in
+    let _ : core.clone.AssertParamIsClone u32 := tt in
     self.["deref"].
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {

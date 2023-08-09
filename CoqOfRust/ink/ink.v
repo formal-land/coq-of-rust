@@ -25,7 +25,7 @@ Module result_info.
     
     Global Instance Method_VALUE `{H : State.Trait} `(Trait)
       : Notation.Dot "VALUE" := {
-      Notation.dot := VALUE;
+      Notation.dot := @VALUE;
     }.
   End IsResultTypeFallback.
   
@@ -51,7 +51,7 @@ Module result_info.
     
     Global Instance Method_value `{H : State.Trait} `(Trait)
       : Notation.Dot "value" := {
-      Notation.dot (self : ref Self) := (Pure false : M (H := H) bool);
+      Notation.dot (self : ref Self) := (axiom : M (H := H) bool);
     }.
   End IsResultErrFallback.
 End result_info.
@@ -79,7 +79,7 @@ Module IsResultTypeFallback.
   
   Global Instance Method_VALUE `{H : State.Trait} `(Trait)
     : Notation.Dot "VALUE" := {
-    Notation.dot := VALUE;
+    Notation.dot := @VALUE;
   }.
 End IsResultTypeFallback.
 
@@ -105,7 +105,7 @@ Module IsResultErrFallback.
   
   Global Instance Method_value `{H : State.Trait} `(Trait)
     : Notation.Dot "value" := {
-    Notation.dot (self : ref Self) := (Pure false : M (H := H) bool);
+    Notation.dot (self : ref Self) := (axiom : M (H := H) bool);
   }.
 End IsResultErrFallback.
 
@@ -122,13 +122,13 @@ Module codegen.
     
     Module info.
       Module ContractCallBuilder.
-        Class Trait (Self : Set) {Type : Set} : Set := {
-          Type := Type;
+        Class Trait (Self : Set) {Type_ : Set} : Set := {
+          Type_ := Type_;
         }.
         
-        Global Instance Method_Type `{H : State.Trait} `(Trait)
-          : Notation.DoubleColonType Self "Type" := {
-          Notation.double_colon_type := Type;
+        Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+          : Notation.DoubleColonType Self "Type_" := {
+          Notation.double_colon_type := Type_;
         }.
       End ContractCallBuilder.
     End info.
@@ -172,7 +172,7 @@ Module codegen.
     Module Env.
       Class Trait (Self : Set) {EnvAccess : Set} : Set := {
         EnvAccess := EnvAccess;
-        env `{H : State.Trait} : Self -> (M (H := H) ImplSelf.EnvAccess);
+        env `{H : State.Trait} : Self -> (M (H := H) EnvAccess);
       }.
       
       Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -181,14 +181,14 @@ Module codegen.
       }.
       Global Instance Method_env `{H : State.Trait} `(Trait)
         : Notation.Dot "env" := {
-        Notation.dot := env;
+        Notation.dot := @env;
       }.
     End Env.
     
     Module StaticEnv.
       Class Trait (Self : Set) {EnvAccess : Set} : Set := {
         EnvAccess := EnvAccess;
-        env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+        env `{H : State.Trait} : (M (H := H) EnvAccess);
       }.
       
       Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -197,7 +197,7 @@ Module codegen.
       }.
       Global Instance Method_env `{H : State.Trait} `(Trait)
         : Notation.Dot "env" := {
-        Notation.dot := env;
+        Notation.dot := @env;
       }.
     End StaticEnv.
   End env.
@@ -210,7 +210,7 @@ Module codegen.
             `{H : State.Trait}
             {E: Set}
             `{core.convert.Into.Trait
-              ink.reflect.event.ContractEventBase.Type
+              ink.reflect.event.ContractEventBase.Type_
               E}
             :
             Self -> E -> (M (H := H) unit);
@@ -218,7 +218,7 @@ Module codegen.
         
         Global Instance Method_emit_event `{H : State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
-          Notation.dot := emit_event;
+          Notation.dot := @emit_event;
         }.
       End EmitEvent.
     End emit.
@@ -279,14 +279,11 @@ Module codegen.
       Module TraitCallBuilder.
         Class Trait (Self : Set) {Builder : Set} : Set := {
           Builder := Builder;
-          call
-            `{H : State.Trait}
-            :
-            (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+          call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
           call_mut
             `{H : State.Trait}
             :
-            (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+            (mut_ref Self) -> (M (H := H) (mut_ref Builder));
         }.
         
         Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -295,11 +292,11 @@ Module codegen.
         }.
         Global Instance Method_call `{H : State.Trait} `(Trait)
           : Notation.Dot "call" := {
-          Notation.dot := call;
+          Notation.dot := @call;
         }.
         Global Instance Method_call_mut `{H : State.Trait} `(Trait)
           : Notation.Dot "call_mut" := {
-          Notation.dot := call_mut;
+          Notation.dot := @call_mut;
         }.
       End TraitCallBuilder.
       
@@ -330,11 +327,11 @@ Module codegen.
           forward
             `{H : State.Trait}
             :
-            (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+            (ref Self) -> (M (H := H) (ref Forwarder));
           forward_mut
             `{H : State.Trait}
             :
-            (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+            (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
           build
             `{H : State.Trait}
             :
@@ -357,19 +354,19 @@ Module codegen.
         }.
         Global Instance Method_forward `{H : State.Trait} `(Trait)
           : Notation.Dot "forward" := {
-          Notation.dot := forward;
+          Notation.dot := @forward;
         }.
         Global Instance Method_forward_mut `{H : State.Trait} `(Trait)
           : Notation.Dot "forward_mut" := {
-          Notation.dot := forward_mut;
+          Notation.dot := @forward_mut;
         }.
         Global Instance Method_build `{H : State.Trait} `(Trait)
           : Notation.Dot "build" := {
-          Notation.dot := build;
+          Notation.dot := @build;
         }.
         Global Instance Method_build_mut `{H : State.Trait} `(Trait)
           : Notation.Dot "build_mut" := {
-          Notation.dot := build_mut;
+          Notation.dot := @build_mut;
         }.
       End TraitCallForwarderFor.
     End call_builder.
@@ -426,13 +423,13 @@ Module dispatch.
   
   Module info.
     Module ContractCallBuilder.
-      Class Trait (Self : Set) {Type : Set} : Set := {
-        Type := Type;
+      Class Trait (Self : Set) {Type_ : Set} : Set := {
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractCallBuilder.
   End info.
@@ -488,25 +485,25 @@ Parameter deny_payment : forall `{H : State.Trait},
 
 Module info.
   Module ContractCallBuilder.
-    Class Trait (Self : Set) {Type : Set} : Set := {
-      Type := Type;
+    Class Trait (Self : Set) {Type_ : Set} : Set := {
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractCallBuilder.
 End info.
 
 Module ContractCallBuilder.
-  Class Trait (Self : Set) {Type : Set} : Set := {
-    Type := Type;
+  Class Trait (Self : Set) {Type_ : Set} : Set := {
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractCallBuilder.
 
@@ -580,7 +577,7 @@ Module env.
   Module Env.
     Class Trait (Self : Set) {EnvAccess : Set} : Set := {
       EnvAccess := EnvAccess;
-      env `{H : State.Trait} : Self -> (M (H := H) ImplSelf.EnvAccess);
+      env `{H : State.Trait} : Self -> (M (H := H) EnvAccess);
     }.
     
     Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -589,14 +586,14 @@ Module env.
     }.
     Global Instance Method_env `{H : State.Trait} `(Trait)
       : Notation.Dot "env" := {
-      Notation.dot := env;
+      Notation.dot := @env;
     }.
   End Env.
   
   Module StaticEnv.
     Class Trait (Self : Set) {EnvAccess : Set} : Set := {
       EnvAccess := EnvAccess;
-      env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+      env `{H : State.Trait} : (M (H := H) EnvAccess);
     }.
     
     Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -605,7 +602,7 @@ Module env.
     }.
     Global Instance Method_env `{H : State.Trait} `(Trait)
       : Notation.Dot "env" := {
-      Notation.dot := env;
+      Notation.dot := @env;
     }.
   End StaticEnv.
 End env.
@@ -613,7 +610,7 @@ End env.
 Module Env.
   Class Trait (Self : Set) {EnvAccess : Set} : Set := {
     EnvAccess := EnvAccess;
-    env `{H : State.Trait} : Self -> (M (H := H) ImplSelf.EnvAccess);
+    env `{H : State.Trait} : Self -> (M (H := H) EnvAccess);
   }.
   
   Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -622,14 +619,14 @@ Module Env.
   }.
   Global Instance Method_env `{H : State.Trait} `(Trait)
     : Notation.Dot "env" := {
-    Notation.dot := env;
+    Notation.dot := @env;
   }.
 End Env.
 
 Module StaticEnv.
   Class Trait (Self : Set) {EnvAccess : Set} : Set := {
     EnvAccess := EnvAccess;
-    env `{H : State.Trait} : (M (H := H) ImplSelf.EnvAccess);
+    env `{H : State.Trait} : (M (H := H) EnvAccess);
   }.
   
   Global Instance Method_EnvAccess `{H : State.Trait} `(Trait)
@@ -638,7 +635,7 @@ Module StaticEnv.
   }.
   Global Instance Method_env `{H : State.Trait} `(Trait)
     : Notation.Dot "env" := {
-    Notation.dot := env;
+    Notation.dot := @env;
   }.
 End StaticEnv.
 
@@ -649,14 +646,14 @@ Module event.
         emit_event
           `{H : State.Trait}
           {E: Set}
-          `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+          `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
           :
           Self -> E -> (M (H := H) unit);
       }.
       
       Global Instance Method_emit_event `{H : State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
-        Notation.dot := emit_event;
+        Notation.dot := @emit_event;
       }.
     End EmitEvent.
   End emit.
@@ -709,14 +706,14 @@ Module emit.
       emit_event
         `{H : State.Trait}
         {E: Set}
-        `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+        `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
         :
         Self -> E -> (M (H := H) unit);
     }.
     
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
-      Notation.dot := emit_event;
+      Notation.dot := @emit_event;
     }.
   End EmitEvent.
 End emit.
@@ -726,14 +723,14 @@ Module EmitEvent.
     emit_event
       `{H : State.Trait}
       {E: Set}
-      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type E}
+      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
       :
       Self -> E -> (M (H := H) unit);
   }.
   
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
-    Notation.dot := emit_event;
+    Notation.dot := @emit_event;
   }.
 End EmitEvent.
 
@@ -838,14 +835,11 @@ Module trait_def.
     Module TraitCallBuilder.
       Class Trait (Self : Set) {Builder : Set} : Set := {
         Builder := Builder;
-        call
-          `{H : State.Trait}
-          :
-          (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+        call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
         call_mut
           `{H : State.Trait}
           :
-          (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+          (mut_ref Self) -> (M (H := H) (mut_ref Builder));
       }.
       
       Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -854,11 +848,11 @@ Module trait_def.
       }.
       Global Instance Method_call `{H : State.Trait} `(Trait)
         : Notation.Dot "call" := {
-        Notation.dot := call;
+        Notation.dot := @call;
       }.
       Global Instance Method_call_mut `{H : State.Trait} `(Trait)
         : Notation.Dot "call_mut" := {
-        Notation.dot := call_mut;
+        Notation.dot := @call_mut;
       }.
     End TraitCallBuilder.
     
@@ -886,14 +880,11 @@ Module trait_def.
             Forwarder} :
           Set := {
         Forwarder := Forwarder;
-        forward
-          `{H : State.Trait}
-          :
-          (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+        forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
         forward_mut
           `{H : State.Trait}
           :
-          (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+          (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
         build
           `{H : State.Trait}
           :
@@ -915,19 +906,19 @@ Module trait_def.
       }.
       Global Instance Method_forward `{H : State.Trait} `(Trait)
         : Notation.Dot "forward" := {
-        Notation.dot := forward;
+        Notation.dot := @forward;
       }.
       Global Instance Method_forward_mut `{H : State.Trait} `(Trait)
         : Notation.Dot "forward_mut" := {
-        Notation.dot := forward_mut;
+        Notation.dot := @forward_mut;
       }.
       Global Instance Method_build `{H : State.Trait} `(Trait)
         : Notation.Dot "build" := {
-        Notation.dot := build;
+        Notation.dot := @build;
       }.
       Global Instance Method_build_mut `{H : State.Trait} `(Trait)
         : Notation.Dot "build_mut" := {
-        Notation.dot := build_mut;
+        Notation.dot := @build_mut;
       }.
     End TraitCallForwarderFor.
   End call_builder.
@@ -949,14 +940,11 @@ Module call_builder.
   Module TraitCallBuilder.
     Class Trait (Self : Set) {Builder : Set} : Set := {
       Builder := Builder;
-      call
-        `{H : State.Trait}
-        :
-        (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+      call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
       call_mut
         `{H : State.Trait}
         :
-        (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+        (mut_ref Self) -> (M (H := H) (mut_ref Builder));
     }.
     
     Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -965,11 +953,11 @@ Module call_builder.
     }.
     Global Instance Method_call `{H : State.Trait} `(Trait)
       : Notation.Dot "call" := {
-      Notation.dot := call;
+      Notation.dot := @call;
     }.
     Global Instance Method_call_mut `{H : State.Trait} `(Trait)
       : Notation.Dot "call_mut" := {
-      Notation.dot := call_mut;
+      Notation.dot := @call_mut;
     }.
   End TraitCallBuilder.
   
@@ -995,14 +983,11 @@ Module call_builder.
         `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
         Set := {
       Forwarder := Forwarder;
-      forward
-        `{H : State.Trait}
-        :
-        (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+      forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
       forward_mut
         `{H : State.Trait}
         :
-        (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+        (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
       build
         `{H : State.Trait}
         :
@@ -1024,19 +1009,19 @@ Module call_builder.
     }.
     Global Instance Method_forward `{H : State.Trait} `(Trait)
       : Notation.Dot "forward" := {
-      Notation.dot := forward;
+      Notation.dot := @forward;
     }.
     Global Instance Method_forward_mut `{H : State.Trait} `(Trait)
       : Notation.Dot "forward_mut" := {
-      Notation.dot := forward_mut;
+      Notation.dot := @forward_mut;
     }.
     Global Instance Method_build `{H : State.Trait} `(Trait)
       : Notation.Dot "build" := {
-      Notation.dot := build;
+      Notation.dot := @build;
     }.
     Global Instance Method_build_mut `{H : State.Trait} `(Trait)
       : Notation.Dot "build_mut" := {
-      Notation.dot := build_mut;
+      Notation.dot := @build_mut;
     }.
   End TraitCallForwarderFor.
 End call_builder.
@@ -1044,11 +1029,11 @@ End call_builder.
 Module TraitCallBuilder.
   Class Trait (Self : Set) {Builder : Set} : Set := {
     Builder := Builder;
-    call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref ImplSelf.Builder));
+    call `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Builder));
     call_mut
       `{H : State.Trait}
       :
-      (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Builder));
+      (mut_ref Self) -> (M (H := H) (mut_ref Builder));
   }.
   
   Global Instance Method_Builder `{H : State.Trait} `(Trait)
@@ -1057,11 +1042,11 @@ Module TraitCallBuilder.
   }.
   Global Instance Method_call `{H : State.Trait} `(Trait)
     : Notation.Dot "call" := {
-    Notation.dot := call;
+    Notation.dot := @call;
   }.
   Global Instance Method_call_mut `{H : State.Trait} `(Trait)
     : Notation.Dot "call_mut" := {
-    Notation.dot := call_mut;
+    Notation.dot := @call_mut;
   }.
 End TraitCallBuilder.
 
@@ -1087,14 +1072,11 @@ Module TraitCallForwarderFor.
       `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
       Set := {
     Forwarder := Forwarder;
-    forward
-      `{H : State.Trait}
-      :
-      (ref Self) -> (M (H := H) (ref ImplSelf.Forwarder));
+    forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
     forward_mut
       `{H : State.Trait}
       :
-      (mut_ref Self) -> (M (H := H) (mut_ref ImplSelf.Forwarder));
+      (mut_ref Self) -> (M (H := H) (mut_ref Forwarder));
     build
       `{H : State.Trait}
       :
@@ -1115,19 +1097,19 @@ Module TraitCallForwarderFor.
   }.
   Global Instance Method_forward `{H : State.Trait} `(Trait)
     : Notation.Dot "forward" := {
-    Notation.dot := forward;
+    Notation.dot := @forward;
   }.
   Global Instance Method_forward_mut `{H : State.Trait} `(Trait)
     : Notation.Dot "forward_mut" := {
-    Notation.dot := forward_mut;
+    Notation.dot := @forward_mut;
   }.
   Global Instance Method_build `{H : State.Trait} `(Trait)
     : Notation.Dot "build" := {
-    Notation.dot := build;
+    Notation.dot := @build;
   }.
   Global Instance Method_build_mut `{H : State.Trait} `(Trait)
     : Notation.Dot "build_mut" := {
-    Notation.dot := build_mut;
+    Notation.dot := @build_mut;
   }.
 End TraitCallForwarderFor.
 
@@ -1235,7 +1217,7 @@ Module reflect.
       
       Global Instance Method_NAME `{H : State.Trait} `(Trait)
         : Notation.Dot "NAME" := {
-        Notation.dot := NAME;
+        Notation.dot := @NAME;
       }.
     End ContractName.
   End contract.
@@ -1254,9 +1236,7 @@ Module reflect.
         CALLABLE
           `{H : State.Trait}
           :
-          (mut_ref ImplSelf.Storage) ->
-          ImplSelf.Input ->
-          (M (H := H) ImplSelf.Output);
+          (mut_ref Storage) -> Input -> (M (H := H) Output);
         MUTATES `{H : State.Trait} : bool;
         PAYABLE `{H : State.Trait} : bool;
         SELECTOR `{H : State.Trait} : list u8;
@@ -1277,23 +1257,23 @@ Module reflect.
       }.
       Global Instance Method_CALLABLE `{H : State.Trait} `(Trait)
         : Notation.Dot "CALLABLE" := {
-        Notation.dot := CALLABLE;
+        Notation.dot := @CALLABLE;
       }.
       Global Instance Method_MUTATES `{H : State.Trait} `(Trait)
         : Notation.Dot "MUTATES" := {
-        Notation.dot := MUTATES;
+        Notation.dot := @MUTATES;
       }.
       Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
-        Notation.dot := PAYABLE;
+        Notation.dot := @PAYABLE;
       }.
       Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
-        Notation.dot := SELECTOR;
+        Notation.dot := @SELECTOR;
       }.
       Global Instance Method_LABEL `{H : State.Trait} `(Trait)
         : Notation.Dot "LABEL" := {
-        Notation.dot := LABEL;
+        Notation.dot := @LABEL;
       }.
     End DispatchableMessageInfo.
     
@@ -1310,10 +1290,7 @@ Module reflect.
         Output := Output;
         Error := Error;
         IS_RESULT `{H : State.Trait} : bool;
-        CALLABLE
-          `{H : State.Trait}
-          :
-          ImplSelf.Input -> (M (H := H) ImplSelf.Output);
+        CALLABLE `{H : State.Trait} : Input -> (M (H := H) Output);
         PAYABLE `{H : State.Trait} : bool;
         SELECTOR `{H : State.Trait} : list u8;
         LABEL `{H : State.Trait} : ref str;
@@ -1337,23 +1314,23 @@ Module reflect.
       }.
       Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
         : Notation.Dot "IS_RESULT" := {
-        Notation.dot := IS_RESULT;
+        Notation.dot := @IS_RESULT;
       }.
       Global Instance Method_CALLABLE `{H : State.Trait} `(Trait)
         : Notation.Dot "CALLABLE" := {
-        Notation.dot := CALLABLE;
+        Notation.dot := @CALLABLE;
       }.
       Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
-        Notation.dot := PAYABLE;
+        Notation.dot := @PAYABLE;
       }.
       Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
-        Notation.dot := SELECTOR;
+        Notation.dot := @SELECTOR;
       }.
       Global Instance Method_LABEL `{H : State.Trait} `(Trait)
         : Notation.Dot "LABEL" := {
-        Notation.dot := LABEL;
+        Notation.dot := @LABEL;
       }.
     End DispatchableConstructorInfo.
     
@@ -1373,13 +1350,12 @@ Module reflect.
         as_result
           `{H : State.Trait}
           :
-          (ref Self) ->
-          (M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)));
+          (ref Self) -> (M (H := H) (core.result.Result (ref C) (ref Error)));
       }.
       
       Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
         : Notation.Dot "IS_RESULT" := {
-        Notation.dot := IS_RESULT;
+        Notation.dot := @IS_RESULT;
       }.
       Global Instance Method_Error `{H : State.Trait} `(Trait)
         : Notation.DoubleColonType Self "Error" := {
@@ -1387,7 +1363,7 @@ Module reflect.
       }.
       Global Instance Method_as_result `{H : State.Trait} `(Trait)
         : Notation.Dot "as_result" := {
-        Notation.dot := as_result;
+        Notation.dot := @as_result;
       }.
     End ConstructorOutput.
     
@@ -1410,32 +1386,32 @@ Module reflect.
     Module ContractMessageDecoder.
       Class Trait
           (Self : Set)
-          {Type : Set}
-          `{parity_scale_codec.codec.Decode.Trait Type}
-          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+          {Type_ : Set}
+          `{parity_scale_codec.codec.Decode.Trait Type_}
+          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
           Set := {
-        Type := Type;
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractMessageDecoder.
     
     Module ContractConstructorDecoder.
       Class Trait
           (Self : Set)
-          {Type : Set}
-          `{ink.reflect.dispatch.DecodeDispatch.Trait Type}
-          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+          {Type_ : Set}
+          `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
+          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
           Set := {
-        Type := Type;
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractConstructorDecoder.
     
@@ -1451,7 +1427,7 @@ Module reflect.
       
       Global Instance Method_execute_dispatchable `{H : State.Trait} `(Trait)
         : Notation.Dot "execute_dispatchable" := {
-        Notation.dot := execute_dispatchable;
+        Notation.dot := @execute_dispatchable;
       }.
     End ExecuteDispatchable.
     
@@ -1479,20 +1455,20 @@ Module reflect.
       
       Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
-        Notation.dot := decode_dispatch;
+        Notation.dot := @decode_dispatch;
       }.
     End DecodeDispatch.
   End dispatch.
   
   Module event.
     Module ContractEventBase.
-      Class Trait (Self : Set) {Type : Set} : Set := {
-        Type := Type;
+      Class Trait (Self : Set) {Type_ : Set} : Set := {
+        Type_ := Type_;
       }.
       
-      Global Instance Method_Type `{H : State.Trait} `(Trait)
-        : Notation.DoubleColonType Self "Type" := {
-        Notation.double_colon_type := Type;
+      Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+        : Notation.DoubleColonType Self "Type_" := {
+        Notation.double_colon_type := Type_;
       }.
     End ContractEventBase.
   End event.
@@ -1507,11 +1483,11 @@ Module reflect.
         
         Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
           : Notation.Dot "PAYABLE" := {
-          Notation.dot := PAYABLE;
+          Notation.dot := @PAYABLE;
         }.
         Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
           : Notation.Dot "SELECTOR" := {
-          Notation.dot := SELECTOR;
+          Notation.dot := @SELECTOR;
         }.
       End TraitMessageInfo.
       
@@ -1524,15 +1500,15 @@ Module reflect.
         
         Global Instance Method_ID `{H : State.Trait} `(Trait)
           : Notation.Dot "ID" := {
-          Notation.dot := ID;
+          Notation.dot := @ID;
         }.
         Global Instance Method_PATH `{H : State.Trait} `(Trait)
           : Notation.Dot "PATH" := {
-          Notation.dot := PATH;
+          Notation.dot := @PATH;
         }.
         Global Instance Method_NAME `{H : State.Trait} `(Trait)
           : Notation.Dot "NAME" := {
-          Notation.dot := NAME;
+          Notation.dot := @NAME;
         }.
       End TraitInfo.
     End info.
@@ -1565,7 +1541,7 @@ Module contract.
     
     Global Instance Method_NAME `{H : State.Trait} `(Trait)
       : Notation.Dot "NAME" := {
-      Notation.dot := NAME;
+      Notation.dot := @NAME;
     }.
   End ContractName.
 End contract.
@@ -1577,7 +1553,7 @@ Module ContractName.
   
   Global Instance Method_NAME `{H : State.Trait} `(Trait)
     : Notation.Dot "NAME" := {
-    Notation.dot := NAME;
+    Notation.dot := @NAME;
   }.
 End ContractName.
 
@@ -1595,9 +1571,7 @@ Module dispatch.
       CALLABLE
         `{H : State.Trait}
         :
-        (mut_ref ImplSelf.Storage) ->
-        ImplSelf.Input ->
-        (M (H := H) ImplSelf.Output);
+        (mut_ref Storage) -> Input -> (M (H := H) Output);
       MUTATES `{H : State.Trait} : bool;
       PAYABLE `{H : State.Trait} : bool;
       SELECTOR `{H : State.Trait} : list u8;
@@ -1618,23 +1592,23 @@ Module dispatch.
     }.
     Global Instance Method_CALLABLE `{H : State.Trait} `(Trait)
       : Notation.Dot "CALLABLE" := {
-      Notation.dot := CALLABLE;
+      Notation.dot := @CALLABLE;
     }.
     Global Instance Method_MUTATES `{H : State.Trait} `(Trait)
       : Notation.Dot "MUTATES" := {
-      Notation.dot := MUTATES;
+      Notation.dot := @MUTATES;
     }.
     Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
       : Notation.Dot "PAYABLE" := {
-      Notation.dot := PAYABLE;
+      Notation.dot := @PAYABLE;
     }.
     Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
       : Notation.Dot "SELECTOR" := {
-      Notation.dot := SELECTOR;
+      Notation.dot := @SELECTOR;
     }.
     Global Instance Method_LABEL `{H : State.Trait} `(Trait)
       : Notation.Dot "LABEL" := {
-      Notation.dot := LABEL;
+      Notation.dot := @LABEL;
     }.
   End DispatchableMessageInfo.
   
@@ -1651,10 +1625,7 @@ Module dispatch.
       Output := Output;
       Error := Error;
       IS_RESULT `{H : State.Trait} : bool;
-      CALLABLE
-        `{H : State.Trait}
-        :
-        ImplSelf.Input -> (M (H := H) ImplSelf.Output);
+      CALLABLE `{H : State.Trait} : Input -> (M (H := H) Output);
       PAYABLE `{H : State.Trait} : bool;
       SELECTOR `{H : State.Trait} : list u8;
       LABEL `{H : State.Trait} : ref str;
@@ -1678,23 +1649,23 @@ Module dispatch.
     }.
     Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
       : Notation.Dot "IS_RESULT" := {
-      Notation.dot := IS_RESULT;
+      Notation.dot := @IS_RESULT;
     }.
     Global Instance Method_CALLABLE `{H : State.Trait} `(Trait)
       : Notation.Dot "CALLABLE" := {
-      Notation.dot := CALLABLE;
+      Notation.dot := @CALLABLE;
     }.
     Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
       : Notation.Dot "PAYABLE" := {
-      Notation.dot := PAYABLE;
+      Notation.dot := @PAYABLE;
     }.
     Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
       : Notation.Dot "SELECTOR" := {
-      Notation.dot := SELECTOR;
+      Notation.dot := @SELECTOR;
     }.
     Global Instance Method_LABEL `{H : State.Trait} `(Trait)
       : Notation.Dot "LABEL" := {
-      Notation.dot := LABEL;
+      Notation.dot := @LABEL;
     }.
   End DispatchableConstructorInfo.
   
@@ -1714,13 +1685,12 @@ Module dispatch.
       as_result
         `{H : State.Trait}
         :
-        (ref Self) ->
-        (M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)));
+        (ref Self) -> (M (H := H) (core.result.Result (ref C) (ref Error)));
     }.
     
     Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
       : Notation.Dot "IS_RESULT" := {
-      Notation.dot := IS_RESULT;
+      Notation.dot := @IS_RESULT;
     }.
     Global Instance Method_Error `{H : State.Trait} `(Trait)
       : Notation.DoubleColonType Self "Error" := {
@@ -1728,7 +1698,7 @@ Module dispatch.
     }.
     Global Instance Method_as_result `{H : State.Trait} `(Trait)
       : Notation.Dot "as_result" := {
-      Notation.dot := as_result;
+      Notation.dot := @as_result;
     }.
   End ConstructorOutput.
   
@@ -1751,32 +1721,32 @@ Module dispatch.
   Module ContractMessageDecoder.
     Class Trait
         (Self : Set)
-        {Type : Set}
-        `{parity_scale_codec.codec.Decode.Trait Type}
-        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+        {Type_ : Set}
+        `{parity_scale_codec.codec.Decode.Trait Type_}
+        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
         Set := {
-      Type := Type;
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractMessageDecoder.
   
   Module ContractConstructorDecoder.
     Class Trait
         (Self : Set)
-        {Type : Set}
-        `{ink.reflect.dispatch.DecodeDispatch.Trait Type}
-        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+        {Type_ : Set}
+        `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
+        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
         Set := {
-      Type := Type;
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractConstructorDecoder.
   
@@ -1792,7 +1762,7 @@ Module dispatch.
     
     Global Instance Method_execute_dispatchable `{H : State.Trait} `(Trait)
       : Notation.Dot "execute_dispatchable" := {
-      Notation.dot := execute_dispatchable;
+      Notation.dot := @execute_dispatchable;
     }.
   End ExecuteDispatchable.
   
@@ -1820,7 +1790,7 @@ Module dispatch.
     
     Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
       : Notation.Dot "decode_dispatch" := {
-      Notation.dot := decode_dispatch;
+      Notation.dot := @decode_dispatch;
     }.
   End DecodeDispatch.
 End dispatch.
@@ -1838,9 +1808,7 @@ Module DispatchableMessageInfo.
     CALLABLE
       `{H : State.Trait}
       :
-      (mut_ref ImplSelf.Storage) ->
-      ImplSelf.Input ->
-      (M (H := H) ImplSelf.Output);
+      (mut_ref Storage) -> Input -> (M (H := H) Output);
     MUTATES `{H : State.Trait} : bool;
     PAYABLE `{H : State.Trait} : bool;
     SELECTOR `{H : State.Trait} : list u8;
@@ -1861,23 +1829,23 @@ Module DispatchableMessageInfo.
   }.
   Global Instance Method_CALLABLE `{H : State.Trait} `(Trait)
     : Notation.Dot "CALLABLE" := {
-    Notation.dot := CALLABLE;
+    Notation.dot := @CALLABLE;
   }.
   Global Instance Method_MUTATES `{H : State.Trait} `(Trait)
     : Notation.Dot "MUTATES" := {
-    Notation.dot := MUTATES;
+    Notation.dot := @MUTATES;
   }.
   Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
     : Notation.Dot "PAYABLE" := {
-    Notation.dot := PAYABLE;
+    Notation.dot := @PAYABLE;
   }.
   Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
     : Notation.Dot "SELECTOR" := {
-    Notation.dot := SELECTOR;
+    Notation.dot := @SELECTOR;
   }.
   Global Instance Method_LABEL `{H : State.Trait} `(Trait)
     : Notation.Dot "LABEL" := {
-    Notation.dot := LABEL;
+    Notation.dot := @LABEL;
   }.
 End DispatchableMessageInfo.
 
@@ -1894,10 +1862,7 @@ Module DispatchableConstructorInfo.
     Output := Output;
     Error := Error;
     IS_RESULT `{H : State.Trait} : bool;
-    CALLABLE
-      `{H : State.Trait}
-      :
-      ImplSelf.Input -> (M (H := H) ImplSelf.Output);
+    CALLABLE `{H : State.Trait} : Input -> (M (H := H) Output);
     PAYABLE `{H : State.Trait} : bool;
     SELECTOR `{H : State.Trait} : list u8;
     LABEL `{H : State.Trait} : ref str;
@@ -1921,23 +1886,23 @@ Module DispatchableConstructorInfo.
   }.
   Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
     : Notation.Dot "IS_RESULT" := {
-    Notation.dot := IS_RESULT;
+    Notation.dot := @IS_RESULT;
   }.
   Global Instance Method_CALLABLE `{H : State.Trait} `(Trait)
     : Notation.Dot "CALLABLE" := {
-    Notation.dot := CALLABLE;
+    Notation.dot := @CALLABLE;
   }.
   Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
     : Notation.Dot "PAYABLE" := {
-    Notation.dot := PAYABLE;
+    Notation.dot := @PAYABLE;
   }.
   Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
     : Notation.Dot "SELECTOR" := {
-    Notation.dot := SELECTOR;
+    Notation.dot := @SELECTOR;
   }.
   Global Instance Method_LABEL `{H : State.Trait} `(Trait)
     : Notation.Dot "LABEL" := {
-    Notation.dot := LABEL;
+    Notation.dot := @LABEL;
   }.
 End DispatchableConstructorInfo.
 
@@ -1964,13 +1929,12 @@ Module ConstructorOutput.
     as_result
       `{H : State.Trait}
       :
-      (ref Self) ->
-      (M (H := H) (core.result.Result (ref C) (ref ImplSelf.Error)));
+      (ref Self) -> (M (H := H) (core.result.Result (ref C) (ref Error)));
   }.
   
   Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
     : Notation.Dot "IS_RESULT" := {
-    Notation.dot := IS_RESULT;
+    Notation.dot := @IS_RESULT;
   }.
   Global Instance Method_Error `{H : State.Trait} `(Trait)
     : Notation.DoubleColonType Self "Error" := {
@@ -1978,7 +1942,7 @@ Module ConstructorOutput.
   }.
   Global Instance Method_as_result `{H : State.Trait} `(Trait)
     : Notation.Dot "as_result" := {
-    Notation.dot := as_result;
+    Notation.dot := @as_result;
   }.
 End ConstructorOutput.
 
@@ -2001,32 +1965,32 @@ Definition ConstructorOutputValue := @ConstructorOutputValue.t.
 Module ContractMessageDecoder.
   Class Trait
       (Self : Set)
-      {Type : Set}
-      `{parity_scale_codec.codec.Decode.Trait Type}
-      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+      {Type_ : Set}
+      `{parity_scale_codec.codec.Decode.Trait Type_}
+      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
       Set := {
-    Type := Type;
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractMessageDecoder.
 
 Module ContractConstructorDecoder.
   Class Trait
       (Self : Set)
-      {Type : Set}
-      `{ink.reflect.dispatch.DecodeDispatch.Trait Type}
-      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type} :
+      {Type_ : Set}
+      `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
+      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
       Set := {
-    Type := Type;
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractConstructorDecoder.
 
@@ -2041,7 +2005,7 @@ Module ExecuteDispatchable.
   
   Global Instance Method_execute_dispatchable `{H : State.Trait} `(Trait)
     : Notation.Dot "execute_dispatchable" := {
-    Notation.dot := execute_dispatchable;
+    Notation.dot := @execute_dispatchable;
   }.
 End ExecuteDispatchable.
 
@@ -2068,31 +2032,31 @@ Module DecodeDispatch.
   
   Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
     : Notation.Dot "decode_dispatch" := {
-    Notation.dot := decode_dispatch;
+    Notation.dot := @decode_dispatch;
   }.
 End DecodeDispatch.
 
 Module event.
   Module ContractEventBase.
-    Class Trait (Self : Set) {Type : Set} : Set := {
-      Type := Type;
+    Class Trait (Self : Set) {Type_ : Set} : Set := {
+      Type_ := Type_;
     }.
     
-    Global Instance Method_Type `{H : State.Trait} `(Trait)
-      : Notation.DoubleColonType Self "Type" := {
-      Notation.double_colon_type := Type;
+    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
     }.
   End ContractEventBase.
 End event.
 
 Module ContractEventBase.
-  Class Trait (Self : Set) {Type : Set} : Set := {
-    Type := Type;
+  Class Trait (Self : Set) {Type_ : Set} : Set := {
+    Type_ := Type_;
   }.
   
-  Global Instance Method_Type `{H : State.Trait} `(Trait)
-    : Notation.DoubleColonType Self "Type" := {
-    Notation.double_colon_type := Type;
+  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    : Notation.DoubleColonType Self "Type_" := {
+    Notation.double_colon_type := Type_;
   }.
 End ContractEventBase.
 
@@ -2106,11 +2070,11 @@ Module trait_def.
       
       Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
-        Notation.dot := PAYABLE;
+        Notation.dot := @PAYABLE;
       }.
       Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
-        Notation.dot := SELECTOR;
+        Notation.dot := @SELECTOR;
       }.
     End TraitMessageInfo.
     
@@ -2123,15 +2087,15 @@ Module trait_def.
       
       Global Instance Method_ID `{H : State.Trait} `(Trait)
         : Notation.Dot "ID" := {
-        Notation.dot := ID;
+        Notation.dot := @ID;
       }.
       Global Instance Method_PATH `{H : State.Trait} `(Trait)
         : Notation.Dot "PATH" := {
-        Notation.dot := PATH;
+        Notation.dot := @PATH;
       }.
       Global Instance Method_NAME `{H : State.Trait} `(Trait)
         : Notation.Dot "NAME" := {
-        Notation.dot := NAME;
+        Notation.dot := @NAME;
       }.
     End TraitInfo.
   End info.
@@ -2164,11 +2128,11 @@ Module info.
     
     Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
       : Notation.Dot "PAYABLE" := {
-      Notation.dot := PAYABLE;
+      Notation.dot := @PAYABLE;
     }.
     Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
       : Notation.Dot "SELECTOR" := {
-      Notation.dot := SELECTOR;
+      Notation.dot := @SELECTOR;
     }.
   End TraitMessageInfo.
   
@@ -2181,15 +2145,15 @@ Module info.
     
     Global Instance Method_ID `{H : State.Trait} `(Trait)
       : Notation.Dot "ID" := {
-      Notation.dot := ID;
+      Notation.dot := @ID;
     }.
     Global Instance Method_PATH `{H : State.Trait} `(Trait)
       : Notation.Dot "PATH" := {
-      Notation.dot := PATH;
+      Notation.dot := @PATH;
     }.
     Global Instance Method_NAME `{H : State.Trait} `(Trait)
       : Notation.Dot "NAME" := {
-      Notation.dot := NAME;
+      Notation.dot := @NAME;
     }.
   End TraitInfo.
 End info.
@@ -2202,11 +2166,11 @@ Module TraitMessageInfo.
   
   Global Instance Method_PAYABLE `{H : State.Trait} `(Trait)
     : Notation.Dot "PAYABLE" := {
-    Notation.dot := PAYABLE;
+    Notation.dot := @PAYABLE;
   }.
   Global Instance Method_SELECTOR `{H : State.Trait} `(Trait)
     : Notation.Dot "SELECTOR" := {
-    Notation.dot := SELECTOR;
+    Notation.dot := @SELECTOR;
   }.
 End TraitMessageInfo.
 
@@ -2218,15 +2182,15 @@ Module TraitInfo.
   }.
   
   Global Instance Method_ID `{H : State.Trait} `(Trait) : Notation.Dot "ID" := {
-    Notation.dot := ID;
+    Notation.dot := @ID;
   }.
   Global Instance Method_PATH `{H : State.Trait} `(Trait)
     : Notation.Dot "PATH" := {
-    Notation.dot := PATH;
+    Notation.dot := @PATH;
   }.
   Global Instance Method_NAME `{H : State.Trait} `(Trait)
     : Notation.Dot "NAME" := {
-    Notation.dot := NAME;
+    Notation.dot := @NAME;
   }.
 End TraitInfo.
 
@@ -2268,7 +2232,7 @@ Module chain_extension.
   Module ChainExtensionInstance.
     Class Trait (Self : Set) {Instance : Set} : Set := {
       Instance := Instance;
-      instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
+      instantiate `{H : State.Trait} : (M (H := H) Instance);
     }.
     
     Global Instance Method_Instance `{H : State.Trait} `(Trait)
@@ -2277,7 +2241,7 @@ Module chain_extension.
     }.
     Global Instance Method_instantiate `{H : State.Trait} `(Trait)
       : Notation.Dot "instantiate" := {
-      Notation.dot := instantiate;
+      Notation.dot := @instantiate;
     }.
   End ChainExtensionInstance.
   
@@ -2351,7 +2315,7 @@ End chain_extension.
 Module ChainExtensionInstance.
   Class Trait (Self : Set) {Instance : Set} : Set := {
     Instance := Instance;
-    instantiate `{H : State.Trait} : (M (H := H) ImplSelf.Instance);
+    instantiate `{H : State.Trait} : (M (H := H) Instance);
   }.
   
   Global Instance Method_Instance `{H : State.Trait} `(Trait)
@@ -2360,7 +2324,7 @@ Module ChainExtensionInstance.
   }.
   Global Instance Method_instantiate `{H : State.Trait} `(Trait)
     : Notation.Dot "instantiate" := {
-    Notation.dot := instantiate;
+    Notation.dot := @instantiate;
   }.
 End ChainExtensionInstance.
 
@@ -2455,7 +2419,7 @@ Module contract_ref.
     
     Global Instance Method_to_account_id `{H : State.Trait} `(Trait)
       : Notation.Dot "to_account_id" := {
-      Notation.dot := to_account_id;
+      Notation.dot := @to_account_id;
     }.
   End ToAccountId.
 End contract_ref.
@@ -2470,7 +2434,7 @@ Module ToAccountId.
   
   Global Instance Method_to_account_id `{H : State.Trait} `(Trait)
     : Notation.Dot "to_account_id" := {
-    Notation.dot := to_account_id;
+    Notation.dot := @to_account_id;
   }.
 End ToAccountId.
 

@@ -66,11 +66,11 @@ Module types.
     
     Global Instance Method_CLEAR_HASH `{H : State.Trait} `(Trait)
       : Notation.Dot "CLEAR_HASH" := {
-      Notation.dot := CLEAR_HASH;
+      Notation.dot := @CLEAR_HASH;
     }.
     Global Instance Method_is_clear `{H : State.Trait} `(Trait)
       : Notation.Dot "is_clear" := {
-      Notation.dot := is_clear;
+      Notation.dot := @is_clear;
     }.
   End Clear.
 End types.
@@ -114,19 +114,6 @@ Module Hash.
 End Hash.
 Definition Hash := @Hash.t.
 
-Module Visitor.
-  Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData unit;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End Visitor.
-Definition Visitor := @Visitor.t.
-
 Module Clear.
   Class Trait (Self : Set) : Set := {
     CLEAR_HASH `{H : State.Trait} : Self;
@@ -135,11 +122,11 @@ Module Clear.
   
   Global Instance Method_CLEAR_HASH `{H : State.Trait} `(Trait)
     : Notation.Dot "CLEAR_HASH" := {
-    Notation.dot := CLEAR_HASH;
+    Notation.dot := @CLEAR_HASH;
   }.
   Global Instance Method_is_clear `{H : State.Trait} `(Trait)
     : Notation.Dot "is_clear" := {
-    Notation.dot := is_clear;
+    Notation.dot := @is_clear;
   }.
 End Clear.
 

@@ -34,7 +34,7 @@ Module BarTrait.
   
   Global Instance Method_show `{H : State.Trait} `(Trait)
     : Notation.Dot "show" := {
-    Notation.dot := show;
+    Notation.dot := @show;
   }.
 End BarTrait.
 

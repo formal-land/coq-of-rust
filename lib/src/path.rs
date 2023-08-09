@@ -40,7 +40,7 @@ impl Path {
     }
 }
 
-fn compile_path_without_env<Res>(path: &rustc_hir::Path<Res>) -> Path {
+fn compile_path_without_env(path: &rustc_hir::Path) -> Path {
     Path {
         segments: path
             .segments
@@ -117,25 +117,33 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
         QPath::Resolved(_, path) => compile_path(env, path),
         QPath::TypeRelative(ty, segment) => {
             let ty = match ty.kind {
-                rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => {
-                    let mut path = compile_path(env, path);
-                    path.prefix_last_by_impl();
-                    path
-                }
-                _ => Path::local("ComplexTypePath".to_string()),
+                rustc_hir::TyKind::Path(QPath::Resolved(_, path)) => match path.res {
+                    // SelfTyAlias and SelfTyParam are only local aliases (named `Self`)
+                    // and cannot be used directly in qualified paths in Coq
+                    Res::SelfTyAlias { .. } | Res::SelfTyParam { .. } => None,
+                    // the rest of paths should refer to implementations of types,
+                    // so we prepend their names with `Impl_`
+                    _ => {
+                        let mut path = compile_path(env, path);
+                        path.prefix_last_by_impl();
+                        Some(path)
+                    }
+                },
+                _ => Some(Path::local("ComplexTypePath".to_string())),
+            };
+            let raw_segments = match ty {
+                Some(path) => vec![path.to_string(), segment.ident.name.to_string()],
+                None => vec![segment.ident.name.to_string()],
             };
             Path {
-                segments: vec![ty.to_string(), segment.ident.name.to_string()]
-                    .iter()
-                    .map(|segment| to_valid_coq_name(segment.to_string()))
-                    .collect(),
+                segments: raw_segments.into_iter().map(to_valid_coq_name).collect(),
             }
         }
         QPath::LangItem(lang_item, _, _) => compile_lang_item(lang_item),
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum StructOrVariant {
     Struct,
     Variant,
@@ -196,6 +204,9 @@ impl StructOrVariant {
 }
 
 pub(crate) fn to_valid_coq_name(str: String) -> String {
+    if str == "Type" {
+        return "Type_".to_string();
+    }
     let str = str::replace(&str, "$", "_");
     let str = str::replace(&str, "{{root}}", "Root");
     str::replace(&str, "::", ".")

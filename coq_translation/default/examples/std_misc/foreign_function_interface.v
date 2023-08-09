@@ -68,7 +68,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
       `{H : State.Trait}
       (self : ref Self)
       : M (H := H) foreign_function_interface.Complex :=
-    let _ := tt in
+    let _ : core.clone.AssertParamIsClone f32 := tt in
     self.["deref"].
   
   Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {

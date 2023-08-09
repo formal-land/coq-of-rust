@@ -40,7 +40,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ := scoping_rules_borrowing.borrow_i32 (addr_of boxed_i32) in
   let* _ := scoping_rules_borrowing.borrow_i32 (addr_of stacked_i32) in
   let* _ :=
-    let _ref_to_i32 := addr_of boxed_i32 in
+    let _ref_to_i32 : ref i32 := addr_of boxed_i32 in
     let* _ := scoping_rules_borrowing.borrow_i32 _ref_to_i32 in
     Pure tt in
   let* _ := scoping_rules_borrowing.eat_box_i32 boxed_i32 in

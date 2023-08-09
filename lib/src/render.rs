@@ -2,6 +2,14 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
+/// provides the instance of the Struct.Trait typeclass
+/// for definitions of functions and constants
+/// which types utilize the M monad constructor
+pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
+    // TODO: check whether the name of the parameter is necessary
+    text("`{H : State.Trait}")
+}
+
 pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     if with_paren {
         RcDoc::concat([RcDoc::text("("), doc, RcDoc::text(")")])
@@ -158,6 +166,19 @@ where
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
 
+/// locally unsets primitive projecitons if the condition is satisfied
+pub(crate) fn locally_unset_primitive_projections(condition: bool, doc: Doc) -> Doc {
+    group(if condition {
+        [
+            group([text("Unset Primitive Projections."), hardline()]),
+            doc,
+            group([hardline(), text("Global Set Primitive Projections.")]),
+        ]
+    } else {
+        [nil(), doc, hardline()]
+    })
+}
+
 /// puts [doc] in a section or a module (that depends on [kind])
 pub(crate) fn enclose<'a, K, U>(kind: K, name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
 where
@@ -217,4 +238,304 @@ where
     } else {
         section(name, ty_params, doc)
     }
+}
+
+/// creates a module with the translation of the given trait
+pub(crate) fn trait_module<'a, U>(
+    name: U,
+    ty_params: &Vec<(U, Option<Doc>)>,
+    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+    items: Vec<Doc<'a>>,
+    instances: Vec<Doc<'a>>,
+) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    module(
+        name,
+        group([
+            locally_unset_primitive_projections(
+                items.is_empty(),
+                trait_typeclass(ty_params, types_with_bounds, items),
+            ),
+            if instances.is_empty() {
+                nil()
+            } else {
+                hardline()
+            },
+            trait_notation_instances(instances),
+        ]),
+    )
+}
+
+/// creates a definition of a typeclass corresponding
+/// to a trait with the given type parameters and bounds
+pub(crate) fn trait_typeclass<'a, U, I>(
+    ty_params: &Vec<(U, Option<Doc>)>,
+    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+    items: I,
+) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    group([
+        nest([
+            new_trait_typeclass_header(ty_params, types_with_bounds),
+            new_typeclass_body(items),
+        ]),
+        hardline(),
+        text("}."),
+    ])
+}
+
+/// creates a definition of a typeclass corresponding
+/// to a trait with the given type parameters and bounds
+pub(crate) fn new_trait_typeclass_header<'a, U>(
+    ty_params: &Vec<(U, Option<Doc>)>,
+    types_with_bounds: &[(U, Vec<Doc<'a>>)],
+) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    nest([
+        text("Class Trait"),
+        line(),
+        nest([
+            text("("),
+            text("Self"),
+            line(),
+            text(":"),
+            line(),
+            text("Set"),
+            text(")"),
+            if ty_params.is_empty() {
+                nil()
+            } else {
+                concat([
+                    line(),
+                    nest([
+                        text("{"),
+                        concat(ty_params.iter().map(|(ty, default)| {
+                            match default {
+                                // @TODO: implement the translation of type parameters with default
+                                Some(_default) => {
+                                    concat([text("(* TODO *)"), line(), text(*ty), line()])
+                                }
+                                None => concat([text(*ty), line()]),
+                            }
+                        })),
+                        text(":"),
+                        line(),
+                        text("Set"),
+                        text("}"),
+                    ]),
+                ])
+            },
+        ]),
+        intersperse(
+            types_with_bounds.iter().map(|(item_name, bounds)| {
+                concat([
+                    line(),
+                    nest([
+                        text("{"),
+                        text(*item_name),
+                        text(" : "),
+                        text("Set"),
+                        text("}"),
+                    ]),
+                    concat(bounds.iter().map(|x| {
+                        concat([
+                            line(),
+                            // @TODO: include default parameters
+                            nest([
+                                text("`{"),
+                                x.clone(),
+                                text(".Trait"),
+                                line(),
+                                text(*item_name),
+                                text("}"),
+                            ]),
+                        ])
+                    })),
+                ])
+            }),
+            [nil()],
+        ),
+        text(" :"),
+        line(),
+        text("Set := {"),
+    ])
+}
+
+/// creates a body of a typeclass with the given items
+pub(crate) fn new_typeclass_body<'a, I>(items: I) -> Doc<'a>
+where
+    I: IntoIterator,
+    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    concat(items)
+}
+
+/// creates a type parameter as a field of a typeclass
+pub(crate) fn typeclass_type_item<'a, U>(name: U) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    group([
+        hardline(),
+        nest([
+            text(name),
+            line(),
+            text(":="),
+            line(),
+            text(name),
+            text(";"),
+        ]),
+    ])
+}
+
+/// creates a field with the given name of a typeclass of the given type,
+/// with the given type parameters and satisfying the given typeclass bounds
+pub(crate) fn typeclass_definition_item<'a, U, V, W>(
+    name: U,
+    ty_params: &'a Vec<V>,
+    bounds: Vec<W>,
+    ty: Doc<'a>,
+) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>>,
+    &'a V: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    W: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+{
+    group([
+        hardline(),
+        nest([
+            text(name),
+            line(),
+            monadic_typeclass_parameter(),
+            line(),
+            if ty_params.is_empty() {
+                nil()
+            } else {
+                concat([
+                    group([
+                        text("{"),
+                        intersperse(ty_params.iter(), [line()]),
+                        text(": Set}"),
+                    ]),
+                    line(),
+                ])
+            },
+            if bounds.is_empty() {
+                nil()
+            } else {
+                concat([intersperse(bounds, [line()]), line()])
+            },
+            text(":"),
+            line(),
+            ty,
+            text(";"),
+        ]),
+    ])
+}
+
+/// separates definitions of instances with [hardline]s
+pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
+    intersperse(instances, [hardline()])
+}
+
+/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
+pub(crate) fn new_instance<'a, U>(name: U, kind: Doc<'a>, field: Doc<'a>, value: Doc<'a>) -> Doc<'a>
+where
+    U: std::fmt::Display,
+{
+    concat([
+        new_instance_header(name, kind),
+        nest([hardline(), new_instance_body(field, value)]),
+        hardline(),
+        text("}."),
+    ])
+}
+
+/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
+pub(crate) fn new_instance_header<U>(name: U, kind: Doc) -> Doc
+where
+    U: std::fmt::Display,
+{
+    nest([
+        nest([
+            text("Global Instance"),
+            line(),
+            text(format!("Method_{name}")),
+            line(),
+            monadic_typeclass_parameter(),
+            line(),
+            text("`(Trait)"),
+        ]),
+        line(),
+        nest([
+            text(": "),
+            kind,
+            line(),
+            text(format!("\"{name}\"")),
+            line(),
+            text(":= {"),
+        ]),
+    ])
+}
+
+/// produces the body of an instance of [Notation.Dot] or [Notation.DoubleColonType]
+pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
+    nest([field, text(" :="), line(), value, text(";")])
+}
+
+/// produces a definition of the given function
+pub(crate) fn function_header<'a, U, V, W, X>(
+    name: U,
+    ty_params: &'a Vec<V>,
+    bounds: Vec<W>,
+    args: &[(X, Doc<'a>)],
+) -> Doc<'a>
+where
+    U: Into<std::borrow::Cow<'a, str>>,
+    &'a V: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    W: pretty::Pretty<'a, pretty::RcAllocator, ()>,
+    X: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+{
+    group([
+        text(name),
+        if ty_params.is_empty() {
+            nil()
+        } else {
+            group([
+                group([
+                    // change here if it doesn't work with '{}' brackets
+                    text("{"),
+                    intersperse(ty_params, [line()]),
+                    text(": Set}"),
+                ]),
+                line(),
+            ])
+        },
+        if bounds.is_empty() {
+            nil()
+        } else {
+            group([intersperse(bounds, [line()]), line()])
+        },
+        concat(args.iter().map(|(name, ty)| {
+            concat([
+                line(),
+                nest([
+                    text("("),
+                    text(*name),
+                    line(),
+                    text(": "),
+                    ty.clone(),
+                    text(")"),
+                ]),
+            ])
+        })),
+    ])
 }
