@@ -65,7 +65,12 @@ Module types.
       from_le_bytes `{H : State.Trait} : Bytes -> (M (H := H) Self);
     }.
     
-    Global Instance Method_Bytes `{H : State.Trait} {Bytes} `(Trait)
+    Global Instance
+        Method_Bytes
+        `{H : State.Trait}
+        {Bytes}
+        `(Trait
+        {Bytes := Bytes})
       : Notation.DoubleColonType Self "Bytes" := {
       Notation.double_colon_type := Bytes;
     }.
@@ -154,23 +159,48 @@ Module types.
       : Notation.Dot "MAX_EVENT_TOPICS" := {
       Notation.dot := @MAX_EVENT_TOPICS;
     }.
-    Global Instance Method_AccountId `{H : State.Trait} {AccountId} `(Trait)
+    Global Instance
+        Method_AccountId
+        `{H : State.Trait}
+        {AccountId}
+        `(Trait
+        {AccountId := AccountId})
       : Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
     }.
-    Global Instance Method_Balance `{H : State.Trait} {Balance} `(Trait)
+    Global Instance
+        Method_Balance
+        `{H : State.Trait}
+        {Balance}
+        `(Trait
+        {Balance := Balance})
       : Notation.DoubleColonType Self "Balance" := {
       Notation.double_colon_type := Balance;
     }.
-    Global Instance Method_Hash `{H : State.Trait} {Hash} `(Trait)
+    Global Instance
+        Method_Hash
+        `{H : State.Trait}
+        {Hash}
+        `(Trait
+        {Hash := Hash})
       : Notation.DoubleColonType Self "Hash" := {
       Notation.double_colon_type := Hash;
     }.
-    Global Instance Method_Timestamp `{H : State.Trait} {Timestamp} `(Trait)
+    Global Instance
+        Method_Timestamp
+        `{H : State.Trait}
+        {Timestamp}
+        `(Trait
+        {Timestamp := Timestamp})
       : Notation.DoubleColonType Self "Timestamp" := {
       Notation.double_colon_type := Timestamp;
     }.
-    Global Instance Method_BlockNumber `{H : State.Trait} {BlockNumber} `(Trait)
+    Global Instance
+        Method_BlockNumber
+        `{H : State.Trait}
+        {BlockNumber}
+        `(Trait
+        {BlockNumber := BlockNumber})
       : Notation.DoubleColonType Self "BlockNumber" := {
       Notation.double_colon_type := BlockNumber;
     }.
@@ -178,7 +208,8 @@ Module types.
         Method_ChainExtension
         `{H : State.Trait}
         {ChainExtension}
-        `(Trait)
+        `(Trait
+        {ChainExtension := ChainExtension})
       : Notation.DoubleColonType Self "ChainExtension" := {
       Notation.double_colon_type := ChainExtension;
     }.
@@ -217,7 +248,12 @@ Module FromLittleEndian.
     from_le_bytes `{H : State.Trait} : Bytes -> (M (H := H) Self);
   }.
   
-  Global Instance Method_Bytes `{H : State.Trait} {Bytes} `(Trait)
+  Global Instance
+      Method_Bytes
+      `{H : State.Trait}
+      {Bytes}
+      `(Trait
+      {Bytes := Bytes})
     : Notation.DoubleColonType Self "Bytes" := {
     Notation.double_colon_type := Bytes;
   }.
@@ -306,23 +342,43 @@ Module Environment.
     : Notation.Dot "MAX_EVENT_TOPICS" := {
     Notation.dot := @MAX_EVENT_TOPICS;
   }.
-  Global Instance Method_AccountId `{H : State.Trait} {AccountId} `(Trait)
+  Global Instance
+      Method_AccountId
+      `{H : State.Trait}
+      {AccountId}
+      `(Trait
+      {AccountId := AccountId})
     : Notation.DoubleColonType Self "AccountId" := {
     Notation.double_colon_type := AccountId;
   }.
-  Global Instance Method_Balance `{H : State.Trait} {Balance} `(Trait)
+  Global Instance
+      Method_Balance
+      `{H : State.Trait}
+      {Balance}
+      `(Trait
+      {Balance := Balance})
     : Notation.DoubleColonType Self "Balance" := {
     Notation.double_colon_type := Balance;
   }.
-  Global Instance Method_Hash `{H : State.Trait} {Hash} `(Trait)
+  Global Instance Method_Hash `{H : State.Trait} {Hash} `(Trait {Hash := Hash})
     : Notation.DoubleColonType Self "Hash" := {
     Notation.double_colon_type := Hash;
   }.
-  Global Instance Method_Timestamp `{H : State.Trait} {Timestamp} `(Trait)
+  Global Instance
+      Method_Timestamp
+      `{H : State.Trait}
+      {Timestamp}
+      `(Trait
+      {Timestamp := Timestamp})
     : Notation.DoubleColonType Self "Timestamp" := {
     Notation.double_colon_type := Timestamp;
   }.
-  Global Instance Method_BlockNumber `{H : State.Trait} {BlockNumber} `(Trait)
+  Global Instance
+      Method_BlockNumber
+      `{H : State.Trait}
+      {BlockNumber}
+      `(Trait
+      {BlockNumber := BlockNumber})
     : Notation.DoubleColonType Self "BlockNumber" := {
     Notation.double_colon_type := BlockNumber;
   }.
@@ -330,7 +386,8 @@ Module Environment.
       Method_ChainExtension
       `{H : State.Trait}
       {ChainExtension}
-      `(Trait)
+      `(Trait
+      {ChainExtension := ChainExtension})
     : Notation.DoubleColonType Self "ChainExtension" := {
     Notation.double_colon_type := ChainExtension;
   }.
@@ -2016,7 +2073,12 @@ Module call.
           Self -> F -> (M (H := H) Output);
       }.
       
-      Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+      Global Instance
+          Method_Output
+          `{H : State.Trait}
+          {Output}
+          `(Trait
+          {Output := Output})
         : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
@@ -2067,11 +2129,21 @@ Module call.
         : Notation.Dot "IS_RESULT" := {
         Notation.dot := @IS_RESULT;
       }.
-      Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+      Global Instance
+          Method_Output
+          `{H : State.Trait}
+          {Output}
+          `(Trait
+          {Output := Output})
         : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
-      Global Instance Method_Error `{H : State.Trait} {Error} `(Trait)
+      Global Instance
+          Method_Error
+          `{H : State.Trait}
+          {Error}
+          `(Trait
+          {Error := Error})
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
@@ -2580,7 +2652,12 @@ Module common.
         Self -> F -> (M (H := H) Output);
     }.
     
-    Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+    Global Instance
+        Method_Output
+        `{H : State.Trait}
+        {Output}
+        `(Trait
+        {Output := Output})
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
@@ -2650,7 +2727,12 @@ Module Unwrap.
       Self -> F -> (M (H := H) Output);
   }.
   
-  Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+  Global Instance
+      Method_Output
+      `{H : State.Trait}
+      {Output}
+      `(Trait
+      {Output := Output})
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
@@ -2700,11 +2782,21 @@ Module create_builder.
       : Notation.Dot "IS_RESULT" := {
       Notation.dot := @IS_RESULT;
     }.
-    Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+    Global Instance
+        Method_Output
+        `{H : State.Trait}
+        {Output}
+        `(Trait
+        {Output := Output})
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
-    Global Instance Method_Error `{H : State.Trait} {Error} `(Trait)
+    Global Instance
+        Method_Error
+        `{H : State.Trait}
+        {Error}
+        `(Trait
+        {Error := Error})
       : Notation.DoubleColonType Self "Error" := {
       Notation.double_colon_type := Error;
     }.
@@ -2915,11 +3007,21 @@ Module ConstructorReturnType.
     : Notation.Dot "IS_RESULT" := {
     Notation.dot := @IS_RESULT;
   }.
-  Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+  Global Instance
+      Method_Output
+      `{H : State.Trait}
+      {Output}
+      `(Trait
+      {Output := Output})
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
-  Global Instance Method_Error `{H : State.Trait} {Error} `(Trait)
+  Global Instance
+      Method_Error
+      `{H : State.Trait}
+      {Error}
+      `(Trait
+      {Error := Error})
     : Notation.DoubleColonType Self "Error" := {
     Notation.double_colon_type := Error;
   }.
@@ -3267,11 +3369,11 @@ Module chain_extension.
       Err := Err;
     }.
     
-    Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait)
+    Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait {Ok := Ok})
       : Notation.DoubleColonType Self "Ok" := {
       Notation.double_colon_type := Ok;
     }.
-    Global Instance Method_Err `{H : State.Trait} {Err} `(Trait)
+    Global Instance Method_Err `{H : State.Trait} {Err} `(Trait {Err := Err})
       : Notation.DoubleColonType Self "Err" := {
       Notation.double_colon_type := Err;
     }.
@@ -3349,11 +3451,11 @@ Module IsResultType.
     Err := Err;
   }.
   
-  Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait)
+  Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait {Ok := Ok})
     : Notation.DoubleColonType Self "Ok" := {
     Notation.double_colon_type := Ok;
   }.
-  Global Instance Method_Err `{H : State.Trait} {Err} `(Trait)
+  Global Instance Method_Err `{H : State.Trait} {Err} `(Trait {Err := Err})
     : Notation.DoubleColonType Self "Err" := {
     Notation.double_colon_type := Err;
   }.
@@ -3394,7 +3496,7 @@ Module contract.
       Env := Env;
     }.
     
-    Global Instance Method_Env `{H : State.Trait} {Env} `(Trait)
+    Global Instance Method_Env `{H : State.Trait} {Env} `(Trait {Env := Env})
       : Notation.DoubleColonType Self "Env" := {
       Notation.double_colon_type := Env;
     }.
@@ -3405,7 +3507,12 @@ Module contract.
       Type_ := Type_;
     }.
     
-    Global Instance Method_Type_ `{H : State.Trait} {Type_} `(Trait)
+    Global Instance
+        Method_Type_
+        `{H : State.Trait}
+        {Type_}
+        `(Trait
+        {Type_ := Type_})
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -3421,7 +3528,7 @@ Module ContractEnv.
     Env := Env;
   }.
   
-  Global Instance Method_Env `{H : State.Trait} {Env} `(Trait)
+  Global Instance Method_Env `{H : State.Trait} {Env} `(Trait {Env := Env})
     : Notation.DoubleColonType Self "Env" := {
     Notation.double_colon_type := Env;
   }.
@@ -3432,7 +3539,12 @@ Module ContractReference.
     Type_ := Type_;
   }.
   
-  Global Instance Method_Type_ `{H : State.Trait} {Type_} `(Trait)
+  Global Instance
+      Method_Type_
+      `{H : State.Trait}
+      {Type_}
+      `(Trait
+      {Type_ := Type_})
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -4571,7 +4683,12 @@ Module hash.
       Type_ := Type_;
     }.
     
-    Global Instance Method_Type_ `{H : State.Trait} {Type_} `(Trait)
+    Global Instance
+        Method_Type_
+        `{H : State.Trait}
+        {Type_}
+        `(Trait
+        {Type_ := Type_})
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -4636,7 +4753,12 @@ Module HashOutput.
     Type_ := Type_;
   }.
   
-  Global Instance Method_Type_ `{H : State.Trait} {Type_} `(Trait)
+  Global Instance
+      Method_Type_
+      `{H : State.Trait}
+      {Type_}
+      `(Trait
+      {Type_ := Type_})
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -4703,7 +4825,12 @@ Module topics.
       output `{H : State.Trait} : Self -> (M (H := H) Output);
     }.
     
-    Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+    Global Instance
+        Method_Output
+        `{H : State.Trait}
+        {Output}
+        `(Trait
+        {Output := Output})
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
@@ -4766,7 +4893,12 @@ Module topics.
       Next := Next;
     }.
     
-    Global Instance Method_Next `{H : State.Trait} {Next} `(Trait)
+    Global Instance
+        Method_Next
+        `{H : State.Trait}
+        {Next}
+        `(Trait
+        {Next := Next})
       : Notation.DoubleColonType Self "Next" := {
       Notation.double_colon_type := Next;
     }.
@@ -4805,7 +4937,8 @@ Module topics.
         Method_RemainingTopics
         `{H : State.Trait}
         {RemainingTopics}
-        `(Trait)
+        `(Trait
+        {RemainingTopics := RemainingTopics})
       : Notation.DoubleColonType Self "RemainingTopics" := {
       Notation.double_colon_type := RemainingTopics;
     }.
@@ -4849,7 +4982,12 @@ Module TopicsBuilderBackend.
     output `{H : State.Trait} : Self -> (M (H := H) Output);
   }.
   
-  Global Instance Method_Output `{H : State.Trait} {Output} `(Trait)
+  Global Instance
+      Method_Output
+      `{H : State.Trait}
+      {Output}
+      `(Trait
+      {Output := Output})
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
@@ -4890,7 +5028,7 @@ Module SomeRemainingTopics.
     Next := Next;
   }.
   
-  Global Instance Method_Next `{H : State.Trait} {Next} `(Trait)
+  Global Instance Method_Next `{H : State.Trait} {Next} `(Trait {Next := Next})
     : Notation.DoubleColonType Self "Next" := {
     Notation.double_colon_type := Next;
   }.
@@ -4929,7 +5067,8 @@ Module Topics.
       Method_RemainingTopics
       `{H : State.Trait}
       {RemainingTopics}
-      `(Trait)
+      `(Trait
+      {RemainingTopics := RemainingTopics})
     : Notation.DoubleColonType Self "RemainingTopics" := {
     Notation.double_colon_type := RemainingTopics;
   }.

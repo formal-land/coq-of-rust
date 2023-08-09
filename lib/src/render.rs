@@ -455,18 +455,19 @@ pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance<'a, U>(
+pub(crate) fn new_instance<'a, U, V>(
     name: U,
-    parameters: &Vec<Doc<'a>>,
+    trait_parameters: &Vec<V>,
     kind: Doc<'a>,
     field: Doc<'a>,
     value: Doc<'a>,
 ) -> Doc<'a>
 where
     U: std::fmt::Display,
+    V: std::fmt::Display,
 {
     concat([
-        new_instance_header(name, parameters, kind),
+        new_instance_header(name, trait_parameters, kind),
         nest([hardline(), new_instance_body(field, value)]),
         hardline(),
         text("}."),
@@ -474,13 +475,14 @@ where
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_header<'a, U>(
+pub(crate) fn new_instance_header<'a, U, V>(
     name: U,
-    parameters: &Vec<Doc<'a>>,
+    trait_parameters: &Vec<V>,
     kind: Doc<'a>,
 ) -> Doc<'a>
 where
     U: std::fmt::Display,
+    V: std::fmt::Display,
 {
     nest([
         nest([
@@ -490,12 +492,34 @@ where
             line(),
             monadic_typeclass_parameter(),
             line(),
-            if parameters.is_empty() {
-                nil()
+            if trait_parameters.is_empty() {
+                text("`(Trait)")
             } else {
-                concat([intersperse(parameters.clone(), [line()]), line()])
+                concat([
+                    intersperse(
+                        trait_parameters
+                            .iter()
+                            .map(|name| concat([text("{"), text(format!("{name}")), text("}")])),
+                        [line()],
+                    ),
+                    line(),
+                    text("`(Trait"),
+                    line(),
+                    intersperse(
+                        trait_parameters.iter().map(|name| {
+                            concat([
+                                text("{"),
+                                text(format!("{name}")),
+                                text(" := "),
+                                text(format!("{name}")),
+                                text("}"),
+                            ])
+                        }),
+                        [line()],
+                    ),
+                    text(")"),
+                ])
             },
-            text("`(Trait)"),
         ]),
         line(),
         nest([
