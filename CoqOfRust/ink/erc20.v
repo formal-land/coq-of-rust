@@ -1293,7 +1293,7 @@ Module erc20.
     }.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
   
-  Definition Result : Set := core.result.Result T erc20.erc20.Error.
+  Definition Result (T : Set) : Set := core.result.Result T erc20.erc20.Error.
 End erc20.
 
 Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
@@ -6001,4 +6001,4 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   }.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
 
-Definition Result : Set := core.result.Result T erc20.erc20.Error.
+Definition Result (T : Set) : Set := core.result.Result T erc20.erc20.Error.

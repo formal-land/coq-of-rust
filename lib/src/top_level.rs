@@ -103,6 +103,7 @@ enum TopLevelItem {
     },
     TypeAlias {
         name: String,
+        ty_params: Vec<String>,
         ty: Box<CoqType>,
     },
     TypeEnum {
@@ -445,9 +446,19 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             vec![TopLevelItem::Error("ForeignMod".to_string())]
         }
         ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
-        ItemKind::TyAlias(ty, _) => vec![TopLevelItem::TypeAlias {
+        ItemKind::TyAlias(ty, generics) => vec![TopLevelItem::TypeAlias {
             name,
             ty: compile_type(env, ty),
+            ty_params: generics
+                .params
+                .iter()
+                .filter_map(|param| match param.kind {
+                    rustc_hir::GenericParamKind::Type { .. } => {
+                        Some(param.name.ident().to_string())
+                    }
+                    _ => None,
+                })
+                .collect(),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
@@ -1613,11 +1624,27 @@ impl TopLevelItem {
                 hardline(),
                 nest([text("End"), line(), text(name), text(".")]),
             ]),
-            TopLevelItem::TypeAlias { name, ty } => nest([
+            TopLevelItem::TypeAlias {
+                name,
+                ty,
+                ty_params,
+            } => nest([
                 nest([
                     text("Definition"),
                     line(),
                     text(name),
+                    if ty_params.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            line(),
+                            text("("),
+                            concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
+                            text(":"),
+                            line(),
+                            text("Set)"),
+                        ])
+                    },
                     line(),
                     text(":"),
                     line(),
@@ -2059,7 +2086,6 @@ impl TopLevelItem {
                         nil()
                     },
                 ]);
-
                 group([
                     nest([text("Module"), line(), module_name.clone(), text(".")]),
                     nest([
