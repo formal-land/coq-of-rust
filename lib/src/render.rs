@@ -455,12 +455,18 @@ pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance<'a, U>(name: U, kind: Doc<'a>, field: Doc<'a>, value: Doc<'a>) -> Doc<'a>
+pub(crate) fn new_instance<'a, U>(
+    name: U,
+    parameters: &Vec<Doc<'a>>,
+    kind: Doc<'a>,
+    field: Doc<'a>,
+    value: Doc<'a>,
+) -> Doc<'a>
 where
     U: std::fmt::Display,
 {
     concat([
-        new_instance_header(name, kind),
+        new_instance_header(name, parameters, kind),
         nest([hardline(), new_instance_body(field, value)]),
         hardline(),
         text("}."),
@@ -468,7 +474,11 @@ where
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_header<U>(name: U, kind: Doc) -> Doc
+pub(crate) fn new_instance_header<'a, U>(
+    name: U,
+    parameters: &Vec<Doc<'a>>,
+    kind: Doc<'a>,
+) -> Doc<'a>
 where
     U: std::fmt::Display,
 {
@@ -480,6 +490,11 @@ where
             line(),
             monadic_typeclass_parameter(),
             line(),
+            if parameters.is_empty() {
+                nil()
+            } else {
+                concat([intersperse(parameters.clone(), [line()]), line()])
+            },
             text("`(Trait)"),
         ]),
         line(),

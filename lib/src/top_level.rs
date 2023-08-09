@@ -2270,12 +2270,14 @@ impl TopLevelItem {
                         concat([match item {
                             TraitItem::Definition { .. } => new_instance(
                                 name,
+                                &vec![],
                                 text("Notation.Dot"),
                                 text("Notation.dot"),
                                 concat([text("@"), text(name)]),
                             ),
                             TraitItem::Type { .. } => new_instance(
                                 name,
+                                &vec![concat([text("{"), text(name), text("}")])],
                                 group([text("Notation.DoubleColonType"), line(), text("Self")]),
                                 text("Notation.double_colon_type"),
                                 text(name),
@@ -2288,6 +2290,7 @@ impl TopLevelItem {
                                 body,
                             } => new_instance(
                                 name,
+                                &vec![],
                                 text("Notation.Dot"),
                                 nest([function_header(
                                     "Notation.dot",
