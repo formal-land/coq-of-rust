@@ -853,14 +853,9 @@ fn compile_generic_bounds(
         .iter()
         .filter_map(|generic_bound| match generic_bound {
             GenericBound::Trait(ptraitref, _) => {
-                eprintln!("{:?}", generic_bound);
-                eprintln!("   |||");
-                eprintln!("   vvv");
                 let trait_ref = ptraitref.trait_ref;
                 // Get the generics for the trait
                 let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
-                eprintln!("{:?}", generics);
-                eprintln!();
 
                 // Get the list of type parameters default status (true if it has a default)
                 let mut type_params_name_and_default_status: Vec<(String, bool)> = generics
