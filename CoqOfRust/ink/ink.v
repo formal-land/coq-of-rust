@@ -242,7 +242,7 @@ Module codegen.
       
       Module RespectTopicLimit.
         Unset Primitive Projections.
-        Class Trait (Self : Set) {N : Set} : Set := {
+        Class Trait (Self : Set) : Set := {
         }.
         Global Set Primitive Projections.
       End RespectTopicLimit.
@@ -318,7 +318,7 @@ Module codegen.
       
       Module TraitCallForwarderFor.
         Class Trait
-            (Self : Set) {TRAIT_ID : Set}
+            (Self : Set)
             {Forwarder : Set}
             `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
               Forwarder} :
@@ -677,7 +677,7 @@ Module event.
     
     Module RespectTopicLimit.
       Unset Primitive Projections.
-      Class Trait (Self : Set) {N : Set} : Set := {
+      Class Trait (Self : Set) : Set := {
       }.
       Global Set Primitive Projections.
     End RespectTopicLimit.
@@ -753,7 +753,7 @@ Module topics.
   
   Module RespectTopicLimit.
     Unset Primitive Projections.
-    Class Trait (Self : Set) {N : Set} : Set := {
+    Class Trait (Self : Set) : Set := {
     }.
     Global Set Primitive Projections.
   End RespectTopicLimit.
@@ -793,7 +793,7 @@ Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
-  Class Trait (Self : Set) {N : Set} : Set := {
+  Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
 End RespectTopicLimit.
@@ -874,7 +874,7 @@ Module trait_def.
     
     Module TraitCallForwarderFor.
       Class Trait
-          (Self : Set) {TRAIT_ID : Set}
+          (Self : Set)
           {Forwarder : Set}
           `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
             Forwarder} :
@@ -978,7 +978,7 @@ Module call_builder.
   
   Module TraitCallForwarderFor.
     Class Trait
-        (Self : Set) {TRAIT_ID : Set}
+        (Self : Set)
         {Forwarder : Set}
         `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
         Set := {
@@ -1067,7 +1067,7 @@ End TraitCallForwarder.
 
 Module TraitCallForwarderFor.
   Class Trait
-      (Self : Set) {TRAIT_ID : Set}
+      (Self : Set)
       {Forwarder : Set}
       `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
       Set := {
@@ -1225,7 +1225,7 @@ Module reflect.
   Module dispatch.
     Module DispatchableMessageInfo.
       Class Trait
-          (Self : Set) {ID : Set}
+          (Self : Set)
           {Input : Set}
           {Output : Set}
           {Storage : Set} :
@@ -1279,7 +1279,7 @@ Module reflect.
     
     Module DispatchableConstructorInfo.
       Class Trait
-          (Self : Set) {ID : Set}
+          (Self : Set)
           {Input : Set}
           {Storage : Set}
           {Output : Set}
@@ -1476,7 +1476,7 @@ Module reflect.
   Module trait_def.
     Module info.
       Module TraitMessageInfo.
-        Class Trait (Self : Set) {TRAIT_LOCAL_MESSAGE_ID : Set} : Set := {
+        Class Trait (Self : Set) : Set := {
           PAYABLE `{H : State.Trait} : bool;
           SELECTOR `{H : State.Trait} : list u8;
         }.
@@ -1560,7 +1560,7 @@ End ContractName.
 Module dispatch.
   Module DispatchableMessageInfo.
     Class Trait
-        (Self : Set) {ID : Set}
+        (Self : Set)
         {Input : Set}
         {Output : Set}
         {Storage : Set} :
@@ -1614,7 +1614,7 @@ Module dispatch.
   
   Module DispatchableConstructorInfo.
     Class Trait
-        (Self : Set) {ID : Set}
+        (Self : Set)
         {Input : Set}
         {Storage : Set}
         {Output : Set}
@@ -1797,7 +1797,7 @@ End dispatch.
 
 Module DispatchableMessageInfo.
   Class Trait
-      (Self : Set) {ID : Set}
+      (Self : Set)
       {Input : Set}
       {Output : Set}
       {Storage : Set} :
@@ -1851,7 +1851,7 @@ End DispatchableMessageInfo.
 
 Module DispatchableConstructorInfo.
   Class Trait
-      (Self : Set) {ID : Set}
+      (Self : Set)
       {Input : Set}
       {Storage : Set}
       {Output : Set}
@@ -2063,7 +2063,7 @@ End ContractEventBase.
 Module trait_def.
   Module info.
     Module TraitMessageInfo.
-      Class Trait (Self : Set) {TRAIT_LOCAL_MESSAGE_ID : Set} : Set := {
+      Class Trait (Self : Set) : Set := {
         PAYABLE `{H : State.Trait} : bool;
         SELECTOR `{H : State.Trait} : list u8;
       }.
@@ -2121,7 +2121,7 @@ End trait_def.
 
 Module info.
   Module TraitMessageInfo.
-    Class Trait (Self : Set) {TRAIT_LOCAL_MESSAGE_ID : Set} : Set := {
+    Class Trait (Self : Set) : Set := {
       PAYABLE `{H : State.Trait} : bool;
       SELECTOR `{H : State.Trait} : list u8;
     }.
@@ -2159,7 +2159,7 @@ Module info.
 End info.
 
 Module TraitMessageInfo.
-  Class Trait (Self : Set) {TRAIT_LOCAL_MESSAGE_ID : Set} : Set := {
+  Class Trait (Self : Set) : Set := {
     PAYABLE `{H : State.Trait} : bool;
     SELECTOR `{H : State.Trait} : list u8;
   }.
@@ -2277,10 +2277,7 @@ Module chain_extension.
   End IsResultType.
   
   Module Output.
-    Class Trait
-        (Self : Set) {IS_RESULT HANDLE_STATUS T E : Set}
-        {ReturnType : Set} :
-        Set := {
+    Class Trait (Self : Set) {T E : Set} {ReturnType : Set} : Set := {
       ReturnType := ReturnType;
     }.
     
@@ -2360,10 +2357,7 @@ Module IsResultType.
 End IsResultType.
 
 Module Output.
-  Class Trait
-      (Self : Set) {IS_RESULT HANDLE_STATUS T E : Set}
-      {ReturnType : Set} :
-      Set := {
+  Class Trait (Self : Set) {T E : Set} {ReturnType : Set} : Set := {
     ReturnType := ReturnType;
   }.
   

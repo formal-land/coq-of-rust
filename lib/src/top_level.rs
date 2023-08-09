@@ -800,25 +800,23 @@ fn get_ty_params(
     generics
         .params
         .iter()
-        .map(|param| {
-            let default = match param.kind {
-                GenericParamKind::Type { default, .. } => {
-                    default.map(|default| compile_type(env, default))
-                }
-                _ => {
-                    env.tcx
-                        .sess
-                        .struct_span_warn(
-                            param.span,
-                            "Only type parameters are currently supported.",
-                        )
-                        .note("It should be supported in future versions.")
-                        .emit();
-                    None
-                }
-            };
-            let name = to_valid_coq_name(param.name.ident().to_string());
-            (name, default)
+        .filter_map(|param| match param.kind {
+            // we ignore lifetimes
+            GenericParamKind::Lifetime { .. } => None,
+            GenericParamKind::Type { default, .. } => {
+                let default = default.map(|default| compile_type(env, default));
+                let name = to_valid_coq_name(param.name.ident().to_string());
+                Some((name, default))
+            }
+            // @TODO: do we want to also support constant parameters?
+            GenericParamKind::Const { ty: _, default: _ } => {
+                env.tcx
+                    .sess
+                    .struct_span_warn(param.span, "Constant parameters are not supported yet.")
+                    .note("It should be supported in future versions.")
+                    .emit();
+                None
+            }
         })
         .collect()
 }
