@@ -542,12 +542,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             ..
         }) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let generic_tys: Vec<String> = generics
-                .params
-                .iter()
-                .filter(|param| matches!(param.kind, rustc_hir::GenericParamKind::Type { .. }))
-                .map(|param| param.name.ident().to_string())
-                .collect();
+            let generic_tys = get_ty_params_names(env, generics);
             let self_ty = compile_type(env, self_ty);
             let entry = env.impl_counter.entry(*self_ty.clone());
             let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
@@ -738,6 +733,7 @@ fn compile_trait(
     generics: &rustc_hir::Generics,
     items: &[rustc_hir::TraitItemRef],
 ) -> TopLevelItem {
+    // @TODO: include generic predicates instead
     if !generics.predicates.is_empty() {
         env.tcx
             .sess
@@ -747,7 +743,7 @@ fn compile_trait(
             )
             .note("It may change in future versions.")
             .emit();
-    };
+    }
     TopLevelItem::Trait {
         name,
         ty_params: get_ty_params(env, generics),
@@ -755,7 +751,7 @@ fn compile_trait(
             .iter()
             .map(|item| {
                 let item = tcx.hir().trait_item(item.id);
-                let ty_params = get_ty_params_names(item.generics);
+                let ty_params = get_ty_params_names(env, item.generics);
                 let where_predicates = get_where_predicates(env, item.generics);
                 let body = compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
                 (to_valid_coq_name(item.ident.name.to_string()), body)
@@ -764,11 +760,11 @@ fn compile_trait(
     }
 }
 
-/// extracts type parameters with their optional default value from the generics
-fn get_ty_params(
+fn compile_ty_params<T>(
     env: &mut Env,
     generics: &rustc_hir::Generics,
-) -> Vec<(String, Option<Box<CoqType>>)> {
+    f: impl Fn(&mut Env, String, Option<&Ty>) -> T,
+) -> Vec<T> {
     generics
         .params
         .iter()
@@ -776,9 +772,7 @@ fn get_ty_params(
             // we ignore lifetimes
             GenericParamKind::Lifetime { .. } => None,
             GenericParamKind::Type { default, .. } => {
-                let default = default.map(|default| compile_type(env, default));
-                let name = to_valid_coq_name(param.name.ident().to_string());
-                Some((name, default))
+                Some(f(env, param.name.ident().to_string(), default))
             }
             // @TODO: do we want to also support constant parameters?
             GenericParamKind::Const { ty: _, default: _ } => {
@@ -793,18 +787,21 @@ fn get_ty_params(
         .collect()
 }
 
+/// extracts type parameters with their optional default value from the generics
+fn get_ty_params(
+    env: &mut Env,
+    generics: &rustc_hir::Generics,
+) -> Vec<(String, Option<Box<CoqType>>)> {
+    compile_ty_params(env, generics, |env, name, default| {
+        let default = default.map(|default| compile_type(env, default));
+        let name = to_valid_coq_name(name);
+        (name, default)
+    })
+}
+
 /// extracts the names of type parameters from the generics
-fn get_ty_params_names(generics: &rustc_hir::Generics) -> Vec<String> {
-    generics
-        .params
-        .iter()
-        .filter_map(|param| match param.kind {
-            rustc_hir::GenericParamKind::Type { .. } => {
-                Some(to_valid_coq_name(param.name.ident().to_string()))
-            }
-            _ => None,
-        })
-        .collect()
+fn get_ty_params_names(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<String> {
+    compile_ty_params(env, generics, |_, name, _| name)
 }
 
 /// extracts where predicates from the generics
