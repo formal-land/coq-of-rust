@@ -893,7 +893,7 @@ fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Ve
         let a_name = tcx.hir().ident(a_id).as_str().to_string();
         let b_name = tcx.hir().ident(b_id).as_str().to_string();
 
-        if a_name == "" || b_name == "" {
+        if a_name.is_empty() || b_name.is_empty() {
             return Ordering::Equal;
         }
 
@@ -925,38 +925,35 @@ fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Ve
         .unique()
         .collect::<Vec<String>>();
     let context = get_context_name(tcx, &definitions[0].hir_id());
-    env.reorder_map.insert(context.to_string(), identifiers);
+    env.reorder_map.insert(context, identifiers);
 }
 
 /// Extract the type name for a node if is a trait
 /// implementation, otherwise returns None
 fn get_impl_type_opt(node: Node) -> Option<String> {
     match node {
-        Node::Item(Item { kind, .. }) => match kind {
-            ItemKind::Impl(Impl {
-                self_ty:
-                    Ty {
-                        kind: TyKind::Path(QPath::Resolved(_, rustc_hir::Path { segments, .. })),
-                        ..
-                    },
-                of_trait,
-                ..
-            }) => {
-                let ty_name: String = segments.into_iter().map(|x| x.ident.as_str()).join("::");
-                match of_trait {
-                    Some(rustc_hir::TraitRef { path, .. }) => {
-                        let trait_name = path
-                            .segments
-                            .into_iter()
-                            .map(|x| x.ident.as_str())
-                            .join("::");
-                        Some(format!("Impl_{trait_name}_for_{ty_name}"))
-                    }
-                    None => Some(format!("Impl_{ty_name}")),
+        Node::Item(Item {
+            kind:
+                ItemKind::Impl(Impl {
+                    self_ty:
+                        Ty {
+                            kind: TyKind::Path(QPath::Resolved(_, rustc_hir::Path { segments, .. })),
+                            ..
+                        },
+                    of_trait,
+                    ..
+                }),
+            ..
+        }) => {
+            let ty_name: String = segments.iter().map(|x| x.ident.as_str()).join("::");
+            match of_trait {
+                Some(rustc_hir::TraitRef { path, .. }) => {
+                    let trait_name = path.segments.iter().map(|x| x.ident.as_str()).join("::");
+                    Some(format!("Impl_{trait_name}_for_{ty_name}"))
                 }
+                None => Some(format!("Impl_{ty_name}")),
             }
-            _ => None,
-        },
+        }
         _ => None,
     }
 }
@@ -992,7 +989,6 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         tcx: *tcx,
         axiomatize: opts.axiomatize,
         file: opts.filename,
-        context: "top_level".to_string(),
         reorder_map: HashMap::new(),
         configuration: get_configuration(&opts.configuration_file),
     };
