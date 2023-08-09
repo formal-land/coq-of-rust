@@ -128,4 +128,5 @@ Definition foo `{H : State.Trait} : M (H := H) unit := Pure tt.
 Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ := functions_order.foo in
   let* _ := functions_order.inner_mod.bar in
+  let* _ := (functions_order.SomeType.Build_t 0).["meth1"] in
   Pure tt.

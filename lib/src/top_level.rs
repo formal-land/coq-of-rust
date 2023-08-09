@@ -25,14 +25,6 @@ pub(crate) struct TopLevelOptions {
     pub(crate) generate_reorder: bool,
 }
 
-/// Trait for getting a name of an AST node. Used
-/// for ordering the nodes based on a list of names
-trait ToName {
-    /// We return [String] instead of [&String] because
-    /// some AST nodes need their names to be constructed.
-    fn to_name(&self) -> String;
-}
-
 // Replace this by a native trait if there is such thing
 trait GetHirId {
     fn hir_id(&self) -> HirId;
@@ -168,37 +160,6 @@ enum TopLevelItem {
     Error(String),
 }
 
-impl ToName for TopLevelItem {
-    fn to_name(&self) -> String {
-        match self {
-            TopLevelItem::Definition { name, .. } => name.clone(),
-            TopLevelItem::Const { name, .. } => name.clone(),
-            TopLevelItem::TypeAlias { name, .. } => name.clone(),
-            TopLevelItem::TypeEnum { name, .. } => name.clone(),
-            TopLevelItem::TypeStructStruct { name, .. } => name.clone(),
-            TopLevelItem::TypeStructTuple { name, .. } => name.clone(),
-            TopLevelItem::TypeStructUnit { name, .. } => name.clone(),
-            TopLevelItem::Module { name, .. } => name.clone(),
-            TopLevelItem::Impl {
-                self_ty, counter, ..
-            } => format!(
-                "Impl_{}{}",
-                self_ty.to_name(),
-                if *counter != 1 {
-                    format!("_{counter}")
-                } else {
-                    "".to_string()
-                }
-            ),
-            TopLevelItem::Trait { name, .. } => name.to_string(),
-            TopLevelItem::TraitImpl {
-                of_trait, self_ty, ..
-            } => format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name()),
-            TopLevelItem::Error(msg) => msg.clone(),
-        }
-    }
-}
-
 /// The actual value of the type parameter of the trait implementation
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TraitImplTyParam {
@@ -208,12 +169,6 @@ enum TraitImplTyParam {
     ValWithDef { name: String, ty: Box<CoqType> },
     /// means the default value of the type parameter is used
     JustDefault { name: String },
-}
-
-impl ToName for (String, ImplItem) {
-    fn to_name(&self) -> String {
-        self.0.clone()
-    }
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -865,15 +820,6 @@ fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Ve
     // The context here is the path of the file name with / so we need
     // to escape it
 
-    let definitions_names = definitions
-        .iter()
-        .map(|def| tcx.hir().ident(def.hir_id()).as_str().to_string())
-        .filter(|x| !x.is_empty())
-        .collect::<Vec<String>>()
-        .join(", ");
-
-    eprintln!("Reordering: {definitions_names:?}");
-
     if definitions.is_empty() {
         return;
     }
@@ -889,7 +835,6 @@ fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Ve
         };
 
         let order = config_get_reorder(env, &a_context);
-        eprintln!("Order for {a_context} : {order:?}");
         let a_name = tcx.hir().ident(a_id).as_str().to_string();
         let b_name = tcx.hir().ident(b_id).as_str().to_string();
 
@@ -909,14 +854,6 @@ fn reorder_definitions_inplace(tcx: &TyCtxt, env: &mut Env, definitions: &mut Ve
 
         a_position.cmp(&b_position)
     });
-
-    let definitions_names = definitions
-        .iter()
-        .map(|def| tcx.hir().ident(def.hir_id()).as_str().to_string())
-        .filter(|x| !x.is_empty() && x != "test" && x != "std")
-        .collect::<Vec<String>>()
-        .join(", ");
-    eprintln!("Reordered: {definitions_names:?}");
 
     let identifiers = definitions
         .iter()
@@ -961,7 +898,6 @@ fn get_impl_type_opt(node: Node) -> Option<String> {
 /// Given a HirId returns the name of the context/scope
 /// where such item is. Example top_level::inner_mod::other_mod
 fn get_context_name(tcx: &TyCtxt, id: &HirId) -> String {
-    let current_node_name = tcx.hir().ident(*id).as_str().to_string();
     let name = tcx
         .hir()
         .parent_iter(*id)
@@ -974,13 +910,11 @@ fn get_context_name(tcx: &TyCtxt, id: &HirId) -> String {
         .rev()
         .collect::<Vec<String>>()
         .join("::");
-    let result = if name.is_empty() {
+    if name.is_empty() {
         "top_level".to_string()
     } else {
         format!("top_level::{}", name)
-    };
-    eprintln!("--> {result}::{current_node_name}");
-    result
+    }
 }
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {

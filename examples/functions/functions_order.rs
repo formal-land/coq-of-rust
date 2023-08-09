@@ -41,7 +41,7 @@ fn main() {
     // functions_order::main
     foo();
     inner_mod::bar();
-    // SomeType(0).meth1();
+    SomeType(0).meth1();
 }
 
 fn foo() {} // functions_order::foo
