@@ -1,2 +1,2 @@
 (* Written by hand *)
-Require Import CoqofRust.CoqOfRust.
+Require Import CoqOfRust.CoqOfRust.
