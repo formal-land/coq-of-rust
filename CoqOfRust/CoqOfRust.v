@@ -779,6 +779,16 @@ Module core.
       }.
     End Deref.
 
+    Module function.
+      Module FnOnce.
+        Class Trait {Args Output : Set} (Self : Set) : Set := {
+          Output := Output;
+          call_once `{State.Trait} : Self -> Args -> M Output;
+        }.
+      End FnOnce.
+    End function.
+    
+
     (* The trait implementations for [Z] are convenient but should be replaced
        by the implementations for the native types eventually. *)
     Module Impl_Add_for_Z.
