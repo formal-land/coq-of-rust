@@ -13,6 +13,7 @@ def update_ink_env():
         sub_exactly_once(
             pattern,
             pattern + """
+Require CoqOfRust.ink.alloc.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.""",
