@@ -14,8 +14,16 @@ def update_ink_env():
             pattern,
             pattern + """
 Require CoqOfRust.ink.ink_primitives.
+Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.""",
             content,
+        )
+    content = \
+        sub_exactly_n(
+            ": Set := @",
+            ":= @",
+            content,
+            62,
         )
     with open(file_name, "w") as f:
         f.write(content)
