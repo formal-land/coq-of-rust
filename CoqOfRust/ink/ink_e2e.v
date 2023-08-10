@@ -58,12 +58,12 @@ Module client.
       Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        account_id : ImplE.AccountId;
+        account_id : E::type["AccountId"];
         dry_run
           :
           pallet_contracts_primitives.ContractInstantiateResult
-            ImplC.AccountId
-            ImplE.Balance;
+            C::type["AccountId"]
+            E::type["Balance"];
         events : subxt.blocks.block_types.ExtrinsicEvents C;
       }.
       Global Set Primitive Projections.
@@ -86,10 +86,12 @@ Module client.
       Context {C E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        code_hash : ImplE.Hash;
+        code_hash : E::type["Hash"];
         dry_run
           :
-          pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
+          pallet_contracts_primitives.CodeUploadResult
+            E::type["Hash"]
+            E::type["Balance"];
         events : subxt.blocks.block_types.ExtrinsicEvents C;
       }.
       Global Set Primitive Projections.
@@ -134,7 +136,7 @@ Module client.
       Record t : Set := {
         exec_result
           :
-          pallet_contracts_primitives.ContractExecResult ImplE.Balance;
+          pallet_contracts_primitives.ContractExecResult E::type["Balance"];
         _marker : core.marker.PhantomData V;
       }.
       Global Set Primitive Projections.
@@ -157,18 +159,20 @@ Module client.
       (_
         :
         pallet_contracts_primitives.ContractInstantiateResult
-          ImplC.AccountId
-          ImplE.Balance)
+          C::type["AccountId"]
+          E::type["Balance"])
     | InstantiateExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
     |
       UploadDryRun
       (_
         :
-        pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance)
+        pallet_contracts_primitives.CodeUploadResult
+          E::type["Hash"]
+          E::type["Balance"])
     | UploadExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
     |
       CallDryRun
-      (_ : pallet_contracts_primitives.ContractExecResult ImplE.Balance)
+      (_ : pallet_contracts_primitives.ContractExecResult E::type["Balance"])
     | CallExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
     | Balance (_ : alloc.string.String)
     | Decoding (_ : subxt.error.Error).
@@ -212,12 +216,12 @@ Module InstantiationResult.
     Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      account_id : ImplE.AccountId;
+      account_id : E::type["AccountId"];
       dry_run
         :
         pallet_contracts_primitives.ContractInstantiateResult
-          ImplC.AccountId
-          ImplE.Balance;
+          C::type["AccountId"]
+          E::type["Balance"];
       events : subxt.blocks.block_types.ExtrinsicEvents C;
     }.
     Global Set Primitive Projections.
@@ -240,10 +244,12 @@ Module UploadResult.
     Context {C E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      code_hash : ImplE.Hash;
+      code_hash : E::type["Hash"];
       dry_run
         :
-        pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance;
+        pallet_contracts_primitives.CodeUploadResult
+          E::type["Hash"]
+          E::type["Balance"];
       events : subxt.blocks.block_types.ExtrinsicEvents C;
     }.
     Global Set Primitive Projections.
@@ -288,7 +294,7 @@ Module CallDryRunResult.
     Record t : Set := {
       exec_result
         :
-        pallet_contracts_primitives.ContractExecResult ImplE.Balance;
+        pallet_contracts_primitives.ContractExecResult E::type["Balance"];
       _marker : core.marker.PhantomData V;
     }.
     Global Set Primitive Projections.
@@ -311,16 +317,20 @@ Module Error.
     (_
       :
       pallet_contracts_primitives.ContractInstantiateResult
-        ImplC.AccountId
-        ImplE.Balance)
+        C::type["AccountId"]
+        E::type["Balance"])
   | InstantiateExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
   |
     UploadDryRun
-    (_ : pallet_contracts_primitives.CodeUploadResult ImplE.Hash ImplE.Balance)
+    (_
+      :
+      pallet_contracts_primitives.CodeUploadResult
+        E::type["Hash"]
+        E::type["Balance"])
   | UploadExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
   |
     CallDryRun
-    (_ : pallet_contracts_primitives.ContractExecResult ImplE.Balance)
+    (_ : pallet_contracts_primitives.ContractExecResult E::type["Balance"])
   | CallExtrinsic (_ : subxt.error.dispatch_error.DispatchError)
   | Balance (_ : alloc.string.String)
   | Decoding (_ : subxt.error.Error).
@@ -358,11 +368,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -372,11 +382,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -386,11 +396,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -400,11 +410,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -414,11 +424,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -428,11 +438,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -442,11 +452,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
@@ -456,11 +466,11 @@ Module default_accounts.
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
         sp_core.sr25519.Signature
-        ImplC.Signature},
+        C::type["Signature"]},
         forall
         `{core.convert.From.Trait
         sp_core.crypto.AccountId32
-        ImplC.AccountId},
+        C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 End default_accounts.
@@ -471,11 +481,11 @@ Parameter alice : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -485,11 +495,11 @@ Parameter bob : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -499,11 +509,11 @@ Parameter charlie : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -513,11 +523,11 @@ Parameter dave : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -527,11 +537,11 @@ Parameter eve : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -541,11 +551,11 @@ Parameter ferdie : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -555,11 +565,11 @@ Parameter one : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -569,11 +579,11 @@ Parameter two : forall `{H : State.Trait},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
       sp_core.sr25519.Signature
-      ImplC.Signature},
+      C::type["Signature"]},
       forall
       `{core.convert.From.Trait
       sp_core.crypto.AccountId32
-      ImplC.AccountId},
+      C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
@@ -698,9 +708,9 @@ Module xts.
       Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        value : ImplE.Balance;
+        value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
-        storage_deposit_limit : core.option.Option ImplE.Balance;
+        storage_deposit_limit : core.option.Option E::type["Balance"];
         code : alloc.vec.Vec u8;
         data : alloc.vec.Vec u8;
         salt : alloc.vec.Vec u8;
@@ -735,10 +745,10 @@ Module xts.
       Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
-        value : ImplE.Balance;
+        dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
+        value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
-        storage_deposit_limit : core.option.Option ImplE.Balance;
+        storage_deposit_limit : core.option.Option E::type["Balance"];
         data : alloc.vec.Vec u8;
       }.
       Global Set Primitive Projections.
@@ -768,8 +778,8 @@ Module xts.
       Context {E C : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        dest : subxt.utils.static_type.Static ImplC.Address;
-        value : ImplE.Balance;
+        dest : subxt.utils.static_type.Static C::type["Address"];
+        value : E::type["Balance"];
       }.
       Global Set Primitive Projections.
       
@@ -796,7 +806,7 @@ Module xts.
       Unset Primitive Projections.
       Record t : Set := {
         code : alloc.vec.Vec u8;
-        storage_deposit_limit : core.option.Option ImplE.Balance;
+        storage_deposit_limit : core.option.Option E::type["Balance"];
         determinism : ink_e2e.xts.Determinism;
       }.
       Global Set Primitive Projections.
@@ -858,9 +868,9 @@ Module InstantiateWithCode.
     Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      value : ImplE.Balance;
+      value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
+      storage_deposit_limit : core.option.Option E::type["Balance"];
       code : alloc.vec.Vec u8;
       data : alloc.vec.Vec u8;
       salt : alloc.vec.Vec u8;
@@ -895,10 +905,10 @@ Module Call.
     Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      dest : subxt.utils.multi_address.MultiAddress ImplE.AccountId unit;
-      value : ImplE.Balance;
+      dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
+      value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
+      storage_deposit_limit : core.option.Option E::type["Balance"];
       data : alloc.vec.Vec u8;
     }.
     Global Set Primitive Projections.
@@ -928,8 +938,8 @@ Module Transfer.
     Context {E C : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      dest : subxt.utils.static_type.Static ImplC.Address;
-      value : ImplE.Balance;
+      dest : subxt.utils.static_type.Static C::type["Address"];
+      value : E::type["Balance"];
     }.
     Global Set Primitive Projections.
     
@@ -956,7 +966,7 @@ Module UploadCode.
     Unset Primitive Projections.
     Record t : Set := {
       code : alloc.vec.Vec u8;
-      storage_deposit_limit : core.option.Option ImplE.Balance;
+      storage_deposit_limit : core.option.Option E::type["Balance"];
       determinism : ink_e2e.xts.Determinism;
     }.
     Global Set Primitive Projections.

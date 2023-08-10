@@ -121,22 +121,44 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
                     // SelfTyAlias and SelfTyParam are only local aliases (named `Self`)
                     // and cannot be used directly in qualified paths in Coq
                     Res::SelfTyAlias { .. } | Res::SelfTyParam { .. } => None,
+                    Res::Def(DefKind::TyParam, _) => {
+                        eprintln!("{:?}", ty);
+                        eprintln!("{:?}", segment);
+                        eprintln!();
+                        Some((compile_path(env, path), true))
+                    }
                     // the rest of paths should refer to implementations of types,
                     // so we prepend their names with `Impl_`
                     _ => {
                         let mut path = compile_path(env, path);
                         path.prefix_last_by_impl();
-                        Some(path)
+                        Some((path, false))
                     }
                 },
-                _ => Some(Path::local("ComplexTypePath".to_string())),
+                _ => Some((Path::local("ComplexTypePath".to_string()), false)),
             };
-            let raw_segments = match ty {
-                Some(path) => vec![path.to_string(), segment.ident.name.to_string()],
-                None => vec![segment.ident.name.to_string()],
-            };
-            Path {
-                segments: raw_segments.into_iter().map(to_valid_coq_name).collect(),
+            match ty {
+                Some((path, is_param)) => {
+                    if is_param {
+                        Path {
+                            segments: vec![format!(
+                                "{}::type[\"{}\"]",
+                                to_valid_coq_name(path.to_string()),
+                                to_valid_coq_name(segment.ident.name.to_string()),
+                            )],
+                        }
+                    } else {
+                        Path {
+                            segments: vec![
+                                to_valid_coq_name(path.to_string()),
+                                to_valid_coq_name(segment.ident.name.to_string()),
+                            ],
+                        }
+                    }
+                }
+                None => Path {
+                    segments: vec![to_valid_coq_name(segment.ident.name.to_string())],
+                },
             }
         }
         QPath::LangItem(lang_item, _, _) => compile_lang_item(lang_item),
