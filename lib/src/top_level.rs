@@ -1232,22 +1232,23 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                              ty_params,
                              ty,
                          }| {
-                            concat([
-                                nest([
-                                    text("`{"),
-                                    name.to_doc(),
-                                    text(".Trait"),
-                                    line(),
-                                    concat(
-                                        ty_params
-                                            .iter()
-                                            .map(|param| concat([param.to_doc(true), line()])),
-                                    ),
-                                    ty.to_doc(true),
-                                    text("}"),
-                                ]),
+                            concat([nest([
+                                text("forall"),
                                 line(),
-                            ])
+                                text("`{"),
+                                name.to_doc(),
+                                text(".Trait"),
+                                line(),
+                                concat(
+                                    ty_params
+                                        .iter()
+                                        .map(|param| concat([param.to_doc(true), line()])),
+                                ),
+                                ty.to_doc(true),
+                                text("}"),
+                                text(","),
+                                line(),
+                            ])])
                         },
                     )),
                 },
