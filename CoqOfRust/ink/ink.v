@@ -115,8 +115,7 @@ Module codegen.
       Parameter deny_payment : forall `{H : State.Trait},
           forall
           {E : Set},
-          `{ink_env.types.Environment.Trait E}
-          M (H := H)
+          forall `{ink_env.types.Environment.Trait E}, M (H := H)
             (core.result.Result unit ink.reflect.dispatch.DispatchError).
     End execution.
     
@@ -452,8 +451,8 @@ Module dispatch.
     Parameter deny_payment : forall `{H : State.Trait},
         forall
         {E : Set},
-        `{ink_env.types.Environment.Trait E}
-        M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+        forall `{ink_env.types.Environment.Trait E}, M (H := H)
+          (core.result.Result unit ink.reflect.dispatch.DispatchError).
   End execution.
   
   Module info.
@@ -513,15 +512,15 @@ Module execution.
   Parameter deny_payment : forall `{H : State.Trait},
       forall
       {E : Set},
-      `{ink_env.types.Environment.Trait E}
-      M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+      forall `{ink_env.types.Environment.Trait E}, M (H := H)
+        (core.result.Result unit ink.reflect.dispatch.DispatchError).
 End execution.
 
 Parameter deny_payment : forall `{H : State.Trait},
     forall
     {E : Set},
-    `{ink_env.types.Environment.Trait E}
-    M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
+    forall `{ink_env.types.Environment.Trait E}, M (H := H)
+      (core.result.Result unit ink.reflect.dispatch.DispatchError).
 
 Module info.
   Module ContractCallBuilder.
