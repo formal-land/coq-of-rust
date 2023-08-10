@@ -70,7 +70,7 @@ Module types.
         `{H : State.Trait}
         {Bytes}
         `(Trait
-        {Bytes := Bytes})
+        (Bytes := Bytes))
       : Notation.DoubleColonType Self "Bytes" := {
       Notation.double_colon_type := Bytes;
     }.
@@ -164,7 +164,7 @@ Module types.
         `{H : State.Trait}
         {AccountId}
         `(Trait
-        {AccountId := AccountId})
+        (AccountId := AccountId))
       : Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
     }.
@@ -173,7 +173,7 @@ Module types.
         `{H : State.Trait}
         {Balance}
         `(Trait
-        {Balance := Balance})
+        (Balance := Balance))
       : Notation.DoubleColonType Self "Balance" := {
       Notation.double_colon_type := Balance;
     }.
@@ -182,7 +182,7 @@ Module types.
         `{H : State.Trait}
         {Hash}
         `(Trait
-        {Hash := Hash})
+        (Hash := Hash))
       : Notation.DoubleColonType Self "Hash" := {
       Notation.double_colon_type := Hash;
     }.
@@ -191,7 +191,7 @@ Module types.
         `{H : State.Trait}
         {Timestamp}
         `(Trait
-        {Timestamp := Timestamp})
+        (Timestamp := Timestamp))
       : Notation.DoubleColonType Self "Timestamp" := {
       Notation.double_colon_type := Timestamp;
     }.
@@ -200,7 +200,7 @@ Module types.
         `{H : State.Trait}
         {BlockNumber}
         `(Trait
-        {BlockNumber := BlockNumber})
+        (BlockNumber := BlockNumber))
       : Notation.DoubleColonType Self "BlockNumber" := {
       Notation.double_colon_type := BlockNumber;
     }.
@@ -209,7 +209,7 @@ Module types.
         `{H : State.Trait}
         {ChainExtension}
         `(Trait
-        {ChainExtension := ChainExtension})
+        (ChainExtension := ChainExtension))
       : Notation.DoubleColonType Self "ChainExtension" := {
       Notation.double_colon_type := ChainExtension;
     }.
@@ -253,7 +253,7 @@ Module FromLittleEndian.
       `{H : State.Trait}
       {Bytes}
       `(Trait
-      {Bytes := Bytes})
+      (Bytes := Bytes))
     : Notation.DoubleColonType Self "Bytes" := {
     Notation.double_colon_type := Bytes;
   }.
@@ -347,7 +347,7 @@ Module Environment.
       `{H : State.Trait}
       {AccountId}
       `(Trait
-      {AccountId := AccountId})
+      (AccountId := AccountId))
     : Notation.DoubleColonType Self "AccountId" := {
     Notation.double_colon_type := AccountId;
   }.
@@ -356,11 +356,11 @@ Module Environment.
       `{H : State.Trait}
       {Balance}
       `(Trait
-      {Balance := Balance})
+      (Balance := Balance))
     : Notation.DoubleColonType Self "Balance" := {
     Notation.double_colon_type := Balance;
   }.
-  Global Instance Method_Hash `{H : State.Trait} {Hash} `(Trait {Hash := Hash})
+  Global Instance Method_Hash `{H : State.Trait} {Hash} `(Trait (Hash := Hash))
     : Notation.DoubleColonType Self "Hash" := {
     Notation.double_colon_type := Hash;
   }.
@@ -369,7 +369,7 @@ Module Environment.
       `{H : State.Trait}
       {Timestamp}
       `(Trait
-      {Timestamp := Timestamp})
+      (Timestamp := Timestamp))
     : Notation.DoubleColonType Self "Timestamp" := {
     Notation.double_colon_type := Timestamp;
   }.
@@ -378,7 +378,7 @@ Module Environment.
       `{H : State.Trait}
       {BlockNumber}
       `(Trait
-      {BlockNumber := BlockNumber})
+      (BlockNumber := BlockNumber))
     : Notation.DoubleColonType Self "BlockNumber" := {
     Notation.double_colon_type := BlockNumber;
   }.
@@ -387,7 +387,7 @@ Module Environment.
       `{H : State.Trait}
       {ChainExtension}
       `(Trait
-      {ChainExtension := ChainExtension})
+      (ChainExtension := ChainExtension))
     : Notation.DoubleColonType Self "ChainExtension" := {
     Notation.double_colon_type := ChainExtension;
   }.
@@ -2078,7 +2078,7 @@ Module call.
           `{H : State.Trait}
           {Output}
           `(Trait
-          {Output := Output})
+          (Output := Output))
         : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
@@ -2134,7 +2134,7 @@ Module call.
           `{H : State.Trait}
           {Output}
           `(Trait
-          {Output := Output})
+          (Output := Output))
         : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
@@ -2143,7 +2143,7 @@ Module call.
           `{H : State.Trait}
           {Error}
           `(Trait
-          {Error := Error})
+          (Error := Error))
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
@@ -2657,7 +2657,7 @@ Module common.
         `{H : State.Trait}
         {Output}
         `(Trait
-        {Output := Output})
+        (Output := Output))
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
@@ -2732,7 +2732,7 @@ Module Unwrap.
       `{H : State.Trait}
       {Output}
       `(Trait
-      {Output := Output})
+      (Output := Output))
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
@@ -2787,7 +2787,7 @@ Module create_builder.
         `{H : State.Trait}
         {Output}
         `(Trait
-        {Output := Output})
+        (Output := Output))
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
@@ -2796,7 +2796,7 @@ Module create_builder.
         `{H : State.Trait}
         {Error}
         `(Trait
-        {Error := Error})
+        (Error := Error))
       : Notation.DoubleColonType Self "Error" := {
       Notation.double_colon_type := Error;
     }.
@@ -3012,7 +3012,7 @@ Module ConstructorReturnType.
       `{H : State.Trait}
       {Output}
       `(Trait
-      {Output := Output})
+      (Output := Output))
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
@@ -3021,7 +3021,7 @@ Module ConstructorReturnType.
       `{H : State.Trait}
       {Error}
       `(Trait
-      {Error := Error})
+      (Error := Error))
     : Notation.DoubleColonType Self "Error" := {
     Notation.double_colon_type := Error;
   }.
@@ -3369,11 +3369,11 @@ Module chain_extension.
       Err := Err;
     }.
     
-    Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait {Ok := Ok})
+    Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait (Ok := Ok))
       : Notation.DoubleColonType Self "Ok" := {
       Notation.double_colon_type := Ok;
     }.
-    Global Instance Method_Err `{H : State.Trait} {Err} `(Trait {Err := Err})
+    Global Instance Method_Err `{H : State.Trait} {Err} `(Trait (Err := Err))
       : Notation.DoubleColonType Self "Err" := {
       Notation.double_colon_type := Err;
     }.
@@ -3451,11 +3451,11 @@ Module IsResultType.
     Err := Err;
   }.
   
-  Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait {Ok := Ok})
+  Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait (Ok := Ok))
     : Notation.DoubleColonType Self "Ok" := {
     Notation.double_colon_type := Ok;
   }.
-  Global Instance Method_Err `{H : State.Trait} {Err} `(Trait {Err := Err})
+  Global Instance Method_Err `{H : State.Trait} {Err} `(Trait (Err := Err))
     : Notation.DoubleColonType Self "Err" := {
     Notation.double_colon_type := Err;
   }.
@@ -3496,7 +3496,7 @@ Module contract.
       Env := Env;
     }.
     
-    Global Instance Method_Env `{H : State.Trait} {Env} `(Trait {Env := Env})
+    Global Instance Method_Env `{H : State.Trait} {Env} `(Trait (Env := Env))
       : Notation.DoubleColonType Self "Env" := {
       Notation.double_colon_type := Env;
     }.
@@ -3512,7 +3512,7 @@ Module contract.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -3528,7 +3528,7 @@ Module ContractEnv.
     Env := Env;
   }.
   
-  Global Instance Method_Env `{H : State.Trait} {Env} `(Trait {Env := Env})
+  Global Instance Method_Env `{H : State.Trait} {Env} `(Trait (Env := Env))
     : Notation.DoubleColonType Self "Env" := {
     Notation.double_colon_type := Env;
   }.
@@ -3544,7 +3544,7 @@ Module ContractReference.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -4688,7 +4688,7 @@ Module hash.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -4758,7 +4758,7 @@ Module HashOutput.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -4830,7 +4830,7 @@ Module topics.
         `{H : State.Trait}
         {Output}
         `(Trait
-        {Output := Output})
+        (Output := Output))
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
@@ -4898,7 +4898,7 @@ Module topics.
         `{H : State.Trait}
         {Next}
         `(Trait
-        {Next := Next})
+        (Next := Next))
       : Notation.DoubleColonType Self "Next" := {
       Notation.double_colon_type := Next;
     }.
@@ -4938,7 +4938,7 @@ Module topics.
         `{H : State.Trait}
         {RemainingTopics}
         `(Trait
-        {RemainingTopics := RemainingTopics})
+        (RemainingTopics := RemainingTopics))
       : Notation.DoubleColonType Self "RemainingTopics" := {
       Notation.double_colon_type := RemainingTopics;
     }.
@@ -4987,7 +4987,7 @@ Module TopicsBuilderBackend.
       `{H : State.Trait}
       {Output}
       `(Trait
-      {Output := Output})
+      (Output := Output))
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
@@ -5028,7 +5028,7 @@ Module SomeRemainingTopics.
     Next := Next;
   }.
   
-  Global Instance Method_Next `{H : State.Trait} {Next} `(Trait {Next := Next})
+  Global Instance Method_Next `{H : State.Trait} {Next} `(Trait (Next := Next))
     : Notation.DoubleColonType Self "Next" := {
     Notation.double_colon_type := Next;
   }.
@@ -5068,7 +5068,7 @@ Module Topics.
       `{H : State.Trait}
       {RemainingTopics}
       `(Trait
-      {RemainingTopics := RemainingTopics})
+      (RemainingTopics := RemainingTopics))
     : Notation.DoubleColonType Self "RemainingTopics" := {
     Notation.double_colon_type := RemainingTopics;
   }.

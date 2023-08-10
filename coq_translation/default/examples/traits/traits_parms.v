@@ -39,7 +39,7 @@ Module SomeTrait.
       `{H : State.Trait}
       {SomeType}
       `(Trait
-      {SomeType := SomeType})
+      (SomeType := SomeType))
     : Notation.DoubleColonType Self "SomeType" := {
     Notation.double_colon_type := SomeType;
   }.

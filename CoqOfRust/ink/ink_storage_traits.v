@@ -158,7 +158,7 @@ Module storage.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -167,7 +167,7 @@ Module storage.
         `{H : State.Trait}
         {PreferredKey}
         `(Trait
-        {PreferredKey := PreferredKey})
+        (PreferredKey := PreferredKey))
       : Notation.DoubleColonType Self "PreferredKey" := {
       Notation.double_colon_type := PreferredKey;
     }.
@@ -187,7 +187,7 @@ Module storage.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -278,7 +278,7 @@ Module StorableHint.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -287,7 +287,7 @@ Module StorableHint.
       `{H : State.Trait}
       {PreferredKey}
       `(Trait
-      {PreferredKey := PreferredKey})
+      (PreferredKey := PreferredKey))
     : Notation.DoubleColonType Self "PreferredKey" := {
     Notation.double_colon_type := PreferredKey;
   }.
@@ -307,7 +307,7 @@ Module AutoStorableHint.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.

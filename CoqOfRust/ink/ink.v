@@ -131,7 +131,7 @@ Module codegen.
             `{H : State.Trait}
             {Type_}
             `(Trait
-            {Type_ := Type_})
+            (Type_ := Type_))
           : Notation.DoubleColonType Self "Type_" := {
           Notation.double_colon_type := Type_;
         }.
@@ -185,7 +185,7 @@ Module codegen.
           `{H : State.Trait}
           {EnvAccess}
           `(Trait
-          {EnvAccess := EnvAccess})
+          (EnvAccess := EnvAccess))
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
@@ -206,7 +206,7 @@ Module codegen.
           `{H : State.Trait}
           {EnvAccess}
           `(Trait
-          {EnvAccess := EnvAccess})
+          (EnvAccess := EnvAccess))
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
@@ -277,7 +277,7 @@ Module codegen.
             `{H : State.Trait}
             {LenTopics}
             `(Trait
-            {LenTopics := LenTopics})
+            (LenTopics := LenTopics))
           : Notation.DoubleColonType Self "LenTopics" := {
           Notation.double_colon_type := LenTopics;
         }.
@@ -311,7 +311,7 @@ Module codegen.
             `{H : State.Trait}
             {Builder}
             `(Trait
-            {Builder := Builder})
+            (Builder := Builder))
           : Notation.DoubleColonType Self "Builder" := {
           Notation.double_colon_type := Builder;
         }.
@@ -340,7 +340,7 @@ Module codegen.
             `{H : State.Trait}
             {Forwarder}
             `(Trait
-            {Forwarder := Forwarder})
+            (Forwarder := Forwarder))
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
@@ -383,7 +383,7 @@ Module codegen.
             `{H : State.Trait}
             {Forwarder}
             `(Trait
-            {Forwarder := Forwarder})
+            (Forwarder := Forwarder))
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
@@ -467,7 +467,7 @@ Module dispatch.
           `{H : State.Trait}
           {Type_}
           `(Trait
-          {Type_ := Type_})
+          (Type_ := Type_))
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
@@ -534,7 +534,7 @@ Module info.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -551,7 +551,7 @@ Module ContractCallBuilder.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -635,7 +635,7 @@ Module env.
         `{H : State.Trait}
         {EnvAccess}
         `(Trait
-        {EnvAccess := EnvAccess})
+        (EnvAccess := EnvAccess))
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
@@ -656,7 +656,7 @@ Module env.
         `{H : State.Trait}
         {EnvAccess}
         `(Trait
-        {EnvAccess := EnvAccess})
+        (EnvAccess := EnvAccess))
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
@@ -678,7 +678,7 @@ Module Env.
       `{H : State.Trait}
       {EnvAccess}
       `(Trait
-      {EnvAccess := EnvAccess})
+      (EnvAccess := EnvAccess))
     : Notation.DoubleColonType Self "EnvAccess" := {
     Notation.double_colon_type := EnvAccess;
   }.
@@ -699,7 +699,7 @@ Module StaticEnv.
       `{H : State.Trait}
       {EnvAccess}
       `(Trait
-      {EnvAccess := EnvAccess})
+      (EnvAccess := EnvAccess))
     : Notation.DoubleColonType Self "EnvAccess" := {
     Notation.double_colon_type := EnvAccess;
   }.
@@ -767,7 +767,7 @@ Module event.
           `{H : State.Trait}
           {LenTopics}
           `(Trait
-          {LenTopics := LenTopics})
+          (LenTopics := LenTopics))
         : Notation.DoubleColonType Self "LenTopics" := {
         Notation.double_colon_type := LenTopics;
       }.
@@ -848,7 +848,7 @@ Module topics.
         `{H : State.Trait}
         {LenTopics}
         `(Trait
-        {LenTopics := LenTopics})
+        (LenTopics := LenTopics))
       : Notation.DoubleColonType Self "LenTopics" := {
       Notation.double_colon_type := LenTopics;
     }.
@@ -893,7 +893,7 @@ Module EventLenTopics.
       `{H : State.Trait}
       {LenTopics}
       `(Trait
-      {LenTopics := LenTopics})
+      (LenTopics := LenTopics))
     : Notation.DoubleColonType Self "LenTopics" := {
     Notation.double_colon_type := LenTopics;
   }.
@@ -932,7 +932,7 @@ Module trait_def.
           `{H : State.Trait}
           {Builder}
           `(Trait
-          {Builder := Builder})
+          (Builder := Builder))
         : Notation.DoubleColonType Self "Builder" := {
         Notation.double_colon_type := Builder;
       }.
@@ -961,7 +961,7 @@ Module trait_def.
           `{H : State.Trait}
           {Forwarder}
           `(Trait
-          {Forwarder := Forwarder})
+          (Forwarder := Forwarder))
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
@@ -1000,7 +1000,7 @@ Module trait_def.
           `{H : State.Trait}
           {Forwarder}
           `(Trait
-          {Forwarder := Forwarder})
+          (Forwarder := Forwarder))
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
@@ -1052,7 +1052,7 @@ Module call_builder.
         `{H : State.Trait}
         {Builder}
         `(Trait
-        {Builder := Builder})
+        (Builder := Builder))
       : Notation.DoubleColonType Self "Builder" := {
       Notation.double_colon_type := Builder;
     }.
@@ -1080,7 +1080,7 @@ Module call_builder.
         `{H : State.Trait}
         {Forwarder}
         `(Trait
-        {Forwarder := Forwarder})
+        (Forwarder := Forwarder))
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
@@ -1118,7 +1118,7 @@ Module call_builder.
         `{H : State.Trait}
         {Forwarder}
         `(Trait
-        {Forwarder := Forwarder})
+        (Forwarder := Forwarder))
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
@@ -1156,7 +1156,7 @@ Module TraitCallBuilder.
       `{H : State.Trait}
       {Builder}
       `(Trait
-      {Builder := Builder})
+      (Builder := Builder))
     : Notation.DoubleColonType Self "Builder" := {
     Notation.double_colon_type := Builder;
   }.
@@ -1184,7 +1184,7 @@ Module TraitCallForwarder.
       `{H : State.Trait}
       {Forwarder}
       `(Trait
-      {Forwarder := Forwarder})
+      (Forwarder := Forwarder))
     : Notation.DoubleColonType Self "Forwarder" := {
     Notation.double_colon_type := Forwarder;
   }.
@@ -1221,7 +1221,7 @@ Module TraitCallForwarderFor.
       `{H : State.Trait}
       {Forwarder}
       `(Trait
-      {Forwarder := Forwarder})
+      (Forwarder := Forwarder))
     : Notation.DoubleColonType Self "Forwarder" := {
     Notation.double_colon_type := Forwarder;
   }.
@@ -1378,7 +1378,7 @@ Module reflect.
           `{H : State.Trait}
           {Input}
           `(Trait
-          {Input := Input})
+          (Input := Input))
         : Notation.DoubleColonType Self "Input" := {
         Notation.double_colon_type := Input;
       }.
@@ -1387,7 +1387,7 @@ Module reflect.
           `{H : State.Trait}
           {Output}
           `(Trait
-          {Output := Output})
+          (Output := Output))
         : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
@@ -1396,7 +1396,7 @@ Module reflect.
           `{H : State.Trait}
           {Storage}
           `(Trait
-          {Storage := Storage})
+          (Storage := Storage))
         : Notation.DoubleColonType Self "Storage" := {
         Notation.double_colon_type := Storage;
       }.
@@ -1446,7 +1446,7 @@ Module reflect.
           `{H : State.Trait}
           {Input}
           `(Trait
-          {Input := Input})
+          (Input := Input))
         : Notation.DoubleColonType Self "Input" := {
         Notation.double_colon_type := Input;
       }.
@@ -1455,7 +1455,7 @@ Module reflect.
           `{H : State.Trait}
           {Storage}
           `(Trait
-          {Storage := Storage})
+          (Storage := Storage))
         : Notation.DoubleColonType Self "Storage" := {
         Notation.double_colon_type := Storage;
       }.
@@ -1464,7 +1464,7 @@ Module reflect.
           `{H : State.Trait}
           {Output}
           `(Trait
-          {Output := Output})
+          (Output := Output))
         : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
@@ -1473,7 +1473,7 @@ Module reflect.
           `{H : State.Trait}
           {Error}
           `(Trait
-          {Error := Error})
+          (Error := Error))
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
@@ -1527,7 +1527,7 @@ Module reflect.
           `{H : State.Trait}
           {Error}
           `(Trait
-          {Error := Error})
+          (Error := Error))
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
@@ -1568,7 +1568,7 @@ Module reflect.
           `{H : State.Trait}
           {Type_}
           `(Trait
-          {Type_ := Type_})
+          (Type_ := Type_))
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
@@ -1589,7 +1589,7 @@ Module reflect.
           `{H : State.Trait}
           {Type_}
           `(Trait
-          {Type_ := Type_})
+          (Type_ := Type_))
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
@@ -1651,7 +1651,7 @@ Module reflect.
           `{H : State.Trait}
           {Type_}
           `(Trait
-          {Type_ := Type_})
+          (Type_ := Type_))
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
@@ -1768,7 +1768,7 @@ Module dispatch.
         `{H : State.Trait}
         {Input}
         `(Trait
-        {Input := Input})
+        (Input := Input))
       : Notation.DoubleColonType Self "Input" := {
       Notation.double_colon_type := Input;
     }.
@@ -1777,7 +1777,7 @@ Module dispatch.
         `{H : State.Trait}
         {Output}
         `(Trait
-        {Output := Output})
+        (Output := Output))
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
@@ -1786,7 +1786,7 @@ Module dispatch.
         `{H : State.Trait}
         {Storage}
         `(Trait
-        {Storage := Storage})
+        (Storage := Storage))
       : Notation.DoubleColonType Self "Storage" := {
       Notation.double_colon_type := Storage;
     }.
@@ -1836,7 +1836,7 @@ Module dispatch.
         `{H : State.Trait}
         {Input}
         `(Trait
-        {Input := Input})
+        (Input := Input))
       : Notation.DoubleColonType Self "Input" := {
       Notation.double_colon_type := Input;
     }.
@@ -1845,7 +1845,7 @@ Module dispatch.
         `{H : State.Trait}
         {Storage}
         `(Trait
-        {Storage := Storage})
+        (Storage := Storage))
       : Notation.DoubleColonType Self "Storage" := {
       Notation.double_colon_type := Storage;
     }.
@@ -1854,7 +1854,7 @@ Module dispatch.
         `{H : State.Trait}
         {Output}
         `(Trait
-        {Output := Output})
+        (Output := Output))
       : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
@@ -1863,7 +1863,7 @@ Module dispatch.
         `{H : State.Trait}
         {Error}
         `(Trait
-        {Error := Error})
+        (Error := Error))
       : Notation.DoubleColonType Self "Error" := {
       Notation.double_colon_type := Error;
     }.
@@ -1917,7 +1917,7 @@ Module dispatch.
         `{H : State.Trait}
         {Error}
         `(Trait
-        {Error := Error})
+        (Error := Error))
       : Notation.DoubleColonType Self "Error" := {
       Notation.double_colon_type := Error;
     }.
@@ -1958,7 +1958,7 @@ Module dispatch.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -1979,7 +1979,7 @@ Module dispatch.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -2055,7 +2055,7 @@ Module DispatchableMessageInfo.
       `{H : State.Trait}
       {Input}
       `(Trait
-      {Input := Input})
+      (Input := Input))
     : Notation.DoubleColonType Self "Input" := {
     Notation.double_colon_type := Input;
   }.
@@ -2064,7 +2064,7 @@ Module DispatchableMessageInfo.
       `{H : State.Trait}
       {Output}
       `(Trait
-      {Output := Output})
+      (Output := Output))
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
@@ -2073,7 +2073,7 @@ Module DispatchableMessageInfo.
       `{H : State.Trait}
       {Storage}
       `(Trait
-      {Storage := Storage})
+      (Storage := Storage))
     : Notation.DoubleColonType Self "Storage" := {
     Notation.double_colon_type := Storage;
   }.
@@ -2123,7 +2123,7 @@ Module DispatchableConstructorInfo.
       `{H : State.Trait}
       {Input}
       `(Trait
-      {Input := Input})
+      (Input := Input))
     : Notation.DoubleColonType Self "Input" := {
     Notation.double_colon_type := Input;
   }.
@@ -2132,7 +2132,7 @@ Module DispatchableConstructorInfo.
       `{H : State.Trait}
       {Storage}
       `(Trait
-      {Storage := Storage})
+      (Storage := Storage))
     : Notation.DoubleColonType Self "Storage" := {
     Notation.double_colon_type := Storage;
   }.
@@ -2141,7 +2141,7 @@ Module DispatchableConstructorInfo.
       `{H : State.Trait}
       {Output}
       `(Trait
-      {Output := Output})
+      (Output := Output))
     : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
@@ -2150,7 +2150,7 @@ Module DispatchableConstructorInfo.
       `{H : State.Trait}
       {Error}
       `(Trait
-      {Error := Error})
+      (Error := Error))
     : Notation.DoubleColonType Self "Error" := {
     Notation.double_colon_type := Error;
   }.
@@ -2211,7 +2211,7 @@ Module ConstructorOutput.
       `{H : State.Trait}
       {Error}
       `(Trait
-      {Error := Error})
+      (Error := Error))
     : Notation.DoubleColonType Self "Error" := {
     Notation.double_colon_type := Error;
   }.
@@ -2252,7 +2252,7 @@ Module ContractMessageDecoder.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -2273,7 +2273,7 @@ Module ContractConstructorDecoder.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -2332,7 +2332,7 @@ Module event.
         `{H : State.Trait}
         {Type_}
         `(Trait
-        {Type_ := Type_})
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -2349,7 +2349,7 @@ Module ContractEventBase.
       `{H : State.Trait}
       {Type_}
       `(Trait
-      {Type_ := Type_})
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -2535,7 +2535,7 @@ Module chain_extension.
         `{H : State.Trait}
         {Instance}
         `(Trait
-        {Instance := Instance})
+        (Instance := Instance))
       : Notation.DoubleColonType Self "Instance" := {
       Notation.double_colon_type := Instance;
     }.
@@ -2559,7 +2559,7 @@ Module chain_extension.
         `{H : State.Trait}
         {ErrorCode}
         `(Trait
-        {ErrorCode := ErrorCode})
+        (ErrorCode := ErrorCode))
       : Notation.DoubleColonType Self "ErrorCode" := {
       Notation.double_colon_type := ErrorCode;
     }.
@@ -2571,11 +2571,11 @@ Module chain_extension.
       Err := Err;
     }.
     
-    Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait {Ok := Ok})
+    Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait (Ok := Ok))
       : Notation.DoubleColonType Self "Ok" := {
       Notation.double_colon_type := Ok;
     }.
-    Global Instance Method_Err `{H : State.Trait} {Err} `(Trait {Err := Err})
+    Global Instance Method_Err `{H : State.Trait} {Err} `(Trait (Err := Err))
       : Notation.DoubleColonType Self "Err" := {
       Notation.double_colon_type := Err;
     }.
@@ -2591,7 +2591,7 @@ Module chain_extension.
         `{H : State.Trait}
         {ReturnType}
         `(Trait
-        {ReturnType := ReturnType})
+        (ReturnType := ReturnType))
       : Notation.DoubleColonType Self "ReturnType" := {
       Notation.double_colon_type := ReturnType;
     }.
@@ -2630,7 +2630,7 @@ Module ChainExtensionInstance.
       `{H : State.Trait}
       {Instance}
       `(Trait
-      {Instance := Instance})
+      (Instance := Instance))
     : Notation.DoubleColonType Self "Instance" := {
     Notation.double_colon_type := Instance;
   }.
@@ -2654,7 +2654,7 @@ Module ChainExtension.
       `{H : State.Trait}
       {ErrorCode}
       `(Trait
-      {ErrorCode := ErrorCode})
+      (ErrorCode := ErrorCode))
     : Notation.DoubleColonType Self "ErrorCode" := {
     Notation.double_colon_type := ErrorCode;
   }.
@@ -2666,11 +2666,11 @@ Module IsResultType.
     Err := Err;
   }.
   
-  Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait {Ok := Ok})
+  Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait (Ok := Ok))
     : Notation.DoubleColonType Self "Ok" := {
     Notation.double_colon_type := Ok;
   }.
-  Global Instance Method_Err `{H : State.Trait} {Err} `(Trait {Err := Err})
+  Global Instance Method_Err `{H : State.Trait} {Err} `(Trait (Err := Err))
     : Notation.DoubleColonType Self "Err" := {
     Notation.double_colon_type := Err;
   }.
@@ -2686,7 +2686,7 @@ Module Output.
       `{H : State.Trait}
       {ReturnType}
       `(Trait
-      {ReturnType := ReturnType})
+      (ReturnType := ReturnType))
     : Notation.DoubleColonType Self "ReturnType" := {
     Notation.double_colon_type := ReturnType;
   }.
