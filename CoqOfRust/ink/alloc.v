@@ -1,6 +1,24 @@
 (* Written by hand *)
 Require Import CoqOfRust.CoqOfRust.
 
+(* 
+ink\crates\prelude\src\lib.rs:
+  borrow,
+  boxed,
+  format,
+  string,
+  vec,
+*)
+
+Module borrow.
+End borrow.
+
+Module boxed.
+End boxed.
+
+Module format.
+End format.
+
 Module vec.
   (* pub struct Vec<T, A: Allocator = Global> { /* private fields */ } *)
   Unset Primitive Projections.
