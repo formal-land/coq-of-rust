@@ -506,15 +506,9 @@ where
                     text("`(Trait"),
                     line(),
                     intersperse(
-                        trait_parameters.iter().map(|name| {
-                            concat([
-                                text("{"),
-                                text(format!("{name}")),
-                                text(" := "),
-                                text(format!("{name}")),
-                                text("}"),
-                            ])
-                        }),
+                        trait_parameters
+                            .iter()
+                            .map(|name| concat([text(format!("({name} := {name})"))])),
                         [line()],
                     ),
                     text(")"),
