@@ -483,6 +483,10 @@
         "Topics",
         "PrefixedValue",
         "Impl_parity_scale_codec_codec_Encode_for_ink_env_topics_PrefixedValue_X"
+      ],
+      "top_level::engine::off_chain": [
+        "AccountError",
+        "OffChainError"
       ]
     }
   }
