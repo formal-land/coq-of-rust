@@ -786,6 +786,14 @@ Module core.
           call_once `{State.Trait} : Self -> Args -> M Output;
         }.
       End FnOnce.
+
+      Module FnMut.
+        Class Trait {Args Output : Set} (Self : Set)
+          `{FnOnce.Trait (Args := Args) (Output := Output) Self} : Set := {
+          call_mut `{State.Trait} : mut_ref Self -> Args -> M Output;
+        }.
+      End FnMut.
+      
     End function.
     
 

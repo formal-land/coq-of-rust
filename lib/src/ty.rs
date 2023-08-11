@@ -1,7 +1,7 @@
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
-use rustc_hir::{BareFnTy, FnDecl, FnRetTy, Ty, TyKind};
+use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigin, Ty, TyKind};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub(crate) enum CoqType {
@@ -19,6 +19,7 @@ pub(crate) enum CoqType {
     Tuple(Vec<Box<CoqType>>),
     Array(Box<CoqType>),
     Ref(Box<CoqType>, rustc_hir::Mutability),
+    OpaqueType(Vec<Path>),
 }
 
 impl CoqType {
@@ -53,6 +54,7 @@ pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
         CoqType::Tuple(tys) => Box::new(CoqType::Tuple(tys.into_iter().map(mt_ty).collect())),
         CoqType::Array(ty) => Box::new(CoqType::Array(mt_ty(ty))),
         CoqType::Ref(ty, mutability) => Box::new(CoqType::Ref(mt_ty(ty), mutability)),
+        CoqType::OpaqueType(..) => ty,
     }
 }
 
@@ -88,7 +90,81 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 })
             }
         }
-        TyKind::OpaqueDef(_, _, _) => CoqType::var("OpaqueDef".to_string()),
+        TyKind::OpaqueDef(item_id, _, _) => {
+            let item = env.tcx.hir().item(*item_id);
+            if let ItemKind::OpaqueTy(opaque_ty) = item.kind {
+                if opaque_ty.generics.params.is_empty() {
+                    if opaque_ty.generics.predicates.is_empty() {
+                        if let OpaqueTyOrigin::FnReturn(_) = opaque_ty.origin {
+                            Box::new(CoqType::OpaqueType(
+                                opaque_ty
+                                    .bounds
+                                    .iter()
+                                    .filter_map(|bound| match bound {
+                                        GenericBound::Trait(p_trait_ref, _) => {
+                                            Some(compile_path(env, p_trait_ref.trait_ref.path))
+                                        }
+                                        GenericBound::LangItemTrait(..) => {
+                                            env.tcx
+                                                .sess
+                                                .struct_span_warn(
+                                                    ty.span,
+                                                    "LangItem traits are not supported in the bounds of opaque types.",
+                                                )
+                                                .note("It should change in the future.")
+                                                .emit();
+                                            None
+                                        }
+                                        // we ignore lifetimes
+                                        GenericBound::Outlives(..) => None
+                                    })
+                                    .collect(),
+                            ))
+                        } else {
+                            env.tcx
+                                .sess
+                                .struct_span_warn(
+                                    ty.span,
+                                    "Opaque types are currently supported only in return types.",
+                                )
+                                .note("It should change in the future.")
+                                .emit();
+                            CoqType::var("OpaqueDef".to_string())
+                        }
+                    } else {
+                        env.tcx
+                            .sess
+                            .struct_span_warn(
+                                ty.span,
+                                "Bounds on generic parameters are not supported for opaque types yet.",
+                            )
+                            .note("It should be supported in the future.")
+                            .emit();
+                        CoqType::var("OpaqueDef".to_string())
+                    }
+                } else {
+                    env.tcx
+                        .sess
+                        .struct_span_warn(
+                            ty.span,
+                            "Generic parameters are not supported for opaque types yet.",
+                        )
+                        .note("It should be supported in the future.")
+                        .emit();
+                    CoqType::var("OpaqueDef".to_string())
+                }
+            } else {
+                // @TODO: check whether it should be possible
+                env.tcx
+                    .sess
+                    .struct_span_warn(
+                        ty.span,
+                        "OpaqueDef refers to an item of kind other than OpaqueTy.",
+                    )
+                    .emit();
+                CoqType::var("OpaqueDef".to_string())
+            }
+        }
         TyKind::TraitObject(_, _, _) => CoqType::var("TraitObject".to_string()),
         TyKind::Typeof(_) => CoqType::var("Typeof".to_string()),
         TyKind::Infer => CoqType::var("_".to_string()),
@@ -174,6 +250,8 @@ impl CoqType {
                     rustc_hir::Mutability::Not => nest([text("ref"), line(), ty.to_doc(true)]),
                 },
             ),
+            // @TODO: translate OpaqueType
+            CoqType::OpaqueType(_) => text("_"),
         }
     }
 
@@ -227,6 +305,7 @@ impl CoqType {
                 name.push_str(&ty.to_name());
                 name
             }
+            CoqType::OpaqueType(_) => todo!(),
         }
     }
 

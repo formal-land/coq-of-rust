@@ -645,7 +645,7 @@ Module engine.
           forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
           T::type["Balance"] ->
           M (H := H) unit.
-      
+      (*
       Parameter get_account_balance : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -660,7 +660,7 @@ Module engine.
       
       Parameter recorded_debug_messages : forall `{H : State.Trait},
           M (H := H) ink_engine.test_api.RecordedDebugMessages.
-      
+      *)
       Parameter set_clear_storage_disabled : forall `{H : State.Trait},
           bool ->
           M (H := H) unit.
@@ -669,7 +669,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
-      
+      (*
       Parameter set_caller : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -753,7 +753,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
           M (H := H) unit.
-      
+      *)(*
       Parameter run_test : forall `{H : State.Trait},
           forall
           {T : Set} {F : Set},
@@ -776,7 +776,7 @@ Module engine.
             (list u8)
             ink_env.types.Environment.AccountId},
             M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
-      
+      *)(*
       Module DefaultAccounts.
         Section DefaultAccounts.
           Context {T : Set}.
@@ -812,10 +812,9 @@ Module engine.
         End DefaultAccounts.
       End DefaultAccounts.
       Definition DefaultAccounts := @DefaultAccounts.t.
-      
-      Parameter recorded_events : forall `{H : State.Trait},
-          M (H := H) OpaqueDef.
-      
+      *)(*
+      Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
+      *)
       Parameter assert_contract_termination : forall `{H : State.Trait},
           forall
           {T : Set} {F : Set},
@@ -848,6 +847,14 @@ Module engine.
     End EnvInstance.
     Definition EnvInstance := @EnvInstance.t.
     
+    Module AccountError.
+      Inductive t : Set :=
+      | Decoding (_ : parity_scale_codec.error.Error)
+      | UnexpectedUserAccount
+      | NoAccountForId (_ : alloc.vec.Vec u8).
+    End AccountError.
+    Definition AccountError := AccountError.t.
+    
     Module OffChainError.
       Inductive t : Set :=
       | Account (_ : ink_env.engine.off_chain.AccountError)
@@ -856,14 +863,6 @@ Module engine.
       | UnregisteredChainExtension.
     End OffChainError.
     Definition OffChainError := OffChainError.t.
-    
-    Module AccountError.
-      Inductive t : Set :=
-      | Decoding (_ : parity_scale_codec.error.Error)
-      | UnexpectedUserAccount
-      | NoAccountForId (_ : alloc.vec.Vec u8).
-    End AccountError.
-    Definition AccountError := AccountError.t.
   End off_chain.
 End engine.
 
@@ -4264,7 +4263,7 @@ Module off_chain.
     End DefaultAccounts.
     Definition DefaultAccounts := @DefaultAccounts.t.
     
-    Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
+    Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
     
     Parameter assert_contract_termination : forall `{H : State.Trait},
         forall
@@ -4579,7 +4578,7 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts := @DefaultAccounts.t.
   
-  Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
+  Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
   
   Parameter assert_contract_termination : forall `{H : State.Trait},
       forall
@@ -4776,7 +4775,7 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts := @DefaultAccounts.t.
 
-Parameter recorded_events : forall `{H : State.Trait}, M (H := H) OpaqueDef.
+Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
 
 Parameter assert_contract_termination : forall `{H : State.Trait},
     forall
