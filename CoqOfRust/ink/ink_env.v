@@ -848,6 +848,14 @@ Module engine.
     End EnvInstance.
     Definition EnvInstance := @EnvInstance.t.
     
+    Module AccountError.
+      Inductive t : Set :=
+      | Decoding (_ : parity_scale_codec.error.Error)
+      | UnexpectedUserAccount
+      | NoAccountForId (_ : alloc.vec.Vec u8).
+    End AccountError.
+    Definition AccountError := AccountError.t.
+    
     Module OffChainError.
       Inductive t : Set :=
       | Account (_ : ink_env.engine.off_chain.AccountError)
@@ -856,14 +864,6 @@ Module engine.
       | UnregisteredChainExtension.
     End OffChainError.
     Definition OffChainError := OffChainError.t.
-    
-    Module AccountError.
-      Inductive t : Set :=
-      | Decoding (_ : parity_scale_codec.error.Error)
-      | UnexpectedUserAccount
-      | NoAccountForId (_ : alloc.vec.Vec u8).
-    End AccountError.
-    Definition AccountError := AccountError.t.
   End off_chain.
 End engine.
 
