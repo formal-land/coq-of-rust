@@ -275,7 +275,7 @@ where
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-pub(crate) fn trait_typeclass<'a, U, I>(
+fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[TraitBound<'a>],
@@ -299,7 +299,7 @@ where
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-pub(crate) fn new_trait_typeclass_header<'a, U>(
+fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[TraitBound<'a>],
