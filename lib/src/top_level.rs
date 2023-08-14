@@ -814,6 +814,7 @@ fn get_where_predicates(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<Wh
         .iter()
         .flat_map(|predicate| match predicate {
             rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+                // @TODO: shouldn't I use [compile_generic_bounds] here instead?
                 let names_and_ty_params = predicate.bounds.iter().filter_map(|bound| match bound {
                     rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
                         let path = trait_ref.trait_ref.path;
