@@ -80,24 +80,22 @@ Definition InstantiateReturnValue := InstantiateReturnValue.t.
 
 
 (* 
-pub struct ContractResult<R, Balance, EventRecord> {
+pub struct ContractResult<R, Balance> {
     pub gas_consumed: Weight,
     pub gas_required: Weight,
     pub storage_deposit: StorageDeposit<Balance>,
     pub debug_message: Vec<u8>,
     pub result: R,
-    pub events: Option<Vec<EventRecord>>,
 }
 *)
 Unset Primitive Projections.
 Module ContractResult.
-  Record t (R Balance EventRecord : Set) : Set := { 
+  Record t (R Balance : Set) : Set := { 
     gas_consumed: Weight;
     gas_required: Weight;
     storage_deposit: StorageDeposit Balance;
     debug_message: Vec u8 None;
     result: R;
-    events: Option (Vec EventRecord None);
   }.
 End ContractResult.
 Global Set Primitive Projections.
