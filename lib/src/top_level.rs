@@ -1579,6 +1579,36 @@ impl WherePredicate {
     }
 }
 
+impl TraitBound {
+    fn to_doc<'a, U>(&'a self, self_name: U) -> Doc
+    where
+        U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
+    {
+        nest([
+            text("`{"),
+            self.name.to_doc(),
+            text(".Trait"),
+            line(),
+            text(self_name),
+            if self.ty_params.is_empty() {
+                nil()
+            } else {
+                concat([
+                    line(),
+                    intersperse(
+                        self.ty_params
+                            .iter()
+                            .map(|ty_param| ty_param.to_doc())
+                            .collect::<Vec<_>>(),
+                        [line()],
+                    ),
+                ])
+            },
+            text("}"),
+        ])
+    }
+}
+
 impl TraitTyParamValue {
     fn to_doc(&self) -> Doc {
         match self {
@@ -2161,12 +2191,7 @@ impl TopLevelItem {
                     .collect(),
                 &bounds
                     .iter()
-                    .map(|TraitBound { name, ty_params }| {
-                        (
-                            name.to_doc(),
-                            ty_params.iter().map(|ty_param| ty_param.to_doc()).collect(),
-                        )
-                    })
+                    .map(|bound| |self_name| bound.to_doc(self_name))
                     .collect::<Vec<_>>(),
                 &body
                     .iter()
@@ -2177,19 +2202,11 @@ impl TopLevelItem {
                             item_name,
                             bounds
                                 .iter()
-                                .map(|TraitBound { name, ty_params }| {
-                                    (
-                                        name.to_doc(),
-                                        ty_params
-                                            .iter()
-                                            .map(|ty_param| ty_param.to_doc())
-                                            .collect(),
-                                    )
-                                })
+                                .map(|bound| |self_name| bound.to_doc(self_name))
                                 .collect(),
                         )),
                     })
-                    .collect::<Vec<(&String, Vec<(Doc, Vec<Doc>)>)>>(),
+                    .collect::<Vec<_>>(),
                 body.iter()
                     .map(|(name, item)| match item {
                         TraitItem::Definition {

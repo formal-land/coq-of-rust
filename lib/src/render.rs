@@ -240,16 +240,13 @@ where
     }
 }
 
-/// a trait bound with parameters
-type TraitBound<'a> = (Doc<'a>, Vec<Doc<'a>>);
-
 /// creates a module with the translation of the given trait
 pub(crate) fn trait_module<'a, U>(
     name: U,
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &[TraitBound<'a>],
-    associated_types: &[(U, Vec<TraitBound<'a>>)],
+    bounds: &[impl Fn(&'a str) -> Doc<'a>],
+    associated_types: &[(U, Vec<impl Fn(U) -> Doc<'a>>)],
     items: Vec<Doc<'a>>,
     instances: Vec<Doc<'a>>,
 ) -> Doc<'a>
@@ -278,8 +275,8 @@ where
 fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &[TraitBound<'a>],
-    associated_types: &[(U, Vec<TraitBound<'a>>)],
+    bounds: &[impl Fn(&'a str) -> Doc<'a>],
+    associated_types: &[(U, Vec<impl Fn(U) -> Doc<'a>>)],
     items: I,
 ) -> Doc<'a>
 where
@@ -302,8 +299,8 @@ where
 fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &[TraitBound<'a>],
-    associated_types: &[(U, Vec<TraitBound<'a>>)],
+    bounds: &[impl Fn(&'a str) -> Doc<'a>],
+    associated_types: &[(U, Vec<impl Fn(U) -> Doc<'a>>)],
 ) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -371,28 +368,15 @@ where
     ])
 }
 
-fn bounds_sequence<'a, U>(self_name: U, bounds: &[TraitBound<'a>]) -> Doc<'a>
+fn bounds_sequence<'a, U>(self_name: U, bounds: &[impl Fn(U) -> Doc<'a>]) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    concat(bounds.iter().map(|(trait_bound, ty_params)| {
-        concat([
-            line(),
-            nest([
-                text("`{"),
-                trait_bound.clone(),
-                text(".Trait"),
-                line(),
-                text(self_name),
-                if ty_params.is_empty() {
-                    nil()
-                } else {
-                    concat([line(), intersperse(ty_params.clone(), [line()])])
-                },
-                text("}"),
-            ]),
-        ])
-    }))
+    concat(
+        bounds
+            .iter()
+            .map(|bound_for| concat([line(), bound_for(self_name)])),
+    )
 }
 
 /// creates a body of a typeclass with the given items
