@@ -108,5 +108,5 @@ Definition ContractResult := ContractResult.t.
 (* pub type CodeUploadResult<CodeHash, Balance> = Result<CodeUploadReturnValue<CodeHash, Balance>, DispatchError> *)
 Definition CodeUploadResult (CodeHash Balance : Set) := (Result (CodeUploadReturnValue CodeHash Balance)) DispatchError.
 
-(* pub type ContractInstantiateResult<AccountId, Balance, EventRecord> = ContractResult<Result<InstantiateReturnValue<AccountId>, DispatchError>, Balance, EventRecord>; *)
-Definition ContractInstantiateResult (AccountId Balance EventRecord : Set) := ContractResult (Result (InstantiateReturnValue AccountId) DispatchError) Balance EventRecord.
+(* pub type ContractInstantiateResult<AccountId, Balance> = ContractResult<Result<InstantiateReturnValue<AccountId>, DispatchError>, Balance>; *)
+Definition ContractInstantiateResult (AccountId Balance: Set) := ContractResult (Result (InstantiateReturnValue AccountId) DispatchError) Balance.
