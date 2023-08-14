@@ -1589,6 +1589,30 @@ impl WherePredicate {
     }
 }
 
+impl TraitTyParamValue {
+    fn to_doc(&self) -> Doc {
+        match self {
+            TraitTyParamValue::ValWithDef { name, ty } => {
+                apply_argument(
+                    name,
+                    concat([
+                        text("(Some"),
+                        line(),
+                        ty.to_doc(false),
+                        text(")"),
+                    ]),
+                )
+            }
+            TraitTyParamValue::JustValue { name, ty } => {
+                apply_argument(name, ty.to_doc(false))
+            }
+            TraitTyParamValue::JustDefault { name } => {
+                apply_argument(name, text("None"))
+            }
+        }
+    }
+}
+
 impl TopLevelItem {
     fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
@@ -2163,28 +2187,7 @@ impl TopLevelItem {
                             trait_bound.to_doc(),
                             ty_params
                                 .iter()
-                                .map(|ty_param| {
-                                    let ty_param = *ty_param.clone();
-                                    match ty_param {
-                                        TraitTyParamValue::ValWithDef { name, ty } => {
-                                            apply_argument(
-                                                name,
-                                                concat([
-                                                    text("(Some"),
-                                                    line(),
-                                                    ty.to_doc(false),
-                                                    text(")"),
-                                                ]),
-                                            )
-                                        }
-                                        TraitTyParamValue::JustValue { name, ty } => {
-                                            apply_argument(name, ty.to_doc(false))
-                                        }
-                                        TraitTyParamValue::JustDefault { name } => {
-                                            apply_argument(name, text("None"))
-                                        }
-                                    }
-                                })
+                                .map(|ty_param| ty_param.to_doc())
                                 .collect(),
                         )
                     })
@@ -2203,28 +2206,7 @@ impl TopLevelItem {
                                         trait_bound.to_doc(),
                                         ty_params
                                             .iter()
-                                            .map(|ty_param| {
-                                                let ty_param = *ty_param.clone();
-                                                match ty_param {
-                                                    TraitTyParamValue::ValWithDef { name, ty } => {
-                                                        apply_argument(
-                                                            name,
-                                                            concat([
-                                                                text("(Some"),
-                                                                line(),
-                                                                ty.to_doc(false),
-                                                                text(")"),
-                                                            ]),
-                                                        )
-                                                    }
-                                                    TraitTyParamValue::JustValue { name, ty } => {
-                                                        apply_argument(name, ty.to_doc(false))
-                                                    }
-                                                    TraitTyParamValue::JustDefault { name } => {
-                                                        apply_argument(name, text("None"))
-                                                    }
-                                                }
-                                            })
+                                            .map(|ty_param| ty_param.to_doc())
                                             .collect(),
                                     )
                                 })
