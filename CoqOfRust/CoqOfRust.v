@@ -177,6 +177,7 @@ Require CoqOfRust.core.hash.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.option.
 Require CoqOfRust.core.result.
+Require CoqOfRust.core.panic.unwind_safe.
 
 Module core.
   Export CoqOfRust.core.clone.
@@ -475,6 +476,10 @@ Module core.
     Global Instance Write_for_Formatter : Write.Trait Formatter.
     Admitted.
   End fmt.
+
+  Module panic.
+    Export CoqOfRust.core.panic.unwind_safe.
+  End panic.
 
   Module panicking.
     Module AssertKind.
