@@ -3,7 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.alloc.
+Require CoqOfRust.ink.pallet_contracts_primitives.
 (* Require CoqOfRust.ink.ink_env. *)
+Require Import CoqOfRust.ink.subxt.
+Require Import CoqOfRust._std.path.
+Require Import CoqOfRust._std.process.
+Require Import CoqOfRust._std.ffi.
+Require Import CoqOfRust._std.sync.
+Require Import CoqOfRust._std.thread.
 
 Module builders.
 (* NOTE: Wait for completion of ink_env *)
@@ -56,13 +63,14 @@ Parameter constructor_exec_input : forall `{H : State.Trait},
     M (H := H) (alloc.vec.Vec u8).
 
 Module client.
-  Definition CallBuilderFinal (E Args RetType : Set) : Set :=
+  Definition CallBuilderFinal (E Args RetType : Set) : Set. Admitted.
+   (* :=
     ink_env.call.call_builder.CallBuilder
       E
       (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
       (ink_env.call.common.Set
         (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
+      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)). *)
   
   Module InstantiationResult.
     Section InstantiationResult.
@@ -200,7 +208,7 @@ Module client.
           :
           alloc.collections.btree.map.BTreeMap
             alloc.string.String
-            std.path.PathBuf;
+            _std.path.PathBuf;
       }.
       Global Set Primitive Projections.
       
@@ -358,7 +366,7 @@ Module Client.
         :
         alloc.collections.btree.map.BTreeMap
           alloc.string.String
-          std.path.PathBuf;
+          _std.path.PathBuf;
     }.
     Global Set Primitive Projections.
     
@@ -604,7 +612,7 @@ Module node_proc.
       Context {R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        proc : std.process.Child;
+        proc : _std.process.Child;
         client : subxt.client.online_client.OnlineClient R;
         url : alloc.string.String;
       }.
@@ -628,7 +636,7 @@ Module node_proc.
       Context {R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        node_path : std.ffi.os_str.OsString;
+        node_path : _std.ffi.os_str.OsString;
         authority : core.option.Option sp_keyring.sr25519.Keyring;
         marker : core.marker.PhantomData R;
       }.
@@ -653,7 +661,7 @@ Module TestNodeProcess.
     Context {R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      proc : std.process.Child;
+      proc : _std.process.Child;
       client : subxt.client.online_client.OnlineClient R;
       url : alloc.string.String;
     }.
@@ -677,7 +685,7 @@ Module TestNodeProcessBuilder.
     Context {R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      node_path : std.ffi.os_str.OsString;
+      node_path : _std.ffi.os_str.OsString;
       authority : core.option.Option sp_keyring.sr25519.Keyring;
       marker : core.marker.PhantomData R;
     }.
@@ -1030,14 +1038,14 @@ Definition PolkadotConfig : Set :=
 Definition Signer (C : Set) : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
-Definition INIT `{H : State.Trait} : std.sync.once.Once :=
-  run (std.sync.once.Once::["new"]).
+Definition INIT `{H : State.Trait} : _std.sync.once.Once :=
+  run (_std.sync.once.Once::["new"]).
 
 Definition
     LOG_PREFIX
     `{H : State.Trait} :
-    std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
-  run (std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
+    _std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
+  run (_std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
 
 Parameter log_prefix : forall `{H : State.Trait},
     M (H := H) alloc.string.String.
