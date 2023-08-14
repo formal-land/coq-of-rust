@@ -1592,23 +1592,12 @@ impl WherePredicate {
 impl TraitTyParamValue {
     fn to_doc(&self) -> Doc {
         match self {
-            TraitTyParamValue::ValWithDef { name, ty } => {
-                apply_argument(
-                    name,
-                    concat([
-                        text("(Some"),
-                        line(),
-                        ty.to_doc(false),
-                        text(")"),
-                    ]),
-                )
-            }
-            TraitTyParamValue::JustValue { name, ty } => {
-                apply_argument(name, ty.to_doc(false))
-            }
-            TraitTyParamValue::JustDefault { name } => {
-                apply_argument(name, text("None"))
-            }
+            TraitTyParamValue::ValWithDef { name, ty } => apply_argument(
+                name,
+                concat([text("(Some"), line(), ty.to_doc(false), text(")")]),
+            ),
+            TraitTyParamValue::JustValue { name, ty } => apply_argument(name, ty.to_doc(false)),
+            TraitTyParamValue::JustDefault { name } => apply_argument(name, text("None")),
         }
     }
 }
@@ -2185,10 +2174,7 @@ impl TopLevelItem {
                     .map(|(trait_bound, ty_params)| {
                         (
                             trait_bound.to_doc(),
-                            ty_params
-                                .iter()
-                                .map(|ty_param| ty_param.to_doc())
-                                .collect(),
+                            ty_params.iter().map(|ty_param| ty_param.to_doc()).collect(),
                         )
                     })
                     .collect::<Vec<_>>(),
