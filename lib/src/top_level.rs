@@ -140,6 +140,8 @@ enum TopLevelItem {
         name: String,
         ty_params: Vec<(String, Option<Box<CoqType>>)>,
         predicates: Vec<WherePredicate>,
+        // @TODO: use a struct instead of a tuple
+        bounds: Vec<(Path, Vec<Box<TraitTyParamValue>>)>,
         body: Vec<(String, TraitItem)>,
     },
     TraitImpl {
@@ -540,8 +542,15 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
-        ItemKind::Trait(_, _, generics, _, items) => {
-            vec![compile_trait(tcx, env, name, generics, items)]
+        ItemKind::Trait(_, _, generics, generic_bounds, items) => {
+            vec![compile_trait(
+                tcx,
+                env,
+                name,
+                generics,
+                generic_bounds,
+                items,
+            )]
         }
         ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
@@ -743,12 +752,14 @@ fn compile_trait(
     env: &mut Env,
     name: String,
     generics: &rustc_hir::Generics,
+    bounds: &GenericBounds,
     items: &[rustc_hir::TraitItemRef],
 ) -> TopLevelItem {
     TopLevelItem::Trait {
         name,
         ty_params: get_ty_params(env, generics),
         predicates: get_where_predicates(env, generics),
+        bounds: compile_generic_bounds(tcx, env, bounds),
         body: items
             .iter()
             .map(|item| {
@@ -1479,11 +1490,13 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             name,
             ty_params,
             predicates,
+            bounds,
             body,
         } => TopLevelItem::Trait {
             name,
             ty_params,
             predicates,
+            bounds,
             body: mt_trait_items(body),
         },
         TopLevelItem::TraitImpl {
@@ -2213,6 +2226,7 @@ impl TopLevelItem {
                 name,
                 ty_params,
                 predicates,
+                bounds,
                 body,
             } => trait_module(
                 name,
@@ -2223,6 +2237,39 @@ impl TopLevelItem {
                 &predicates
                     .iter()
                     .map(|predicate| predicate.to_doc())
+                    .collect(),
+                &bounds
+                    .iter()
+                    .map(|(trait_bound, ty_params)| {
+                        (
+                            trait_bound.to_doc(),
+                            ty_params
+                                .iter()
+                                .map(|ty_param| {
+                                    let ty_param = *ty_param.clone();
+                                    match ty_param {
+                                        TraitTyParamValue::ValWithDef { name, ty } => {
+                                            apply_argument(
+                                                name,
+                                                concat([
+                                                    text("(Some"),
+                                                    line(),
+                                                    ty.to_doc(false),
+                                                    text(")"),
+                                                ]),
+                                            )
+                                        }
+                                        TraitTyParamValue::JustValue { name, ty } => {
+                                            apply_argument(name, ty.to_doc(false))
+                                        }
+                                        TraitTyParamValue::JustDefault { name } => {
+                                            apply_argument(name, text("None"))
+                                        }
+                                    }
+                                })
+                                .collect(),
+                        )
+                    })
                     .collect(),
                 &body
                     .iter()
