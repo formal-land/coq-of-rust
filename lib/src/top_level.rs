@@ -39,7 +39,7 @@ enum TraitItem {
         ret_ty: Box<CoqType>,
         body: Option<Box<Expr>>,
     },
-    Type(Vec<(Path, Vec<Box<TraitTyParamValue>>)>),
+    Type(Vec<TraitBound>),
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -67,6 +67,12 @@ struct WherePredicate {
     name: Path,
     ty_params: Vec<Box<CoqType>>,
     ty: Box<CoqType>,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct TraitBound {
+    name: Path,
+    ty_params: Vec<Box<TraitTyParamValue>>,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -132,8 +138,7 @@ enum TopLevelItem {
         name: String,
         ty_params: Vec<(String, Option<Box<CoqType>>)>,
         predicates: Vec<WherePredicate>,
-        // @TODO: use a struct instead of a tuple
-        bounds: Vec<(Path, Vec<Box<TraitTyParamValue>>)>,
+        bounds: Vec<TraitBound>,
         body: Vec<(String, TraitItem)>,
     },
     TraitImpl {
@@ -806,7 +811,7 @@ fn compile_generic_bounds(
     tcx: &TyCtxt,
     env: &mut Env,
     generic_bounds: &GenericBounds,
-) -> Vec<(Path, Vec<Box<TraitTyParamValue>>)> {
+) -> Vec<TraitBound> {
     generic_bounds
         .iter()
         .filter_map(|generic_bound| match generic_bound {
@@ -850,7 +855,10 @@ fn compile_generic_bounds(
                     })
                     .collect();
 
-                Some((compile_path(env, ptraitref.trait_ref.path), ty_params))
+                Some(TraitBound {
+                    name: compile_path(env, ptraitref.trait_ref.path),
+                    ty_params,
+                })
             }
             GenericBound::LangItemTrait { .. } => {
                 env.tcx
@@ -2171,9 +2179,9 @@ impl TopLevelItem {
                     .collect(),
                 &bounds
                     .iter()
-                    .map(|(trait_bound, ty_params)| {
+                    .map(|TraitBound { name, ty_params }| {
                         (
-                            trait_bound.to_doc(),
+                            name.to_doc(),
                             ty_params.iter().map(|ty_param| ty_param.to_doc()).collect(),
                         )
                     })
@@ -2187,9 +2195,9 @@ impl TopLevelItem {
                             item_name,
                             bounds
                                 .iter()
-                                .map(|(trait_bound, ty_params)| {
+                                .map(|TraitBound { name, ty_params }| {
                                     (
-                                        trait_bound.to_doc(),
+                                        name.to_doc(),
                                         ty_params
                                             .iter()
                                             .map(|ty_param| ty_param.to_doc())
