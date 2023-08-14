@@ -82,7 +82,7 @@ Definition ResolverKey := @ResolverKey.t.
 
 Module storage.
   Module Storable.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
       encode
         `{H : State.Trait}
         {T: Set}
@@ -120,7 +120,14 @@ Module storage.
   
   Module Packed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{ink_storage_traits.storage.Storable.Trait Self}
+          `{parity_scale_codec.codec.Codec.Trait Self}
+          `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+        Set := {
     }.
     Global Set Primitive Projections.
   End Packed.
@@ -203,7 +210,7 @@ Module storage.
 End storage.
 
 Module Storable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
     encode
       `{H : State.Trait}
       {T: Set}
@@ -248,7 +255,14 @@ End Sealed.
 
 Module Packed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{ink_storage_traits.storage.Storable.Trait Self}
+        `{parity_scale_codec.codec.Codec.Trait Self}
+        `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+      Set := {
   }.
   Global Set Primitive Projections.
 End Packed.

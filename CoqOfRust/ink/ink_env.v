@@ -8,21 +8,66 @@ Require CoqOfRust.ink.parity_scale_codec.
 Module arithmetic.
   Module BaseArithmetic.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{core.marker.Sized.Trait Self}
+          `{core.convert.From.Trait Self (T := u8)}
+          `{num_traits.bounds.Bounded.Trait Self}
+          `{core.cmp.Ord.Trait Self}
+          `{core.cmp.PartialOrd.Trait Self (Rhs := (Some Self))}
+          `{num_traits.identities.Zero.Trait Self}
+          `{num_traits.identities.One.Trait Self}
+          `{num_traits.bounds.Bounded.Trait Self}
+          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.AddAssign.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.SubAssign.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.MulAssign.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.DivAssign.Trait Self (Rhs := (Some Self))}
+          `{num_traits.ops.checked.CheckedMul.Trait Self}
+          `{ink_env.arithmetic.Saturating.Trait Self}
+          `{core.convert.TryFrom.Trait Self (T := u16)}
+          `{core.convert.TryFrom.Trait Self (T := u32)}
+          `{core.convert.TryFrom.Trait Self (T := u64)}
+          `{core.convert.TryFrom.Trait Self (T := u128)}
+          `{core.convert.TryFrom.Trait Self (T := usize)}
+          `{core.convert.TryInto.Trait Self (T := u16)}
+          `{core.convert.TryInto.Trait Self (T := u32)}
+          `{core.convert.TryInto.Trait Self (T := u64)}
+          `{core.convert.TryInto.Trait Self (T := u128)}
+          `{core.convert.TryInto.Trait Self (T := usize)} :
+        Set := {
     }.
     Global Set Primitive Projections.
   End BaseArithmetic.
   
   Module AtLeast32Bit.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{ink_env.arithmetic.BaseArithmetic.Trait Self}
+          `{core.convert.From.Trait Self (T := u16)}
+          `{core.convert.From.Trait Self (T := u32)} :
+        Set := {
     }.
     Global Set Primitive Projections.
   End AtLeast32Bit.
   
   Module AtLeast32BitUnsigned.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
+          `{num_traits.sign.Unsigned.Trait Self} :
+        Set := {
     }.
     Global Set Primitive Projections.
   End AtLeast32BitUnsigned.
@@ -91,7 +136,13 @@ Module types.
   
   Module CodecAsType.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{scale_decode.DecodeAsType.Trait Self}
+          `{scale_encode.EncodeAsType.Trait Self} :
+        Set := {
     }.
     Global Set Primitive Projections.
   End CodecAsType.
@@ -274,7 +325,13 @@ End AccountIdGuard.
 
 Module CodecAsType.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{scale_decode.DecodeAsType.Trait Self}
+        `{scale_encode.EncodeAsType.Trait Self} :
+      Set := {
   }.
   Global Set Primitive Projections.
 End CodecAsType.
@@ -521,7 +578,7 @@ Module topics.
       Notation.dot := @AMOUNT;
     }.
   End EventTopicsAmount.
-  (*
+  
   Module Topics.
     Class Trait
         (Self : Set)
@@ -554,7 +611,7 @@ Module topics.
       Notation.dot := @topics;
     }.
   End Topics.
-  *)
+  
   Module PrefixedValue.
     Section PrefixedValue.
       Context {T : Set}.
@@ -578,7 +635,13 @@ End topics.
 
 Module engine.
   Module OnInstance.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{ink_env.backend.EnvBackend.Trait Self}
+          `{ink_env.backend.TypedEnvBackend.Trait Self} :
+        Set := {
       on_instance
         `{H : State.Trait}
         {F R: Set}
@@ -648,7 +711,7 @@ Module engine.
           forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
           T::type["Balance"] ->
           M (H := H) unit.
-      (*
+      
       Parameter get_account_balance : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -663,7 +726,7 @@ Module engine.
       
       Parameter recorded_debug_messages : forall `{H : State.Trait},
           M (H := H) ink_engine.test_api.RecordedDebugMessages.
-      *)
+      
       Parameter set_clear_storage_disabled : forall `{H : State.Trait},
           bool ->
           M (H := H) unit.
@@ -672,7 +735,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
-      (*
+      
       Parameter set_caller : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -756,7 +819,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
           M (H := H) unit.
-      *)(*
+      
       Module DefaultAccounts.
         Section DefaultAccounts.
           Context {T : Set}.
@@ -834,9 +897,9 @@ Module engine.
             F ->
           T::type["AccountId"] ->
           T::type["Balance"] ->
-          M (H := H) unit.*)
+          M (H := H) unit.
     End test_api.
-    (*
+    
     Module EnvInstance.
       Unset Primitive Projections.
       Record t : Set := {
@@ -849,7 +912,7 @@ Module engine.
       }.
     End EnvInstance.
     Definition EnvInstance := @EnvInstance.t.
-    *)
+    
     Module AccountError.
       Inductive t : Set :=
       | Decoding (_ : parity_scale_codec.error.Error)
@@ -895,7 +958,7 @@ End error.
 Module hash.
   Module HashOutput.
     Class Trait
-        (Self : Set)
+        (Self : Set) `{ink_env.hash.private.Sealed.Trait Self}
         {Type_ : Set}
         `{core.default.Default.Trait Type_} :
         Set := {
@@ -914,7 +977,13 @@ Module hash.
   End HashOutput.
   
   Module CryptoHash.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{ink_env.hash.HashOutput.Trait Self}
+          `{ink_env.hash.private.Sealed.Trait Self} :
+        Set := {
       hash
         `{H : State.Trait}
         :
@@ -1179,7 +1248,7 @@ Module backend.
   End EnvBackend.
   
   Module TypedEnvBackend.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Set := {
       caller
         `{H : State.Trait}
         {E: Set}
@@ -2409,21 +2478,66 @@ Parameter call_runtime : forall `{H : State.Trait},
 
 Module BaseArithmetic.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{core.marker.Sized.Trait Self}
+        `{core.convert.From.Trait Self (T := u8)}
+        `{num_traits.bounds.Bounded.Trait Self}
+        `{core.cmp.Ord.Trait Self}
+        `{core.cmp.PartialOrd.Trait Self (Rhs := (Some Self))}
+        `{num_traits.identities.Zero.Trait Self}
+        `{num_traits.identities.One.Trait Self}
+        `{num_traits.bounds.Bounded.Trait Self}
+        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.AddAssign.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.SubAssign.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.MulAssign.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.DivAssign.Trait Self (Rhs := (Some Self))}
+        `{num_traits.ops.checked.CheckedMul.Trait Self}
+        `{ink_env.arithmetic.Saturating.Trait Self}
+        `{core.convert.TryFrom.Trait Self (T := u16)}
+        `{core.convert.TryFrom.Trait Self (T := u32)}
+        `{core.convert.TryFrom.Trait Self (T := u64)}
+        `{core.convert.TryFrom.Trait Self (T := u128)}
+        `{core.convert.TryFrom.Trait Self (T := usize)}
+        `{core.convert.TryInto.Trait Self (T := u16)}
+        `{core.convert.TryInto.Trait Self (T := u32)}
+        `{core.convert.TryInto.Trait Self (T := u64)}
+        `{core.convert.TryInto.Trait Self (T := u128)}
+        `{core.convert.TryInto.Trait Self (T := usize)} :
+      Set := {
   }.
   Global Set Primitive Projections.
 End BaseArithmetic.
 
 Module AtLeast32Bit.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{ink_env.arithmetic.BaseArithmetic.Trait Self}
+        `{core.convert.From.Trait Self (T := u16)}
+        `{core.convert.From.Trait Self (T := u32)} :
+      Set := {
   }.
   Global Set Primitive Projections.
 End AtLeast32Bit.
 
 Module AtLeast32BitUnsigned.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
+        `{num_traits.sign.Unsigned.Trait Self} :
+      Set := {
   }.
   Global Set Primitive Projections.
 End AtLeast32BitUnsigned.
@@ -2669,7 +2783,7 @@ Module EnvBackend.
 End EnvBackend.
 
 Module TypedEnvBackend.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Set := {
     caller
       `{H : State.Trait}
       {E: Set}
@@ -3862,7 +3976,7 @@ Definition Selector := @Selector.t.
 
 Module chain_extension.
   Module FromStatusCode.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
       from_status_code
         `{H : State.Trait}
         :
@@ -3920,7 +4034,14 @@ Module chain_extension.
   End state.
   
   Module IsResultType.
-    Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
+        {Ok : Set}
+        {Err : Set} :
+        Set := {
       Ok := Ok;
       Err := Err;
     }.
@@ -3946,7 +4067,7 @@ Module chain_extension.
 End chain_extension.
 
 Module FromStatusCode.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
     from_status_code
       `{H : State.Trait}
       :
@@ -4002,7 +4123,14 @@ End HandleErrorCode.
 Definition HandleErrorCode := @HandleErrorCode.t.
 
 Module IsResultType.
-  Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
+      {Ok : Set}
+      {Err : Set} :
+      Set := {
     Ok := Ok;
     Err := Err;
   }.
@@ -4107,7 +4235,13 @@ Module ContractReference.
 End ContractReference.
 
 Module OnInstance.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{ink_env.backend.EnvBackend.Trait Self}
+        `{ink_env.backend.TypedEnvBackend.Trait Self} :
+      Set := {
     on_instance
       `{H : State.Trait}
       {F R: Set}
@@ -4925,7 +5059,7 @@ Definition Result (T : Set) : Set := core.result.Result T ink_env.error.Error.
 
 Module HashOutput.
   Class Trait
-      (Self : Set)
+      (Self : Set) `{ink_env.hash.private.Sealed.Trait Self}
       {Type_ : Set}
       `{core.default.Default.Trait Type_} :
       Set := {
@@ -4944,7 +5078,13 @@ Module HashOutput.
 End HashOutput.
 
 Module CryptoHash.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{ink_env.hash.HashOutput.Trait Self}
+        `{ink_env.hash.private.Sealed.Trait Self} :
+      Set := {
     hash
       `{H : State.Trait}
       :

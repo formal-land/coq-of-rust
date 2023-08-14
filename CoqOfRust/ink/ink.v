@@ -1524,7 +1524,14 @@ Module reflect.
     End private.
     
     Module ConstructorOutput.
-      Class Trait (Self : Set) {C : Set} {Error : Set} : Set := {
+      Class Trait
+          (Self
+            :
+            Set)
+            `{ink.reflect.dispatch.private.Sealed.Trait Self}
+            {C : Set}
+          {Error : Set} :
+          Set := {
         IS_RESULT `{H : State.Trait} : bool;
         Error := Error;
         as_result
@@ -1637,7 +1644,9 @@ Module reflect.
     Definition DispatchError := DispatchError.t.
     
     Module DecodeDispatch.
-      Class Trait (Self : Set) : Set := {
+      Class Trait
+          (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
+          Set := {
         decode_dispatch
           `{H : State.Trait}
           {I: Set}
@@ -1914,7 +1923,10 @@ Module dispatch.
   End private.
   
   Module ConstructorOutput.
-    Class Trait (Self : Set) {C : Set} {Error : Set} : Set := {
+    Class Trait
+        (Self : Set) `{ink.reflect.dispatch.private.Sealed.Trait Self} {C : Set}
+        {Error : Set} :
+        Set := {
       IS_RESULT `{H : State.Trait} : bool;
       Error := Error;
       as_result
@@ -2027,7 +2039,9 @@ Module dispatch.
   Definition DispatchError := DispatchError.t.
   
   Module DecodeDispatch.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
+        Set := {
       decode_dispatch
         `{H : State.Trait}
         {I: Set}
@@ -2208,7 +2222,10 @@ Module Sealed.
 End Sealed.
 
 Module ConstructorOutput.
-  Class Trait (Self : Set) {C : Set} {Error : Set} : Set := {
+  Class Trait
+      (Self : Set) `{ink.reflect.dispatch.private.Sealed.Trait Self} {C : Set}
+      {Error : Set} :
+      Set := {
     IS_RESULT `{H : State.Trait} : bool;
     Error := Error;
     as_result
@@ -2320,7 +2337,9 @@ End DispatchError.
 Definition DispatchError := DispatchError.t.
 
 Module DecodeDispatch.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
+      Set := {
     decode_dispatch
       `{H : State.Trait}
       {I: Set}
@@ -2581,7 +2600,11 @@ Module chain_extension.
   End ChainExtension.
   
   Module IsResultType.
-    Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
+    Class Trait
+        (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self}
+        {Ok : Set}
+        {Err : Set} :
+        Set := {
       Ok := Ok;
       Err := Err;
     }.
@@ -2597,7 +2620,14 @@ Module chain_extension.
   End IsResultType.
   
   Module Output.
-    Class Trait (Self : Set) {T E : Set} {ReturnType : Set} : Set := {
+    Class Trait
+        (Self
+          :
+          Set)
+          `{ink.chain_extension.private.OutputSealed.Trait Self}
+          {T E : Set}
+        {ReturnType : Set} :
+        Set := {
       ReturnType := ReturnType;
     }.
     
@@ -2676,7 +2706,11 @@ Module ChainExtension.
 End ChainExtension.
 
 Module IsResultType.
-  Class Trait (Self : Set) {Ok : Set} {Err : Set} : Set := {
+  Class Trait
+      (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self}
+      {Ok : Set}
+      {Err : Set} :
+      Set := {
     Ok := Ok;
     Err := Err;
   }.
@@ -2692,7 +2726,14 @@ Module IsResultType.
 End IsResultType.
 
 Module Output.
-  Class Trait (Self : Set) {T E : Set} {ReturnType : Set} : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{ink.chain_extension.private.OutputSealed.Trait Self}
+        {T E : Set}
+      {ReturnType : Set} :
+      Set := {
     ReturnType := ReturnType;
   }.
   
