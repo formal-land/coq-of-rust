@@ -12,5 +12,5 @@ impl fmt::Display for Circle {
 
 fn main() {
     let circle = Circle { radius: 6 };
-    println!("{}", circle.to_string());
+    circle.to_string();
 }

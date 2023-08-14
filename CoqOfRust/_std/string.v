@@ -73,8 +73,3 @@ Module StringType.
 
  (* @TODO add more methods from (Struct std::string::String) *)
 End StringType.
-
-Global Instance ToString_on_Display {Self : Set}
-  `{_std.fmt.Display.Trait Self} :
-  ToString.Trait Self.
-Admitted.
