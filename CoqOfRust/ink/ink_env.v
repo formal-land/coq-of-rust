@@ -521,7 +521,7 @@ Module topics.
       Notation.dot := @AMOUNT;
     }.
   End EventTopicsAmount.
-  
+  (*
   Module Topics.
     Class Trait
         (Self : Set)
@@ -554,7 +554,7 @@ Module topics.
       Notation.dot := @topics;
     }.
   End Topics.
-  
+  *)
   Module PrefixedValue.
     Section PrefixedValue.
       Context {T : Set}.
@@ -648,7 +648,7 @@ Module engine.
           forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
           T::type["Balance"] ->
           M (H := H) unit.
-      
+      (*
       Parameter get_account_balance : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -663,7 +663,7 @@ Module engine.
       
       Parameter recorded_debug_messages : forall `{H : State.Trait},
           M (H := H) ink_engine.test_api.RecordedDebugMessages.
-      
+      *)
       Parameter set_clear_storage_disabled : forall `{H : State.Trait},
           bool ->
           M (H := H) unit.
@@ -672,7 +672,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
-      
+      (*
       Parameter set_caller : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -756,7 +756,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
           M (H := H) unit.
-      
+      *)
       Parameter run_test : forall `{H : State.Trait},
           forall
           {T : Set} {F : Set},
