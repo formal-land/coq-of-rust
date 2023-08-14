@@ -1,6 +1,19 @@
 (* Written by hand *)
 Require Import CoqOfRust.CoqOfRust.
 
+(* TODO: Implement the following items to satisfy the dependency for e2e/env file
+- [ ] blocks.block_types.ExtrinsicEvents
+- [ ] error.dispatch_error.DispatchError
+- [ ] error.Error
+- [ ] config.Config
+- [ ] tx.signer.pair_signer.PairSigner
+- [ ] client.online_client.OnlineClient
+- [ ] utils.multi_address.MultiAddress
+- [ ] utils.static_type.Static
+- [ ] config.polkadot.PolkadotExtrinsicParams
+- [ ] config.WithExtrinsicParams
+*)
+
 (* 
 pub trait Config: 'static {
     type Index: Debug + Copy + DeserializeOwned + Into<u64>;
