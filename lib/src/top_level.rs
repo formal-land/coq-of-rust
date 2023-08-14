@@ -760,31 +760,35 @@ fn get_where_predicates(
         .flat_map(|predicate| match predicate {
             rustc_hir::WherePredicate::BoundPredicate(predicate) => {
                 let names_and_ty_params = compile_generic_bounds(tcx, env, predicate.bounds);
-                let names_and_ty_params = names_and_ty_params.into_iter().map(|bound| {
-                    (
-                        bound.name,
-                        bound
-                            .ty_params
-                            .into_iter()
-                            .filter_map(|param| match *param {
-                                TraitTyParamValue::JustDefault { .. } => None,
-                                TraitTyParamValue::JustValue { ty, .. }
-                                | TraitTyParamValue::ValWithDef { ty, .. } => Some(ty),
-                            })
-                            .collect(),
-                    )
-                });
                 names_and_ty_params
-                    .map(|(name, ty_params)| WherePredicate {
-                        name,
-                        ty_params,
-                        ty: compile_type(env, predicate.bounded_ty),
+                    .into_iter()
+                    .map(|bound| {
+                        trait_bound_to_where_predicate(
+                            bound,
+                            compile_type(env, predicate.bounded_ty),
+                        )
                     })
                     .collect()
             }
             _ => vec![],
         })
         .collect()
+}
+
+fn trait_bound_to_where_predicate(bound: TraitBound, ty: Box<CoqType>) -> WherePredicate {
+    WherePredicate {
+        name: bound.name,
+        ty_params: bound
+            .ty_params
+            .into_iter()
+            .filter_map(|param| match *param {
+                TraitTyParamValue::JustDefault { .. } => None,
+                TraitTyParamValue::JustValue { ty, .. }
+                | TraitTyParamValue::ValWithDef { ty, .. } => Some(ty),
+            })
+            .collect(),
+        ty,
+    }
 }
 
 /// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
