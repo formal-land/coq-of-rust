@@ -8,6 +8,12 @@ Require Import CoqOfRust._std.vec.
 Require Import CoqOfRust.ink.sp_runtime.
 Require Import CoqOfRust.ink.sp_weights.
 
+(* TODO: Implement the following structs to satisfy the dependency for e2e/env
+- [x] ContractInstantiateResult
+- [x] CodeUploadResult
+- [ ] ContractExecResult
+*)
+
 (* 
 pub struct CodeUploadReturnValue<CodeHash, Balance> {
     pub code_hash: CodeHash,
