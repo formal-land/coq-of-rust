@@ -504,14 +504,14 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             vec![TopLevelItem::Trait {
                 name,
                 ty_params: get_ty_params(env, generics),
-                predicates: get_where_predicates(env, generics),
+                predicates: get_where_predicates(tcx, env, generics),
                 bounds: compile_generic_bounds(tcx, env, generic_bounds),
                 body: items
                     .iter()
                     .map(|item| {
                         let item = tcx.hir().trait_item(item.id);
                         let ty_params = get_ty_params_names(env, item.generics);
-                        let where_predicates = get_where_predicates(env, item.generics);
+                        let where_predicates = get_where_predicates(tcx, env, item.generics);
                         let body =
                             compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
                         (to_valid_coq_name(item.ident.name.to_string()), body)
@@ -749,30 +749,30 @@ fn get_ty_params_names(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<Str
 }
 
 /// extracts where predicates from the generics
-fn get_where_predicates(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<WherePredicate> {
+fn get_where_predicates(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    generics: &rustc_hir::Generics,
+) -> Vec<WherePredicate> {
     generics
         .predicates
         .iter()
         .flat_map(|predicate| match predicate {
             rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                // @TODO: shouldn't I use [compile_generic_bounds] here instead?
-                let names_and_ty_params = predicate.bounds.iter().filter_map(|bound| match bound {
-                    rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
-                        let path = trait_ref.trait_ref.path;
-                        Some((compile_path(env, path), compile_path_ty_params(env, path)))
-                    }
-                    GenericBound::LangItemTrait { .. } => {
-                        env.tcx
-                            .sess
-                            .struct_span_warn(
-                                predicate.span,
-                                "LangItem trait bounds are not supported yet.",
-                            )
-                            .note("It will change in the future.")
-                            .emit();
-                        None
-                    }
-                    GenericBound::Outlives { .. } => None,
+                let names_and_ty_params = compile_generic_bounds(tcx, env, predicate.bounds);
+                let names_and_ty_params = names_and_ty_params.into_iter().map(|bound| {
+                    (
+                        bound.name,
+                        bound
+                            .ty_params
+                            .into_iter()
+                            .filter_map(|param| match *param {
+                                TraitTyParamValue::JustDefault { .. } => None,
+                                TraitTyParamValue::JustValue { ty, .. }
+                                | TraitTyParamValue::ValWithDef { ty, .. } => Some(ty),
+                            })
+                            .collect(),
+                    )
                 });
                 names_and_ty_params
                     .map(|(name, ty_params)| WherePredicate {
@@ -791,7 +791,7 @@ fn get_where_predicates(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<Wh
 fn compile_generic_bounds(
     tcx: &TyCtxt,
     env: &mut Env,
-    generic_bounds: &GenericBounds,
+    generic_bounds: GenericBounds,
 ) -> Vec<TraitBound> {
     generic_bounds
         .iter()
