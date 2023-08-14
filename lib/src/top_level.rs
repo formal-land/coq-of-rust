@@ -663,7 +663,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     // part of the list of type parameters.
                     type_params_name_and_default_status.remove(0);
 
-                    // @TODO: saved cursor position
                     let ty_params = compile_path_ty_params(env, trait_ref.path);
 
                     vec![TopLevelItem::TraitImpl {
@@ -1580,6 +1579,7 @@ impl WherePredicate {
 }
 
 impl TraitBound {
+    /// turns the trait bound into its representation as constraint
     fn to_doc<'a, U>(&'a self, self_name: U) -> Doc
     where
         U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
