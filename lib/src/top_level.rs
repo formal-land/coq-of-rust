@@ -566,55 +566,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                     _ => "Pattern".to_string(),
                                 }
                             });
-                            let ty_params = item
-                                .generics
-                                .params
-                                .iter()
-                                .filter_map(|param| match param.kind {
-                                    rustc_hir::GenericParamKind::Type { .. } => {
-                                        Some(param.name.ident().to_string())
-                                    }
-                                    _ => None,
-                                })
-                                .collect();
-                            let where_predicates = item
-                                .generics
-                                .predicates
-                                .iter()
-                                .flat_map(|predicate| match predicate {
-                                    rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                                        let names_and_ty_params =
-                                            predicate.bounds.iter().filter_map(|bound| match bound {
-                                                rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
-                                                    let path = trait_ref.trait_ref.path;
-                                                    Some((
-                                                        compile_path(env, path),
-                                                        compile_path_ty_params(env, path),
-                                                    ))
-                                                }
-                                                _ => {
-                                                    env.tcx
-                                                        .sess
-                                                        .struct_span_warn(
-                                                            predicate.span,
-                                                            "Only trait bounds are currently supported.",
-                                                        )
-                                                        .note("It may change in future versions.")
-                                                        .emit();
-                                                    None
-                                                },
-                                            });
-                                        names_and_ty_params
-                                            .map(|(name, ty_params)| WherePredicate {
-                                                name,
-                                                ty_params,
-                                                ty: compile_type(env, predicate.bounded_ty),
-                                            })
-                                            .collect()
-                                    }
-                                    _ => vec![],
-                                })
-                                .collect();
+                            let ty_params = get_ty_params_names(env, item.generics);
+                            let where_predicates = get_where_predicates(tcx, env, item.generics);
                             let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
                             let ret_ty = compile_fn_ret_ty(env, output);
                             let expr = tcx.hir().body(*body_id).value;
@@ -623,7 +576,11 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                                 where_predicates,
                                 args: arg_names.zip(arg_tys).collect(),
                                 ret_ty,
-                                body: if env.axiomatize {None} else {Some(Box::new(compile_expr(env, expr)))},
+                                body: if env.axiomatize {
+                                    None
+                                } else {
+                                    Some(Box::new(compile_expr(env, expr)))
+                                },
                                 is_method,
                                 is_dead_code: if_marked_as_dead_code,
                             }
