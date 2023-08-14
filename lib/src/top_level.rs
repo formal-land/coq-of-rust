@@ -139,6 +139,7 @@ enum TopLevelItem {
     Trait {
         name: String,
         ty_params: Vec<(String, Option<Box<CoqType>>)>,
+        predicates: Vec<WherePredicate>,
         body: Vec<(String, TraitItem)>,
     },
     TraitImpl {
@@ -758,6 +759,7 @@ fn compile_trait(
     TopLevelItem::Trait {
         name,
         ty_params: get_ty_params(env, generics),
+        predicates: get_where_predicates(env, generics),
         body: items
             .iter()
             .map(|item| {
@@ -1486,10 +1488,12 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
         TopLevelItem::Trait {
             name,
             ty_params,
+            predicates,
             body,
         } => TopLevelItem::Trait {
             name,
             ty_params,
+            predicates,
             body: mt_trait_items(body),
         },
         TopLevelItem::TraitImpl {
@@ -2218,12 +2222,17 @@ impl TopLevelItem {
             TopLevelItem::Trait {
                 name,
                 ty_params,
+                predicates,
                 body,
             } => trait_module(
                 name,
                 &ty_params
                     .iter()
                     .map(|(ty, default)| (ty, default.as_ref().map(|default| default.to_doc(true))))
+                    .collect(),
+                &predicates
+                    .iter()
+                    .map(|predicate| predicate.to_doc())
                     .collect(),
                 &body
                     .iter()

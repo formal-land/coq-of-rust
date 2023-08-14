@@ -417,7 +417,10 @@ Definition BlockNumber : Set := u32.
 
 Module topics.
   Module TopicsBuilderBackend.
-    Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
+    Class Trait
+        (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E}
+        {Output : Set} :
+        Set := {
       Output := Output;
       expect `{H : State.Trait} : (mut_ref Self) -> usize -> (M (H := H) unit);
       push_topic
@@ -645,7 +648,7 @@ Module engine.
           forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
           T::type["Balance"] ->
           M (H := H) unit.
-      (*
+      
       Parameter get_account_balance : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -660,7 +663,7 @@ Module engine.
       
       Parameter recorded_debug_messages : forall `{H : State.Trait},
           M (H := H) ink_engine.test_api.RecordedDebugMessages.
-      *)
+      
       Parameter set_clear_storage_disabled : forall `{H : State.Trait},
           bool ->
           M (H := H) unit.
@@ -669,7 +672,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
-      (*
+      
       Parameter set_caller : forall `{H : State.Trait},
           forall
           {T : Set},
@@ -753,7 +756,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
           M (H := H) unit.
-      *)(*
+      
       Parameter run_test : forall `{H : State.Trait},
           forall
           {T : Set} {F : Set},
@@ -776,7 +779,7 @@ Module engine.
             (list u8)
             ink_env.types.Environment.AccountId},
             M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
-      *)(*
+      
       Module DefaultAccounts.
         Section DefaultAccounts.
           Context {T : Set}.
@@ -812,9 +815,9 @@ Module engine.
         End DefaultAccounts.
       End DefaultAccounts.
       Definition DefaultAccounts := @DefaultAccounts.t.
-      *)(*
+      
       Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
-      *)(*
+      
       Parameter assert_contract_termination : forall `{H : State.Trait},
           forall
           {T : Set} {F : Set},
@@ -831,9 +834,9 @@ Module engine.
             F ->
           T::type["AccountId"] ->
           T::type["Balance"] ->
-          M (H := H) unit.*)
+          M (H := H) unit.
     End test_api.
-    (*
+    
     Module EnvInstance.
       Unset Primitive Projections.
       Record t : Set := {
@@ -846,7 +849,7 @@ Module engine.
       }.
     End EnvInstance.
     Definition EnvInstance := @EnvInstance.t.
-    *)
+    
     Module AccountError.
       Inductive t : Set :=
       | Decoding (_ : parity_scale_codec.error.Error)
@@ -1631,7 +1634,9 @@ Module call.
     End state.
     
     Module FromAccountId.
-      Class Trait (Self : Set) {T : Set} : Set := {
+      Class Trait
+          (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+          Set := {
         from_account_id
           `{H : State.Trait}
           :
@@ -3301,7 +3306,9 @@ Module create_builder.
   End state.
   
   Module FromAccountId.
-    Class Trait (Self : Set) {T : Set} : Set := {
+    Class Trait
+        (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+        Set := {
       from_account_id
         `{H : State.Trait}
         :
@@ -3525,7 +3532,9 @@ End Salt.
 Definition Salt := Salt.t.
 
 Module FromAccountId.
-  Class Trait (Self : Set) {T : Set} : Set := {
+  Class Trait
+      (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+      Set := {
     from_account_id
       `{H : State.Trait}
       :
@@ -4982,7 +4991,10 @@ Module Sealed.
 End Sealed.
 
 Module TopicsBuilderBackend.
-  Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
+  Class Trait
+      (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E}
+      {Output : Set} :
+      Set := {
     Output := Output;
     expect `{H : State.Trait} : (mut_ref Self) -> usize -> (M (H := H) unit);
     push_topic

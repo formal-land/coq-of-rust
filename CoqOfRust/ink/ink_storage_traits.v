@@ -143,7 +143,11 @@ Module storage.
   
   Module StorableHint.
     Class Trait
-        (Self : Set) {Key : Set}
+        (Self
+          :
+          Set)
+          {Key : Set}
+          `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
         `{ink_storage_traits.storage.Storable.Trait Type_}
         {PreferredKey : Set}
@@ -175,7 +179,11 @@ Module storage.
   
   Module AutoStorableHint.
     Class Trait
-        (Self : Set) {Key : Set}
+        (Self
+          :
+          Set)
+          {Key : Set}
+          `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
         `{ink_storage_traits.storage.Storable.Trait Type_} :
         Set := {
@@ -263,7 +271,11 @@ Module StorageKey.
 
 Module StorableHint.
   Class Trait
-      (Self : Set) {Key : Set}
+      (Self
+        :
+        Set)
+        {Key : Set}
+        `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}
       `{ink_storage_traits.storage.Storable.Trait Type_}
       {PreferredKey : Set}
@@ -295,7 +307,11 @@ End StorableHint.
 
 Module AutoStorableHint.
   Class Trait
-      (Self : Set) {Key : Set}
+      (Self
+        :
+        Set)
+        {Key : Set}
+        `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}
       `{ink_storage_traits.storage.Storable.Trait Type_} :
       Set := {

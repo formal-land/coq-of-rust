@@ -219,7 +219,13 @@ Module codegen.
   Module event.
     Module emit.
       Module EmitEvent.
-        Class Trait (Self : Set) {C : Set} : Set := {
+        Class Trait
+            (Self
+              :
+              Set)
+              {C : Set}
+              `{ink.reflect.event.ContractEventBase.Trait C} :
+            Set := {
           emit_event
             `{H : State.Trait}
             {E: Set}
@@ -711,7 +717,13 @@ End StaticEnv.
 Module event.
   Module emit.
     Module EmitEvent.
-      Class Trait (Self : Set) {C : Set} : Set := {
+      Class Trait
+          (Self
+            :
+            Set)
+            {C : Set}
+            `{ink.reflect.event.ContractEventBase.Trait C} :
+          Set := {
         emit_event
           `{H : State.Trait}
           {E: Set}
@@ -776,7 +788,9 @@ End event.
 
 Module emit.
   Module EmitEvent.
-    Class Trait (Self : Set) {C : Set} : Set := {
+    Class Trait
+        (Self : Set) {C : Set} `{ink.reflect.event.ContractEventBase.Trait C} :
+        Set := {
       emit_event
         `{H : State.Trait}
         {E: Set}
@@ -793,7 +807,9 @@ Module emit.
 End emit.
 
 Module EmitEvent.
-  Class Trait (Self : Set) {C : Set} : Set := {
+  Class Trait
+      (Self : Set) {C : Set} `{ink.reflect.event.ContractEventBase.Trait C} :
+      Set := {
     emit_event
       `{H : State.Trait}
       {E: Set}
@@ -2728,7 +2744,9 @@ End OutputSealed.
 
 Module contract_ref.
   Module ToAccountId.
-    Class Trait (Self : Set) {T : Set} : Set := {
+    Class Trait
+        (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+        Set := {
       to_account_id
         `{H : State.Trait}
         :
@@ -2743,7 +2761,9 @@ Module contract_ref.
 End contract_ref.
 
 Module ToAccountId.
-  Class Trait (Self : Set) {T : Set} : Set := {
+  Class Trait
+      (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+      Set := {
     to_account_id
       `{H : State.Trait}
       :

@@ -247,6 +247,7 @@ type TraitBound<'a> = (Doc<'a>, Vec<Doc<'a>>);
 pub(crate) fn trait_module<'a, U>(
     name: U,
     ty_params: &Vec<(U, Option<Doc>)>,
+    predicates: &Vec<Doc<'a>>,
     types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
     items: Vec<Doc<'a>>,
     instances: Vec<Doc<'a>>,
@@ -259,7 +260,7 @@ where
         group([
             locally_unset_primitive_projections(
                 items.is_empty(),
-                trait_typeclass(ty_params, types_with_bounds, items),
+                trait_typeclass(ty_params, predicates, types_with_bounds, items),
             ),
             if instances.is_empty() {
                 nil()
@@ -275,6 +276,7 @@ where
 /// to a trait with the given type parameters and bounds
 pub(crate) fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
+    predicates: &Vec<Doc<'a>>,
     types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
     items: I,
 ) -> Doc<'a>
@@ -285,7 +287,7 @@ where
 {
     group([
         nest([
-            new_trait_typeclass_header(ty_params, types_with_bounds),
+            new_trait_typeclass_header(ty_params, predicates, types_with_bounds),
             new_typeclass_body(items),
         ]),
         hardline(),
@@ -297,6 +299,7 @@ where
 /// to a trait with the given type parameters and bounds
 pub(crate) fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
+    predicates: &Vec<Doc<'a>>,
     types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
 ) -> Doc<'a>
 where
@@ -335,6 +338,11 @@ where
                         text("}"),
                     ]),
                 ])
+            },
+            if predicates.is_empty() {
+                nil()
+            } else {
+                concat([line(), concat(predicates.clone())])
             },
         ]),
         intersperse(
