@@ -9,9 +9,8 @@ use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind,
-    QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
-    ImplItemRef, ItemId,
+    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, ImplItemRef, Item, ItemId,
+    ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
@@ -147,7 +146,6 @@ enum TopLevelItem {
     },
     Error(String),
 }
-
 
 /// The actual value of the type parameter of the trait's generic parameter
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
