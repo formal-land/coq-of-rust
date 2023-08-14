@@ -5,55 +5,6 @@ Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.
 
-Module arithmetic.
-  Module BaseArithmetic.
-    Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
-    }.
-    Global Set Primitive Projections.
-  End BaseArithmetic.
-  
-  Module AtLeast32Bit.
-    Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
-    }.
-    Global Set Primitive Projections.
-  End AtLeast32Bit.
-  
-  Module AtLeast32BitUnsigned.
-    Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
-    }.
-    Global Set Primitive Projections.
-  End AtLeast32BitUnsigned.
-  
-  Module Saturating.
-    Class Trait (Self : Set) : Set := {
-      saturating_add `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_sub `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_mul `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_pow `{H : State.Trait} : Self -> usize -> (M (H := H) Self);
-    }.
-    
-    Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_add" := {
-      Notation.dot := @saturating_add;
-    }.
-    Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_sub" := {
-      Notation.dot := @saturating_sub;
-    }.
-    Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_mul" := {
-      Notation.dot := @saturating_mul;
-    }.
-    Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_pow" := {
-      Notation.dot := @saturating_pow;
-    }.
-  End Saturating.
-End arithmetic.
-
 Module types.
   Module FromLittleEndian.
     Class Trait
@@ -414,481 +365,6 @@ Definition Timestamp : Set := u64.
 Definition Gas : Set := u64.
 
 Definition BlockNumber : Set := u32.
-
-Module topics.
-  Module TopicsBuilderBackend.
-    Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
-      Output := Output;
-      expect `{H : State.Trait} : (mut_ref Self) -> usize -> (M (H := H) unit);
-      push_topic
-        `{H : State.Trait}
-        {T: Set}
-        `{parity_scale_codec.codec.Encode.Trait T}
-        :
-        (mut_ref Self) -> (ref T) -> (M (H := H) unit);
-      output `{H : State.Trait} : Self -> (M (H := H) Output);
-    }.
-    
-    Global Instance
-        Method_Output
-        `{H : State.Trait}
-        {Output}
-        `(Trait
-        (Output := Output))
-      : Notation.DoubleColonType Self "Output" := {
-      Notation.double_colon_type := Output;
-    }.
-    Global Instance Method_expect `{H : State.Trait} `(Trait)
-      : Notation.Dot "expect" := {
-      Notation.dot := @expect;
-    }.
-    Global Instance Method_push_topic `{H : State.Trait} `(Trait)
-      : Notation.Dot "push_topic" := {
-      Notation.dot := @push_topic;
-    }.
-    Global Instance Method_output `{H : State.Trait} `(Trait)
-      : Notation.Dot "output" := {
-      Notation.dot := @output;
-    }.
-  End TopicsBuilderBackend.
-  
-  Module TopicsBuilder.
-    Section TopicsBuilder.
-      Context {S E B : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        backend : B;
-        state : core.marker.PhantomData ((S * E));
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_backend : Notation.Dot "backend" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_state : Notation.Dot "state" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
-    End TopicsBuilder.
-  End TopicsBuilder.
-  Definition TopicsBuilder := @TopicsBuilder.t.
-  
-  Module state.
-    Module Uninit.
-      Inductive t : Set :=
-      .
-    End Uninit.
-    Definition Uninit := Uninit.t.
-    
-    Module HasRemainingTopics.
-      Inductive t : Set :=
-      .
-    End HasRemainingTopics.
-    Definition HasRemainingTopics := HasRemainingTopics.t.
-    
-    Module NoRemainingTopics.
-      Inductive t : Set :=
-      .
-    End NoRemainingTopics.
-    Definition NoRemainingTopics := NoRemainingTopics.t.
-  End state.
-  
-  Module SomeRemainingTopics.
-    Class Trait (Self : Set) {Next : Set} : Set := {
-      Next := Next;
-    }.
-    
-    Global Instance
-        Method_Next
-        `{H : State.Trait}
-        {Next}
-        `(Trait
-        (Next := Next))
-      : Notation.DoubleColonType Self "Next" := {
-      Notation.double_colon_type := Next;
-    }.
-  End SomeRemainingTopics.
-  
-  Module EventTopicsAmount.
-    Class Trait (Self : Set) : Set := {
-      AMOUNT `{H : State.Trait} : usize;
-    }.
-    
-    Global Instance Method_AMOUNT `{H : State.Trait} `(Trait)
-      : Notation.Dot "AMOUNT" := {
-      Notation.dot := @AMOUNT;
-    }.
-  End EventTopicsAmount.
-  
-  Module Topics.
-    Class Trait
-        (Self : Set)
-        {RemainingTopics : Set}
-        `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} :
-        Set := {
-      RemainingTopics := RemainingTopics;
-      topics
-        `{H : State.Trait}
-        {E B: Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.topics.TopicsBuilderBackend.Trait E B}
-        :
-        (ref Self) ->
-        (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-        (M (H := H) ink_env.topics.TopicsBuilderBackend.Output);
-    }.
-    
-    Global Instance
-        Method_RemainingTopics
-        `{H : State.Trait}
-        {RemainingTopics}
-        `(Trait
-        (RemainingTopics := RemainingTopics))
-      : Notation.DoubleColonType Self "RemainingTopics" := {
-      Notation.double_colon_type := RemainingTopics;
-    }.
-    Global Instance Method_topics `{H : State.Trait} `(Trait)
-      : Notation.Dot "topics" := {
-      Notation.dot := @topics;
-    }.
-  End Topics.
-  
-  Module PrefixedValue.
-    Section PrefixedValue.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        prefix : ref (Slice u8);
-        value : ref T;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_prefix : Notation.Dot "prefix" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_value : Notation.Dot "value" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
-    End PrefixedValue.
-  End PrefixedValue.
-  Definition PrefixedValue := @PrefixedValue.t.
-End topics.
-
-Module engine.
-  Module OnInstance.
-    Class Trait (Self : Set) : Set := {
-      on_instance
-        `{H : State.Trait}
-        {F R: Set}
-        `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
-        :
-        F -> (M (H := H) R);
-    }.
-    
-    Global Instance Method_on_instance `{H : State.Trait} `(Trait)
-      : Notation.Dot "on_instance" := {
-      Notation.dot := @on_instance;
-    }.
-  End OnInstance.
-  
-  Module off_chain.
-    Module call_data.
-      Module CallData.
-        Unset Primitive Projections.
-        Record t : Set := {
-          bytes : alloc.vec.Vec u8;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_bytes : Notation.Dot "bytes" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End CallData.
-      Definition CallData := @CallData.t.
-    End call_data.
-    
-    Module impls.
-      Module TopicsBuilder.
-        Unset Primitive Projections.
-        Record t : Set := {
-          topics : alloc.vec.Vec (alloc.vec.Vec u8);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_topics : Notation.Dot "topics" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End TopicsBuilder.
-      Definition TopicsBuilder := @TopicsBuilder.t.
-    End impls.
-    
-    Module test_api.
-      Module EmittedEvent.
-        Unset Primitive Projections.
-        Record t : Set := {
-          topics : alloc.vec.Vec (alloc.vec.Vec u8);
-          data : alloc.vec.Vec u8;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_topics : Notation.Dot "topics" := {
-          Notation.dot '(Build_t x0 _) := x0;
-        }.
-        Global Instance Get_data : Notation.Dot "data" := {
-          Notation.dot '(Build_t _ x1) := x1;
-        }.
-      End EmittedEvent.
-      Definition EmittedEvent := @EmittedEvent.t.
-      
-      Parameter set_account_balance : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-          T::type["Balance"] ->
-          M (H := H) unit.
-      
-      Parameter get_account_balance : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-          M (H := H) (ink_env.error.Result T::type["Balance"]).
-      
-      Parameter register_chain_extension : forall `{H : State.Trait},
-          forall
-          {E : Set},
-          forall `{ink_engine.chain_extension.ChainExtension.Trait E}, E ->
-          M (H := H) unit.
-      
-      Parameter recorded_debug_messages : forall `{H : State.Trait},
-          M (H := H) ink_engine.test_api.RecordedDebugMessages.
-      
-      Parameter set_clear_storage_disabled : forall `{H : State.Trait},
-          bool ->
-          M (H := H) unit.
-      
-      Parameter advance_block : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
-      
-      Parameter set_caller : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            T::type["AccountId"] ->
-          M (H := H) unit.
-      
-      Parameter set_callee : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            T::type["AccountId"] ->
-          M (H := H) unit.
-      
-      Parameter set_contract : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            T::type["AccountId"] ->
-          M (H := H) unit.
-      
-      Parameter is_contract : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            T::type["AccountId"] ->
-          M (H := H) bool.
-      
-      Parameter callee : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, M (H := H)
-            T::type["AccountId"].
-      
-      Parameter get_contract_storage_rw : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, ref
-            T::type["AccountId"] ->
-          M (H := H) (usize * usize).
-      
-      Parameter set_value_transferred : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-          M (H := H) unit.
-      
-      Parameter transfer_in : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-          M (H := H) unit.
-      
-      Parameter count_used_storage_cells : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, ref
-            T::type["AccountId"] ->
-          M (H := H) (ink_env.error.Result usize).
-      
-      Parameter set_block_timestamp : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["Timestamp"] ->
-          M (H := H) unit.
-      
-      Parameter set_block_number : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
-          M (H := H) unit.
-      
-      Parameter run_test : forall `{H : State.Trait},
-          forall
-          {T : Set} {F : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.ops.function.FnOnce.Trait
-            ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
-            F},
-            forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            F ->
-          M (H := H) (ink_env.error.Result unit).
-      
-      Parameter default_accounts : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
-      
-      Module DefaultAccounts.
-        Section DefaultAccounts.
-          Context {T : Set}.
-          Unset Primitive Projections.
-          Record t : Set := {
-            alice : T::type["AccountId"];
-            bob : T::type["AccountId"];
-            charlie : T::type["AccountId"];
-            django : T::type["AccountId"];
-            eve : T::type["AccountId"];
-            frank : T::type["AccountId"];
-          }.
-          Global Set Primitive Projections.
-          
-          Global Instance Get_alice : Notation.Dot "alice" := {
-            Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
-          }.
-          Global Instance Get_bob : Notation.Dot "bob" := {
-            Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
-          }.
-          Global Instance Get_charlie : Notation.Dot "charlie" := {
-            Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
-          }.
-          Global Instance Get_django : Notation.Dot "django" := {
-            Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
-          }.
-          Global Instance Get_eve : Notation.Dot "eve" := {
-            Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
-          }.
-          Global Instance Get_frank : Notation.Dot "frank" := {
-            Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
-          }.
-        End DefaultAccounts.
-      End DefaultAccounts.
-      Definition DefaultAccounts := @DefaultAccounts.t.
-      
-      Parameter recorded_events : forall `{H : State.Trait},
-          M (H := H) OpaqueDef.
-      
-      Parameter assert_contract_termination : forall `{H : State.Trait},
-          forall
-          {T : Set} {F : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.ops.function.FnMut.Trait
-            unit
-            F},
-            forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
-            `{core.fmt.Debug.Trait
-            ink_env.types.Environment.AccountId},
-            forall
-            `{core.fmt.Debug.Trait
-            ink_env.types.Environment.Balance},
-            F ->
-          T::type["AccountId"] ->
-          T::type["Balance"] ->
-          M (H := H) unit.
-    End test_api.
-    
-    Module EnvInstance.
-      Unset Primitive Projections.
-      Record t : Set := {
-        engine : ink_engine.ext.Engine;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_engine : Notation.Dot "engine" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End EnvInstance.
-    Definition EnvInstance := @EnvInstance.t.
-    
-    Module AccountError.
-      Inductive t : Set :=
-      | Decoding (_ : parity_scale_codec.error.Error)
-      | UnexpectedUserAccount
-      | NoAccountForId (_ : alloc.vec.Vec u8).
-    End AccountError.
-    Definition AccountError := AccountError.t.
-    
-    Module OffChainError.
-      Inductive t : Set :=
-      | Account (_ : ink_env.engine.off_chain.AccountError)
-      | UninitializedBlocks
-      | UninitializedExecutionContext
-      | UnregisteredChainExtension.
-    End OffChainError.
-    Definition OffChainError := OffChainError.t.
-  End off_chain.
-End engine.
-
-Module error.
-  Module Error.
-    Inductive t : Set :=
-    | Decode (_ : parity_scale_codec.error.Error)
-    | OffChain (_ : ink_env.engine.off_chain.OffChainError)
-    | CalleeTrapped
-    | CalleeReverted
-    | KeyNotFound
-    | _BelowSubsistenceThreshold
-    | TransferFailed
-    | _EndowmentTooLow
-    | CodeNotFound
-    | NotCallable
-    | Unknown
-    | LoggingDisabled
-    | CallRuntimeFailed
-    | EcdsaRecoveryFailed.
-  End Error.
-  Definition Error := Error.t.
-  
-  Definition Result (T : Set) : Set := core.result.Result T ink_env.error.Error.
-End error.
 
 Module api.
   Parameter caller : forall `{H : State.Trait},
@@ -1361,16 +837,6 @@ Parameter is_contract : forall `{H : State.Trait},
     forall `{ink_env.types.Environment.Trait E}, ref E::type["AccountId"] ->
     M (H := H) bool.
 
-Parameter is_contract : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-      (list u8)
-      ink_env.types.Environment.AccountId},
-      T::type["AccountId"] ->
-    M (H := H) bool.
-
 Parameter code_hash : forall `{H : State.Trait},
     forall
     {E : Set},
@@ -1406,6 +872,55 @@ Parameter call_runtime : forall `{H : State.Trait},
       Call},
       ref Call ->
     M (H := H) (ink_env.error.Result unit).
+
+Module arithmetic.
+  Module BaseArithmetic.
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Set := {
+    }.
+    Global Set Primitive Projections.
+  End BaseArithmetic.
+  
+  Module AtLeast32Bit.
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Set := {
+    }.
+    Global Set Primitive Projections.
+  End AtLeast32Bit.
+  
+  Module AtLeast32BitUnsigned.
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Set := {
+    }.
+    Global Set Primitive Projections.
+  End AtLeast32BitUnsigned.
+  
+  Module Saturating.
+    Class Trait (Self : Set) : Set := {
+      saturating_add `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_sub `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_mul `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_pow `{H : State.Trait} : Self -> usize -> (M (H := H) Self);
+    }.
+    
+    Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_add" := {
+      Notation.dot := @saturating_add;
+    }.
+    Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_sub" := {
+      Notation.dot := @saturating_sub;
+    }.
+    Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_mul" := {
+      Notation.dot := @saturating_mul;
+    }.
+    Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_pow" := {
+      Notation.dot := @saturating_pow;
+    }.
+  End Saturating.
+End arithmetic.
 
 Module BaseArithmetic.
   Unset Primitive Projections.
@@ -3404,50 +2919,6 @@ Module state.
   Definition Salt := Salt.t.
 End state.
 
-Module state.
-  Module IgnoreErrorCode.
-    Inductive t : Set :=
-    .
-  End IgnoreErrorCode.
-  Definition IgnoreErrorCode := IgnoreErrorCode.t.
-  
-  Module HandleErrorCode.
-    Section HandleErrorCode.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        error_code : core.marker.PhantomData (T);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_error_code : Notation.Dot "error_code" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End HandleErrorCode.
-  End HandleErrorCode.
-  Definition HandleErrorCode := @HandleErrorCode.t.
-End state.
-
-Module state.
-  Module Uninit.
-    Inductive t : Set :=
-    .
-  End Uninit.
-  Definition Uninit := Uninit.t.
-  
-  Module HasRemainingTopics.
-    Inductive t : Set :=
-    .
-  End HasRemainingTopics.
-  Definition HasRemainingTopics := HasRemainingTopics.t.
-  
-  Module NoRemainingTopics.
-    Inductive t : Set :=
-    .
-  End NoRemainingTopics.
-  Definition NoRemainingTopics := NoRemainingTopics.t.
-End state.
-
 Module Salt.
   Inductive t : Set :=
   .
@@ -3900,6 +3371,30 @@ Module ChainExtensionMethod.
 End ChainExtensionMethod.
 Definition ChainExtensionMethod := @ChainExtensionMethod.t.
 
+Module state.
+  Module IgnoreErrorCode.
+    Inductive t : Set :=
+    .
+  End IgnoreErrorCode.
+  Definition IgnoreErrorCode := IgnoreErrorCode.t.
+  
+  Module HandleErrorCode.
+    Section HandleErrorCode.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        error_code : core.marker.PhantomData (T);
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_error_code : Notation.Dot "error_code" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End HandleErrorCode.
+  End HandleErrorCode.
+  Definition HandleErrorCode := @HandleErrorCode.t.
+End state.
+
 Module IgnoreErrorCode.
   Inductive t : Set :=
   .
@@ -3945,15 +3440,6 @@ Module private.
     }.
     Global Set Primitive Projections.
   End IsResultTypeSealed.
-End private.
-
-Module private.
-  Module Sealed.
-    Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
-    }.
-    Global Set Primitive Projections.
-  End Sealed.
 End private.
 
 Module IsResultTypeSealed.
@@ -4026,6 +3512,300 @@ Module ContractReference.
     Notation.double_colon_type := Type_;
   }.
 End ContractReference.
+
+Module engine.
+  Module OnInstance.
+    Class Trait (Self : Set) : Set := {
+      on_instance
+        `{H : State.Trait}
+        {F R: Set}
+        `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+        :
+        F -> (M (H := H) R);
+    }.
+    
+    Global Instance Method_on_instance `{H : State.Trait} `(Trait)
+      : Notation.Dot "on_instance" := {
+      Notation.dot := @on_instance;
+    }.
+  End OnInstance.
+  
+  Module off_chain.
+    Module call_data.
+      Module CallData.
+        Unset Primitive Projections.
+        Record t : Set := {
+          bytes : alloc.vec.Vec u8;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_bytes : Notation.Dot "bytes" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End CallData.
+      Definition CallData := @CallData.t.
+    End call_data.
+    
+    Module impls.
+      Module TopicsBuilder.
+        Unset Primitive Projections.
+        Record t : Set := {
+          topics : alloc.vec.Vec (alloc.vec.Vec u8);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_topics : Notation.Dot "topics" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End TopicsBuilder.
+      Definition TopicsBuilder := @TopicsBuilder.t.
+    End impls.
+    
+    Module test_api.
+      Module EmittedEvent.
+        Unset Primitive Projections.
+        Record t : Set := {
+          topics : alloc.vec.Vec (alloc.vec.Vec u8);
+          data : alloc.vec.Vec u8;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_topics : Notation.Dot "topics" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_data : Notation.Dot "data" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End EmittedEvent.
+      Definition EmittedEvent := @EmittedEvent.t.
+      
+      Parameter set_account_balance : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
+          T::type["Balance"] ->
+          M (H := H) unit.
+      
+      Parameter get_account_balance : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
+          M (H := H) (ink_env.error.Result T::type["Balance"]).
+      
+      Parameter register_chain_extension : forall `{H : State.Trait},
+          forall
+          {E : Set},
+          forall `{ink_engine.chain_extension.ChainExtension.Trait E}, E ->
+          M (H := H) unit.
+      
+      Parameter recorded_debug_messages : forall `{H : State.Trait},
+          M (H := H) ink_engine.test_api.RecordedDebugMessages.
+      
+      Parameter set_clear_storage_disabled : forall `{H : State.Trait},
+          bool ->
+          M (H := H) unit.
+      
+      Parameter advance_block : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
+      
+      Parameter set_caller : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            T::type["AccountId"] ->
+          M (H := H) unit.
+      
+      Parameter set_callee : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            T::type["AccountId"] ->
+          M (H := H) unit.
+      
+      Parameter set_contract : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            T::type["AccountId"] ->
+          M (H := H) unit.
+      
+      Parameter is_contract : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            T::type["AccountId"] ->
+          M (H := H) bool.
+      
+      Parameter callee : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, M (H := H)
+            T::type["AccountId"].
+      
+      Parameter get_contract_storage_rw : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, ref
+            T::type["AccountId"] ->
+          M (H := H) (usize * usize).
+      
+      Parameter set_value_transferred : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
+          M (H := H) unit.
+      
+      Parameter transfer_in : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
+          M (H := H) unit.
+      
+      Parameter count_used_storage_cells : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, ref
+            T::type["AccountId"] ->
+          M (H := H) (ink_env.error.Result usize).
+      
+      Parameter set_block_timestamp : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, T::type["Timestamp"] ->
+          M (H := H) unit.
+      
+      Parameter set_block_number : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
+          M (H := H) unit.
+      
+      Parameter run_test : forall `{H : State.Trait},
+          forall
+          {T : Set} {F : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.ops.function.FnOnce.Trait
+            ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+            F},
+            forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            F ->
+          M (H := H) (ink_env.error.Result unit).
+      
+      Parameter default_accounts : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+      
+      Module DefaultAccounts.
+        Section DefaultAccounts.
+          Context {T : Set}.
+          Unset Primitive Projections.
+          Record t : Set := {
+            alice : T::type["AccountId"];
+            bob : T::type["AccountId"];
+            charlie : T::type["AccountId"];
+            django : T::type["AccountId"];
+            eve : T::type["AccountId"];
+            frank : T::type["AccountId"];
+          }.
+          Global Set Primitive Projections.
+          
+          Global Instance Get_alice : Notation.Dot "alice" := {
+            Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
+          }.
+          Global Instance Get_bob : Notation.Dot "bob" := {
+            Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+          }.
+          Global Instance Get_charlie : Notation.Dot "charlie" := {
+            Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
+          }.
+          Global Instance Get_django : Notation.Dot "django" := {
+            Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+          }.
+          Global Instance Get_eve : Notation.Dot "eve" := {
+            Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
+          }.
+          Global Instance Get_frank : Notation.Dot "frank" := {
+            Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+          }.
+        End DefaultAccounts.
+      End DefaultAccounts.
+      Definition DefaultAccounts := @DefaultAccounts.t.
+      
+      Parameter recorded_events : forall `{H : State.Trait},
+          M (H := H) OpaqueDef.
+      
+      Parameter assert_contract_termination : forall `{H : State.Trait},
+          forall
+          {T : Set} {F : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.ops.function.FnMut.Trait
+            unit
+            F},
+            forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
+            `{core.fmt.Debug.Trait
+            ink_env.types.Environment.AccountId},
+            forall
+            `{core.fmt.Debug.Trait
+            ink_env.types.Environment.Balance},
+            F ->
+          T::type["AccountId"] ->
+          T::type["Balance"] ->
+          M (H := H) unit.
+    End test_api.
+    
+    Module EnvInstance.
+      Unset Primitive Projections.
+      Record t : Set := {
+        engine : ink_engine.ext.Engine;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_engine : Notation.Dot "engine" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End EnvInstance.
+    Definition EnvInstance := @EnvInstance.t.
+    
+    Module OffChainError.
+      Inductive t : Set :=
+      | Account (_ : ink_env.engine.off_chain.AccountError)
+      | UninitializedBlocks
+      | UninitializedExecutionContext
+      | UnregisteredChainExtension.
+    End OffChainError.
+    Definition OffChainError := OffChainError.t.
+    
+    Module AccountError.
+      Inductive t : Set :=
+      | Decoding (_ : parity_scale_codec.error.Error)
+      | UnexpectedUserAccount
+      | NoAccountForId (_ : alloc.vec.Vec u8).
+    End AccountError.
+    Definition AccountError := AccountError.t.
+  End off_chain.
+End engine.
 
 Module OnInstance.
   Class Trait (Self : Set) : Set := {
@@ -4369,26 +4149,6 @@ Module TopicsBuilder.
 End TopicsBuilder.
 Definition TopicsBuilder := @TopicsBuilder.t.
 
-Module TopicsBuilder.
-  Section TopicsBuilder.
-    Context {S E B : Set}.
-    Unset Primitive Projections.
-    Record t : Set := {
-      backend : B;
-      state : core.marker.PhantomData ((S * E));
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_backend : Notation.Dot "backend" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_state : Notation.Dot "state" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
-  End TopicsBuilder.
-End TopicsBuilder.
-Definition TopicsBuilder := @TopicsBuilder.t.
-
 Module test_api.
   Module EmittedEvent.
     Unset Primitive Projections.
@@ -4675,6 +4435,16 @@ Parameter set_contract : forall `{H : State.Trait},
       T::type["AccountId"] ->
     M (H := H) unit.
 
+Parameter is_contract : forall `{H : State.Trait},
+    forall
+    {T : Set},
+    forall `{ink_env.types.Environment.Trait T}, forall
+      `{core.convert.From.Trait
+      (list u8)
+      ink_env.types.Environment.AccountId},
+      T::type["AccountId"] ->
+    M (H := H) bool.
+
 Parameter callee : forall `{H : State.Trait},
     forall
     {T : Set},
@@ -4822,6 +4592,29 @@ Module AccountError.
   | NoAccountForId (_ : alloc.vec.Vec u8).
 End AccountError.
 Definition AccountError := AccountError.t.
+
+Module error.
+  Module Error.
+    Inductive t : Set :=
+    | Decode (_ : parity_scale_codec.error.Error)
+    | OffChain (_ : ink_env.engine.off_chain.OffChainError)
+    | CalleeTrapped
+    | CalleeReverted
+    | KeyNotFound
+    | _BelowSubsistenceThreshold
+    | TransferFailed
+    | _EndowmentTooLow
+    | CodeNotFound
+    | NotCallable
+    | Unknown
+    | LoggingDisabled
+    | CallRuntimeFailed
+    | EcdsaRecoveryFailed.
+  End Error.
+  Definition Error := Error.t.
+  
+  Definition Result (T : Set) : Set := core.result.Result T ink_env.error.Error.
+End error.
 
 Module Error.
   Inductive t : Set :=
@@ -4975,12 +4768,179 @@ Module Blake2x128.
 End Blake2x128.
 Definition Blake2x128 := Blake2x128.t.
 
+Module private.
+  Module Sealed.
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Set := {
+    }.
+    Global Set Primitive Projections.
+  End Sealed.
+End private.
+
 Module Sealed.
   Unset Primitive Projections.
   Class Trait (Self : Set) : Set := {
   }.
   Global Set Primitive Projections.
 End Sealed.
+
+Module topics.
+  Module TopicsBuilderBackend.
+    Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
+      Output := Output;
+      expect `{H : State.Trait} : (mut_ref Self) -> usize -> (M (H := H) unit);
+      push_topic
+        `{H : State.Trait}
+        {T: Set}
+        `{parity_scale_codec.codec.Encode.Trait T}
+        :
+        (mut_ref Self) -> (ref T) -> (M (H := H) unit);
+      output `{H : State.Trait} : Self -> (M (H := H) Output);
+    }.
+    
+    Global Instance
+        Method_Output
+        `{H : State.Trait}
+        {Output}
+        `(Trait
+        (Output := Output))
+      : Notation.DoubleColonType Self "Output" := {
+      Notation.double_colon_type := Output;
+    }.
+    Global Instance Method_expect `{H : State.Trait} `(Trait)
+      : Notation.Dot "expect" := {
+      Notation.dot := @expect;
+    }.
+    Global Instance Method_push_topic `{H : State.Trait} `(Trait)
+      : Notation.Dot "push_topic" := {
+      Notation.dot := @push_topic;
+    }.
+    Global Instance Method_output `{H : State.Trait} `(Trait)
+      : Notation.Dot "output" := {
+      Notation.dot := @output;
+    }.
+  End TopicsBuilderBackend.
+  
+  Module TopicsBuilder.
+    Section TopicsBuilder.
+      Context {S E B : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        backend : B;
+        state : core.marker.PhantomData ((S * E));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_backend : Notation.Dot "backend" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_state : Notation.Dot "state" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End TopicsBuilder.
+  End TopicsBuilder.
+  Definition TopicsBuilder := @TopicsBuilder.t.
+  
+  Module state.
+    Module Uninit.
+      Inductive t : Set :=
+      .
+    End Uninit.
+    Definition Uninit := Uninit.t.
+    
+    Module HasRemainingTopics.
+      Inductive t : Set :=
+      .
+    End HasRemainingTopics.
+    Definition HasRemainingTopics := HasRemainingTopics.t.
+    
+    Module NoRemainingTopics.
+      Inductive t : Set :=
+      .
+    End NoRemainingTopics.
+    Definition NoRemainingTopics := NoRemainingTopics.t.
+  End state.
+  
+  Module SomeRemainingTopics.
+    Class Trait (Self : Set) {Next : Set} : Set := {
+      Next := Next;
+    }.
+    
+    Global Instance
+        Method_Next
+        `{H : State.Trait}
+        {Next}
+        `(Trait
+        (Next := Next))
+      : Notation.DoubleColonType Self "Next" := {
+      Notation.double_colon_type := Next;
+    }.
+  End SomeRemainingTopics.
+  
+  Module EventTopicsAmount.
+    Class Trait (Self : Set) : Set := {
+      AMOUNT `{H : State.Trait} : usize;
+    }.
+    
+    Global Instance Method_AMOUNT `{H : State.Trait} `(Trait)
+      : Notation.Dot "AMOUNT" := {
+      Notation.dot := @AMOUNT;
+    }.
+  End EventTopicsAmount.
+  
+  Module Topics.
+    Class Trait
+        (Self : Set)
+        {RemainingTopics : Set}
+        `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} :
+        Set := {
+      RemainingTopics := RemainingTopics;
+      topics
+        `{H : State.Trait}
+        {E B: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.TopicsBuilderBackend.Trait E B}
+        :
+        (ref Self) ->
+        (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
+        (M (H := H) ink_env.topics.TopicsBuilderBackend.Output);
+    }.
+    
+    Global Instance
+        Method_RemainingTopics
+        `{H : State.Trait}
+        {RemainingTopics}
+        `(Trait
+        (RemainingTopics := RemainingTopics))
+      : Notation.DoubleColonType Self "RemainingTopics" := {
+      Notation.double_colon_type := RemainingTopics;
+    }.
+    Global Instance Method_topics `{H : State.Trait} `(Trait)
+      : Notation.Dot "topics" := {
+      Notation.dot := @topics;
+    }.
+  End Topics.
+  
+  Module PrefixedValue.
+    Section PrefixedValue.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        prefix : ref (Slice u8);
+        value : ref T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_prefix : Notation.Dot "prefix" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End PrefixedValue.
+  End PrefixedValue.
+  Definition PrefixedValue := @PrefixedValue.t.
+End topics.
 
 Module TopicsBuilderBackend.
   Class Trait (Self : Set) {E : Set} {Output : Set} : Set := {
@@ -5017,6 +4977,46 @@ Module TopicsBuilderBackend.
     Notation.dot := @output;
   }.
 End TopicsBuilderBackend.
+
+Module TopicsBuilder.
+  Section TopicsBuilder.
+    Context {S E B : Set}.
+    Unset Primitive Projections.
+    Record t : Set := {
+      backend : B;
+      state : core.marker.PhantomData ((S * E));
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_backend : Notation.Dot "backend" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_state : Notation.Dot "state" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End TopicsBuilder.
+End TopicsBuilder.
+Definition TopicsBuilder := @TopicsBuilder.t.
+
+Module state.
+  Module Uninit.
+    Inductive t : Set :=
+    .
+  End Uninit.
+  Definition Uninit := Uninit.t.
+  
+  Module HasRemainingTopics.
+    Inductive t : Set :=
+    .
+  End HasRemainingTopics.
+  Definition HasRemainingTopics := HasRemainingTopics.t.
+  
+  Module NoRemainingTopics.
+    Inductive t : Set :=
+    .
+  End NoRemainingTopics.
+  Definition NoRemainingTopics := NoRemainingTopics.t.
+End state.
 
 Module Uninit.
   Inductive t : Set :=
