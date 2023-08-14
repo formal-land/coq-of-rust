@@ -640,7 +640,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Set := {
     conditional_select
       `{H : State.Trait}
       :
@@ -2023,7 +2023,13 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{subtle.ConstantTimeEq.Trait Self}
+        `{subtle.ConstantTimeGreater.Trait Self} :
+      Set := {
   }.
   
   Global Instance Method_ct_lt `{H : State.Trait} `(Trait)

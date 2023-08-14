@@ -34,7 +34,7 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Set := {
     conditional_select
       `{H : State.Trait}
       :
@@ -112,7 +112,13 @@ Module ConstantTimeGreater.
 End ConstantTimeGreater.
 
 Module ConstantTimeLess.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self
+        :
+        Set)
+        `{subtle.ConstantTimeEq.Trait Self}
+        `{subtle.ConstantTimeGreater.Trait Self} :
+      Set := {
   }.
   
   Global Instance Method_ct_lt `{H : State.Trait} `(Trait)
