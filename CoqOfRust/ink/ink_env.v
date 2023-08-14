@@ -815,7 +815,7 @@ Module engine.
             (list u8)
             ink_env.types.Environment.AccountId},
             M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
-      *)
+      
       Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
       
       Parameter assert_contract_termination : forall `{H : State.Trait},
@@ -834,9 +834,9 @@ Module engine.
             F ->
           T::type["AccountId"] ->
           T::type["Balance"] ->
-          M (H := H) unit.
+          M (H := H) unit.*)
     End test_api.
-    
+    (*
     Module EnvInstance.
       Unset Primitive Projections.
       Record t : Set := {
@@ -849,7 +849,7 @@ Module engine.
       }.
     End EnvInstance.
     Definition EnvInstance := @EnvInstance.t.
-    
+    *)
     Module AccountError.
       Inductive t : Set :=
       | Decoding (_ : parity_scale_codec.error.Error)
