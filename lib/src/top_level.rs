@@ -2270,7 +2270,7 @@ impl TopLevelItem {
                                 .collect(),
                         )
                     })
-                    .collect(),
+                    .collect::<Vec<_>>(),
                 &body
                     .iter()
                     .filter_map(|(item_name, item)| match item {

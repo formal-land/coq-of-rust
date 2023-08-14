@@ -248,7 +248,7 @@ pub(crate) fn trait_module<'a, U>(
     name: U,
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &Vec<TraitBound<'a>>,
+    bounds: &[TraitBound<'a>],
     types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
     items: Vec<Doc<'a>>,
     instances: Vec<Doc<'a>>,
@@ -278,7 +278,7 @@ where
 pub(crate) fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &Vec<TraitBound<'a>>,
+    bounds: &[TraitBound<'a>],
     types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
     items: I,
 ) -> Doc<'a>
@@ -302,7 +302,7 @@ where
 pub(crate) fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &Vec<TraitBound<'a>>,
+    bounds: &[TraitBound<'a>],
     types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
 ) -> Doc<'a>
 where
@@ -319,31 +319,24 @@ where
             line(),
             text("Set"),
             text(")"),
-            if bounds.is_empty() {
-                nil()
-            } else {
+            concat([concat(bounds.iter().map(|(trait_bound, ty_params)| {
                 concat([
                     line(),
-                    concat(bounds.iter().map(|(trait_bound, ty_params)| {
-                        concat([
-                            line(),
-                            nest([
-                                text("`{"),
-                                trait_bound.clone(),
-                                text(".Trait"),
-                                line(),
-                                text("Self"),
-                                if ty_params.is_empty() {
-                                    nil()
-                                } else {
-                                    concat([line(), intersperse(ty_params.clone(), [line()])])
-                                },
-                                text("}"),
-                            ]),
-                        ])
-                    })),
+                    nest([
+                        text("`{"),
+                        trait_bound.clone(),
+                        text(".Trait"),
+                        line(),
+                        text("Self"),
+                        if ty_params.is_empty() {
+                            nil()
+                        } else {
+                            concat([line(), intersperse(ty_params.clone(), [line()])])
+                        },
+                        text("}"),
+                    ]),
                 ])
-            },
+            }))]),
             if ty_params.is_empty() {
                 nil()
             } else {
