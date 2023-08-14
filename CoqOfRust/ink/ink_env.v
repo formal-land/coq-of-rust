@@ -756,30 +756,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
           M (H := H) unit.
-      *)
-      Parameter run_test : forall `{H : State.Trait},
-          forall
-          {T : Set} {F : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.ops.function.FnOnce.Trait
-            ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
-            F},
-            forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            F ->
-          M (H := H) (ink_env.error.Result unit).
-      
-      Parameter default_accounts : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-            (list u8)
-            ink_env.types.Environment.AccountId},
-            M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
-      
+      *)(*
       Module DefaultAccounts.
         Section DefaultAccounts.
           Context {T : Set}.
@@ -816,6 +793,29 @@ Module engine.
       End DefaultAccounts.
       Definition DefaultAccounts := @DefaultAccounts.t.
       
+      Parameter run_test : forall `{H : State.Trait},
+          forall
+          {T : Set} {F : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.ops.function.FnOnce.Trait
+            ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+            F},
+            forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            F ->
+          M (H := H) (ink_env.error.Result unit).
+      
+      Parameter default_accounts : forall `{H : State.Trait},
+          forall
+          {T : Set},
+          forall `{ink_env.types.Environment.Trait T}, forall
+            `{core.convert.From.Trait
+            (list u8)
+            ink_env.types.Environment.AccountId},
+            M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+      *)
       Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
       
       Parameter assert_contract_termination : forall `{H : State.Trait},

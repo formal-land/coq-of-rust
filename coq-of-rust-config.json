@@ -487,6 +487,11 @@
       "top_level::engine::off_chain": [
         "AccountError",
         "OffChainError"
+      ],
+      "top_level::engine::off_chain::test_api": [
+        "DefaultAccounts",
+        "run_test",
+        "default_accounts"
       ]
     }
   }
