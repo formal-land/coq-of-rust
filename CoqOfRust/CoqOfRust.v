@@ -1268,6 +1268,13 @@ Global Instance IDebug11 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 : Set}
   Admitted.
 End Debug_Tuple_Instances.
 
+Module ToString_Instances.
+  Global Instance ToString_on_Display {Self : Set}
+    `{core.fmt.Display.Trait Self} :
+    ToString.Trait Self.
+  Admitted.
+End ToString_Instances.
+
 Module _crate.
   Module intrinsics.
     Parameter discriminant_value : forall {A : Set}, ref A -> u128.
