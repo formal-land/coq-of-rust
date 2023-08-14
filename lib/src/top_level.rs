@@ -501,14 +501,23 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
         ItemKind::Trait(_, _, generics, generic_bounds, items) => {
-            vec![compile_trait(
-                tcx,
-                env,
+            vec![TopLevelItem::Trait {
                 name,
-                generics,
-                generic_bounds,
-                items,
-            )]
+                ty_params: get_ty_params(env, generics),
+                predicates: get_where_predicates(env, generics),
+                bounds: compile_generic_bounds(tcx, env, generic_bounds),
+                body: items
+                    .iter()
+                    .map(|item| {
+                        let item = tcx.hir().trait_item(item.id);
+                        let ty_params = get_ty_params_names(env, item.generics);
+                        let where_predicates = get_where_predicates(env, item.generics);
+                        let body =
+                            compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
+                        (to_valid_coq_name(item.ident.name.to_string()), body)
+                    })
+                    .collect(),
+            }]
         }
         ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
@@ -692,33 +701,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 }
             }
         }
-    }
-}
-
-/// [compile_trait] is responsible for compiling traits in [compile_top_level_item]
-fn compile_trait(
-    tcx: &TyCtxt,
-    env: &mut Env,
-    name: String,
-    generics: &rustc_hir::Generics,
-    bounds: &GenericBounds,
-    items: &[rustc_hir::TraitItemRef],
-) -> TopLevelItem {
-    TopLevelItem::Trait {
-        name,
-        ty_params: get_ty_params(env, generics),
-        predicates: get_where_predicates(env, generics),
-        bounds: compile_generic_bounds(tcx, env, bounds),
-        body: items
-            .iter()
-            .map(|item| {
-                let item = tcx.hir().trait_item(item.id);
-                let ty_params = get_ty_params_names(env, item.generics);
-                let where_predicates = get_where_predicates(env, item.generics);
-                let body = compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
-                (to_valid_coq_name(item.ident.name.to_string()), body)
-            })
-            .collect(),
     }
 }
 
