@@ -47,9 +47,9 @@ pub(crate) fn get_configuration(configuration_file_path: &str) -> Configuration 
     Configuration::default()
 }
 
-pub(crate) fn config_get_reorder(env: &Env) -> Vec<String> {
+pub(crate) fn config_get_reorder(env: &Env, context: &str) -> Vec<String> {
     match env.configuration.reorder.get(&env.file) {
-        Some(contexts) => match contexts.get(&env.context) {
+        Some(contexts) => match contexts.get(context) {
             Some(identifiers) => identifiers.clone(),
             None => vec![],
         },

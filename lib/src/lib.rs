@@ -25,5 +25,6 @@ pub mod options;
 pub mod path;
 pub mod pattern;
 pub mod render;
+pub mod reorder;
 pub mod top_level;
 pub mod ty;
