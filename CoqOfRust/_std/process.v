@@ -1,7 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.core.option.
-Require Import CoqOfRust._std.vec.
+Require Import CoqOfRust.alloc.vec.
 
 (* ********STRUCTS******** *)
 (* 
@@ -100,8 +100,8 @@ pub struct Output {
 Module Output.
   Record t : Set := { 
     status : ExitStatus;
-    stdout : Vec u8 None;
-    stderr : Vec u8 None;
+    stdout : Vec u8;
+    stderr : Vec u8;
   }.
 End Output.
 Definition Output := Output.t.

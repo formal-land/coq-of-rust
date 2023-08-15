@@ -30,11 +30,13 @@ Module JoinHandle.
 End JoinHandle.
 Definition JoinHandle := JoinHandle.t.
 
-(* pub struct LocalKey<T: 'static> { /* private fields */ } *)
-Module LocalKey.
-  Parameter t : Set -> Set.
-End LocalKey.
-Definition LocalKey := LocalKey.t.
+Module local.
+  (* pub struct LocalKey<T: 'static> { /* private fields */ } *)
+  Module LocalKey.
+    Parameter t : Set -> Set.
+  End LocalKey.
+  Definition LocalKey := LocalKey.t.
+End local.
 
 (* pub struct Scope<'scope, 'env: 'scope> { /* private fields */ } *)
 Module Scope.

@@ -107,6 +107,9 @@ Module Allocator.
   }.
 End Allocator.
 
+Global Instance Allocator_for_Global : Allocator.Trait Global.
+Admitted.
+
 (* 
 pub unsafe trait GlobalAlloc {
     // Required methods

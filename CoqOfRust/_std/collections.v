@@ -1,6 +1,6 @@
 Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.alloc.
+Require Import CoqOfRust.core.alloc.
 Require Import CoqOfRust.core.clone.
 Require Import CoqOfRust.core.cmp.
 
@@ -536,7 +536,8 @@ Module btree_set.
   Definition Union := Union.t.
 End btree_set.
 
-Module hash_map.
+Module hash.
+Module map.
   (* ********STRUCTS******** *)
   (* 
   [?] DrainFilter
@@ -641,6 +642,7 @@ Module hash_map.
   End RandomState.
   Definition RandomState := RandomState.t.
 
+
   (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
   Module HashMap.
     Parameter t : Set -> Set -> Set -> Set.
@@ -736,8 +738,8 @@ Module hash_map.
     .
   End Entry.
   Definition Entry := Entry.t.
-  
-End hash_map.
+End map.
+End hash.
 
 Module hash_set.
   (* ********STRUCTS******** *)
@@ -782,7 +784,7 @@ Module hash_set.
     Parameter t : Set -> Set -> Set.
   End HashSet.
   Definition HashSet (T : Set) (S : option Set) : Set
-    := HashSet.t T (defaultType S hash_map.RandomState).
+    := HashSet.t T (defaultType S hash.map.RandomState).
 
   (* pub struct Intersection<'a, T: 'a, S: 'a> { /* private fields */ } *)
   Module Intersection.
@@ -813,7 +815,6 @@ Module hash_set.
     Parameter t : Set -> Set -> Set.
   End Union.
   Definition Union := Union.t.
-
 End hash_set.
 
 Module linked_list.
@@ -1031,7 +1032,7 @@ Definition BinaryHeap := BinaryHeap.t.
 
 (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
 Definition HashMap (K V : Set) (S : option Set) : Set :=
-  hash_map.HashMap K V S.
+  hash.map.HashMap K V S.
 
 (* pub struct HashSet<T, S = RandomState> { /* private fields */ } *)
 Definition HashSet (T : Set) (S : option Set) : Set :=

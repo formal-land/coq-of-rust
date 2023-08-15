@@ -232,7 +232,6 @@ ink/ink_e2e.v
 ink/ink_e2e_macro.v
 ink/ink_engine.v
 ink/ink_env.v
-ink/ink_macro.v
 # _std/error.v
 # _std/io.v
 _std/iter_type.v
