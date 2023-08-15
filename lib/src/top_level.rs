@@ -209,27 +209,19 @@ fn compile_fn_sig_and_body_id(
 fn check_if_is_test_main_function(tcx: &TyCtxt, body_id: &rustc_hir::BodyId) -> bool {
     let body = tcx.hir().body(*body_id);
     let expr = body.value;
-    match expr.kind {
-        rustc_hir::ExprKind::Block(block, _) => match block.expr {
-            Some(expr) => match expr.kind {
-                rustc_hir::ExprKind::Call(func, _) => match &func.kind {
-                    rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(_, path)) => {
-                        match path.segments {
-                            [base, path] => {
-                                base.ident.name.to_string() == "test"
-                                    && path.ident.name.to_string() == "test_main_static"
-                            }
-                            _ => false,
-                        }
+    if let rustc_hir::ExprKind::Block(block, _) = expr.kind {
+        if let Some(expr) = block.expr {
+            if let rustc_hir::ExprKind::Call(func, _) = expr.kind {
+                if let rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(_, path)) = &func.kind {
+                    if let [base, path] = path.segments {
+                        return base.ident.name.to_string() == "test"
+                            && path.ident.name.to_string() == "test_main_static";
                     }
-                    _ => false,
-                },
-                _ => false,
-            },
-            None => false,
-        },
-        _ => false,
+                }
+            }
+        }
     }
+    false
 }
 
 /// Check if a top-level definition is actually test metadata. If so, we ignore
