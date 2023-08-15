@@ -42,9 +42,7 @@ End Programmer.
 
 Module CompSciStudent.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{supertraits.Programmer.Trait Self}
         `{supertraits.Student.Trait Self} :
       Set := {

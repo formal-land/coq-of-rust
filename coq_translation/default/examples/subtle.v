@@ -2024,9 +2024,7 @@ End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{subtle.ConstantTimeEq.Trait Self}
         `{subtle.ConstantTimeGreater.Trait Self} :
       Set := {

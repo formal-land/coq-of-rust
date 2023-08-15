@@ -113,9 +113,7 @@ End ConstantTimeGreater.
 
 Module ConstantTimeLess.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{subtle.ConstantTimeEq.Trait Self}
         `{subtle.ConstantTimeGreater.Trait Self} :
       Set := {
