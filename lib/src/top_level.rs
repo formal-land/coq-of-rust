@@ -227,16 +227,13 @@ fn check_if_is_test_main_function(tcx: &TyCtxt, body_id: &rustc_hir::BodyId) -> 
 /// Check if a top-level definition is actually test metadata. If so, we ignore
 /// it.
 fn check_if_test_declaration(ty: &Ty) -> bool {
-    match &ty.kind {
-        TyKind::Path(QPath::Resolved(_, path)) => match path.segments {
-            [base, path] => {
-                base.ident.name.to_string() == "test"
-                    && path.ident.name.to_string() == "TestDescAndFn"
-            }
-            _ => false,
-        },
-        _ => false,
+    if let TyKind::Path(QPath::Resolved(_, path)) = &ty.kind {
+        if let [base, path] = path.segments {
+            return base.ident.name.to_string() == "test"
+                && path.ident.name.to_string() == "TestDescAndFn";
+        }
     }
+    false
 }
 
 // Function checks if code block is having any `allow` attributes, and if it does,
