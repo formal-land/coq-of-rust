@@ -476,61 +476,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let mut items: Vec<ImplItemRef> = items.to_vec();
             reorder_definitions_inplace(tcx, env, &mut items);
 
-            let items = items
-                .iter()
-                .map(|item| {
-                    let is_method = match item.kind {
-                        rustc_hir::AssocItemKind::Fn { has_self } => has_self,
-                        _ => false,
-                    };
-                    let item = tcx.hir().impl_item(item.id);
-                    let value = match &item.kind {
-                        ImplItemKind::Const(_, body_id) => {
-                            let expr = tcx.hir().body(*body_id).value;
-                            ImplItem::Const {
-                                body: Box::new(compile_expr(env, expr)),
-                                is_dead_code: if_marked_as_dead_code,
-                            }
-                        }
-                        ImplItemKind::Fn(
-                            rustc_hir::FnSig {
-                                decl: rustc_hir::FnDecl { inputs, output, .. },
-                                ..
-                            },
-                            body_id,
-                        ) => {
-                            let arg_names = tcx.hir().body(*body_id).params.iter().map(|param| {
-                                match param.pat.kind {
-                                    PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-                                    _ => "Pattern".to_string(),
-                                }
-                            });
-                            let ty_params = get_ty_params_names(env, item.generics);
-                            let where_predicates = get_where_predicates(tcx, env, item.generics);
-                            let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
-                            let ret_ty = compile_fn_ret_ty(env, output);
-                            let expr = tcx.hir().body(*body_id).value;
-                            ImplItem::Definition {
-                                ty_params,
-                                where_predicates,
-                                args: arg_names.zip(arg_tys).collect(),
-                                ret_ty,
-                                body: if env.axiomatize {
-                                    None
-                                } else {
-                                    Some(Box::new(compile_expr(env, expr)))
-                                },
-                                is_method,
-                                is_dead_code: if_marked_as_dead_code,
-                            }
-                        }
-                        ImplItemKind::Type(ty) => ImplItem::Type {
-                            ty: compile_type(env, ty),
-                        },
-                    };
-                    (item.ident.name.to_string(), value)
-                })
-                .collect();
+            let items = compile_impl_item_refs(tcx, env, &items, if_marked_as_dead_code);
+
             match of_trait {
                 Some(trait_ref) => {
                     let trait_non_default_items = tcx
@@ -563,6 +510,72 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
         }
     }
+}
+
+fn compile_impl_item_refs(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    items: &[ImplItemRef],
+    is_dead_code: bool,
+) -> Vec<(String, ImplItem)> {
+    items
+        .iter()
+        .map(|item| {
+            let is_method = match item.kind {
+                rustc_hir::AssocItemKind::Fn { has_self } => has_self,
+                _ => false,
+            };
+            let item = tcx.hir().impl_item(item.id);
+            let value =
+                match &item.kind {
+                    ImplItemKind::Const(_, body_id) => {
+                        let expr = tcx.hir().body(*body_id).value;
+                        ImplItem::Const {
+                            body: Box::new(compile_expr(env, expr)),
+                            is_dead_code,
+                        }
+                    }
+                    ImplItemKind::Fn(
+                        rustc_hir::FnSig {
+                            decl: rustc_hir::FnDecl { inputs, output, .. },
+                            ..
+                        },
+                        body_id,
+                    ) => {
+                        let arg_names = tcx.hir().body(*body_id).params.iter().map(|param| {
+                            match param.pat.kind {
+                                PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+                                _ => "Pattern".to_string(),
+                            }
+                        });
+                        let ty_params = get_ty_params_names(env, item.generics);
+                        let where_predicates = get_where_predicates(tcx, env, item.generics);
+                        let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
+                        let ret_ty = compile_fn_ret_ty(env, output);
+                        let expr = tcx.hir().body(*body_id).value;
+                        let args = arg_names.zip(arg_tys).collect();
+                        let body = if env.axiomatize {
+                            None
+                        } else {
+                            Some(Box::new(compile_expr(env, expr)))
+                        };
+                        ImplItem::Definition {
+                            ty_params,
+                            where_predicates,
+                            args,
+                            ret_ty,
+                            body,
+                            is_method,
+                            is_dead_code,
+                        }
+                    }
+                    ImplItemKind::Type(ty) => ImplItem::Type {
+                        ty: compile_type(env, ty),
+                    },
+                };
+            (item.ident.name.to_string(), value)
+        })
+        .collect()
 }
 
 /// filters out type parameters and compiles them with the given function
@@ -697,6 +710,7 @@ fn compile_trait_bound(
     }
 }
 
+/// computes tre list of actual type parameters with their default status
 fn get_ty_params_with_default_status(
     env: &mut Env,
     generics: &rustc_middle::ty::Generics,
@@ -711,6 +725,9 @@ fn get_ty_params_with_default_status(
     add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
 }
 
+/// takes a list of actual type parameters
+/// and the information about required and default type parameters
+/// and returns a list that combines them
 fn add_default_status_to_ty_params(
     ty_params: &[Box<CoqType>],
     names_and_default_status: &[(String, bool)],
@@ -757,7 +774,7 @@ fn type_params_name_and_default_status(
         .collect()
 }
 
-/// [compile_trait_item_body] compiles the body of the trait item in [compile_trait]
+/// [compile_trait_item_body] compiles the body of the trait item
 fn compile_trait_item_body(
     tcx: &TyCtxt,
     env: &mut Env,
