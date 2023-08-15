@@ -345,10 +345,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                             object: Box::new(object),
                             func,
                             args,
-                            generic_tys: generic_tys
-                                .into_iter()
-                                .map(|ty| mt_ty_unboxed(ty))
-                                .collect(),
+                            generic_tys: generic_tys.into_iter().map(mt_ty_unboxed).collect(),
                         })),
                         fresh_vars,
                     )

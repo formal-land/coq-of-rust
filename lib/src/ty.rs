@@ -56,6 +56,7 @@ pub(crate) fn mt_ty_unboxed(ty: CoqType) -> CoqType {
     }
 }
 
+#[allow(clippy::boxed_local)]
 pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
     Box::new(mt_ty_unboxed(*ty))
 }
