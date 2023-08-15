@@ -2070,7 +2070,7 @@ impl TopLevelItem {
                     .collect(),
                 &bounds
                     .iter()
-                    .map(|bound| |self_name| bound.to_doc(text(self_name)))
+                    .map(|bound| bound.to_doc(text("Self")))
                     .collect::<Vec<_>>(),
                 &body
                     .iter()
@@ -2081,7 +2081,7 @@ impl TopLevelItem {
                             item_name,
                             bounds
                                 .iter()
-                                .map(|bound| |self_name| bound.to_doc(text(self_name)))
+                                .map(|bound| bound.to_doc(text(item_name)))
                                 .collect(),
                         )),
                     })

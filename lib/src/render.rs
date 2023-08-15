@@ -245,8 +245,8 @@ pub(crate) fn trait_module<'a, U>(
     name: U,
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &[impl Fn(&'a str) -> Doc<'a>],
-    associated_types: &[(U, Vec<impl Fn(U) -> Doc<'a>>)],
+    bounds: &[Doc<'a>],
+    associated_types: &[(U, Vec<Doc<'a>>)],
     items: Vec<Doc<'a>>,
     instances: Vec<Doc<'a>>,
 ) -> Doc<'a>
@@ -275,8 +275,8 @@ where
 fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &[impl Fn(&'a str) -> Doc<'a>],
-    associated_types: &[(U, Vec<impl Fn(U) -> Doc<'a>>)],
+    bounds: &[Doc<'a>],
+    associated_types: &[(U, Vec<Doc<'a>>)],
     items: I,
 ) -> Doc<'a>
 where
@@ -299,8 +299,8 @@ where
 fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
-    bounds: &[impl Fn(&'a str) -> Doc<'a>],
-    associated_types: &[(U, Vec<impl Fn(U) -> Doc<'a>>)],
+    bounds: &[Doc<'a>],
+    associated_types: &[(U, Vec<Doc<'a>>)],
 ) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -318,7 +318,7 @@ where
                 text("Set"),
                 text(")"),
             ]),
-            bounds_sequence("Self", bounds),
+            bounds_sequence(bounds),
             if ty_params.is_empty() {
                 nil()
             } else {
@@ -359,7 +359,7 @@ where
                         text("Set"),
                         text("}"),
                     ]),
-                    bounds_sequence(*item_name, bounds),
+                    bounds_sequence(bounds),
                 ])
             }),
             [nil()],
@@ -370,15 +370,12 @@ where
     ])
 }
 
-fn bounds_sequence<'a, U>(self_name: U, bounds: &[impl Fn(U) -> Doc<'a>]) -> Doc<'a>
-where
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
-    concat(
-        bounds
-            .iter()
-            .map(|bound_for| concat([line(), bound_for(self_name)])),
-    )
+fn bounds_sequence<'a>(bounds: &[Doc<'a>]) -> Doc<'a> {
+    if bounds.is_empty() {
+        nil()
+    } else {
+        concat([line(), intersperse(bounds.to_vec(), [line()])])
+    }
 }
 
 /// creates a body of a typeclass with the given items
