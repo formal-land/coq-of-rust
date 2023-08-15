@@ -757,18 +757,7 @@ fn compile_generic_bounds(
     generic_bounds
         .iter()
         .filter_map(|generic_bound| match generic_bound {
-            GenericBound::Trait(ptraitref, _) => {
-                let trait_ref = ptraitref.trait_ref;
-                // Get the generics for the trait
-                let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
-
-                let ty_params = get_ty_params_with_default_status(env, generics, trait_ref.path);
-
-                Some(TraitBound {
-                    name: compile_path(env, trait_ref.path),
-                    ty_params,
-                })
-            }
+            GenericBound::Trait(ptraitref, _) => Some(compile_trait_bound(tcx, env, ptraitref)),
             GenericBound::LangItemTrait { .. } => {
                 env.tcx
                     .sess
@@ -786,8 +775,24 @@ fn compile_generic_bounds(
         .collect()
 }
 
+/// Get the generics for the trait
+fn compile_trait_bound(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    ptraitref: &rustc_hir::PolyTraitRef,
+) -> TraitBound {
+    TraitBound {
+        name: compile_path(env, ptraitref.trait_ref.path),
+        ty_params: get_ty_params_with_default_status(
+            env,
+            tcx.generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
+            ptraitref.trait_ref.path,
+        ),
+    }
+}
+
 fn get_ty_params_with_default_status(
-    env: &mut Env<'_>,
+    env: &mut Env,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
 ) -> Vec<Box<TraitTyParamValue>> {
