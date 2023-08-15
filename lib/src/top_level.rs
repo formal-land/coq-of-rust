@@ -172,6 +172,18 @@ struct FnSigAndBody {
     body: Option<Box<Expr>>,
 }
 
+fn give_if<T>(item: T, condition: bool) -> Option<T> {
+    if condition {
+        Some(item)
+    } else {
+        None
+    }
+}
+
+fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
+    give_if(item, !condition)
+}
+
 fn compile_fn_sig_and_body_id(
     env: &mut Env,
     fn_sig: &rustc_hir::FnSig<'_>,
@@ -196,11 +208,7 @@ fn compile_fn_sig_and_body_id(
             rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
             rustc_hir::FnRetTy::Return(ty) => compile_type(env, ty),
         },
-        body: if env.axiomatize {
-            None
-        } else {
-            Some(Box::new(compile_expr(env, expr)))
-        },
+        body: give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize),
     }
 }
 
@@ -543,11 +551,7 @@ fn compile_impl_item_refs(
                         let ret_ty = compile_fn_ret_ty(env, output);
                         let expr = tcx.hir().body(*body_id).value;
                         let args = arg_names.zip(arg_tys).collect();
-                        let body = if env.axiomatize {
-                            None
-                        } else {
-                            Some(Box::new(compile_expr(env, expr)))
-                        };
+                        let body = give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize);
                         ImplItem::Definition {
                             ty_params,
                             where_predicates,
