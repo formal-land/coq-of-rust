@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition call_me
     `{H : State.Trait}
     {F : Set}
-    `{core.ops.function.Fn.Trait unit F}
+    `{core.ops.function.Fn.Trait (Args := unit) F}
     (f : F)
     : M (H := H) unit :=
   let* _ := f in
