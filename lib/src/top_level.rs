@@ -762,43 +762,10 @@ fn compile_generic_bounds(
                 // Get the generics for the trait
                 let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
 
-                // Get the list of type parameters default status (true if it has a default)
-                let mut type_params_name_and_default_status: Vec<(String, bool)> = generics
-                    .params
-                    .iter()
-                    .filter_map(|param| match param.kind {
-                        rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
-                            Some((param.name.to_string(), has_default))
-                        }
-                        _ => None,
-                    })
-                    .collect();
-                // The first type parameter is always the Self type, that we do not consider as
-                // part of the list of type parameters.
-                type_params_name_and_default_status.remove(0);
-
-                let ty_params = compile_path_ty_params(env, trait_ref.path);
-                let ty_params: Vec<Box<TraitTyParamValue>> = ty_params
-                    .into_iter()
-                    .map(Some)
-                    .chain(repeat(None))
-                    .zip(type_params_name_and_default_status)
-                    .map(|(ty, (name, has_default))| {
-                        Box::new(match ty {
-                            Some(ty) => {
-                                if has_default {
-                                    TraitTyParamValue::ValWithDef { name, ty }
-                                } else {
-                                    TraitTyParamValue::JustValue { name, ty }
-                                }
-                            }
-                            None => TraitTyParamValue::JustDefault { name },
-                        })
-                    })
-                    .collect();
+                let ty_params = get_ty_params_with_default_status(env, generics, trait_ref.path);
 
                 Some(TraitBound {
-                    name: compile_path(env, ptraitref.trait_ref.path),
+                    name: compile_path(env, trait_ref.path),
                     ty_params,
                 })
             }
@@ -815,6 +782,66 @@ fn compile_generic_bounds(
             }
             // we ignore lifetimes
             GenericBound::Outlives { .. } => None,
+        })
+        .collect()
+}
+
+fn get_ty_params_with_default_status(
+    env: &mut Env<'_>,
+    generics: &rustc_middle::ty::Generics,
+    path: &rustc_hir::Path,
+) -> Vec<Box<TraitTyParamValue>> {
+    let mut type_params_name_and_default_status = type_params_name_and_default_status(generics);
+    // The first type parameter is always the Self type, that we do not consider as
+    // part of the list of type parameters.
+    type_params_name_and_default_status.remove(0);
+
+    let ty_params = compile_path_ty_params(env, path);
+    add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
+}
+
+fn add_default_status_to_ty_params(
+    ty_params: &[Box<CoqType>],
+    names_and_default_status: &[(String, bool)],
+) -> Vec<Box<TraitTyParamValue>> {
+    ty_params
+        .iter()
+        .map(Some)
+        .chain(repeat(None))
+        .zip(names_and_default_status)
+        .map(|(ty, (name, has_default))| {
+            Box::new(match ty {
+                Some(ty) => {
+                    if *has_default {
+                        TraitTyParamValue::ValWithDef {
+                            name: name.clone(),
+                            ty: ty.clone(),
+                        }
+                    } else {
+                        TraitTyParamValue::JustValue {
+                            name: name.clone(),
+                            ty: ty.clone(),
+                        }
+                    }
+                }
+                None => TraitTyParamValue::JustDefault { name: name.clone() },
+            })
+        })
+        .collect()
+}
+
+/// Get the list of type parameters names and default status (true if it has a default)
+fn type_params_name_and_default_status(
+    generics: &rustc_middle::ty::Generics,
+) -> Vec<(String, bool)> {
+    generics
+        .params
+        .iter()
+        .filter_map(|param| match param.kind {
+            rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
+                Some((param.name.to_string(), has_default))
+            }
+            _ => None,
         })
         .collect()
 }
