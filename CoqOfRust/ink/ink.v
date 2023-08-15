@@ -228,7 +228,7 @@ Module codegen.
             `{H : State.Trait}
             {E: Set}
             `{core.convert.Into.Trait
-              ink.reflect.event.ContractEventBase.Type_
+              (T := ink.reflect.event.ContractEventBase.Type_)
               E}
             :
             Self -> E -> (M (H := H) unit);
@@ -723,7 +723,9 @@ Module event.
         emit_event
           `{H : State.Trait}
           {E: Set}
-          `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
+          `{core.convert.Into.Trait
+            (T := ink.reflect.event.ContractEventBase.Type_)
+            E}
           :
           Self -> E -> (M (H := H) unit);
       }.
@@ -790,7 +792,9 @@ Module emit.
       emit_event
         `{H : State.Trait}
         {E: Set}
-        `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
+        `{core.convert.Into.Trait
+          (T := ink.reflect.event.ContractEventBase.Type_)
+          E}
         :
         Self -> E -> (M (H := H) unit);
     }.
@@ -809,7 +813,9 @@ Module EmitEvent.
     emit_event
       `{H : State.Trait}
       {E: Set}
-      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
+      `{core.convert.Into.Trait
+        (T := ink.reflect.event.ContractEventBase.Type_)
+        E}
       :
       Self -> E -> (M (H := H) unit);
   }.

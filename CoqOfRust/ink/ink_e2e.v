@@ -367,11 +367,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -381,11 +381,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -395,11 +395,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -409,11 +409,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -423,11 +423,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -437,11 +437,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -451,11 +451,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -465,11 +465,11 @@ Module default_accounts.
       {C : Set},
       forall `{subxt.config.Config.Trait C}, forall
         `{core.convert.From.Trait
-        sp_core.sr25519.Signature
+        (T := sp_core.sr25519.Signature)
         C::type["Signature"]},
         forall
         `{core.convert.From.Trait
-        sp_core.crypto.AccountId32
+        (T := sp_core.crypto.AccountId32)
         C::type["AccountId"]},
         M (H := H)
         (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -480,11 +480,11 @@ Parameter alice : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -494,11 +494,11 @@ Parameter bob : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -508,11 +508,11 @@ Parameter charlie : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -522,11 +522,11 @@ Parameter dave : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -536,11 +536,11 @@ Parameter eve : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -550,11 +550,11 @@ Parameter ferdie : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -564,11 +564,11 @@ Parameter one : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
@@ -578,11 +578,11 @@ Parameter two : forall `{H : State.Trait},
     {C : Set},
     forall `{subxt.config.Config.Trait C}, forall
       `{core.convert.From.Trait
-      sp_core.sr25519.Signature
+      (T := sp_core.sr25519.Signature)
       C::type["Signature"]},
       forall
       `{core.convert.From.Trait
-      sp_core.crypto.AccountId32
+      (T := sp_core.crypto.AccountId32)
       C::type["AccountId"]},
       M (H := H)
       (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).

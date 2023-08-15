@@ -512,15 +512,15 @@ Module api.
       {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
       forall `{ink_env.types.Environment.Trait E}, forall
         `{ink_env.call.create_builder.FromAccountId.Trait
-        E
+        (T := E)
         ContractRef},
         forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
         `{core.convert.AsRef.Trait
-        (Slice u8)
+        (T := Slice u8)
         Salt},
         forall
         `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        ContractRef
+        (C := ContractRef)
         R},
         ref
         (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
@@ -765,15 +765,15 @@ Parameter instantiate_contract : forall `{H : State.Trait},
     {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
     forall `{ink_env.types.Environment.Trait E}, forall
       `{ink_env.call.create_builder.FromAccountId.Trait
-      E
+      (T := E)
       ContractRef},
       forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
       `{core.convert.AsRef.Trait
-      (Slice u8)
+      (T := Slice u8)
       Salt},
       forall
       `{ink_env.call.create_builder.ConstructorReturnType.Trait
-      ContractRef
+      (C := ContractRef)
       R},
       ref
       (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
@@ -1196,9 +1196,9 @@ Module backend.
         {I T E ErrorCode F D: Set}
         `{parity_scale_codec.codec.Encode.Trait I}
         `{parity_scale_codec.codec.Decode.Trait T}
-        `{core.convert.From.Trait ErrorCode E}
-        `{core.ops.function.FnOnce.Trait (u32) F}
-        `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
+        `{core.convert.From.Trait (T := ErrorCode) E}
+        `{core.ops.function.FnOnce.Trait (Args := u32) F}
+        `{core.ops.function.FnOnce.Trait (Args := (ref (Slice u8))) D}
         :
         (mut_ref Self) ->
         u32 ->
@@ -1370,10 +1370,12 @@ Module backend.
         `{H : State.Trait}
         {E ContractRef Args Salt R: Set}
         `{ink_env.types.Environment.Trait E}
-        `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+        `{ink_env.call.create_builder.FromAccountId.Trait (T := E) ContractRef}
         `{parity_scale_codec.codec.Encode.Trait Args}
-        `{core.convert.AsRef.Trait (Slice u8) Salt}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
+        `{core.convert.AsRef.Trait (T := Slice u8) Salt}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait
+          (C := ContractRef)
+          R}
         :
         (mut_ref Self) ->
         (ref
@@ -1660,9 +1662,9 @@ Module EnvBackend.
       {I T E ErrorCode F D: Set}
       `{parity_scale_codec.codec.Encode.Trait I}
       `{parity_scale_codec.codec.Decode.Trait T}
-      `{core.convert.From.Trait ErrorCode E}
-      `{core.ops.function.FnOnce.Trait (u32) F}
-      `{core.ops.function.FnOnce.Trait ((ref (Slice u8))) D}
+      `{core.convert.From.Trait (T := ErrorCode) E}
+      `{core.ops.function.FnOnce.Trait (Args := u32) F}
+      `{core.ops.function.FnOnce.Trait (Args := (ref (Slice u8))) D}
       :
       (mut_ref Self) ->
       u32 ->
@@ -1834,10 +1836,12 @@ Module TypedEnvBackend.
       `{H : State.Trait}
       {E ContractRef Args Salt R: Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.call.create_builder.FromAccountId.Trait E ContractRef}
+      `{ink_env.call.create_builder.FromAccountId.Trait (T := E) ContractRef}
       `{parity_scale_codec.codec.Encode.Trait Args}
-      `{core.convert.AsRef.Trait (Slice u8) Salt}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait ContractRef R}
+      `{core.convert.AsRef.Trait (T := Slice u8) Salt}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait
+        (C := ContractRef)
+        R}
       :
       (mut_ref Self) ->
       (ref
@@ -2153,7 +2157,7 @@ Module call.
         unwrap_or_else
           `{H : State.Trait}
           {F: Set}
-          `{core.ops.function.FnOnce.Trait unit F}
+          `{core.ops.function.FnOnce.Trait (Args := unit) F}
           :
           Self -> F -> (M (H := H) Output);
       }.
@@ -2731,7 +2735,7 @@ Module common.
       unwrap_or_else
         `{H : State.Trait}
         {F: Set}
-        `{core.ops.function.FnOnce.Trait unit F}
+        `{core.ops.function.FnOnce.Trait (Args := unit) F}
         :
         Self -> F -> (M (H := H) Output);
     }.
@@ -2806,7 +2810,7 @@ Module Unwrap.
     unwrap_or_else
       `{H : State.Trait}
       {F: Set}
-      `{core.ops.function.FnOnce.Trait unit F}
+      `{core.ops.function.FnOnce.Trait (Args := unit) F}
       :
       Self -> F -> (M (H := H) Output);
   }.
@@ -3627,7 +3631,7 @@ Module engine.
       on_instance
         `{H : State.Trait}
         {F R: Set}
-        `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+        `{core.ops.function.FnOnce.Trait (Args := (mut_ref Self)) F}
         :
         F -> (M (H := H) R);
     }.
@@ -3723,7 +3727,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.convert.From.Trait
-            (list u8)
+            (T := list u8)
             ink_env.types.Environment.AccountId},
             T::type["AccountId"] ->
           M (H := H) unit.
@@ -3733,7 +3737,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.convert.From.Trait
-            (list u8)
+            (T := list u8)
             ink_env.types.Environment.AccountId},
             T::type["AccountId"] ->
           M (H := H) unit.
@@ -3743,7 +3747,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.convert.From.Trait
-            (list u8)
+            (T := list u8)
             ink_env.types.Environment.AccountId},
             T::type["AccountId"] ->
           M (H := H) unit.
@@ -3753,7 +3757,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.convert.From.Trait
-            (list u8)
+            (T := list u8)
             ink_env.types.Environment.AccountId},
             T::type["AccountId"] ->
           M (H := H) bool.
@@ -3843,11 +3847,11 @@ Module engine.
           {T : Set} {F : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.ops.function.FnOnce.Trait
-            ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+            (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))
             F},
             forall
             `{core.convert.From.Trait
-            (list u8)
+            (T := list u8)
             ink_env.types.Environment.AccountId},
             F ->
           M (H := H) (ink_env.error.Result unit).
@@ -3857,7 +3861,7 @@ Module engine.
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.convert.From.Trait
-            (list u8)
+            (T := list u8)
             ink_env.types.Environment.AccountId},
             M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
       
@@ -3868,7 +3872,7 @@ Module engine.
           {T : Set} {F : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.ops.function.FnMut.Trait
-            unit
+            (Args := unit)
             F},
             forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
             `{core.fmt.Debug.Trait
@@ -3923,7 +3927,7 @@ Module OnInstance.
     on_instance
       `{H : State.Trait}
       {F R: Set}
-      `{core.ops.function.FnOnce.Trait ((mut_ref Self)) F}
+      `{core.ops.function.FnOnce.Trait (Args := (mut_ref Self)) F}
       :
       F -> (M (H := H) R);
   }.
@@ -4019,7 +4023,7 @@ Module off_chain.
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.convert.From.Trait
-          (list u8)
+          (T := list u8)
           ink_env.types.Environment.AccountId},
           T::type["AccountId"] ->
         M (H := H) unit.
@@ -4029,7 +4033,7 @@ Module off_chain.
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.convert.From.Trait
-          (list u8)
+          (T := list u8)
           ink_env.types.Environment.AccountId},
           T::type["AccountId"] ->
         M (H := H) unit.
@@ -4039,7 +4043,7 @@ Module off_chain.
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.convert.From.Trait
-          (list u8)
+          (T := list u8)
           ink_env.types.Environment.AccountId},
           T::type["AccountId"] ->
         M (H := H) unit.
@@ -4049,7 +4053,7 @@ Module off_chain.
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.convert.From.Trait
-          (list u8)
+          (T := list u8)
           ink_env.types.Environment.AccountId},
           T::type["AccountId"] ->
         M (H := H) bool.
@@ -4137,11 +4141,11 @@ Module off_chain.
         {T : Set} {F : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.ops.function.FnOnce.Trait
-          ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+          (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))
           F},
           forall
           `{core.convert.From.Trait
-          (list u8)
+          (T := list u8)
           ink_env.types.Environment.AccountId},
           F ->
         M (H := H) (ink_env.error.Result unit).
@@ -4151,7 +4155,7 @@ Module off_chain.
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.convert.From.Trait
-          (list u8)
+          (T := list u8)
           ink_env.types.Environment.AccountId},
           M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
     
@@ -4162,7 +4166,7 @@ Module off_chain.
         {T : Set} {F : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.ops.function.FnMut.Trait
-          unit
+          (Args := unit)
           F},
           forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
           `{core.fmt.Debug.Trait
@@ -4314,7 +4318,7 @@ Module test_api.
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.convert.From.Trait
-        (list u8)
+        (T := list u8)
         ink_env.types.Environment.AccountId},
         T::type["AccountId"] ->
       M (H := H) unit.
@@ -4324,7 +4328,7 @@ Module test_api.
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.convert.From.Trait
-        (list u8)
+        (T := list u8)
         ink_env.types.Environment.AccountId},
         T::type["AccountId"] ->
       M (H := H) unit.
@@ -4334,7 +4338,7 @@ Module test_api.
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.convert.From.Trait
-        (list u8)
+        (T := list u8)
         ink_env.types.Environment.AccountId},
         T::type["AccountId"] ->
       M (H := H) unit.
@@ -4344,7 +4348,7 @@ Module test_api.
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.convert.From.Trait
-        (list u8)
+        (T := list u8)
         ink_env.types.Environment.AccountId},
         T::type["AccountId"] ->
       M (H := H) bool.
@@ -4432,11 +4436,11 @@ Module test_api.
       {T : Set} {F : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.ops.function.FnOnce.Trait
-        ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+        (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))
         F},
         forall
         `{core.convert.From.Trait
-        (list u8)
+        (T := list u8)
         ink_env.types.Environment.AccountId},
         F ->
       M (H := H) (ink_env.error.Result unit).
@@ -4446,7 +4450,7 @@ Module test_api.
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.convert.From.Trait
-        (list u8)
+        (T := list u8)
         ink_env.types.Environment.AccountId},
         M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
   
@@ -4457,7 +4461,7 @@ Module test_api.
       {T : Set} {F : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.ops.function.FnMut.Trait
-        unit
+        (Args := unit)
         F},
         forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
         `{core.fmt.Debug.Trait
@@ -4521,7 +4525,7 @@ Parameter set_caller : forall `{H : State.Trait},
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.convert.From.Trait
-      (list u8)
+      (T := list u8)
       ink_env.types.Environment.AccountId},
       T::type["AccountId"] ->
     M (H := H) unit.
@@ -4531,7 +4535,7 @@ Parameter set_callee : forall `{H : State.Trait},
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.convert.From.Trait
-      (list u8)
+      (T := list u8)
       ink_env.types.Environment.AccountId},
       T::type["AccountId"] ->
     M (H := H) unit.
@@ -4541,7 +4545,7 @@ Parameter set_contract : forall `{H : State.Trait},
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.convert.From.Trait
-      (list u8)
+      (T := list u8)
       ink_env.types.Environment.AccountId},
       T::type["AccountId"] ->
     M (H := H) unit.
@@ -4551,7 +4555,7 @@ Parameter is_contract : forall `{H : State.Trait},
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.convert.From.Trait
-      (list u8)
+      (T := list u8)
       ink_env.types.Environment.AccountId},
       T::type["AccountId"] ->
     M (H := H) bool.
@@ -4639,11 +4643,11 @@ Parameter run_test : forall `{H : State.Trait},
     {T : Set} {F : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.ops.function.FnOnce.Trait
-      ((ink_env.engine.off_chain.test_api.DefaultAccounts T))
+      (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))
       F},
       forall
       `{core.convert.From.Trait
-      (list u8)
+      (T := list u8)
       ink_env.types.Environment.AccountId},
       F ->
     M (H := H) (ink_env.error.Result unit).
@@ -4653,7 +4657,7 @@ Parameter default_accounts : forall `{H : State.Trait},
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.convert.From.Trait
-      (list u8)
+      (T := list u8)
       ink_env.types.Environment.AccountId},
       M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 
@@ -4664,7 +4668,7 @@ Parameter assert_contract_termination : forall `{H : State.Trait},
     {T : Set} {F : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.ops.function.FnMut.Trait
-      unit
+      (Args := unit)
       F},
       forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
       `{core.fmt.Debug.Trait
@@ -5021,7 +5025,7 @@ Module topics.
         `{H : State.Trait}
         {E B: Set}
         `{ink_env.types.Environment.Trait E}
-        `{ink_env.topics.TopicsBuilderBackend.Trait E B}
+        `{ink_env.topics.TopicsBuilderBackend.Trait (E := E) B}
         :
         (ref Self) ->
         (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
@@ -5194,7 +5198,7 @@ Module Topics.
       `{H : State.Trait}
       {E B: Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait (E := E) B}
       :
       (ref Self) ->
       (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
