@@ -7,7 +7,7 @@ Definition main
     : M (H := H) (core.result.Result unit core.num.error.ParseIntError) :=
   let number_str := "10" in
   let* number :=
-    let* α0 := number_str.["parse"] in
+    let* α0 := number_str.["parse"] : M i32 in
     match α0 with
     | core.result.Result.Ok number => Pure number
     | core.result.Result.Err e => Return (core.result.Result.Err e)

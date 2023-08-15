@@ -9,10 +9,10 @@ Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (H := H) (aliases_for_result.AliasedResult i32) :=
-  let* α0 := first_number_str.["parse"] in
+  let* α0 := first_number_str.["parse"] : M i32 in
   α0.["and_then"]
     (fun first_number =>
-      let* α0 := second_number_str.["parse"] in
+      let* α0 := second_number_str.["parse"] : M i32 in
       α0.["map"] (fun second_number => first_number.["mul"] second_number)).
 
 Definition print

@@ -84,7 +84,7 @@ Definition double_first
     α0.["ok_or_else"] (fun  => boxing_errors.EmptyVec.Build.["into"]) in
   α1.["and_then"]
     (fun s =>
-      let* α0 := s.["parse"] in
+      let* α0 := s.["parse"] : M i32 in
       let* α1 := α0.["map_err"] (fun e => e.["into"]) in
       α1.["map"] (fun i => 2.["mul"] i)).
 

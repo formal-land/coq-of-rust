@@ -39,21 +39,26 @@ impl CoqType {
     }
 }
 
-pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
-    match *ty {
-        CoqType::Application { func, args } => Box::new(CoqType::Application {
+pub(crate) fn mt_ty_unboxed(ty: CoqType) -> CoqType {
+    match ty {
+        CoqType::Application { func, args } => CoqType::Application {
             func,
             args: args.into_iter().map(mt_ty).collect(),
-        }),
+        },
         CoqType::Var(..) => ty,
-        CoqType::Function { args, ret } => Box::new(CoqType::Function {
+        CoqType::Function { args, ret } => CoqType::Function {
             args: args.into_iter().map(mt_ty).collect(),
             ret: CoqType::monad(mt_ty(ret)),
-        }),
-        CoqType::Tuple(tys) => Box::new(CoqType::Tuple(tys.into_iter().map(mt_ty).collect())),
-        CoqType::Array(ty) => Box::new(CoqType::Array(mt_ty(ty))),
-        CoqType::Ref(ty, mutability) => Box::new(CoqType::Ref(mt_ty(ty), mutability)),
+        },
+        CoqType::Tuple(tys) => CoqType::Tuple(tys.into_iter().map(mt_ty).collect()),
+        CoqType::Array(ty) => CoqType::Array(mt_ty(ty)),
+        CoqType::Ref(ty, mutability) => CoqType::Ref(mt_ty(ty), mutability),
     }
+}
+
+#[allow(clippy::boxed_local)]
+pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
+    Box::new(mt_ty_unboxed(*ty))
 }
 
 pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
