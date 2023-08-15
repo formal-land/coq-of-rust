@@ -309,13 +309,15 @@ where
         text("Class Trait"),
         line(),
         nest([
-            text("("),
-            text("Self"),
-            line(),
-            text(":"),
-            line(),
-            text("Set"),
-            text(")"),
+            nest([
+                text("("),
+                text("Self"),
+                line(),
+                text(":"),
+                line(),
+                text("Set"),
+                text(")"),
+            ]),
             bounds_sequence("Self", bounds),
             if ty_params.is_empty() {
                 nil()

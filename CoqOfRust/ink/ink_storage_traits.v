@@ -121,9 +121,7 @@ Module storage.
   Module Packed.
     Unset Primitive Projections.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{ink_storage_traits.storage.Storable.Trait Self}
           `{parity_scale_codec.codec.Codec.Trait Self}
           `{ink_storage_traits.storage.private.Sealed.Trait Self} :
@@ -150,9 +148,7 @@ Module storage.
   
   Module StorableHint.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           {Key : Set}
           `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
@@ -186,9 +182,7 @@ Module storage.
   
   Module AutoStorableHint.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           {Key : Set}
           `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
@@ -256,9 +250,7 @@ End Sealed.
 Module Packed.
   Unset Primitive Projections.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{ink_storage_traits.storage.Storable.Trait Self}
         `{parity_scale_codec.codec.Codec.Trait Self}
         `{ink_storage_traits.storage.private.Sealed.Trait Self} :
@@ -285,9 +277,7 @@ Module StorageKey.
 
 Module StorableHint.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         {Key : Set}
         `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}
@@ -321,9 +311,7 @@ End StorableHint.
 
 Module AutoStorableHint.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         {Key : Set}
         `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}

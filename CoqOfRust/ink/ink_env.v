@@ -45,9 +45,7 @@ Module types.
   Module CodecAsType.
     Unset Primitive Projections.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{scale_decode.DecodeAsType.Trait Self}
           `{scale_encode.EncodeAsType.Trait Self} :
         Set := {
@@ -234,9 +232,7 @@ End AccountIdGuard.
 Module CodecAsType.
   Unset Primitive Projections.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{scale_decode.DecodeAsType.Trait Self}
         `{scale_encode.EncodeAsType.Trait Self} :
       Set := {
@@ -891,9 +887,7 @@ Module arithmetic.
   Module BaseArithmetic.
     Unset Primitive Projections.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{core.marker.Sized.Trait Self}
           `{core.convert.From.Trait Self (T := u8)}
           `{num_traits.bounds.Bounded.Trait Self}
@@ -930,9 +924,7 @@ Module arithmetic.
   Module AtLeast32Bit.
     Unset Primitive Projections.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{ink_env.arithmetic.BaseArithmetic.Trait Self}
           `{core.convert.From.Trait Self (T := u16)}
           `{core.convert.From.Trait Self (T := u32)} :
@@ -944,9 +936,7 @@ Module arithmetic.
   Module AtLeast32BitUnsigned.
     Unset Primitive Projections.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
           `{num_traits.sign.Unsigned.Trait Self} :
         Set := {
@@ -984,9 +974,7 @@ End arithmetic.
 Module BaseArithmetic.
   Unset Primitive Projections.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{core.marker.Sized.Trait Self}
         `{core.convert.From.Trait Self (T := u8)}
         `{num_traits.bounds.Bounded.Trait Self}
@@ -1023,9 +1011,7 @@ End BaseArithmetic.
 Module AtLeast32Bit.
   Unset Primitive Projections.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{ink_env.arithmetic.BaseArithmetic.Trait Self}
         `{core.convert.From.Trait Self (T := u16)}
         `{core.convert.From.Trait Self (T := u32)} :
@@ -1037,9 +1023,7 @@ End AtLeast32Bit.
 Module AtLeast32BitUnsigned.
   Unset Primitive Projections.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
         `{num_traits.sign.Unsigned.Trait Self} :
       Set := {
@@ -3423,9 +3407,7 @@ Module chain_extension.
   
   Module IsResultType.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
         {Ok : Set}
         {Err : Set} :
@@ -3536,9 +3518,7 @@ Definition HandleErrorCode := @HandleErrorCode.t.
 
 Module IsResultType.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
       {Ok : Set}
       {Err : Set} :
@@ -3640,9 +3620,7 @@ End ContractReference.
 Module engine.
   Module OnInstance.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{ink_env.backend.EnvBackend.Trait Self}
           `{ink_env.backend.TypedEnvBackend.Trait Self} :
         Set := {
@@ -3938,9 +3916,7 @@ End engine.
 
 Module OnInstance.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{ink_env.backend.EnvBackend.Trait Self}
         `{ink_env.backend.TypedEnvBackend.Trait Self} :
       Set := {
@@ -4795,9 +4771,7 @@ Module hash.
   
   Module CryptoHash.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{ink_env.hash.HashOutput.Trait Self}
           `{ink_env.hash.private.Sealed.Trait Self} :
         Set := {
@@ -4871,9 +4845,7 @@ End HashOutput.
 
 Module CryptoHash.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{ink_env.hash.HashOutput.Trait Self}
         `{ink_env.hash.private.Sealed.Trait Self} :
       Set := {

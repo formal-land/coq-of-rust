@@ -220,9 +220,7 @@ Module codegen.
     Module emit.
       Module EmitEvent.
         Class Trait
-            (Self
-              :
-              Set)
+            (Self : Set)
               {C : Set}
               `{ink.reflect.event.ContractEventBase.Trait C} :
             Set := {
@@ -718,9 +716,7 @@ Module event.
   Module emit.
     Module EmitEvent.
       Class Trait
-          (Self
-            :
-            Set)
+          (Self : Set)
             {C : Set}
             `{ink.reflect.event.ContractEventBase.Trait C} :
           Set := {
@@ -1525,9 +1521,7 @@ Module reflect.
     
     Module ConstructorOutput.
       Class Trait
-          (Self
-            :
-            Set)
+          (Self : Set)
             `{ink.reflect.dispatch.private.Sealed.Trait Self}
             {C : Set}
           {Error : Set} :
@@ -2621,9 +2615,7 @@ Module chain_extension.
   
   Module Output.
     Class Trait
-        (Self
-          :
-          Set)
+        (Self : Set)
           `{ink.chain_extension.private.OutputSealed.Trait Self}
           {T E : Set}
         {ReturnType : Set} :
@@ -2727,9 +2719,7 @@ End IsResultType.
 
 Module Output.
   Class Trait
-      (Self
-        :
-        Set)
+      (Self : Set)
         `{ink.chain_extension.private.OutputSealed.Trait Self}
         {T E : Set}
       {ReturnType : Set} :
