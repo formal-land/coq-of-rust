@@ -7,7 +7,7 @@ Definition multiply
     (second_number_str : ref str)
     : M (H := H) (core.result.Result i32 core.num.error.ParseIntError) :=
   let* first_number :=
-    let* α0 := first_number_str.["parse"] in
+    let* α0 := first_number_str.["parse"] : M i32 in
     let* α1 := α0.["branch"] in
     match α1 with
     | LanguageItem.Break residual =>
@@ -16,7 +16,7 @@ Definition multiply
     | LanguageItem.Continue val => Pure val
     end in
   let* second_number :=
-    let* α0 := second_number_str.["parse"] in
+    let* α0 := second_number_str.["parse"] : M i32 in
     let* α1 := α0.["branch"] in
     match α1 with
     | LanguageItem.Break residual =>

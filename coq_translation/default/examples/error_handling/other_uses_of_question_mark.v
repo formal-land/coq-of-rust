@@ -72,7 +72,7 @@ Definition double_first
     | LanguageItem.Continue val => Pure val
     end in
   let* parsed :=
-    let* α0 := first.["parse"] in
+    let* α0 := first.["parse"] : M i32 in
     let* α1 := α0.["branch"] in
     match α1 with
     | LanguageItem.Break residual =>

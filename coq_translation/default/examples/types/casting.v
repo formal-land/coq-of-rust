@@ -137,7 +137,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := 300 (* 300.0 *).["to_int_unchecked"] in
+      let* α0 := 300 (* 300.0 *).["to_int_unchecked"] : M u8 in
       let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
         format_arguments::["new_v1"]
@@ -149,7 +149,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* _ :=
     let* _ :=
       let* α0 := 100 (* 100.0 *).["neg"] in
-      let* α1 := α0.["to_int_unchecked"] in
+      let* α1 := α0.["to_int_unchecked"] : M u8 in
       let* α2 := format_argument::["new_display"] (addr_of α1) in
       let* α3 :=
         format_arguments::["new_v1"]
@@ -160,7 +160,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := f32::["NAN"].["to_int_unchecked"] in
+      let* α0 := f32::["NAN"].["to_int_unchecked"] : M u8 in
       let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
         format_arguments::["new_v1"]

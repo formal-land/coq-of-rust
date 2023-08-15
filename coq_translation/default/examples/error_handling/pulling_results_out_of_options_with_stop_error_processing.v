@@ -13,7 +13,7 @@ Definition double_first
     let* α0 := vec.["first"] in
     α0.["map"]
       (fun first =>
-        let* α0 := first.["parse"] in
+        let* α0 := first.["parse"] : M i32 in
         α0.["map"] (fun n => 2.["mul"] n)) in
   opt.["map_or"]
     (core.result.Result.Ok core.option.Option.None)

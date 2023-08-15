@@ -11,7 +11,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     let* α1 :=
       α0.["filter_map"]
         (fun s =>
-          let* α0 := s.["parse"] in
+          let* α0 := s.["parse"] : M i32 in
           α0.["ok"]) in
     α1.["collect"] in
   let* _ :=

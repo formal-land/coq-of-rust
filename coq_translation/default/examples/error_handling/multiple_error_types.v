@@ -8,7 +8,7 @@ Definition double_first
   let* first :=
     let* α0 := vec.["first"] in
     α0.["unwrap"] in
-  let* α0 := first.["parse"] in
+  let* α0 := first.["parse"] : M i32 in
   let* α1 := α0.["unwrap"] in
   2.["mul"] α1.
 
