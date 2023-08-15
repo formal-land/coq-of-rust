@@ -336,43 +336,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 compile_fn_sig_and_body_id(env, fn_sig, body_id);
             vec![TopLevelItem::Definition {
                 name,
-                ty_params: generics
-                    .params
-                    .iter()
-                    .filter_map(|param| match param.kind {
-                        rustc_hir::GenericParamKind::Type { .. } => {
-                            Some(to_valid_coq_name(param.name.ident().to_string()))
-                        }
-                        _ => None,
-                    })
-                    .collect(),
-                where_predicates: generics
-                    .predicates
-                    .iter()
-                    .flat_map(|predicate| match predicate {
-                        rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                            let names_and_ty_params =
-                                predicate.bounds.iter().filter_map(|bound| match bound {
-                                    rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
-                                        let path = trait_ref.trait_ref.path;
-                                        Some((
-                                            compile_path(env, path),
-                                            compile_path_ty_params(env, path),
-                                        ))
-                                    }
-                                    _ => None,
-                                });
-                            names_and_ty_params
-                                .map(|(name, ty_params)| WherePredicate {
-                                    name,
-                                    ty_params,
-                                    ty: compile_type(env, predicate.bounded_ty),
-                                })
-                                .collect()
-                        }
-                        _ => vec![],
-                    })
-                    .collect(),
+                ty_params: get_ty_params_names(env, generics),
+                where_predicates: get_where_predicates(tcx, env, generics),
                 args,
                 ret_ty,
                 body,
@@ -410,16 +375,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::TyAlias(ty, generics) => vec![TopLevelItem::TypeAlias {
             name,
             ty: compile_type(env, ty),
-            ty_params: generics
-                .params
-                .iter()
-                .filter_map(|param| match param.kind {
-                    rustc_hir::GenericParamKind::Type { .. } => {
-                        Some(param.name.ident().to_string())
-                    }
-                    _ => None,
-                })
-                .collect(),
+            ty_params: get_ty_params_names(env, generics),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
@@ -452,24 +408,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         }],
         ItemKind::Struct(body, generics) => {
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let ty_params = generics
-                .params
-                .iter()
-                .filter_map(|param| match param.kind {
-                    rustc_hir::GenericParamKind::Type { .. } => {
-                        Some(param.name.ident().to_string())
-                    }
-                    rustc_hir::GenericParamKind::Const { .. } => {
-                        env.tcx
-                            .sess
-                            .struct_span_warn(param.span, "Constant parameters are not supported.")
-                            .note("It should be supported in future versions.")
-                            .emit();
-                        None
-                    }
-                    rustc_hir::GenericParamKind::Lifetime { .. } => None,
-                })
-                .collect();
+            let ty_params = get_ty_params_names(env, generics);
 
             match body {
                 VariantData::Struct(fields, _) => {
@@ -702,7 +641,7 @@ fn get_ty_params(
 
 /// extracts the names of type parameters from the generics
 fn get_ty_params_names(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<String> {
-    compile_ty_params(env, generics, |_, name, _| name)
+    compile_ty_params(env, generics, |_, name, _| to_valid_coq_name(name))
 }
 
 /// extracts where predicates from the generics
@@ -732,6 +671,7 @@ fn get_where_predicates(
         .collect()
 }
 
+/// converts a trait bound to a where predicate
 fn trait_bound_to_where_predicate(bound: TraitBound, ty: Box<CoqType>) -> WherePredicate {
     WherePredicate {
         name: bound.name,
