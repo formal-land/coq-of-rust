@@ -81,6 +81,17 @@ enum VariantItem {
     Tuple { tys: Vec<Box<CoqType>> },
 }
 
+/// The actual value of the type parameter of the trait's generic parameter
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+enum TraitTyParamValue {
+    /// the value of the parameter that has no default
+    JustValue { name: String, ty: Box<CoqType> },
+    /// the value that replaces the default value of the parameter
+    ValWithDef { name: String, ty: Box<CoqType> },
+    /// means the default value of the type parameter is used
+    JustDefault { name: String },
+}
+
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -150,17 +161,6 @@ enum TopLevelItem {
         trait_non_default_items: Vec<String>,
     },
     Error(String),
-}
-
-/// The actual value of the type parameter of the trait's generic parameter
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-enum TraitTyParamValue {
-    /// the value of the parameter that has no default
-    JustValue { name: String, ty: Box<CoqType> },
-    /// the value that replaces the default value of the parameter
-    ValWithDef { name: String, ty: Box<CoqType> },
-    /// means the default value of the type parameter is used
-    JustDefault { name: String },
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
