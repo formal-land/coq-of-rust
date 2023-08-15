@@ -64,8 +64,7 @@ enum ImplItem {
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct WherePredicate {
-    name: Path,
-    ty_params: Vec<Box<CoqType>>,
+    bound: TraitBound,
     ty: Box<CoqType>,
 }
 
@@ -645,19 +644,7 @@ fn get_where_predicates(
 
 /// converts a trait bound to a where predicate
 fn trait_bound_to_where_predicate(bound: TraitBound, ty: Box<CoqType>) -> WherePredicate {
-    WherePredicate {
-        name: bound.name,
-        ty_params: bound
-            .ty_params
-            .into_iter()
-            .filter_map(|param| match *param {
-                TraitTyParamValue::JustDefault { .. } => None,
-                TraitTyParamValue::JustValue { ty, .. }
-                | TraitTyParamValue::ValWithDef { ty, .. } => Some(ty),
-            })
-            .collect(),
-        ty,
-    }
+    WherePredicate { bound, ty }
 }
 
 /// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
@@ -1047,8 +1034,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     None => nil(),
                     Some(where_predicates) => concat(where_predicates.iter().map(
                         |WherePredicate {
-                             name,
-                             ty_params,
+                             bound: TraitBound { name, ty_params },
                              ty,
                          }| {
                             concat([nest([
@@ -1061,7 +1047,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                                 concat(
                                     ty_params
                                         .iter()
-                                        .map(|param| concat([param.to_doc(true), line()])),
+                                        .map(|param| concat([param.to_doc(), line()])),
                                 ),
                                 ty.to_doc(true),
                                 text("}"),
@@ -1110,8 +1096,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                         None => nil(),
                         Some(where_predicates) => concat(where_predicates.iter().map(
                             |WherePredicate {
-                                 name,
-                                 ty_params,
+                                 bound: TraitBound { name, ty_params },
                                  ty,
                              }| {
                                 concat([
@@ -1123,7 +1108,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                                         concat(
                                             ty_params
                                                 .iter()
-                                                .map(|param| concat([param.to_doc(true), line()])),
+                                                .map(|param| concat([param.to_doc(), line()])),
                                         ),
                                         ty.to_doc(true),
                                         text("}"),
@@ -1473,13 +1458,14 @@ impl WherePredicate {
     fn to_doc(&self) -> Doc {
         nest([
             text("`{"),
-            self.name.to_doc(),
+            self.bound.name.to_doc(),
             text(".Trait"),
             line(),
             concat(
-                self.ty_params
+                self.bound
+                    .ty_params
                     .iter()
-                    .map(|param| concat([param.to_doc(true), line()])),
+                    .map(|param| concat([param.to_doc(), line()])),
             ),
             self.ty.to_doc(true),
             text("}"),
