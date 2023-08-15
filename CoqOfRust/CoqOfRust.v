@@ -1249,7 +1249,7 @@ End Debug_Tuple_Instances.
 Module ToString_Instances.
   Global Instance ToString_on_Display {Self : Set}
     `{core.fmt.Display.Trait Self} :
-    ToString.Trait Self.
+    alloc.string.ToString.Trait Self.
   Admitted.
 End ToString_Instances.
 
