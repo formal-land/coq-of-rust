@@ -1253,6 +1253,16 @@ Module ToString_Instances.
   Admitted.
 End ToString_Instances.
 
+Module Parse_Instances.
+  Global Instance Parse_u32 `{H : State.Trait} :
+    Notation.Dot "parse" (T := string -> M u32).
+  Admitted.
+
+  Global Instance Parse_bool `{H : State.Trait} :
+    Notation.Dot "parse" (T := string -> M bool).
+  Admitted.
+End Parse_Instances.
+
 Module _crate.
   Module intrinsics.
     Parameter discriminant_value : forall {A : Set}, ref A -> u128.
