@@ -1456,35 +1456,19 @@ impl ImplItem {
 impl WherePredicate {
     /// turns the predicate into its representation as constraint
     fn to_doc(&self) -> Doc {
-        nest([
-            text("`{"),
-            self.bound.name.to_doc(),
-            text(".Trait"),
-            line(),
-            concat(
-                self.bound
-                    .ty_params
-                    .iter()
-                    .map(|param| concat([param.to_doc(), line()])),
-            ),
-            self.ty.to_doc(true),
-            text("}"),
-        ])
+        self.bound.to_doc(self.ty.to_doc(true))
     }
 }
 
 impl TraitBound {
     /// turns the trait bound into its representation as constraint
-    fn to_doc<'a, U>(&'a self, self_name: U) -> Doc
-    where
-        U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-    {
+    fn to_doc<'a>(&'a self, self_doc: Doc<'a>) -> Doc<'a> {
         nest([
             text("`{"),
             self.name.to_doc(),
             text(".Trait"),
             line(),
-            text(self_name),
+            self_doc,
             if self.ty_params.is_empty() {
                 nil()
             } else {
@@ -2086,7 +2070,7 @@ impl TopLevelItem {
                     .collect(),
                 &bounds
                     .iter()
-                    .map(|bound| |self_name| bound.to_doc(self_name))
+                    .map(|bound| |self_name| bound.to_doc(text(self_name)))
                     .collect::<Vec<_>>(),
                 &body
                     .iter()
@@ -2097,7 +2081,7 @@ impl TopLevelItem {
                             item_name,
                             bounds
                                 .iter()
-                                .map(|bound| |self_name| bound.to_doc(self_name))
+                                .map(|bound| |self_name| bound.to_doc(text(self_name)))
                                 .collect(),
                         )),
                     })

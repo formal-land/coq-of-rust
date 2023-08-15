@@ -1196,9 +1196,9 @@ Module backend.
         {I T E ErrorCode F D: Set}
         `{parity_scale_codec.codec.Encode.Trait I}
         `{parity_scale_codec.codec.Decode.Trait T}
-        `{core.convert.From.Trait (T := ErrorCode) E}
-        `{core.ops.function.FnOnce.Trait (Args := u32) F}
-        `{core.ops.function.FnOnce.Trait (Args := (ref (Slice u8))) D}
+        `{core.convert.From.Trait E (T := ErrorCode)}
+        `{core.ops.function.FnOnce.Trait F (Args := u32)}
+        `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
         :
         (mut_ref Self) ->
         u32 ->
@@ -1370,12 +1370,12 @@ Module backend.
         `{H : State.Trait}
         {E ContractRef Args Salt R: Set}
         `{ink_env.types.Environment.Trait E}
-        `{ink_env.call.create_builder.FromAccountId.Trait (T := E) ContractRef}
+        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         `{parity_scale_codec.codec.Encode.Trait Args}
-        `{core.convert.AsRef.Trait (T := Slice u8) Salt}
+        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
         `{ink_env.call.create_builder.ConstructorReturnType.Trait
-          (C := ContractRef)
-          R}
+          R
+          (C := ContractRef)}
         :
         (mut_ref Self) ->
         (ref
@@ -1662,9 +1662,9 @@ Module EnvBackend.
       {I T E ErrorCode F D: Set}
       `{parity_scale_codec.codec.Encode.Trait I}
       `{parity_scale_codec.codec.Decode.Trait T}
-      `{core.convert.From.Trait (T := ErrorCode) E}
-      `{core.ops.function.FnOnce.Trait (Args := u32) F}
-      `{core.ops.function.FnOnce.Trait (Args := (ref (Slice u8))) D}
+      `{core.convert.From.Trait E (T := ErrorCode)}
+      `{core.ops.function.FnOnce.Trait F (Args := u32)}
+      `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
       :
       (mut_ref Self) ->
       u32 ->
@@ -1836,12 +1836,12 @@ Module TypedEnvBackend.
       `{H : State.Trait}
       {E ContractRef Args Salt R: Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.call.create_builder.FromAccountId.Trait (T := E) ContractRef}
+      `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
       `{parity_scale_codec.codec.Encode.Trait Args}
-      `{core.convert.AsRef.Trait (T := Slice u8) Salt}
+      `{core.convert.AsRef.Trait Salt (T := Slice u8)}
       `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        (C := ContractRef)
-        R}
+        R
+        (C := ContractRef)}
       :
       (mut_ref Self) ->
       (ref
@@ -2157,7 +2157,7 @@ Module call.
         unwrap_or_else
           `{H : State.Trait}
           {F: Set}
-          `{core.ops.function.FnOnce.Trait (Args := unit) F}
+          `{core.ops.function.FnOnce.Trait F (Args := unit)}
           :
           Self -> F -> (M (H := H) Output);
       }.
@@ -2735,7 +2735,7 @@ Module common.
       unwrap_or_else
         `{H : State.Trait}
         {F: Set}
-        `{core.ops.function.FnOnce.Trait (Args := unit) F}
+        `{core.ops.function.FnOnce.Trait F (Args := unit)}
         :
         Self -> F -> (M (H := H) Output);
     }.
@@ -2810,7 +2810,7 @@ Module Unwrap.
     unwrap_or_else
       `{H : State.Trait}
       {F: Set}
-      `{core.ops.function.FnOnce.Trait (Args := unit) F}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)}
       :
       Self -> F -> (M (H := H) Output);
   }.
@@ -3631,7 +3631,7 @@ Module engine.
       on_instance
         `{H : State.Trait}
         {F R: Set}
-        `{core.ops.function.FnOnce.Trait (Args := (mut_ref Self)) F}
+        `{core.ops.function.FnOnce.Trait F (Args := (mut_ref Self))}
         :
         F -> (M (H := H) R);
     }.
@@ -3927,7 +3927,7 @@ Module OnInstance.
     on_instance
       `{H : State.Trait}
       {F R: Set}
-      `{core.ops.function.FnOnce.Trait (Args := (mut_ref Self)) F}
+      `{core.ops.function.FnOnce.Trait F (Args := (mut_ref Self))}
       :
       F -> (M (H := H) R);
   }.
@@ -5025,7 +5025,7 @@ Module topics.
         `{H : State.Trait}
         {E B: Set}
         `{ink_env.types.Environment.Trait E}
-        `{ink_env.topics.TopicsBuilderBackend.Trait (E := E) B}
+        `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
         :
         (ref Self) ->
         (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
@@ -5198,7 +5198,7 @@ Module Topics.
       `{H : State.Trait}
       {E B: Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait (E := E) B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       :
       (ref Self) ->
       (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
