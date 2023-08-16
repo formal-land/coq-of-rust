@@ -916,22 +916,19 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
 
 // We can not have more than 7 arguments for the function,
 // so we put all the arguments into one struct
+#[derive(Clone)]
 struct ArgumentsForFnToDoc<'a> {
     name: &'a String,
-    ty_params: Option<&'a Vec<String>>,
-    where_predicates: Option<&'a Vec<WherePredicate>>,
-    args: &'a Vec<(String, Box<CoqType>)>,
-    ret_ty: &'a CoqType,
-    body: &'a Option<Box<Expr>>,
-    is_dead_code: bool,
+    definition: &'a FunDefinition,
     extra_data: Option<&'a TopLevelItem>,
 }
 
-fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
+fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
     let types_for_f = types_for_f(strct_args.extra_data);
+    let strct_args = strct_args.clone();
 
     group([
-        if strct_args.is_dead_code {
+        if strct_args.definition.is_dead_code {
             concat([
                 text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                 hardline(),
@@ -942,7 +939,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
-            match strct_args.body {
+            match strct_args.definition.body {
                 Some(body) => group([
                     nest([
                         text("Parameter "),
@@ -950,7 +947,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                         text(" : "),
                         // get type of argument named f
                         // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                        concat(strct_args.args.iter().map(|(name, ty)| {
+                        concat(strct_args.definition.args.iter().map(|(name, ty)| {
                             if name == "f" {
                                 ty.to_doc_tuning(false)
                             } else {
@@ -959,7 +956,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                         })),
                         text(" -> "),
                         types_for_f,
-                        strct_args.ret_ty.to_doc(false),
+                        strct_args.definition.ret_ty.to_doc(false),
                         text("."),
                     ]),
                     hardline(),
@@ -970,7 +967,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                         text(" : "),
                         text("Notation.DoubleColon"),
                         line(),
-                        concat(strct_args.args.iter().map(|(name, ty)| {
+                        concat(strct_args.definition.args.iter().map(|(name, ty)| {
                             if name == "f" {
                                 ty.to_doc_tuning(false)
                             } else {
@@ -999,7 +996,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
         } else {
             nil()
         },
-        match strct_args.body {
+        match strct_args.definition.body {
             None => nest([nest([
                 nest([
                     text("Parameter"),
@@ -1017,31 +1014,29 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                 ]),
                 line(),
                 // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
-                match strct_args.ty_params {
-                    None => nil(),
-                    Some(ty_params) => {
-                        if ty_params.is_empty() {
-                            nil()
-                        } else {
-                            concat([
-                                text("forall"),
-                                line(),
-                                nest([intersperse(
-                                    ty_params.iter().map(|t| {
-                                        concat([text("{"), text(t), text(" : "), text("Set}")])
-                                    }),
-                                    [line()],
-                                )]),
-                                text(","),
-                                line(),
-                            ])
-                        }
+                {
+                    let ty_params = strct_args.definition.ty_params;
+                    if ty_params.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            text("forall"),
+                            line(),
+                            nest([intersperse(
+                                ty_params.iter().map(|t| {
+                                    concat([text("{"), text(t), text(" : "), text("Set}")])
+                                }),
+                                [line()],
+                            )]),
+                            text(","),
+                            line(),
+                        ])
                     }
                 },
                 // where predicates types
-                match strct_args.where_predicates {
-                    None => nil(),
-                    Some(where_predicates) => concat(where_predicates.iter().map(|predicate| {
+                {
+                    let where_predicates = strct_args.definition.where_predicates;
+                    concat(where_predicates.iter().map(|predicate| {
                         nest([
                             text("forall"),
                             line(),
@@ -1049,17 +1044,18 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                             text(","),
                             line(),
                         ])
-                    })),
+                    }))
                 },
                 // argument types
                 concat(
                     strct_args
+                        .definition
                         .args
                         .iter()
                         .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
                 ),
                 // return type
-                strct_args.ret_ty.to_doc(false),
+                strct_args.definition.ret_ty.to_doc(false),
                 text("."),
             ])]),
             Some(body) => nest([
@@ -1067,34 +1063,32 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     nest([text("Definition"), line(), text(strct_args.name)]),
                     line(),
                     monadic_typeclass_parameter(),
-                    match strct_args.ty_params {
-                        None => nil(),
-                        Some(ty_params) => {
-                            if ty_params.is_empty() {
-                                nil()
-                            } else {
-                                concat([
+                    {
+                        let ty_params = strct_args.definition.ty_params;
+                        if ty_params.is_empty() {
+                            nil()
+                        } else {
+                            concat([
+                                line(),
+                                nest([
+                                    text("{"),
+                                    intersperse(ty_params.iter().map(text), [line()]),
                                     line(),
-                                    nest([
-                                        text("{"),
-                                        intersperse(ty_params.iter().map(text), [line()]),
-                                        line(),
-                                        text(": Set}"),
-                                    ]),
-                                ])
-                            }
+                                    text(": Set}"),
+                                ]),
+                            ])
                         }
                     },
                     line(),
-                    match strct_args.where_predicates {
-                        None => nil(),
-                        Some(where_predicates) => concat(
+                    {
+                        let where_predicates = strct_args.definition.where_predicates;
+                        concat(
                             where_predicates
                                 .iter()
                                 .map(|predicate| concat([predicate.to_doc(), line()])),
-                        ),
+                        )
                     },
-                    concat(strct_args.args.iter().map(|(name, ty)| {
+                    concat(strct_args.definition.args.iter().map(|(name, ty)| {
                         concat([
                             nest([
                                 text("("),
@@ -1111,7 +1105,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     nest([
                         text(":"),
                         line(),
-                        strct_args.ret_ty.to_doc(false),
+                        strct_args.definition.ret_ty.to_doc(false),
                         text(" :="),
                     ]),
                 ]),
@@ -1395,12 +1389,14 @@ impl ImplItem {
             } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
-                    ty_params: Some(ty_params),
-                    where_predicates: Some(where_predicates),
-                    args,
-                    ret_ty,
-                    body,
-                    is_dead_code: *is_dead_code,
+                    definition: &FunDefinition {
+                        ty_params: *ty_params,
+                        where_predicates: *where_predicates,
+                        args: *args,
+                        ret_ty: *ret_ty,
+                        body: *body,
+                        is_dead_code: *is_dead_code,
+                    },
                     extra_data: *extra_data,
                 };
 
@@ -1544,14 +1540,17 @@ impl TopLevelItem {
                         is_dead_code,
                     },
             } => {
+                let def = Box::new(FunDefinition {
+                    ty_params: ty_params.clone(),
+                    where_predicates: where_predicates.clone(),
+                    args: args.clone(),
+                    ret_ty: ret_ty.clone(),
+                    body: body.clone(),
+                    is_dead_code: *is_dead_code,
+                });
                 let afftd = ArgumentsForFnToDoc {
                     name,
-                    ty_params: Some(ty_params),
-                    where_predicates: Some(where_predicates),
-                    args,
-                    ret_ty,
-                    body,
-                    is_dead_code: *is_dead_code,
+                    definition: &*def,
                     extra_data: *extra_data,
                 };
 
