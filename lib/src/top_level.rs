@@ -1086,29 +1086,11 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     line(),
                     match strct_args.where_predicates {
                         None => nil(),
-                        Some(where_predicates) => concat(where_predicates.iter().map(
-                            |WherePredicate {
-                                 bound: TraitBound { name, ty_params },
-                                 ty,
-                             }| {
-                                concat([
-                                    nest([
-                                        text("`{"),
-                                        name.to_doc(),
-                                        text(".Trait"),
-                                        line(),
-                                        concat(
-                                            ty_params
-                                                .iter()
-                                                .map(|param| concat([param.to_doc(), line()])),
-                                        ),
-                                        ty.to_doc(true),
-                                        text("}"),
-                                    ]),
-                                    line(),
-                                ])
-                            },
-                        )),
+                        Some(where_predicates) => {
+                            concat(where_predicates.iter().map(|WherePredicate { bound, ty }| {
+                                concat([bound.to_doc(ty.to_doc(true)), line()])
+                            }))
+                        }
                     },
                     concat(strct_args.args.iter().map(|(name, ty)| {
                         concat([

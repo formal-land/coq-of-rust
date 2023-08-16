@@ -1673,8 +1673,8 @@ Module
       `{H : State.Trait}
       {E : Set}
       `{core.convert.Into.Trait
-        (T := ink.reflect.event.ContractEventBase.Type_)
-        E}
+        E
+        (T := ink.reflect.event.ContractEventBase.Type_)}
       (self : Self)
       (event : E)
       : M (H := H) unit :=
@@ -1922,7 +1922,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       `{H : State.Trait}
       {E B : Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait (E := E) B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2206,7 +2206,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
       `{H : State.Trait}
       {E B : Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait (E := E) B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2261,7 +2261,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
       `{H : State.Trait}
       {E B : Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait (E := E) B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -3961,8 +3961,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       `{H : State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait
-        (Args := (ref (Slice Root.core.primitive.u8)))
-        F}
+        F
+        (Args := (ref (Slice Root.core.primitive.u8)))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -4650,8 +4650,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       `{H : State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait
-        (Args := (ref (Slice Root.core.primitive.u8)))
-        F}
+        F
+        (Args := (ref (Slice Root.core.primitive.u8)))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
