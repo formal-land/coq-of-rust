@@ -14,6 +14,19 @@ Module SomeType.
 End SomeType.
 Definition SomeType := @SomeType.t.
 
+Module OtherType.
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : bool;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
+End OtherType.
+Definition OtherType := @OtherType.t.
+
 Module inner_mod.
   Parameter bar : forall `{H : State.Trait}, M (H := H) unit.
   
