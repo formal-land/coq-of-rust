@@ -46,15 +46,6 @@ Module Impl_functions_order_SomeType.
   }.
 End Impl_functions_order_SomeType.
 
-Definition depends_on_trait_impl
-    `{H : State.Trait}
-    (u : u32)
-    (b : bool)
-    : M (H := H) unit :=
-  let* _ := (functions_order.OtherType.Build_t b).["some_trait_foo"] in
-  let* _ := (functions_order.SomeType.Build_t u).["some_trait_foo"] in
-  Pure tt.
-
 Module SomeTrait.
   Class Trait (Self : Set) : Set := {
     some_trait_foo `{H : State.Trait} : (ref Self) -> (M (H := H) unit);
@@ -144,6 +135,15 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       some_trait_bar;
   }.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+
+Definition depends_on_trait_impl
+    `{H : State.Trait}
+    (u : u32)
+    (b : bool)
+    : M (H := H) unit :=
+  let* _ := (functions_order.OtherType.Build_t b).["some_trait_foo"] in
+  let* _ := (functions_order.SomeType.Build_t u).["some_trait_foo"] in
+  Pure tt.
 
 Module inner_mod.
   Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
