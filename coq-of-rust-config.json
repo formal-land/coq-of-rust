@@ -26,6 +26,7 @@
     },
     "ink_env": {
       "top_level": [
+        "arithmetic",
         "types",
         "AtLeast32BitUnsigned",
         "AccountId",
@@ -94,7 +95,6 @@
         "set_code_hash",
         "set_code_hash2",
         "call_runtime",
-        "arithmetic",
         "Add",
         "AddAssign",
         "Div",
