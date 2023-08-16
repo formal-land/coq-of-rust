@@ -82,8 +82,6 @@ pub(crate) fn reorder_definitions_inplace(
             return Ordering::Equal;
         };
 
-        eprintln!("------------> {}", get_name(tcx, a_id));
-
         let order = config_get_reorder(env, &a_context);
         let a_name = get_name(tcx, a_id);
         let b_name = get_name(tcx, b_id);
@@ -112,7 +110,9 @@ pub(crate) fn reorder_definitions_inplace(
             if !name.is_empty() && name != "test" && name != "std" {
                 Some(name)
             } else {
-                eprintln!("Reorder debug: empty indent for: {:?}", def.hir_id());
+                if env.configuration.debug_reorder {
+                    eprintln!("Reorder debug: empty indent for: {:?}", def.hir_id());
+                };
                 None
             }
         })
