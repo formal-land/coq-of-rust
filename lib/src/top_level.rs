@@ -43,18 +43,23 @@ enum TraitItem {
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct FunDefinition {
+    ty_params: Vec<String>,
+    where_predicates: Vec<WherePredicate>,
+    args: Vec<(String, Box<CoqType>)>,
+    ret_ty: Box<CoqType>,
+    body: Option<Box<Expr>>,
+    is_method: bool,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum ImplItem {
     Const {
         body: Box<Expr>,
         is_dead_code: bool,
     },
     Definition {
-        ty_params: Vec<String>,
-        where_predicates: Vec<WherePredicate>,
-        args: Vec<(String, Box<CoqType>)>,
-        ret_ty: Box<CoqType>,
-        body: Option<Box<Expr>>,
-        is_method: bool,
+        definition: FunDefinition,
         is_dead_code: bool,
     },
     Type {
@@ -557,12 +562,14 @@ fn compile_impl_item_refs(
                         let args = arg_names.zip(arg_tys).collect();
                         let body = give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize);
                         ImplItem::Definition {
-                            ty_params,
-                            where_predicates,
-                            args,
-                            ret_ty,
-                            body,
-                            is_method,
+                            definition: FunDefinition {
+                                ty_params,
+                                where_predicates,
+                                args,
+                                ret_ty,
+                                body,
+                                is_method,
+                            },
                             is_dead_code,
                         }
                     }
@@ -1129,26 +1136,31 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             }
         }
         ImplItem::Definition {
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty,
-            body,
-            is_method,
+            definition:
+                FunDefinition {
+                    ty_params,
+                    where_predicates,
+                    args,
+                    ret_ty,
+                    body,
+                    is_method,
+                },
             is_dead_code,
         } => ImplItem::Definition {
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty: CoqType::monad(mt_ty(ret_ty)),
-            body: match body {
-                None => body,
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr::Block(Box::new(body))))
-                }
+            definition: FunDefinition {
+                ty_params,
+                where_predicates,
+                args,
+                ret_ty: CoqType::monad(mt_ty(ret_ty)),
+                body: match body {
+                    None => body,
+                    Some(body) => {
+                        let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                        Some(Box::new(Expr::Block(Box::new(body))))
+                    }
+                },
+                is_method,
             },
-            is_method,
             is_dead_code,
         },
         ImplItem::Type { .. } => item,
@@ -1368,12 +1380,15 @@ impl ImplItem {
                 ),
             ]),
             ImplItem::Definition {
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty,
-                body,
-                is_method,
+                definition:
+                    FunDefinition {
+                        ty_params,
+                        where_predicates,
+                        args,
+                        ret_ty,
+                        body,
+                        is_method,
+                    },
                 is_dead_code,
             } => {
                 let afftd = ArgumentsForFnToDoc {
