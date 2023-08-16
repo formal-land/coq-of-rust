@@ -26,6 +26,19 @@ impl GetHirId for ImplItemRef {
     }
 }
 
+fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
+    let a_name = tcx.hir().ident(a_id).as_str().to_string();
+    if a_name.is_empty() {
+        let a_node_opt = tcx.hir().find(a_id);
+        match a_node_opt {
+            Some(node) => get_impl_type_opt(node).unwrap_or(a_name),
+            None => a_name,
+        }
+    } else {
+        a_name
+    }
+}
+
 /// Reorder a vector of definitions to match the contents of the
 /// configuration file. The reordering happens before the compilation
 /// i.e. before calling the `compile_...` functions, in the
@@ -43,6 +56,22 @@ pub(crate) fn reorder_definitions_inplace(
         return;
     }
 
+    if env.configuration.debug_reorder {
+        eprintln!("Reorder debug: ----------------------------");
+        eprintln!(
+            "Reorder debug: Reordering definitions at {}",
+            get_context_name(tcx, &definitions[0].hir_id())
+        );
+        eprintln!(
+            "Reorder debug: {}",
+            definitions
+                .iter()
+                .map(|def| { tcx.hir().ident(def.hir_id()).as_str().to_string() })
+                .collect::<Vec<String>>()
+                .join("\nReorder debug: ")
+        );
+    }
+
     definitions.sort_by(|a, b| {
         let a_id = a.hir_id();
         let b_id = b.hir_id();
@@ -53,9 +82,11 @@ pub(crate) fn reorder_definitions_inplace(
             return Ordering::Equal;
         };
 
+        eprintln!("------------> {}", get_name(tcx, a_id));
+
         let order = config_get_reorder(env, &a_context);
-        let a_name = tcx.hir().ident(a_id).as_str().to_string();
-        let b_name = tcx.hir().ident(b_id).as_str().to_string();
+        let a_name = get_name(tcx, a_id);
+        let b_name = get_name(tcx, b_id);
 
         if a_name.is_empty() || b_name.is_empty() {
             return Ordering::Equal;
@@ -77,15 +108,32 @@ pub(crate) fn reorder_definitions_inplace(
     let identifiers = definitions
         .iter()
         .filter_map(|def| {
-            let name = tcx.hir().ident(def.hir_id()).as_str().to_string();
+            let name = get_name(tcx, def.hir_id());
             if !name.is_empty() && name != "test" && name != "std" {
                 Some(name)
             } else {
+                eprintln!("Reorder debug: empty indent for: {:?}", def.hir_id());
                 None
             }
         })
         .unique()
         .collect::<Vec<String>>();
+
+    if env.configuration.debug_reorder {
+        eprintln!(
+            "Reorder debug: Reordered definitions at {}",
+            get_context_name(tcx, &definitions[0].hir_id())
+        );
+        eprintln!(
+            "Reorder debug: {}",
+            definitions
+                .iter()
+                .map(|def| { tcx.hir().ident(def.hir_id()).as_str().to_string() })
+                .collect::<Vec<String>>()
+                .join("\nReorder debug: ")
+        );
+        eprintln!("Reorder debug: ----------------------------");
+    }
 
     let context = get_context_name(tcx, &definitions[0].hir_id());
     env.reorder_map.insert(context, identifiers);

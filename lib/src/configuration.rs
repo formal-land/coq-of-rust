@@ -22,6 +22,7 @@ pub(crate) struct Configuration {
     ///  ...
     /// }
     pub(crate) reorder: Reorder,
+    pub(crate) debug_reorder: bool,
 }
 
 pub(crate) fn get_configuration(configuration_file_path: &str) -> Configuration {
