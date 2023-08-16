@@ -1,8 +1,11 @@
 {
   "axiomatize": false,
+  "debug_reorder": true,
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": [
+        "depends_on_trait_impl",
+        "SomeTrait",
         "foo",
         "inner_mod",
         "main"
