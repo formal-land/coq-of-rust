@@ -44,18 +44,80 @@ def sub_exactly_n(pattern, replacement, text, times) -> str:
         )
     else:
         raise ValueError(
-            f"Pattern {pattern} not found exactly {times} times in text")
+            f"Pattern {pattern} not found exactly {times} times in text\n" +
+            f"It was found {len(matches)} times."
+        )
 
 
-def sub_exactly_once(pattern, replacement, text) -> str:
+def sub_exactly_once(
+    pattern,
+    replacement,
+    text,
+) -> str:
     return sub_exactly_n(pattern, replacement, text, 1)
+
+
+def update_ink_e2e_macro():
+    file_name = "ink_e2e_macro.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = \
+        sub_exactly_once(
+            pattern,
+            pattern + """
+Require CoqOfRust.ink.proc_macro.
+Require CoqOfRust.ink.syn.""",
+            content,
+        )
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
+def update_ink_macro():
+    file_name = "ink_macro.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = \
+        sub_exactly_once(
+            pattern,
+            pattern + """
+Require CoqOfRust.ink.proc_macro.
+Require CoqOfRust.ink.proc_macro2.
+Require CoqOfRust.ink.syn.
+Require CoqOfRust.ink.synstructure.""",
+            content,
+        )
+    content = \
+        sub_exactly_once(
+            """End storage_item.
+
+Parameter generate""",
+            """End storage_item.
+
+(* Parameter generate""",
+            content,
+        )
+    content = \
+        sub_exactly_once(
+            r"""M \(H := H\) \(syn.error.Result proc_macro2.TokenStream\).
+
+Module trait_def.""",
+            """M (H := H) (syn.error.Result proc_macro2.TokenStream). *)
+
+Module trait_def.""",
+            content,
+        )
+    with open(file_name, "w") as f:
+        f.write(content)
 
 
 def update_ink_primitives():
     file_name = "ink_primitives.v"
     with open(file_name, "r") as f:
         content = f.read()
-    # NOTE: Commented out because the generics are being satisfied in newer commits. 
+    # NOTE: Commented out because the generics are being satisfied in newer commits.
     # content = \
     #     sub_exactly_once(
     #         "Definition MessageResult",
@@ -119,7 +181,9 @@ Require CoqOfRust.ink.parity_scale_codec.""",
         f.write(content)
 
 
+update_ink_e2e_macro()
 update_ink_env()
+update_ink_macro()
 update_ink_primitives()
-update_storage()
 update_storage_traits()
+update_storage()

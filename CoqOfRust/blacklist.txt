@@ -1,8 +1,6 @@
 examples/cargo/concurrent_tests.v
 examples/conversion/from.v
 examples/conversion/into.v
-examples/conversion/converting_to_string.v
-examples/conversion/parsing_a_string.v
 examples/custom_types/constants.v
 examples/custom_types/enums_c_like.v
 examples/custom_types/enums_testcase_linked_list.v
@@ -233,7 +231,6 @@ ink/ink_e2e.v
 ink/ink_e2e_macro.v
 ink/ink_engine.v
 ink/ink_env.v
-ink/ink_macro.v
 # _std/error.v
 # _std/io.v
 _std/iter_type.v

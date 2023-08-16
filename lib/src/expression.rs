@@ -60,6 +60,7 @@ pub(crate) enum Expr {
         object: Box<Expr>,
         func: String,
         args: Vec<Expr>,
+        generic_tys: Vec<CoqType>,
     },
     Lambda {
         args: Vec<Pattern>,
@@ -329,24 +330,28 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 }),
             )
         }),
-        Expr::MethodCall { object, func, args } => {
-            monadic_let(fresh_vars, *object, |fresh_vars, object| {
-                monadic_lets(
-                    fresh_vars,
-                    args,
-                    Box::new(|fresh_vars, args| {
-                        (
-                            Stmt::Expr(Box::new(Expr::MethodCall {
-                                object: Box::new(object),
-                                func,
-                                args,
-                            })),
-                            fresh_vars,
-                        )
-                    }),
-                )
-            })
-        }
+        Expr::MethodCall {
+            object,
+            func,
+            args,
+            generic_tys,
+        } => monadic_let(fresh_vars, *object, |fresh_vars, object| {
+            monadic_lets(
+                fresh_vars,
+                args,
+                Box::new(|fresh_vars, args| {
+                    (
+                        Stmt::Expr(Box::new(Expr::MethodCall {
+                            object: Box::new(object),
+                            func,
+                            args,
+                            generic_tys: generic_tys.into_iter().map(mt_ty_unboxed).collect(),
+                        })),
+                        fresh_vars,
+                    )
+                }),
+            )
+        }),
         Expr::Lambda { args, body } => {
             let (body, _) = mt_expression(FreshVars::new(), *body);
             (
@@ -614,6 +619,7 @@ fn to_valid_coq_identifier(ident: String) -> String {
         _ => ident,
     }
 }
+
 /// decides how to compile an object of type LangItem, when it acts like a function
 /// in a function call
 fn compile_lang_item_in_a_call(lang_item: rustc_hir::LangItem, args: &[Expr]) -> Expr {
@@ -635,7 +641,12 @@ fn compile_lang_item_in_a_call(lang_item: rustc_hir::LangItem, args: &[Expr]) ->
                     while compiling rustc_hir::QPath::LangItem in ExprKind::Path in ExprKind::Call",
                 )
                 .to_vec();
-            Expr::MethodCall { object, func, args }
+            Expr::MethodCall {
+                object,
+                func,
+                args,
+                generic_tys: vec![],
+            }
         }
     }
 }
@@ -685,6 +696,18 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             }
         }
         ExprKind::MethodCall(path_segment, object, args, _) => {
+            let generic_tys: Vec<CoqType> = path_segment
+                .args
+                .map(|generics| {
+                    let rustc_hir::GenericArgs { args, .. } = generics;
+                    args.iter()
+                        .filter_map(|ty| match ty {
+                            rustc_hir::GenericArg::Type(ty) => Some(*compile_type(env, ty)),
+                            _ => None,
+                        })
+                        .collect::<Vec<CoqType>>()
+                })
+                .unwrap_or(vec![]);
             let object = compile_expr(env, object);
             let func = path_segment.ident.to_string();
             let args: Vec<_> = args.iter().map(|expr| compile_expr(env, expr)).collect();
@@ -692,6 +715,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 object: Box::new(object),
                 func,
                 args,
+                generic_tys,
             }
         }
         ExprKind::Tup(elements) => {
@@ -709,6 +733,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 object: Box::new(expr_left),
                 func,
                 args: vec![expr_right],
+                generic_tys: vec![],
             }
         }
         ExprKind::Unary(un_op, expr) => {
@@ -718,6 +743,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 object: Box::new(expr),
                 func,
                 args: vec![],
+                generic_tys: vec![],
             }
         }
         ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
@@ -864,6 +890,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 object: Box::new(left),
                 func,
                 args: vec![right],
+                generic_tys: vec![],
             }
         }
         ExprKind::Field(base, ident) => {
@@ -1042,14 +1069,29 @@ impl Expr {
                     concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
-            Expr::MethodCall { object, func, args } => paren(
-                with_paren && !args.is_empty(),
+            Expr::MethodCall {
+                object,
+                func,
+                args,
+                generic_tys,
+            } => paren(
+                with_paren && !args.is_empty() && !generic_tys.is_empty(),
                 nest([
                     object.to_doc(true),
                     text(".["),
                     text(format!("\"{func}\"")),
                     text("]"),
                     concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
+                    if !generic_tys.is_empty() {
+                        text(" : M")
+                    } else {
+                        nil()
+                    },
+                    concat(
+                        generic_tys
+                            .iter()
+                            .map(|generic| concat([line(), generic.to_doc(true)])),
+                    ),
                 ]),
             ),
             Expr::Lambda { args, body } => paren(

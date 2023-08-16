@@ -75,7 +75,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
         (fun c =>
           let* α0 := c.["join"] in
           α0.["unwrap"]) in
-    α1.["sum"] in
+    α1.["sum"] : M u32 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of final_result) in

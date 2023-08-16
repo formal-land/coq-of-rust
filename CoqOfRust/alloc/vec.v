@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.alloc.
+Require Import CoqOfRust.core.alloc.
 (* Require Import CoqOfRust._std.iter. *)
 Require Import CoqOfRust._std.ops.
 
@@ -98,9 +98,9 @@ where
 { /* private fields */ }
 *)
 Module Vec.
-  Parameter t : forall (T A : Set), Set.
+  Parameter t : forall (T (*A*) : Set), Set.
 End Vec.
-Definition Vec (T : Set) (A : option Set) := Vec.t T (defaultType A Global).
+Definition Vec (T : Set) (*(A : option Set)*) := Vec.t T (*(defaultType A Global)*).
 
   (* 
   let A_type := (defaultType A Global) in

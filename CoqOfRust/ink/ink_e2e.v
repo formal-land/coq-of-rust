@@ -1019,14 +1019,11 @@ Definition PolkadotConfig : Set :=
 Definition Signer (C : Set) : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
-Definition INIT `{H : State.Trait} : std.sync.once.Once :=
-  run (std.sync.once.Once::["new"]).
+Parameter INIT : forall `{H : State.Trait}, std.sync.once.Once.
 
-Definition
-    LOG_PREFIX
-    `{H : State.Trait} :
-    std.thread.local.LocalKey (core.cell.RefCell alloc.string.String) :=
-  run (std.thread.local.LocalKey::["new"] ink_e2e.LOG_PREFIX.__getit).
+Parameter LOG_PREFIX :
+  forall `{H : State.Trait},
+  std.thread.local.LocalKey (core.cell.RefCell alloc.string.String).
 
 Parameter log_prefix : forall `{H : State.Trait},
     M (H := H) alloc.string.String.

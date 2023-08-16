@@ -11,7 +11,7 @@ Definition double_first
   let* α0 := vec.["first"] in
   α0.["map"]
     (fun first =>
-      let* α0 := first.["parse"] in
+      let* α0 := first.["parse"] : M i32 in
       α0.["map"] (fun n => 2.["mul"] n)).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -152,6 +152,15 @@ Global Instance Method_destroy `{State.Trait} (A : Set) :
 Global Instance Method_ne_u64 `{State.Trait} :
   Notation.Dot "ne" (T := u64 -> u64 -> M bool). Admitted.
 
+Require CoqOfRust.alloc.boxed.
+Require CoqOfRust.alloc.string.
+Require CoqOfRust.alloc.vec.
+
+Module alloc.
+  Export CoqOfRust.alloc.boxed.
+  Export CoqOfRust.alloc.string.
+  Export CoqOfRust.alloc.vec.
+End alloc.
 
 (* @TODO:
    1. Move this to its folders
@@ -169,6 +178,8 @@ Global Instance Method_ne_u64 `{State.Trait} :
    this case).
 *)
 
+Require CoqOfRust.core.alloc.
+Require CoqOfRust.core.cell.
 Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
 Require CoqOfRust.core.convert.
@@ -180,6 +191,8 @@ Require CoqOfRust.core.result.
 Require CoqOfRust.core.panic.unwind_safe.
 
 Module core.
+  Export CoqOfRust.core.alloc.
+  Export CoqOfRust.core.cell.
   Export CoqOfRust.core.clone.
   Export CoqOfRust.core.cmp.
   Export CoqOfRust.core.convert.
@@ -975,32 +988,6 @@ Module core.
   End ops.
 End core.
 
-Module alloc.
-  Module boxed.
-    Definition Box (A : Set) : Set := A.
-
-    Definition new `{State.Trait} {A : Set} (x : A) : M (Box A) := Pure x.
-
-    Global Instance Method_Box_new `{State.Trait} {A : Set} :
-      Notation.DoubleColon Box "new" := {
-      Notation.double_colon (x : A) := new x;
-    }.
-  End boxed.
-
-  Module string.
-    Definition String : Set := string.
-  End string.
-
-  Module Allocator.
-    Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
-      (* TODO *)
-    }.
-    Global Set Primitive Projections.
-  End Allocator.
-End alloc.
-
-Require CoqOfRust._std.alloc.
 Require CoqOfRust._std.any.
 Require CoqOfRust._std.arch.
 Require CoqOfRust._std.array.
@@ -1009,8 +996,6 @@ Require CoqOfRust._std.assert_matches.
 Require CoqOfRust._std.async_iter.
 Require CoqOfRust._std.backtrace.
 Require CoqOfRust._std.borrow.
-Require CoqOfRust._std.boxed.
-Require CoqOfRust._std.cell.
 Require CoqOfRust._std.char.
 Require CoqOfRust._std.collections.
 Require CoqOfRust._std.env.
@@ -1040,24 +1025,19 @@ Require Import CoqOfRust._std.rc.
 Require Import CoqOfRust._std.simd.
 Require Import CoqOfRust._std.slice.
 Require Import CoqOfRust._std.str.
-Require Import CoqOfRust._std.string.
 Require Import CoqOfRust._std.sync.
 Require Import CoqOfRust._std.task.
 Require Import CoqOfRust._std.thread.
 Require Import CoqOfRust._std.time.
-Require Import CoqOfRust._std.vec.
 
 
 Module std.
-  Module alloc := _std.alloc.
   Module any := _std.any.
   Module arch := _std.arch.
   Module array := _std.array.
   Module ascii := _std.ascii.
   Module backtrace := _std.backtrace.
   Module borrow := _std.borrow.
-  Module boxed := _std.boxed.
-  Module cell := _std.cell.
   Module char := _std.char.
   Module clone := core.clone.
   Module cmp := core.cmp.
@@ -1088,12 +1068,10 @@ Module std.
   Module simd := _std.simd.
   Module slice := _std.slice.
   Module str := _std.str.
-  Module string := _std.string.
   Module sync := _std.sync.
   Module task := _std.task.
   Module thread := _std.thread.
   Module time := _std.time.
-  Module vec := _std.vec.
 End std.
 
 (*** std instances *)
@@ -1114,7 +1092,7 @@ Module hash_Instances.
 
   (** Hasher implementation for DefaultHasher *)
   Global Instance DefaultHasher_Hasher :
-    core.hash.Hasher.Trait std.collections.hash_map.DefaultHasher. Admitted.
+    core.hash.Hasher.Trait std.collections.hash.map.DefaultHasher. Admitted.
 
   (** Hash implementation for primitive types *)
   Global Instance Hash_for_unit : core.hash.Hash.Trait unit. Admitted.
@@ -1280,6 +1258,23 @@ Global Instance IDebug11 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 : Set}
     core.fmt.Debug.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9 * A10 * A11 * A12).
   Admitted.
 End Debug_Tuple_Instances.
+
+Module ToString_Instances.
+  Global Instance ToString_on_Display {Self : Set}
+    `{core.fmt.Display.Trait Self} :
+    alloc.string.ToString.Trait Self.
+  Admitted.
+End ToString_Instances.
+
+Module Parse_Instances.
+  Global Instance Parse_u32 `{H : State.Trait} :
+    Notation.Dot "parse" (T := string -> M u32).
+  Admitted.
+
+  Global Instance Parse_bool `{H : State.Trait} :
+    Notation.Dot "parse" (T := string -> M bool).
+  Admitted.
+End Parse_Instances.
 
 Module _crate.
   Module intrinsics.
@@ -1488,7 +1483,7 @@ Module Impl_Slice.
       forall `{State.Trait} {T (* A *) : Set}
       (* `{(* core. *) alloc.Allocator.Trait A} *)
       (b : alloc.boxed.Box (Slice T) (* A *)),
-        M (Vec T None (* (Some A) *)).
+        M (alloc.vec.Vec T (* (Some A) *)).
   End hack.
   Definition hack := hack.t.
 
@@ -1506,15 +1501,23 @@ Module Impl_Slice.
     Definition Self := Slice T.
 
     Definition into_vec `{State.Trait}
-      (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *)
-      (self : ref Self) (* (alloc : A) *) : M (Vec T None (* (Some A) *)) :=
-        hack::["into_vec"] self.
+      {A : Set} `{alloc.Allocator.Trait A}
+      (self : ref Self) (alloc : A) :
+      M (alloc.vec.Vec T).
+    Admitted.
 
     Global Instance Method_into_vec `{State.Trait}
       (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *) :
       Notation.DoubleColon (Slice T) "into_vec" := {
         Notation.double_colon (self : ref Self) (* (alloc : A) *) :=
           into_vec self (* alloc *);
+      }.
+
+    Global Instance Method_into_vec_box `{State.Trait}
+      (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *) :
+      Notation.DoubleColon (Slice T) "into_vec" := {
+        Notation.double_colon (self : alloc.boxed.Box Self) (* (alloc : A) *) :=
+          hack.into_vec self (* alloc *);
       }.
   End Impl_Slice.
 End Impl_Slice.
@@ -1607,10 +1610,10 @@ Module Impl_IntoIter_for_Vec.
   Section Impl_IntoIter_for_Vec.
   Context {T (* A *) : Set}.
 (*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := Vec T None (* (Some A) *).
+  Definition Self := alloc.vec.Vec T (* (Some A) *).
 
   Definition Item := T.
-  Definition IntoIter := std.vec.IntoIter T None (* (Some A) *).
+  Definition IntoIter := alloc.vec.IntoIter T None (* (Some A) *).
 
   Parameter into_iter :
     forall `{State.Trait}, Self -> M IntoIter.
@@ -1633,7 +1636,7 @@ Module Impl_Iterator_for_Vec_IntoIter.
   Section Impl_Iterator_for_Vec_IntoIter.
   Context {T (* A *) : Set}.
 (*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := std.vec.IntoIter T None (* (Some A) *).
+  Definition Self := alloc.vec.IntoIter T None (* (Some A) *).
 
   Definition Item := T.
 
@@ -1652,10 +1655,10 @@ Module Impl_IntoIter_for_Vec_IntoIter.
   Section Impl_IntoIter_for_Vec_IntoIter.
   Context {T (* A *) : Set}.
 (*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := std.vec.IntoIter T None (* (Some A) *).
+  Definition Self := alloc.vec.IntoIter T None (* (Some A) *).
 
   Definition Item := T.
-  Definition IntoIter := std.vec.IntoIter T None (* (Some A) *).
+  Definition IntoIter := alloc.vec.IntoIter T None (* (Some A) *).
 
   Definition into_iter `{State.Trait} (self : Self) : M IntoIter := Pure self.
 
@@ -1673,7 +1676,7 @@ Module Temp_Impl_for_Vec.
   Section Temp_Impl_for_Vec.
   Context {T : Set}.
 
-  Definition Self := Vec T None.
+  Definition Self := alloc.vec.Vec T.
 
   Parameter iter : forall `{State.Trait}, ref Self -> M (std.slice.Iter T).
   Parameter iter_mut :
@@ -1695,7 +1698,7 @@ Module Impl_Debug_for_Vec.
   Context `{core.fmt.Debug.Trait T}.
 (*   Context `{alloc.Allocator.Trait A}. *)
 
-  Definition Self := Vec T None (* (Some A) *).
+  Definition Self := alloc.vec.Vec T (* (Some A) *).
 
   Global Instance IDebug : core.fmt.Debug.Trait Self. Admitted.
   End Impl_Debug_for_Vec.
