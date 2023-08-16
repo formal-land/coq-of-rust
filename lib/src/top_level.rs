@@ -107,12 +107,7 @@ enum TopLevelItem {
     },
     Definition {
         name: String,
-        ty_params: Vec<String>,
-        where_predicates: Vec<WherePredicate>,
-        args: Vec<(String, Box<CoqType>)>,
-        ret_ty: Box<CoqType>,
-        body: Option<Box<Expr>>,
-        is_dead_code: bool,
+        definition: FunDefinition,
     },
     TypeAlias {
         name: String,
@@ -342,12 +337,14 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 compile_fn_sig_and_body_id(env, fn_sig, body_id);
             vec![TopLevelItem::Definition {
                 name,
-                ty_params: get_ty_params_names(env, generics),
-                where_predicates: get_where_predicates(tcx, env, generics),
-                args,
-                ret_ty,
-                body,
-                is_dead_code: if_marked_as_dead_code,
+                definition: FunDefinition {
+                    ty_params: get_ty_params_names(env, generics),
+                    where_predicates: get_where_predicates(tcx, env, generics),
+                    args,
+                    ret_ty,
+                    body,
+                    is_dead_code: if_marked_as_dead_code,
+                },
             }]
         }
         ItemKind::Macro(_, _) => vec![],
@@ -1230,26 +1227,31 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
         },
         TopLevelItem::Definition {
             name,
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty,
-            body,
-            is_dead_code,
+            definition:
+                FunDefinition {
+                    ty_params,
+                    where_predicates,
+                    args,
+                    ret_ty,
+                    body,
+                    is_dead_code,
+                },
         } => TopLevelItem::Definition {
             name,
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty: CoqType::monad(mt_ty(ret_ty)),
-            body: match body {
-                None => body,
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr::Block(Box::new(body))))
-                }
+            definition: FunDefinition {
+                ty_params,
+                where_predicates,
+                args,
+                ret_ty: CoqType::monad(mt_ty(ret_ty)),
+                body: match body {
+                    None => body,
+                    Some(body) => {
+                        let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                        Some(Box::new(Expr::Block(Box::new(body))))
+                    }
+                },
+                is_dead_code,
             },
-            is_dead_code,
         },
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
@@ -1532,12 +1534,15 @@ impl TopLevelItem {
             },
             TopLevelItem::Definition {
                 name,
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty,
-                body,
-                is_dead_code,
+                definition:
+                    FunDefinition {
+                        ty_params,
+                        where_predicates,
+                        args,
+                        ret_ty,
+                        body,
+                        is_dead_code,
+                    },
             } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
