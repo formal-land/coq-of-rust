@@ -1,11 +1,13 @@
 {
   "axiomatize": false,
-  "debug_reorder": true,
+  "debug_reorder": false,
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": [
-        "depends_on_trait_impl",
         "SomeTrait",
+        "Impl_SomeTrait_for_SomeType",
+        "Impl_SomeTrait_for_OtherType",
+        "depends_on_trait_impl",
         "foo",
         "inner_mod",
         "main"
