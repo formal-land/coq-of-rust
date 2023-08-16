@@ -128,7 +128,7 @@ pub(crate) fn reorder_definitions_inplace(
             "Reorder debug: {}",
             definitions
                 .iter()
-                .map(|def| { tcx.hir().ident(def.hir_id()).as_str().to_string() })
+                .map(|def| { get_name(tcx, def.hir_id()) })
                 .collect::<Vec<String>>()
                 .join("\nReorder debug: ")
         );
