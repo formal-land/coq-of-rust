@@ -2233,7 +2233,7 @@ impl TopLevelItem {
                                 &vec![],
                                 text("Notation.Dot"),
                                 text("Notation.dot"),
-                                concat([text("@"), text(name)]),
+                                text(name),
                             ),
                             TraitItem::Type { .. } => new_instance(
                                 name,

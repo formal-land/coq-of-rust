@@ -22,7 +22,7 @@ Module Animal.
   
   Global Instance Method_noise `{H : State.Trait} `(Trait)
     : Notation.Dot "noise" := {
-    Notation.dot := @noise;
+    Notation.dot := noise;
   }.
 End Animal.
 

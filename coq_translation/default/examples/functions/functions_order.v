@@ -41,11 +41,11 @@ Module SomeTrait.
   
   Global Instance Method_some_trait_foo `{H : State.Trait} `(Trait)
     : Notation.Dot "some_trait_foo" := {
-    Notation.dot := @some_trait_foo;
+    Notation.dot := some_trait_foo;
   }.
   Global Instance Method_some_trait_bar `{H : State.Trait} `(Trait)
     : Notation.Dot "some_trait_bar" := {
-    Notation.dot := @some_trait_bar;
+    Notation.dot := some_trait_bar;
   }.
 End SomeTrait.
 
