@@ -231,6 +231,7 @@ ink/ink_e2e.v
 ink/ink_e2e_macro.v
 ink/ink_engine.v
 ink/ink_env.v
+ink/pallet_contracts_primitives.v
 # _std/error.v
 # _std/io.v
 _std/iter_type.v
