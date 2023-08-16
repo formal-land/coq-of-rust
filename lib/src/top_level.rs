@@ -1037,17 +1037,15 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                 // where predicates types
                 match strct_args.where_predicates {
                     None => nil(),
-                    Some(where_predicates) => {
-                        concat(where_predicates.iter().map(|WherePredicate { bound, ty }| {
-                            concat([nest([
-                                text("forall"),
-                                line(),
-                                bound.to_doc(ty.to_doc(true)),
-                                text(","),
-                                line(),
-                            ])])
-                        }))
-                    }
+                    Some(where_predicates) => concat(where_predicates.iter().map(|predicate| {
+                        nest([
+                            text("forall"),
+                            line(),
+                            predicate.to_doc(),
+                            text(","),
+                            line(),
+                        ])
+                    })),
                 },
                 // argument types
                 concat(
@@ -1086,11 +1084,11 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     line(),
                     match strct_args.where_predicates {
                         None => nil(),
-                        Some(where_predicates) => {
-                            concat(where_predicates.iter().map(|WherePredicate { bound, ty }| {
-                                concat([bound.to_doc(ty.to_doc(true)), line()])
-                            }))
-                        }
+                        Some(where_predicates) => concat(
+                            where_predicates
+                                .iter()
+                                .map(|predicate| concat([predicate.to_doc(), line()])),
+                        ),
                     },
                     concat(strct_args.args.iter().map(|(name, ty)| {
                         concat([
