@@ -919,13 +919,12 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
 #[derive(Clone)]
 struct ArgumentsForFnToDoc<'a> {
     name: &'a String,
-    definition: &'a FunDefinition,
+    definition: FunDefinition,
     extra_data: Option<&'a TopLevelItem>,
 }
 
-fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
+fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
     let types_for_f = types_for_f(strct_args.extra_data);
-    let strct_args = strct_args.clone();
 
     group([
         if strct_args.definition.is_dead_code {
@@ -939,7 +938,8 @@ fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
-            match strct_args.definition.body {
+            let fun_definition = strct_args.definition;
+            match &fun_definition.body {
                 Some(body) => group([
                     nest([
                         text("Parameter "),
@@ -996,7 +996,7 @@ fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
         } else {
             nil()
         },
-        match strct_args.definition.body {
+        match &strct_args.definition.body {
             None => nest([nest([
                 nest([
                     text("Parameter"),
@@ -1015,7 +1015,7 @@ fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
                 line(),
                 // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
                 {
-                    let ty_params = strct_args.definition.ty_params;
+                    let ty_params = &strct_args.definition.ty_params;
                     if ty_params.is_empty() {
                         nil()
                     } else {
@@ -1035,7 +1035,7 @@ fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
                 },
                 // where predicates types
                 {
-                    let where_predicates = strct_args.definition.where_predicates;
+                    let where_predicates = &strct_args.definition.where_predicates;
                     concat(where_predicates.iter().map(|predicate| {
                         nest([
                             text("forall"),
@@ -1064,7 +1064,7 @@ fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
                     line(),
                     monadic_typeclass_parameter(),
                     {
-                        let ty_params = strct_args.definition.ty_params;
+                        let ty_params = &strct_args.definition.ty_params;
                         if ty_params.is_empty() {
                             nil()
                         } else {
@@ -1081,7 +1081,7 @@ fn fn_to_doc<'a>(strct_args: ArgumentsForFnToDoc<'a>) -> Doc<'a> {
                     },
                     line(),
                     {
-                        let where_predicates = strct_args.definition.where_predicates;
+                        let where_predicates = &strct_args.definition.where_predicates;
                         concat(
                             where_predicates
                                 .iter()
@@ -1387,16 +1387,17 @@ impl ImplItem {
                     },
                 is_method,
             } => {
+                let definition = FunDefinition {
+                    ty_params: ty_params.clone(),
+                    where_predicates: where_predicates.clone(),
+                    args: args.clone(),
+                    ret_ty: ret_ty.clone(),
+                    body: body.clone(),
+                    is_dead_code: *is_dead_code,
+                };
                 let afftd = ArgumentsForFnToDoc {
                     name,
-                    definition: &FunDefinition {
-                        ty_params: *ty_params,
-                        where_predicates: *where_predicates,
-                        args: *args,
-                        ret_ty: *ret_ty,
-                        body: *body,
-                        is_dead_code: *is_dead_code,
-                    },
+                    definition,
                     extra_data: *extra_data,
                 };
 
@@ -1540,17 +1541,17 @@ impl TopLevelItem {
                         is_dead_code,
                     },
             } => {
-                let def = Box::new(FunDefinition {
+                let definition = FunDefinition {
                     ty_params: ty_params.clone(),
                     where_predicates: where_predicates.clone(),
                     args: args.clone(),
                     ret_ty: ret_ty.clone(),
                     body: body.clone(),
                     is_dead_code: *is_dead_code,
-                });
+                };
                 let afftd = ArgumentsForFnToDoc {
                     name,
-                    definition: &*def,
+                    definition,
                     extra_data: *extra_data,
                 };
 
