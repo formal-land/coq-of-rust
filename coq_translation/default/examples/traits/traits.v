@@ -27,15 +27,15 @@ Module Animal.
   
   Global Instance Method_new `{H : State.Trait} `(Trait)
     : Notation.Dot "new" := {
-    Notation.dot := @new;
+    Notation.dot := new;
   }.
   Global Instance Method_name `{H : State.Trait} `(Trait)
     : Notation.Dot "name" := {
-    Notation.dot := @name;
+    Notation.dot := name;
   }.
   Global Instance Method_noise `{H : State.Trait} `(Trait)
     : Notation.Dot "noise" := {
-    Notation.dot := @noise;
+    Notation.dot := noise;
   }.
   Global Instance Method_talk `{H : State.Trait} `(Trait)
     : Notation.Dot "talk" := {

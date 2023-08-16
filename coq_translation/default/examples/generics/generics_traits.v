@@ -18,7 +18,7 @@ Module DoubleDrop.
   
   Global Instance Method_double_drop `{H : State.Trait} `(Trait)
     : Notation.Dot "double_drop" := {
-    Notation.dot := @double_drop;
+    Notation.dot := double_drop;
   }.
 End DoubleDrop.
 

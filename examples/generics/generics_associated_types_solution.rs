@@ -10,6 +10,7 @@ trait Contains {
     fn contains(&self, _: &Self::A, _: &Self::B) -> bool;
     fn first(&self) -> i32;
     fn last(&self) -> i32;
+    fn a(&self) -> Self::A;
 }
 
 impl Contains for Container {
@@ -32,10 +33,18 @@ impl Contains for Container {
     fn last(&self) -> i32 {
         self.1
     }
+
+    fn a(&self) -> i32 {
+        self.0
+    }
 }
 
 fn difference<C: Contains>(container: &C) -> i32 {
     container.last() - container.first()
+}
+
+fn get_a<C: Contains>(container: &C) -> C::A {
+    container.a()
 }
 
 fn main() {
