@@ -49,7 +49,7 @@ struct FunDefinition {
     args: Vec<(String, Box<CoqType>)>,
     ret_ty: Box<CoqType>,
     body: Option<Box<Expr>>,
-    is_method: bool,
+    is_dead_code: bool,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -60,7 +60,7 @@ enum ImplItem {
     },
     Definition {
         definition: FunDefinition,
-        is_dead_code: bool,
+        is_method: bool,
     },
     Type {
         ty: Box<CoqType>,
@@ -568,9 +568,9 @@ fn compile_impl_item_refs(
                                 args,
                                 ret_ty,
                                 body,
-                                is_method,
+                                is_dead_code,
                             },
-                            is_dead_code,
+                            is_method,
                         }
                     }
                     ImplItemKind::Type(ty) => ImplItem::Type {
@@ -1143,9 +1143,9 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                     args,
                     ret_ty,
                     body,
-                    is_method,
+                    is_dead_code,
                 },
-            is_dead_code,
+            is_method,
         } => ImplItem::Definition {
             definition: FunDefinition {
                 ty_params,
@@ -1159,9 +1159,9 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                         Some(Box::new(Expr::Block(Box::new(body))))
                     }
                 },
-                is_method,
+                is_dead_code,
             },
-            is_dead_code,
+            is_method,
         },
         ImplItem::Type { .. } => item,
     }
@@ -1387,9 +1387,9 @@ impl ImplItem {
                         args,
                         ret_ty,
                         body,
-                        is_method,
+                        is_dead_code,
                     },
-                is_dead_code,
+                is_method,
             } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
