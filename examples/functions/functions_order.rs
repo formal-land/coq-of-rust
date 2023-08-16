@@ -1,10 +1,16 @@
-pub struct SomeType(u32); // functions_order::SomeType
+pub struct SomeType(u32);
+pub struct OtherType(bool);
 
 impl SomeType {
     pub fn meth1(self) {
         self.meth2();
     } // functions_order::impl_SomeType::meth1
     fn meth2(self) {} // functions_order::impl_SomeType::meth2
+}
+
+fn depends_on_trait_impl(u: u32, b: bool) {
+    OtherType(b).some_trait_foo();
+    SomeType(u).some_trait_foo();
 }
 
 trait SomeTrait {
@@ -17,6 +23,11 @@ impl SomeTrait for SomeType {
         self.some_trait_bar()
     }
 
+    fn some_trait_bar(&self) {}
+}
+
+impl SomeTrait for OtherType {
+    fn some_trait_foo(&self) {}
     fn some_trait_bar(&self) {}
 }
 
