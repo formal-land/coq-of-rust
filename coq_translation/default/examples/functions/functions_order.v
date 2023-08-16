@@ -14,6 +14,19 @@ Module SomeType.
 End SomeType.
 Definition SomeType := @SomeType.t.
 
+Module OtherType.
+  Unset Primitive Projections.
+  Record t : Set := {
+    _ : bool;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_0 : Notation.Dot 0 := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
+End OtherType.
+Definition OtherType := @OtherType.t.
+
 Module Impl_functions_order_SomeType.
   Definition Self := functions_order.SomeType.
   
@@ -86,6 +99,52 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   }.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
+Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+  Definition Self := functions_order.OtherType.
+  
+  Definition some_trait_foo
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
+    Pure tt.
+  
+  Global Instance Method_some_trait_foo `{H : State.Trait} :
+    Notation.Dot "some_trait_foo" := {
+    Notation.dot := some_trait_foo;
+  }.
+  
+  Definition some_trait_bar
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
+    Pure tt.
+  
+  Global Instance Method_some_trait_bar `{H : State.Trait} :
+    Notation.Dot "some_trait_bar" := {
+    Notation.dot := some_trait_bar;
+  }.
+  
+  Global Instance I : functions_order.SomeTrait.Trait Self := {
+    functions_order.SomeTrait.some_trait_foo
+      `{H : State.Trait}
+      :=
+      some_trait_foo;
+    functions_order.SomeTrait.some_trait_bar
+      `{H : State.Trait}
+      :=
+      some_trait_bar;
+  }.
+End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+
+Definition depends_on_trait_impl
+    `{H : State.Trait}
+    (u : u32)
+    (b : bool)
+    : M (H := H) unit :=
+  let* _ := (functions_order.OtherType.Build_t b).["some_trait_foo"] in
+  let* _ := (functions_order.SomeType.Build_t u).["some_trait_foo"] in
+  Pure tt.
+
 Module inner_mod.
   Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
   
@@ -102,11 +161,11 @@ Module inner_mod.
   End nested_mod.
 End inner_mod.
 
-Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
-
 Definition bar `{H : State.Trait} : M (H := H) unit :=
   let* _ := functions_order.inner_mod.tar in
   Pure tt.
+
+Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
 
 Module nested_mod.
   Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
@@ -116,11 +175,11 @@ Module nested_mod.
     Pure tt.
 End nested_mod.
 
-Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
-
 Definition tick `{H : State.Trait} : M (H := H) unit :=
   let* _ := functions_order.inner_mod.nested_mod.tack in
   Pure tt.
+
+Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
 
 Definition foo `{H : State.Trait} : M (H := H) unit := Pure tt.
 
