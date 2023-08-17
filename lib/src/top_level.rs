@@ -26,6 +26,13 @@ pub(crate) struct TopLevelOptions {
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct FnSigAndBody {
+    args: Vec<(String, Box<CoqType>)>,
+    ret_ty: Box<CoqType>,
+    body: Option<Box<Expr>>,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum TraitItem {
     Definition {
         ty_params: Vec<String>,
@@ -163,13 +170,6 @@ enum TopLevelItem {
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct TopLevel(Vec<TopLevelItem>);
-
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-struct FnSigAndBody {
-    args: Vec<(String, Box<CoqType>)>,
-    ret_ty: Box<CoqType>,
-    body: Option<Box<Expr>>,
-}
 
 /// emits a warning with the given messages
 fn emit_warning_with_note(
