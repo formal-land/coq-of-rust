@@ -1577,7 +1577,7 @@ Module FloatConst.
       (axiom : M (H := H) Self);
   }.
 End FloatConst.
-
+*)
 Module identities.
   Module Zero.
     Class Trait
@@ -1638,7 +1638,7 @@ Module identities.
       {T : Set},
       forall `{num_traits.identities.One.Trait T}, M (H := H) T.
 End identities.
-
+(*
 Module Zero.
   Class Trait
       (Self : Set)
