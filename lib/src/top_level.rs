@@ -42,6 +42,7 @@ enum TraitItem {
     Type(Vec<TraitBound>),
 }
 
+/// fields common for all function definitions
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct FunDefinition {
     ty_params: Vec<String>,
@@ -914,29 +915,15 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
     }
 }
 
-// We can not have more than 7 arguments for the function,
-// so we put all the arguments into one struct
-#[derive(Clone)]
-struct ArgumentsForFnToDoc<'a> {
-    name: &'a String,
-    definition: &'a FunDefinition,
-    extra_data: Option<&'a TopLevelItem>,
-}
-
 fn fn_to_doc<'a>(
     name: &'a String,
     definition: &'a FunDefinition,
     extra_data: Option<&'a TopLevelItem>,
 ) -> Doc<'a> {
-    let strct_args = ArgumentsForFnToDoc {
-        name,
-        definition,
-        extra_data,
-    };
-    let types_for_f = types_for_f(strct_args.extra_data);
+    let types_for_f = types_for_f(extra_data);
 
     group([
-        if strct_args.definition.is_dead_code {
+        if definition.is_dead_code {
             concat([
                 text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                 hardline(),
@@ -946,8 +933,8 @@ fn fn_to_doc<'a>(
         },
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-        if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
-            let fun_definition = strct_args.definition;
+        if (name == "fmt") && is_extra(extra_data) {
+            let fun_definition = definition;
             match &fun_definition.body {
                 Some(body) => group([
                     nest([
@@ -956,7 +943,7 @@ fn fn_to_doc<'a>(
                         text(" : "),
                         // get type of argument named f
                         // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                        concat(strct_args.definition.args.iter().map(|(name, ty)| {
+                        concat(definition.args.iter().map(|(name, ty)| {
                             if name == "f" {
                                 ty.to_doc_tuning(false)
                             } else {
@@ -965,7 +952,7 @@ fn fn_to_doc<'a>(
                         })),
                         text(" -> "),
                         types_for_f,
-                        strct_args.definition.ret_ty.to_doc(false),
+                        definition.ret_ty.to_doc(false),
                         text("."),
                     ]),
                     hardline(),
@@ -976,7 +963,7 @@ fn fn_to_doc<'a>(
                         text(" : "),
                         text("Notation.DoubleColon"),
                         line(),
-                        concat(strct_args.definition.args.iter().map(|(name, ty)| {
+                        concat(definition.args.iter().map(|(name, ty)| {
                             if name == "f" {
                                 ty.to_doc_tuning(false)
                             } else {
@@ -1005,16 +992,16 @@ fn fn_to_doc<'a>(
         } else {
             nil()
         },
-        match &strct_args.definition.body {
+        match &definition.body {
             None => concat([
                 // if the return type is opaque define a corresponding opaque type
                 // @TODO: use also the parameter
-                if strct_args.definition.ret_ty.has_opaque_types() {
+                if definition.ret_ty.has_opaque_types() {
                     concat([
                         nest([
                             text("Parameter"),
                             line(),
-                            text([strct_args.name, "_", "ret_ty"].concat()),
+                            text([name, "_", "ret_ty"].concat()),
                             line(),
                             text(":"),
                             line(),
@@ -1029,7 +1016,7 @@ fn fn_to_doc<'a>(
                     nest([
                         text("Parameter"),
                         line(),
-                        text(strct_args.name),
+                        text(name),
                         line(),
                         text(":"),
                         line(),
@@ -1043,7 +1030,7 @@ fn fn_to_doc<'a>(
                     line(),
                     // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
                     {
-                        let ty_params = &strct_args.definition.ty_params;
+                        let ty_params = &definition.ty_params;
                         if ty_params.is_empty() {
                             nil()
                         } else {
@@ -1063,7 +1050,7 @@ fn fn_to_doc<'a>(
                     },
                     // where predicates types
                     {
-                        let where_predicates = &strct_args.definition.where_predicates;
+                        let where_predicates = &definition.where_predicates;
                         concat(where_predicates.iter().map(|predicate| {
                             nest([
                                 text("forall"),
@@ -1076,31 +1063,30 @@ fn fn_to_doc<'a>(
                     },
                     // argument types
                     concat(
-                        strct_args
-                            .definition
+                        definition
                             .args
                             .iter()
                             .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
                     ),
                     // return type
-                    if strct_args.definition.ret_ty.has_opaque_types() {
-                        let ret_ty_name = [strct_args.name, "_", "ret_ty"].concat();
-                        let ret_ty = &mut strct_args.definition.ret_ty.clone();
+                    if definition.ret_ty.has_opaque_types() {
+                        let ret_ty_name = [name, "_", "ret_ty"].concat();
+                        let ret_ty = &mut definition.ret_ty.clone();
                         ret_ty.subst_opaque_types(&ret_ty_name);
                         ret_ty.to_doc(false)
                     } else {
-                        strct_args.definition.ret_ty.to_doc(false)
+                        definition.ret_ty.to_doc(false)
                     },
                     text("."),
                 ])]),
             ]),
             Some(body) => nest([
                 nest([
-                    nest([text("Definition"), line(), text(strct_args.name)]),
+                    nest([text("Definition"), line(), text(name)]),
                     line(),
                     monadic_typeclass_parameter(),
                     {
-                        let ty_params = &strct_args.definition.ty_params;
+                        let ty_params = &definition.ty_params;
                         if ty_params.is_empty() {
                             nil()
                         } else {
@@ -1117,14 +1103,14 @@ fn fn_to_doc<'a>(
                     },
                     line(),
                     {
-                        let where_predicates = &strct_args.definition.where_predicates;
+                        let where_predicates = &definition.where_predicates;
                         concat(
                             where_predicates
                                 .iter()
                                 .map(|predicate| concat([predicate.to_doc(), line()])),
                         )
                     },
-                    concat(strct_args.definition.args.iter().map(|(name, ty)| {
+                    concat(definition.args.iter().map(|(name, ty)| {
                         concat([
                             nest([
                                 text("("),
@@ -1142,7 +1128,7 @@ fn fn_to_doc<'a>(
                         text(":"),
                         line(),
                         // @TODO: improve for opaque types with trait bounds
-                        strct_args.definition.ret_ty.to_doc(false),
+                        definition.ret_ty.to_doc(false),
                         text(" :="),
                     ]),
                 ]),
