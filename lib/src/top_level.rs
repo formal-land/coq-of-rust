@@ -203,9 +203,8 @@ fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
 fn compile_fn_sig_and_body_id(
     env: &mut Env,
     fn_sig: &rustc_hir::FnSig<'_>,
-    body_id: &rustc_hir::BodyId,
+    body: &rustc_hir::Body,
 ) -> FnSigAndBody {
-    let body = env.tcx.hir().body(*body_id);
     FnSigAndBody {
         args: get_args(env, body, fn_sig.decl.inputs, "arg"),
         ret_ty: match fn_sig.decl.output {
@@ -338,8 +337,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 return vec![];
             }
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let env_tcx = env.tcx;
             let FnSigAndBody { args, ret_ty, body } =
-                compile_fn_sig_and_body_id(env, fn_sig, body_id);
+                compile_fn_sig_and_body_id(env, fn_sig, get_body(&env_tcx, body_id));
             vec![TopLevelItem::Definition(FunDefinition {
                 name,
                 ty_params: get_ty_params_names(env, generics),
@@ -835,8 +835,9 @@ fn compile_trait_item_body(
                 ty: compile_fn_decl(env, fn_sig.decl),
             },
             TraitFn::Provided(body_id) => {
+                let env_tcx = env.tcx;
                 let FnSigAndBody { args, ret_ty, body } =
-                    compile_fn_sig_and_body_id(env, fn_sig, body_id);
+                    compile_fn_sig_and_body_id(env, fn_sig, get_body(&env_tcx, body_id));
                 TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
