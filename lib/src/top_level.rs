@@ -645,11 +645,10 @@ fn compile_ty_params<T>(
             }
             // @TODO: do we want to also support constant parameters?
             GenericParamKind::Const { ty: _, default: _ } => {
-                env.tcx
-                    .sess
-                    .struct_span_warn(param.span, "Constant parameters are not supported yet.")
-                    .note("It should be supported in future versions.")
-                    .emit();
+                let span = &param.span;
+                let warning_msg = "Constant parameters are not supported yet.";
+                let note_msg = "It should be supported in future versions.";
+                emit_warning_with_note(env, span, warning_msg, note_msg);
                 None
             }
         })
@@ -867,14 +866,10 @@ fn compile_trait_item_body(
         },
         TraitItemKind::Type(generic_bounds, concrete_type) => {
             if concrete_type.is_some() {
-                env.tcx
-                    .sess
-                    .struct_span_warn(
-                        item.span,
-                        "Concrete value of associated types is not supported yet.",
-                    )
-                    .note("It may change in future versions.")
-                    .emit();
+                let span = &item.span;
+                let warning_msg = "Concrete value of associated types is not supported yet.";
+                let note_msg = "It may change in future versions.";
+                emit_warning_with_note(env, span, warning_msg, note_msg);
             }
             let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
             TraitItem::Type(generic_bounds)
