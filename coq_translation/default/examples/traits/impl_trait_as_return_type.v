@@ -20,7 +20,7 @@ Definition combine_vecs
     `{H : State.Trait}
     (v : alloc.vec.Vec i32)
     (u : alloc.vec.Vec i32)
-    : M (H := H) _ :=
+    : M (H := H) _ (* OpaqueTy *) :=
   let* α0 := v.["into_iter"] in
   let* α1 := u.["into_iter"] in
   let* α2 := α0.["chain"] α1 in

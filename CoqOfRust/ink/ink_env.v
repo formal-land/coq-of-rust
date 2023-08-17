@@ -3839,7 +3839,9 @@ Module engine.
       End DefaultAccounts.
       Definition DefaultAccounts := @DefaultAccounts.t.
       
-      Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
+      Parameter recorded_events_ret_ty : Set.
+      Parameter recorded_events : forall `{H : State.Trait},
+          M (H := H) recorded_events_ret_ty.
       
       Parameter assert_contract_termination : forall `{H : State.Trait},
           forall
@@ -4129,7 +4131,9 @@ Module off_chain.
     End DefaultAccounts.
     Definition DefaultAccounts := @DefaultAccounts.t.
     
-    Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
+    Parameter recorded_events_ret_ty : Set.
+    Parameter recorded_events : forall `{H : State.Trait},
+        M (H := H) recorded_events_ret_ty.
     
     Parameter assert_contract_termination : forall `{H : State.Trait},
         forall
@@ -4421,7 +4425,9 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts := @DefaultAccounts.t.
   
-  Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
+  Parameter recorded_events_ret_ty : Set.
+  Parameter recorded_events : forall `{H : State.Trait},
+      M (H := H) recorded_events_ret_ty.
   
   Parameter assert_contract_termination : forall `{H : State.Trait},
       forall
@@ -4625,7 +4631,9 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts := @DefaultAccounts.t.
 
-Parameter recorded_events : forall `{H : State.Trait}, M (H := H) _.
+Parameter recorded_events_ret_ty : Set.
+Parameter recorded_events : forall `{H : State.Trait},
+    M (H := H) recorded_events_ret_ty.
 
 Parameter assert_contract_termination : forall `{H : State.Trait},
     forall
