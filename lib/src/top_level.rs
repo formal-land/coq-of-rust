@@ -923,7 +923,16 @@ struct ArgumentsForFnToDoc<'a> {
     extra_data: Option<&'a TopLevelItem>,
 }
 
-fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
+fn fn_to_doc<'a>(
+    name: &'a String,
+    definition: &'a FunDefinition,
+    extra_data: Option<&'a TopLevelItem>,
+) -> Doc<'a> {
+    let strct_args = ArgumentsForFnToDoc {
+        name,
+        definition,
+        extra_data,
+    };
     let types_for_f = types_for_f(strct_args.extra_data);
 
     group([
@@ -1406,34 +1415,26 @@ impl ImplItem {
             ImplItem::Definition {
                 definition,
                 is_method,
-            } => {
-                let afftd = ArgumentsForFnToDoc {
-                    name,
-                    definition,
-                    extra_data: *extra_data,
-                };
-
-                concat([
-                    fn_to_doc(afftd),
-                    hardline(),
-                    hardline(),
-                    if *is_method {
-                        concat([Self::class_instance_to_doc(
-                            "Method",
-                            name,
-                            "Notation.Dot",
-                            "Notation.dot",
-                        )])
-                    } else {
-                        Self::class_instance_to_doc(
-                            "AssociatedFunction",
-                            name,
-                            "Notation.DoubleColon Self",
-                            "Notation.double_colon",
-                        )
-                    },
-                ])
-            }
+            } => concat([
+                fn_to_doc(name, definition, *extra_data),
+                hardline(),
+                hardline(),
+                if *is_method {
+                    concat([Self::class_instance_to_doc(
+                        "Method",
+                        name,
+                        "Notation.Dot",
+                        "Notation.dot",
+                    )])
+                } else {
+                    Self::class_instance_to_doc(
+                        "AssociatedFunction",
+                        name,
+                        "Notation.DoubleColon Self",
+                        "Notation.double_colon",
+                    )
+                },
+            ]),
             ImplItem::Type { ty } => nest([
                 nest([
                     text("Definition"),
@@ -1542,13 +1543,7 @@ impl TopLevelItem {
                 ]),
             },
             TopLevelItem::Definition { name, definition } => {
-                let afftd = ArgumentsForFnToDoc {
-                    name,
-                    definition,
-                    extra_data: *extra_data,
-                };
-
-                fn_to_doc(afftd)
+                fn_to_doc(name, definition, *extra_data)
             }
             TopLevelItem::Module {
                 name,
