@@ -53,9 +53,7 @@ struct FunDefinition {
     name: String,
     ty_params: Vec<String>,
     where_predicates: Vec<WherePredicate>,
-    args: Vec<(String, Box<CoqType>)>,
-    ret_ty: Box<CoqType>,
-    body: Option<Box<Expr>>,
+    signature_and_body: FnSigAndBody,
     is_dead_code: bool,
 }
 
@@ -337,15 +335,13 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let env_tcx = env.tcx;
-            let FnSigAndBody { args, ret_ty, body } =
+            let signature_and_body =
                 compile_fn_sig_and_body_id(env, fn_sig, get_body(&env_tcx, body_id));
             vec![TopLevelItem::Definition(FunDefinition {
                 name,
                 ty_params: get_ty_params_names(env, generics),
                 where_predicates: get_where_predicates(tcx, env, generics),
-                args,
-                ret_ty,
-                body,
+                signature_and_body,
                 is_dead_code: if_marked_as_dead_code,
             })]
         }
@@ -576,9 +572,11 @@ fn compile_impl_item(
                 name,
                 ty_params: get_ty_params_names(env, item.generics),
                 where_predicates: get_where_predicates(tcx, env, item.generics),
-                args: get_args(env, get_body(tcx, body_id), inputs, "Pattern"),
-                ret_ty: compile_fn_ret_ty(env, output),
-                body: compile_function_body(env, get_body(tcx, body_id)),
+                signature_and_body: FnSigAndBody {
+                    args: get_args(env, get_body(tcx, body_id), inputs, "Pattern"),
+                    ret_ty: compile_fn_ret_ty(env, output),
+                    body: compile_function_body(env, get_body(tcx, body_id)),
+                },
                 is_dead_code,
             },
             is_method,
@@ -975,7 +973,7 @@ impl FunDefinition {
             // Printing instance of DoubleColon Class for [f]
             // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
             if ((&self.name) == "fmt") && is_extra(extra_data) {
-                match &self.body {
+                match &self.signature_and_body.body {
                     Some(body) => group([
                         nest([
                             text("Parameter "),
@@ -983,7 +981,7 @@ impl FunDefinition {
                             text(" : "),
                             // get type of argument named f
                             // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                            concat(self.args.iter().map(|(name, ty)| {
+                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
                                 if name == "f" {
                                     ty.to_doc_tuning(false)
                                 } else {
@@ -992,7 +990,7 @@ impl FunDefinition {
                             })),
                             text(" -> "),
                             types_for_f,
-                            self.ret_ty.to_doc(false),
+                            self.signature_and_body.ret_ty.to_doc(false),
                             text("."),
                         ]),
                         hardline(),
@@ -1003,7 +1001,7 @@ impl FunDefinition {
                             text(" : "),
                             text("Notation.DoubleColon"),
                             line(),
-                            concat(self.args.iter().map(|(name, ty)| {
+                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
                                 if name == "f" {
                                     ty.to_doc_tuning(false)
                                 } else {
@@ -1032,11 +1030,11 @@ impl FunDefinition {
             } else {
                 nil()
             },
-            match &self.body {
+            match &self.signature_and_body.body {
                 None => concat([
                     // if the return type is opaque define a corresponding opaque type
                     // @TODO: use also the parameter
-                    if self.ret_ty.has_opaque_types() {
+                    if self.signature_and_body.ret_ty.has_opaque_types() {
                         concat([
                             nest([
                                 text("Parameter"),
@@ -1103,18 +1101,19 @@ impl FunDefinition {
                         },
                         // argument types
                         concat(
-                            self.args
+                            self.signature_and_body
+                                .args
                                 .iter()
                                 .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
                         ),
                         // return type
-                        if self.ret_ty.has_opaque_types() {
+                        if self.signature_and_body.ret_ty.has_opaque_types() {
                             let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
-                            let ret_ty = &mut self.ret_ty.clone();
+                            let ret_ty = &mut self.signature_and_body.ret_ty.clone();
                             ret_ty.subst_opaque_types(&ret_ty_name);
                             ret_ty.to_doc(false)
                         } else {
-                            self.ret_ty.to_doc(false)
+                            self.signature_and_body.ret_ty.to_doc(false)
                         },
                         text("."),
                     ])]),
@@ -1149,7 +1148,7 @@ impl FunDefinition {
                                     .map(|predicate| concat([predicate.to_doc(), line()])),
                             )
                         },
-                        concat(self.args.iter().map(|(name, ty)| {
+                        concat(self.signature_and_body.args.iter().map(|(name, ty)| {
                             concat([
                                 nest([
                                     text("("),
@@ -1167,7 +1166,7 @@ impl FunDefinition {
                             text(":"),
                             line(),
                             // @TODO: improve for opaque types with trait bounds
-                            self.ret_ty.to_doc(false),
+                            self.signature_and_body.ret_ty.to_doc(false),
                             text(" :="),
                         ]),
                     ]),
@@ -1200,9 +1199,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                     name,
                     ty_params,
                     where_predicates,
-                    args,
-                    ret_ty,
-                    body,
+                    signature_and_body,
                     is_dead_code,
                 },
             is_method,
@@ -1211,15 +1208,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                 name,
                 ty_params,
                 where_predicates,
-                args,
-                ret_ty: CoqType::monad(mt_ty(ret_ty)),
-                body: match body {
-                    None => body,
-                    Some(body) => {
-                        let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                        Some(Box::new(Expr::Block(Box::new(body))))
-                    }
-                },
+                signature_and_body: mt_fn_sig_and_body(signature_and_body),
                 is_dead_code,
             },
             is_method,
@@ -1295,23 +1284,13 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             name,
             ty_params,
             where_predicates,
-            args,
-            ret_ty,
-            body,
+            signature_and_body,
             is_dead_code,
         }) => TopLevelItem::Definition(FunDefinition {
             name,
             ty_params,
             where_predicates,
-            args,
-            ret_ty: CoqType::monad(mt_ty(ret_ty)),
-            body: match body {
-                None => body,
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr::Block(Box::new(body))))
-                }
-            },
+            signature_and_body: mt_fn_sig_and_body(signature_and_body),
             is_dead_code,
         }),
         TopLevelItem::TypeAlias { .. } => item,
