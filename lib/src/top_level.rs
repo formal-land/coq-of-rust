@@ -559,15 +559,16 @@ fn compile_impl_item_refs(
                         let expr = tcx.hir().body(*body_id).value;
                         let args = arg_names.zip(arg_tys).collect();
                         let body = give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize);
+                        let definition = FunDefinition {
+                            ty_params,
+                            where_predicates,
+                            args,
+                            ret_ty,
+                            body,
+                            is_dead_code,
+                        };
                         ImplItem::Definition {
-                            definition: FunDefinition {
-                                ty_params,
-                                where_predicates,
-                                args,
-                                ret_ty,
-                                body,
-                                is_dead_code,
-                            },
+                            definition,
                             is_method,
                         }
                     }
