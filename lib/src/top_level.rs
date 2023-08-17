@@ -45,6 +45,7 @@ enum TraitItem {
 /// fields common for all function definitions
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct FunDefinition {
+    name: String,
     ty_params: Vec<String>,
     where_predicates: Vec<WherePredicate>,
     args: Vec<(String, Box<CoqType>)>,
@@ -56,6 +57,7 @@ struct FunDefinition {
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum ImplItem {
     Const {
+        name: String,
         body: Box<Expr>,
         is_dead_code: bool,
     },
@@ -64,6 +66,7 @@ enum ImplItem {
         is_method: bool,
     },
     Type {
+        name: String,
         ty: Box<CoqType>,
     },
 }
@@ -107,7 +110,6 @@ enum TopLevelItem {
         value: Option<Box<Expr>>,
     },
     Definition {
-        name: String,
         definition: FunDefinition,
     },
     TypeAlias {
@@ -143,7 +145,7 @@ enum TopLevelItem {
         self_ty: Box<CoqType>,
         /// We use a counter to disambiguate several impls for the same type
         counter: u64,
-        items: Vec<(String, ImplItem)>,
+        items: Vec<ImplItem>,
     },
     Trait {
         name: String,
@@ -157,7 +159,7 @@ enum TopLevelItem {
         ty_params: Vec<Box<TraitTyParamValue>>,
         self_ty: Box<CoqType>,
         of_trait: Path,
-        items: Vec<(String, ImplItem)>,
+        items: Vec<ImplItem>,
         trait_non_default_items: Vec<String>,
     },
     Error(String),
@@ -337,8 +339,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let FnSigAndBody { args, ret_ty, body } =
                 compile_fn_sig_and_body_id(env, fn_sig, body_id);
             vec![TopLevelItem::Definition {
-                name,
                 definition: FunDefinition {
+                    name,
                     ty_params: get_ty_params_names(env, generics),
                     where_predicates: get_where_predicates(tcx, env, generics),
                     args,
@@ -521,64 +523,77 @@ fn compile_impl_item_refs(
     env: &mut Env,
     items: &[ImplItemRef],
     is_dead_code: bool,
-) -> Vec<(String, ImplItem)> {
+) -> Vec<ImplItem> {
     items
         .iter()
-        .map(|item| {
-            let is_method = match item.kind {
+        .map(|item| compile_impl_item_ref(tcx, env, item, is_dead_code))
+        .collect()
+}
+
+fn compile_impl_item_ref(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    item_ref: &ImplItemRef,
+    is_dead_code: bool,
+) -> ImplItem {
+    let item = tcx.hir().impl_item(item_ref.id);
+    let name = item.ident.name.to_string();
+    let value = match &item.kind {
+        ImplItemKind::Const(_, body_id) => {
+            let expr = tcx.hir().body(*body_id).value;
+            ImplItem::Const {
+                name,
+                body: Box::new(compile_expr(env, expr)),
+                is_dead_code,
+            }
+        }
+        ImplItemKind::Fn(
+            rustc_hir::FnSig {
+                decl: rustc_hir::FnDecl { inputs, output, .. },
+                ..
+            },
+            body_id,
+        ) => {
+            let arg_names =
+                tcx.hir()
+                    .body(*body_id)
+                    .params
+                    .iter()
+                    .map(|param| match param.pat.kind {
+                        PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+                        _ => "Pattern".to_string(),
+                    });
+            let ty_params = get_ty_params_names(env, item.generics);
+            let where_predicates = get_where_predicates(tcx, env, item.generics);
+            let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
+            let ret_ty = compile_fn_ret_ty(env, output);
+            let expr = tcx.hir().body(*body_id).value;
+            let args = arg_names.zip(arg_tys).collect();
+            let body = give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize);
+            let definition = FunDefinition {
+                name,
+                ty_params,
+                where_predicates,
+                args,
+                ret_ty,
+                body,
+                is_dead_code,
+            };
+            let is_method = match item_ref.kind {
                 rustc_hir::AssocItemKind::Fn { has_self } => has_self,
                 _ => false,
             };
-            let item = tcx.hir().impl_item(item.id);
-            let value =
-                match &item.kind {
-                    ImplItemKind::Const(_, body_id) => {
-                        let expr = tcx.hir().body(*body_id).value;
-                        ImplItem::Const {
-                            body: Box::new(compile_expr(env, expr)),
-                            is_dead_code,
-                        }
-                    }
-                    ImplItemKind::Fn(
-                        rustc_hir::FnSig {
-                            decl: rustc_hir::FnDecl { inputs, output, .. },
-                            ..
-                        },
-                        body_id,
-                    ) => {
-                        let arg_names = tcx.hir().body(*body_id).params.iter().map(|param| {
-                            match param.pat.kind {
-                                PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-                                _ => "Pattern".to_string(),
-                            }
-                        });
-                        let ty_params = get_ty_params_names(env, item.generics);
-                        let where_predicates = get_where_predicates(tcx, env, item.generics);
-                        let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
-                        let ret_ty = compile_fn_ret_ty(env, output);
-                        let expr = tcx.hir().body(*body_id).value;
-                        let args = arg_names.zip(arg_tys).collect();
-                        let body = give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize);
-                        let definition = FunDefinition {
-                            ty_params,
-                            where_predicates,
-                            args,
-                            ret_ty,
-                            body,
-                            is_dead_code,
-                        };
-                        ImplItem::Definition {
-                            definition,
-                            is_method,
-                        }
-                    }
-                    ImplItemKind::Type(ty) => ImplItem::Type {
-                        ty: compile_type(env, ty),
-                    },
-                };
-            (item.ident.name.to_string(), value)
-        })
-        .collect()
+            ImplItem::Definition {
+                definition,
+                is_method,
+            }
+        }
+        ImplItemKind::Type(ty) => ImplItem::Type {
+            name,
+            ty: compile_type(env, ty),
+        },
+    };
+    value
 }
 
 /// filters out type parameters and compiles them with the given function
@@ -1142,9 +1157,14 @@ fn fn_to_doc<'a>(
 
 fn mt_impl_item(item: ImplItem) -> ImplItem {
     match item {
-        ImplItem::Const { body, is_dead_code } => {
+        ImplItem::Const {
+            name,
+            body,
+            is_dead_code,
+        } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Const {
+                name,
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_dead_code,
             }
@@ -1152,6 +1172,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
         ImplItem::Definition {
             definition:
                 FunDefinition {
+                    name,
                     ty_params,
                     where_predicates,
                     args,
@@ -1162,6 +1183,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             is_method,
         } => ImplItem::Definition {
             definition: FunDefinition {
+                name,
                 ty_params,
                 where_predicates,
                 args,
@@ -1181,11 +1203,8 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
     }
 }
 
-fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
-    items
-        .into_iter()
-        .map(|(s, item)| (s, mt_impl_item(item)))
-        .collect()
+fn mt_impl_items(items: Vec<ImplItem>) -> Vec<ImplItem> {
+    items.into_iter().map(mt_impl_item).collect()
 }
 
 fn mt_trait_item(body: TraitItem) -> TraitItem {
@@ -1243,9 +1262,9 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             },
         },
         TopLevelItem::Definition {
-            name,
             definition:
                 FunDefinition {
+                    name,
                     ty_params,
                     where_predicates,
                     args,
@@ -1254,8 +1273,8 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                     is_dead_code,
                 },
         } => TopLevelItem::Definition {
-            name,
             definition: FunDefinition {
+                name,
                 ty_params,
                 where_predicates,
                 args,
@@ -1370,9 +1389,13 @@ impl ImplItem {
         ])
     }
 
-    fn to_doc<'a>(&'a self, name: &'a String, extra_data: &Option<&'a TopLevelItem>) -> Doc<'a> {
+    fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc<'a> {
         match self {
-            ImplItem::Const { body, is_dead_code } => concat([
+            ImplItem::Const {
+                name,
+                body,
+                is_dead_code,
+            } => concat([
                 if *is_dead_code {
                     concat([
                         text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
@@ -1402,26 +1425,26 @@ impl ImplItem {
                 definition,
                 is_method,
             } => concat([
-                fn_to_doc(name, definition, *extra_data),
+                fn_to_doc(&definition.name, definition, *extra_data),
                 hardline(),
                 hardline(),
                 if *is_method {
                     concat([Self::class_instance_to_doc(
                         "Method",
-                        name,
+                        &definition.name,
                         "Notation.Dot",
                         "Notation.dot",
                     )])
                 } else {
                     Self::class_instance_to_doc(
                         "AssociatedFunction",
-                        name,
+                        &definition.name,
                         "Notation.DoubleColon Self",
                         "Notation.double_colon",
                     )
                 },
             ]),
-            ImplItem::Type { ty } => nest([
+            ImplItem::Type { name, ty } => nest([
                 nest([
                     text("Definition"),
                     line(),
@@ -1528,8 +1551,8 @@ impl TopLevelItem {
                     text("."),
                 ]),
             },
-            TopLevelItem::Definition { name, definition } => {
-                fn_to_doc(name, definition, *extra_data)
+            TopLevelItem::Definition { definition } => {
+                fn_to_doc(&definition.name, definition, *extra_data)
             }
             TopLevelItem::Module {
                 name,
@@ -2025,9 +2048,11 @@ impl TopLevelItem {
                             self_ty.to_doc(false),
                             text("."),
                         ]),
-                        concat(items.iter().map(|(name, item)| {
-                            concat([hardline(), hardline(), item.to_doc(name, extra_data)])
-                        })),
+                        concat(
+                            items.iter().map(|item| {
+                                concat([hardline(), hardline(), item.to_doc(extra_data)])
+                            }),
+                        ),
                     ]),
                     hardline(),
                     nest([text("End"), line(), module_name, text(".")]),
@@ -2200,9 +2225,11 @@ impl TopLevelItem {
                         ]),
                         hardline(),
                         hardline(),
-                        concat(items.iter().map(|(name, item)| {
-                            concat([item.to_doc(name, extra_data), hardline(), hardline()])
-                        })),
+                        concat(
+                            items.iter().map(|item| {
+                                concat([item.to_doc(extra_data), hardline(), hardline()])
+                            }),
+                        ),
                         nest([
                             nest([
                                 text("Global Instance I :"),
