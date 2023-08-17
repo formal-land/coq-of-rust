@@ -1,17 +1,19 @@
 (* Written by hand *)
 Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.core.fmt.
+Require Import CoqOfRust.alloc.
 
 (* TODO: Implement the following items to satisfy the dependency for e2e/env file
 - [?] blocks.block_types.ExtrinsicEvents
 - [?] error.dispatch_error.DispatchError
 - [?] error.Error
 - [?] config.Config
-- [ ] config.polkadot.PolkadotExtrinsicParams
-- [ ] config.WithExtrinsicParams
-- [ ] tx.signer.pair_signer.PairSigner
-- [ ] client.online_client.OnlineClient
-- [ ] utils.multi_address.MultiAddress
-- [ ] utils.static_type.Static
+- [x] config.polkadot.PolkadotExtrinsicParams
+- [?] config.WithExtrinsicParams
+- [x] tx.signer.pair_signer.PairSigner
+- [x] client.online_client.OnlineClient
+- [x] utils.multi_address.MultiAddress
+- [x] utils.static_type.Static
 *)
 
 (* 
@@ -50,7 +52,69 @@ Module config.
         ExtrinsicParams := ExtrinsicParams;
     }.
   End Config.
+
+  Module extrinsic_params.
+    (* pub struct BaseExtrinsicParams<T: Config, Tip: Debug> { /* private fields */ } *)
+    Unset Primitive Projections.
+    Module BaseExtrinsicParams.
+      Record t (T Tip : Set) 
+        `{Config.Trait T}
+        `{core.Debug.Trait Tip}
+      : Set := { }.
+    End BaseExtrinsicParams.
+    Global Set Primitive Projections.
+    Definition BaseExtrinsicParams := BaseExtrinsicParams.t.
+  End extrinsic_params.
+
+  (* pub struct WithExtrinsicParams<T: Config, E: ExtrinsicParams<T::Hash>> { /* private fields */ } *)
+  Unset Primitive Projections.
+  Module WithExtrinsicParams.
+    Record t (T E : Set) 
+      `{Config.Trait T}
+      (* TODO: Is this the correct way to translate the type param..? *)
+      `{ExtrinsicParams.Trait T T.Hash}
+    : Set := { }.
+  End WithExtrinsicParams.
+  Global Set Primitive Projections.
+  Definition WithExtrinsicParams := WithExtrinsicParams.t.
+
+  Module polkadot.
+    (* pub struct PlainTip { /* private fields */ } *)
+    Unset Primitive Projections.
+    Module PlainTip.
+      Record t : Set := { }.
+    End PlainTip.
+    Global Set Primitive Projections.
+    Definition PlainTip := PlainTip.t.
+
+    (* *******TYPE DEFS******** *)
+    (* pub type PolkadotExtrinsicParams<T> = BaseExtrinsicParams<T, PlainTip>; *)
+    Definition PolkadotExtrinsicParams (T : Set) : Set := extrinsic_params.BaseExtrinsicParams T PlainTip.
+  End polkadot.
+  
 End config.
+
+Module tx.
+  (* 
+  pub trait Signer<T: Config> {
+      // Required methods
+      fn account_id(&self) -> T::AccountId;
+      fn address(&self) -> T::Address;
+      fn sign(&self, signer_payload: &[u8]) -> T::Signature;
+  }
+  *)
+  Module Signer.
+    Class Trait (Self T : Set) 
+      `{Config.Trait T}
+    : Set := {
+      account_id : ref Self -> T.AccountId;
+      address : ref Self -> T.Address;
+      sign : ref Self -> ref (slice u8) -> T.Signature; 
+    }.
+  End Signer.
+  
+End tx.
+
 
 Module error.
   (* 
@@ -128,9 +192,51 @@ Module error.
     .
   End Dispatch_error.
   Definition Dispatch_error := Dispatch_error.t.
-  
-  
 End error.
+
+Module client.
+  (* pub struct OnlineClient<T: Config> { /* private fields */ } *)
+  Unset Primitive Projections.
+  Module OnlineClient.
+    Record t : Set := { }.
+  End OnlineClient.
+  Global Set Primitive Projections.
+  Definition OnlineClient := OnlineClient.t.
+End client.
+
+Module utils.
+  Module multi_address.
+    (* 
+    pub enum MultiAddress<AccountId, AccountIndex> {
+        Id(AccountId),
+        Index(AccountIndex),
+        Raw(Vec<u8>),
+        Address32([u8; 32]),
+        Address20([u8; 20]),
+    }
+    *)
+    Module MultiAddress.
+      Inductive t (AccountId AccountIndex : Set) : Set := 
+      | Id : AccountId -> t AccountI AccountIndex
+      | Index : AccountIndex -> t AccountI AccountIndex
+      | Raw : alloc.vec.Vec u8 None -> t AccountI AccountIndex
+      | Address32 : slice u8 -> t AccountI AccountIndex
+      | Address20 : slice u8 -> t AccountI AccountIndex
+      .
+    End MultiAddress.
+    Definition MultiAddress := MultiAddress.t.
+
+    (* pub struct Static<T>(pub T); *)
+    Unset Primitive Projections.
+    Module Static.
+      Record t (T : Set) : Set := { 
+        _ : T;
+      }.
+    End Static.
+    Global Set Primitive Projections.
+    Definition Static := Static.t.
+  End multi_address.
+End utils.
 
 
 (* NOTE: content in this module does not match its document specification *)

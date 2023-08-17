@@ -17,10 +17,12 @@ Module sr25519.
   Definition Pair := Pair.t.
 
   (* pub struct Signature(pub [u8; 64]); *)
-  (* NOTE: waiting for a correct implementation in CoqOfRust for this kind of slice... *)
+  (* NOTE: For now we use normal slice to approximate the array type *)
   Unset Primitive Projections.
   Module Signature.
-    Record t : Set := { }.
+    Record t : Set := { 
+      _ : slice u8;
+    }.
   End Signature.
   Global Set Primitive Projections.
   Definition Signature := Signature.t.
