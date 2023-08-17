@@ -997,67 +997,94 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
             nil()
         },
         match &strct_args.definition.body {
-            None => nest([nest([
-                nest([
-                    text("Parameter"),
-                    line(),
-                    text(strct_args.name),
-                    line(),
-                    text(":"),
-                    line(),
-                ]),
-                nest([
-                    text("forall"),
-                    line(),
-                    monadic_typeclass_parameter(),
-                    text(","),
-                ]),
-                line(),
-                // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
-                {
-                    let ty_params = &strct_args.definition.ty_params;
-                    if ty_params.is_empty() {
-                        nil()
-                    } else {
-                        concat([
-                            text("forall"),
-                            line(),
-                            nest([intersperse(
-                                ty_params.iter().map(|t| {
-                                    concat([text("{"), text(t), text(" : "), text("Set}")])
-                                }),
-                                [line()],
-                            )]),
-                            text(","),
-                            line(),
-                        ])
-                    }
-                },
-                // where predicates types
-                {
-                    let where_predicates = &strct_args.definition.where_predicates;
-                    concat(where_predicates.iter().map(|predicate| {
+            None => concat([
+                // if the return type is opaque define a corresponding opaque type
+                // @TODO: use also the parameter
+                if strct_args.definition.ret_ty.has_opaque_types() {
+                    concat([
                         nest([
-                            text("forall"),
+                            text("Parameter"),
                             line(),
-                            predicate.to_doc(),
-                            text(","),
+                            text([strct_args.name, "_", "ret_ty"].concat()),
                             line(),
-                        ])
-                    }))
+                            text(":"),
+                            line(),
+                            text("Set."),
+                        ]),
+                        hardline(),
+                    ])
+                } else {
+                    nil()
                 },
-                // argument types
-                concat(
-                    strct_args
-                        .definition
-                        .args
-                        .iter()
-                        .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
-                ),
-                // return type
-                strct_args.definition.ret_ty.to_doc(false),
-                text("."),
-            ])]),
+                nest([nest([
+                    nest([
+                        text("Parameter"),
+                        line(),
+                        text(strct_args.name),
+                        line(),
+                        text(":"),
+                        line(),
+                    ]),
+                    nest([
+                        text("forall"),
+                        line(),
+                        monadic_typeclass_parameter(),
+                        text(","),
+                    ]),
+                    line(),
+                    // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
+                    {
+                        let ty_params = &strct_args.definition.ty_params;
+                        if ty_params.is_empty() {
+                            nil()
+                        } else {
+                            concat([
+                                text("forall"),
+                                line(),
+                                nest([intersperse(
+                                    ty_params.iter().map(|t| {
+                                        concat([text("{"), text(t), text(" : "), text("Set}")])
+                                    }),
+                                    [line()],
+                                )]),
+                                text(","),
+                                line(),
+                            ])
+                        }
+                    },
+                    // where predicates types
+                    {
+                        let where_predicates = &strct_args.definition.where_predicates;
+                        concat(where_predicates.iter().map(|predicate| {
+                            nest([
+                                text("forall"),
+                                line(),
+                                predicate.to_doc(),
+                                text(","),
+                                line(),
+                            ])
+                        }))
+                    },
+                    // argument types
+                    concat(
+                        strct_args
+                            .definition
+                            .args
+                            .iter()
+                            .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
+                    ),
+                    // return type
+                    if strct_args.definition.ret_ty.has_opaque_types() {
+                        let ret_ty_name = [strct_args.name, "_", "ret_ty"].concat();
+                        let ret_ty = &mut strct_args.definition.ret_ty.clone();
+                        ret_ty.subst_opaque_types(&ret_ty_name);
+                        ret_ty.to_doc(false)
+                    } else {
+                        strct_args.definition.ret_ty.to_doc(false)
+                    },
+                    text("."),
+                ])]),
+            ]),
             Some(body) => nest([
                 nest([
                     nest([text("Definition"), line(), text(strct_args.name)]),
@@ -1105,6 +1132,7 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                     nest([
                         text(":"),
                         line(),
+                        // @TODO: improve for opaque types with trait bounds
                         strct_args.definition.ret_ty.to_doc(false),
                         text(" :="),
                     ]),

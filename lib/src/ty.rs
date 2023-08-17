@@ -256,7 +256,7 @@ impl CoqType {
                 },
             ),
             // @TODO: translate OpaqueType
-            CoqType::OpaqueType(_) => text("_"),
+            CoqType::OpaqueType(_) => text("_ (* OpaqueTy *)"),
         }
     }
 
@@ -323,6 +323,45 @@ impl CoqType {
                 ret
             }
             _ => String::from("default_name"),
+        }
+    }
+
+    /// returns true if the subtree rooted in [self] contains an opaque type
+    pub(crate) fn has_opaque_types(&self) -> bool {
+        match self {
+            CoqType::Var(_) => false,
+            CoqType::Application { args, .. } => args.iter().any(|ty| ty.has_opaque_types()),
+            CoqType::Function { args, ret } => {
+                args.iter().any(|ty| ty.has_opaque_types()) && ret.has_opaque_types()
+            }
+            CoqType::Tuple(types) => types.iter().any(|ty| ty.has_opaque_types()),
+            CoqType::Array(ty) => ty.has_opaque_types(),
+            CoqType::Ref(ty, _) => ty.has_opaque_types(),
+            CoqType::OpaqueType(_) => true,
+        }
+    }
+
+    /// substitutes all occurences of OpaqueType with var(name)
+    pub(crate) fn subst_opaque_types(&mut self, name: &String) {
+        match self {
+            CoqType::Var(_) => {}
+            CoqType::Application { args, .. } => args
+                .iter_mut()
+                .map(|ty| ty.subst_opaque_types(name))
+                .collect(),
+            CoqType::Function { args, ret } => {
+                ret.subst_opaque_types(name);
+                args.iter_mut()
+                    .map(|ty| ty.subst_opaque_types(name))
+                    .collect()
+            }
+            CoqType::Tuple(types) => types
+                .iter_mut()
+                .map(|ty| ty.subst_opaque_types(name))
+                .collect(),
+            CoqType::Array(ty) => ty.subst_opaque_types(name),
+            CoqType::Ref(ty, _) => ty.subst_opaque_types(name),
+            CoqType::OpaqueType(_) => *self = *CoqType::var(name.clone()),
         }
     }
 }
