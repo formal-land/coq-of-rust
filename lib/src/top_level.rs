@@ -172,6 +172,7 @@ struct FnSigAndBody {
     body: Option<Box<Expr>>,
 }
 
+/// returns Some(item) if the condition is satisfied
 fn give_if<T>(item: T, condition: bool) -> Option<T> {
     if condition {
         Some(item)
@@ -180,6 +181,7 @@ fn give_if<T>(item: T, condition: bool) -> Option<T> {
     }
 }
 
+/// returns Some(item) if the condition is not satisfied
 fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
     give_if(item, !condition)
 }
