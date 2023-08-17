@@ -932,7 +932,7 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
 }
 
 impl FunDefinition {
-    fn fn_to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
+    fn to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
         let types_for_f = types_for_f(extra_data);
 
         group([
@@ -1422,7 +1422,7 @@ impl ImplItem {
                 definition,
                 is_method,
             } => concat([
-                definition.fn_to_doc(*extra_data),
+                definition.to_doc(*extra_data),
                 hardline(),
                 hardline(),
                 if *is_method {
@@ -1548,7 +1548,7 @@ impl TopLevelItem {
                     text("."),
                 ]),
             },
-            TopLevelItem::Definition { definition } => definition.fn_to_doc(*extra_data),
+            TopLevelItem::Definition { definition } => definition.to_doc(*extra_data),
             TopLevelItem::Module {
                 name,
                 body,
