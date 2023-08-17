@@ -4226,8 +4226,58 @@ Module Real.
     Notation.dot := @atanh;
   }.
 End Real.
+*)
+(* moved *)
+Module NumOps.
+  Unset Primitive Projections.
+  Class Trait
+      (Self : Set) {(* TODO *) Rhs (* TODO *) Output : option Set}
+        `{core.ops.arith.Add.Trait Self (Rhs := (Rhs (* @TODO *)))}
+        `{core.ops.arith.Sub.Trait Self (Rhs := (Rhs (* @TODO *)))}
+        `{core.ops.arith.Mul.Trait Self (Rhs := (Rhs (* @TODO *)))}
+        `{core.ops.arith.Div.Trait Self (Rhs := (Rhs (* @TODO *)))}
+        `{core.ops.arith.Rem.Trait Self (Rhs := (Rhs (* @TODO *)))} :
+      Set := {
+  }.
+  Global Set Primitive Projections.
+End NumOps.
+
+(* moved *)
+Module Num.
+  Class Trait
+      (Self : Set)
+        `{core.cmp.PartialEq.Trait Self (Rhs := None)}
+        `{num_traits.identities.Zero.Trait Self}
+        `{num_traits.identities.One.Trait Self}
+        `{num_traits.NumOps.Trait Self (Rhs := None) (Output := None)}
+      {FromStrRadixErr : Set} :
+      Set := {
+    FromStrRadixErr := FromStrRadixErr;
+    from_str_radix
+      `{H : State.Trait}
+      :
+      (ref str) ->
+      u32 ->
+      (M (H := H) (core.result.Result Self FromStrRadixErr));
+  }.
+  
+  Global Instance
+      Method_FromStrRadixErr
+      `{H : State.Trait}
+      {FromStrRadixErr}
+      `(Trait
+      (FromStrRadixErr := FromStrRadixErr))
+    : Notation.DoubleColonType Self "FromStrRadixErr" := {
+    Notation.double_colon_type := FromStrRadixErr;
+  }.
+  Global Instance Method_from_str_radix `{H : State.Trait} `(Trait)
+    : Notation.Dot "from_str_radix" := {
+    Notation.dot := @from_str_radix;
+  }.
+End Num.
 
 Module sign.
+  (*
   Module Signed.
     Class Trait
         (Self : Set)
@@ -4285,7 +4335,7 @@ Module sign.
       {T : Set},
       forall `{num_traits.sign.Signed.Trait T}, T ->
       M (H := H) T.
-  
+  *)
   Module Unsigned.
     Unset Primitive Projections.
     Class Trait (Self : Set) `{num_traits.Num.Trait Self} : Set := {
@@ -4293,7 +4343,7 @@ Module sign.
     Global Set Primitive Projections.
   End Unsigned.
 End sign.
-
+(*
 Module Signed.
   Class Trait
       (Self : Set)
@@ -4355,55 +4405,10 @@ Module Unsigned.
   }.
   Global Set Primitive Projections.
 End Unsigned.
-
-Module Num.
-  Class Trait
-      (Self : Set)
-        `{core.cmp.PartialEq.Trait Self (Rhs := None)}
-        `{num_traits.identities.Zero.Trait Self}
-        `{num_traits.identities.One.Trait Self}
-        `{num_traits.NumOps.Trait Self (Rhs := None) (Output := None)}
-      {FromStrRadixErr : Set} :
-      Set := {
-    FromStrRadixErr := FromStrRadixErr;
-    from_str_radix
-      `{H : State.Trait}
-      :
-      (ref str) ->
-      u32 ->
-      (M (H := H) (core.result.Result Self FromStrRadixErr));
-  }.
-  
-  Global Instance
-      Method_FromStrRadixErr
-      `{H : State.Trait}
-      {FromStrRadixErr}
-      `(Trait
-      (FromStrRadixErr := FromStrRadixErr))
-    : Notation.DoubleColonType Self "FromStrRadixErr" := {
-    Notation.double_colon_type := FromStrRadixErr;
-  }.
-  Global Instance Method_from_str_radix `{H : State.Trait} `(Trait)
-    : Notation.Dot "from_str_radix" := {
-    Notation.dot := @from_str_radix;
-  }.
-End Num.
-
-Module NumOps.
-  Unset Primitive Projections.
-  Class Trait
-      (Self : Set)
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Rhs))}
-        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Rhs))}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Rhs))}
-        `{core.ops.arith.Div.Trait Self (Rhs := (Some Rhs))}
-        `{core.ops.arith.Rem.Trait Self (Rhs := (Some Rhs))}
-        {(* TODO *) Rhs (* TODO *) Output : Set} :
-      Set := {
-  }.
-  Global Set Primitive Projections.
-End NumOps.
-
+*)
+(* moved the Num module *)
+(* moved the NumOps module *)
+(*
 Module NumRef.
   Unset Primitive Projections.
   Class Trait
