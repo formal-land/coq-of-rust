@@ -516,34 +516,37 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
+/// compiles a list of references to items
 fn compile_impl_item_refs(
     tcx: &TyCtxt,
     env: &mut Env,
-    items: &[ImplItemRef],
+    item_refs: &[ImplItemRef],
     is_dead_code: bool,
 ) -> Vec<ImplItem> {
-    items
+    item_refs
         .iter()
-        .map(|item| {
+        .map(|item_ref| {
             compile_impl_item(
                 tcx,
                 env,
-                tcx.hir().impl_item(item.id),
-                is_method(item),
+                tcx.hir().impl_item(item_ref.id),
+                is_method(item_ref),
                 is_dead_code,
             )
         })
         .collect()
 }
 
-fn is_method(item: &ImplItemRef) -> bool {
-    if let rustc_hir::AssocItemKind::Fn { has_self } = item.kind {
+/// tells if the referenced item is a method
+fn is_method(item_ref: &ImplItemRef) -> bool {
+    if let rustc_hir::AssocItemKind::Fn { has_self } = item_ref.kind {
         has_self
     } else {
         false
     }
 }
 
+/// compiles an item
 fn compile_impl_item(
     tcx: &TyCtxt,
     env: &mut Env,
