@@ -35,9 +35,7 @@ enum TraitItem {
     DefinitionWithDefault {
         ty_params: Vec<String>,
         where_predicates: Vec<WherePredicate>,
-        args: Vec<(String, Box<CoqType>)>,
-        ret_ty: Box<CoqType>,
-        body: Option<Box<Expr>>,
+        signature_and_body: FnSigAndBody,
     },
     Type(Vec<TraitBound>),
 }
@@ -166,6 +164,7 @@ enum TopLevelItem {
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct TopLevel(Vec<TopLevelItem>);
 
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct FnSigAndBody {
     args: Vec<(String, Box<CoqType>)>,
     ret_ty: Box<CoqType>,
@@ -836,14 +835,12 @@ fn compile_trait_item_body(
             },
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
-                let FnSigAndBody { args, ret_ty, body } =
+                let signature_and_body =
                     compile_fn_sig_and_body_id(env, fn_sig, get_body(&env_tcx, body_id));
                 TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
-                    args,
-                    ret_ty,
-                    body,
+                    signature_and_body,
                 }
             }
         },
@@ -1235,6 +1232,21 @@ fn mt_impl_items(items: Vec<ImplItem>) -> Vec<ImplItem> {
     items.into_iter().map(mt_impl_item).collect()
 }
 
+fn mt_fn_sig_and_body(signature_and_body: FnSigAndBody) -> FnSigAndBody {
+    let FnSigAndBody { args, ret_ty, body } = signature_and_body;
+    FnSigAndBody {
+        args,
+        ret_ty,
+        body: match body {
+            None => body,
+            Some(body) => {
+                let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                Some(Box::new(Expr::Block(Box::new(body))))
+            }
+        },
+    }
+}
+
 fn mt_trait_item(body: TraitItem) -> TraitItem {
     match body {
         TraitItem::Definition {
@@ -1250,21 +1262,11 @@ fn mt_trait_item(body: TraitItem) -> TraitItem {
         TraitItem::DefinitionWithDefault {
             ty_params,
             where_predicates,
-            args,
-            ret_ty,
-            body,
+            signature_and_body,
         } => TraitItem::DefinitionWithDefault {
             ty_params,
             where_predicates,
-            args,
-            ret_ty: CoqType::monad(mt_ty(ret_ty)),
-            body: match body {
-                None => body,
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr::Block(Box::new(body))))
-                }
-            },
+            signature_and_body: mt_fn_sig_and_body(signature_and_body),
         },
     }
 }
@@ -2152,9 +2154,7 @@ impl TopLevelItem {
                             TraitItem::DefinitionWithDefault {
                                 ty_params,
                                 where_predicates,
-                                args,
-                                ret_ty,
-                                body,
+                                signature_and_body,
                             } => new_instance::<_, String>(
                                 name,
                                 &vec![],
@@ -2166,19 +2166,25 @@ impl TopLevelItem {
                                         .iter()
                                         .map(|predicate| predicate.to_doc())
                                         .collect(),
-                                    &args
+                                    &signature_and_body
+                                        .args
                                         .iter()
                                         .map(|(name, ty)| (name, ty.to_doc(false)))
                                         .collect::<Vec<_>>(),
                                 )]),
                                 group([
                                     text("("),
-                                    match body {
+                                    match &signature_and_body.body {
                                         None => text("axiom"),
                                         Some(body) => body.to_doc(false),
                                     },
                                     line(),
-                                    nest([text(":"), line(), ret_ty.to_doc(false), text(")")]),
+                                    nest([
+                                        text(":"),
+                                        line(),
+                                        signature_and_body.ret_ty.to_doc(false),
+                                        text(")"),
+                                    ]),
                                 ]),
                             ),
                         }])
