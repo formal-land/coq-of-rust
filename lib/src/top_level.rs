@@ -580,24 +580,21 @@ fn compile_impl_item(
                         PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
                         _ => "Pattern".to_string(),
                     });
-            let ty_params = get_ty_params_names(env, item.generics);
-            let where_predicates = get_where_predicates(tcx, env, item.generics);
-            let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
-            let ret_ty = compile_fn_ret_ty(env, output);
-            let expr = tcx.hir().body(*body_id).value;
-            let args = arg_names.zip(arg_tys).collect();
-            let body = give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize);
-            let definition = FunDefinition {
-                name,
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty,
-                body,
-                is_dead_code,
-            };
             ImplItem::Definition {
-                definition,
+                definition: FunDefinition {
+                    name,
+                    ty_params: get_ty_params_names(env, item.generics),
+                    where_predicates: get_where_predicates(tcx, env, item.generics),
+                    args: arg_names
+                        .zip(inputs.iter().map(|ty| compile_type(env, ty)))
+                        .collect(),
+                    ret_ty: compile_fn_ret_ty(env, output),
+                    body: give_if_not(
+                        Box::new(compile_expr(env, tcx.hir().body(*body_id).value)),
+                        env.axiomatize,
+                    ),
+                    is_dead_code,
+                },
                 is_method,
             }
         }
