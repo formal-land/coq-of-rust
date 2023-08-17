@@ -206,25 +206,13 @@ fn compile_fn_sig_and_body_id(
     body_id: &rustc_hir::BodyId,
 ) -> FnSigAndBody {
     let body = env.tcx.hir().body(*body_id);
-    let expr = body.value;
     FnSigAndBody {
-        args: body
-            .params
-            .iter()
-            .zip(fn_sig.decl.inputs.iter())
-            .map(|(param, ty)| {
-                let name = match &param.pat.kind {
-                    PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-                    _ => "arg".to_string(),
-                };
-                (name, compile_type(env, ty))
-            })
-            .collect(),
+        args: get_args(env, body, fn_sig.decl.inputs, "arg"),
         ret_ty: match fn_sig.decl.output {
             rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
             rustc_hir::FnRetTy::Return(ty) => compile_type(env, ty),
         },
-        body: give_if_not(Box::new(compile_expr(env, expr)), env.axiomatize),
+        body: compile_function_body(env, body),
     }
 }
 
