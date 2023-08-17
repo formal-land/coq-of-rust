@@ -1617,7 +1617,7 @@ Module Impl_subtle_CtOption_T_4.
       `{H : State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait (Args := unit) F}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)}
       (self : Self)
       (f : F)
       : M (H := H) T :=
@@ -1659,7 +1659,7 @@ Module Impl_subtle_CtOption_T_4.
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait (Args := T) F}
+      `{core.ops.function.FnOnce.Trait F (Args := T)}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
@@ -1681,7 +1681,7 @@ Module Impl_subtle_CtOption_T_4.
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait (Args := T) F}
+      `{core.ops.function.FnOnce.Trait F (Args := T)}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
@@ -1705,7 +1705,7 @@ Module Impl_subtle_CtOption_T_4.
       `{H : State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait (Args := unit) F}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption T) :=
