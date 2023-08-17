@@ -571,15 +571,7 @@ fn compile_impl_item(
             },
             body_id,
         ) => {
-            let arg_names =
-                tcx.hir()
-                    .body(*body_id)
-                    .params
-                    .iter()
-                    .map(|param| match param.pat.kind {
-                        PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-                        _ => "Pattern".to_string(),
-                    });
+            let arg_names = get_arg_names(tcx, body_id);
             ImplItem::Definition {
                 definition: FunDefinition {
                     name,
@@ -603,6 +595,21 @@ fn compile_impl_item(
             ty: compile_type(env, ty),
         },
     }
+}
+
+/// returns names of the arguments
+fn get_arg_names<'a>(
+    tcx: &'a TyCtxt,
+    body_id: &'a rustc_hir::BodyId,
+) -> impl Iterator<Item = String> + 'a {
+    tcx.hir()
+        .body(*body_id)
+        .params
+        .iter()
+        .map(|param| match param.pat.kind {
+            PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+            _ => "Pattern".to_string(),
+        })
 }
 
 /// filters out type parameters and compiles them with the given function
