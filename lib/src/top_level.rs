@@ -589,9 +589,9 @@ fn compile_impl_item(
                 name,
                 ty_params: get_ty_params_names(env, item.generics),
                 where_predicates: get_where_predicates(tcx, env, item.generics),
-                args: get_args(tcx, env, body_id, inputs),
+                args: get_args(env, get_body(tcx, body_id), inputs),
                 ret_ty: compile_fn_ret_ty(env, output),
-                body: compile_function_body(tcx, env, body_id),
+                body: compile_function_body(env, get_body(tcx, body_id)),
                 is_dead_code,
             },
             is_method,
@@ -603,43 +603,33 @@ fn compile_impl_item(
     }
 }
 
+/// returns the body corresponding to the given body_id
+fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::Body<'a> {
+    tcx.hir().body(*body_id)
+}
+
 // compiles the body of a function
-fn compile_function_body(
-    tcx: &TyCtxt,
-    env: &mut Env,
-    body_id: &rustc_hir::BodyId,
-) -> Option<Box<Expr>> {
-    give_if_not(
-        Box::new(compile_expr(env, tcx.hir().body(*body_id).value)),
-        env.axiomatize,
-    )
+fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Expr>> {
+    give_if_not(Box::new(compile_expr(env, body.value)), env.axiomatize)
 }
 
 /// returns a list of pairs of argument names and their types
 fn get_args(
-    tcx: &TyCtxt,
     env: &mut Env,
-    body_id: &rustc_hir::BodyId,
+    body: &rustc_hir::Body,
     inputs: &[rustc_hir::Ty],
 ) -> Vec<(String, Box<CoqType>)> {
-    get_arg_names(tcx, body_id)
+    get_arg_names(body)
         .zip(inputs.iter().map(|ty| compile_type(env, ty)))
         .collect()
 }
 
 /// returns names of the arguments
-fn get_arg_names<'a>(
-    tcx: &'a TyCtxt,
-    body_id: &'a rustc_hir::BodyId,
-) -> impl Iterator<Item = String> + 'a {
-    tcx.hir()
-        .body(*body_id)
-        .params
-        .iter()
-        .map(|param| match param.pat.kind {
-            PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-            _ => "Pattern".to_string(),
-        })
+fn get_arg_names<'a>(body: &'a rustc_hir::Body) -> impl Iterator<Item = String> + 'a {
+    body.params.iter().map(|param| match param.pat.kind {
+        PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+        _ => "Pattern".to_string(),
+    })
 }
 
 /// filters out type parameters and compiles them with the given function
