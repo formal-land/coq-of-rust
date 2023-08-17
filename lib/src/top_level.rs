@@ -570,31 +570,47 @@ fn compile_impl_item(
                 ..
             },
             body_id,
-        ) => {
-            let arg_names = get_arg_names(tcx, body_id);
-            ImplItem::Definition {
-                definition: FunDefinition {
-                    name,
-                    ty_params: get_ty_params_names(env, item.generics),
-                    where_predicates: get_where_predicates(tcx, env, item.generics),
-                    args: arg_names
-                        .zip(inputs.iter().map(|ty| compile_type(env, ty)))
-                        .collect(),
-                    ret_ty: compile_fn_ret_ty(env, output),
-                    body: give_if_not(
-                        Box::new(compile_expr(env, tcx.hir().body(*body_id).value)),
-                        env.axiomatize,
-                    ),
-                    is_dead_code,
-                },
-                is_method,
-            }
-        }
+        ) => ImplItem::Definition {
+            definition: FunDefinition {
+                name,
+                ty_params: get_ty_params_names(env, item.generics),
+                where_predicates: get_where_predicates(tcx, env, item.generics),
+                args: get_args(tcx, env, body_id, inputs),
+                ret_ty: compile_fn_ret_ty(env, output),
+                body: compile_function_body(tcx, env, body_id),
+                is_dead_code,
+            },
+            is_method,
+        },
         ImplItemKind::Type(ty) => ImplItem::Type {
             name,
             ty: compile_type(env, ty),
         },
     }
+}
+
+// compiles the body of a function
+fn compile_function_body(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    body_id: &rustc_hir::BodyId,
+) -> Option<Box<Expr>> {
+    give_if_not(
+        Box::new(compile_expr(env, tcx.hir().body(*body_id).value)),
+        env.axiomatize,
+    )
+}
+
+/// returns a list of pairs of argument names and their types
+fn get_args(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    body_id: &rustc_hir::BodyId,
+    inputs: &[rustc_hir::Ty],
+) -> Vec<(String, Box<CoqType>)> {
+    get_arg_names(tcx, body_id)
+        .zip(inputs.iter().map(|ty| compile_type(env, ty)))
+        .collect()
 }
 
 /// returns names of the arguments
