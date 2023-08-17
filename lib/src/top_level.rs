@@ -919,7 +919,7 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
 #[derive(Clone)]
 struct ArgumentsForFnToDoc<'a> {
     name: &'a String,
-    definition: FunDefinition,
+    definition: &'a FunDefinition,
     extra_data: Option<&'a TopLevelItem>,
 }
 
@@ -1376,25 +1376,9 @@ impl ImplItem {
                 ),
             ]),
             ImplItem::Definition {
-                definition:
-                    FunDefinition {
-                        ty_params,
-                        where_predicates,
-                        args,
-                        ret_ty,
-                        body,
-                        is_dead_code,
-                    },
+                definition,
                 is_method,
             } => {
-                let definition = FunDefinition {
-                    ty_params: ty_params.clone(),
-                    where_predicates: where_predicates.clone(),
-                    args: args.clone(),
-                    ret_ty: ret_ty.clone(),
-                    body: body.clone(),
-                    is_dead_code: *is_dead_code,
-                };
                 let afftd = ArgumentsForFnToDoc {
                     name,
                     definition,
@@ -1529,26 +1513,7 @@ impl TopLevelItem {
                     text("."),
                 ]),
             },
-            TopLevelItem::Definition {
-                name,
-                definition:
-                    FunDefinition {
-                        ty_params,
-                        where_predicates,
-                        args,
-                        ret_ty,
-                        body,
-                        is_dead_code,
-                    },
-            } => {
-                let definition = FunDefinition {
-                    ty_params: ty_params.clone(),
-                    where_predicates: where_predicates.clone(),
-                    args: args.clone(),
-                    ret_ty: ret_ty.clone(),
-                    body: body.clone(),
-                    is_dead_code: *is_dead_code,
-                };
+            TopLevelItem::Definition { name, definition } => {
                 let afftd = ArgumentsForFnToDoc {
                     name,
                     definition,
