@@ -172,6 +172,20 @@ struct FnSigAndBody {
     body: Option<Box<Expr>>,
 }
 
+/// emits a warning with the given messages
+fn emit_warning_with_note(
+    env: &mut Env,
+    span: &rustc_span::Span,
+    warning_msg: &str,
+    note_msg: &str,
+) {
+    env.tcx
+        .sess
+        .struct_span_warn(*span, warning_msg)
+        .note(note_msg)
+        .emit();
+}
+
 /// returns Some(item) if the condition is satisfied
 fn give_if<T>(item: T, condition: bool) -> Option<T> {
     if condition {
@@ -725,20 +739,6 @@ fn compile_generic_bounds(
             GenericBound::Outlives { .. } => None,
         })
         .collect()
-}
-
-/// emits a warning with the given messages
-fn emit_warning_with_note(
-    env: &mut Env,
-    span: &rustc_span::Span,
-    warning_msg: &str,
-    note_msg: &str,
-) {
-    env.tcx
-        .sess
-        .struct_span_warn(*span, warning_msg)
-        .note(note_msg)
-        .emit();
 }
 
 /// Get the generics for the trait
