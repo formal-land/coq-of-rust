@@ -536,7 +536,7 @@ fn compile_impl_item_ref(
 ) -> ImplItem {
     let item = tcx.hir().impl_item(item_ref.id);
     let name = item.ident.name.to_string();
-    let value = match &item.kind {
+    match &item.kind {
         ImplItemKind::Const(_, body_id) => {
             let expr = tcx.hir().body(*body_id).value;
             ImplItem::Const {
@@ -590,8 +590,7 @@ fn compile_impl_item_ref(
             name,
             ty: compile_type(env, ty),
         },
-    };
-    value
+    }
 }
 
 /// filters out type parameters and compiles them with the given function
