@@ -716,20 +716,30 @@ fn compile_generic_bounds(
         .filter_map(|generic_bound| match generic_bound {
             GenericBound::Trait(ptraitref, _) => Some(compile_trait_bound(tcx, env, ptraitref)),
             GenericBound::LangItemTrait { .. } => {
-                env.tcx
-                    .sess
-                    .struct_span_warn(
-                        generic_bound.span(),
-                        "LangItem trait bounds are not supported yet.",
-                    )
-                    .note("It will change in the future.")
-                    .emit();
+                let warning_msg = "LangItem trait bounds are not supported yet.";
+                let note_msg = "It will change in the future.";
+                let span = &generic_bound.span();
+                emit_warning_with_note(env, span, warning_msg, note_msg);
                 None
             }
             // we ignore lifetimes
             GenericBound::Outlives { .. } => None,
         })
         .collect()
+}
+
+/// emits a warning with the given messages
+fn emit_warning_with_note(
+    env: &mut Env,
+    span: &rustc_span::Span,
+    warning_msg: &str,
+    note_msg: &str,
+) {
+    env.tcx
+        .sess
+        .struct_span_warn(*span, warning_msg)
+        .note(note_msg)
+        .emit();
 }
 
 /// Get the generics for the trait
