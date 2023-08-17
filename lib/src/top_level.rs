@@ -931,11 +931,7 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
     }
 }
 
-fn fn_to_doc<'a>(
-    name: &'a String,
-    definition: &'a FunDefinition,
-    extra_data: Option<&'a TopLevelItem>,
-) -> Doc<'a> {
+fn fn_to_doc<'a>(definition: &'a FunDefinition, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
     let types_for_f = types_for_f(extra_data);
 
     group([
@@ -949,7 +945,7 @@ fn fn_to_doc<'a>(
         },
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-        if (name == "fmt") && is_extra(extra_data) {
+        if ((&definition.name) == "fmt") && is_extra(extra_data) {
             match &definition.body {
                 Some(body) => group([
                     nest([
@@ -1016,7 +1012,7 @@ fn fn_to_doc<'a>(
                         nest([
                             text("Parameter"),
                             line(),
-                            text([name, "_", "ret_ty"].concat()),
+                            text([&definition.name, "_", "ret_ty"].concat()),
                             line(),
                             text(":"),
                             line(),
@@ -1031,7 +1027,7 @@ fn fn_to_doc<'a>(
                     nest([
                         text("Parameter"),
                         line(),
-                        text(name),
+                        text(&definition.name),
                         line(),
                         text(":"),
                         line(),
@@ -1085,7 +1081,7 @@ fn fn_to_doc<'a>(
                     ),
                     // return type
                     if definition.ret_ty.has_opaque_types() {
-                        let ret_ty_name = [name, "_", "ret_ty"].concat();
+                        let ret_ty_name = [&definition.name, "_", "ret_ty"].concat();
                         let ret_ty = &mut definition.ret_ty.clone();
                         ret_ty.subst_opaque_types(&ret_ty_name);
                         ret_ty.to_doc(false)
@@ -1097,7 +1093,7 @@ fn fn_to_doc<'a>(
             ]),
             Some(body) => nest([
                 nest([
-                    nest([text("Definition"), line(), text(name)]),
+                    nest([text("Definition"), line(), text(&definition.name)]),
                     line(),
                     monadic_typeclass_parameter(),
                     {
@@ -1425,7 +1421,7 @@ impl ImplItem {
                 definition,
                 is_method,
             } => concat([
-                fn_to_doc(&definition.name, definition, *extra_data),
+                fn_to_doc(definition, *extra_data),
                 hardline(),
                 hardline(),
                 if *is_method {
@@ -1551,9 +1547,7 @@ impl TopLevelItem {
                     text("."),
                 ]),
             },
-            TopLevelItem::Definition { definition } => {
-                fn_to_doc(&definition.name, definition, *extra_data)
-            }
+            TopLevelItem::Definition { definition } => fn_to_doc(definition, *extra_data),
             TopLevelItem::Module {
                 name,
                 body,
