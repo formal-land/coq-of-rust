@@ -11,7 +11,7 @@ Require Import CoqOfRust.ink.sp_weights.
 (* TODO: Implement the following structs to satisfy the dependency for e2e/env
 - [x] ContractInstantiateResult
 - [x] CodeUploadResult
-- [ ] ContractExecResult
+- [x] ContractExecResult
 *)
 
 (* 
@@ -114,3 +114,6 @@ Definition CodeUploadResult (CodeHash Balance : Set) := (Result (CodeUploadRetur
 
 (* pub type ContractInstantiateResult<AccountId, Balance> = ContractResult<Result<InstantiateReturnValue<AccountId>, DispatchError>, Balance>; *)
 Definition ContractInstantiateResult (AccountId Balance: Set) := ContractResult (Result (InstantiateReturnValue AccountId) DispatchError) Balance.
+
+(* pub type ContractExecResult<Balance> = ContractResult<Result<ExecReturnValue, DispatchError>, Balance>; *)
+Definition ContractExecResult (Balance : Set) := ContractResult (Result ExecReturnValue DispatchError) Balance.
