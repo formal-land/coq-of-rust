@@ -589,7 +589,7 @@ fn compile_impl_item(
                 name,
                 ty_params: get_ty_params_names(env, item.generics),
                 where_predicates: get_where_predicates(tcx, env, item.generics),
-                args: get_args(env, get_body(tcx, body_id), inputs),
+                args: get_args(env, get_body(tcx, body_id), inputs, "Pattern"),
                 ret_ty: compile_fn_ret_ty(env, output),
                 body: compile_function_body(env, get_body(tcx, body_id)),
                 is_dead_code,
@@ -618,17 +618,21 @@ fn get_args(
     env: &mut Env,
     body: &rustc_hir::Body,
     inputs: &[rustc_hir::Ty],
+    default: &str,
 ) -> Vec<(String, Box<CoqType>)> {
-    get_arg_names(body)
+    get_arg_names(body, default)
         .zip(inputs.iter().map(|ty| compile_type(env, ty)))
         .collect()
 }
 
 /// returns names of the arguments
-fn get_arg_names<'a>(body: &'a rustc_hir::Body) -> impl Iterator<Item = String> + 'a {
+fn get_arg_names<'a>(
+    body: &'a rustc_hir::Body,
+    default: &'a str,
+) -> impl Iterator<Item = String> + 'a {
     body.params.iter().map(|param| match param.pat.kind {
         PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-        _ => "Pattern".to_string(),
+        _ => default.to_string(),
     })
 }
 
