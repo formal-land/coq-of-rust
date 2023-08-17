@@ -934,8 +934,7 @@ fn fn_to_doc<'a>(
         // Printing instance of DoubleColon Class for [f]
         // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
         if (name == "fmt") && is_extra(extra_data) {
-            let fun_definition = definition;
-            match &fun_definition.body {
+            match &definition.body {
                 Some(body) => group([
                     nest([
                         text("Parameter "),
