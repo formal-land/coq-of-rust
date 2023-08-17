@@ -524,17 +524,33 @@ fn compile_impl_item_refs(
 ) -> Vec<ImplItem> {
     items
         .iter()
-        .map(|item| compile_impl_item_ref(tcx, env, item, is_dead_code))
+        .map(|item| {
+            compile_impl_item(
+                tcx,
+                env,
+                tcx.hir().impl_item(item.id),
+                is_method(item),
+                is_dead_code,
+            )
+        })
         .collect()
 }
 
-fn compile_impl_item_ref(
+fn is_method(item: &ImplItemRef) -> bool {
+    if let rustc_hir::AssocItemKind::Fn { has_self } = item.kind {
+        has_self
+    } else {
+        false
+    }
+}
+
+fn compile_impl_item(
     tcx: &TyCtxt,
     env: &mut Env,
-    item_ref: &ImplItemRef,
+    item: &rustc_hir::ImplItem,
+    is_method: bool,
     is_dead_code: bool,
 ) -> ImplItem {
-    let item = tcx.hir().impl_item(item_ref.id);
     let name = item.ident.name.to_string();
     match &item.kind {
         ImplItemKind::Const(_, body_id) => {
@@ -576,10 +592,6 @@ fn compile_impl_item_ref(
                 ret_ty,
                 body,
                 is_dead_code,
-            };
-            let is_method = match item_ref.kind {
-                rustc_hir::AssocItemKind::Fn { has_self } => has_self,
-                _ => false,
             };
             ImplItem::Definition {
                 definition,
