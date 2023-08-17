@@ -776,24 +776,35 @@ fn add_default_status_to_ty_params(
         .chain(repeat(None))
         .zip(names_and_default_status)
         .map(|(ty, (name, has_default))| {
-            Box::new(match ty {
-                Some(ty) => {
-                    if *has_default {
-                        TraitTyParamValue::ValWithDef {
-                            name: name.clone(),
-                            ty: ty.clone(),
-                        }
-                    } else {
-                        TraitTyParamValue::JustValue {
-                            name: name.clone(),
-                            ty: ty.clone(),
-                        }
-                    }
-                }
-                None => TraitTyParamValue::JustDefault { name: name.clone() },
-            })
+            compile_ty_param_value(name, ty.map(|ty| &**ty), has_default)
         })
         .collect()
+}
+
+/// compiles a type parameter
+fn compile_ty_param_value(
+    name: &str,
+    ty: Option<&CoqType>,
+    has_default: &bool,
+) -> Box<TraitTyParamValue> {
+    Box::new(match ty {
+        Some(ty) => {
+            if *has_default {
+                TraitTyParamValue::ValWithDef {
+                    name: name.to_string(),
+                    ty: Box::new(ty.clone()),
+                }
+            } else {
+                TraitTyParamValue::JustValue {
+                    name: name.to_string(),
+                    ty: Box::new(ty.clone()),
+                }
+            }
+        }
+        None => TraitTyParamValue::JustDefault {
+            name: name.to_string(),
+        },
+    })
 }
 
 /// Get the list of type parameters names and default status (true if it has a default)
