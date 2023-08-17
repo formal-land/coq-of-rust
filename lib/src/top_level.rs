@@ -931,224 +931,225 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
     }
 }
 
-fn fn_to_doc<'a>(definition: &'a FunDefinition, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
-    let types_for_f = types_for_f(extra_data);
+impl FunDefinition {
+    fn fn_to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
+        let types_for_f = types_for_f(extra_data);
 
-    group([
-        if definition.is_dead_code {
-            concat([
-                text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
-                hardline(),
-            ])
-        } else {
-            nil()
-        },
-        // Printing instance of DoubleColon Class for [f]
-        // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-        if ((&definition.name) == "fmt") && is_extra(extra_data) {
-            match &definition.body {
-                Some(body) => group([
-                    nest([
-                        text("Parameter "),
-                        body.parameter_name_for_fmt(),
-                        text(" : "),
-                        // get type of argument named f
-                        // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                        concat(definition.args.iter().map(|(name, ty)| {
-                            if name == "f" {
-                                ty.to_doc_tuning(false)
-                            } else {
-                                nil()
-                            }
-                        })),
-                        text(" -> "),
-                        types_for_f,
-                        definition.ret_ty.to_doc(false),
-                        text("."),
-                    ]),
+        group([
+            if self.is_dead_code {
+                concat([
+                    text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                     hardline(),
-                    hardline(),
-                    nest([
-                        text("Global Instance Deb_"),
-                        body.parameter_name_for_fmt(),
-                        text(" : "),
-                        text("Notation.DoubleColon"),
-                        line(),
-                        concat(definition.args.iter().map(|(name, ty)| {
-                            if name == "f" {
-                                ty.to_doc_tuning(false)
-                            } else {
-                                nil()
-                            }
-                        })),
-                        text(" \""),
-                        body.parameter_name_for_fmt(),
-                        text("\""),
-                        text(" := "),
-                        text("{"),
-                        line(),
+                ])
+            } else {
+                nil()
+            },
+            // Printing instance of DoubleColon Class for [f]
+            // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
+            if ((&self.name) == "fmt") && is_extra(extra_data) {
+                match &self.body {
+                    Some(body) => group([
                         nest([
-                            text("Notation.double_colon := "),
+                            text("Parameter "),
                             body.parameter_name_for_fmt(),
-                            text(";"),
-                            line(),
-                        ]),
-                        text("}."),
-                    ]),
-                    hardline(),
-                    hardline(),
-                ]),
-                None => nil(),
-            }
-        } else {
-            nil()
-        },
-        match &definition.body {
-            None => concat([
-                // if the return type is opaque define a corresponding opaque type
-                // @TODO: use also the parameter
-                if definition.ret_ty.has_opaque_types() {
-                    concat([
-                        nest([
-                            text("Parameter"),
-                            line(),
-                            text([&definition.name, "_", "ret_ty"].concat()),
-                            line(),
-                            text(":"),
-                            line(),
-                            text("Set."),
+                            text(" : "),
+                            // get type of argument named f
+                            // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                            concat(self.args.iter().map(|(name, ty)| {
+                                if name == "f" {
+                                    ty.to_doc_tuning(false)
+                                } else {
+                                    nil()
+                                }
+                            })),
+                            text(" -> "),
+                            types_for_f,
+                            self.ret_ty.to_doc(false),
+                            text("."),
                         ]),
                         hardline(),
-                    ])
-                } else {
-                    nil()
-                },
-                nest([nest([
-                    nest([
-                        text("Parameter"),
-                        line(),
-                        text(&definition.name),
-                        line(),
-                        text(":"),
-                        line(),
-                    ]),
-                    nest([
-                        text("forall"),
-                        line(),
-                        monadic_typeclass_parameter(),
-                        text(","),
-                    ]),
-                    line(),
-                    // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
-                    {
-                        let ty_params = &definition.ty_params;
-                        if ty_params.is_empty() {
-                            nil()
-                        } else {
-                            concat([
-                                text("forall"),
-                                line(),
-                                nest([intersperse(
-                                    ty_params.iter().map(|t| {
-                                        concat([text("{"), text(t), text(" : "), text("Set}")])
-                                    }),
-                                    [line()],
-                                )]),
-                                text(","),
-                                line(),
-                            ])
-                        }
-                    },
-                    // where predicates types
-                    {
-                        let where_predicates = &definition.where_predicates;
-                        concat(where_predicates.iter().map(|predicate| {
+                        hardline(),
+                        nest([
+                            text("Global Instance Deb_"),
+                            body.parameter_name_for_fmt(),
+                            text(" : "),
+                            text("Notation.DoubleColon"),
+                            line(),
+                            concat(self.args.iter().map(|(name, ty)| {
+                                if name == "f" {
+                                    ty.to_doc_tuning(false)
+                                } else {
+                                    nil()
+                                }
+                            })),
+                            text(" \""),
+                            body.parameter_name_for_fmt(),
+                            text("\""),
+                            text(" := "),
+                            text("{"),
+                            line(),
                             nest([
-                                text("forall"),
+                                text("Notation.double_colon := "),
+                                body.parameter_name_for_fmt(),
+                                text(";"),
                                 line(),
-                                predicate.to_doc(),
-                                text(","),
-                                line(),
-                            ])
-                        }))
-                    },
-                    // argument types
-                    concat(
-                        definition
-                            .args
-                            .iter()
-                            .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
-                    ),
-                    // return type
-                    if definition.ret_ty.has_opaque_types() {
-                        let ret_ty_name = [&definition.name, "_", "ret_ty"].concat();
-                        let ret_ty = &mut definition.ret_ty.clone();
-                        ret_ty.subst_opaque_types(&ret_ty_name);
-                        ret_ty.to_doc(false)
-                    } else {
-                        definition.ret_ty.to_doc(false)
-                    },
-                    text("."),
-                ])]),
-            ]),
-            Some(body) => nest([
-                nest([
-                    nest([text("Definition"), line(), text(&definition.name)]),
-                    line(),
-                    monadic_typeclass_parameter(),
-                    {
-                        let ty_params = &definition.ty_params;
-                        if ty_params.is_empty() {
-                            nil()
-                        } else {
-                            concat([
-                                line(),
-                                nest([
-                                    text("{"),
-                                    intersperse(ty_params.iter().map(text), [line()]),
-                                    line(),
-                                    text(": Set}"),
-                                ]),
-                            ])
-                        }
-                    },
-                    line(),
-                    {
-                        let where_predicates = &definition.where_predicates;
-                        concat(
-                            where_predicates
-                                .iter()
-                                .map(|predicate| concat([predicate.to_doc(), line()])),
-                        )
-                    },
-                    concat(definition.args.iter().map(|(name, ty)| {
+                            ]),
+                            text("}."),
+                        ]),
+                        hardline(),
+                        hardline(),
+                    ]),
+                    None => nil(),
+                }
+            } else {
+                nil()
+            },
+            match &self.body {
+                None => concat([
+                    // if the return type is opaque define a corresponding opaque type
+                    // @TODO: use also the parameter
+                    if self.ret_ty.has_opaque_types() {
                         concat([
                             nest([
-                                text("("),
-                                text(name),
+                                text("Parameter"),
+                                line(),
+                                text([&self.name, "_", "ret_ty"].concat()),
                                 line(),
                                 text(":"),
                                 line(),
-                                ty.to_doc(false),
-                                text(")"),
+                                text("Set."),
                             ]),
-                            line(),
+                            hardline(),
                         ])
-                    })),
-                    nest([
-                        text(":"),
+                    } else {
+                        nil()
+                    },
+                    nest([nest([
+                        nest([
+                            text("Parameter"),
+                            line(),
+                            text(&self.name),
+                            line(),
+                            text(":"),
+                            line(),
+                        ]),
+                        nest([
+                            text("forall"),
+                            line(),
+                            monadic_typeclass_parameter(),
+                            text(","),
+                        ]),
                         line(),
-                        // @TODO: improve for opaque types with trait bounds
-                        definition.ret_ty.to_doc(false),
-                        text(" :="),
-                    ]),
+                        // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
+                        {
+                            let ty_params = &self.ty_params;
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    text("forall"),
+                                    line(),
+                                    nest([intersperse(
+                                        ty_params.iter().map(|t| {
+                                            concat([text("{"), text(t), text(" : "), text("Set}")])
+                                        }),
+                                        [line()],
+                                    )]),
+                                    text(","),
+                                    line(),
+                                ])
+                            }
+                        },
+                        // where predicates types
+                        {
+                            let where_predicates = &self.where_predicates;
+                            concat(where_predicates.iter().map(|predicate| {
+                                nest([
+                                    text("forall"),
+                                    line(),
+                                    predicate.to_doc(),
+                                    text(","),
+                                    line(),
+                                ])
+                            }))
+                        },
+                        // argument types
+                        concat(
+                            self.args
+                                .iter()
+                                .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
+                        ),
+                        // return type
+                        if self.ret_ty.has_opaque_types() {
+                            let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                            let ret_ty = &mut self.ret_ty.clone();
+                            ret_ty.subst_opaque_types(&ret_ty_name);
+                            ret_ty.to_doc(false)
+                        } else {
+                            self.ret_ty.to_doc(false)
+                        },
+                        text("."),
+                    ])]),
                 ]),
-                line(),
-                body.to_doc(false),
-                text("."),
-            ]),
-        },
-    ])
+                Some(body) => nest([
+                    nest([
+                        nest([text("Definition"), line(), text(&self.name)]),
+                        line(),
+                        monadic_typeclass_parameter(),
+                        {
+                            let ty_params = &self.ty_params;
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        intersperse(ty_params.iter().map(text), [line()]),
+                                        line(),
+                                        text(": Set}"),
+                                    ]),
+                                ])
+                            }
+                        },
+                        line(),
+                        {
+                            let where_predicates = &self.where_predicates;
+                            concat(
+                                where_predicates
+                                    .iter()
+                                    .map(|predicate| concat([predicate.to_doc(), line()])),
+                            )
+                        },
+                        concat(self.args.iter().map(|(name, ty)| {
+                            concat([
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(")"),
+                                ]),
+                                line(),
+                            ])
+                        })),
+                        nest([
+                            text(":"),
+                            line(),
+                            // @TODO: improve for opaque types with trait bounds
+                            self.ret_ty.to_doc(false),
+                            text(" :="),
+                        ]),
+                    ]),
+                    line(),
+                    body.to_doc(false),
+                    text("."),
+                ]),
+            },
+        ])
+    }
 }
 
 fn mt_impl_item(item: ImplItem) -> ImplItem {
@@ -1421,7 +1422,7 @@ impl ImplItem {
                 definition,
                 is_method,
             } => concat([
-                fn_to_doc(definition, *extra_data),
+                definition.fn_to_doc(*extra_data),
                 hardline(),
                 hardline(),
                 if *is_method {
@@ -1547,7 +1548,7 @@ impl TopLevelItem {
                     text("."),
                 ]),
             },
-            TopLevelItem::Definition { definition } => fn_to_doc(definition, *extra_data),
+            TopLevelItem::Definition { definition } => definition.fn_to_doc(*extra_data),
             TopLevelItem::Module {
                 name,
                 body,
