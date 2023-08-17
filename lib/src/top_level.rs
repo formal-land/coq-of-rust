@@ -1236,7 +1236,7 @@ fn mt_fn_sig_and_body(signature_and_body: FnSigAndBody) -> FnSigAndBody {
     let FnSigAndBody { args, ret_ty, body } = signature_and_body;
     FnSigAndBody {
         args,
-        ret_ty,
+        ret_ty: CoqType::monad(mt_ty(ret_ty)),
         body: match body {
             None => body,
             Some(body) => {
