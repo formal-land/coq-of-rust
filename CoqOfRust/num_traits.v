@@ -1937,8 +1937,9 @@ Module PrimInt.
     Notation.dot := @pow;
   }.
 End PrimInt.
-
+*)
 Module ops.
+  (*
   Module bytes.
     Module NumBytes.
       Unset Primitive Projections.
@@ -2028,7 +2029,7 @@ Module ops.
       }.
     End FromBytes.
   End bytes.
-  
+  *)
   Module checked.
     Module CheckedAdd.
       Class Trait
@@ -2133,7 +2134,7 @@ Module ops.
         Notation.dot := @checked_neg;
       }.
     End CheckedNeg.
-    
+    (*
     Module CheckedShl.
       Class Trait
           (Self : Set)
@@ -2169,8 +2170,9 @@ Module ops.
         Notation.dot := @checked_shr;
       }.
     End CheckedShr.
+    *)
   End checked.
-  
+  (*
   Module euclid.
     Module Euclid.
       Class Trait
@@ -2517,8 +2519,9 @@ Module ops.
       }.
     End WrappingShr.
   End wrapping.
+  *)
 End ops.
-
+(*
 Module bytes.
   Module NumBytes.
     Unset Primitive Projections.
