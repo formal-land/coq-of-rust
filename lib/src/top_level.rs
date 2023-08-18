@@ -339,14 +339,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 return vec![];
             }
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition(compile_fun_definition(
                 env,
                 &name,
                 generics,
-                &HirFnSigAndBody {
-                    fn_sig,
-                    body: get_body(tcx, body_id),
-                },
+                &fn_sig_and_body,
                 "arg",
                 if_marked_as_dead_code,
             ))]
@@ -516,6 +514,18 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 }
             }
         }
+    }
+}
+
+/// returns a pair of function signature and its body
+fn get_hir_fn_sig_and_body<'a>(
+    tcx: &'a TyCtxt,
+    fn_sig: &'a rustc_hir::FnSig<'a>,
+    body_id: &rustc_hir::BodyId,
+) -> HirFnSigAndBody<'a> {
+    HirFnSigAndBody {
+        fn_sig,
+        body: get_body(tcx, body_id),
     }
 }
 
