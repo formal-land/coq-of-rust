@@ -563,24 +563,40 @@ fn compile_impl_item(
             }
         }
         ImplItemKind::Fn(fn_sig, body_id) => ImplItem::Definition {
-            definition: FunDefinition {
-                name,
-                ty_params: get_ty_params_names(env, item.generics),
-                where_predicates: get_where_predicates(tcx, env, item.generics),
-                signature_and_body: compile_fn_sig_and_body(
-                    env,
-                    fn_sig,
-                    get_body(tcx, body_id),
-                    "Pattern",
-                ),
+            definition: compile_fun_definition(
+                env,
+                &name,
+                item,
+                fn_sig,
+                body_id,
+                "Pattern",
                 is_dead_code,
-            },
+            ),
             is_method,
         },
         ImplItemKind::Type(ty) => ImplItem::Type {
             name,
             ty: compile_type(env, ty),
         },
+    }
+}
+
+fn compile_fun_definition(
+    env: &mut Env,
+    name: &str,
+    item: &rustc_hir::ImplItem,
+    fn_sig: &rustc_hir::FnSig,
+    body_id: &rustc_hir::BodyId,
+    default: &str,
+    is_dead_code: bool,
+) -> FunDefinition {
+    let tcx = env.tcx;
+    FunDefinition {
+        name: name.to_owned(),
+        ty_params: get_ty_params_names(env, item.generics),
+        where_predicates: get_where_predicates(&tcx, env, item.generics),
+        signature_and_body: compile_fn_sig_and_body(env, fn_sig, get_body(&tcx, body_id), default),
+        is_dead_code,
     }
 }
 
