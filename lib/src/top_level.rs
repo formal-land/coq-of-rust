@@ -1630,47 +1630,45 @@ impl TopLevelItem {
                             nest([text("Module"), line(), text(name), text(".")]),
                             nest([
                                 hardline(),
-                                text("Unset Primitive Projections."),
-                                hardline(),
-                                nest([
-                                    text("Record"),
-                                    line(),
-                                    text("t"),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    text("Set"),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text("{"),
-                                ]),
-                                if fields.is_empty() {
-                                    text(" ")
-                                } else {
-                                    concat([
-                                        nest([
+                                locally_unset_primitive_projections(&concat([
+                                    nest([
+                                        text("Record"),
+                                        line(),
+                                        text("t"),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text("{"),
+                                    ]),
+                                    if fields.is_empty() {
+                                        text(" ")
+                                    } else {
+                                        concat([
+                                            nest([
+                                                hardline(),
+                                                intersperse(
+                                                    fields.iter().map(|(name, ty)| {
+                                                        nest([
+                                                            text(name),
+                                                            line(),
+                                                            text(":"),
+                                                            line(),
+                                                            ty.to_doc(false),
+                                                            text(";"),
+                                                        ])
+                                                    }),
+                                                    [hardline()],
+                                                ),
+                                            ]),
                                             hardline(),
-                                            intersperse(
-                                                fields.iter().map(|(name, ty)| {
-                                                    nest([
-                                                        text(name),
-                                                        line(),
-                                                        text(":"),
-                                                        line(),
-                                                        ty.to_doc(false),
-                                                        text(";"),
-                                                    ])
-                                                }),
-                                                [hardline()],
-                                            ),
-                                        ]),
-                                        hardline(),
-                                    ])
-                                },
-                                text("}."),
-                                hardline(),
-                                text("Global Set Primitive Projections."),
+                                        ])
+                                    },
+                                    text("}."),
+                                ])),
                             ]),
                             hardline(),
                             nest([text("End"), line(), text(name), text(".")]),
