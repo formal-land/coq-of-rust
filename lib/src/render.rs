@@ -270,7 +270,14 @@ where
         content: &group([
             locally_unset_primitive_projections_if(
                 items.is_empty(),
-                &trait_typeclass(ty_params, predicates, bounds, associated_types, &items),
+                &coq::Definition {
+                    ty_params: ty_params.to_vec(),
+                    predicates: predicates.to_vec(),
+                    bounds: bounds.to_vec(),
+                    associated_types: associated_types.to_vec(),
+                    items,
+                }
+                .to_doc(),
             ),
             if instances.is_empty() {
                 nil()
@@ -279,28 +286,6 @@ where
             },
             trait_notation_instances(instances),
         ]),
-    }
-    .to_doc()
-}
-
-/// creates a definition of a typeclass corresponding
-/// to a trait with the given type parameters and bounds
-fn trait_typeclass<'a, U>(
-    ty_params: &[(U, Option<Doc<'a>>)],
-    predicates: &[Doc<'a>],
-    bounds: &[Doc<'a>],
-    associated_types: &[(U, Vec<Doc<'a>>)],
-    items: &[Doc<'a>],
-) -> Doc<'a>
-where
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
-    coq::Definition {
-        ty_params: ty_params.to_vec(),
-        predicates: predicates.to_vec(),
-        bounds: bounds.to_vec(),
-        associated_types: associated_types.to_vec(),
-        items: items.to_vec(),
     }
     .to_doc()
 }
