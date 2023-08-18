@@ -8,7 +8,7 @@ Module HasArea.
   
   Global Instance Method_area `{H : State.Trait} `(Trait)
     : Notation.Dot "area" := {
-    Notation.dot := area;
+    Notation.dot := @area;
   }.
 End HasArea.
 

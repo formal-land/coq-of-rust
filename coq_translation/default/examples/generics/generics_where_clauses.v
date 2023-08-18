@@ -8,7 +8,7 @@ Module PrintInOption.
   
   Global Instance Method_print_in_option `{H : State.Trait} `(Trait)
     : Notation.Dot "print_in_option" := {
-    Notation.dot := print_in_option;
+    Notation.dot := @print_in_option;
   }.
 End PrintInOption.
 
