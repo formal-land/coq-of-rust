@@ -332,19 +332,15 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 return vec![];
             }
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let env_tcx = env.tcx;
-            vec![TopLevelItem::Definition(FunDefinition {
-                name,
-                ty_params: get_ty_params_names(env, generics),
-                where_predicates: get_where_predicates(tcx, env, generics),
-                signature_and_body: compile_fn_sig_and_body(
-                    env,
-                    fn_sig,
-                    get_body(&env_tcx, body_id),
-                    "arg",
-                ),
-                is_dead_code: if_marked_as_dead_code,
-            })]
+            vec![TopLevelItem::Definition(compile_fun_definition(
+                env,
+                &name,
+                generics,
+                fn_sig,
+                body_id,
+                "arg",
+                if_marked_as_dead_code,
+            ))]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
