@@ -566,7 +566,7 @@ fn compile_impl_item(
             definition: compile_fun_definition(
                 env,
                 &name,
-                item,
+                item.generics,
                 fn_sig,
                 body_id,
                 "Pattern",
@@ -581,10 +581,11 @@ fn compile_impl_item(
     }
 }
 
+/// compiles a given function
 fn compile_fun_definition(
     env: &mut Env,
     name: &str,
-    item: &rustc_hir::ImplItem,
+    generics: &rustc_hir::Generics,
     fn_sig: &rustc_hir::FnSig,
     body_id: &rustc_hir::BodyId,
     default: &str,
@@ -593,8 +594,8 @@ fn compile_fun_definition(
     let tcx = env.tcx;
     FunDefinition {
         name: name.to_owned(),
-        ty_params: get_ty_params_names(env, item.generics),
-        where_predicates: get_where_predicates(&tcx, env, item.generics),
+        ty_params: get_ty_params_names(env, generics),
+        where_predicates: get_where_predicates(&tcx, env, generics),
         signature_and_body: compile_fn_sig_and_body(env, fn_sig, get_body(&tcx, body_id), default),
         is_dead_code,
     }
