@@ -267,7 +267,7 @@ where
 {
     coq::Module {
         name,
-        content: &group([
+        content: vec![
             locally_unset_primitive_projections_if(
                 items.is_empty(),
                 &coq::Definition {
@@ -285,7 +285,7 @@ where
                 hardline()
             },
             trait_notation_instances(instances),
-        ]),
+        ],
     }
     .to_doc()
 }
