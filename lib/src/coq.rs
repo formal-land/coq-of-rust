@@ -1,8 +1,9 @@
 use crate::render::{self, group, hardline, nest, text, Doc};
 
 /// a coq module
-pub(crate) struct Module<'a> {
+pub(crate) struct Module<'a, 'b> {
     pub name: &'a str,
+    pub content: &'b Doc<'a>,
 }
 
 /// a coq definition
@@ -14,9 +15,9 @@ pub(crate) struct Definition<'a, U> {
     pub items: Vec<Doc<'a>>,
 }
 
-impl<'a> Module<'a> {
-    pub(crate) fn to_doc(&self, content: &Doc<'a>) -> Doc<'a> {
-        render::module(self.name, content.clone())
+impl<'a, 'b> Module<'a, 'b> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        render::module(self.name, self.content.clone())
     }
 }
 

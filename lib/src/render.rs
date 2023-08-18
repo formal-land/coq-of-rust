@@ -265,18 +265,22 @@ pub(crate) fn trait_module<'a, U>(
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    coq::Module { name }.to_doc(&group([
-        locally_unset_primitive_projections_if(
-            items.is_empty(),
-            &trait_typeclass(ty_params, predicates, bounds, associated_types, &items),
-        ),
-        if instances.is_empty() {
-            nil()
-        } else {
-            hardline()
-        },
-        trait_notation_instances(instances),
-    ]))
+    coq::Module {
+        name,
+        content: &group([
+            locally_unset_primitive_projections_if(
+                items.is_empty(),
+                &trait_typeclass(ty_params, predicates, bounds, associated_types, &items),
+            ),
+            if instances.is_empty() {
+                nil()
+            } else {
+                hardline()
+            },
+            trait_notation_instances(instances),
+        ]),
+    }
+    .to_doc()
 }
 
 /// creates a definition of a typeclass corresponding
