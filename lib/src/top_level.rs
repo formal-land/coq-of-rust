@@ -197,7 +197,7 @@ fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
     give_if(item, !condition)
 }
 
-fn compile_fn_sig_and_body_id(
+fn compile_fn_sig_and_body(
     env: &mut Env,
     fn_sig: &rustc_hir::FnSig<'_>,
     body: &rustc_hir::Body,
@@ -336,7 +336,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let env_tcx = env.tcx;
             let signature_and_body =
-                compile_fn_sig_and_body_id(env, fn_sig, get_body(&env_tcx, body_id));
+                compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id));
             vec![TopLevelItem::Definition(FunDefinition {
                 name,
                 ty_params: get_ty_params_names(env, generics),
@@ -834,7 +834,7 @@ fn compile_trait_item_body(
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
                 let signature_and_body =
-                    compile_fn_sig_and_body_id(env, fn_sig, get_body(&env_tcx, body_id));
+                    compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id));
                 TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
