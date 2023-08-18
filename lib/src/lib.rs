@@ -17,6 +17,7 @@ extern crate rustc_span;
 
 pub mod callbacks;
 pub mod configuration;
+pub mod coq;
 pub mod core;
 pub mod env;
 pub mod expression;
