@@ -859,14 +859,8 @@ fn compile_trait_item_body(
             },
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
-                let signature_and_body = compile_fn_sig_and_body(
-                    env,
-                    &HirFnSigAndBody {
-                        fn_sig,
-                        body: get_body(&env_tcx, body_id),
-                    },
-                    "arg",
-                );
+                let fn_sig_and_body = get_hir_fn_sig_and_body(&env_tcx, fn_sig, body_id);
+                let signature_and_body = compile_fn_sig_and_body(env, &fn_sig_and_body, "arg");
                 TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
