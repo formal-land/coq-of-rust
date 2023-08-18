@@ -179,6 +179,7 @@ End alloc.
 *)
 
 Require CoqOfRust.core.alloc.
+Require CoqOfRust.core.borrow.
 Require CoqOfRust.core.cell.
 Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
@@ -188,9 +189,11 @@ Require CoqOfRust.core.hash.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.option.
 Require CoqOfRust.core.result.
+Require CoqOfRust.core.panic.unwind_safe.
 
 Module core.
   Export CoqOfRust.core.alloc.
+  Export CoqOfRust.core.borrow.
   Export CoqOfRust.core.cell.
   Export CoqOfRust.core.clone.
   Export CoqOfRust.core.cmp.
@@ -488,6 +491,10 @@ Module core.
     Global Instance Write_for_Formatter : Write.Trait Formatter.
     Admitted.
   End fmt.
+
+  Module panic.
+    Export CoqOfRust.core.panic.unwind_safe.
+  End panic.
 
   Module panicking.
     Module AssertKind.
@@ -799,6 +806,14 @@ Module core.
           call_once `{State.Trait} : Self -> Args -> M Output;
         }.
       End FnOnce.
+
+      Module FnMut.
+        Class Trait {Args Output : Set} (Self : Set)
+          `{FnOnce.Trait (Args := Args) (Output := Output) Self} : Set := {
+          call_mut `{State.Trait} : mut_ref Self -> Args -> M Output;
+        }.
+      End FnMut.
+      
     End function.
     
 
@@ -982,7 +997,6 @@ Require CoqOfRust._std.ascii.
 Require CoqOfRust._std.assert_matches.
 Require CoqOfRust._std.async_iter.
 Require CoqOfRust._std.backtrace.
-Require CoqOfRust._std.borrow.
 Require CoqOfRust._std.char.
 Require CoqOfRust._std.collections.
 Require CoqOfRust._std.env.
@@ -1024,7 +1038,7 @@ Module std.
   Module array := _std.array.
   Module ascii := _std.ascii.
   Module backtrace := _std.backtrace.
-  Module borrow := _std.borrow.
+  Module borrow := core.borrow.
   Module char := _std.char.
   Module clone := core.clone.
   Module cmp := core.cmp.

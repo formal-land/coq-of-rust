@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition apply
     `{H : State.Trait}
     {F : Set}
-    `{core.ops.function.FnOnce.Trait unit F}
+    `{core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M (H := H) unit :=
   let* _ := f in
@@ -13,7 +13,7 @@ Definition apply
 Definition apply_to_3
     `{H : State.Trait}
     {F : Set}
-    `{core.ops.function.Fn.Trait (i32) F}
+    `{core.ops.function.Fn.Trait F (Args := i32)}
     (f : F)
     : M (H := H) i32 :=
   f 3.

@@ -13,7 +13,7 @@ Module Person.
 End Person.
 
 Module Student.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{supertraits.Person.Trait Self} : Set := {
     university
       `{H : State.Trait}
       :
@@ -41,7 +41,11 @@ Module Programmer.
 End Programmer.
 
 Module CompSciStudent.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self : Set)
+        `{supertraits.Programmer.Trait Self}
+        `{supertraits.Student.Trait Self} :
+      Set := {
     git_username
       `{H : State.Trait}
       :

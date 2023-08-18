@@ -96,7 +96,7 @@ End
 Definition difference
     `{H : State.Trait}
     {A B C : Set}
-    `{generics_associated_types_problem.Contains.Trait A B C}
+    `{generics_associated_types_problem.Contains.Trait C (A := A) (B := B)}
     (container : ref C)
     : M (H := H) i32 :=
   let* α0 := container.["last"] in

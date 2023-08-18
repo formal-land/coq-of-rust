@@ -39,7 +39,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
 Definition read_lines
     `{H : State.Trait}
     {P : Set}
-    `{core.convert.AsRef.Trait std.path.Path P}
+    `{core.convert.AsRef.Trait P (T := std.path.Path)}
     (filename : P)
     :
       M (H := H)
