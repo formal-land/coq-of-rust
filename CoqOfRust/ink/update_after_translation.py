@@ -179,6 +179,20 @@ Require CoqOfRust.ink.parity_scale_codec.""",
             content,
             2,
         )
+    content = \
+        sub_exactly_n(
+            "Notation.dot := encode;",
+            "Notation.dot := @encode;",
+            content,
+            2,
+        )
+    content = \
+        sub_exactly_n(
+            "Notation.dot := decode;",
+            "Notation.dot := @decode;",
+            content,
+            2,
+        )
     with open(file_name, "w") as f:
         f.write(content)
 

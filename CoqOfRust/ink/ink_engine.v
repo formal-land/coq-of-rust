@@ -353,11 +353,11 @@ Module chain_extension.
     
     Global Instance Method_func_id `{H : State.Trait} `(Trait)
       : Notation.Dot "func_id" := {
-      Notation.dot := @func_id;
+      Notation.dot := func_id;
     }.
     Global Instance Method_call `{H : State.Trait} `(Trait)
       : Notation.Dot "call" := {
-      Notation.dot := @call;
+      Notation.dot := call;
     }.
   End ChainExtension.
 End chain_extension.
@@ -410,11 +410,11 @@ Module ChainExtension.
   
   Global Instance Method_func_id `{H : State.Trait} `(Trait)
     : Notation.Dot "func_id" := {
-    Notation.dot := @func_id;
+    Notation.dot := func_id;
   }.
   Global Instance Method_call `{H : State.Trait} `(Trait)
     : Notation.Dot "call" := {
-    Notation.dot := @call;
+    Notation.dot := call;
   }.
 End ChainExtension.
 

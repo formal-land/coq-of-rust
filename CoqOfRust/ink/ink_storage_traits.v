@@ -137,7 +137,7 @@ Module storage.
     
     Global Instance Method_KEY `{H : State.Trait} `(Trait)
       : Notation.Dot "KEY" := {
-      Notation.dot := @KEY;
+      Notation.dot := KEY;
     }.
     (* Global Instance Method_key `{H : State.Trait} `(Trait)
       : Notation.Dot "key" := {
@@ -266,7 +266,7 @@ Module StorageKey.
   
   Global Instance Method_KEY `{H : State.Trait} `(Trait)
     : Notation.Dot "KEY" := {
-    Notation.dot := @KEY;
+    Notation.dot := KEY;
   }.
   (* Global Instance Method_key `{H : State.Trait} `(Trait)
     : Notation.Dot "key" := {
@@ -342,7 +342,7 @@ Module layout.
     
     Global Instance Method_layout `{H : State.Trait} `(Trait)
       : Notation.Dot "layout" := {
-      Notation.dot := @layout;
+      Notation.dot := layout;
     }.
   End StorageLayout.
 End layout.
@@ -357,6 +357,6 @@ Module StorageLayout.
   
   Global Instance Method_layout `{H : State.Trait} `(Trait)
     : Notation.Dot "layout" := {
-    Notation.dot := @layout;
+    Notation.dot := layout;
   }.
 End StorageLayout.

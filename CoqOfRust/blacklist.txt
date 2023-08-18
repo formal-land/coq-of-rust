@@ -1,7 +1,6 @@
 examples/cargo/concurrent_tests.v
 examples/conversion/from.v
 examples/conversion/into.v
-examples/custom_types/constants.v
 examples/custom_types/enums_c_like.v
 examples/custom_types/enums_testcase_linked_list.v
 examples/custom_types/enums_type_aliases_v1.v
@@ -58,7 +57,6 @@ examples/functions/functions_closures.v
 examples/functions/functions.v
 examples/functions/higher_order_functions.v
 examples/generics/generics_associated_types_problem.v
-examples/generics/generics_associated_types_solution.v
 examples/generics/generics_bounds.v
 examples/generics/generics_implementation.v
 examples/generics/generics_multiple_bounds.v
@@ -75,7 +73,6 @@ examples/modules/struct_visibility.v
 examples/modules/super_and_self.v
 examples/modules/the_use_as_declaration.v
 examples/modules/visibility.v
-examples/monadic_transformation/example03.v
 examples/monadic_transformation/example05.v
 examples/primitives/arrays_and_slices.v
 examples/primitives/literals_operators.v
@@ -83,12 +80,10 @@ examples/primitives/tuples.v
 examples/scoping_rules/scoping_rules_borrowing_mutablity.v
 examples/scoping_rules/scoping_rules_borrowing_the_ref_pattern.v
 examples/scoping_rules/scoping_rules_lifetimes_bounds.v
-examples/scoping_rules/scoping_rules_lifetimes_functions.v
 examples/scoping_rules/scoping_rules_lifetimes_structs.v
 examples/scoping_rules/scoping_rules_lifetimes_traits.v
 examples/scoping_rules/scoping_rules_ownership_and_rules_partial_moves.v
 examples/scoping_rules/scoping_rules_raii_desctructor.v
-examples/scoping_rules/scoping_rules_raii.v
 examples/std_library_types/arc.v
 examples/std_library_types/box_stack_heap.v
 examples/std_library_types/hash_map_alternate_or_custom_key_types.v
@@ -121,7 +116,6 @@ examples/std_misc/threads_test_case_map_reduce.v
 examples/std_misc/threads.v
 examples/subtle.v
 examples/testing/documentation_testing.v
-examples/testing/unit_testing.v
 examples/traits/clone.v
 examples/traits/derive.v
 examples/traits/disambiguating_overlapping_traits.v
