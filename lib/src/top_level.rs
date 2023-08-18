@@ -2125,16 +2125,16 @@ impl TopLevelItem {
                 body.iter()
                     .map(|(name, item)| {
                         concat([match item {
-                            TraitItem::Definition { .. } => new_instance::<_, String>(
+                            TraitItem::Definition { .. } => new_instance(
                                 name,
-                                &vec![],
+                                &[],
                                 text("Notation.Dot"),
                                 text("Notation.dot"),
                                 concat([text("@"), text(name)]),
                             ),
                             TraitItem::Type { .. } => new_instance(
                                 name,
-                                &vec![name],
+                                &[name],
                                 group([text("Notation.DoubleColonType"), line(), text("Self")]),
                                 text("Notation.double_colon_type"),
                                 text(name),
@@ -2143,9 +2143,9 @@ impl TopLevelItem {
                                 ty_params,
                                 where_predicates,
                                 signature_and_body,
-                            } => new_instance::<_, String>(
+                            } => new_instance(
                                 name,
-                                &vec![],
+                                &[],
                                 text("Notation.Dot"),
                                 nest([function_header(
                                     "Notation.dot",

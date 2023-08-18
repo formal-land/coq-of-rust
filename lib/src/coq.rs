@@ -1,4 +1,4 @@
-use crate::render::{self, group, hardline, nest, text, Doc};
+use crate::render::{self, concat, group, hardline, nest, text, Doc};
 
 /// a coq module
 pub(crate) struct Module<'a> {
@@ -13,6 +13,15 @@ pub(crate) struct Definition<'a, U> {
     pub bounds: Vec<Doc<'a>>,
     pub associated_types: Vec<(U, Vec<Doc<'a>>)>,
     pub items: Vec<Doc<'a>>,
+}
+
+/// a global instance of a coq typeclass
+pub(crate) struct Instance<'a> {
+    pub name: &'a str,
+    pub trait_parameters: Vec<&'a str>,
+    pub kind: Doc<'a>,
+    pub field: Doc<'a>,
+    pub value: Doc<'a>,
 }
 
 impl<'a> Module<'a> {
@@ -35,6 +44,20 @@ where
                     &self.associated_types,
                 ),
                 render::new_typeclass_body(self.items.clone()),
+            ]),
+            hardline(),
+            text("}."),
+        ])
+    }
+}
+
+impl<'a> Instance<'a> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        concat([
+            render::new_instance_header(self.name, &self.trait_parameters, self.kind.to_owned()),
+            nest([
+                hardline(),
+                render::new_instance_body(self.field.to_owned(), self.value.to_owned()),
             ]),
             hardline(),
             text("}."),

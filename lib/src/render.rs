@@ -452,23 +452,21 @@ pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance<'a, U, V>(
-    name: U,
-    trait_parameters: &Vec<V>,
+pub(crate) fn new_instance<'a>(
+    name: &'a str,
+    trait_parameters: &[&'a str],
     kind: Doc<'a>,
     field: Doc<'a>,
     value: Doc<'a>,
-) -> Doc<'a>
-where
-    U: std::fmt::Display,
-    V: std::fmt::Display,
-{
-    concat([
-        new_instance_header(name, trait_parameters, kind),
-        nest([hardline(), new_instance_body(field, value)]),
-        hardline(),
-        text("}."),
-    ])
+) -> Doc<'a> {
+    coq::Instance {
+        name,
+        trait_parameters: trait_parameters.to_vec(),
+        kind,
+        field,
+        value,
+    }
+    .to_doc()
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
