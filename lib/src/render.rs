@@ -166,17 +166,25 @@ where
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
 
+/// locally unsets primitive projecitons
+fn locally_unset_primitive_projections<'a>(doc: &Doc<'a>) -> Doc<'a> {
+    group([
+        group([text("Unset Primitive Projections."), hardline()]),
+        doc.clone(),
+        group([hardline(), text("Global Set Primitive Projections.")]),
+    ])
+}
+
 /// locally unsets primitive projecitons if the condition is satisfied
-pub(crate) fn locally_unset_primitive_projections(condition: bool, doc: Doc) -> Doc {
-    group(if condition {
-        [
-            group([text("Unset Primitive Projections."), hardline()]),
-            doc,
-            group([hardline(), text("Global Set Primitive Projections.")]),
-        ]
+pub(crate) fn locally_unset_primitive_projections_if<'a>(
+    condition: bool,
+    doc: &Doc<'a>,
+) -> Doc<'a> {
+    if condition {
+        locally_unset_primitive_projections(doc)
     } else {
-        [nil(), doc, hardline()]
-    })
+        group([doc.clone(), hardline()])
+    }
 }
 
 /// puts [doc] in a section or a module (that depends on [kind])
@@ -256,9 +264,9 @@ where
     module(
         name,
         group([
-            locally_unset_primitive_projections(
+            locally_unset_primitive_projections_if(
                 items.is_empty(),
-                trait_typeclass(ty_params, predicates, bounds, associated_types, items),
+                &trait_typeclass(ty_params, predicates, bounds, associated_types, items),
             ),
             if instances.is_empty() {
                 nil()
