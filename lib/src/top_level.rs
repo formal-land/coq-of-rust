@@ -337,7 +337,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 &name,
                 generics,
                 fn_sig,
-                body_id,
+                get_body(&tcx, body_id),
                 "arg",
                 if_marked_as_dead_code,
             ))]
@@ -564,7 +564,7 @@ fn compile_impl_item(
                 &name,
                 item.generics,
                 fn_sig,
-                body_id,
+                get_body(&tcx, body_id),
                 "Pattern",
                 is_dead_code,
             ),
@@ -583,7 +583,7 @@ fn compile_fun_definition(
     name: &str,
     generics: &rustc_hir::Generics,
     fn_sig: &rustc_hir::FnSig,
-    body_id: &rustc_hir::BodyId,
+    body: &rustc_hir::Body,
     default: &str,
     is_dead_code: bool,
 ) -> FunDefinition {
@@ -592,7 +592,7 @@ fn compile_fun_definition(
         name: name.to_owned(),
         ty_params: get_ty_params_names(env, generics),
         where_predicates: get_where_predicates(&tcx, env, generics),
-        signature_and_body: compile_fn_sig_and_body(env, fn_sig, get_body(&tcx, body_id), default),
+        signature_and_body: compile_fn_sig_and_body(env, fn_sig, body, default),
         is_dead_code,
     }
 }
