@@ -559,20 +559,14 @@ fn compile_impl_item(
                 is_dead_code,
             }
         }
-        ImplItemKind::Fn(
-            rustc_hir::FnSig {
-                decl: rustc_hir::FnDecl { inputs, output, .. },
-                ..
-            },
-            body_id,
-        ) => ImplItem::Definition {
+        ImplItemKind::Fn(fn_sig, body_id) => ImplItem::Definition {
             definition: FunDefinition {
                 name,
                 ty_params: get_ty_params_names(env, item.generics),
                 where_predicates: get_where_predicates(tcx, env, item.generics),
                 signature_and_body: FnSigAndBody {
-                    args: get_args(env, get_body(tcx, body_id), inputs, "Pattern"),
-                    ret_ty: compile_fn_ret_ty(env, output),
+                    args: get_args(env, get_body(tcx, body_id), fn_sig.decl.inputs, "Pattern"),
+                    ret_ty: compile_fn_ret_ty(env, &fn_sig.decl.output),
                     body: compile_function_body(env, get_body(tcx, body_id)),
                 },
                 is_dead_code,
