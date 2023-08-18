@@ -25,6 +25,12 @@ pub(crate) struct TopLevelOptions {
     pub(crate) generate_reorder: bool,
 }
 
+#[derive(Clone, Debug)]
+struct HirFnSigAndBody<'a> {
+    fn_sig: &'a rustc_hir::FnSig<'a>,
+    body: &'a rustc_hir::Body<'a>,
+}
+
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct FnSigAndBody {
     args: Vec<(String, Box<CoqType>)>,
@@ -336,8 +342,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 env,
                 &name,
                 generics,
-                fn_sig,
-                get_body(&tcx, body_id),
+                &HirFnSigAndBody {
+                    fn_sig,
+                    body: get_body(tcx, body_id),
+                },
                 "arg",
                 if_marked_as_dead_code,
             ))]
@@ -563,8 +571,10 @@ fn compile_impl_item(
                 env,
                 &name,
                 item.generics,
-                fn_sig,
-                get_body(&tcx, body_id),
+                &HirFnSigAndBody {
+                    fn_sig,
+                    body: get_body(tcx, body_id),
+                },
                 "Pattern",
                 is_dead_code,
             ),
@@ -582,8 +592,7 @@ fn compile_fun_definition(
     env: &mut Env,
     name: &str,
     generics: &rustc_hir::Generics,
-    fn_sig: &rustc_hir::FnSig,
-    body: &rustc_hir::Body,
+    fn_sig_and_body: &HirFnSigAndBody,
     default: &str,
     is_dead_code: bool,
 ) -> FunDefinition {
@@ -592,7 +601,12 @@ fn compile_fun_definition(
         name: name.to_owned(),
         ty_params: get_ty_params_names(env, generics),
         where_predicates: get_where_predicates(&tcx, env, generics),
-        signature_and_body: compile_fn_sig_and_body(env, fn_sig, body, default),
+        signature_and_body: compile_fn_sig_and_body(
+            env,
+            fn_sig_and_body.fn_sig,
+            fn_sig_and_body.body,
+            default,
+        ),
         is_dead_code,
     }
 }
