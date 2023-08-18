@@ -167,7 +167,7 @@ where
 }
 
 /// locally unsets primitive projecitons
-fn locally_unset_primitive_projections<'a>(doc: &Doc<'a>) -> Doc<'a> {
+pub(crate) fn locally_unset_primitive_projections<'a>(doc: &Doc<'a>) -> Doc<'a> {
     group([
         text("Unset Primitive Projections."),
         hardline(),
