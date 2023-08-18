@@ -205,14 +205,14 @@ fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
 
 fn compile_fn_sig_and_body(
     env: &mut Env,
-    fn_sig: &rustc_hir::FnSig<'_>,
-    body: &rustc_hir::Body,
+    fn_sig_and_body: &HirFnSigAndBody,
     default: &str,
 ) -> FnSigAndBody {
+    let decl = fn_sig_and_body.fn_sig.decl;
     FnSigAndBody {
-        args: get_args(env, body, fn_sig.decl.inputs, default),
-        ret_ty: compile_fn_ret_ty(env, &fn_sig.decl.output),
-        body: compile_function_body(env, body),
+        args: get_args(env, fn_sig_and_body.body, decl.inputs, default),
+        ret_ty: compile_fn_ret_ty(env, &decl.output),
+        body: compile_function_body(env, fn_sig_and_body.body),
     }
 }
 
@@ -601,12 +601,7 @@ fn compile_fun_definition(
         name: name.to_owned(),
         ty_params: get_ty_params_names(env, generics),
         where_predicates: get_where_predicates(&tcx, env, generics),
-        signature_and_body: compile_fn_sig_and_body(
-            env,
-            fn_sig_and_body.fn_sig,
-            fn_sig_and_body.body,
-            default,
-        ),
+        signature_and_body: compile_fn_sig_and_body(env, fn_sig_and_body, default),
         is_dead_code,
     }
 }
@@ -856,8 +851,14 @@ fn compile_trait_item_body(
             },
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
-                let signature_and_body =
-                    compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id), "arg");
+                let signature_and_body = compile_fn_sig_and_body(
+                    env,
+                    &HirFnSigAndBody {
+                        fn_sig,
+                        body: get_body(&env_tcx, body_id),
+                    },
+                    "arg",
+                );
                 TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
