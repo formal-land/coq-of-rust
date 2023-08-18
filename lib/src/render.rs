@@ -169,9 +169,11 @@ where
 /// locally unsets primitive projecitons
 fn locally_unset_primitive_projections<'a>(doc: &Doc<'a>) -> Doc<'a> {
     group([
-        group([text("Unset Primitive Projections."), hardline()]),
+        text("Unset Primitive Projections."),
+        hardline(),
         doc.clone(),
-        group([hardline(), text("Global Set Primitive Projections.")]),
+        hardline(),
+        text("Global Set Primitive Projections."),
     ])
 }
 
