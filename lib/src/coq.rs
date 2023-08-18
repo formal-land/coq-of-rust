@@ -59,7 +59,7 @@ impl<'a> Instance<'a> {
         kind: Doc<'a>,
         field: Doc<'a>,
         value: Doc<'a>,
-    ) -> Instance<'a> {
+    ) -> Self {
         Instance {
             name,
             trait_parameters: trait_parameters.to_vec(),
