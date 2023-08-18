@@ -205,10 +205,7 @@ fn compile_fn_sig_and_body(
 ) -> FnSigAndBody {
     FnSigAndBody {
         args: get_args(env, body, fn_sig.decl.inputs, default),
-        ret_ty: match fn_sig.decl.output {
-            rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
-            rustc_hir::FnRetTy::Return(ty) => compile_type(env, ty),
-        },
+        ret_ty: compile_fn_ret_ty(env, &fn_sig.decl.output),
         body: compile_function_body(env, body),
     }
 }
