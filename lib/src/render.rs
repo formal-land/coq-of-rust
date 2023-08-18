@@ -260,7 +260,7 @@ pub(crate) fn trait_module<'a, U>(
     bounds: &[Doc<'a>],
     associated_types: &[(U, Vec<Doc<'a>>)],
     items: Vec<Doc<'a>>,
-    instances: Vec<Doc<'a>>,
+    instances: Vec<coq::Instance<'a>>,
 ) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -447,8 +447,11 @@ where
 }
 
 /// separates definitions of instances with [hardline]s
-pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
-    intersperse(instances, [hardline()])
+pub(crate) fn trait_notation_instances(instances: Vec<coq::Instance>) -> Doc {
+    intersperse(
+        instances.iter().map(|i| i.to_doc()).collect::<Vec<Doc>>(),
+        [hardline()],
+    )
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
@@ -458,7 +461,7 @@ pub(crate) fn new_instance<'a>(
     kind: Doc<'a>,
     field: Doc<'a>,
     value: Doc<'a>,
-) -> Doc<'a> {
+) -> coq::Instance<'a> {
     coq::Instance {
         name,
         trait_parameters: trait_parameters.to_vec(),
@@ -466,7 +469,6 @@ pub(crate) fn new_instance<'a>(
         field,
         value,
     }
-    .to_doc()
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]

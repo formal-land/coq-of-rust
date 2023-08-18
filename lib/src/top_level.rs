@@ -2123,59 +2123,57 @@ impl TopLevelItem {
                     })
                     .collect(),
                 body.iter()
-                    .map(|(name, item)| {
-                        concat([match item {
-                            TraitItem::Definition { .. } => new_instance(
-                                name,
-                                &[],
-                                text("Notation.Dot"),
-                                text("Notation.dot"),
-                                concat([text("@"), text(name)]),
-                            ),
-                            TraitItem::Type { .. } => new_instance(
-                                name,
-                                &[name],
-                                group([text("Notation.DoubleColonType"), line(), text("Self")]),
-                                text("Notation.double_colon_type"),
-                                text(name),
-                            ),
-                            TraitItem::DefinitionWithDefault {
+                    .map(|(name, item)| match item {
+                        TraitItem::Definition { .. } => new_instance(
+                            name,
+                            &[],
+                            text("Notation.Dot"),
+                            text("Notation.dot"),
+                            concat([text("@"), text(name)]),
+                        ),
+                        TraitItem::Type { .. } => new_instance(
+                            name,
+                            &[name],
+                            group([text("Notation.DoubleColonType"), line(), text("Self")]),
+                            text("Notation.double_colon_type"),
+                            text(name),
+                        ),
+                        TraitItem::DefinitionWithDefault {
+                            ty_params,
+                            where_predicates,
+                            signature_and_body,
+                        } => new_instance(
+                            name,
+                            &[],
+                            text("Notation.Dot"),
+                            nest([function_header(
+                                "Notation.dot",
                                 ty_params,
-                                where_predicates,
-                                signature_and_body,
-                            } => new_instance(
-                                name,
-                                &[],
-                                text("Notation.Dot"),
-                                nest([function_header(
-                                    "Notation.dot",
-                                    ty_params,
-                                    where_predicates
-                                        .iter()
-                                        .map(|predicate| predicate.to_doc())
-                                        .collect(),
-                                    &signature_and_body
-                                        .args
-                                        .iter()
-                                        .map(|(name, ty)| (name, ty.to_doc(false)))
-                                        .collect::<Vec<_>>(),
-                                )]),
-                                group([
-                                    text("("),
-                                    match &signature_and_body.body {
-                                        None => text("axiom"),
-                                        Some(body) => body.to_doc(false),
-                                    },
+                                where_predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_doc())
+                                    .collect(),
+                                &signature_and_body
+                                    .args
+                                    .iter()
+                                    .map(|(name, ty)| (name, ty.to_doc(false)))
+                                    .collect::<Vec<_>>(),
+                            )]),
+                            group([
+                                text("("),
+                                match &signature_and_body.body {
+                                    None => text("axiom"),
+                                    Some(body) => body.to_doc(false),
+                                },
+                                line(),
+                                nest([
+                                    text(":"),
                                     line(),
-                                    nest([
-                                        text(":"),
-                                        line(),
-                                        signature_and_body.ret_ty.to_doc(false),
-                                        text(")"),
-                                    ]),
+                                    signature_and_body.ret_ty.to_doc(false),
+                                    text(")"),
                                 ]),
-                            ),
-                        }])
+                            ]),
+                        ),
                     })
                     .collect(),
             ),
