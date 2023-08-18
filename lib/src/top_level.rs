@@ -1627,9 +1627,8 @@ impl TopLevelItem {
                     concat(variants.iter().map(|(name, fields)| match fields {
                         VariantItem::Tuple { .. } => nil(),
                         VariantItem::Struct { fields } => concat([
-                            nest([text("Module"), line(), text(name), text(".")]),
-                            nest([
-                                hardline(),
+                            module(
+                                name,
                                 locally_unset_primitive_projections(&concat([
                                     nest([
                                         text("Record"),
@@ -1669,9 +1668,7 @@ impl TopLevelItem {
                                     },
                                     text("}."),
                                 ])),
-                            ]),
-                            hardline(),
-                            nest([text("End"), line(), text(name), text(".")]),
+                            ),
                             hardline(),
                             hardline(),
                         ]),
