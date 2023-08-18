@@ -19,7 +19,7 @@ pub(crate) struct Definition<'a, U> {
 pub(crate) struct Instance<'a> {
     name: &'a str,
     trait_parameters: Vec<&'a str>,
-    kind: Doc<'a>,
+    class: &'a str,
     field: Doc<'a>,
     value: Doc<'a>,
 }
@@ -77,14 +77,14 @@ impl<'a> Instance<'a> {
     pub(crate) fn new(
         name: &'a str,
         trait_parameters: &[&'a str],
-        kind: Doc<'a>,
+        class: &'a str,
         field: Doc<'a>,
         value: Doc<'a>,
     ) -> Self {
         Instance {
             name,
             trait_parameters: trait_parameters.to_vec(),
-            kind,
+            class,
             field,
             value,
         }
@@ -92,7 +92,7 @@ impl<'a> Instance<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
-            render::new_instance_header(self.name, &self.trait_parameters, self.kind.to_owned()),
+            render::new_instance_header(self.name, &self.trait_parameters, text(self.class)),
             nest([
                 hardline(),
                 render::new_instance_body(self.field.to_owned(), self.value.to_owned()),

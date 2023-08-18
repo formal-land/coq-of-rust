@@ -2128,14 +2128,14 @@ impl TopLevelItem {
                         TraitItem::Definition { .. } => coq::Instance::new(
                             name,
                             &[],
-                            text("Notation.Dot"),
+                            "Notation.Dot",
                             text("Notation.dot"),
                             concat([text("@"), text(name)]),
                         ),
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[name],
-                            group([text("Notation.DoubleColonType"), line(), text("Self")]),
+                            "Notation.DoubleColonType_Self",
                             text("Notation.double_colon_type"),
                             text(name),
                         ),
@@ -2146,7 +2146,7 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[],
-                            text("Notation.Dot"),
+                            "Notation.Dot",
                             nest([function_header(
                                 "Notation.dot",
                                 ty_params,
