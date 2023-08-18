@@ -203,6 +203,7 @@ fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
     give_if(item, !condition)
 }
 
+/// compiles a function with the given signature and body
 fn compile_fn_sig_and_body(
     env: &mut Env,
     fn_sig_and_body: &HirFnSigAndBody,
