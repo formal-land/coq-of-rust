@@ -333,7 +333,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             if check_if_is_test_main_function(tcx, body_id) {
                 return vec![];
             }
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition(compile_fun_definition(
                 env,
@@ -341,12 +341,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 generics,
                 &fn_sig_and_body,
                 "arg",
-                if_marked_as_dead_code,
+                is_dead_code,
             ))]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let mut items: Vec<ItemId> = module.item_ids.to_vec();
             reorder_definitions_inplace(tcx, env, &mut items);
             let items = deduplicate_top_level_items(
@@ -365,7 +365,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             vec![TopLevelItem::Module {
                 name,
                 body: TopLevel(items),
-                is_dead_code: if_marked_as_dead_code,
+                is_dead_code,
             }]
         }
         ItemKind::ForeignMod { .. } => {
@@ -407,7 +407,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 .collect(),
         }],
         ItemKind::Struct(body, generics) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let ty_params = get_ty_params_names(env, generics);
 
             match body {
@@ -420,7 +420,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         name,
                         ty_params,
                         fields,
-                        is_dead_code: if_marked_as_dead_code,
+                        is_dead_code,
                     }]
                 }
                 VariantData::Tuple(fields, _, _) => {
@@ -468,7 +468,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             items,
             ..
         }) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let generic_tys = get_ty_params_names(env, generics);
             let self_ty = compile_type(env, self_ty);
             let entry = env.impl_counter.entry(*self_ty.clone());
@@ -476,7 +476,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let mut items: Vec<ImplItemRef> = items.to_vec();
             reorder_definitions_inplace(tcx, env, &mut items);
 
-            let items = compile_impl_item_refs(tcx, env, &items, if_marked_as_dead_code);
+            let items = compile_impl_item_refs(tcx, env, &items, is_dead_code);
 
             match of_trait {
                 Some(trait_ref) => {
