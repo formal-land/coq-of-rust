@@ -582,10 +582,7 @@ fn compile_impl_item(
                 env,
                 &name,
                 item.generics,
-                &HirFnSigAndBody {
-                    fn_sig,
-                    body: get_body(tcx, body_id),
-                },
+                &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
                 "Pattern",
                 is_dead_code,
             ),
