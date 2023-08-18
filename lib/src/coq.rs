@@ -2,8 +2,8 @@ use crate::render::{self, concat, group, hardline, nest, text, Doc};
 
 /// a coq module
 pub(crate) struct Module<'a> {
-    pub name: &'a str,
-    pub content: Vec<Doc<'a>>,
+    name: &'a str,
+    content: Vec<Doc<'a>>,
 }
 
 /// a coq definition
