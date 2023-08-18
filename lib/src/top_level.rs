@@ -564,11 +564,12 @@ fn compile_impl_item(
                 name,
                 ty_params: get_ty_params_names(env, item.generics),
                 where_predicates: get_where_predicates(tcx, env, item.generics),
-                signature_and_body: FnSigAndBody {
-                    args: get_args(env, get_body(tcx, body_id), fn_sig.decl.inputs, "Pattern"),
-                    ret_ty: compile_fn_ret_ty(env, &fn_sig.decl.output),
-                    body: compile_function_body(env, get_body(tcx, body_id)),
-                },
+                signature_and_body: compile_fn_sig_and_body(
+                    env,
+                    fn_sig,
+                    get_body(tcx, body_id),
+                    "Pattern",
+                ),
                 is_dead_code,
             },
             is_method,
