@@ -1,4 +1,5 @@
 use crate::configuration::*;
+use crate::coq;
 use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
@@ -2124,14 +2125,14 @@ impl TopLevelItem {
                     .collect(),
                 body.iter()
                     .map(|(name, item)| match item {
-                        TraitItem::Definition { .. } => new_instance(
+                        TraitItem::Definition { .. } => coq::Instance::new_instance(
                             name,
                             &[],
                             text("Notation.Dot"),
                             text("Notation.dot"),
                             concat([text("@"), text(name)]),
                         ),
-                        TraitItem::Type { .. } => new_instance(
+                        TraitItem::Type { .. } => coq::Instance::new_instance(
                             name,
                             &[name],
                             group([text("Notation.DoubleColonType"), line(), text("Self")]),
@@ -2142,7 +2143,7 @@ impl TopLevelItem {
                             ty_params,
                             where_predicates,
                             signature_and_body,
-                        } => new_instance(
+                        } => coq::Instance::new_instance(
                             name,
                             &[],
                             text("Notation.Dot"),

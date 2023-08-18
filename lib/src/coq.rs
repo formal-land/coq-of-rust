@@ -52,6 +52,23 @@ where
 }
 
 impl<'a> Instance<'a> {
+    /// produces a new coq instance
+    pub(crate) fn new_instance(
+        name: &'a str,
+        trait_parameters: &[&'a str],
+        kind: Doc<'a>,
+        field: Doc<'a>,
+        value: Doc<'a>,
+    ) -> Instance<'a> {
+        Instance {
+            name,
+            trait_parameters: trait_parameters.to_vec(),
+            kind,
+            field,
+            value,
+        }
+    }
+
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
             render::new_instance_header(self.name, &self.trait_parameters, self.kind.to_owned()),
