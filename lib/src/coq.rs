@@ -17,11 +17,11 @@ pub(crate) struct Definition<'a, U> {
 
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
-    pub name: &'a str,
-    pub trait_parameters: Vec<&'a str>,
-    pub kind: Doc<'a>,
-    pub field: Doc<'a>,
-    pub value: Doc<'a>,
+    name: &'a str,
+    trait_parameters: Vec<&'a str>,
+    kind: Doc<'a>,
+    field: Doc<'a>,
+    value: Doc<'a>,
 }
 
 impl<'a> Module<'a> {
@@ -53,7 +53,7 @@ where
 
 impl<'a> Instance<'a> {
     /// produces a new coq instance
-    pub(crate) fn new_instance(
+    pub(crate) fn new(
         name: &'a str,
         trait_parameters: &[&'a str],
         kind: Doc<'a>,

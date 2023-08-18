@@ -2125,14 +2125,14 @@ impl TopLevelItem {
                     .collect(),
                 body.iter()
                     .map(|(name, item)| match item {
-                        TraitItem::Definition { .. } => coq::Instance::new_instance(
+                        TraitItem::Definition { .. } => coq::Instance::new(
                             name,
                             &[],
                             text("Notation.Dot"),
                             text("Notation.dot"),
                             concat([text("@"), text(name)]),
                         ),
-                        TraitItem::Type { .. } => coq::Instance::new_instance(
+                        TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[name],
                             group([text("Notation.DoubleColonType"), line(), text("Self")]),
@@ -2143,7 +2143,7 @@ impl TopLevelItem {
                             ty_params,
                             where_predicates,
                             signature_and_body,
-                        } => coq::Instance::new_instance(
+                        } => coq::Instance::new(
                             name,
                             &[],
                             text("Notation.Dot"),
