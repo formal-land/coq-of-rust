@@ -2080,11 +2080,11 @@ impl TopLevelItem {
                 &ty_params
                     .iter()
                     .map(|(ty, default)| (ty, default.as_ref().map(|default| default.to_doc(true))))
-                    .collect(),
+                    .collect::<Vec<_>>(),
                 &predicates
                     .iter()
                     .map(|predicate| predicate.to_doc())
-                    .collect(),
+                    .collect::<Vec<_>>(),
                 &bounds
                     .iter()
                     .map(|bound| bound.to_doc(text("Self")))

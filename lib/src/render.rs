@@ -255,8 +255,8 @@ where
 /// creates a module with the translation of the given trait
 pub(crate) fn trait_module<'a, U>(
     name: &'a str,
-    ty_params: &Vec<(U, Option<Doc>)>,
-    predicates: &Vec<Doc<'a>>,
+    ty_params: &[(U, Option<Doc<'a>>)],
+    predicates: &[Doc<'a>],
     bounds: &[Doc<'a>],
     associated_types: &[(U, Vec<Doc<'a>>)],
     items: Vec<Doc<'a>>,
@@ -268,7 +268,7 @@ where
     coq::Module { name }.to_doc(&group([
         locally_unset_primitive_projections_if(
             items.is_empty(),
-            &trait_typeclass(ty_params, predicates, bounds, associated_types, items),
+            &trait_typeclass(ty_params, predicates, bounds, associated_types, &items),
         ),
         if instances.is_empty() {
             nil()
@@ -281,27 +281,29 @@ where
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-fn trait_typeclass<'a, U, I>(
-    ty_params: &Vec<(U, Option<Doc>)>,
-    predicates: &Vec<Doc<'a>>,
+fn trait_typeclass<'a, U>(
+    ty_params: &[(U, Option<Doc<'a>>)],
+    predicates: &[Doc<'a>],
     bounds: &[Doc<'a>],
     associated_types: &[(U, Vec<Doc<'a>>)],
-    items: I,
+    items: &[Doc<'a>],
 ) -> Doc<'a>
 where
-    I: IntoIterator,
-    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    coq::Definition {}.to_doc(
-        &new_trait_typeclass_header(ty_params, predicates, bounds, associated_types),
-        &new_typeclass_body(items),
-    )
+    coq::Definition {
+        ty_params: ty_params.to_vec(),
+        predicates: predicates.to_vec(),
+        bounds: bounds.to_vec(),
+        associated_types: associated_types.to_vec(),
+        items: items.to_vec(),
+    }
+    .to_doc()
 }
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-fn new_trait_typeclass_header<'a, U>(
+pub(crate) fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[Doc<'a>],
