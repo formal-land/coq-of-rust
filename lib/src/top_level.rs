@@ -333,13 +333,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let env_tcx = env.tcx;
-            let signature_and_body =
-                compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id), "arg");
             vec![TopLevelItem::Definition(FunDefinition {
                 name,
                 ty_params: get_ty_params_names(env, generics),
                 where_predicates: get_where_predicates(tcx, env, generics),
-                signature_and_body,
+                signature_and_body: compile_fn_sig_and_body(
+                    env,
+                    fn_sig,
+                    get_body(&env_tcx, body_id),
+                    "arg",
+                ),
                 is_dead_code: if_marked_as_dead_code,
             })]
         }
