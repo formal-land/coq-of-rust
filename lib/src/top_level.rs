@@ -176,12 +176,7 @@ enum TopLevelItem {
 pub struct TopLevel(Vec<TopLevelItem>);
 
 /// emits a warning with the given messages
-fn emit_warning_with_note(
-    env: &mut Env,
-    span: &rustc_span::Span,
-    warning_msg: &str,
-    note_msg: &str,
-) {
+fn emit_warning_with_note(env: &Env, span: &rustc_span::Span, warning_msg: &str, note_msg: &str) {
     env.tcx
         .sess
         .struct_span_warn(*span, warning_msg)
@@ -626,7 +621,7 @@ fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Ex
 
 /// returns a list of pairs of argument names and their types
 fn get_args(
-    env: &mut Env,
+    env: &Env,
     body: &rustc_hir::Body,
     inputs: &[rustc_hir::Ty],
     default: &str,
@@ -649,9 +644,9 @@ fn get_arg_names<'a>(
 
 /// filters out type parameters and compiles them with the given function
 fn compile_ty_params<T>(
-    env: &mut Env,
+    env: &Env,
     generics: &rustc_hir::Generics,
-    f: impl Fn(&mut Env, String, Option<&Ty>) -> T,
+    f: impl Fn(&Env, String, Option<&Ty>) -> T,
 ) -> Vec<T> {
     generics
         .params
@@ -675,10 +670,7 @@ fn compile_ty_params<T>(
 }
 
 /// extracts type parameters with their optional default value from the generics
-fn get_ty_params(
-    env: &mut Env,
-    generics: &rustc_hir::Generics,
-) -> Vec<(String, Option<Box<CoqType>>)> {
+fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<(String, Option<Box<CoqType>>)> {
     compile_ty_params(env, generics, |env, name, default| {
         let default = default.map(|default| compile_type(env, default));
         let name = to_valid_coq_name(name);
@@ -687,14 +679,14 @@ fn get_ty_params(
 }
 
 /// extracts the names of type parameters from the generics
-fn get_ty_params_names(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<String> {
+fn get_ty_params_names(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
     compile_ty_params(env, generics, |_, name, _| to_valid_coq_name(name))
 }
 
 /// extracts where predicates from the generics
 fn get_where_predicates(
     tcx: &TyCtxt,
-    env: &mut Env,
+    env: &Env,
     generics: &rustc_hir::Generics,
 ) -> Vec<WherePredicate> {
     generics
@@ -726,7 +718,7 @@ fn trait_bound_to_where_predicate(bound: TraitBound, ty: Box<CoqType>) -> WhereP
 /// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
 fn compile_generic_bounds(
     tcx: &TyCtxt,
-    env: &mut Env,
+    env: &Env,
     generic_bounds: GenericBounds,
 ) -> Vec<TraitBound> {
     generic_bounds
@@ -747,11 +739,7 @@ fn compile_generic_bounds(
 }
 
 /// Get the generics for the trait
-fn compile_trait_bound(
-    tcx: &TyCtxt,
-    env: &mut Env,
-    ptraitref: &rustc_hir::PolyTraitRef,
-) -> TraitBound {
+fn compile_trait_bound(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> TraitBound {
     TraitBound {
         name: compile_path(env, ptraitref.trait_ref.path),
         ty_params: get_ty_params_with_default_status(
@@ -764,7 +752,7 @@ fn compile_trait_bound(
 
 /// computes tre list of actual type parameters with their default status
 fn get_ty_params_with_default_status(
-    env: &mut Env,
+    env: &Env,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
 ) -> Vec<Box<TraitTyParamValue>> {
