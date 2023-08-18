@@ -265,18 +265,18 @@ pub(crate) fn trait_module<'a, U>(
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    coq::Module {
+    coq::Module::new(
         name,
-        content: vec![
+        vec![
             locally_unset_primitive_projections_if(
                 items.is_empty(),
-                &coq::Definition {
-                    ty_params: ty_params.to_vec(),
-                    predicates: predicates.to_vec(),
-                    bounds: bounds.to_vec(),
-                    associated_types: associated_types.to_vec(),
+                &coq::Definition::new(
+                    ty_params.to_vec(),
+                    predicates.to_vec(),
+                    bounds.to_vec(),
+                    associated_types.to_vec(),
                     items,
-                }
+                )
                 .to_doc(),
             ),
             if instances.is_empty() {
@@ -286,7 +286,7 @@ where
             },
             trait_notation_instances(instances),
         ],
-    }
+    )
     .to_doc()
 }
 

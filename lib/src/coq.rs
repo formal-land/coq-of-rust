@@ -8,11 +8,11 @@ pub(crate) struct Module<'a> {
 
 /// a coq definition
 pub(crate) struct Definition<'a, U> {
-    pub ty_params: Vec<(U, Option<Doc<'a>>)>,
-    pub predicates: Vec<Doc<'a>>,
-    pub bounds: Vec<Doc<'a>>,
-    pub associated_types: Vec<(U, Vec<Doc<'a>>)>,
-    pub items: Vec<Doc<'a>>,
+    ty_params: Vec<(U, Option<Doc<'a>>)>,
+    predicates: Vec<Doc<'a>>,
+    bounds: Vec<Doc<'a>>,
+    associated_types: Vec<(U, Vec<Doc<'a>>)>,
+    items: Vec<Doc<'a>>,
 }
 
 /// a global instance of a coq typeclass
@@ -25,6 +25,10 @@ pub(crate) struct Instance<'a> {
 }
 
 impl<'a> Module<'a> {
+    pub(crate) fn new(name: &'a str, content: Vec<Doc<'a>>) -> Self {
+        Module { name, content }
+    }
+
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         render::module(self.name, group(self.content.clone()))
     }
@@ -34,6 +38,23 @@ impl<'a, U> Definition<'a, U>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
+    /// produces a new coq instance
+    pub(crate) fn new(
+        ty_params: Vec<(U, Option<Doc<'a>>)>,
+        predicates: Vec<Doc<'a>>,
+        bounds: Vec<Doc<'a>>,
+        associated_types: Vec<(U, Vec<Doc<'a>>)>,
+        items: Vec<Doc<'a>>,
+    ) -> Self {
+        Definition {
+            ty_params,
+            predicates,
+            bounds,
+            associated_types,
+            items,
+        }
+    }
+
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         group([
             nest([
