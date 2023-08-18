@@ -2,6 +2,8 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
+use crate::coq;
+
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
@@ -252,7 +254,7 @@ where
 
 /// creates a module with the translation of the given trait
 pub(crate) fn trait_module<'a, U>(
-    name: U,
+    name: &'a str,
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[Doc<'a>],
@@ -263,21 +265,18 @@ pub(crate) fn trait_module<'a, U>(
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    module(
-        name,
-        group([
-            locally_unset_primitive_projections_if(
-                items.is_empty(),
-                &trait_typeclass(ty_params, predicates, bounds, associated_types, items),
-            ),
-            if instances.is_empty() {
-                nil()
-            } else {
-                hardline()
-            },
-            trait_notation_instances(instances),
-        ]),
-    )
+    coq::Module { name }.to_doc(&group([
+        locally_unset_primitive_projections_if(
+            items.is_empty(),
+            &trait_typeclass(ty_params, predicates, bounds, associated_types, items),
+        ),
+        if instances.is_empty() {
+            nil()
+        } else {
+            hardline()
+        },
+        trait_notation_instances(instances),
+    ]))
 }
 
 /// creates a definition of a typeclass corresponding
