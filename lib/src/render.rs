@@ -293,14 +293,10 @@ where
     I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    group([
-        nest([
-            new_trait_typeclass_header(ty_params, predicates, bounds, associated_types),
-            new_typeclass_body(items),
-        ]),
-        hardline(),
-        text("}."),
-    ])
+    coq::Definition {}.to_doc(
+        &new_trait_typeclass_header(ty_params, predicates, bounds, associated_types),
+        &new_typeclass_body(items),
+    )
 }
 
 /// creates a definition of a typeclass corresponding
