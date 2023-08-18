@@ -201,9 +201,10 @@ fn compile_fn_sig_and_body(
     env: &mut Env,
     fn_sig: &rustc_hir::FnSig<'_>,
     body: &rustc_hir::Body,
+    default: &str,
 ) -> FnSigAndBody {
     FnSigAndBody {
-        args: get_args(env, body, fn_sig.decl.inputs, "arg"),
+        args: get_args(env, body, fn_sig.decl.inputs, default),
         ret_ty: match fn_sig.decl.output {
             rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
             rustc_hir::FnRetTy::Return(ty) => compile_type(env, ty),
@@ -336,7 +337,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let env_tcx = env.tcx;
             let signature_and_body =
-                compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id));
+                compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id), "arg");
             vec![TopLevelItem::Definition(FunDefinition {
                 name,
                 ty_params: get_ty_params_names(env, generics),
@@ -834,7 +835,7 @@ fn compile_trait_item_body(
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
                 let signature_and_body =
-                    compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id));
+                    compile_fn_sig_and_body(env, fn_sig, get_body(&env_tcx, body_id), "arg");
                 TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
