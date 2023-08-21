@@ -101,11 +101,14 @@ Module storage.
     
     Global Instance Method_encode `{H : State.Trait} `(Trait)
       : Notation.Dot "encode" := {
-      Notation.dot := @encode;
+      Notation.dot{T: Set} `{parity_scale_codec.codec.Output.Trait T}
+          `{core.marker.Sized.Trait T}
+           :=
+        encode;
     }.
     Global Instance Method_decode `{H : State.Trait} `(Trait)
       : Notation.Dot "decode" := {
-      Notation.dot := @decode;
+      Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  := decode;
     }.
   End Storable.
   
@@ -137,7 +140,7 @@ Module storage.
     
     Global Instance Method_KEY `{H : State.Trait} `(Trait)
       : Notation.Dot "KEY" := {
-      Notation.dot := @KEY;
+      Notation.dot := KEY;
     }.
     (* Global Instance Method_key `{H : State.Trait} `(Trait)
       : Notation.Dot "key" := {
@@ -166,7 +169,7 @@ Module storage.
         {Type_}
         `(Trait
         (Type_ := Type_))
-      : Notation.DoubleColonType_Self "Type_" := {
+      : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
     Global Instance
@@ -175,7 +178,7 @@ Module storage.
         {PreferredKey}
         `(Trait
         (PreferredKey := PreferredKey))
-      : Notation.DoubleColonType_Self "PreferredKey" := {
+      : Notation.DoubleColonType Self "PreferredKey" := {
       Notation.double_colon_type := PreferredKey;
     }.
   End StorableHint.
@@ -197,7 +200,7 @@ Module storage.
         {Type_}
         `(Trait
         (Type_ := Type_))
-      : Notation.DoubleColonType_Self "Type_" := {
+      : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
   End AutoStorableHint.
@@ -223,11 +226,14 @@ Module Storable.
   
   Global Instance Method_encode `{H : State.Trait} `(Trait)
     : Notation.Dot "encode" := {
-    Notation.dot := @encode;
+    Notation.dot{T: Set} `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
+         :=
+      encode;
   }.
   Global Instance Method_decode `{H : State.Trait} `(Trait)
     : Notation.Dot "decode" := {
-    Notation.dot := @decode;
+    Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  := decode;
   }.
 End Storable.
 
@@ -266,7 +272,7 @@ Module StorageKey.
   
   Global Instance Method_KEY `{H : State.Trait} `(Trait)
     : Notation.Dot "KEY" := {
-    Notation.dot := @KEY;
+    Notation.dot := KEY;
   }.
   (* Global Instance Method_key `{H : State.Trait} `(Trait)
     : Notation.Dot "key" := {
@@ -295,7 +301,7 @@ Module StorableHint.
       {Type_}
       `(Trait
       (Type_ := Type_))
-    : Notation.DoubleColonType_Self "Type_" := {
+    : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
   Global Instance
@@ -304,7 +310,7 @@ Module StorableHint.
       {PreferredKey}
       `(Trait
       (PreferredKey := PreferredKey))
-    : Notation.DoubleColonType_Self "PreferredKey" := {
+    : Notation.DoubleColonType Self "PreferredKey" := {
     Notation.double_colon_type := PreferredKey;
   }.
 End StorableHint.
@@ -326,7 +332,7 @@ Module AutoStorableHint.
       {Type_}
       `(Trait
       (Type_ := Type_))
-    : Notation.DoubleColonType_Self "Type_" := {
+    : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
 End AutoStorableHint.
@@ -342,7 +348,7 @@ Module layout.
     
     Global Instance Method_layout `{H : State.Trait} `(Trait)
       : Notation.Dot "layout" := {
-      Notation.dot := @layout;
+      Notation.dot := layout;
     }.
   End StorageLayout.
 End layout.
@@ -357,6 +363,6 @@ Module StorageLayout.
   
   Global Instance Method_layout `{H : State.Trait} `(Trait)
     : Notation.Dot "layout" := {
-    Notation.dot := @layout;
+    Notation.dot := layout;
   }.
 End StorageLayout.

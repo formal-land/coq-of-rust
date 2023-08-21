@@ -2125,17 +2125,29 @@ impl TopLevelItem {
                     .collect(),
                 body.iter()
                     .map(|(name, item)| match item {
-                        TraitItem::Definition { .. } => coq::Instance::new(
+                        TraitItem::Definition {
+                            ty_params,
+                            where_predicates,
+                            ty: _,
+                        } => coq::Instance::new(
                             name,
                             &[],
                             "Notation.Dot",
-                            text("Notation.dot"),
-                            concat([text("@"), text(name)]),
+                            nest([function_header(
+                                "Notation.dot",
+                                ty_params,
+                                where_predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_doc())
+                                    .collect(),
+                                &Vec::<(&String, _)>::new(),
+                            )]),
+                            text(name),
                         ),
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[name],
-                            "Notation.DoubleColonType_Self",
+                            "Notation.DoubleColonType Self",
                             text("Notation.double_colon_type"),
                             text(name),
                         ),

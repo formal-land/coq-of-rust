@@ -32,27 +32,27 @@ Module Contains.
   }.
   
   Global Instance Method_A `{H : State.Trait} {A} `(Trait (A := A))
-    : Notation.DoubleColonType_Self "A" := {
+    : Notation.DoubleColonType Self "A" := {
     Notation.double_colon_type := A;
   }.
   Global Instance Method_B `{H : State.Trait} {B} `(Trait (B := B))
-    : Notation.DoubleColonType_Self "B" := {
+    : Notation.DoubleColonType Self "B" := {
     Notation.double_colon_type := B;
   }.
   Global Instance Method_contains `{H : State.Trait} `(Trait)
     : Notation.Dot "contains" := {
-    Notation.dot := @contains;
+    Notation.dot := contains;
   }.
   Global Instance Method_first `{H : State.Trait} `(Trait)
     : Notation.Dot "first" := {
-    Notation.dot := @first;
+    Notation.dot := first;
   }.
   Global Instance Method_last `{H : State.Trait} `(Trait)
     : Notation.Dot "last" := {
-    Notation.dot := @last;
+    Notation.dot := last;
   }.
   Global Instance Method_a `{H : State.Trait} `(Trait) : Notation.Dot "a" := {
-    Notation.dot := @a;
+    Notation.dot := a;
   }.
 End Contains.
 

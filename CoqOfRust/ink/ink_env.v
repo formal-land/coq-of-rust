@@ -28,12 +28,12 @@ Module types.
         {Bytes}
         `(Trait
         (Bytes := Bytes))
-      : Notation.DoubleColonType_Self "Bytes" := {
+      : Notation.DoubleColonType Self "Bytes" := {
       Notation.double_colon_type := Bytes;
     }.
     Global Instance Method_from_le_bytes `{H : State.Trait} `(Trait)
       : Notation.Dot "from_le_bytes" := {
-      Notation.dot := @from_le_bytes;
+      Notation.dot := from_le_bytes;
     }.
   End FromLittleEndian.
   
@@ -118,7 +118,7 @@ Module types.
     
     Global Instance Method_MAX_EVENT_TOPICS `{H : State.Trait} `(Trait)
       : Notation.Dot "MAX_EVENT_TOPICS" := {
-      Notation.dot := @MAX_EVENT_TOPICS;
+      Notation.dot := MAX_EVENT_TOPICS;
     }.
     Global Instance
         Method_AccountId
@@ -126,7 +126,7 @@ Module types.
         {AccountId}
         `(Trait
         (AccountId := AccountId))
-      : Notation.DoubleColonType_Self "AccountId" := {
+      : Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
     }.
     Global Instance
@@ -135,7 +135,7 @@ Module types.
         {Balance}
         `(Trait
         (Balance := Balance))
-      : Notation.DoubleColonType_Self "Balance" := {
+      : Notation.DoubleColonType Self "Balance" := {
       Notation.double_colon_type := Balance;
     }.
     Global Instance
@@ -144,7 +144,7 @@ Module types.
         {Hash}
         `(Trait
         (Hash := Hash))
-      : Notation.DoubleColonType_Self "Hash" := {
+      : Notation.DoubleColonType Self "Hash" := {
       Notation.double_colon_type := Hash;
     }.
     Global Instance
@@ -153,7 +153,7 @@ Module types.
         {Timestamp}
         `(Trait
         (Timestamp := Timestamp))
-      : Notation.DoubleColonType_Self "Timestamp" := {
+      : Notation.DoubleColonType Self "Timestamp" := {
       Notation.double_colon_type := Timestamp;
     }.
     Global Instance
@@ -162,7 +162,7 @@ Module types.
         {BlockNumber}
         `(Trait
         (BlockNumber := BlockNumber))
-      : Notation.DoubleColonType_Self "BlockNumber" := {
+      : Notation.DoubleColonType Self "BlockNumber" := {
       Notation.double_colon_type := BlockNumber;
     }.
     Global Instance
@@ -171,7 +171,7 @@ Module types.
         {ChainExtension}
         `(Trait
         (ChainExtension := ChainExtension))
-      : Notation.DoubleColonType_Self "ChainExtension" := {
+      : Notation.DoubleColonType Self "ChainExtension" := {
       Notation.double_colon_type := ChainExtension;
     }.
   End Environment.
@@ -215,12 +215,12 @@ Module FromLittleEndian.
       {Bytes}
       `(Trait
       (Bytes := Bytes))
-    : Notation.DoubleColonType_Self "Bytes" := {
+    : Notation.DoubleColonType Self "Bytes" := {
     Notation.double_colon_type := Bytes;
   }.
   Global Instance Method_from_le_bytes `{H : State.Trait} `(Trait)
     : Notation.Dot "from_le_bytes" := {
-    Notation.dot := @from_le_bytes;
+    Notation.dot := from_le_bytes;
   }.
 End FromLittleEndian.
 
@@ -305,7 +305,7 @@ Module Environment.
   
   Global Instance Method_MAX_EVENT_TOPICS `{H : State.Trait} `(Trait)
     : Notation.Dot "MAX_EVENT_TOPICS" := {
-    Notation.dot := @MAX_EVENT_TOPICS;
+    Notation.dot := MAX_EVENT_TOPICS;
   }.
   Global Instance
       Method_AccountId
@@ -313,7 +313,7 @@ Module Environment.
       {AccountId}
       `(Trait
       (AccountId := AccountId))
-    : Notation.DoubleColonType_Self "AccountId" := {
+    : Notation.DoubleColonType Self "AccountId" := {
     Notation.double_colon_type := AccountId;
   }.
   Global Instance
@@ -322,11 +322,11 @@ Module Environment.
       {Balance}
       `(Trait
       (Balance := Balance))
-    : Notation.DoubleColonType_Self "Balance" := {
+    : Notation.DoubleColonType Self "Balance" := {
     Notation.double_colon_type := Balance;
   }.
   Global Instance Method_Hash `{H : State.Trait} {Hash} `(Trait (Hash := Hash))
-    : Notation.DoubleColonType_Self "Hash" := {
+    : Notation.DoubleColonType Self "Hash" := {
     Notation.double_colon_type := Hash;
   }.
   Global Instance
@@ -335,7 +335,7 @@ Module Environment.
       {Timestamp}
       `(Trait
       (Timestamp := Timestamp))
-    : Notation.DoubleColonType_Self "Timestamp" := {
+    : Notation.DoubleColonType Self "Timestamp" := {
     Notation.double_colon_type := Timestamp;
   }.
   Global Instance
@@ -344,7 +344,7 @@ Module Environment.
       {BlockNumber}
       `(Trait
       (BlockNumber := BlockNumber))
-    : Notation.DoubleColonType_Self "BlockNumber" := {
+    : Notation.DoubleColonType Self "BlockNumber" := {
     Notation.double_colon_type := BlockNumber;
   }.
   Global Instance
@@ -353,7 +353,7 @@ Module Environment.
       {ChainExtension}
       `(Trait
       (ChainExtension := ChainExtension))
-    : Notation.DoubleColonType_Self "ChainExtension" := {
+    : Notation.DoubleColonType Self "ChainExtension" := {
     Notation.double_colon_type := ChainExtension;
   }.
 End Environment.
@@ -930,19 +930,19 @@ Module arithmetic.
     
     Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
       : Notation.Dot "saturating_add" := {
-      Notation.dot := @saturating_add;
+      Notation.dot := saturating_add;
     }.
     Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
       : Notation.Dot "saturating_sub" := {
-      Notation.dot := @saturating_sub;
+      Notation.dot := saturating_sub;
     }.
     Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
       : Notation.Dot "saturating_mul" := {
-      Notation.dot := @saturating_mul;
+      Notation.dot := saturating_mul;
     }.
     Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
       : Notation.Dot "saturating_pow" := {
-      Notation.dot := @saturating_pow;
+      Notation.dot := saturating_pow;
     }.
   End Saturating.
 End arithmetic.
@@ -1017,19 +1017,19 @@ Module Saturating.
   
   Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
     : Notation.Dot "saturating_add" := {
-    Notation.dot := @saturating_add;
+    Notation.dot := saturating_add;
   }.
   Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
     : Notation.Dot "saturating_sub" := {
-    Notation.dot := @saturating_sub;
+    Notation.dot := saturating_sub;
   }.
   Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
     : Notation.Dot "saturating_mul" := {
-    Notation.dot := @saturating_mul;
+    Notation.dot := saturating_mul;
   }.
   Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
     : Notation.Dot "saturating_pow" := {
-    Notation.dot := @saturating_pow;
+    Notation.dot := saturating_pow;
   }.
 End Saturating.
 
@@ -1192,59 +1192,82 @@ Module backend.
     
     Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "set_contract_storage" := {
-      Notation.dot := @set_contract_storage;
+      Notation.dot{K V: Set} `{parity_scale_codec.codec.Encode.Trait K}
+          `{ink_storage_traits.storage.Storable.Trait V}
+           :=
+        set_contract_storage;
     }.
     Global Instance Method_get_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "get_contract_storage" := {
-      Notation.dot := @get_contract_storage;
+      Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+          `{ink_storage_traits.storage.Storable.Trait R}
+           :=
+        get_contract_storage;
     }.
     Global Instance Method_take_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "take_contract_storage" := {
-      Notation.dot := @take_contract_storage;
+      Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+          `{ink_storage_traits.storage.Storable.Trait R}
+           :=
+        take_contract_storage;
     }.
     Global Instance Method_contains_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "contains_contract_storage" := {
-      Notation.dot := @contains_contract_storage;
+      Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+        contains_contract_storage;
     }.
     Global Instance Method_clear_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "clear_contract_storage" := {
-      Notation.dot := @clear_contract_storage;
+      Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+        clear_contract_storage;
     }.
     Global Instance Method_decode_input `{H : State.Trait} `(Trait)
       : Notation.Dot "decode_input" := {
-      Notation.dot := @decode_input;
+      Notation.dot{T: Set} `{parity_scale_codec.codec.Decode.Trait T}  :=
+        decode_input;
     }.
     Global Instance Method_return_value `{H : State.Trait} `(Trait)
       : Notation.Dot "return_value" := {
-      Notation.dot := @return_value;
+      Notation.dot{R: Set} `{parity_scale_codec.codec.Encode.Trait R}  :=
+        return_value;
     }.
     Global Instance Method_debug_message `{H : State.Trait} `(Trait)
       : Notation.Dot "debug_message" := {
-      Notation.dot := @debug_message;
+      Notation.dot := debug_message;
     }.
     Global Instance Method_hash_bytes `{H : State.Trait} `(Trait)
       : Notation.Dot "hash_bytes" := {
-      Notation.dot := @hash_bytes;
+      Notation.dot{H: Set} `{ink_env.hash.CryptoHash.Trait H}  := hash_bytes;
     }.
     Global Instance Method_hash_encoded `{H : State.Trait} `(Trait)
       : Notation.Dot "hash_encoded" := {
-      Notation.dot := @hash_encoded;
+      Notation.dot{H T: Set} `{ink_env.hash.CryptoHash.Trait H}
+          `{parity_scale_codec.codec.Encode.Trait T}
+           :=
+        hash_encoded;
     }.
     Global Instance Method_ecdsa_recover `{H : State.Trait} `(Trait)
       : Notation.Dot "ecdsa_recover" := {
-      Notation.dot := @ecdsa_recover;
+      Notation.dot := ecdsa_recover;
     }.
     Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} `(Trait)
       : Notation.Dot "ecdsa_to_eth_address" := {
-      Notation.dot := @ecdsa_to_eth_address;
+      Notation.dot := ecdsa_to_eth_address;
     }.
     Global Instance Method_call_chain_extension `{H : State.Trait} `(Trait)
       : Notation.Dot "call_chain_extension" := {
-      Notation.dot := @call_chain_extension;
+      Notation.dot{I T E ErrorCode F D: Set}
+          `{parity_scale_codec.codec.Encode.Trait I}
+          `{parity_scale_codec.codec.Decode.Trait T}
+          `{core.convert.From.Trait E (T := ErrorCode)}
+          `{core.ops.function.FnOnce.Trait F (Args := u32)}
+          `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+           :=
+        call_chain_extension;
     }.
     Global Instance Method_set_code_hash `{H : State.Trait} `(Trait)
       : Notation.Dot "set_code_hash" := {
-      Notation.dot := @set_code_hash;
+      Notation.dot := set_code_hash;
     }.
   End EnvBackend.
   
@@ -1419,83 +1442,117 @@ Module backend.
     
     Global Instance Method_caller `{H : State.Trait} `(Trait)
       : Notation.Dot "caller" := {
-      Notation.dot := @caller;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := caller;
     }.
     Global Instance Method_transferred_value `{H : State.Trait} `(Trait)
       : Notation.Dot "transferred_value" := {
-      Notation.dot := @transferred_value;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        transferred_value;
     }.
     Global Instance Method_weight_to_fee `{H : State.Trait} `(Trait)
       : Notation.Dot "weight_to_fee" := {
-      Notation.dot := @weight_to_fee;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        weight_to_fee;
     }.
     Global Instance Method_gas_left `{H : State.Trait} `(Trait)
       : Notation.Dot "gas_left" := {
-      Notation.dot := @gas_left;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := gas_left;
     }.
     Global Instance Method_block_timestamp `{H : State.Trait} `(Trait)
       : Notation.Dot "block_timestamp" := {
-      Notation.dot := @block_timestamp;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        block_timestamp;
     }.
     Global Instance Method_account_id `{H : State.Trait} `(Trait)
       : Notation.Dot "account_id" := {
-      Notation.dot := @account_id;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := account_id;
     }.
     Global Instance Method_balance `{H : State.Trait} `(Trait)
       : Notation.Dot "balance" := {
-      Notation.dot := @balance;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := balance;
     }.
     Global Instance Method_block_number `{H : State.Trait} `(Trait)
       : Notation.Dot "block_number" := {
-      Notation.dot := @block_number;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        block_number;
     }.
     Global Instance Method_minimum_balance `{H : State.Trait} `(Trait)
       : Notation.Dot "minimum_balance" := {
-      Notation.dot := @minimum_balance;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        minimum_balance;
     }.
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
-      Notation.dot := @emit_event;
+      Notation.dot{E Event: Set} `{ink_env.types.Environment.Trait E}
+          `{ink_env.topics.Topics.Trait Event}
+          `{parity_scale_codec.codec.Encode.Trait Event}
+           :=
+        emit_event;
     }.
     Global Instance Method_invoke_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "invoke_contract" := {
-      Notation.dot := @invoke_contract;
+      Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+          `{parity_scale_codec.codec.Encode.Trait Args}
+          `{parity_scale_codec.codec.Decode.Trait R}
+           :=
+        invoke_contract;
     }.
     Global Instance Method_invoke_contract_delegate `{H : State.Trait} `(Trait)
       : Notation.Dot "invoke_contract_delegate" := {
-      Notation.dot := @invoke_contract_delegate;
+      Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+          `{parity_scale_codec.codec.Encode.Trait Args}
+          `{parity_scale_codec.codec.Decode.Trait R}
+           :=
+        invoke_contract_delegate;
     }.
     Global Instance Method_instantiate_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "instantiate_contract" := {
-      Notation.dot := @instantiate_contract;
+      Notation.dot{E ContractRef Args Salt R: Set}
+          `{ink_env.types.Environment.Trait E}
+          `{ink_env.call.create_builder.FromAccountId.Trait
+            ContractRef
+            (T := E)}
+          `{parity_scale_codec.codec.Encode.Trait Args}
+          `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+          `{ink_env.call.create_builder.ConstructorReturnType.Trait
+            R
+            (C := ContractRef)}
+           :=
+        instantiate_contract;
     }.
     Global Instance Method_terminate_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "terminate_contract" := {
-      Notation.dot := @terminate_contract;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        terminate_contract;
     }.
     Global Instance Method_transfer `{H : State.Trait} `(Trait)
       : Notation.Dot "transfer" := {
-      Notation.dot := @transfer;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := transfer;
     }.
     Global Instance Method_is_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "is_contract" := {
-      Notation.dot := @is_contract;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := is_contract;
     }.
     Global Instance Method_caller_is_origin `{H : State.Trait} `(Trait)
       : Notation.Dot "caller_is_origin" := {
-      Notation.dot := @caller_is_origin;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        caller_is_origin;
     }.
     Global Instance Method_code_hash `{H : State.Trait} `(Trait)
       : Notation.Dot "code_hash" := {
-      Notation.dot := @code_hash;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := code_hash;
     }.
     Global Instance Method_own_code_hash `{H : State.Trait} `(Trait)
       : Notation.Dot "own_code_hash" := {
-      Notation.dot := @own_code_hash;
+      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+        own_code_hash;
     }.
     Global Instance Method_call_runtime `{H : State.Trait} `(Trait)
       : Notation.Dot "call_runtime" := {
-      Notation.dot := @call_runtime;
+      Notation.dot{E Call: Set} `{ink_env.types.Environment.Trait E}
+          `{parity_scale_codec.codec.Encode.Trait Call}
+           :=
+        call_runtime;
     }.
   End TypedEnvBackend.
 End backend.
@@ -1658,59 +1715,82 @@ Module EnvBackend.
   
   Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "set_contract_storage" := {
-    Notation.dot := @set_contract_storage;
+    Notation.dot{K V: Set} `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait V}
+         :=
+      set_contract_storage;
   }.
   Global Instance Method_get_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "get_contract_storage" := {
-    Notation.dot := @get_contract_storage;
+    Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait R}
+         :=
+      get_contract_storage;
   }.
   Global Instance Method_take_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "take_contract_storage" := {
-    Notation.dot := @take_contract_storage;
+    Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+        `{ink_storage_traits.storage.Storable.Trait R}
+         :=
+      take_contract_storage;
   }.
   Global Instance Method_contains_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "contains_contract_storage" := {
-    Notation.dot := @contains_contract_storage;
+    Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+      contains_contract_storage;
   }.
   Global Instance Method_clear_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "clear_contract_storage" := {
-    Notation.dot := @clear_contract_storage;
+    Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+      clear_contract_storage;
   }.
   Global Instance Method_decode_input `{H : State.Trait} `(Trait)
     : Notation.Dot "decode_input" := {
-    Notation.dot := @decode_input;
+    Notation.dot{T: Set} `{parity_scale_codec.codec.Decode.Trait T}  :=
+      decode_input;
   }.
   Global Instance Method_return_value `{H : State.Trait} `(Trait)
     : Notation.Dot "return_value" := {
-    Notation.dot := @return_value;
+    Notation.dot{R: Set} `{parity_scale_codec.codec.Encode.Trait R}  :=
+      return_value;
   }.
   Global Instance Method_debug_message `{H : State.Trait} `(Trait)
     : Notation.Dot "debug_message" := {
-    Notation.dot := @debug_message;
+    Notation.dot := debug_message;
   }.
   Global Instance Method_hash_bytes `{H : State.Trait} `(Trait)
     : Notation.Dot "hash_bytes" := {
-    Notation.dot := @hash_bytes;
+    Notation.dot{H: Set} `{ink_env.hash.CryptoHash.Trait H}  := hash_bytes;
   }.
   Global Instance Method_hash_encoded `{H : State.Trait} `(Trait)
     : Notation.Dot "hash_encoded" := {
-    Notation.dot := @hash_encoded;
+    Notation.dot{H T: Set} `{ink_env.hash.CryptoHash.Trait H}
+        `{parity_scale_codec.codec.Encode.Trait T}
+         :=
+      hash_encoded;
   }.
   Global Instance Method_ecdsa_recover `{H : State.Trait} `(Trait)
     : Notation.Dot "ecdsa_recover" := {
-    Notation.dot := @ecdsa_recover;
+    Notation.dot := ecdsa_recover;
   }.
   Global Instance Method_ecdsa_to_eth_address `{H : State.Trait} `(Trait)
     : Notation.Dot "ecdsa_to_eth_address" := {
-    Notation.dot := @ecdsa_to_eth_address;
+    Notation.dot := ecdsa_to_eth_address;
   }.
   Global Instance Method_call_chain_extension `{H : State.Trait} `(Trait)
     : Notation.Dot "call_chain_extension" := {
-    Notation.dot := @call_chain_extension;
+    Notation.dot{I T E ErrorCode F D: Set}
+        `{parity_scale_codec.codec.Encode.Trait I}
+        `{parity_scale_codec.codec.Decode.Trait T}
+        `{core.convert.From.Trait E (T := ErrorCode)}
+        `{core.ops.function.FnOnce.Trait F (Args := u32)}
+        `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+         :=
+      call_chain_extension;
   }.
   Global Instance Method_set_code_hash `{H : State.Trait} `(Trait)
     : Notation.Dot "set_code_hash" := {
-    Notation.dot := @set_code_hash;
+    Notation.dot := set_code_hash;
   }.
 End EnvBackend.
 
@@ -1878,83 +1958,112 @@ Module TypedEnvBackend.
   
   Global Instance Method_caller `{H : State.Trait} `(Trait)
     : Notation.Dot "caller" := {
-    Notation.dot := @caller;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := caller;
   }.
   Global Instance Method_transferred_value `{H : State.Trait} `(Trait)
     : Notation.Dot "transferred_value" := {
-    Notation.dot := @transferred_value;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      transferred_value;
   }.
   Global Instance Method_weight_to_fee `{H : State.Trait} `(Trait)
     : Notation.Dot "weight_to_fee" := {
-    Notation.dot := @weight_to_fee;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := weight_to_fee;
   }.
   Global Instance Method_gas_left `{H : State.Trait} `(Trait)
     : Notation.Dot "gas_left" := {
-    Notation.dot := @gas_left;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := gas_left;
   }.
   Global Instance Method_block_timestamp `{H : State.Trait} `(Trait)
     : Notation.Dot "block_timestamp" := {
-    Notation.dot := @block_timestamp;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      block_timestamp;
   }.
   Global Instance Method_account_id `{H : State.Trait} `(Trait)
     : Notation.Dot "account_id" := {
-    Notation.dot := @account_id;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := account_id;
   }.
   Global Instance Method_balance `{H : State.Trait} `(Trait)
     : Notation.Dot "balance" := {
-    Notation.dot := @balance;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := balance;
   }.
   Global Instance Method_block_number `{H : State.Trait} `(Trait)
     : Notation.Dot "block_number" := {
-    Notation.dot := @block_number;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := block_number;
   }.
   Global Instance Method_minimum_balance `{H : State.Trait} `(Trait)
     : Notation.Dot "minimum_balance" := {
-    Notation.dot := @minimum_balance;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      minimum_balance;
   }.
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
-    Notation.dot := @emit_event;
+    Notation.dot{E Event: Set} `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.Topics.Trait Event}
+        `{parity_scale_codec.codec.Encode.Trait Event}
+         :=
+      emit_event;
   }.
   Global Instance Method_invoke_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract" := {
-    Notation.dot := @invoke_contract;
+    Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
+         :=
+      invoke_contract;
   }.
   Global Instance Method_invoke_contract_delegate `{H : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract_delegate" := {
-    Notation.dot := @invoke_contract_delegate;
+    Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
+         :=
+      invoke_contract_delegate;
   }.
   Global Instance Method_instantiate_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "instantiate_contract" := {
-    Notation.dot := @instantiate_contract;
+    Notation.dot{E ContractRef Args Salt R: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait
+          R
+          (C := ContractRef)}
+         :=
+      instantiate_contract;
   }.
   Global Instance Method_terminate_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "terminate_contract" := {
-    Notation.dot := @terminate_contract;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      terminate_contract;
   }.
   Global Instance Method_transfer `{H : State.Trait} `(Trait)
     : Notation.Dot "transfer" := {
-    Notation.dot := @transfer;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := transfer;
   }.
   Global Instance Method_is_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "is_contract" := {
-    Notation.dot := @is_contract;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := is_contract;
   }.
   Global Instance Method_caller_is_origin `{H : State.Trait} `(Trait)
     : Notation.Dot "caller_is_origin" := {
-    Notation.dot := @caller_is_origin;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      caller_is_origin;
   }.
   Global Instance Method_code_hash `{H : State.Trait} `(Trait)
     : Notation.Dot "code_hash" := {
-    Notation.dot := @code_hash;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := code_hash;
   }.
   Global Instance Method_own_code_hash `{H : State.Trait} `(Trait)
     : Notation.Dot "own_code_hash" := {
-    Notation.dot := @own_code_hash;
+    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := own_code_hash;
   }.
   Global Instance Method_call_runtime `{H : State.Trait} `(Trait)
     : Notation.Dot "call_runtime" := {
-    Notation.dot := @call_runtime;
+    Notation.dot{E Call: Set} `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Call}
+         :=
+      call_runtime;
   }.
 End TypedEnvBackend.
 
@@ -2144,12 +2253,14 @@ Module call.
           {Output}
           `(Trait
           (Output := Output))
-        : Notation.DoubleColonType_Self "Output" := {
+        : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
       Global Instance Method_unwrap_or_else `{H : State.Trait} `(Trait)
         : Notation.Dot "unwrap_or_else" := {
-        Notation.dot := @unwrap_or_else;
+        Notation.dot{F: Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}
+             :=
+          unwrap_or_else;
       }.
     End Unwrap.
   End common.
@@ -2175,7 +2286,7 @@ Module call.
       
       Global Instance Method_from_account_id `{H : State.Trait} `(Trait)
         : Notation.Dot "from_account_id" := {
-        Notation.dot := @from_account_id;
+        Notation.dot := from_account_id;
       }.
     End FromAccountId.
     
@@ -2194,7 +2305,7 @@ Module call.
       
       Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
         : Notation.Dot "IS_RESULT" := {
-        Notation.dot := @IS_RESULT;
+        Notation.dot := IS_RESULT;
       }.
       Global Instance
           Method_Output
@@ -2202,7 +2313,7 @@ Module call.
           {Output}
           `(Trait
           (Output := Output))
-        : Notation.DoubleColonType_Self "Output" := {
+        : Notation.DoubleColonType Self "Output" := {
         Notation.double_colon_type := Output;
       }.
       Global Instance
@@ -2211,12 +2322,12 @@ Module call.
           {Error}
           `(Trait
           (Error := Error))
-        : Notation.DoubleColonType_Self "Error" := {
+        : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
       Global Instance Method_ok `{H : State.Trait} `(Trait)
         : Notation.Dot "ok" := {
-        Notation.dot := @ok;
+        Notation.dot := ok;
       }.
       Global Instance Method_err `{H : State.Trait} `(Trait)
         : Notation.Dot "err" := {
@@ -2722,12 +2833,14 @@ Module common.
         {Output}
         `(Trait
         (Output := Output))
-      : Notation.DoubleColonType_Self "Output" := {
+      : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
     Global Instance Method_unwrap_or_else `{H : State.Trait} `(Trait)
       : Notation.Dot "unwrap_or_else" := {
-      Notation.dot := @unwrap_or_else;
+      Notation.dot{F: Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}
+           :=
+        unwrap_or_else;
     }.
   End Unwrap.
 End common.
@@ -2797,12 +2910,13 @@ Module Unwrap.
       {Output}
       `(Trait
       (Output := Output))
-    : Notation.DoubleColonType_Self "Output" := {
+    : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
   Global Instance Method_unwrap_or_else `{H : State.Trait} `(Trait)
     : Notation.Dot "unwrap_or_else" := {
-    Notation.dot := @unwrap_or_else;
+    Notation.dot{F: Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}  :=
+      unwrap_or_else;
   }.
 End Unwrap.
 
@@ -2827,7 +2941,7 @@ Module create_builder.
     
     Global Instance Method_from_account_id `{H : State.Trait} `(Trait)
       : Notation.Dot "from_account_id" := {
-      Notation.dot := @from_account_id;
+      Notation.dot := from_account_id;
     }.
   End FromAccountId.
   
@@ -2846,7 +2960,7 @@ Module create_builder.
     
     Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
       : Notation.Dot "IS_RESULT" := {
-      Notation.dot := @IS_RESULT;
+      Notation.dot := IS_RESULT;
     }.
     Global Instance
         Method_Output
@@ -2854,7 +2968,7 @@ Module create_builder.
         {Output}
         `(Trait
         (Output := Output))
-      : Notation.DoubleColonType_Self "Output" := {
+      : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
     Global Instance
@@ -2863,12 +2977,12 @@ Module create_builder.
         {Error}
         `(Trait
         (Error := Error))
-      : Notation.DoubleColonType_Self "Error" := {
+      : Notation.DoubleColonType Self "Error" := {
       Notation.double_colon_type := Error;
     }.
     Global Instance Method_ok `{H : State.Trait} `(Trait)
       : Notation.Dot "ok" := {
-      Notation.dot := @ok;
+      Notation.dot := ok;
     }.
     Global Instance Method_err `{H : State.Trait} `(Trait)
       : Notation.Dot "err" := {
@@ -3009,7 +3123,7 @@ Module FromAccountId.
   
   Global Instance Method_from_account_id `{H : State.Trait} `(Trait)
     : Notation.Dot "from_account_id" := {
-    Notation.dot := @from_account_id;
+    Notation.dot := from_account_id;
   }.
 End FromAccountId.
 
@@ -3028,7 +3142,7 @@ Module ConstructorReturnType.
   
   Global Instance Method_IS_RESULT `{H : State.Trait} `(Trait)
     : Notation.Dot "IS_RESULT" := {
-    Notation.dot := @IS_RESULT;
+    Notation.dot := IS_RESULT;
   }.
   Global Instance
       Method_Output
@@ -3036,7 +3150,7 @@ Module ConstructorReturnType.
       {Output}
       `(Trait
       (Output := Output))
-    : Notation.DoubleColonType_Self "Output" := {
+    : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
   Global Instance
@@ -3045,11 +3159,11 @@ Module ConstructorReturnType.
       {Error}
       `(Trait
       (Error := Error))
-    : Notation.DoubleColonType_Self "Error" := {
+    : Notation.DoubleColonType Self "Error" := {
     Notation.double_colon_type := Error;
   }.
   Global Instance Method_ok `{H : State.Trait} `(Trait) : Notation.Dot "ok" := {
-    Notation.dot := @ok;
+    Notation.dot := ok;
   }.
   Global Instance Method_err `{H : State.Trait} `(Trait)
     : Notation.Dot "err" := {
@@ -3337,7 +3451,7 @@ Module chain_extension.
     
     Global Instance Method_from_status_code `{H : State.Trait} `(Trait)
       : Notation.Dot "from_status_code" := {
-      Notation.dot := @from_status_code;
+      Notation.dot := from_status_code;
     }.
   End FromStatusCode.
   
@@ -3397,11 +3511,11 @@ Module chain_extension.
     }.
     
     Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait (Ok := Ok))
-      : Notation.DoubleColonType_Self "Ok" := {
+      : Notation.DoubleColonType Self "Ok" := {
       Notation.double_colon_type := Ok;
     }.
     Global Instance Method_Err `{H : State.Trait} {Err} `(Trait (Err := Err))
-      : Notation.DoubleColonType_Self "Err" := {
+      : Notation.DoubleColonType Self "Err" := {
       Notation.double_colon_type := Err;
     }.
   End IsResultType.
@@ -3426,7 +3540,7 @@ Module FromStatusCode.
   
   Global Instance Method_from_status_code `{H : State.Trait} `(Trait)
     : Notation.Dot "from_status_code" := {
-    Notation.dot := @from_status_code;
+    Notation.dot := from_status_code;
   }.
 End FromStatusCode.
 
@@ -3508,11 +3622,11 @@ Module IsResultType.
   }.
   
   Global Instance Method_Ok `{H : State.Trait} {Ok} `(Trait (Ok := Ok))
-    : Notation.DoubleColonType_Self "Ok" := {
+    : Notation.DoubleColonType Self "Ok" := {
     Notation.double_colon_type := Ok;
   }.
   Global Instance Method_Err `{H : State.Trait} {Err} `(Trait (Err := Err))
-    : Notation.DoubleColonType_Self "Err" := {
+    : Notation.DoubleColonType Self "Err" := {
     Notation.double_colon_type := Err;
   }.
 End IsResultType.
@@ -3544,7 +3658,7 @@ Module contract.
     }.
     
     Global Instance Method_Env `{H : State.Trait} {Env} `(Trait (Env := Env))
-      : Notation.DoubleColonType_Self "Env" := {
+      : Notation.DoubleColonType Self "Env" := {
       Notation.double_colon_type := Env;
     }.
   End ContractEnv.
@@ -3560,7 +3674,7 @@ Module contract.
         {Type_}
         `(Trait
         (Type_ := Type_))
-      : Notation.DoubleColonType_Self "Type_" := {
+      : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
   End ContractReference.
@@ -3576,7 +3690,7 @@ Module ContractEnv.
   }.
   
   Global Instance Method_Env `{H : State.Trait} {Env} `(Trait (Env := Env))
-    : Notation.DoubleColonType_Self "Env" := {
+    : Notation.DoubleColonType Self "Env" := {
     Notation.double_colon_type := Env;
   }.
 End ContractEnv.
@@ -3592,7 +3706,7 @@ Module ContractReference.
       {Type_}
       `(Trait
       (Type_ := Type_))
-    : Notation.DoubleColonType_Self "Type_" := {
+    : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
 End ContractReference.
@@ -3614,7 +3728,11 @@ Module engine.
     
     Global Instance Method_on_instance `{H : State.Trait} `(Trait)
       : Notation.Dot "on_instance" := {
-      Notation.dot := @on_instance;
+      Notation.dot{F R: Set} `{core.ops.function.FnOnce.Trait
+            F
+            (Args := (mut_ref Self))}
+           :=
+        on_instance;
     }.
   End OnInstance.
   
@@ -3908,7 +4026,11 @@ Module OnInstance.
   
   Global Instance Method_on_instance `{H : State.Trait} `(Trait)
     : Notation.Dot "on_instance" := {
-    Notation.dot := @on_instance;
+    Notation.dot{F R: Set} `{core.ops.function.FnOnce.Trait
+          F
+          (Args := (mut_ref Self))}
+         :=
+      on_instance;
   }.
 End OnInstance.
 
@@ -4739,7 +4861,7 @@ Module hash.
         {Type_}
         `(Trait
         (Type_ := Type_))
-      : Notation.DoubleColonType_Self "Type_" := {
+      : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
   End HashOutput.
@@ -4760,7 +4882,7 @@ Module hash.
     
     Global Instance Method_hash `{H : State.Trait} `(Trait)
       : Notation.Dot "hash" := {
-      Notation.dot := @hash;
+      Notation.dot := hash;
     }.
   End CryptoHash.
   
@@ -4813,7 +4935,7 @@ Module HashOutput.
       {Type_}
       `(Trait
       (Type_ := Type_))
-    : Notation.DoubleColonType_Self "Type_" := {
+    : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
 End HashOutput.
@@ -4834,7 +4956,7 @@ Module CryptoHash.
   
   Global Instance Method_hash `{H : State.Trait} `(Trait)
     : Notation.Dot "hash" := {
-    Notation.dot := @hash;
+    Notation.dot := hash;
   }.
 End CryptoHash.
 
@@ -4901,20 +5023,21 @@ Module topics.
         {Output}
         `(Trait
         (Output := Output))
-      : Notation.DoubleColonType_Self "Output" := {
+      : Notation.DoubleColonType Self "Output" := {
       Notation.double_colon_type := Output;
     }.
     Global Instance Method_expect `{H : State.Trait} `(Trait)
       : Notation.Dot "expect" := {
-      Notation.dot := @expect;
+      Notation.dot := expect;
     }.
     Global Instance Method_push_topic `{H : State.Trait} `(Trait)
       : Notation.Dot "push_topic" := {
-      Notation.dot := @push_topic;
+      Notation.dot{T: Set} `{parity_scale_codec.codec.Encode.Trait T}  :=
+        push_topic;
     }.
     Global Instance Method_output `{H : State.Trait} `(Trait)
       : Notation.Dot "output" := {
-      Notation.dot := @output;
+      Notation.dot := output;
     }.
   End TopicsBuilderBackend.
   
@@ -4969,7 +5092,7 @@ Module topics.
         {Next}
         `(Trait
         (Next := Next))
-      : Notation.DoubleColonType_Self "Next" := {
+      : Notation.DoubleColonType Self "Next" := {
       Notation.double_colon_type := Next;
     }.
   End SomeRemainingTopics.
@@ -4981,7 +5104,7 @@ Module topics.
     
     Global Instance Method_AMOUNT `{H : State.Trait} `(Trait)
       : Notation.Dot "AMOUNT" := {
-      Notation.dot := @AMOUNT;
+      Notation.dot := AMOUNT;
     }.
   End EventTopicsAmount.
   
@@ -5009,12 +5132,15 @@ Module topics.
         {RemainingTopics}
         `(Trait
         (RemainingTopics := RemainingTopics))
-      : Notation.DoubleColonType_Self "RemainingTopics" := {
+      : Notation.DoubleColonType Self "RemainingTopics" := {
       Notation.double_colon_type := RemainingTopics;
     }.
     Global Instance Method_topics `{H : State.Trait} `(Trait)
       : Notation.Dot "topics" := {
-      Notation.dot := @topics;
+      Notation.dot{E B: Set} `{ink_env.types.Environment.Trait E}
+          `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+           :=
+        topics;
     }.
   End Topics.
   
@@ -5061,20 +5187,21 @@ Module TopicsBuilderBackend.
       {Output}
       `(Trait
       (Output := Output))
-    : Notation.DoubleColonType_Self "Output" := {
+    : Notation.DoubleColonType Self "Output" := {
     Notation.double_colon_type := Output;
   }.
   Global Instance Method_expect `{H : State.Trait} `(Trait)
     : Notation.Dot "expect" := {
-    Notation.dot := @expect;
+    Notation.dot := expect;
   }.
   Global Instance Method_push_topic `{H : State.Trait} `(Trait)
     : Notation.Dot "push_topic" := {
-    Notation.dot := @push_topic;
+    Notation.dot{T: Set} `{parity_scale_codec.codec.Encode.Trait T}  :=
+      push_topic;
   }.
   Global Instance Method_output `{H : State.Trait} `(Trait)
     : Notation.Dot "output" := {
-    Notation.dot := @output;
+    Notation.dot := output;
   }.
 End TopicsBuilderBackend.
 
@@ -5142,7 +5269,7 @@ Module SomeRemainingTopics.
   }.
   
   Global Instance Method_Next `{H : State.Trait} {Next} `(Trait (Next := Next))
-    : Notation.DoubleColonType_Self "Next" := {
+    : Notation.DoubleColonType Self "Next" := {
     Notation.double_colon_type := Next;
   }.
 End SomeRemainingTopics.
@@ -5154,7 +5281,7 @@ Module EventTopicsAmount.
   
   Global Instance Method_AMOUNT `{H : State.Trait} `(Trait)
     : Notation.Dot "AMOUNT" := {
-    Notation.dot := @AMOUNT;
+    Notation.dot := AMOUNT;
   }.
 End EventTopicsAmount.
 
@@ -5182,12 +5309,15 @@ Module Topics.
       {RemainingTopics}
       `(Trait
       (RemainingTopics := RemainingTopics))
-    : Notation.DoubleColonType_Self "RemainingTopics" := {
+    : Notation.DoubleColonType Self "RemainingTopics" := {
     Notation.double_colon_type := RemainingTopics;
   }.
   Global Instance Method_topics `{H : State.Trait} `(Trait)
     : Notation.Dot "topics" := {
-    Notation.dot := @topics;
+    Notation.dot{E B: Set} `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+         :=
+      topics;
   }.
 End Topics.
 

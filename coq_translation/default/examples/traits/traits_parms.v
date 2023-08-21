@@ -40,12 +40,12 @@ Module SomeTrait.
       {SomeType}
       `(Trait
       (SomeType := SomeType))
-    : Notation.DoubleColonType_Self "SomeType" := {
+    : Notation.DoubleColonType Self "SomeType" := {
     Notation.double_colon_type := SomeType;
   }.
   Global Instance Method_some_fn `{H : State.Trait} `(Trait)
     : Notation.Dot "some_fn" := {
-    Notation.dot := @some_fn;
+    Notation.dot := some_fn;
   }.
 End SomeTrait.
 
