@@ -11,6 +11,9 @@ Require Import CoqOfRust._std.process.
 Require Import CoqOfRust._std.ffi.
 Require Import CoqOfRust._std.sync.
 Require Import CoqOfRust._std.thread.
+Require Import CoqOfRust.core.convert.
+
+(* sp_keyring *)
 
 Module builders.
 (* NOTE: Wait for completion of ink_env *)
