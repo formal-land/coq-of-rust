@@ -6,10 +6,10 @@ Definition multiply
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (H := H) (core.result.Result i32 core.num.error.ParseIntError) :=
-  let* α0 := first_number_str.["parse"] in
+  let* α0 := first_number_str.["parse"] : M i32 in
   match α0 with
   | core.result.Result.Ok first_number =>
-    let* α0 := second_number_str.["parse"] in
+    let* α0 := second_number_str.["parse"] : M i32 in
     match α0 with
     | core.result.Result.Ok second_number =>
       let* α0 := first_number.["mul"] second_number in

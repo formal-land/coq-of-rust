@@ -34,13 +34,18 @@ Module SomeTrait.
     some_fn `{H : State.Trait} : (M (H := H) unit);
   }.
   
-  Global Instance Method_SomeType `{H : State.Trait} `(Trait)
+  Global Instance
+      Method_SomeType
+      `{H : State.Trait}
+      {SomeType}
+      `(Trait
+      (SomeType := SomeType))
     : Notation.DoubleColonType Self "SomeType" := {
     Notation.double_colon_type := SomeType;
   }.
   Global Instance Method_some_fn `{H : State.Trait} `(Trait)
     : Notation.Dot "some_fn" := {
-    Notation.dot := @some_fn;
+    Notation.dot := some_fn;
   }.
 End SomeTrait.
 

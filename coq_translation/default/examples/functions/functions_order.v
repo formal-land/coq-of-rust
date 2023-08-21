@@ -14,22 +14,6 @@ Module SomeType.
 End SomeType.
 Definition SomeType := @SomeType.t.
 
-Module Impl_core_default_Default_for_functions_order_SomeType.
-  Definition Self := functions_order.SomeType.
-  
-  Definition default `{H : State.Trait} : M (H := H) functions_order.SomeType :=
-    Pure (functions_order.SomeType.Build_t 42).
-  
-  Global Instance AssociatedFunction_default `{H : State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H : State.Trait} := default;
-  }.
-End Impl_core_default_Default_for_functions_order_SomeType.
-
 Module Impl_functions_order_SomeType.
   Definition Self := functions_order.SomeType.
   
@@ -49,6 +33,59 @@ Module Impl_functions_order_SomeType.
   }.
 End Impl_functions_order_SomeType.
 
+Module SomeTrait.
+  Class Trait (Self : Set) : Set := {
+    some_trait_foo `{H : State.Trait} : (ref Self) -> (M (H := H) unit);
+    some_trait_bar `{H : State.Trait} : (ref Self) -> (M (H := H) unit);
+  }.
+  
+  Global Instance Method_some_trait_foo `{H : State.Trait} `(Trait)
+    : Notation.Dot "some_trait_foo" := {
+    Notation.dot := some_trait_foo;
+  }.
+  Global Instance Method_some_trait_bar `{H : State.Trait} `(Trait)
+    : Notation.Dot "some_trait_bar" := {
+    Notation.dot := some_trait_bar;
+  }.
+End SomeTrait.
+
+Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+  Definition Self := functions_order.SomeType.
+  
+  Definition some_trait_bar
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
+    Pure tt.
+  
+  Global Instance Method_some_trait_bar `{H : State.Trait} :
+    Notation.Dot "some_trait_bar" := {
+    Notation.dot := some_trait_bar;
+  }.
+  
+  Definition some_trait_foo
+      `{H : State.Trait}
+      (self : ref Self)
+      : M (H := H) unit :=
+    self.["some_trait_bar"].
+  
+  Global Instance Method_some_trait_foo `{H : State.Trait} :
+    Notation.Dot "some_trait_foo" := {
+    Notation.dot := some_trait_foo;
+  }.
+  
+  Global Instance I : functions_order.SomeTrait.Trait Self := {
+    functions_order.SomeTrait.some_trait_foo
+      `{H : State.Trait}
+      :=
+      some_trait_foo;
+    functions_order.SomeTrait.some_trait_bar
+      `{H : State.Trait}
+      :=
+      some_trait_bar;
+  }.
+End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+
 Module inner_mod.
   Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
   
@@ -65,25 +102,25 @@ Module inner_mod.
   End nested_mod.
 End inner_mod.
 
+Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
+
 Definition bar `{H : State.Trait} : M (H := H) unit :=
   let* _ := functions_order.inner_mod.tar in
   Pure tt.
 
-Definition tar `{H : State.Trait} : M (H := H) unit := Pure tt.
-
 Module nested_mod.
+  Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
+  
   Definition tick `{H : State.Trait} : M (H := H) unit :=
     let* _ := functions_order.inner_mod.nested_mod.tack in
     Pure tt.
-  
-  Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
 End nested_mod.
+
+Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
 
 Definition tick `{H : State.Trait} : M (H := H) unit :=
   let* _ := functions_order.inner_mod.nested_mod.tack in
   Pure tt.
-
-Definition tack `{H : State.Trait} : M (H := H) unit := Pure tt.
 
 Definition foo `{H : State.Trait} : M (H := H) unit := Pure tt.
 

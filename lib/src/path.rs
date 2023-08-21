@@ -121,12 +121,7 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
                     // SelfTyAlias and SelfTyParam are only local aliases (named `Self`)
                     // and cannot be used directly in qualified paths in Coq
                     Res::SelfTyAlias { .. } | Res::SelfTyParam { .. } => None,
-                    Res::Def(DefKind::TyParam, _) => {
-                        eprintln!("{:?}", ty);
-                        eprintln!("{:?}", segment);
-                        eprintln!();
-                        Some((compile_path(env, path), true))
-                    }
+                    Res::Def(DefKind::TyParam, _) => Some((compile_path(env, path), true)),
                     // the rest of paths should refer to implementations of types,
                     // so we prepend their names with `Impl_`
                     _ => {

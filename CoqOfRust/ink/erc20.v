@@ -835,7 +835,7 @@ Module erc20.
       let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
       let* α3 := α2.["push_arg"] __ink_binding_0 in
       let* α4 := α0.["exec_input"] α3 in
-      α4.["returns"].
+      α4.["returns"] : M Self.
     
     Global Instance AssociatedFunction_new `{H : State.Trait} :
       Notation.DoubleColon Self "new" := {
@@ -1512,7 +1512,8 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
     let* α7 :=
       α6.["field"]
         (fun f =>
-          let* α0 := f.["ty"] in
+          let* α0 :=
+            f.["ty"] : M ink_storage_traits.storage.AutoStorableHint.Type_ in
           let* α1 := α0.["name"] "total_supply" in
           let* α2 :=
             α1.["type_name"]
@@ -1522,7 +1523,8 @@ storage::traits::ManualKey<375105693u32, ()>,>>::Type" in
     let* α8 :=
       α7.["field"]
         (fun f =>
-          let* α0 := f.["ty"] in
+          let* α0 :=
+            f.["ty"] : M ink_storage_traits.storage.AutoStorableHint.Type_ in
           let* α1 := α0.["name"] "balances" in
           let* α2 :=
             α1.["type_name"]
@@ -1534,7 +1536,8 @@ AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
     let* α9 :=
       α8.["field"]
         (fun f =>
-          let* α0 := f.["ty"] in
+          let* α0 :=
+            f.["ty"] : M ink_storage_traits.storage.AutoStorableHint.Type_ in
           let* α1 := α0.["name"] "allowances" in
           let* α2 :=
             α1.["type_name"]
@@ -1669,7 +1672,9 @@ Module
   Definition emit_event
       `{H : State.Trait}
       {E : Set}
-      `{core.convert.Into.Trait ink.reflect.event.ContractEventBase.Type_ E}
+      `{core.convert.Into.Trait
+        E
+        (T := ink.reflect.event.ContractEventBase.Type_)}
       (self : Self)
       (event : E)
       : M (H := H) unit :=
@@ -1917,7 +1922,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       `{H : State.Trait}
       {E B : Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
@@ -2201,11 +2206,11 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
       `{H : State.Trait}
       {E B : Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
-    let* α0 := builder.["build"] in
+    let* α0 := builder.["build"] : M Self in
     let* α1 :=
       α0.["push_topic"]
         (addr_of
@@ -2213,7 +2218,8 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
             ink_env.topics.PrefixedValue.value :=
               [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114];
             ink_env.topics.PrefixedValue.prefix := [];
-          |}) in
+          |}) : M
+        (ink_env.topics.PrefixedValue (list u8)) in
     let* α2 :=
       α1.["push_topic"]
         (addr_of
@@ -2221,7 +2227,9 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
             ink_env.topics.PrefixedValue.value := addr_of self.["from"];
             ink_env.topics.PrefixedValue.prefix :=
               [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114, 58, 58, 102, 114, 111, 109];
-          |}) in
+          |}) : M
+        (ink_env.topics.PrefixedValue
+          (core.option.Option erc20.erc20.AccountId)) in
     let* α3 :=
       α2.["push_topic"]
         (addr_of
@@ -2229,7 +2237,9 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
             ink_env.topics.PrefixedValue.value := addr_of self.["to"];
             ink_env.topics.PrefixedValue.prefix :=
               [69, 114, 99, 50, 48, 58, 58, 84, 114, 97, 110, 115, 102, 101, 114, 58, 58, 116, 111];
-          |}) in
+          |}) : M
+        (ink_env.topics.PrefixedValue
+          (core.option.Option erc20.erc20.AccountId)) in
     α3.["finish"].
   
   Global Instance Method_topics `{H : State.Trait} : Notation.Dot "topics" := {
@@ -2251,11 +2261,11 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
       `{H : State.Trait}
       {E B : Set}
       `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.TopicsBuilderBackend.Trait E B}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
       : M (H := H) ink_env.topics.TopicsBuilderBackend.Output :=
-    let* α0 := builder.["build"] in
+    let* α0 := builder.["build"] : M Self in
     let* α1 :=
       α0.["push_topic"]
         (addr_of
@@ -2263,7 +2273,8 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
             ink_env.topics.PrefixedValue.value :=
               [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108];
             ink_env.topics.PrefixedValue.prefix := [];
-          |}) in
+          |}) : M
+        (ink_env.topics.PrefixedValue (list u8)) in
     let* α2 :=
       α1.["push_topic"]
         (addr_of
@@ -2271,7 +2282,8 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
             ink_env.topics.PrefixedValue.value := addr_of self.["owner"];
             ink_env.topics.PrefixedValue.prefix :=
               [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108, 58, 58, 111, 119, 110, 101, 114];
-          |}) in
+          |}) : M
+        (ink_env.topics.PrefixedValue erc20.erc20.AccountId) in
     let* α3 :=
       α2.["push_topic"]
         (addr_of
@@ -2279,7 +2291,8 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
             ink_env.topics.PrefixedValue.value := addr_of self.["spender"];
             ink_env.topics.PrefixedValue.prefix :=
               [69, 114, 99, 50, 48, 58, 58, 65, 112, 112, 114, 111, 118, 97, 108, 58, 58, 115, 112, 101, 110, 100, 101, 114];
-          |}) in
+          |}) : M
+        (ink_env.topics.PrefixedValue erc20.erc20.AccountId) in
     α3.["finish"].
   
   Global Instance Method_topics `{H : State.Trait} : Notation.Dot "topics" := {
@@ -3947,7 +3960,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   Definition using_encoded
       `{H : State.Trait}
       {R F : Set}
-      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
+      `{core.ops.function.FnOnce.Trait
+        F
+        (Args := (ref (Slice Root.core.primitive.u8)))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -4053,7 +4068,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       let dst_ : mut_ref (core.mem.maybe_uninit.MaybeUninit Self) := dst_ in
       let* dst_ :=
         let* α0 := dst_.["as_mut_ptr"] in
-        let* α1 := α0.["cast"] in
+        let* α1 :=
+          α0.["cast"] : M
+            (core.mem.maybe_uninit.MaybeUninit erc20.erc20.AccountId) in
         let* α2 := α1.["deref"] in
         Pure (addr_of α2) in
       let* _ :=
@@ -4197,7 +4214,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
     let* α7 :=
       α6.["field"]
         (fun f =>
-          let* α0 := f.["ty"] in
+          let* α0 := f.["ty"] : M erc20.erc20.AccountId in
           let* α1 := α0.["name"] "account_id" in
           α1.["type_name"] "AccountId") in
     α5.["composite"] α7.
@@ -4367,7 +4384,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α3 := ink_env.call.selector.Selector::["new"] [ 219; 99; 117; 168 ] in
     let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
     let* α5 := α2.["exec_input"] α4 in
-    α5.["returns"].
+    α5.["returns"] : M erc20.erc20.Balance.
   
   Global Instance Method_total_supply `{H : State.Trait} :
     Notation.Dot "total_supply" := {
@@ -4398,7 +4415,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α2.["exec_input"] α5 in
-    α6.["returns"].
+    α6.["returns"] : M erc20.erc20.Balance.
   
   Global Instance Method_balance_of `{H : State.Trait} :
     Notation.Dot "balance_of" := {
@@ -4434,7 +4451,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
-    α7.["returns"].
+    α7.["returns"] : M erc20.erc20.Balance.
   
   Global Instance Method_allowance `{H : State.Trait} :
     Notation.Dot "allowance" := {
@@ -4470,7 +4487,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
-    α7.["returns"].
+    α7.["returns"] : M (erc20.erc20.Result unit).
   
   Global Instance Method_transfer `{H : State.Trait} :
     Notation.Dot "transfer" := {
@@ -4506,7 +4523,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
-    α7.["returns"].
+    α7.["returns"] : M (erc20.erc20.Result unit).
   
   Global Instance Method_approve `{H : State.Trait} :
     Notation.Dot "approve" := {
@@ -4547,7 +4564,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α6.["push_arg"] __ink_binding_2 in
     let* α8 := α2.["exec_input"] α7 in
-    α8.["returns"].
+    α8.["returns"] : M (erc20.erc20.Result unit).
   
   Global Instance Method_transfer_from `{H : State.Trait} :
     Notation.Dot "transfer_from" := {
@@ -4632,7 +4649,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   Definition using_encoded
       `{H : State.Trait}
       {R F : Set}
-      `{core.ops.function.FnOnce.Trait ((ref (Slice Root.core.primitive.u8))) F}
+      `{core.ops.function.FnOnce.Trait
+        F
+        (Args := (ref (Slice Root.core.primitive.u8)))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -4799,7 +4818,8 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
     let* α7 :=
       α6.["field"]
         (fun f =>
-          let* α0 := f.["ty"] in
+          let* α0 :=
+            f.["ty"] : M ink.codegen.dispatch.info.ContractCallBuilder.Type_ in
           let* α1 := α0.["name"] "inner" in
           α1.["type_name"]
             "<Erc20 as::ink::codegen::ContractCallBuilder>::Type") in
@@ -4967,7 +4987,7 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
     let* α3 := α2.["push_arg"] __ink_binding_0 in
     let* α4 := α0.["exec_input"] α3 in
-    α4.["returns"].
+    α4.["returns"] : M Self.
   
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {

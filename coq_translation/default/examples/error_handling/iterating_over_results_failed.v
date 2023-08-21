@@ -8,7 +8,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
     (Slice _)::["into_vec"] α0 in
   let* numbers :=
     let* α0 := strings.["into_iter"] in
-    let* α1 := α0.["map"] (fun s => s.["parse"]) in
+    let* α1 := α0.["map"] (fun s => s.["parse"] : M i32) in
     α1.["collect"] in
   let* _ :=
     let* _ :=

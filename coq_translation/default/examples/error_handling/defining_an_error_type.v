@@ -76,7 +76,7 @@ Definition double_first
   let* α1 := α0.["ok_or"] defining_an_error_type.DoubleError.Build in
   α1.["and_then"]
     (fun s =>
-      let* α0 := s.["parse"] in
+      let* α0 := s.["parse"] : M i32 in
       let* α1 :=
         α0.["map_err"]
           (fun _ => Pure defining_an_error_type.DoubleError.Build) in

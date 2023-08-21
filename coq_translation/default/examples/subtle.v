@@ -313,7 +313,7 @@ Module ConstantTimeEq.
   
   Global Instance Method_ct_eq `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_eq" := {
-    Notation.dot := @ct_eq;
+    Notation.dot := ct_eq;
   }.
   Global Instance Method_ct_ne `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_ne" := {
@@ -640,7 +640,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Set := {
     conditional_select
       `{H : State.Trait}
       :
@@ -649,7 +649,7 @@ Module ConditionallySelectable.
   
   Global Instance Method_conditional_select `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_select" := {
-    Notation.dot := @conditional_select;
+    Notation.dot := conditional_select;
   }.
   Global Instance Method_conditional_assign `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_assign" := {
@@ -1370,7 +1370,7 @@ Module ConditionallyNegatable.
   
   Global Instance Method_conditional_negate `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_negate" := {
-    Notation.dot := @conditional_negate;
+    Notation.dot := conditional_negate;
   }.
 End ConditionallyNegatable.
 
@@ -1617,7 +1617,7 @@ Module Impl_subtle_CtOption_T_4.
       `{H : State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait unit F}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)}
       (self : Self)
       (f : F)
       : M (H := H) T :=
@@ -1659,7 +1659,7 @@ Module Impl_subtle_CtOption_T_4.
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait (T) F}
+      `{core.ops.function.FnOnce.Trait F (Args := T)}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
@@ -1681,7 +1681,7 @@ Module Impl_subtle_CtOption_T_4.
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait (T) F}
+      `{core.ops.function.FnOnce.Trait F (Args := T)}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption U) :=
@@ -1705,7 +1705,7 @@ Module Impl_subtle_CtOption_T_4.
       `{H : State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait unit F}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)}
       (self : Self)
       (f : F)
       : M (H := H) (subtle.CtOption T) :=
@@ -1798,7 +1798,7 @@ Module ConstantTimeGreater.
   
   Global Instance Method_ct_gt `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_gt" := {
-    Notation.dot := @ct_gt;
+    Notation.dot := ct_gt;
   }.
 End ConstantTimeGreater.
 
@@ -2023,7 +2023,11 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self : Set)
+        `{subtle.ConstantTimeEq.Trait Self}
+        `{subtle.ConstantTimeGreater.Trait Self} :
+      Set := {
   }.
   
   Global Instance Method_ct_lt `{H : State.Trait} `(Trait)

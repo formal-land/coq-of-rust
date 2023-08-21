@@ -9,7 +9,7 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   let* errors := alloc.vec.Vec::["new"] in
   let* numbers :=
     let* α0 := strings.["into_iter"] in
-    let* α1 := α0.["map"] (fun s => s.["parse"]) in
+    let* α1 := α0.["map"] (fun s => s.["parse"] : M u8) in
     let* α2 :=
       α1.["filter_map"]
         (fun r =>

@@ -96,8 +96,6 @@ Definition String : Set := string.
 
 Definition ref (A : Set) : Set := A.
 Definition mut_ref : Set -> Set := ref.
-Definition deref {A : Set} (r : ref A) : A := r.
-Definition mut_deref {A : Set} (r : mut_ref A) : A := r.
 
 Parameter eqb : forall {A : Set}, A -> A -> bool.
 

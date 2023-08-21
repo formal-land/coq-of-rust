@@ -4,16 +4,16 @@ use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
 use crate::render::*;
+use crate::reorder::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
 use rustc_hir::{
-    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, Item, ItemKind, PatKind,
-    QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
+    GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, ImplItemRef, Item, ItemId,
+    ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
 };
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
-use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::iter::repeat;
 use std::string::ToString;
@@ -25,12 +25,17 @@ pub(crate) struct TopLevelOptions {
     pub(crate) generate_reorder: bool,
 }
 
-/// Trait for getting a name of an AST node. Used
-/// for ordering the nodes based on a list of names
-trait ToName {
-    /// We return [String] instead of [&String] because
-    /// some AST nodes need their names to be constructed.
-    fn to_name(&self) -> String;
+#[derive(Clone, Debug)]
+struct HirFnSigAndBody<'a> {
+    fn_sig: &'a rustc_hir::FnSig<'a>,
+    body: &'a rustc_hir::Body<'a>,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct FnSigAndBody {
+    args: Vec<(String, Box<CoqType>)>,
+    ret_ty: Box<CoqType>,
+    body: Option<Box<Expr>>,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -43,44 +48,65 @@ enum TraitItem {
     DefinitionWithDefault {
         ty_params: Vec<String>,
         where_predicates: Vec<WherePredicate>,
-        args: Vec<(String, Box<CoqType>)>,
-        ret_ty: Box<CoqType>,
-        body: Option<Box<Expr>>,
+        signature_and_body: FnSigAndBody,
     },
-    Type(Vec<(Path, Vec<Box<TraitTyParamValue>>)>),
+    Type(Vec<TraitBound>),
+}
+
+/// fields common for all function definitions
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct FunDefinition {
+    name: String,
+    ty_params: Vec<String>,
+    where_predicates: Vec<WherePredicate>,
+    signature_and_body: FnSigAndBody,
+    is_dead_code: bool,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum ImplItem {
     Const {
+        name: String,
         body: Box<Expr>,
         is_dead_code: bool,
     },
     Definition {
-        ty_params: Vec<String>,
-        where_predicates: Vec<WherePredicate>,
-        args: Vec<(String, Box<CoqType>)>,
-        ret_ty: Box<CoqType>,
-        body: Option<Box<Expr>>,
+        definition: FunDefinition,
         is_method: bool,
-        is_dead_code: bool,
     },
     Type {
+        name: String,
         ty: Box<CoqType>,
     },
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct WherePredicate {
-    name: Path,
-    ty_params: Vec<Box<CoqType>>,
+    bound: TraitBound,
     ty: Box<CoqType>,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct TraitBound {
+    name: Path,
+    ty_params: Vec<Box<TraitTyParamValue>>,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 enum VariantItem {
     Struct { fields: Vec<(String, Box<CoqType>)> },
     Tuple { tys: Vec<Box<CoqType>> },
+}
+
+/// The actual value of the type parameter of the trait's generic parameter
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+enum TraitTyParamValue {
+    /// the value of the parameter that has no default
+    JustValue { name: String, ty: Box<CoqType> },
+    /// the value that replaces the default value of the parameter
+    ValWithDef { name: String, ty: Box<CoqType> },
+    /// means the default value of the type parameter is used
+    JustDefault { name: String },
 }
 
 /// Representation of top-level hir [Item]s in coq-of-rust
@@ -90,17 +116,9 @@ enum TopLevelItem {
     Const {
         name: String,
         ty: Box<CoqType>,
-        value: Box<Expr>,
+        value: Option<Box<Expr>>,
     },
-    Definition {
-        name: String,
-        ty_params: Vec<String>,
-        where_predicates: Vec<WherePredicate>,
-        args: Vec<(String, Box<CoqType>)>,
-        ret_ty: Box<CoqType>,
-        body: Option<Box<Expr>>,
-        is_dead_code: bool,
-    },
+    Definition(FunDefinition),
     TypeAlias {
         name: String,
         ty_params: Vec<String>,
@@ -134,11 +152,13 @@ enum TopLevelItem {
         self_ty: Box<CoqType>,
         /// We use a counter to disambiguate several impls for the same type
         counter: u64,
-        items: Vec<(String, ImplItem)>,
+        items: Vec<ImplItem>,
     },
     Trait {
         name: String,
         ty_params: Vec<(String, Option<Box<CoqType>>)>,
+        predicates: Vec<WherePredicate>,
+        bounds: Vec<TraitBound>,
         body: Vec<(String, TraitItem)>,
     },
     TraitImpl {
@@ -146,98 +166,49 @@ enum TopLevelItem {
         ty_params: Vec<Box<TraitTyParamValue>>,
         self_ty: Box<CoqType>,
         of_trait: Path,
-        items: Vec<(String, ImplItem)>,
+        items: Vec<ImplItem>,
         trait_non_default_items: Vec<String>,
     },
     Error(String),
 }
 
-impl ToName for TopLevelItem {
-    fn to_name(&self) -> String {
-        match self {
-            TopLevelItem::Definition { name, .. } => name.clone(),
-            TopLevelItem::Const { name, .. } => name.clone(),
-            TopLevelItem::TypeAlias { name, .. } => name.clone(),
-            TopLevelItem::TypeEnum { name, .. } => name.clone(),
-            TopLevelItem::TypeStructStruct { name, .. } => name.clone(),
-            TopLevelItem::TypeStructTuple { name, .. } => name.clone(),
-            TopLevelItem::TypeStructUnit { name, .. } => name.clone(),
-            TopLevelItem::Module { name, .. } => name.clone(),
-            TopLevelItem::Impl {
-                self_ty, counter, ..
-            } => format!(
-                "Impl_{}{}",
-                self_ty.to_name(),
-                if *counter != 1 {
-                    format!("_{counter}")
-                } else {
-                    "".to_string()
-                }
-            ),
-            TopLevelItem::Trait { name, .. } => name.to_string(),
-            TopLevelItem::TraitImpl {
-                of_trait, self_ty, ..
-            } => format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name()),
-            TopLevelItem::Error(msg) => msg.clone(),
-        }
-    }
-}
-
-/// The actual value of the type parameter of the trait's generic parameter
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-enum TraitTyParamValue {
-    /// the value of the parameter that has no default
-    JustValue { name: String, ty: Box<CoqType> },
-    /// the value that replaces the default value of the parameter
-    ValWithDef { name: String, ty: Box<CoqType> },
-    /// means the default value of the type parameter is used
-    JustDefault { name: String },
-}
-
-impl ToName for (String, ImplItem) {
-    fn to_name(&self) -> String {
-        self.0.clone()
-    }
-}
-
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct TopLevel(Vec<TopLevelItem>);
 
-struct FnSigAndBody {
-    args: Vec<(String, Box<CoqType>)>,
-    ret_ty: Box<CoqType>,
-    body: Option<Box<Expr>>,
+/// emits a warning with the given messages
+fn emit_warning_with_note(env: &Env, span: &rustc_span::Span, warning_msg: &str, note_msg: &str) {
+    env.tcx
+        .sess
+        .struct_span_warn(*span, warning_msg)
+        .note(note_msg)
+        .emit();
 }
 
-fn compile_fn_sig_and_body_id(
+/// returns Some(item) if the condition is satisfied
+fn give_if<T>(item: T, condition: bool) -> Option<T> {
+    if condition {
+        Some(item)
+    } else {
+        None
+    }
+}
+
+/// returns Some(item) if the condition is not satisfied
+fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
+    give_if(item, !condition)
+}
+
+/// compiles a function with the given signature and body
+fn compile_fn_sig_and_body(
     env: &mut Env,
-    fn_sig: &rustc_hir::FnSig<'_>,
-    body_id: &rustc_hir::BodyId,
+    fn_sig_and_body: &HirFnSigAndBody,
+    default: &str,
 ) -> FnSigAndBody {
-    let body = env.tcx.hir().body(*body_id);
-    let expr = body.value;
+    let decl = fn_sig_and_body.fn_sig.decl;
     FnSigAndBody {
-        args: body
-            .params
-            .iter()
-            .zip(fn_sig.decl.inputs.iter())
-            .map(|(param, ty)| {
-                let name = match &param.pat.kind {
-                    PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-                    _ => "arg".to_string(),
-                };
-                (name, compile_type(env, ty))
-            })
-            .collect(),
-        ret_ty: match fn_sig.decl.output {
-            rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
-            rustc_hir::FnRetTy::Return(ty) => compile_type(env, ty),
-        },
-        body: if env.axiomatize {
-            None
-        } else {
-            Some(Box::new(compile_expr(env, expr)))
-        },
+        args: get_args(env, fn_sig_and_body.body, decl.inputs, default),
+        ret_ty: compile_fn_ret_ty(env, &decl.output),
+        body: compile_function_body(env, fn_sig_and_body.body),
     }
 }
 
@@ -246,42 +217,31 @@ fn compile_fn_sig_and_body_id(
 fn check_if_is_test_main_function(tcx: &TyCtxt, body_id: &rustc_hir::BodyId) -> bool {
     let body = tcx.hir().body(*body_id);
     let expr = body.value;
-    match expr.kind {
-        rustc_hir::ExprKind::Block(block, _) => match block.expr {
-            Some(expr) => match expr.kind {
-                rustc_hir::ExprKind::Call(func, _) => match &func.kind {
-                    rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(_, path)) => {
-                        match path.segments {
-                            [base, path] => {
-                                base.ident.name.to_string() == "test"
-                                    && path.ident.name.to_string() == "test_main_static"
-                            }
-                            _ => false,
-                        }
+    if let rustc_hir::ExprKind::Block(block, _) = expr.kind {
+        if let Some(expr) = block.expr {
+            if let rustc_hir::ExprKind::Call(func, _) = expr.kind {
+                if let rustc_hir::ExprKind::Path(rustc_hir::QPath::Resolved(_, path)) = &func.kind {
+                    if let [base, path] = path.segments {
+                        return base.ident.name.to_string() == "test"
+                            && path.ident.name.to_string() == "test_main_static";
                     }
-                    _ => false,
-                },
-                _ => false,
-            },
-            None => false,
-        },
-        _ => false,
+                }
+            }
+        }
     }
+    false
 }
 
 /// Check if a top-level definition is actually test metadata. If so, we ignore
 /// it.
 fn check_if_test_declaration(ty: &Ty) -> bool {
-    match &ty.kind {
-        TyKind::Path(QPath::Resolved(_, path)) => match path.segments {
-            [base, path] => {
-                base.ident.name.to_string() == "test"
-                    && path.ident.name.to_string() == "TestDescAndFn"
-            }
-            _ => false,
-        },
-        _ => false,
+    if let TyKind::Path(QPath::Resolved(_, path)) = &ty.kind {
+        if let [base, path] = path.segments {
+            return base.ident.name.to_string() == "test"
+                && path.ident.name.to_string() == "TestDescAndFn";
+        }
     }
+    false
 }
 
 // Function checks if code block is having any `allow` attributes, and if it does,
@@ -357,72 +317,40 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 return vec![];
             }
 
-            let value = tcx.hir().body(*body_id).value;
+            let value = if env.axiomatize {
+                None
+            } else {
+                let value = tcx.hir().body(*body_id).value;
+                Some(Box::new(compile_expr(env, value)))
+            };
             vec![TopLevelItem::Const {
                 name,
                 ty: compile_type(env, ty),
-                value: Box::new(compile_expr(env, value)),
+                value,
             }]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
             if check_if_is_test_main_function(tcx, body_id) {
                 return vec![];
             }
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let FnSigAndBody { args, ret_ty, body } =
-                compile_fn_sig_and_body_id(env, fn_sig, body_id);
-            vec![TopLevelItem::Definition {
-                name,
-                ty_params: generics
-                    .params
-                    .iter()
-                    .filter_map(|param| match param.kind {
-                        rustc_hir::GenericParamKind::Type { .. } => {
-                            Some(to_valid_coq_name(param.name.ident().to_string()))
-                        }
-                        _ => None,
-                    })
-                    .collect(),
-                where_predicates: generics
-                    .predicates
-                    .iter()
-                    .flat_map(|predicate| match predicate {
-                        rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                            let names_and_ty_params =
-                                predicate.bounds.iter().filter_map(|bound| match bound {
-                                    rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
-                                        let path = trait_ref.trait_ref.path;
-                                        Some((
-                                            compile_path(env, path),
-                                            compile_path_ty_params(env, path),
-                                        ))
-                                    }
-                                    _ => None,
-                                });
-                            names_and_ty_params
-                                .map(|(name, ty_params)| WherePredicate {
-                                    name,
-                                    ty_params,
-                                    ty: compile_type(env, predicate.bounded_ty),
-                                })
-                                .collect()
-                        }
-                        _ => vec![],
-                    })
-                    .collect(),
-                args,
-                ret_ty,
-                body,
-                is_dead_code: if_marked_as_dead_code,
-            }]
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
+            vec![TopLevelItem::Definition(compile_fun_definition(
+                env,
+                &name,
+                generics,
+                &fn_sig_and_body,
+                "arg",
+                is_dead_code,
+            ))]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            env.push_context(&name);
-            let mut items = deduplicate_top_level_items(
-                module
-                    .item_ids
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let mut items: Vec<ItemId> = module.item_ids.to_vec();
+            reorder_definitions_inplace(tcx, env, &mut items);
+            let items = deduplicate_top_level_items(
+                items
                     .iter()
                     .flat_map(|item_id| {
                         let item = tcx.hir().item(*item_id);
@@ -430,8 +358,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     })
                     .collect(),
             );
-            reorder_definitions_inplace(env, &mut items);
-            env.pop_context();
             // We remove empty modules in the translation
             if items.is_empty() {
                 return vec![];
@@ -439,7 +365,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             vec![TopLevelItem::Module {
                 name,
                 body: TopLevel(items),
-                is_dead_code: if_marked_as_dead_code,
+                is_dead_code,
             }]
         }
         ItemKind::ForeignMod { .. } => {
@@ -449,16 +375,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::TyAlias(ty, generics) => vec![TopLevelItem::TypeAlias {
             name,
             ty: compile_type(env, ty),
-            ty_params: generics
-                .params
-                .iter()
-                .filter_map(|param| match param.kind {
-                    rustc_hir::GenericParamKind::Type { .. } => {
-                        Some(param.name.ident().to_string())
-                    }
-                    _ => None,
-                })
-                .collect(),
+            ty_params: get_ty_params_names(env, generics),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
         ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
@@ -490,25 +407,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 .collect(),
         }],
         ItemKind::Struct(body, generics) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let ty_params = generics
-                .params
-                .iter()
-                .filter_map(|param| match param.kind {
-                    rustc_hir::GenericParamKind::Type { .. } => {
-                        Some(param.name.ident().to_string())
-                    }
-                    rustc_hir::GenericParamKind::Const { .. } => {
-                        env.tcx
-                            .sess
-                            .struct_span_warn(param.span, "Constant parameters are not supported.")
-                            .note("It should be supported in future versions.")
-                            .emit();
-                        None
-                    }
-                    rustc_hir::GenericParamKind::Lifetime { .. } => None,
-                })
-                .collect();
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let ty_params = get_ty_params_names(env, generics);
 
             match body {
                 VariantData::Struct(fields, _) => {
@@ -520,7 +420,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         name,
                         ty_params,
                         fields,
-                        is_dead_code: if_marked_as_dead_code,
+                        is_dead_code,
                     }]
                 }
                 VariantData::Tuple(fields, _, _) => {
@@ -539,8 +439,24 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
-        ItemKind::Trait(_, _, generics, _, items) => {
-            vec![compile_trait(tcx, env, name, generics, items)]
+        ItemKind::Trait(_, _, generics, generic_bounds, items) => {
+            vec![TopLevelItem::Trait {
+                name,
+                ty_params: get_ty_params(env, generics),
+                predicates: get_where_predicates(tcx, env, generics),
+                bounds: compile_generic_bounds(tcx, env, generic_bounds),
+                body: items
+                    .iter()
+                    .map(|item| {
+                        let item = tcx.hir().trait_item(item.id);
+                        let ty_params = get_ty_params_names(env, item.generics);
+                        let where_predicates = get_where_predicates(tcx, env, item.generics);
+                        let body =
+                            compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
+                        (to_valid_coq_name(item.ident.name.to_string()), body)
+                    })
+                    .collect(),
+            }]
         }
         ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
@@ -552,121 +468,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             items,
             ..
         }) => {
-            let if_marked_as_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let generic_tys = get_ty_params_names(env, generics);
             let self_ty = compile_type(env, self_ty);
             let entry = env.impl_counter.entry(*self_ty.clone());
             let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
-            let impl_name = format!(
-                "Impl_{}{}",
-                self_ty.to_name(),
-                if counter != 1 {
-                    format!("_{counter}")
-                } else {
-                    "".to_string()
-                }
-            );
-            env.push_context(&impl_name);
-            let mut items = items
-                .iter()
-                .map(|item| {
-                    let is_method = match item.kind {
-                        rustc_hir::AssocItemKind::Fn { has_self } => has_self,
-                        _ => false,
-                    };
-                    let item = tcx.hir().impl_item(item.id);
-                    let value = match &item.kind {
-                        ImplItemKind::Const(_, body_id) => {
-                            let expr = tcx.hir().body(*body_id).value;
-                            ImplItem::Const {
-                                body: Box::new(compile_expr(env, expr)),
-                                is_dead_code: if_marked_as_dead_code,
-                            }
-                        }
-                        ImplItemKind::Fn(
-                            rustc_hir::FnSig {
-                                decl: rustc_hir::FnDecl { inputs, output, .. },
-                                ..
-                            },
-                            body_id,
-                        ) => {
-                            let arg_names = tcx.hir().body(*body_id).params.iter().map(|param| {
-                                match param.pat.kind {
-                                    PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
-                                    _ => "Pattern".to_string(),
-                                }
-                            });
-                            let ty_params = item
-                                .generics
-                                .params
-                                .iter()
-                                .filter_map(|param| match param.kind {
-                                    rustc_hir::GenericParamKind::Type { .. } => {
-                                        Some(param.name.ident().to_string())
-                                    }
-                                    _ => None,
-                                })
-                                .collect();
-                            let where_predicates = item
-                                .generics
-                                .predicates
-                                .iter()
-                                .flat_map(|predicate| match predicate {
-                                    rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                                        let names_and_ty_params =
-                                            predicate.bounds.iter().filter_map(|bound| match bound {
-                                                rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
-                                                    let path = trait_ref.trait_ref.path;
-                                                    Some((
-                                                        compile_path(env, path),
-                                                        compile_path_ty_params(env, path),
-                                                    ))
-                                                }
-                                                _ => {
-                                                    env.tcx
-                                                        .sess
-                                                        .struct_span_warn(
-                                                            predicate.span,
-                                                            "Only trait bounds are currently supported.",
-                                                        )
-                                                        .note("It may change in future versions.")
-                                                        .emit();
-                                                    None
-                                                },
-                                            });
-                                        names_and_ty_params
-                                            .map(|(name, ty_params)| WherePredicate {
-                                                name,
-                                                ty_params,
-                                                ty: compile_type(env, predicate.bounded_ty),
-                                            })
-                                            .collect()
-                                    }
-                                    _ => vec![],
-                                })
-                                .collect();
-                            let arg_tys = inputs.iter().map(|ty| compile_type(env, ty));
-                            let ret_ty = compile_fn_ret_ty(env, output);
-                            let expr = tcx.hir().body(*body_id).value;
-                            ImplItem::Definition {
-                                ty_params,
-                                where_predicates,
-                                args: arg_names.zip(arg_tys).collect(),
-                                ret_ty,
-                                body: if env.axiomatize {None} else {Some(Box::new(compile_expr(env, expr)))},
-                                is_method,
-                                is_dead_code: if_marked_as_dead_code,
-                            }
-                        }
-                        ImplItemKind::Type(ty) => ImplItem::Type {
-                            ty: compile_type(env, ty),
-                        },
-                    };
-                    (item.ident.name.to_string(), value)
-                })
-                .collect();
-            reorder_definitions_inplace(env, &mut items);
-            env.pop_context();
+            let mut items: Vec<ImplItemRef> = items.to_vec();
+            reorder_definitions_inplace(tcx, env, &mut items);
+
+            let items = compile_impl_item_refs(tcx, env, &items, is_dead_code);
+
             match of_trait {
                 Some(trait_ref) => {
                     let trait_non_default_items = tcx
@@ -680,44 +491,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     // Get the generics for the trait
                     let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
 
-                    // Get the list of type parameters default status (true if it has a default)
-                    let mut type_params_name_and_default_status: Vec<(String, bool)> = generics
-                        .params
-                        .iter()
-                        .filter_map(|param| match param.kind {
-                            rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
-                                Some((param.name.to_string(), has_default))
-                            }
-                            _ => None,
-                        })
-                        .collect();
-                    // The first type parameter is always the Self type, that we do not consider as
-                    // part of the list of type parameters.
-                    type_params_name_and_default_status.remove(0);
-
-                    // @TODO: saved cursor position
-                    let ty_params = compile_path_ty_params(env, trait_ref.path);
-
                     vec![TopLevelItem::TraitImpl {
                         generic_tys,
-                        ty_params: ty_params
-                            .into_iter()
-                            .map(Some)
-                            .chain(repeat(None))
-                            .zip(type_params_name_and_default_status)
-                            .map(|(ty, (name, has_default))| {
-                                Box::new(match ty {
-                                    Some(ty) => {
-                                        if has_default {
-                                            TraitTyParamValue::ValWithDef { name, ty }
-                                        } else {
-                                            TraitTyParamValue::JustValue { name, ty }
-                                        }
-                                    }
-                                    None => TraitTyParamValue::JustDefault { name },
-                                })
-                            })
-                            .collect(),
+                        ty_params: get_ty_params_with_default_status(env, generics, trait_ref.path),
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
                         items,
@@ -736,46 +512,141 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
     }
 }
 
-/// [compile_trait] is responsible for compiling traits in [compile_top_level_item]
-fn compile_trait(
+/// returns a pair of function signature and its body
+fn get_hir_fn_sig_and_body<'a>(
+    tcx: &'a TyCtxt,
+    fn_sig: &'a rustc_hir::FnSig<'a>,
+    body_id: &rustc_hir::BodyId,
+) -> HirFnSigAndBody<'a> {
+    HirFnSigAndBody {
+        fn_sig,
+        body: get_body(tcx, body_id),
+    }
+}
+
+/// compiles a list of references to items
+fn compile_impl_item_refs(
     tcx: &TyCtxt,
     env: &mut Env,
-    name: String,
-    generics: &rustc_hir::Generics,
-    items: &[rustc_hir::TraitItemRef],
-) -> TopLevelItem {
-    // @TODO: include generic predicates instead
-    if !generics.predicates.is_empty() {
-        env.tcx
-            .sess
-            .struct_span_warn(
-                generics.span,
-                "Type parameter bounds are not supported in traits yet.",
+    item_refs: &[ImplItemRef],
+    is_dead_code: bool,
+) -> Vec<ImplItem> {
+    item_refs
+        .iter()
+        .map(|item_ref| {
+            compile_impl_item(
+                tcx,
+                env,
+                tcx.hir().impl_item(item_ref.id),
+                is_method(item_ref),
+                is_dead_code,
             )
-            .note("It may change in future versions.")
-            .emit();
+        })
+        .collect()
+}
+
+/// tells if the referenced item is a method
+fn is_method(item_ref: &ImplItemRef) -> bool {
+    if let rustc_hir::AssocItemKind::Fn { has_self } = item_ref.kind {
+        has_self
+    } else {
+        false
     }
-    TopLevelItem::Trait {
-        name,
-        ty_params: get_ty_params(env, generics),
-        body: items
-            .iter()
-            .map(|item| {
-                let item = tcx.hir().trait_item(item.id);
-                let ty_params = get_ty_params_names(env, item.generics);
-                let where_predicates = get_where_predicates(env, item.generics);
-                let body = compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
-                (to_valid_coq_name(item.ident.name.to_string()), body)
-            })
-            .collect(),
+}
+
+/// compiles an item
+fn compile_impl_item(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    item: &rustc_hir::ImplItem,
+    is_method: bool,
+    is_dead_code: bool,
+) -> ImplItem {
+    let name = item.ident.name.to_string();
+    match &item.kind {
+        ImplItemKind::Const(_, body_id) => {
+            let expr = tcx.hir().body(*body_id).value;
+            ImplItem::Const {
+                name,
+                body: Box::new(compile_expr(env, expr)),
+                is_dead_code,
+            }
+        }
+        ImplItemKind::Fn(fn_sig, body_id) => ImplItem::Definition {
+            definition: compile_fun_definition(
+                env,
+                &name,
+                item.generics,
+                &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
+                "Pattern",
+                is_dead_code,
+            ),
+            is_method,
+        },
+        ImplItemKind::Type(ty) => ImplItem::Type {
+            name,
+            ty: compile_type(env, ty),
+        },
     }
+}
+
+/// compiles a given function
+fn compile_fun_definition(
+    env: &mut Env,
+    name: &str,
+    generics: &rustc_hir::Generics,
+    fn_sig_and_body: &HirFnSigAndBody,
+    default: &str,
+    is_dead_code: bool,
+) -> FunDefinition {
+    let tcx = env.tcx;
+    FunDefinition {
+        name: name.to_owned(),
+        ty_params: get_ty_params_names(env, generics),
+        where_predicates: get_where_predicates(&tcx, env, generics),
+        signature_and_body: compile_fn_sig_and_body(env, fn_sig_and_body, default),
+        is_dead_code,
+    }
+}
+
+/// returns the body corresponding to the given body_id
+fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::Body<'a> {
+    tcx.hir().body(*body_id)
+}
+
+// compiles the body of a function
+fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Expr>> {
+    give_if_not(Box::new(compile_expr(env, body.value)), env.axiomatize)
+}
+
+/// returns a list of pairs of argument names and their types
+fn get_args(
+    env: &Env,
+    body: &rustc_hir::Body,
+    inputs: &[rustc_hir::Ty],
+    default: &str,
+) -> Vec<(String, Box<CoqType>)> {
+    get_arg_names(body, default)
+        .zip(inputs.iter().map(|ty| compile_type(env, ty)))
+        .collect()
+}
+
+/// returns names of the arguments
+fn get_arg_names<'a>(
+    body: &'a rustc_hir::Body,
+    default: &'a str,
+) -> impl Iterator<Item = String> + 'a {
+    body.params.iter().map(|param| match param.pat.kind {
+        PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+        _ => default.to_string(),
+    })
 }
 
 /// filters out type parameters and compiles them with the given function
 fn compile_ty_params<T>(
-    env: &mut Env,
+    env: &Env,
     generics: &rustc_hir::Generics,
-    f: impl Fn(&mut Env, String, Option<&Ty>) -> T,
+    f: impl Fn(&Env, String, Option<&Ty>) -> T,
 ) -> Vec<T> {
     generics
         .params
@@ -788,11 +659,10 @@ fn compile_ty_params<T>(
             }
             // @TODO: do we want to also support constant parameters?
             GenericParamKind::Const { ty: _, default: _ } => {
-                env.tcx
-                    .sess
-                    .struct_span_warn(param.span, "Constant parameters are not supported yet.")
-                    .note("It should be supported in future versions.")
-                    .emit();
+                let span = &param.span;
+                let warning_msg = "Constant parameters are not supported yet.";
+                let note_msg = "It should be supported in future versions.";
+                emit_warning_with_note(env, span, warning_msg, note_msg);
                 None
             }
         })
@@ -800,10 +670,7 @@ fn compile_ty_params<T>(
 }
 
 /// extracts type parameters with their optional default value from the generics
-fn get_ty_params(
-    env: &mut Env,
-    generics: &rustc_hir::Generics,
-) -> Vec<(String, Option<Box<CoqType>>)> {
+fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<(String, Option<Box<CoqType>>)> {
     compile_ty_params(env, generics, |env, name, default| {
         let default = default.map(|default| compile_type(env, default));
         let name = to_valid_coq_name(name);
@@ -812,40 +679,29 @@ fn get_ty_params(
 }
 
 /// extracts the names of type parameters from the generics
-fn get_ty_params_names(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<String> {
-    compile_ty_params(env, generics, |_, name, _| name)
+fn get_ty_params_names(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
+    compile_ty_params(env, generics, |_, name, _| to_valid_coq_name(name))
 }
 
 /// extracts where predicates from the generics
-fn get_where_predicates(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<WherePredicate> {
+fn get_where_predicates(
+    tcx: &TyCtxt,
+    env: &Env,
+    generics: &rustc_hir::Generics,
+) -> Vec<WherePredicate> {
     generics
         .predicates
         .iter()
         .flat_map(|predicate| match predicate {
             rustc_hir::WherePredicate::BoundPredicate(predicate) => {
-                let names_and_ty_params = predicate.bounds.iter().filter_map(|bound| match bound {
-                    rustc_hir::GenericBound::Trait(ref trait_ref, _) => {
-                        let path = trait_ref.trait_ref.path;
-                        Some((compile_path(env, path), compile_path_ty_params(env, path)))
-                    }
-                    GenericBound::LangItemTrait { .. } => {
-                        env.tcx
-                            .sess
-                            .struct_span_warn(
-                                predicate.span,
-                                "LangItem trait bounds are not supported yet.",
-                            )
-                            .note("It will change in the future.")
-                            .emit();
-                        None
-                    }
-                    GenericBound::Outlives { .. } => None,
-                });
+                let names_and_ty_params = compile_generic_bounds(tcx, env, predicate.bounds);
                 names_and_ty_params
-                    .map(|(name, ty_params)| WherePredicate {
-                        name,
-                        ty_params,
-                        ty: compile_type(env, predicate.bounded_ty),
+                    .into_iter()
+                    .map(|bound| {
+                        trait_bound_to_where_predicate(
+                            bound,
+                            compile_type(env, predicate.bounded_ty),
+                        )
                     })
                     .collect()
             }
@@ -854,66 +710,26 @@ fn get_where_predicates(env: &mut Env, generics: &rustc_hir::Generics) -> Vec<Wh
         .collect()
 }
 
+/// converts a trait bound to a where predicate
+fn trait_bound_to_where_predicate(bound: TraitBound, ty: Box<CoqType>) -> WherePredicate {
+    WherePredicate { bound, ty }
+}
+
 /// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
 fn compile_generic_bounds(
     tcx: &TyCtxt,
-    env: &mut Env,
-    generic_bounds: &GenericBounds,
-) -> Vec<(Path, Vec<Box<TraitTyParamValue>>)> {
+    env: &Env,
+    generic_bounds: GenericBounds,
+) -> Vec<TraitBound> {
     generic_bounds
         .iter()
         .filter_map(|generic_bound| match generic_bound {
-            GenericBound::Trait(ptraitref, _) => {
-                let trait_ref = ptraitref.trait_ref;
-                // Get the generics for the trait
-                let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
-
-                // Get the list of type parameters default status (true if it has a default)
-                let mut type_params_name_and_default_status: Vec<(String, bool)> = generics
-                    .params
-                    .iter()
-                    .filter_map(|param| match param.kind {
-                        rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
-                            Some((param.name.to_string(), has_default))
-                        }
-                        _ => None,
-                    })
-                    .collect();
-                // The first type parameter is always the Self type, that we do not consider as
-                // part of the list of type parameters.
-                type_params_name_and_default_status.remove(0);
-
-                let ty_params = compile_path_ty_params(env, trait_ref.path);
-                let ty_params: Vec<Box<TraitTyParamValue>> = ty_params
-                    .into_iter()
-                    .map(Some)
-                    .chain(repeat(None))
-                    .zip(type_params_name_and_default_status)
-                    .map(|(ty, (name, has_default))| {
-                        Box::new(match ty {
-                            Some(ty) => {
-                                if has_default {
-                                    TraitTyParamValue::ValWithDef { name, ty }
-                                } else {
-                                    TraitTyParamValue::JustValue { name, ty }
-                                }
-                            }
-                            None => TraitTyParamValue::JustDefault { name },
-                        })
-                    })
-                    .collect();
-
-                Some((compile_path(env, ptraitref.trait_ref.path), ty_params))
-            }
+            GenericBound::Trait(ptraitref, _) => Some(compile_trait_bound(tcx, env, ptraitref)),
             GenericBound::LangItemTrait { .. } => {
-                env.tcx
-                    .sess
-                    .struct_span_warn(
-                        generic_bound.span(),
-                        "LangItem trait bounds are not supported yet.",
-                    )
-                    .note("It will change in the future.")
-                    .emit();
+                let warning_msg = "LangItem trait bounds are not supported yet.";
+                let note_msg = "It will change in the future.";
+                let span = &generic_bound.span();
+                emit_warning_with_note(env, span, warning_msg, note_msg);
                 None
             }
             // we ignore lifetimes
@@ -922,7 +738,94 @@ fn compile_generic_bounds(
         .collect()
 }
 
-/// [compile_trait_item_body] compiles the body of the trait item in [compile_trait]
+/// Get the generics for the trait
+fn compile_trait_bound(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> TraitBound {
+    TraitBound {
+        name: compile_path(env, ptraitref.trait_ref.path),
+        ty_params: get_ty_params_with_default_status(
+            env,
+            tcx.generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
+            ptraitref.trait_ref.path,
+        ),
+    }
+}
+
+/// computes tre list of actual type parameters with their default status
+fn get_ty_params_with_default_status(
+    env: &Env,
+    generics: &rustc_middle::ty::Generics,
+    path: &rustc_hir::Path,
+) -> Vec<Box<TraitTyParamValue>> {
+    let mut type_params_name_and_default_status = type_params_name_and_default_status(generics);
+    // The first type parameter is always the Self type, that we do not consider as
+    // part of the list of type parameters.
+    type_params_name_and_default_status.remove(0);
+
+    let ty_params = compile_path_ty_params(env, path);
+    add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
+}
+
+/// takes a list of actual type parameters
+/// and the information about required and default type parameters
+/// and returns a list that combines them
+fn add_default_status_to_ty_params(
+    ty_params: &[Box<CoqType>],
+    names_and_default_status: &[(String, bool)],
+) -> Vec<Box<TraitTyParamValue>> {
+    ty_params
+        .iter()
+        .map(Some)
+        .chain(repeat(None))
+        .zip(names_and_default_status)
+        .map(|(ty, (name, has_default))| {
+            compile_ty_param_value(name, ty.map(|ty| &**ty), has_default)
+        })
+        .collect()
+}
+
+/// compiles a type parameter
+fn compile_ty_param_value(
+    name: &str,
+    ty: Option<&CoqType>,
+    has_default: &bool,
+) -> Box<TraitTyParamValue> {
+    Box::new(match ty {
+        Some(ty) => {
+            if *has_default {
+                TraitTyParamValue::ValWithDef {
+                    name: name.to_string(),
+                    ty: Box::new(ty.clone()),
+                }
+            } else {
+                TraitTyParamValue::JustValue {
+                    name: name.to_string(),
+                    ty: Box::new(ty.clone()),
+                }
+            }
+        }
+        None => TraitTyParamValue::JustDefault {
+            name: name.to_string(),
+        },
+    })
+}
+
+/// Get the list of type parameters names and default status (true if it has a default)
+fn type_params_name_and_default_status(
+    generics: &rustc_middle::ty::Generics,
+) -> Vec<(String, bool)> {
+    generics
+        .params
+        .iter()
+        .filter_map(|param| match param.kind {
+            rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
+                Some((param.name.to_string(), has_default))
+            }
+            _ => None,
+        })
+        .collect()
+}
+
+/// [compile_trait_item_body] compiles the body of the trait item
 fn compile_trait_item_body(
     tcx: &TyCtxt,
     env: &mut Env,
@@ -943,59 +846,27 @@ fn compile_trait_item_body(
                 ty: compile_fn_decl(env, fn_sig.decl),
             },
             TraitFn::Provided(body_id) => {
-                let FnSigAndBody { args, ret_ty, body } =
-                    compile_fn_sig_and_body_id(env, fn_sig, body_id);
+                let env_tcx = env.tcx;
+                let fn_sig_and_body = get_hir_fn_sig_and_body(&env_tcx, fn_sig, body_id);
+                let signature_and_body = compile_fn_sig_and_body(env, &fn_sig_and_body, "arg");
                 TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
-                    args,
-                    ret_ty,
-                    body,
+                    signature_and_body,
                 }
             }
         },
         TraitItemKind::Type(generic_bounds, concrete_type) => {
             if concrete_type.is_some() {
-                env.tcx
-                    .sess
-                    .struct_span_warn(
-                        item.span,
-                        "Concrete value of associated types is not supported yet.",
-                    )
-                    .note("It may change in future versions.")
-                    .emit();
+                let span = &item.span;
+                let warning_msg = "Concrete value of associated types is not supported yet.";
+                let note_msg = "It may change in future versions.";
+                emit_warning_with_note(env, span, warning_msg, note_msg);
             }
             let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
             TraitItem::Type(generic_bounds)
         }
     }
-}
-
-#[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
-fn reorder_definitions_inplace(env: &mut Env, definitions: &mut Vec<impl ToName>) {
-    let context = &env.context;
-
-    // The context here is the path of the file name with / so we need
-    // to escape it
-    let order = config_get_reorder(env);
-    definitions.sort_by(|a, b| {
-        let a_name = a.to_name();
-        let b_name = b.to_name();
-        let a_position = order.iter().position(|elm| *elm == a_name);
-        if a_position.is_none() {
-            return Ordering::Equal;
-        }
-
-        let b_position = order.iter().position(|elm| *elm == b_name);
-        if b_position.is_none() {
-            return Ordering::Equal;
-        };
-
-        a_position.cmp(&b_position)
-    });
-
-    let identifiers: Vec<String> = definitions.iter().map(ToName::to_name).collect();
-    env.reorder_map.insert(context.to_string(), identifiers);
 }
 
 fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
@@ -1004,22 +875,23 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         tcx: *tcx,
         axiomatize: opts.axiomatize,
         file: opts.filename,
-        context: "top_level".to_string(),
         reorder_map: HashMap::new(),
         configuration: get_configuration(&opts.configuration_file),
     };
 
-    let mut results: Vec<TopLevelItem> = deduplicate_top_level_items(
-        tcx.hir()
-            .items()
+    let mut results: Vec<ItemId> = tcx.hir().items().collect();
+    reorder_definitions_inplace(tcx, &mut env, &mut results);
+
+    let results = deduplicate_top_level_items(
+        results
+            .iter()
             .flat_map(|item_id| {
-                let item = tcx.hir().item(item_id);
+                let item = tcx.hir().item(*item_id);
                 compile_top_level_item(tcx, &mut env, item)
             })
             .collect(),
     );
 
-    reorder_definitions_inplace(&mut env, &mut results);
     if opts.generate_reorder {
         let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});
         println!("{}", serde_json::to_string_pretty(&json).expect("json"));
@@ -1099,178 +971,174 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
     }
 }
 
-// We can not have more than 7 arguments for the function,
-// so we put all the arguments into one struct
-struct ArgumentsForFnToDoc<'a> {
-    name: &'a String,
-    ty_params: Option<&'a Vec<String>>,
-    where_predicates: Option<&'a Vec<WherePredicate>>,
-    args: &'a Vec<(String, Box<CoqType>)>,
-    ret_ty: &'a CoqType,
-    body: &'a Option<Box<Expr>>,
-    is_dead_code: bool,
-    extra_data: Option<&'a TopLevelItem>,
-}
+impl FunDefinition {
+    fn to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
+        let types_for_f = types_for_f(extra_data);
 
-fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
-    let types_for_f = types_for_f(strct_args.extra_data);
-
-    group([
-        if strct_args.is_dead_code {
-            concat([
-                text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
-                hardline(),
-            ])
-        } else {
-            nil()
-        },
-        // Printing instance of DoubleColon Class for [f]
-        // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-        if (strct_args.name == "fmt") && is_extra(strct_args.extra_data) {
-            match strct_args.body {
-                Some(body) => group([
-                    nest([
-                        text("Parameter "),
-                        body.parameter_name_for_fmt(),
-                        text(" : "),
-                        // get type of argument named f
-                        // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                        concat(strct_args.args.iter().map(|(name, ty)| {
-                            if name == "f" {
-                                ty.to_doc_tuning(false)
-                            } else {
-                                nil()
-                            }
-                        })),
-                        text(" -> "),
-                        types_for_f,
-                        strct_args.ret_ty.to_doc(false),
-                        text("."),
-                    ]),
+        group([
+            if self.is_dead_code {
+                concat([
+                    text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                     hardline(),
-                    hardline(),
-                    nest([
-                        text("Global Instance Deb_"),
-                        body.parameter_name_for_fmt(),
-                        text(" : "),
-                        text("Notation.DoubleColon"),
-                        line(),
-                        concat(strct_args.args.iter().map(|(name, ty)| {
-                            if name == "f" {
-                                ty.to_doc_tuning(false)
-                            } else {
-                                nil()
-                            }
-                        })),
-                        text(" \""),
-                        body.parameter_name_for_fmt(),
-                        text("\""),
-                        text(" := "),
-                        text("{"),
-                        line(),
+                ])
+            } else {
+                nil()
+            },
+            // Printing instance of DoubleColon Class for [f]
+            // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
+            if ((&self.name) == "fmt") && is_extra(extra_data) {
+                match &self.signature_and_body.body {
+                    Some(body) => group([
                         nest([
-                            text("Notation.double_colon := "),
+                            text("Parameter "),
                             body.parameter_name_for_fmt(),
-                            text(";"),
+                            text(" : "),
+                            // get type of argument named f
+                            // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
+                                if name == "f" {
+                                    ty.to_doc_tuning(false)
+                                } else {
+                                    nil()
+                                }
+                            })),
+                            text(" -> "),
+                            types_for_f,
+                            self.signature_and_body.ret_ty.to_doc(false),
+                            text("."),
+                        ]),
+                        hardline(),
+                        hardline(),
+                        nest([
+                            text("Global Instance Deb_"),
+                            body.parameter_name_for_fmt(),
+                            text(" : "),
+                            text("Notation.DoubleColon"),
+                            line(),
+                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
+                                if name == "f" {
+                                    ty.to_doc_tuning(false)
+                                } else {
+                                    nil()
+                                }
+                            })),
+                            text(" \""),
+                            body.parameter_name_for_fmt(),
+                            text("\""),
+                            text(" := "),
+                            text("{"),
+                            line(),
+                            nest([
+                                text("Notation.double_colon := "),
+                                body.parameter_name_for_fmt(),
+                                text(";"),
+                                line(),
+                            ]),
+                            text("}."),
+                        ]),
+                        hardline(),
+                        hardline(),
+                    ]),
+                    None => nil(),
+                }
+            } else {
+                nil()
+            },
+            match &self.signature_and_body.body {
+                None => concat([
+                    // if the return type is opaque define a corresponding opaque type
+                    // @TODO: use also the parameter
+                    if self.signature_and_body.ret_ty.has_opaque_types() {
+                        concat([
+                            nest([
+                                text("Parameter"),
+                                line(),
+                                text([&self.name, "_", "ret_ty"].concat()),
+                                line(),
+                                text(":"),
+                                line(),
+                                text("Set."),
+                            ]),
+                            hardline(),
+                        ])
+                    } else {
+                        nil()
+                    },
+                    nest([nest([
+                        nest([
+                            text("Parameter"),
+                            line(),
+                            text(&self.name),
+                            line(),
+                            text(":"),
                             line(),
                         ]),
-                        text("}."),
-                    ]),
-                    hardline(),
-                    hardline(),
-                ]),
-                None => nil(),
-            }
-        } else {
-            nil()
-        },
-        match strct_args.body {
-            None => nest([nest([
-                nest([
-                    text("Parameter"),
-                    line(),
-                    text(strct_args.name),
-                    line(),
-                    text(":"),
-                    line(),
-                ]),
-                nest([
-                    text("forall"),
-                    line(),
-                    monadic_typeclass_parameter(),
-                    text(","),
-                ]),
-                line(),
-                // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
-                match strct_args.ty_params {
-                    None => nil(),
-                    Some(ty_params) => {
-                        if ty_params.is_empty() {
-                            nil()
-                        } else {
-                            concat([
-                                text("forall"),
-                                line(),
-                                nest([intersperse(
-                                    ty_params.iter().map(|t| {
-                                        concat([text("{"), text(t), text(" : "), text("Set}")])
-                                    }),
-                                    [line()],
-                                )]),
-                                text(","),
-                                line(),
-                            ])
-                        }
-                    }
-                },
-                // where predicates types
-                match strct_args.where_predicates {
-                    None => nil(),
-                    Some(where_predicates) => concat(where_predicates.iter().map(
-                        |WherePredicate {
-                             name,
-                             ty_params,
-                             ty,
-                         }| {
-                            concat([nest([
-                                text("forall"),
-                                line(),
-                                text("`{"),
-                                name.to_doc(),
-                                text(".Trait"),
-                                line(),
-                                concat(
-                                    ty_params
-                                        .iter()
-                                        .map(|param| concat([param.to_doc(true), line()])),
-                                ),
-                                ty.to_doc(true),
-                                text("}"),
-                                text(","),
-                                line(),
-                            ])])
+                        nest([
+                            text("forall"),
+                            line(),
+                            monadic_typeclass_parameter(),
+                            text(","),
+                        ]),
+                        line(),
+                        // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
+                        {
+                            let ty_params = &self.ty_params;
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    text("forall"),
+                                    line(),
+                                    nest([intersperse(
+                                        ty_params.iter().map(|t| {
+                                            concat([text("{"), text(t), text(" : "), text("Set}")])
+                                        }),
+                                        [line()],
+                                    )]),
+                                    text(","),
+                                    line(),
+                                ])
+                            }
                         },
-                    )),
-                },
-                // argument types
-                concat(
-                    strct_args
-                        .args
-                        .iter()
-                        .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
-                ),
-                // return type
-                strct_args.ret_ty.to_doc(false),
-                text("."),
-            ])]),
-            Some(body) => nest([
-                nest([
-                    nest([text("Definition"), line(), text(strct_args.name)]),
-                    line(),
-                    monadic_typeclass_parameter(),
-                    match strct_args.ty_params {
-                        None => nil(),
-                        Some(ty_params) => {
+                        // where predicates types
+                        {
+                            let where_predicates = &self.where_predicates;
+                            concat(where_predicates.iter().map(|predicate| {
+                                nest([
+                                    text("forall"),
+                                    line(),
+                                    predicate.to_doc(),
+                                    text(","),
+                                    line(),
+                                ])
+                            }))
+                        },
+                        // argument types
+                        concat(
+                            self.signature_and_body
+                                .args
+                                .iter()
+                                .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
+                        ),
+                        // return type
+                        if self.signature_and_body.ret_ty.has_opaque_types() {
+                            let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                            let ret_ty = &mut self.signature_and_body.ret_ty.clone();
+                            ret_ty.subst_opaque_types(&ret_ty_name);
+                            ret_ty.to_doc(false)
+                        } else {
+                            self.signature_and_body.ret_ty.to_doc(false)
+                        },
+                        text("."),
+                    ])]),
+                ]),
+                Some(body) => nest([
+                    nest([
+                        nest([text("Definition"), line(), text(&self.name)]),
+                        line(),
+                        monadic_typeclass_parameter(),
+                        {
+                            let ty_params = &self.ty_params;
                             if ty_params.is_empty() {
                                 nil()
                             } else {
@@ -1284,106 +1152,102 @@ fn fn_to_doc(strct_args: ArgumentsForFnToDoc) -> Doc {
                                     ]),
                                 ])
                             }
-                        }
-                    },
-                    line(),
-                    match strct_args.where_predicates {
-                        None => nil(),
-                        Some(where_predicates) => concat(where_predicates.iter().map(
-                            |WherePredicate {
-                                 name,
-                                 ty_params,
-                                 ty,
-                             }| {
-                                concat([
-                                    nest([
-                                        text("`{"),
-                                        name.to_doc(),
-                                        text(".Trait"),
-                                        line(),
-                                        concat(
-                                            ty_params
-                                                .iter()
-                                                .map(|param| concat([param.to_doc(true), line()])),
-                                        ),
-                                        ty.to_doc(true),
-                                        text("}"),
-                                    ]),
-                                    line(),
-                                ])
-                            },
-                        )),
-                    },
-                    concat(strct_args.args.iter().map(|(name, ty)| {
-                        concat([
-                            nest([
-                                text("("),
-                                text(name),
-                                line(),
-                                text(":"),
-                                line(),
-                                ty.to_doc(false),
-                                text(")"),
-                            ]),
-                            line(),
-                        ])
-                    })),
-                    nest([
-                        text(":"),
+                        },
                         line(),
-                        strct_args.ret_ty.to_doc(false),
-                        text(" :="),
+                        {
+                            let where_predicates = &self.where_predicates;
+                            concat(
+                                where_predicates
+                                    .iter()
+                                    .map(|predicate| concat([predicate.to_doc(), line()])),
+                            )
+                        },
+                        concat(self.signature_and_body.args.iter().map(|(name, ty)| {
+                            concat([
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(")"),
+                                ]),
+                                line(),
+                            ])
+                        })),
+                        nest([
+                            text(":"),
+                            line(),
+                            // @TODO: improve for opaque types with trait bounds
+                            self.signature_and_body.ret_ty.to_doc(false),
+                            text(" :="),
+                        ]),
                     ]),
+                    line(),
+                    body.to_doc(false),
+                    text("."),
                 ]),
-                line(),
-                body.to_doc(false),
-                text("."),
-            ]),
-        },
-    ])
+            },
+        ])
+    }
 }
 
 fn mt_impl_item(item: ImplItem) -> ImplItem {
     match item {
-        ImplItem::Const { body, is_dead_code } => {
+        ImplItem::Const {
+            name,
+            body,
+            is_dead_code,
+        } => {
             let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
             ImplItem::Const {
+                name,
                 body: Box::new(Expr::Block(Box::new(body))),
                 is_dead_code,
             }
         }
         ImplItem::Definition {
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty,
-            body,
+            definition:
+                FunDefinition {
+                    name,
+                    ty_params,
+                    where_predicates,
+                    signature_and_body,
+                    is_dead_code,
+                },
             is_method,
-            is_dead_code,
         } => ImplItem::Definition {
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty: CoqType::monad(mt_ty(ret_ty)),
-            body: match body {
-                None => body,
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr::Block(Box::new(body))))
-                }
+            definition: FunDefinition {
+                name,
+                ty_params,
+                where_predicates,
+                signature_and_body: mt_fn_sig_and_body(signature_and_body),
+                is_dead_code,
             },
             is_method,
-            is_dead_code,
         },
         ImplItem::Type { .. } => item,
     }
 }
 
-fn mt_impl_items(items: Vec<(String, ImplItem)>) -> Vec<(String, ImplItem)> {
-    items
-        .into_iter()
-        .map(|(s, item)| (s, mt_impl_item(item)))
-        .collect()
+fn mt_impl_items(items: Vec<ImplItem>) -> Vec<ImplItem> {
+    items.into_iter().map(mt_impl_item).collect()
+}
+
+fn mt_fn_sig_and_body(signature_and_body: FnSigAndBody) -> FnSigAndBody {
+    let FnSigAndBody { args, ret_ty, body } = signature_and_body;
+    FnSigAndBody {
+        args,
+        ret_ty: CoqType::monad(mt_ty(ret_ty)),
+        body: match body {
+            None => body,
+            Some(body) => {
+                let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                Some(Box::new(Expr::Block(Box::new(body))))
+            }
+        },
+    }
 }
 
 fn mt_trait_item(body: TraitItem) -> TraitItem {
@@ -1401,21 +1265,11 @@ fn mt_trait_item(body: TraitItem) -> TraitItem {
         TraitItem::DefinitionWithDefault {
             ty_params,
             where_predicates,
-            args,
-            ret_ty,
-            body,
+            signature_and_body,
         } => TraitItem::DefinitionWithDefault {
             ty_params,
             where_predicates,
-            args,
-            ret_ty: CoqType::monad(mt_ty(ret_ty)),
-            body: match body {
-                None => body,
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr::Block(Box::new(body))))
-                }
-            },
+            signature_and_body: mt_fn_sig_and_body(signature_and_body),
         },
     }
 }
@@ -1429,37 +1283,30 @@ fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
 /// Monad transform for [TopLevelItem]
 fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
     match item {
-        TopLevelItem::Const { name, ty, value } => {
-            let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
-            TopLevelItem::Const {
-                name,
-                ty,
-                value: Box::new(Expr::Block(Box::new(value))),
-            }
-        }
-        TopLevelItem::Definition {
+        TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
             name,
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty,
-            body,
-            is_dead_code,
-        } => TopLevelItem::Definition {
-            name,
-            ty_params,
-            where_predicates,
-            args,
-            ret_ty: CoqType::monad(mt_ty(ret_ty)),
-            body: match body {
-                None => body,
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr::Block(Box::new(body))))
+            ty,
+            value: match value {
+                None => value,
+                Some(value) => {
+                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
+                    Some(Box::new(Expr::Block(Box::new(value))))
                 }
             },
-            is_dead_code,
         },
+        TopLevelItem::Definition(FunDefinition {
+            name,
+            ty_params,
+            where_predicates,
+            signature_and_body,
+            is_dead_code,
+        }) => TopLevelItem::Definition(FunDefinition {
+            name,
+            ty_params,
+            where_predicates,
+            signature_and_body: mt_fn_sig_and_body(signature_and_body),
+            is_dead_code,
+        }),
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
         TopLevelItem::TypeStructStruct { .. } => item,
@@ -1486,10 +1333,14 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
         TopLevelItem::Trait {
             name,
             ty_params,
+            predicates,
+            bounds,
             body,
         } => TopLevelItem::Trait {
             name,
             ty_params,
+            predicates,
+            bounds,
             body: mt_trait_items(body),
         },
         TopLevelItem::TraitImpl {
@@ -1556,9 +1407,13 @@ impl ImplItem {
         ])
     }
 
-    fn to_doc<'a>(&'a self, name: &'a String, extra_data: &Option<&'a TopLevelItem>) -> Doc<'a> {
+    fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc<'a> {
         match self {
-            ImplItem::Const { body, is_dead_code } => concat([
+            ImplItem::Const {
+                name,
+                body,
+                is_dead_code,
+            } => concat([
                 if *is_dead_code {
                     concat([
                         text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
@@ -1585,47 +1440,29 @@ impl ImplItem {
                 ),
             ]),
             ImplItem::Definition {
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty,
-                body,
+                definition,
                 is_method,
-                is_dead_code,
-            } => {
-                let afftd = ArgumentsForFnToDoc {
-                    name,
-                    ty_params: Some(ty_params),
-                    where_predicates: Some(where_predicates),
-                    args,
-                    ret_ty,
-                    body,
-                    is_dead_code: *is_dead_code,
-                    extra_data: *extra_data,
-                };
-
-                concat([
-                    fn_to_doc(afftd),
-                    hardline(),
-                    hardline(),
-                    if *is_method {
-                        concat([Self::class_instance_to_doc(
-                            "Method",
-                            name,
-                            "Notation.Dot",
-                            "Notation.dot",
-                        )])
-                    } else {
-                        Self::class_instance_to_doc(
-                            "AssociatedFunction",
-                            name,
-                            "Notation.DoubleColon Self",
-                            "Notation.double_colon",
-                        )
-                    },
-                ])
-            }
-            ImplItem::Type { ty } => nest([
+            } => concat([
+                definition.to_doc(*extra_data),
+                hardline(),
+                hardline(),
+                if *is_method {
+                    concat([Self::class_instance_to_doc(
+                        "Method",
+                        &definition.name,
+                        "Notation.Dot",
+                        "Notation.dot",
+                    )])
+                } else {
+                    Self::class_instance_to_doc(
+                        "AssociatedFunction",
+                        &definition.name,
+                        "Notation.DoubleColon Self",
+                        "Notation.double_colon",
+                    )
+                },
+            ]),
+            ImplItem::Type { name, ty } => nest([
                 nest([
                     text("Definition"),
                     line(),
@@ -1648,71 +1485,91 @@ impl ImplItem {
 impl WherePredicate {
     /// turns the predicate into its representation as constraint
     fn to_doc(&self) -> Doc {
+        self.bound.to_doc(self.ty.to_doc(true))
+    }
+}
+
+impl TraitBound {
+    /// turns the trait bound into its representation as constraint
+    fn to_doc<'a>(&'a self, self_doc: Doc<'a>) -> Doc<'a> {
         nest([
             text("`{"),
             self.name.to_doc(),
             text(".Trait"),
             line(),
-            concat(
-                self.ty_params
-                    .iter()
-                    .map(|param| concat([param.to_doc(true), line()])),
-            ),
-            self.ty.to_doc(true),
+            self_doc,
+            if self.ty_params.is_empty() {
+                nil()
+            } else {
+                concat([
+                    line(),
+                    intersperse(
+                        self.ty_params
+                            .iter()
+                            .map(|ty_param| ty_param.to_doc())
+                            .collect::<Vec<_>>(),
+                        [line()],
+                    ),
+                ])
+            },
             text("}"),
         ])
+    }
+}
+
+impl TraitTyParamValue {
+    fn to_doc(&self) -> Doc {
+        match self {
+            TraitTyParamValue::ValWithDef { name, ty } => apply_argument(
+                name,
+                concat([text("(Some"), line(), ty.to_doc(false), text(")")]),
+            ),
+            TraitTyParamValue::JustValue { name, ty } => apply_argument(name, ty.to_doc(false)),
+            TraitTyParamValue::JustDefault { name } => apply_argument(name, text("None")),
+        }
     }
 }
 
 impl TopLevelItem {
     fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
-            TopLevelItem::Const { name, ty, value } => nest([
-                nest([
-                    text("Definition"),
+            TopLevelItem::Const { name, ty, value } => match value {
+                None => nest([
+                    nest([text("Parameter"), line(), text(name), text(" :")]),
                     line(),
-                    text(name),
-                    line(),
+                    text("forall "),
                     monadic_typeclass_parameter(),
-                    text(" :"),
+                    text(","),
                     line(),
                     ty.to_doc(false),
-                    text(" :="),
+                    text("."),
                 ]),
-                line(),
-                nest([
-                    text("run"),
+                Some(value) => nest([
+                    nest([
+                        text("Definition"),
+                        line(),
+                        text(name),
+                        line(),
+                        monadic_typeclass_parameter(),
+                        text(" :"),
+                        line(),
+                        ty.to_doc(false),
+                        text(" :="),
+                    ]),
                     line(),
-                    // We have to force the parenthesis because otherwise they
-                    // are lost when printing a statement in the expression
-                    text("("),
-                    value.to_doc(true),
-                    text(")"),
+                    nest([
+                        text("run"),
+                        line(),
+                        // We have to force the parenthesis because otherwise they
+                        // are lost when printing a statement in the expression
+                        text("("),
+                        value.to_doc(true),
+                        text(")"),
+                    ]),
+                    text("."),
                 ]),
-                text("."),
-            ]),
-            TopLevelItem::Definition {
-                name,
-                ty_params,
-                where_predicates,
-                args,
-                ret_ty,
-                body,
-                is_dead_code,
-            } => {
-                let afftd = ArgumentsForFnToDoc {
-                    name,
-                    ty_params: Some(ty_params),
-                    where_predicates: Some(where_predicates),
-                    args,
-                    ret_ty,
-                    body,
-                    is_dead_code: *is_dead_code,
-                    extra_data: *extra_data,
-                };
-
-                fn_to_doc(afftd)
-            }
+            },
+            TopLevelItem::Definition(definition) => definition.to_doc(*extra_data),
             TopLevelItem::Module {
                 name,
                 body,
@@ -2207,9 +2064,11 @@ impl TopLevelItem {
                             self_ty.to_doc(false),
                             text("."),
                         ]),
-                        concat(items.iter().map(|(name, item)| {
-                            concat([hardline(), hardline(), item.to_doc(name, extra_data)])
-                        })),
+                        concat(
+                            items.iter().map(|item| {
+                                concat([hardline(), hardline(), item.to_doc(extra_data)])
+                            }),
+                        ),
                     ]),
                     hardline(),
                     nest([text("End"), line(), module_name, text(".")]),
@@ -2218,6 +2077,8 @@ impl TopLevelItem {
             TopLevelItem::Trait {
                 name,
                 ty_params,
+                predicates,
+                bounds,
                 body,
             } => trait_module(
                 name,
@@ -2225,6 +2086,14 @@ impl TopLevelItem {
                     .iter()
                     .map(|(ty, default)| (ty, default.as_ref().map(|default| default.to_doc(true))))
                     .collect(),
+                &predicates
+                    .iter()
+                    .map(|predicate| predicate.to_doc())
+                    .collect(),
+                &bounds
+                    .iter()
+                    .map(|bound| bound.to_doc(text("Self")))
+                    .collect::<Vec<_>>(),
                 &body
                     .iter()
                     .filter_map(|(item_name, item)| match item {
@@ -2234,40 +2103,11 @@ impl TopLevelItem {
                             item_name,
                             bounds
                                 .iter()
-                                .map(|(trait_bound, ty_params)| {
-                                    (
-                                        trait_bound.to_doc(),
-                                        ty_params
-                                            .iter()
-                                            .map(|ty_param| {
-                                                let ty_param = *ty_param.clone();
-                                                match ty_param {
-                                                    TraitTyParamValue::ValWithDef { name, ty } => {
-                                                        apply_argument(
-                                                            name,
-                                                            concat([
-                                                                text("(Some"),
-                                                                line(),
-                                                                ty.to_doc(false),
-                                                                text(")"),
-                                                            ]),
-                                                        )
-                                                    }
-                                                    TraitTyParamValue::JustValue { name, ty } => {
-                                                        apply_argument(name, ty.to_doc(false))
-                                                    }
-                                                    TraitTyParamValue::JustDefault { name } => {
-                                                        apply_argument(name, text("None"))
-                                                    }
-                                                }
-                                            })
-                                            .collect(),
-                                    )
-                                })
+                                .map(|bound| bound.to_doc(text(item_name)))
                                 .collect(),
                         )),
                     })
-                    .collect::<Vec<(&String, Vec<(Doc, Vec<Doc>)>)>>(),
+                    .collect::<Vec<_>>(),
                 body.iter()
                     .map(|(name, item)| match item {
                         TraitItem::Definition {
@@ -2295,7 +2135,7 @@ impl TopLevelItem {
                                 &vec![],
                                 text("Notation.Dot"),
                                 text("Notation.dot"),
-                                concat([text("@"), text(name)]),
+                                text(name),
                             ),
                             TraitItem::Type { .. } => new_instance(
                                 name,
@@ -2307,9 +2147,7 @@ impl TopLevelItem {
                             TraitItem::DefinitionWithDefault {
                                 ty_params,
                                 where_predicates,
-                                args,
-                                ret_ty,
-                                body,
+                                signature_and_body,
                             } => new_instance::<_, String>(
                                 name,
                                 &vec![],
@@ -2321,19 +2159,25 @@ impl TopLevelItem {
                                         .iter()
                                         .map(|predicate| predicate.to_doc())
                                         .collect(),
-                                    &args
+                                    &signature_and_body
+                                        .args
                                         .iter()
                                         .map(|(name, ty)| (name, ty.to_doc(false)))
                                         .collect::<Vec<_>>(),
                                 )]),
                                 group([
                                     text("("),
-                                    match body {
+                                    match &signature_and_body.body {
                                         None => text("axiom"),
                                         Some(body) => body.to_doc(false),
                                     },
                                     line(),
-                                    nest([text(":"), line(), ret_ty.to_doc(false), text(")")]),
+                                    nest([
+                                        text(":"),
+                                        line(),
+                                        signature_and_body.ret_ty.to_doc(false),
+                                        text(")"),
+                                    ]),
                                 ]),
                             ),
                         }])
@@ -2401,9 +2245,11 @@ impl TopLevelItem {
                         ]),
                         hardline(),
                         hardline(),
-                        concat(items.iter().map(|(name, item)| {
-                            concat([item.to_doc(name, extra_data), hardline(), hardline()])
-                        })),
+                        concat(
+                            items.iter().map(|item| {
+                                concat([item.to_doc(extra_data), hardline(), hardline()])
+                            }),
+                        ),
                         nest([
                             nest([
                                 text("Global Instance I :"),

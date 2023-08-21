@@ -8,12 +8,12 @@ Module Person.
   
   Global Instance Method_name `{H : State.Trait} `(Trait)
     : Notation.Dot "name" := {
-    Notation.dot := @name;
+    Notation.dot := name;
   }.
 End Person.
 
 Module Student.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{supertraits.Person.Trait Self} : Set := {
     university
       `{H : State.Trait}
       :
@@ -22,7 +22,7 @@ Module Student.
   
   Global Instance Method_university `{H : State.Trait} `(Trait)
     : Notation.Dot "university" := {
-    Notation.dot := @university;
+    Notation.dot := university;
   }.
 End Student.
 
@@ -36,12 +36,16 @@ Module Programmer.
   
   Global Instance Method_fav_language `{H : State.Trait} `(Trait)
     : Notation.Dot "fav_language" := {
-    Notation.dot := @fav_language;
+    Notation.dot := fav_language;
   }.
 End Programmer.
 
 Module CompSciStudent.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self : Set)
+        `{supertraits.Programmer.Trait Self}
+        `{supertraits.Student.Trait Self} :
+      Set := {
     git_username
       `{H : State.Trait}
       :
@@ -50,7 +54,7 @@ Module CompSciStudent.
   
   Global Instance Method_git_username `{H : State.Trait} `(Trait)
     : Notation.Dot "git_username" := {
-    Notation.dot := @git_username;
+    Notation.dot := git_username;
   }.
 End CompSciStudent.
 

@@ -30,15 +30,15 @@ Module Contains.
   
   Global Instance Method_contains `{H : State.Trait} `(Trait)
     : Notation.Dot "contains" := {
-    Notation.dot := @contains;
+    Notation.dot := contains;
   }.
   Global Instance Method_first `{H : State.Trait} `(Trait)
     : Notation.Dot "first" := {
-    Notation.dot := @first;
+    Notation.dot := first;
   }.
   Global Instance Method_last `{H : State.Trait} `(Trait)
     : Notation.Dot "last" := {
-    Notation.dot := @last;
+    Notation.dot := last;
   }.
 End Contains.
 
@@ -96,7 +96,7 @@ End
 Definition difference
     `{H : State.Trait}
     {A B C : Set}
-    `{generics_associated_types_problem.Contains.Trait A B C}
+    `{generics_associated_types_problem.Contains.Trait C (A := A) (B := B)}
     (container : ref C)
     : M (H := H) i32 :=
   let* α0 := container.["last"] in

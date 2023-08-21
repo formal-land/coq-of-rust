@@ -82,7 +82,7 @@ Definition ResolverKey := @ResolverKey.t.
 
 Module storage.
   Module Storable.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
       encode
         `{H : State.Trait}
         {T: Set}
@@ -120,7 +120,12 @@ Module storage.
   
   Module Packed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait
+        (Self : Set)
+          `{ink_storage_traits.storage.Storable.Trait Self}
+          `{parity_scale_codec.codec.Codec.Trait Self}
+          `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+        Set := {
     }.
     Global Set Primitive Projections.
   End Packed.
@@ -132,7 +137,7 @@ Module storage.
     
     Global Instance Method_KEY `{H : State.Trait} `(Trait)
       : Notation.Dot "KEY" := {
-      Notation.dot := @KEY;
+      Notation.dot := KEY;
     }.
     (* Global Instance Method_key `{H : State.Trait} `(Trait)
       : Notation.Dot "key" := {
@@ -143,7 +148,9 @@ Module storage.
   
   Module StorableHint.
     Class Trait
-        (Self : Set) {Key : Set}
+        (Self : Set)
+          {Key : Set}
+          `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
         `{ink_storage_traits.storage.Storable.Trait Type_}
         {PreferredKey : Set}
@@ -153,11 +160,21 @@ Module storage.
       PreferredKey := PreferredKey;
     }.
     
-    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    Global Instance
+        Method_Type_
+        `{H : State.Trait}
+        {Type_}
+        `(Trait
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
-    Global Instance Method_PreferredKey `{H : State.Trait} `(Trait)
+    Global Instance
+        Method_PreferredKey
+        `{H : State.Trait}
+        {PreferredKey}
+        `(Trait
+        (PreferredKey := PreferredKey))
       : Notation.DoubleColonType Self "PreferredKey" := {
       Notation.double_colon_type := PreferredKey;
     }.
@@ -165,14 +182,21 @@ Module storage.
   
   Module AutoStorableHint.
     Class Trait
-        (Self : Set) {Key : Set}
+        (Self : Set)
+          {Key : Set}
+          `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
         `{ink_storage_traits.storage.Storable.Trait Type_} :
         Set := {
       Type_ := Type_;
     }.
     
-    Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+    Global Instance
+        Method_Type_
+        `{H : State.Trait}
+        {Type_}
+        `(Trait
+        (Type_ := Type_))
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
@@ -180,7 +204,7 @@ Module storage.
 End storage.
 
 Module Storable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
     encode
       `{H : State.Trait}
       {T: Set}
@@ -225,7 +249,12 @@ End Sealed.
 
 Module Packed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait
+      (Self : Set)
+        `{ink_storage_traits.storage.Storable.Trait Self}
+        `{parity_scale_codec.codec.Codec.Trait Self}
+        `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+      Set := {
   }.
   Global Set Primitive Projections.
 End Packed.
@@ -237,7 +266,7 @@ Module StorageKey.
   
   Global Instance Method_KEY `{H : State.Trait} `(Trait)
     : Notation.Dot "KEY" := {
-    Notation.dot := @KEY;
+    Notation.dot := KEY;
   }.
   (* Global Instance Method_key `{H : State.Trait} `(Trait)
     : Notation.Dot "key" := {
@@ -248,7 +277,9 @@ Module StorageKey.
 
 Module StorableHint.
   Class Trait
-      (Self : Set) {Key : Set}
+      (Self : Set)
+        {Key : Set}
+        `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}
       `{ink_storage_traits.storage.Storable.Trait Type_}
       {PreferredKey : Set}
@@ -258,11 +289,21 @@ Module StorableHint.
     PreferredKey := PreferredKey;
   }.
   
-  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+  Global Instance
+      Method_Type_
+      `{H : State.Trait}
+      {Type_}
+      `(Trait
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
-  Global Instance Method_PreferredKey `{H : State.Trait} `(Trait)
+  Global Instance
+      Method_PreferredKey
+      `{H : State.Trait}
+      {PreferredKey}
+      `(Trait
+      (PreferredKey := PreferredKey))
     : Notation.DoubleColonType Self "PreferredKey" := {
     Notation.double_colon_type := PreferredKey;
   }.
@@ -270,14 +311,21 @@ End StorableHint.
 
 Module AutoStorableHint.
   Class Trait
-      (Self : Set) {Key : Set}
+      (Self : Set)
+        {Key : Set}
+        `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}
       `{ink_storage_traits.storage.Storable.Trait Type_} :
       Set := {
     Type_ := Type_;
   }.
   
-  Global Instance Method_Type_ `{H : State.Trait} `(Trait)
+  Global Instance
+      Method_Type_
+      `{H : State.Trait}
+      {Type_}
+      `(Trait
+      (Type_ := Type_))
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
@@ -294,7 +342,7 @@ Module layout.
     
     Global Instance Method_layout `{H : State.Trait} `(Trait)
       : Notation.Dot "layout" := {
-      Notation.dot := @layout;
+      Notation.dot := layout;
     }.
   End StorageLayout.
 End layout.
@@ -309,6 +357,6 @@ Module StorageLayout.
   
   Global Instance Method_layout `{H : State.Trait} `(Trait)
     : Notation.Dot "layout" := {
-    Notation.dot := @layout;
+    Notation.dot := layout;
   }.
 End StorageLayout.

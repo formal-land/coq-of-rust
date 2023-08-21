@@ -240,14 +240,13 @@ where
     }
 }
 
-/// a trait bound with parameters
-type TraitBound<'a> = (Doc<'a>, Vec<Doc<'a>>);
-
 /// creates a module with the translation of the given trait
 pub(crate) fn trait_module<'a, U>(
     name: U,
     ty_params: &Vec<(U, Option<Doc>)>,
-    types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
+    predicates: &Vec<Doc<'a>>,
+    bounds: &[Doc<'a>],
+    associated_types: &[(U, Vec<Doc<'a>>)],
     items: Vec<Doc<'a>>,
     instances: Vec<Doc<'a>>,
 ) -> Doc<'a>
@@ -259,7 +258,7 @@ where
         group([
             locally_unset_primitive_projections(
                 items.is_empty(),
-                trait_typeclass(ty_params, types_with_bounds, items),
+                trait_typeclass(ty_params, predicates, bounds, associated_types, items),
             ),
             if instances.is_empty() {
                 nil()
@@ -273,9 +272,11 @@ where
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-pub(crate) fn trait_typeclass<'a, U, I>(
+fn trait_typeclass<'a, U, I>(
     ty_params: &Vec<(U, Option<Doc>)>,
-    types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
+    predicates: &Vec<Doc<'a>>,
+    bounds: &[Doc<'a>],
+    associated_types: &[(U, Vec<Doc<'a>>)],
     items: I,
 ) -> Doc<'a>
 where
@@ -285,7 +286,7 @@ where
 {
     group([
         nest([
-            new_trait_typeclass_header(ty_params, types_with_bounds),
+            new_trait_typeclass_header(ty_params, predicates, bounds, associated_types),
             new_typeclass_body(items),
         ]),
         hardline(),
@@ -295,9 +296,11 @@ where
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-pub(crate) fn new_trait_typeclass_header<'a, U>(
+fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
-    types_with_bounds: &[(U, Vec<TraitBound<'a>>)],
+    predicates: &Vec<Doc<'a>>,
+    bounds: &[Doc<'a>],
+    associated_types: &[(U, Vec<Doc<'a>>)],
 ) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
@@ -306,13 +309,16 @@ where
         text("Class Trait"),
         line(),
         nest([
-            text("("),
-            text("Self"),
-            line(),
-            text(":"),
-            line(),
-            text("Set"),
-            text(")"),
+            nest([
+                text("("),
+                text("Self"),
+                line(),
+                text(":"),
+                line(),
+                text("Set"),
+                text(")"),
+            ]),
+            bounds_sequence(bounds),
             if ty_params.is_empty() {
                 nil()
             } else {
@@ -336,9 +342,14 @@ where
                     ]),
                 ])
             },
+            if predicates.is_empty() {
+                nil()
+            } else {
+                concat([line(), concat(predicates.clone())])
+            },
         ]),
         intersperse(
-            types_with_bounds.iter().map(|(item_name, bounds)| {
+            associated_types.iter().map(|(item_name, bounds)| {
                 concat([
                     line(),
                     nest([
@@ -348,25 +359,7 @@ where
                         text("Set"),
                         text("}"),
                     ]),
-                    concat(bounds.iter().map(|(trait_bound, ty_params)| {
-                        concat([
-                            line(),
-                            // @TODO: include default parameters
-                            nest([
-                                text("`{"),
-                                trait_bound.clone(),
-                                text(".Trait"),
-                                line(),
-                                text(*item_name),
-                                if ty_params.is_empty() {
-                                    nil()
-                                } else {
-                                    concat([line(), intersperse(ty_params.clone(), [line()])])
-                                },
-                                text("}"),
-                            ]),
-                        ])
-                    })),
+                    bounds_sequence(bounds),
                 ])
             }),
             [nil()],
@@ -375,6 +368,14 @@ where
         line(),
         text("Set := {"),
     ])
+}
+
+fn bounds_sequence<'a>(bounds: &[Doc<'a>]) -> Doc<'a> {
+    if bounds.is_empty() {
+        nil()
+    } else {
+        concat([line(), intersperse(bounds.to_vec(), [line()])])
+    }
 }
 
 /// creates a body of a typeclass with the given items

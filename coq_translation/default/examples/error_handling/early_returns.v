@@ -7,13 +7,13 @@ Definition multiply
     (second_number_str : ref str)
     : M (H := H) (core.result.Result i32 core.num.error.ParseIntError) :=
   let* first_number :=
-    let* α0 := first_number_str.["parse"] in
+    let* α0 := first_number_str.["parse"] : M i32 in
     match α0 with
     | core.result.Result.Ok first_number => Pure first_number
     | core.result.Result.Err e => Return (core.result.Result.Err e)
     end in
   let* second_number :=
-    let* α0 := second_number_str.["parse"] in
+    let* α0 := second_number_str.["parse"] : M i32 in
     match α0 with
     | core.result.Result.Ok second_number => Pure second_number
     | core.result.Result.Err e => Return (core.result.Result.Err e)
