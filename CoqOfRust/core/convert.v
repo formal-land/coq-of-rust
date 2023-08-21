@@ -60,6 +60,12 @@ Module AsRef.
   }.
 End AsRef.
 
+Module Impl_AsRef_for_string.
+  Global Instance I : convert.AsRef.Trait string string := {
+    as_ref self := self;
+  }.
+End Impl_AsRef_for_string.
+
 (* 
 pub trait From<T>: Sized {
     // Required method

@@ -169,6 +169,10 @@ Global Instance Method_ne_u64 `{State.Trait} :
    this case).
 *)
 
+Require CoqOfRust.core.alloc.
+Require CoqOfRust.core.any.
+Require CoqOfRust.core.borrow.
+Require CoqOfRust.core.cell.
 Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
 Require CoqOfRust.core.convert.
@@ -179,6 +183,10 @@ Require CoqOfRust.core.option.
 Require CoqOfRust.core.result.
 
 Module core.
+  Export CoqOfRust.core.alloc.
+  Export CoqOfRust.core.any.
+  Export CoqOfRust.core.borrow.
+  Export CoqOfRust.core.cell.
   Export CoqOfRust.core.clone.
   Export CoqOfRust.core.cmp.
   Export CoqOfRust.core.convert.

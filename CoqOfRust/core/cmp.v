@@ -46,6 +46,10 @@ Module PartialEq.
       let* is_eq := eq x y in
       Pure (negb is_eq);
   }.
+
+  Module Impl_PartialEq_for_str.
+    Global Instance I : Trait str (Rhs := None). Admitted.
+  End Impl_PartialEq_for_str.
 End PartialEq.
 
 Module PartialOrd.
@@ -76,6 +80,10 @@ Module PartialOrd.
   Global Instance Method_ge `{State.Trait} `(Trait) : Notation.Dot "ge" := {
     Notation.dot := ge;
   }. *)
+  Module Impl_PartialOrd_for_str.
+    Global Instance I : Trait str None. Admitted.
+    Global Instance I' : Trait str (Some str). Admitted.
+  End Impl_PartialOrd_for_str.
 End PartialOrd.
 
 (* 
@@ -85,6 +93,10 @@ Module Eq.
   Unset Primitive Projections.
   Class Trait (Self : Set) `{PartialEq.Trait Self} : Set := { }.
   Set Primitive Projections.
+
+  Module Impl_Eq_for_str.
+    Global Instance I : Trait str := {}.
+  End Impl_Eq_for_str.
 End Eq.
 
 (* 
@@ -111,6 +123,10 @@ Module Ord.
     clamp `{PartialOrd.Trait Self (Some Self)} : Self -> Self -> Self;
 
     }.
+
+  Module Impl_Ord_for_str.
+    Global Instance I : Trait str. Admitted.
+  End Impl_Ord_for_str.
 End Ord.
 
 (* ********FUNCTIONS******** *)
