@@ -17,4 +17,8 @@ Module Clone.
   Class Trait (Self : Set) : Set := {
     clone `{H : State.Trait} : ref Self -> M (H := H) Self;
   }.
+
+  Module Impl_Clone_for_str.
+    Global Instance I : Trait str. Admitted.
+  End Impl_Clone_for_str.
 End Clone.
