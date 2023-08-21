@@ -57,7 +57,7 @@ pub(crate) fn reorder_definitions_inplace(
     }
 
     if env.configuration.debug_reorder {
-        eprintln!("Reorder debug: ----------------------------");
+        eprintln!("Reorder debug: ------- crate: {} ---------", env.file);
         eprintln!(
             "Reorder debug: Reordering definitions at {}",
             get_context_name(tcx, &definitions[0].hir_id())

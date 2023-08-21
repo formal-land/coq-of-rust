@@ -1,6 +1,6 @@
 {
   "axiomatize": false,
-  "debug_reorder": false,
+  "debug_reorder": true,
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": [
