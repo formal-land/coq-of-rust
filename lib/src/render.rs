@@ -234,43 +234,6 @@ pub(crate) fn add_context_in_section_if_necessary<'a>(
     }
 }
 
-/// creates a module with the translation of the given trait
-pub(crate) fn trait_module<'a>(
-    name: &'a str,
-    ty_params: &[(String, Option<Doc<'a>>)],
-    predicates: &[Doc<'a>],
-    bounds: &[Doc<'a>],
-    associated_types: &[(String, Vec<Doc<'a>>)],
-    items: Vec<Doc<'a>>,
-    instances: Vec<coq::Instance<'a>>,
-) -> Doc<'a> {
-    coq::Module::new(
-        name,
-        [
-            vec![coq::TopLevelItem::Code(
-                locally_unset_primitive_projections_if(
-                    items.is_empty(),
-                    &coq::Class::new(
-                        "Trait",
-                        ty_params.to_vec(),
-                        predicates.to_vec(),
-                        bounds.to_vec(),
-                        associated_types.to_vec(),
-                        items,
-                    )
-                    .to_doc(),
-                ),
-            )],
-            instances
-                .iter()
-                .map(|i| coq::TopLevelItem::Instance(i.to_owned()))
-                .collect(),
-        ]
-        .concat(),
-    )
-    .to_doc()
-}
-
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
 pub(crate) fn new_trait_typeclass_header<'a>(

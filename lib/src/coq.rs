@@ -97,6 +97,42 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Section(section) => section.to_doc(),
         }
     }
+
+    /// creates a module with the translation of the given trait
+    pub(crate) fn trait_module(
+        name: &'a str,
+        ty_params: &[(String, Option<Doc<'a>>)],
+        predicates: &[Doc<'a>],
+        bounds: &[Doc<'a>],
+        associated_types: &[(String, Vec<Doc<'a>>)],
+        items: Vec<Doc<'a>>,
+        instances: Vec<Instance<'a>>,
+    ) -> Self {
+        TopLevelItem::Module(Module::new(
+            name,
+            [
+                vec![TopLevelItem::Code(
+                    render::locally_unset_primitive_projections_if(
+                        items.is_empty(),
+                        &Class::new(
+                            "Trait",
+                            ty_params.to_vec(),
+                            predicates.to_vec(),
+                            bounds.to_vec(),
+                            associated_types.to_vec(),
+                            items,
+                        )
+                        .to_doc(),
+                    ),
+                )],
+                instances
+                    .iter()
+                    .map(|i| TopLevelItem::Instance(i.to_owned()))
+                    .collect(),
+            ]
+            .concat(),
+        ))
+    }
 }
 
 impl<'a> Module<'a> {
