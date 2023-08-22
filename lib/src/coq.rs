@@ -1,4 +1,5 @@
-use crate::render::{self, concat, group, hardline, intersperse, line, nest, paren, text, Doc};
+use crate::path::Path;
+use crate::render::{self, concat, group, hardline, line, nest, paren, text, Doc};
 
 pub(crate) struct Comment {
     text: String,
@@ -36,12 +37,6 @@ pub(crate) enum Expression {
         arg: Box<Expression>,
     },
     Variable(Path),
-}
-
-#[derive(Clone)]
-/// a path to a coq construction
-pub(crate) struct Path {
-    names: Vec<String>,
 }
 
 impl Comment {
@@ -150,18 +145,5 @@ impl Expression {
             ),
             Self::Variable(path) => path.to_doc(),
         }
-    }
-}
-
-impl Path {
-    /// produces a new coq path
-    pub(crate) fn new(names: &[String]) -> Path {
-        Path {
-            names: names.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
-        intersperse(self.names.clone(), ["."])
     }
 }

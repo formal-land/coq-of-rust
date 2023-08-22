@@ -2133,7 +2133,7 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[],
-                            coq::Expression::Variable(coq::Path::new(&[
+                            coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),
                             ])),
@@ -2152,11 +2152,11 @@ impl TopLevelItem {
                             name,
                             &[name],
                             coq::Expression::Application {
-                                func: Box::new(coq::Expression::Variable(coq::Path::new(&[
+                                func: Box::new(coq::Expression::Variable(Path::new(&[
                                     "Notation".to_string(),
                                     "DoubleColonType".to_string(),
                                 ]))),
-                                arg: Box::new(coq::Expression::Variable(coq::Path::new(&[
+                                arg: Box::new(coq::Expression::Variable(Path::new(&[
                                     "Self".to_string()
                                 ]))),
                             },
@@ -2170,7 +2170,7 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[],
-                            coq::Expression::Variable(coq::Path::new(&[
+                            coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),
                             ])),

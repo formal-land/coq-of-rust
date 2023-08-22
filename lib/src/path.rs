@@ -230,6 +230,12 @@ pub(crate) fn to_valid_coq_name(str: String) -> String {
 }
 
 impl Path {
+    pub(crate) fn new(segments: &[String]) -> Self {
+        Path {
+            segments: segments.to_owned(),
+        }
+    }
+
     pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
         // clone to be able to consume
         let segments = self.segments.clone();
