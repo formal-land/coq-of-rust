@@ -972,229 +972,6 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
     }
 }
 
-impl FunDefinition {
-    fn to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
-        let types_for_f = types_for_f(extra_data);
-
-        group([
-            if self.is_dead_code {
-                concat([
-                    coq::Comment::new("#[allow(dead_code)] - function was ignored by the compiler")
-                        .to_doc(),
-                    hardline(),
-                ])
-            } else {
-                nil()
-            },
-            // Printing instance of DoubleColon Class for [f]
-            // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
-            if ((&self.name) == "fmt") && is_extra(extra_data) {
-                match &self.signature_and_body.body {
-                    Some(body) => group([
-                        nest([
-                            text("Parameter "),
-                            body.parameter_name_for_fmt(),
-                            text(" : "),
-                            // get type of argument named f
-                            // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
-                                if name == "f" {
-                                    ty.to_doc_tuning(false)
-                                } else {
-                                    nil()
-                                }
-                            })),
-                            text(" -> "),
-                            types_for_f,
-                            self.signature_and_body.ret_ty.to_doc(false),
-                            text("."),
-                        ]),
-                        hardline(),
-                        hardline(),
-                        nest([
-                            text("Global Instance Deb_"),
-                            body.parameter_name_for_fmt(),
-                            text(" : "),
-                            text("Notation.DoubleColon"),
-                            line(),
-                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
-                                if name == "f" {
-                                    ty.to_doc_tuning(false)
-                                } else {
-                                    nil()
-                                }
-                            })),
-                            text(" \""),
-                            body.parameter_name_for_fmt(),
-                            text("\""),
-                            text(" := "),
-                            text("{"),
-                            line(),
-                            nest([
-                                text("Notation.double_colon := "),
-                                body.parameter_name_for_fmt(),
-                                text(";"),
-                                line(),
-                            ]),
-                            text("}."),
-                        ]),
-                        hardline(),
-                        hardline(),
-                    ]),
-                    None => nil(),
-                }
-            } else {
-                nil()
-            },
-            match &self.signature_and_body.body {
-                None => concat([
-                    // if the return type is opaque define a corresponding opaque type
-                    // @TODO: use also the parameter
-                    if self.signature_and_body.ret_ty.has_opaque_types() {
-                        concat([
-                            nest([
-                                text("Parameter"),
-                                line(),
-                                text([&self.name, "_", "ret_ty"].concat()),
-                                line(),
-                                text(":"),
-                                line(),
-                                text("Set."),
-                            ]),
-                            hardline(),
-                        ])
-                    } else {
-                        nil()
-                    },
-                    nest([nest([
-                        nest([
-                            text("Parameter"),
-                            line(),
-                            text(&self.name),
-                            line(),
-                            text(":"),
-                            line(),
-                        ]),
-                        nest([
-                            text("forall"),
-                            line(),
-                            monadic_typeclass_parameter(),
-                            text(","),
-                        ]),
-                        line(),
-                        // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
-                        {
-                            let ty_params = &self.ty_params;
-                            if ty_params.is_empty() {
-                                nil()
-                            } else {
-                                concat([
-                                    text("forall"),
-                                    line(),
-                                    nest([intersperse(
-                                        ty_params.iter().map(|t| {
-                                            concat([text("{"), text(t), text(" : "), text("Set}")])
-                                        }),
-                                        [line()],
-                                    )]),
-                                    text(","),
-                                    line(),
-                                ])
-                            }
-                        },
-                        // where predicates types
-                        {
-                            let where_predicates = &self.where_predicates;
-                            concat(where_predicates.iter().map(|predicate| {
-                                nest([
-                                    text("forall"),
-                                    line(),
-                                    predicate.to_doc(),
-                                    text(","),
-                                    line(),
-                                ])
-                            }))
-                        },
-                        // argument types
-                        concat(
-                            self.signature_and_body
-                                .args
-                                .iter()
-                                .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
-                        ),
-                        // return type
-                        if self.signature_and_body.ret_ty.has_opaque_types() {
-                            let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
-                            let ret_ty = &mut self.signature_and_body.ret_ty.clone();
-                            ret_ty.subst_opaque_types(&ret_ty_name);
-                            ret_ty.to_doc(false)
-                        } else {
-                            self.signature_and_body.ret_ty.to_doc(false)
-                        },
-                        text("."),
-                    ])]),
-                ]),
-                Some(body) => nest([
-                    nest([
-                        nest([text("Definition"), line(), text(&self.name)]),
-                        line(),
-                        monadic_typeclass_parameter(),
-                        {
-                            let ty_params = &self.ty_params;
-                            if ty_params.is_empty() {
-                                nil()
-                            } else {
-                                concat([
-                                    line(),
-                                    nest([
-                                        text("{"),
-                                        intersperse(ty_params.iter().map(text), [line()]),
-                                        line(),
-                                        text(": Set}"),
-                                    ]),
-                                ])
-                            }
-                        },
-                        line(),
-                        {
-                            let where_predicates = &self.where_predicates;
-                            concat(
-                                where_predicates
-                                    .iter()
-                                    .map(|predicate| concat([predicate.to_doc(), line()])),
-                            )
-                        },
-                        concat(self.signature_and_body.args.iter().map(|(name, ty)| {
-                            concat([
-                                nest([
-                                    text("("),
-                                    text(name),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    ty.to_doc(false),
-                                    text(")"),
-                                ]),
-                                line(),
-                            ])
-                        })),
-                        nest([
-                            text(":"),
-                            line(),
-                            // @TODO: improve for opaque types with trait bounds
-                            self.signature_and_body.ret_ty.to_doc(false),
-                            text(" :="),
-                        ]),
-                    ]),
-                    line(),
-                    body.to_doc(false),
-                    text("."),
-                ]),
-            },
-        ])
-    }
-}
-
 fn mt_impl_item(item: ImplItem) -> ImplItem {
     match item {
         ImplItem::Const {
@@ -1366,6 +1143,232 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
 
 pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
     TopLevel(top_level.0.into_iter().map(mt_top_level_item).collect())
+}
+
+impl FunDefinition {
+    fn to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
+        let types_for_f = types_for_f(extra_data);
+
+        group([
+            if self.is_dead_code {
+                concat([
+                    coq::Comment::new("#[allow(dead_code)] - function was ignored by the compiler")
+                        .to_doc(),
+                    hardline(),
+                ])
+            } else {
+                nil()
+            },
+            // Printing instance of DoubleColon Class for [f]
+            // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
+            if ((&self.name) == "fmt") && is_extra(extra_data) {
+                match &self.signature_and_body.body {
+                    Some(body) => group([
+                        nest([
+                            text("Parameter "),
+                            body.parameter_name_for_fmt(),
+                            text(" : "),
+                            // get type of argument named f
+                            // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
+                                if name == "f" {
+                                    ty.to_doc_tuning(false)
+                                } else {
+                                    nil()
+                                }
+                            })),
+                            text(" -> "),
+                            types_for_f,
+                            self.signature_and_body.ret_ty.to_doc(false),
+                            text("."),
+                        ]),
+                        hardline(),
+                        hardline(),
+                        nest([
+                            text("Global Instance Deb_"),
+                            body.parameter_name_for_fmt(),
+                            text(" : "),
+                            Path::new(&["Notation".to_string(), "DoubleColon".to_string()])
+                                .to_doc(),
+                            line(),
+                            concat(self.signature_and_body.args.iter().map(|(name, ty)| {
+                                if name == "f" {
+                                    ty.to_doc_tuning(false)
+                                } else {
+                                    nil()
+                                }
+                            })),
+                            text(" \""),
+                            body.parameter_name_for_fmt(),
+                            text("\""),
+                            text(" := "),
+                            text("{"),
+                            line(),
+                            nest([
+                                Path::new(&["Notation".to_string(), "double_colon".to_string()])
+                                    .to_doc(),
+                                text(" := "),
+                                body.parameter_name_for_fmt(),
+                                text(";"),
+                                line(),
+                            ]),
+                            text("}."),
+                        ]),
+                        hardline(),
+                        hardline(),
+                    ]),
+                    None => nil(),
+                }
+            } else {
+                nil()
+            },
+            match &self.signature_and_body.body {
+                None => concat([
+                    // if the return type is opaque define a corresponding opaque type
+                    // @TODO: use also the parameter
+                    if self.signature_and_body.ret_ty.has_opaque_types() {
+                        concat([
+                            nest([
+                                text("Parameter"),
+                                line(),
+                                text([&self.name, "_", "ret_ty"].concat()),
+                                line(),
+                                text(":"),
+                                line(),
+                                text("Set."),
+                            ]),
+                            hardline(),
+                        ])
+                    } else {
+                        nil()
+                    },
+                    nest([nest([
+                        nest([
+                            text("Parameter"),
+                            line(),
+                            text(&self.name),
+                            line(),
+                            text(":"),
+                            line(),
+                        ]),
+                        nest([
+                            text("forall"),
+                            line(),
+                            monadic_typeclass_parameter(),
+                            text(","),
+                        ]),
+                        line(),
+                        // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
+                        {
+                            let ty_params = &self.ty_params;
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    text("forall"),
+                                    line(),
+                                    nest([intersperse(
+                                        ty_params.iter().map(|t| {
+                                            concat([text("{"), text(t), text(" : "), text("Set}")])
+                                        }),
+                                        [line()],
+                                    )]),
+                                    text(","),
+                                    line(),
+                                ])
+                            }
+                        },
+                        // where predicates types
+                        {
+                            let where_predicates = &self.where_predicates;
+                            concat(where_predicates.iter().map(|predicate| {
+                                nest([
+                                    text("forall"),
+                                    line(),
+                                    predicate.to_doc(),
+                                    text(","),
+                                    line(),
+                                ])
+                            }))
+                        },
+                        // argument types
+                        concat(
+                            self.signature_and_body
+                                .args
+                                .iter()
+                                .map(|(_, ty)| concat([ty.to_doc(false), text(" ->"), line()])),
+                        ),
+                        // return type
+                        if self.signature_and_body.ret_ty.has_opaque_types() {
+                            let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                            let ret_ty = &mut self.signature_and_body.ret_ty.clone();
+                            ret_ty.subst_opaque_types(&ret_ty_name);
+                            ret_ty.to_doc(false)
+                        } else {
+                            self.signature_and_body.ret_ty.to_doc(false)
+                        },
+                        text("."),
+                    ])]),
+                ]),
+                Some(body) => nest([
+                    nest([
+                        nest([text("Definition"), line(), text(&self.name)]),
+                        line(),
+                        monadic_typeclass_parameter(),
+                        {
+                            let ty_params = &self.ty_params;
+                            if ty_params.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    line(),
+                                    nest([
+                                        text("{"),
+                                        intersperse(ty_params.iter().map(text), [line()]),
+                                        line(),
+                                        text(": Set}"),
+                                    ]),
+                                ])
+                            }
+                        },
+                        line(),
+                        {
+                            let where_predicates = &self.where_predicates;
+                            concat(
+                                where_predicates
+                                    .iter()
+                                    .map(|predicate| concat([predicate.to_doc(), line()])),
+                            )
+                        },
+                        concat(self.signature_and_body.args.iter().map(|(name, ty)| {
+                            concat([
+                                nest([
+                                    text("("),
+                                    text(name),
+                                    line(),
+                                    text(":"),
+                                    line(),
+                                    ty.to_doc(false),
+                                    text(")"),
+                                ]),
+                                line(),
+                            ])
+                        })),
+                        nest([
+                            text(":"),
+                            line(),
+                            // @TODO: improve for opaque types with trait bounds
+                            self.signature_and_body.ret_ty.to_doc(false),
+                            text(" :="),
+                        ]),
+                    ]),
+                    line(),
+                    body.to_doc(false),
+                    text("."),
+                ]),
+            },
+        ])
+    }
 }
 
 impl ImplItem {
