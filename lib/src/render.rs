@@ -206,8 +206,8 @@ where
 }
 
 /// puts [doc] in a module of name [name]
-pub(crate) fn module<'a>(name: &'a str, doc: Doc<'a>) -> Doc<'a> {
-    coq::Module::new(name, vec![doc]).to_doc()
+pub(crate) fn module<'a>(name: &'a str, content: Vec<coq::TopLevelItem<'a>>) -> Doc<'a> {
+    coq::Module::new(name, content).to_doc()
 }
 
 /// decides whether to enclose [doc] within a section with a context
@@ -247,7 +247,7 @@ pub(crate) fn trait_module<'a>(
     coq::Module::new(
         name,
         vec![
-            locally_unset_primitive_projections_if(
+            coq::TopLevelItem::Code(locally_unset_primitive_projections_if(
                 items.is_empty(),
                 &coq::Class::new(
                     ty_params.to_vec(),
@@ -257,13 +257,13 @@ pub(crate) fn trait_module<'a>(
                     items,
                 )
                 .to_doc(),
-            ),
-            if instances.is_empty() {
+            )),
+            coq::TopLevelItem::Code(if instances.is_empty() {
                 nil()
             } else {
                 hardline()
-            },
-            trait_notation_instances(instances),
+            }),
+            coq::TopLevelItem::Code(trait_notation_instances(instances)),
         ],
     )
     .to_doc()

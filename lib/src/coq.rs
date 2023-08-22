@@ -8,7 +8,6 @@ pub(crate) enum TopLevelItem<'a> {
     Class(Class<'a>),
     Comment(Comment),
     Context(Context),
-    Expression(Expression),
     Instance(Instance<'a>),
     Module(Module<'a>),
     Section(Section<'a>),
@@ -22,7 +21,7 @@ pub(crate) struct Comment {
 /// a coq module
 pub(crate) struct Module<'a> {
     name: &'a str,
-    content: Vec<Doc<'a>>,
+    content: Vec<TopLevelItem<'a>>,
 }
 
 /// a coq section
@@ -78,14 +77,32 @@ impl Comment {
     }
 }
 
+impl<'a> TopLevelItem<'a> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        match self {
+            TopLevelItem::Code(code) => code.to_owned(),
+            TopLevelItem::Class(class) => class.to_doc(),
+            TopLevelItem::Comment(comment) => comment.to_doc(),
+            TopLevelItem::Context(context) => context.to_doc(),
+            TopLevelItem::Instance(instance) => instance.to_doc(),
+            TopLevelItem::Module(module) => module.to_doc(),
+            TopLevelItem::Section(section) => section.to_doc(),
+        }
+    }
+}
+
 impl<'a> Module<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &'a str, content: Vec<Doc<'a>>) -> Self {
+    pub(crate) fn new(name: &'a str, content: Vec<TopLevelItem<'a>>) -> Self {
         Module { name, content }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose("Module", self.name, group(self.content.clone()))
+        render::enclose(
+            "Module",
+            self.name,
+            group(self.content.iter().map(|item| item.to_doc())),
+        )
     }
 }
 
