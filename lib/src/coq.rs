@@ -18,7 +18,7 @@ pub(crate) struct Context {
 }
 
 /// a coq definition
-pub(crate) struct Definition<'a, U> {
+pub(crate) struct Class<'a, U> {
     ty_params: Vec<(U, Option<Doc<'a>>)>,
     predicates: Vec<Doc<'a>>,
     bounds: Vec<Doc<'a>>,
@@ -100,7 +100,7 @@ impl Context {
     }
 }
 
-impl<'a, U> Definition<'a, U>
+impl<'a, U> Class<'a, U>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
@@ -112,7 +112,7 @@ where
         associated_types: Vec<(U, Vec<Doc<'a>>)>,
         items: Vec<Doc<'a>>,
     ) -> Self {
-        Definition {
+        Class {
             ty_params,
             predicates,
             bounds,

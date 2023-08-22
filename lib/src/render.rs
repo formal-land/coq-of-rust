@@ -267,7 +267,7 @@ where
         group([
             locally_unset_primitive_projections_if(
                 items.is_empty(),
-                &coq::Definition::new(
+                &coq::Class::new(
                     ty_params.to_vec(),
                     predicates.to_vec(),
                     bounds.to_vec(),
