@@ -16,7 +16,7 @@ pub(crate) struct Configuration {
     /// appear in the translation output:
     /// "reorder": {
     ///   "some/path/some_file.rs": {
-    ///     "top_level::some_mod": ["bar", "foo"],
+    ///     "top_level::some_mod": { "bar": "foo", ... },
     ///      ...
     ///   },
     ///  ...
@@ -48,7 +48,7 @@ pub(crate) fn get_configuration(configuration_file_path: &str) -> Configuration 
     Configuration::default()
 }
 
-pub(crate) fn config_get_reorder<'a>(env: &Env, context: &str, id: &str) -> Option<String> {
+pub(crate) fn config_get_reorder(env: &Env, context: &str, id: &str) -> Option<String> {
     match env.configuration.reorder.get(&env.file) {
         Some(contexts) => match contexts.get(context) {
             Some(identifiers) => identifiers.get(id).map(ToOwned::to_owned),
