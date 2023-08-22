@@ -246,28 +246,26 @@ pub(crate) fn trait_module<'a>(
 ) -> Doc<'a> {
     coq::Module::new(
         name,
-        vec![
-            coq::TopLevelItem::Code(locally_unset_primitive_projections_if(
-                items.is_empty(),
-                &coq::Class::new(
-                    ty_params.to_vec(),
-                    predicates.to_vec(),
-                    bounds.to_vec(),
-                    associated_types.to_vec(),
-                    items,
-                )
-                .to_doc(),
-            )),
-            if instances.is_empty() {
-                coq::TopLevelItem::Code(nil())
-            } else {
-                coq::TopLevelItem::Code(hardline())
-            },
-            coq::TopLevelItem::Code(intersperse(
-                instances.iter().map(|i| i.to_doc()).collect::<Vec<Doc>>(),
-                [hardline()],
-            )),
-        ],
+        [
+            vec![coq::TopLevelItem::Code(
+                locally_unset_primitive_projections_if(
+                    items.is_empty(),
+                    &coq::Class::new(
+                        ty_params.to_vec(),
+                        predicates.to_vec(),
+                        bounds.to_vec(),
+                        associated_types.to_vec(),
+                        items,
+                    )
+                    .to_doc(),
+                ),
+            )],
+            instances
+                .iter()
+                .map(|i| coq::TopLevelItem::Instance(i.to_owned()))
+                .collect(),
+        ]
+        .concat(),
     )
     .to_doc()
 }

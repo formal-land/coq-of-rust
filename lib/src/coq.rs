@@ -2,6 +2,7 @@ use crate::path::Path;
 use crate::render::{self, concat, group, hardline, intersperse, line, nest, paren, text, Doc};
 
 #[allow(dead_code)]
+#[derive(Clone)]
 /// any coq top level item
 pub(crate) enum TopLevelItem<'a> {
     Code(Doc<'a>),
@@ -13,29 +14,34 @@ pub(crate) enum TopLevelItem<'a> {
     Section(Section<'a>),
 }
 
+#[derive(Clone)]
 /// a coq comment
 pub(crate) struct Comment {
     text: String,
 }
 
+#[derive(Clone)]
 /// a coq module
 pub(crate) struct Module<'a> {
     name: &'a str,
     content: Vec<TopLevelItem<'a>>,
 }
 
+#[derive(Clone)]
 /// a coq section
 pub(crate) struct Section<'a> {
     name: &'a str,
     content: Vec<Doc<'a>>,
 }
 
+#[derive(Clone)]
 /// a coq `Context` item
 pub(crate) struct Context {
     idents: Vec<String>,
     ty: Expression,
 }
 
+#[derive(Clone)]
 /// a coq definition
 pub(crate) struct Class<'a> {
     ty_params: Vec<(String, Option<Doc<'a>>)>,
@@ -45,6 +51,7 @@ pub(crate) struct Class<'a> {
     items: Vec<Doc<'a>>,
 }
 
+#[derive(Clone)]
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
     name: &'a str,
@@ -101,7 +108,7 @@ impl<'a> Module<'a> {
         render::enclose(
             "Module",
             self.name,
-            group(self.content.iter().map(|item| item.to_doc())),
+            intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
         )
     }
 }
