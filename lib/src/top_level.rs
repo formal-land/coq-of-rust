@@ -2132,7 +2132,10 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[],
-                            coq::Path::new(&["Notation".to_string(), "Dot".to_string()]),
+                            coq::Expression::Variable(coq::Path::new(&[
+                                "Notation".to_string(),
+                                "Dot".to_string(),
+                            ])),
                             nest([function_header(
                                 "Notation.dot",
                                 ty_params,
@@ -2147,10 +2150,15 @@ impl TopLevelItem {
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[name],
-                            coq::Path::new(&[
-                                "Notation".to_string(),
-                                "DoubleColonType Self".to_string(),
-                            ]),
+                            coq::Expression::Application {
+                                func: Box::new(coq::Expression::Variable(coq::Path::new(&[
+                                    "Notation".to_string(),
+                                    "DoubleColonType".to_string(),
+                                ]))),
+                                arg: Box::new(coq::Expression::Variable(coq::Path::new(&[
+                                    "Self".to_string()
+                                ]))),
+                            },
                             text("Notation.double_colon_type"),
                             text(name),
                         ),
@@ -2161,7 +2169,10 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[],
-                            coq::Path::new(&["Notation".to_string(), "Dot".to_string()]),
+                            coq::Expression::Variable(coq::Path::new(&[
+                                "Notation".to_string(),
+                                "Dot".to_string(),
+                            ])),
                             nest([function_header(
                                 "Notation.dot",
                                 ty_params,

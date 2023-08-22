@@ -1,15 +1,9 @@
-use crate::render::{self, concat, group, hardline, intersperse, nest, text, Doc};
+use crate::render::{self, concat, group, hardline, intersperse, line, nest, paren, text, Doc};
 
 /// a coq module
 pub(crate) struct Module<'a> {
     name: &'a str,
     content: Vec<Doc<'a>>,
-}
-
-#[derive(Clone)]
-/// a path to a coq construction
-pub(crate) struct Path {
-    names: Vec<String>,
 }
 
 /// a coq definition
@@ -25,9 +19,25 @@ pub(crate) struct Definition<'a, U> {
 pub(crate) struct Instance<'a> {
     name: &'a str,
     trait_parameters: Vec<&'a str>,
-    class: Path,
+    class: Expression,
     field: Doc<'a>,
     value: Doc<'a>,
+}
+
+#[derive(Clone)]
+/// a coq expression
+pub(crate) enum Expression {
+    Application {
+        func: Box<Expression>,
+        arg: Box<Expression>,
+    },
+    Variable(Path),
+}
+
+#[derive(Clone)]
+/// a path to a coq construction
+pub(crate) struct Path {
+    names: Vec<String>,
 }
 
 impl<'a> Module<'a> {
@@ -38,19 +48,6 @@ impl<'a> Module<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         render::module(self.name, group(self.content.clone()))
-    }
-}
-
-impl Path {
-    /// produces a new coq path
-    pub(crate) fn new(names: &[String]) -> Path {
-        Path {
-            names: names.to_owned(),
-        }
-    }
-
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
-        intersperse(self.names.clone(), ["."])
     }
 }
 
@@ -97,7 +94,7 @@ impl<'a> Instance<'a> {
     pub(crate) fn new(
         name: &'a str,
         trait_parameters: &[&'a str],
-        class: Path,
+        class: Expression,
         field: Doc<'a>,
         value: Doc<'a>,
     ) -> Self {
@@ -112,7 +109,11 @@ impl<'a> Instance<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
-            render::new_instance_header(self.name, &self.trait_parameters, self.class.to_doc()),
+            render::new_instance_header(
+                self.name,
+                &self.trait_parameters,
+                self.class.to_doc(false),
+            ),
             nest([
                 hardline(),
                 render::new_instance_body(self.field.to_owned(), self.value.to_owned()),
@@ -120,5 +121,30 @@ impl<'a> Instance<'a> {
             hardline(),
             text("}."),
         ])
+    }
+}
+
+impl Expression {
+    pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
+        match self {
+            Self::Application { func, arg } => paren(
+                with_paren,
+                group([func.to_doc(false), line(), arg.to_doc(true)]),
+            ),
+            Self::Variable(path) => path.to_doc(),
+        }
+    }
+}
+
+impl Path {
+    /// produces a new coq path
+    pub(crate) fn new(names: &[String]) -> Path {
+        Path {
+            names: names.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        intersperse(self.names.clone(), ["."])
     }
 }
