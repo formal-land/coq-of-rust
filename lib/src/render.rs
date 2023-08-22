@@ -384,19 +384,14 @@ where
     ])
 }
 
-/// creates a field with the given name of a typeclass of the given type,
+/// creates a typeclass field with the given name of the given type,
 /// with the given type parameters and satisfying the given typeclass bounds
-pub(crate) fn typeclass_definition_item<'a, U, V, W>(
-    name: U,
-    ty_params: &'a Vec<V>,
-    bounds: Vec<W>,
+pub(crate) fn typeclass_definition_item<'a>(
+    name: &'a str,
+    ty_params: &'a Vec<String>,
+    bounds: Vec<Doc<'a>>,
     ty: Doc<'a>,
-) -> Doc<'a>
-where
-    U: Into<std::borrow::Cow<'a, str>>,
-    &'a V: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    W: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-{
+) -> Doc<'a> {
     group([
         hardline(),
         nest([
