@@ -225,8 +225,8 @@ pub(crate) fn module<'a>(name: &'a str, doc: Doc<'a>) -> Doc<'a> {
     coq::Module::new(name, vec![doc]).to_doc()
 }
 
-/// decides whether to enclose [doc] within a section
-pub(crate) fn add_section_if_necessary<'a>(
+/// decides whether to enclose [doc] within a section with a context
+pub(crate) fn add_context_in_section_if_necessary<'a>(
     name: &'a str,
     ty_params: &Vec<String>,
     doc: Doc<'a>,

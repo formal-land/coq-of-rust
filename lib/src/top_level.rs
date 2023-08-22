@@ -1756,7 +1756,7 @@ impl TopLevelItem {
                 },
                 module(
                     name,
-                    add_section_if_necessary(
+                    add_context_in_section_if_necessary(
                         name,
                         ty_params,
                         group([
@@ -1888,7 +1888,7 @@ impl TopLevelItem {
             } => group([
                 module(
                     name,
-                    add_section_if_necessary(
+                    add_context_in_section_if_necessary(
                         name,
                         ty_params,
                         group([
@@ -2007,7 +2007,7 @@ impl TopLevelItem {
             TopLevelItem::TypeStructUnit { name, ty_params } => group([
                 module(
                     name,
-                    add_section_if_necessary(
+                    add_context_in_section_if_necessary(
                         name,
                         ty_params,
                         group([
