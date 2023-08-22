@@ -1,9 +1,15 @@
-use crate::render::{self, concat, group, hardline, nest, text, Doc};
+use crate::render::{self, concat, group, hardline, intersperse, nest, text, Doc};
 
 /// a coq module
 pub(crate) struct Module<'a> {
     name: &'a str,
     content: Vec<Doc<'a>>,
+}
+
+#[derive(Clone)]
+/// a path to a coq construction
+pub(crate) struct Path {
+    names: Vec<String>,
 }
 
 /// a coq definition
@@ -19,12 +25,13 @@ pub(crate) struct Definition<'a, U> {
 pub(crate) struct Instance<'a> {
     name: &'a str,
     trait_parameters: Vec<&'a str>,
-    class: &'a str,
+    class: Path,
     field: Doc<'a>,
     value: Doc<'a>,
 }
 
 impl<'a> Module<'a> {
+    /// produces a new coq module
     pub(crate) fn new(name: &'a str, content: Vec<Doc<'a>>) -> Self {
         Module { name, content }
     }
@@ -34,11 +41,24 @@ impl<'a> Module<'a> {
     }
 }
 
+impl Path {
+    /// produces a new coq path
+    pub(crate) fn new(names: &[String]) -> Path {
+        Path {
+            names: names.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        intersperse(self.names.clone(), ["."])
+    }
+}
+
 impl<'a, U> Definition<'a, U>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    /// produces a new coq instance
+    /// produces a new coq definition
     pub(crate) fn new(
         ty_params: Vec<(U, Option<Doc<'a>>)>,
         predicates: Vec<Doc<'a>>,
@@ -77,7 +97,7 @@ impl<'a> Instance<'a> {
     pub(crate) fn new(
         name: &'a str,
         trait_parameters: &[&'a str],
-        class: &'a str,
+        class: Path,
         field: Doc<'a>,
         value: Doc<'a>,
     ) -> Self {
@@ -92,7 +112,7 @@ impl<'a> Instance<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
-            render::new_instance_header(self.name, &self.trait_parameters, text(self.class)),
+            render::new_instance_header(self.name, &self.trait_parameters, self.class.to_doc()),
             nest([
                 hardline(),
                 render::new_instance_body(self.field.to_owned(), self.value.to_owned()),

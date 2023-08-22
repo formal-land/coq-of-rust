@@ -2132,7 +2132,7 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[],
-                            "Notation.Dot",
+                            coq::Path::new(&["Notation".to_string(), "Dot".to_string()]),
                             nest([function_header(
                                 "Notation.dot",
                                 ty_params,
@@ -2147,7 +2147,10 @@ impl TopLevelItem {
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[name],
-                            "Notation.DoubleColonType Self",
+                            coq::Path::new(&[
+                                "Notation".to_string(),
+                                "DoubleColonType Self".to_string(),
+                            ]),
                             text("Notation.double_colon_type"),
                             text(name),
                         ),
@@ -2158,7 +2161,7 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[],
-                            "Notation.Dot",
+                            coq::Path::new(&["Notation".to_string(), "Dot".to_string()]),
                             nest([function_header(
                                 "Notation.dot",
                                 ty_params,
