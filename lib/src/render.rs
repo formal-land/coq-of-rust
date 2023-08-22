@@ -225,11 +225,8 @@ where
 }
 
 /// puts [doc] in a module of name [name]
-pub(crate) fn module<'a, U>(name: U, doc: Doc<'a>) -> Doc<'a>
-where
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
-    enclose("Module", name, &vec![], doc)
+pub(crate) fn module<'a>(name: &'a str, doc: Doc<'a>) -> Doc<'a> {
+    coq::Module::new(name, vec![doc]).to_doc()
 }
 
 /// puts [doc] in a section of name [name] with type parameters from [ty_context]
@@ -265,9 +262,9 @@ pub(crate) fn trait_module<'a, U>(
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    coq::Module::new(
+    module(
         name,
-        vec![
+        group([
             locally_unset_primitive_projections_if(
                 items.is_empty(),
                 &coq::Definition::new(
@@ -285,9 +282,8 @@ where
                 hardline()
             },
             trait_notation_instances(instances),
-        ],
+        ]),
     )
-    .to_doc()
 }
 
 /// creates a definition of a typeclass corresponding

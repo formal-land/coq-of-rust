@@ -59,7 +59,7 @@ impl<'a> Module<'a> {
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::module(self.name, group(self.content.clone()))
+        render::enclose("Module", self.name, &vec![], group(self.content.clone()))
     }
 }
 
