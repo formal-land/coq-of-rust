@@ -262,9 +262,9 @@ pub(crate) fn trait_module<'a, U>(
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    module(
+    coq::Module::new(
         name,
-        group([
+        vec![
             locally_unset_primitive_projections_if(
                 items.is_empty(),
                 &coq::Class::new(
@@ -282,8 +282,9 @@ where
                 hardline()
             },
             trait_notation_instances(instances),
-        ]),
+        ],
     )
+    .to_doc()
 }
 
 /// creates a definition of a typeclass corresponding
