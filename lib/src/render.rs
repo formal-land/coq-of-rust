@@ -258,11 +258,11 @@ pub(crate) fn trait_module<'a>(
                 )
                 .to_doc(),
             )),
-            coq::TopLevelItem::Code(if instances.is_empty() {
-                nil()
+            if instances.is_empty() {
+                coq::TopLevelItem::Code(nil())
             } else {
-                hardline()
-            }),
+                coq::TopLevelItem::Code(hardline())
+            },
             coq::TopLevelItem::Code(trait_notation_instances(instances)),
         ],
     )
