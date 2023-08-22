@@ -192,29 +192,14 @@ pub(crate) fn locally_unset_primitive_projections_if<'a>(
 }
 
 /// puts [doc] in a section or a module (that depends on [kind])
-pub(crate) fn enclose<'a, K, U>(kind: K, name: U, ty_context: &Vec<String>, doc: Doc<'a>) -> Doc<'a>
+pub(crate) fn enclose<'a, K, U>(kind: K, name: U, doc: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
     K: Into<std::borrow::Cow<'a, str>>,
 {
     group([
         group([text(kind), line(), text(name), text(".")]),
-        nest([
-            hardline(),
-            if ty_context.is_empty() {
-                nil()
-            } else {
-                group([
-                    coq::Context::new(
-                        ty_context,
-                        &coq::Expression::Variable(Path::new(&["Set".to_string()])),
-                    )
-                    .to_doc(),
-                    hardline(),
-                ])
-            },
-            doc,
-        ]),
+        nest([hardline(), doc]),
         hardline(),
         group([text("End"), line(), text(name), text(".")]),
     ])

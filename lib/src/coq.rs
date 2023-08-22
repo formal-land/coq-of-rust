@@ -85,7 +85,7 @@ impl<'a> Module<'a> {
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose("Module", self.name, &vec![], group(self.content.clone()))
+        render::enclose("Module", self.name, group(self.content.clone()))
     }
 }
 
@@ -102,7 +102,6 @@ impl<'a> Section<'a> {
         render::enclose(
             "Section",
             self.name,
-            &vec![],
             intersperse(self.content.clone(), [hardline()]),
         )
     }
