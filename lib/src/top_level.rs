@@ -2084,7 +2084,12 @@ impl TopLevelItem {
                 name,
                 &ty_params
                     .iter()
-                    .map(|(ty, default)| (ty, default.as_ref().map(|default| default.to_doc(true))))
+                    .map(|(ty, default)| {
+                        (
+                            ty.to_owned(),
+                            default.as_ref().map(|default| default.to_doc(true)),
+                        )
+                    })
                     .collect::<Vec<_>>(),
                 &predicates
                     .iter()
@@ -2100,7 +2105,7 @@ impl TopLevelItem {
                         TraitItem::Definition { .. } => None,
                         TraitItem::DefinitionWithDefault { .. } => None,
                         TraitItem::Type(bounds) => Some((
-                            item_name,
+                            item_name.to_string(),
                             bounds
                                 .iter()
                                 .map(|bound| bound.to_doc(text(item_name)))

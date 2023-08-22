@@ -250,18 +250,15 @@ pub(crate) fn add_context_in_section_if_necessary<'a>(
 }
 
 /// creates a module with the translation of the given trait
-pub(crate) fn trait_module<'a, U>(
+pub(crate) fn trait_module<'a>(
     name: &'a str,
-    ty_params: &[(U, Option<Doc<'a>>)],
+    ty_params: &[(String, Option<Doc<'a>>)],
     predicates: &[Doc<'a>],
     bounds: &[Doc<'a>],
-    associated_types: &[(U, Vec<Doc<'a>>)],
+    associated_types: &[(String, Vec<Doc<'a>>)],
     items: Vec<Doc<'a>>,
     instances: Vec<coq::Instance<'a>>,
-) -> Doc<'a>
-where
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
+) -> Doc<'a> {
     coq::Module::new(
         name,
         vec![
@@ -289,15 +286,12 @@ where
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-pub(crate) fn new_trait_typeclass_header<'a, U>(
-    ty_params: &Vec<(U, Option<Doc>)>,
+pub(crate) fn new_trait_typeclass_header<'a>(
+    ty_params: &Vec<(String, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[Doc<'a>],
-    associated_types: &[(U, Vec<Doc<'a>>)],
-) -> Doc<'a>
-where
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
+    associated_types: &[(String, Vec<Doc<'a>>)],
+) -> Doc<'a> {
     nest([
         text("Class Trait"),
         line(),
@@ -322,10 +316,13 @@ where
                         concat(ty_params.iter().map(|(ty, default)| {
                             match default {
                                 // @TODO: implement the translation of type parameters with default
-                                Some(_default) => {
-                                    concat([text("(* TODO *)"), line(), text(*ty), line()])
-                                }
-                                None => concat([text(*ty), line()]),
+                                Some(_default) => concat([
+                                    text("(* TODO *)"),
+                                    line(),
+                                    text(ty.to_owned()),
+                                    line(),
+                                ]),
+                                None => concat([text(ty.to_owned()), line()]),
                             }
                         })),
                         text(":"),
@@ -347,7 +344,7 @@ where
                     line(),
                     nest([
                         text("{"),
-                        text(*item_name),
+                        text(item_name.to_owned()),
                         text(" : "),
                         text("Set"),
                         text("}"),

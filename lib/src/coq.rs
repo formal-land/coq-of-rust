@@ -1,6 +1,20 @@
 use crate::path::Path;
 use crate::render::{self, concat, group, hardline, intersperse, line, nest, paren, text, Doc};
 
+#[allow(dead_code)]
+/// any coq top level item
+pub(crate) enum TopLevelItem<'a> {
+    Code(Doc<'a>),
+    Class(Class<'a>),
+    Comment(Comment),
+    Context(Context),
+    Expression(Expression),
+    Instance(Instance<'a>),
+    Module(Module<'a>),
+    Section(Section<'a>),
+}
+
+/// a coq comment
 pub(crate) struct Comment {
     text: String,
 }
@@ -24,11 +38,11 @@ pub(crate) struct Context {
 }
 
 /// a coq definition
-pub(crate) struct Class<'a, U> {
-    ty_params: Vec<(U, Option<Doc<'a>>)>,
+pub(crate) struct Class<'a> {
+    ty_params: Vec<(String, Option<Doc<'a>>)>,
     predicates: Vec<Doc<'a>>,
     bounds: Vec<Doc<'a>>,
-    associated_types: Vec<(U, Vec<Doc<'a>>)>,
+    associated_types: Vec<(String, Vec<Doc<'a>>)>,
     items: Vec<Doc<'a>>,
 }
 
@@ -125,23 +139,20 @@ impl Context {
     }
 }
 
-impl<'a, U> Class<'a, U>
-where
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
+impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
     pub(crate) fn new(
-        ty_params: Vec<(U, Option<Doc<'a>>)>,
+        ty_params: Vec<(String, Option<Doc<'a>>)>,
         predicates: Vec<Doc<'a>>,
         bounds: Vec<Doc<'a>>,
-        associated_types: Vec<(U, Vec<Doc<'a>>)>,
+        associated_types: Vec<(String, Vec<Doc<'a>>)>,
         items: Vec<Doc<'a>>,
     ) -> Self {
         Class {
-            ty_params,
+            ty_params: ty_params.to_owned(),
             predicates,
             bounds,
-            associated_types,
+            associated_types: associated_types.to_owned(),
             items,
         }
     }
