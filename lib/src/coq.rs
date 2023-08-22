@@ -1,5 +1,9 @@
 use crate::render::{self, concat, group, hardline, intersperse, line, nest, paren, text, Doc};
 
+pub(crate) struct Comment {
+    text: String,
+}
+
 /// a coq module
 pub(crate) struct Module<'a> {
     name: &'a str,
@@ -38,6 +42,19 @@ pub(crate) enum Expression {
 /// a path to a coq construction
 pub(crate) struct Path {
     names: Vec<String>,
+}
+
+impl Comment {
+    /// produces a new coq comment
+    pub(crate) fn new(text: &str) -> Self {
+        Comment {
+            text: text.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        concat([text("(* "), text(self.text.to_string()), text(" *)")])
+    }
 }
 
 impl<'a> Module<'a> {

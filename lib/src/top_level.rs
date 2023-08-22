@@ -979,7 +979,8 @@ impl FunDefinition {
         group([
             if self.is_dead_code {
                 concat([
-                    text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                    coq::Comment::new("#[allow(dead_code)] - function was ignored by the compiler")
+                        .to_doc(),
                     hardline(),
                 ])
             } else {
