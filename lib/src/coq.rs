@@ -97,6 +97,21 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Section(section) => section.to_doc(),
         }
     }
+}
+
+impl<'a> Module<'a> {
+    /// produces a new coq module
+    pub(crate) fn new(name: &'a str, content: Vec<TopLevelItem<'a>>) -> Self {
+        Module { name, content }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        render::enclose(
+            "Module",
+            self.name,
+            intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
+        )
+    }
 
     /// creates a module with the translation of the given trait
     pub(crate) fn trait_module(
@@ -108,7 +123,7 @@ impl<'a> TopLevelItem<'a> {
         items: Vec<Doc<'a>>,
         instances: Vec<Instance<'a>>,
     ) -> Self {
-        TopLevelItem::Module(Module::new(
+        Module::new(
             name,
             [
                 vec![TopLevelItem::Code(
@@ -131,21 +146,6 @@ impl<'a> TopLevelItem<'a> {
                     .collect(),
             ]
             .concat(),
-        ))
-    }
-}
-
-impl<'a> Module<'a> {
-    /// produces a new coq module
-    pub(crate) fn new(name: &'a str, content: Vec<TopLevelItem<'a>>) -> Self {
-        Module { name, content }
-    }
-
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose(
-            "Module",
-            self.name,
-            intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
         )
     }
 }
