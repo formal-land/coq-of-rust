@@ -131,7 +131,7 @@ impl<'a, U> Class<'a, U>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    /// produces a new coq definition
+    /// produces a new coq typeclass definition
     pub(crate) fn new(
         ty_params: Vec<(U, Option<Doc<'a>>)>,
         predicates: Vec<Doc<'a>>,
