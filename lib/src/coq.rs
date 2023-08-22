@@ -11,6 +11,13 @@ pub(crate) struct Module<'a> {
     content: Vec<Doc<'a>>,
 }
 
+/// a coq section
+pub(crate) struct Section<'a> {
+    name: &'a str,
+    ty_context: Vec<String>,
+    content: Vec<Doc<'a>>,
+}
+
 /// a coq `Context` item
 pub(crate) struct Context {
     idents: Vec<String>,
@@ -66,6 +73,26 @@ impl<'a> Module<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         render::enclose("Module", self.name, &vec![], group(self.content.clone()))
+    }
+}
+
+impl<'a> Section<'a> {
+    /// produces a new coq module
+    pub(crate) fn new(name: &'a str, ty_context: &[String], content: &[Doc<'a>]) -> Self {
+        Section {
+            name,
+            ty_context: ty_context.to_owned(),
+            content: content.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        render::enclose(
+            "Section",
+            self.name,
+            &self.ty_context,
+            concat(self.content.to_owned()),
+        )
     }
 }
 
