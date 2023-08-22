@@ -263,7 +263,10 @@ pub(crate) fn trait_module<'a>(
             } else {
                 coq::TopLevelItem::Code(hardline())
             },
-            coq::TopLevelItem::Code(trait_notation_instances(instances)),
+            coq::TopLevelItem::Code(intersperse(
+                instances.iter().map(|i| i.to_doc()).collect::<Vec<Doc>>(),
+                [hardline()],
+            )),
         ],
     )
     .to_doc()
@@ -423,14 +426,6 @@ where
             text(";"),
         ]),
     ])
-}
-
-/// separates definitions of instances with [hardline]s
-pub(crate) fn trait_notation_instances(instances: Vec<coq::Instance>) -> Doc {
-    intersperse(
-        instances.iter().map(|i| i.to_doc()).collect::<Vec<Doc>>(),
-        [hardline()],
-    )
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
