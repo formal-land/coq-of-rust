@@ -14,7 +14,6 @@ pub(crate) struct Module<'a> {
 /// a coq section
 pub(crate) struct Section<'a> {
     name: &'a str,
-    ty_context: Vec<String>,
     content: Vec<Doc<'a>>,
 }
 
@@ -78,10 +77,9 @@ impl<'a> Module<'a> {
 
 impl<'a> Section<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &'a str, ty_context: &[String], content: &[Doc<'a>]) -> Self {
+    pub(crate) fn new(name: &'a str, content: &[Doc<'a>]) -> Self {
         Section {
             name,
-            ty_context: ty_context.to_owned(),
             content: content.to_owned(),
         }
     }
@@ -90,8 +88,8 @@ impl<'a> Section<'a> {
         render::enclose(
             "Section",
             self.name,
-            &self.ty_context,
-            concat(self.content.to_owned()),
+            &vec![],
+            intersperse(self.content.clone(), [hardline()]),
         )
     }
 }

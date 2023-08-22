@@ -234,7 +234,18 @@ pub(crate) fn add_context_in_section_if_necessary<'a>(
     if ty_params.is_empty() {
         doc
     } else {
-        coq::Section::new(name, ty_params, &[doc]).to_doc()
+        coq::Section::new(
+            name,
+            &[
+                coq::Context::new(
+                    ty_params,
+                    &coq::Expression::Variable(Path::new(&["Set".to_string()])),
+                )
+                .to_doc(),
+                doc,
+            ],
+        )
+        .to_doc()
     }
 }
 
