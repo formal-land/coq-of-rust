@@ -44,6 +44,7 @@ pub(crate) struct Context {
 #[derive(Clone)]
 /// a coq definition
 pub(crate) struct Class<'a> {
+    name: String,
     ty_params: Vec<(String, Option<Doc<'a>>)>,
     predicates: Vec<Doc<'a>>,
     bounds: Vec<Doc<'a>>,
@@ -165,6 +166,7 @@ impl Context {
 impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
     pub(crate) fn new(
+        name: &str,
         ty_params: Vec<(String, Option<Doc<'a>>)>,
         predicates: Vec<Doc<'a>>,
         bounds: Vec<Doc<'a>>,
@@ -172,6 +174,7 @@ impl<'a> Class<'a> {
         items: Vec<Doc<'a>>,
     ) -> Self {
         Class {
+            name: name.to_owned(),
             ty_params: ty_params.to_owned(),
             predicates,
             bounds,
@@ -184,6 +187,7 @@ impl<'a> Class<'a> {
         group([
             nest([
                 render::new_trait_typeclass_header(
+                    &self.name,
                     &self.ty_params,
                     &self.predicates,
                     &self.bounds,

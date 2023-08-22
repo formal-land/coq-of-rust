@@ -251,6 +251,7 @@ pub(crate) fn trait_module<'a>(
                 locally_unset_primitive_projections_if(
                     items.is_empty(),
                     &coq::Class::new(
+                        "Trait",
                         ty_params.to_vec(),
                         predicates.to_vec(),
                         bounds.to_vec(),
@@ -273,13 +274,15 @@ pub(crate) fn trait_module<'a>(
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
 pub(crate) fn new_trait_typeclass_header<'a>(
+    name: &str,
     ty_params: &Vec<(String, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[Doc<'a>],
     associated_types: &[(String, Vec<Doc<'a>>)],
 ) -> Doc<'a> {
     nest([
-        text("Class Trait"),
+        text("Class "),
+        text(name.to_owned()),
         line(),
         nest([
             nest([
