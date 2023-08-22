@@ -2,6 +2,24 @@
   "axiomatize": false,
   "debug_reorder": true,
   "reorder": {
+    "examples/functions/functions_order.rs": {
+      "top_level": {
+	"depends_on_trait_impl": "Impl_SomeTrait_for_OtherType",
+        "main": "foo"
+      },
+      "top_level::Impl_SomeTrait_for_SomeType": {
+        "some_trait_bar": "some_trait_foo"
+      },
+      "top_level::Impl_SomeType": {
+        "meth2": "meth1"
+      },
+      "top_level::inner_mod": {
+        "tar": "bar"
+      },
+      "top_level::inner_mod::nested_mod": {
+        "tack": "tick"
+      }
+    },
     "ink_env": {
       "top_level": {
         "arithmetic": "types"
