@@ -225,11 +225,6 @@ pub(crate) fn module<'a>(name: &'a str, doc: Doc<'a>) -> Doc<'a> {
     coq::Module::new(name, vec![doc]).to_doc()
 }
 
-/// puts [doc] in a section of name [name] with type parameters from [ty_context]
-pub(crate) fn section<'a>(name: &'a str, ty_context: &[String], doc: Doc<'a>) -> Doc<'a> {
-    coq::Section::new(name, ty_context, &[doc]).to_doc()
-}
-
 /// decides whether to enclose [doc] within a section
 pub(crate) fn add_section_if_necessary<'a>(
     name: &'a str,
@@ -239,7 +234,7 @@ pub(crate) fn add_section_if_necessary<'a>(
     if ty_params.is_empty() {
         doc
     } else {
-        section(name, ty_params, doc)
+        coq::Section::new(name, ty_params, &[doc]).to_doc()
     }
 }
 
