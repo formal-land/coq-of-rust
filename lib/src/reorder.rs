@@ -7,7 +7,6 @@ use crate::env::*;
 use itertools::Itertools;
 use rustc_hir::{HirId, Impl, ImplItemRef, Item, ItemId, ItemKind, Node, QPath, Ty, TyKind};
 use rustc_middle::ty::TyCtxt;
-use std::cmp::Ordering;
 use std::string::ToString;
 
 pub(crate) trait GetHirId {
@@ -68,40 +67,35 @@ pub(crate) fn reorder_definitions_inplace(
                 .iter()
                 .map(|def| { tcx.hir().ident(def.hir_id()).as_str().to_string() })
                 .collect::<Vec<String>>()
-                .join("\nReorder debug: ")
+                .join(",")
         );
     }
 
-    definitions.sort_by(|a, b| {
-        let a_id = a.hir_id();
-        let b_id = b.hir_id();
-        let a_context = get_context_name(tcx, &a_id);
-        let b_context = get_context_name(tcx, &b_id);
+    let definitions_ids: Vec<HirId> = definitions.iter().map(|def| def.hir_id()).collect();
 
-        if a_context != b_context {
-            return Ordering::Equal;
-        };
+    // @TODO 
+    // compute the origional position
 
-        let order = config_get_reorder(env, &a_context);
-        let a_name = get_name(tcx, a_id);
-        let b_name = get_name(tcx, b_id);
+    for def_id in &definitions_ids {
+        let def_name = get_name(tcx, *def_id);
+        let context = get_context_name(tcx, &def_id);
+ 	let pos = definitions_ids.iter().position(|elm| elm == def_id).unwrap();
 
-        if a_name.is_empty() || b_name.is_empty() {
-            return Ordering::Equal;
-        }
-
-        let a_position = order.iter().position(|elm| *elm == a_name);
-        if a_position.is_none() {
-            return Ordering::Equal;
-        }
-
-        let b_position = order.iter().position(|elm| *elm == b_name);
-        if b_position.is_none() {
-            return Ordering::Equal;
-        };
-
-        a_position.cmp(&b_position)
-    });
+        match config_get_reorder(env, &context, &def_name) {
+	    Some(config_identifier) => {
+		let config_id_pos = definitions_ids.iter()
+		    .map(|hir_id| get_name(tcx, *hir_id))
+		    .position(|elm| elm == config_identifier);
+		if config_id_pos.is_none() {
+		    continue;
+		}
+		let config_id_pos = config_id_pos.unwrap();
+		let def = definitions.remove(pos);
+		definitions.insert(config_id_pos, def);
+	    },
+	    None => continue,
+	}
+    };
 
     let identifiers = definitions
         .iter()
@@ -110,9 +104,6 @@ pub(crate) fn reorder_definitions_inplace(
             if !name.is_empty() && name != "test" && name != "std" {
                 Some(name)
             } else {
-                if env.configuration.debug_reorder {
-                    eprintln!("Reorder debug: empty indent for: {:?}", def.hir_id());
-                };
                 None
             }
         })
@@ -130,7 +121,7 @@ pub(crate) fn reorder_definitions_inplace(
                 .iter()
                 .map(|def| { get_name(tcx, def.hir_id()) })
                 .collect::<Vec<String>>()
-                .join("\nReorder debug: ")
+                .join(",")
         );
         eprintln!("Reorder debug: ----------------------------");
     }

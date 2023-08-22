@@ -7,7 +7,7 @@ type File = String; // Represents a file path, ex: examples/foo/bar.rs"
 type Context = String; // Represents a context inside a file, ex: "top_level::some_mod"
 type Identifier = String; // Represents a identifier inside a context ex: "SomeType"
 
-type Reorder = HashMap<File, HashMap<Context, Vec<Identifier>>>;
+type Reorder = HashMap<File, HashMap<Context, HashMap<Identifier, String>>>;
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub(crate) struct Configuration {
@@ -48,12 +48,12 @@ pub(crate) fn get_configuration(configuration_file_path: &str) -> Configuration 
     Configuration::default()
 }
 
-pub(crate) fn config_get_reorder(env: &Env, context: &str) -> Vec<String> {
+pub(crate) fn config_get_reorder<'a>(env: &Env, context: &str, id: &str) -> Option<String> {
     match env.configuration.reorder.get(&env.file) {
         Some(contexts) => match contexts.get(context) {
-            Some(identifiers) => identifiers.clone(),
-            None => vec![],
+            Some(identifiers) => identifiers.get(id).map(ToOwned::to_owned),
+            None => None,
         },
-        None => vec![],
+        None => None,
     }
 }
