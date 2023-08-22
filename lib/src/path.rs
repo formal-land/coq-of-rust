@@ -240,7 +240,7 @@ impl Path {
         // clone to be able to consume
         let segments = self.segments.clone();
         // consume (by into_iter) to let the result live arbitrarily long
-        intersperse(segments.into_iter().map(text), [text(".")])
+        intersperse(segments, [text(".")])
     }
 
     pub(crate) fn to_name(&self) -> String {
