@@ -2,7 +2,7 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
-use crate::coq;
+use crate::{coq, path::Path};
 
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
@@ -192,7 +192,7 @@ pub(crate) fn locally_unset_primitive_projections_if<'a>(
 }
 
 /// puts [doc] in a section or a module (that depends on [kind])
-pub(crate) fn enclose<'a, K, U>(kind: K, name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
+pub(crate) fn enclose<'a, K, U>(kind: K, name: U, ty_context: &Vec<String>, doc: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
     K: Into<std::borrow::Cow<'a, str>>,
@@ -204,16 +204,12 @@ where
             if ty_context.is_empty() {
                 nil()
             } else {
-                let types: Vec<Doc<'a>> = ty_context.iter().map(|&ty| text(ty)).collect();
                 group([
-                    nest([
-                        text("Context"),
-                        line(),
-                        text("{"),
-                        intersperse(types, [line()]),
-                        line(),
-                        text(": Set}."),
-                    ]),
+                    coq::Context::new(
+                        ty_context,
+                        &coq::Expression::Variable(Path::new(&["Set".to_string()])),
+                    )
+                    .to_doc(),
                     hardline(),
                 ])
             },
@@ -230,7 +226,7 @@ pub(crate) fn module<'a>(name: &'a str, doc: Doc<'a>) -> Doc<'a> {
 }
 
 /// puts [doc] in a section of name [name] with type parameters from [ty_context]
-pub(crate) fn section<'a, U>(name: U, ty_context: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
+pub(crate) fn section<'a, U>(name: U, ty_context: &Vec<String>, doc: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
@@ -238,7 +234,11 @@ where
 }
 
 /// decides whether to enclose [doc] within a section
-pub(crate) fn add_section_if_necessary<'a, U>(name: U, ty_params: &Vec<U>, doc: Doc<'a>) -> Doc<'a>
+pub(crate) fn add_section_if_necessary<'a, U>(
+    name: U,
+    ty_params: &Vec<String>,
+    doc: Doc<'a>,
+) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {

@@ -1,5 +1,5 @@
 use crate::path::Path;
-use crate::render::{self, concat, group, hardline, line, nest, paren, text, Doc};
+use crate::render::{self, concat, group, hardline, intersperse, line, nest, paren, text, Doc};
 
 pub(crate) struct Comment {
     text: String,
@@ -9,6 +9,12 @@ pub(crate) struct Comment {
 pub(crate) struct Module<'a> {
     name: &'a str,
     content: Vec<Doc<'a>>,
+}
+
+/// a coq `Context` item
+pub(crate) struct Context {
+    idents: Vec<String>,
+    ty: Expression,
 }
 
 /// a coq definition
@@ -60,6 +66,37 @@ impl<'a> Module<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         render::enclose("Module", self.name, &vec![], group(self.content.clone()))
+    }
+}
+
+impl Context {
+    pub(crate) fn new(idents: &[String], ty: &Expression) -> Self {
+        Context {
+            idents: idents.to_owned(),
+            ty: ty.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        nest([
+            text("Context"),
+            line(),
+            if self.idents.is_empty() {
+                // I assume that an empty identifier list means a typeclass definition
+                group([text("`{"), self.ty.to_doc(false), text("}")])
+            } else {
+                group([
+                    text("{"),
+                    intersperse(self.idents.to_owned(), [line()]),
+                    line(),
+                    text(":"),
+                    line(),
+                    self.ty.to_doc(false),
+                    text("}"),
+                ])
+            },
+            text("."),
+        ])
     }
 }
 
