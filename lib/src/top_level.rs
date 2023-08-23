@@ -348,8 +348,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let context = get_full_name(tcx, item.hir_id());
             let mut items: Vec<ItemId> = module.item_ids.to_vec();
-            reorder_definitions_inplace(tcx, env, &mut items);
+            reorder_definitions_inplace(tcx, env, &context, &mut items);
             let items = deduplicate_top_level_items(
                 items
                     .iter()
@@ -475,8 +476,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             let entry = env.impl_counter.entry(*self_ty.clone());
             let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
             let mut items: Vec<ImplItemRef> = items.to_vec();
-            reorder_definitions_inplace(tcx, env, &mut items);
-
+            let context = get_full_name(tcx, item.hir_id());
+            reorder_definitions_inplace(tcx, env, &context, &mut items);
             let items = compile_impl_item_refs(tcx, env, &items, is_dead_code);
 
             match of_trait {
@@ -881,7 +882,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
     };
 
     let mut results: Vec<ItemId> = tcx.hir().items().collect();
-    reorder_definitions_inplace(tcx, &mut env, &mut results);
+    reorder_definitions_inplace(tcx, &mut env, "top_level", &mut results);
 
     let results = deduplicate_top_level_items(
         results

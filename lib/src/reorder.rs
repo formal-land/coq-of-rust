@@ -22,7 +22,7 @@ impl GetHirId for ImplItemRef {
     }
 }
 
-fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
+pub fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
     let a_name = tcx.hir().ident(a_id).as_str().to_string();
     if a_name.is_empty() {
         let a_node_opt = tcx.hir().find(a_id);
@@ -33,6 +33,32 @@ fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
     } else {
         a_name
     }
+}
+
+/// Given a HirId returns the name of the context/scope
+/// where such item is. Example top_level::inner_mod::other_mod
+pub(crate) fn get_context_name(tcx: &TyCtxt, id: HirId) -> String {
+    let name = tcx
+        .hir()
+        .parent_iter(id)
+        .filter_map(|(_, parent)| match get_impl_type_opt(parent) {
+            Some(typ) => Some(typ),
+            None => parent.ident().map(|ident| ident.as_str().to_string()),
+        })
+        .collect::<Vec<String>>()
+        .into_iter()
+        .rev()
+        .collect::<Vec<String>>()
+        .join("::");
+    if name.is_empty() {
+        "top_level".to_string()
+    } else {
+        format!("top_level::{}", name)
+    }
+}
+
+pub fn get_full_name(tcx: &TyCtxt, id: HirId) -> String {
+    format!("{}::{}", get_context_name(tcx, id), get_name(tcx, id))
 }
 
 /// Reorder a vector of definitions to match the contents of the
@@ -50,8 +76,10 @@ fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
 pub(crate) fn reorder_definitions_inplace(
     tcx: &TyCtxt,
     env: &mut Env,
+    parent_context: &str,
     definitions: &mut Vec<impl GetHirId>,
 ) {
+    println!("reordering ids in {parent_context}");
     if definitions.is_empty() {
         return;
     }
@@ -67,7 +95,7 @@ pub(crate) fn reorder_definitions_inplace(
                     // \x1b[0m <- reset
                     "\x1b[0;31mreorder before: {i:6} {}/{} {}\x1b[0m",
                     env.file,
-                    get_context_name(tcx, &def.hir_id()),
+                    get_context_name(tcx, def.hir_id()),
                     get_name(tcx, def.hir_id())
                 ))
                 .collect::<Vec<String>>()
@@ -79,7 +107,10 @@ pub(crate) fn reorder_definitions_inplace(
 
     for def_id in &definitions_ids {
         let def_name = get_name(tcx, *def_id);
-        let context = get_context_name(tcx, def_id);
+        let context = get_context_name(tcx, *def_id);
+        if context != parent_context {
+            continue;
+        }
         let pos = definitions_ids
             .iter()
             .position(|elm| elm == def_id)
@@ -101,6 +132,8 @@ pub(crate) fn reorder_definitions_inplace(
                     continue;
                 }
                 let config_id_pos = config_id_pos.unwrap();
+
+                println!("reorder moving: ({file}/{context}) {def_name} from {pos} to {config_id_pos}, after {config_identifier}");
                 let def = definitions.remove(pos);
                 definitions.insert(config_id_pos, def);
             }
@@ -121,7 +154,7 @@ pub(crate) fn reorder_definitions_inplace(
                         // \x1b[0m <- reset
                         "\x1b[0;32mreorder after:  {pos:6} {}/{} {}\x1b[0m",
                         env.file,
-                        get_context_name(tcx, &def.hir_id()),
+                        get_context_name(tcx, def.hir_id()),
                         get_name(tcx, def.hir_id())
                     )
                 })
@@ -158,27 +191,5 @@ fn get_impl_type_opt(node: Node) -> Option<String> {
             }
         }
         _ => None,
-    }
-}
-
-/// Given a HirId returns the name of the context/scope
-/// where such item is. Example top_level::inner_mod::other_mod
-pub(crate) fn get_context_name(tcx: &TyCtxt, id: &HirId) -> String {
-    let name = tcx
-        .hir()
-        .parent_iter(*id)
-        .filter_map(|(_, parent)| match get_impl_type_opt(parent) {
-            Some(typ) => Some(typ),
-            None => parent.ident().map(|ident| ident.as_str().to_string()),
-        })
-        .collect::<Vec<String>>()
-        .into_iter()
-        .rev()
-        .collect::<Vec<String>>()
-        .join("::");
-    if name.is_empty() {
-        "top_level".to_string()
-    } else {
-        format!("top_level::{}", name)
     }
 }
