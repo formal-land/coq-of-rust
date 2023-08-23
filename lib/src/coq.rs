@@ -3,7 +3,6 @@ use crate::render::{
     self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
 };
 
-#[allow(dead_code)]
 #[derive(Clone)]
 /// any coq top level item
 pub(crate) enum TopLevelItem<'a> {
@@ -152,15 +151,14 @@ impl<'a> TopLevelItem<'a> {
             [
                 TopLevelItem::locally_unset_primitive_projections_if(
                     items.is_empty(),
-                    &Class::new(
+                    &[TopLevelItem::Class(Class::new(
                         "Trait",
                         ty_params.to_vec(),
                         predicates.to_vec(),
                         bounds.to_vec(),
                         associated_types.to_vec(),
                         items,
-                    )
-                    .to_doc(),
+                    ))],
                 ),
                 instances
                     .iter()
@@ -172,23 +170,26 @@ impl<'a> TopLevelItem<'a> {
     }
 
     /// locally unsets primitive projecitons
-    pub(crate) fn locally_unset_primitive_projections(doc: &Doc<'a>) -> Vec<Self> {
-        vec![
-            TopLevelItem::Code(text("Unset Primitive Projections.")),
-            TopLevelItem::Code(doc.clone()),
-            TopLevelItem::Code(text("Global Set Primitive Projections.")),
+    pub(crate) fn locally_unset_primitive_projections(doc: &[TopLevelItem<'a>]) -> Vec<Self> {
+        [
+            vec![TopLevelItem::Code(text("Unset Primitive Projections."))],
+            doc.to_vec(),
+            vec![TopLevelItem::Code(text(
+                "Global Set Primitive Projections.",
+            ))],
         ]
+        .concat()
     }
 
     /// locally unsets primitive projecitons if the condition is satisfied
     pub(crate) fn locally_unset_primitive_projections_if(
         condition: bool,
-        doc: &Doc<'a>,
+        doc: &[TopLevelItem<'a>],
     ) -> Vec<Self> {
         if condition {
             TopLevelItem::locally_unset_primitive_projections(doc)
         } else {
-            vec![TopLevelItem::Code(group([doc.clone(), hardline()]))]
+            [doc.to_vec(), vec![TopLevelItem::Line]].concat()
         }
     }
 
