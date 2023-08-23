@@ -178,29 +178,6 @@ where
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
 
-/// locally unsets primitive projecitons
-pub(crate) fn locally_unset_primitive_projections<'a>(doc: &Doc<'a>) -> Doc<'a> {
-    group([
-        text("Unset Primitive Projections."),
-        hardline(),
-        doc.clone(),
-        hardline(),
-        text("Global Set Primitive Projections."),
-    ])
-}
-
-/// locally unsets primitive projecitons if the condition is satisfied
-pub(crate) fn locally_unset_primitive_projections_if<'a>(
-    condition: bool,
-    doc: &Doc<'a>,
-) -> Doc<'a> {
-    if condition {
-        locally_unset_primitive_projections(doc)
-    } else {
-        group([doc.clone(), hardline()])
-    }
-}
-
 /// puts [doc] in a section or a module (that depends on [kind])
 pub(crate) fn enclose<'a, K, U>(kind: K, name: U, doc: Doc<'a>) -> Doc<'a>
 where

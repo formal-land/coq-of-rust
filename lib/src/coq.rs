@@ -148,20 +148,18 @@ impl<'a> TopLevelItem<'a> {
         TopLevelItem::Module(Module::new(
             name,
             [
-                vec![TopLevelItem::Code(
-                    render::locally_unset_primitive_projections_if(
-                        items.is_empty(),
-                        &Class::new(
-                            "Trait",
-                            ty_params.to_vec(),
-                            predicates.to_vec(),
-                            bounds.to_vec(),
-                            associated_types.to_vec(),
-                            items,
-                        )
-                        .to_doc(),
-                    ),
-                )],
+                TopLevelItem::locally_unset_primitive_projections_if(
+                    items.is_empty(),
+                    &Class::new(
+                        "Trait",
+                        ty_params.to_vec(),
+                        predicates.to_vec(),
+                        bounds.to_vec(),
+                        associated_types.to_vec(),
+                        items,
+                    )
+                    .to_doc(),
+                ),
                 instances
                     .iter()
                     .map(|i| TopLevelItem::Instance(i.to_owned()))
@@ -169,6 +167,27 @@ impl<'a> TopLevelItem<'a> {
             ]
             .concat(),
         ))
+    }
+
+    /// locally unsets primitive projecitons
+    pub(crate) fn locally_unset_primitive_projections(doc: &Doc<'a>) -> Vec<Self> {
+        vec![
+            TopLevelItem::Code(text("Unset Primitive Projections.")),
+            TopLevelItem::Code(doc.clone()),
+            TopLevelItem::Code(text("Global Set Primitive Projections.")),
+        ]
+    }
+
+    /// locally unsets primitive projecitons if the condition is satisfied
+    pub(crate) fn locally_unset_primitive_projections_if(
+        condition: bool,
+        doc: &Doc<'a>,
+    ) -> Vec<Self> {
+        if condition {
+            TopLevelItem::locally_unset_primitive_projections(doc)
+        } else {
+            vec![TopLevelItem::Code(group([doc.clone(), hardline()]))]
+        }
     }
 
     /// decides whether to enclose [doc] within a section with a context

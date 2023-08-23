@@ -1633,8 +1633,8 @@ impl TopLevelItem {
                             VariantItem::Struct { fields } => concat([
                                 coq::Module::new(
                                     name,
-                                    vec![coq::TopLevelItem::Code(
-                                        locally_unset_primitive_projections(&concat([
+                                    coq::TopLevelItem::locally_unset_primitive_projections(
+                                        &concat([
                                             nest([
                                                 text("Record"),
                                                 line(),
@@ -1672,8 +1672,8 @@ impl TopLevelItem {
                                                 ])
                                             },
                                             text("}."),
-                                        ])),
-                                    )],
+                                        ]),
+                                    ),
                                 )
                                 .to_doc(),
                                 hardline(),
