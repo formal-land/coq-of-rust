@@ -1627,56 +1627,59 @@ impl TopLevelItem {
                 nest([text("Module"), line(), text(name), text(".")]),
                 nest([
                     hardline(),
-                    concat(variants.iter().map(|(name, fields)| match fields {
-                        VariantItem::Tuple { .. } => nil(),
-                        VariantItem::Struct { fields } => concat([
-                            module(
-                                name,
-                                vec![coq::TopLevelItem::Code(
-                                    locally_unset_primitive_projections(&concat([
-                                        nest([
-                                            text("Record"),
-                                            line(),
-                                            text("t"),
-                                            line(),
-                                            text(":"),
-                                            line(),
-                                            text("Set"),
-                                            line(),
-                                            text(":="),
-                                            line(),
-                                            text("{"),
-                                        ]),
-                                        if fields.is_empty() {
-                                            text(" ")
-                                        } else {
-                                            concat([
-                                                nest([
+                    concat(variants.iter().map(|(name, fields)| {
+                        match fields {
+                            VariantItem::Tuple { .. } => nil(),
+                            VariantItem::Struct { fields } => concat([
+                                coq::Module::new(
+                                    name,
+                                    vec![coq::TopLevelItem::Code(
+                                        locally_unset_primitive_projections(&concat([
+                                            nest([
+                                                text("Record"),
+                                                line(),
+                                                text("t"),
+                                                line(),
+                                                text(":"),
+                                                line(),
+                                                text("Set"),
+                                                line(),
+                                                text(":="),
+                                                line(),
+                                                text("{"),
+                                            ]),
+                                            if fields.is_empty() {
+                                                text(" ")
+                                            } else {
+                                                concat([
+                                                    nest([
+                                                        hardline(),
+                                                        intersperse(
+                                                            fields.iter().map(|(name, ty)| {
+                                                                nest([
+                                                                    text(name),
+                                                                    line(),
+                                                                    text(":"),
+                                                                    line(),
+                                                                    ty.to_doc(false),
+                                                                    text(";"),
+                                                                ])
+                                                            }),
+                                                            [hardline()],
+                                                        ),
+                                                    ]),
                                                     hardline(),
-                                                    intersperse(
-                                                        fields.iter().map(|(name, ty)| {
-                                                            nest([
-                                                                text(name),
-                                                                line(),
-                                                                text(":"),
-                                                                line(),
-                                                                ty.to_doc(false),
-                                                                text(";"),
-                                                            ])
-                                                        }),
-                                                        [hardline()],
-                                                    ),
-                                                ]),
-                                                hardline(),
-                                            ])
-                                        },
-                                        text("}."),
-                                    ])),
-                                )],
-                            ),
-                            hardline(),
-                            hardline(),
-                        ]),
+                                                ])
+                                            },
+                                            text("}."),
+                                        ])),
+                                    )],
+                                )
+                                .to_doc(),
+                                hardline(),
+                                hardline(),
+                            ]),
+                        }
                     })),
                     nest([
                         text("Inductive"),
@@ -1754,7 +1757,7 @@ impl TopLevelItem {
                 } else {
                     nil()
                 },
-                module(
+                coq::Module::new(
                     name,
                     coq::TopLevelItem::add_context_in_section_if_necessary(
                         name,
@@ -1861,7 +1864,8 @@ impl TopLevelItem {
                             },
                         ]))],
                     ),
-                ),
+                )
+                .to_doc(),
                 hardline(),
                 nest([
                     text("Definition"),
@@ -1886,7 +1890,7 @@ impl TopLevelItem {
                 ty_params,
                 fields,
             } => group([
-                module(
+                coq::Module::new(
                     name,
                     coq::TopLevelItem::add_context_in_section_if_necessary(
                         name,
@@ -1990,7 +1994,8 @@ impl TopLevelItem {
                             ),
                         ]))],
                     ),
-                ),
+                )
+                .to_doc(),
                 hardline(),
                 nest([
                     text("Definition"),
@@ -2005,7 +2010,7 @@ impl TopLevelItem {
                 ]),
             ]),
             TopLevelItem::TypeStructUnit { name, ty_params } => group([
-                module(
+                coq::Module::new(
                     name,
                     coq::TopLevelItem::add_context_in_section_if_necessary(
                         name,
@@ -2022,7 +2027,8 @@ impl TopLevelItem {
                             nest([text("Build"), text(".")]),
                         ]))],
                     ),
-                ),
+                )
+                .to_doc(),
                 hardline(),
                 nest([
                     text("Definition"),

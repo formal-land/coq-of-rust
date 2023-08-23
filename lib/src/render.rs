@@ -215,11 +215,6 @@ where
     ])
 }
 
-/// puts [doc] in a module of name [name]
-pub(crate) fn module<'a>(name: &'a str, content: Vec<coq::TopLevelItem<'a>>) -> Doc<'a> {
-    coq::Module::new(name, content).to_doc()
-}
-
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
 pub(crate) fn new_trait_typeclass_header<'a>(
