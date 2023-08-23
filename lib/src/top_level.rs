@@ -987,23 +987,10 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
             }
         }
         ImplItem::Definition {
-            definition:
-                FunDefinition {
-                    name,
-                    ty_params,
-                    where_predicates,
-                    signature_and_body,
-                    is_dead_code,
-                },
+            definition,
             is_method,
         } => ImplItem::Definition {
-            definition: FunDefinition {
-                name,
-                ty_params,
-                where_predicates,
-                signature_and_body: signature_and_body.mt(),
-                is_dead_code,
-            },
+            definition: definition.mt(),
             is_method,
         },
         ImplItem::Type { .. } => item,
@@ -1074,19 +1061,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 }
             },
         },
-        TopLevelItem::Definition(FunDefinition {
-            name,
-            ty_params,
-            where_predicates,
-            signature_and_body,
-            is_dead_code,
-        }) => TopLevelItem::Definition(FunDefinition {
-            name,
-            ty_params,
-            where_predicates,
-            signature_and_body: signature_and_body.mt(),
-            is_dead_code,
-        }),
+        TopLevelItem::Definition(definiiton) => TopLevelItem::Definition(definiiton.mt()),
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
         TopLevelItem::TypeStructStruct { .. } => item,
@@ -1147,6 +1122,16 @@ pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
 }
 
 impl FunDefinition {
+    fn mt(self) -> Self {
+        FunDefinition {
+            name: self.name,
+            ty_params: self.ty_params,
+            where_predicates: self.where_predicates,
+            signature_and_body: self.signature_and_body.mt(),
+            is_dead_code: self.is_dead_code,
+        }
+    }
+
     fn to_coq<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Vec<coq::TopLevelItem<'a>> {
         let types_for_f = types_for_f(extra_data);
 
