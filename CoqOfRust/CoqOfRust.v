@@ -992,7 +992,6 @@ Module core.
   End ops.
 End core.
 
-Require CoqOfRust._std.any.
 Require CoqOfRust._std.arch.
 Require CoqOfRust._std.array.
 Require CoqOfRust._std.ascii.
@@ -1035,7 +1034,6 @@ Require Import CoqOfRust._std.time.
 
 
 Module std.
-  Module any := _std.any.
   Module arch := _std.arch.
   Module array := _std.array.
   Module ascii := _std.ascii.
