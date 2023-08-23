@@ -79,7 +79,7 @@ pub(crate) fn reorder_definitions_inplace(
 
     for def_id in &definitions_ids {
         let def_name = get_name(tcx, *def_id);
-        let context = get_context_name(tcx, &def_id);
+        let context = get_context_name(tcx, def_id);
         let pos = definitions_ids
             .iter()
             .position(|elm| elm == def_id)
