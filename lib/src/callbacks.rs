@@ -31,7 +31,7 @@ impl Callbacks for ToCoq {
         let (crate_name, coq_output) = queries.global_ctxt().unwrap().enter(|ctxt| {
             let current_crate_name = ctxt.crate_name(rustc_hir::def_id::LOCAL_CRATE);
             let current_crate_name_string = current_crate_name.to_string();
-	    eprintln!("Compiling create {current_crate_name_string:}");
+            eprintln!("Compiling create {current_crate_name_string:}");
             (
                 current_crate_name_string.clone(),
                 top_level_to_coq(
