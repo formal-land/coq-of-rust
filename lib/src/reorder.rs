@@ -61,7 +61,7 @@ pub(crate) fn reorder_definitions_inplace(
             definitions
                 .iter()
 		.enumerate()
-                .map(|(i, def)| format!("\x1b[0;31mreorder before: {i:6} {}::{}::{}\x1b[0m", env.file, get_context_name(tcx, &def.hir_id()), get_name(tcx, def.hir_id())))
+                .map(|(i, def)| format!("\x1b[0;31mreorder before: {i:6} {}/{} {}\x1b[0m", env.file, get_context_name(tcx, &def.hir_id()), get_name(tcx, def.hir_id())))
                 .collect::<Vec<String>>()
                 .join("\n")
         );
@@ -101,7 +101,7 @@ pub(crate) fn reorder_definitions_inplace(
                 .map(|def| {
 		    let id = def.hir_id();
 		    let pos = definitions_ids.iter().position(|x| *x == id).unwrap_or(0);
-		    format!("\x1b[0;32mreorder after:  {pos:6} {}::{}::{}\x1b[0m", env.file, get_context_name(tcx, &def.hir_id()), get_name(tcx, def.hir_id()))
+		    format!("\x1b[0;32mreorder after:  {pos:6} {}/{} {}\x1b[0m", env.file, get_context_name(tcx, &def.hir_id()), get_name(tcx, def.hir_id()))
 		})
                 .collect::<Vec<String>>()
                 .join("\n")
