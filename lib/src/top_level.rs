@@ -2153,7 +2153,7 @@ impl TopLevelItem {
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
                                         ident: None,
-                                        ty: text("Trait"),
+                                        ty: coq::Expression::Variable(Path::new(&["Trait"])),
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
@@ -2186,11 +2186,15 @@ impl TopLevelItem {
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
                                         ident: None,
-                                        ty: (concat([
-                                            text("Trait"),
-                                            line(),
-                                            concat([text(format!("({name} := {name})"))]),
-                                        ])),
+                                        ty: coq::Expression::Application {
+                                            func: Box::new(coq::Expression::Variable(Path::new(
+                                                &["Trait"],
+                                            ))),
+                                            param: Some(name.to_string()),
+                                            arg: Box::new(coq::Expression::Variable(Path::new(&[
+                                                name,
+                                            ]))),
+                                        },
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
@@ -2200,6 +2204,7 @@ impl TopLevelItem {
                                     "Notation".to_string(),
                                     "DoubleColonType".to_string(),
                                 ]))),
+                                param: None,
                                 arg: Box::new(coq::Expression::Variable(Path::new(&[
                                     "Self".to_string()
                                 ]))),
@@ -2218,7 +2223,7 @@ impl TopLevelItem {
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
                                         ident: None,
-                                        ty: text("Trait"),
+                                        ty: coq::Expression::Variable(Path::new(&["Trait"])),
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),

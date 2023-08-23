@@ -230,9 +230,9 @@ pub(crate) fn to_valid_coq_name(str: String) -> String {
 }
 
 impl Path {
-    pub(crate) fn new(segments: &[String]) -> Self {
+    pub(crate) fn new<S: ToString>(segments: &[S]) -> Self {
         Path {
-            segments: segments.to_owned(),
+            segments: segments.iter().map(|s| s.to_string()).collect(),
         }
     }
 

@@ -58,7 +58,7 @@ pub(crate) struct Class<'a> {
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
     name: &'a str,
-    parameters: Vec<ArgSpec<'a>>,
+    parameters: Vec<ArgSpec>,
     class: Expression,
     field: Doc<'a>,
     value: Doc<'a>,
@@ -69,6 +69,7 @@ pub(crate) struct Instance<'a> {
 pub(crate) enum Expression {
     Application {
         func: Box<Expression>,
+        param: Option<String>,
         arg: Box<Expression>,
     },
     Variable(Path),
@@ -76,16 +77,22 @@ pub(crate) enum Expression {
 
 #[derive(Clone)]
 /// a specification of an argument of a coq construction
-pub(crate) struct ArgSpec<'a> {
-    decl: ArgDecl<'a>,
+pub(crate) struct ArgSpec {
+    decl: ArgDecl,
     kind: ArgSpecKind,
 }
 
 #[derive(Clone)]
 /// a variant of the argument specification
-pub(crate) enum ArgDecl<'a> {
-    Normal { ident: String, ty: Option<Doc<'a>> },
-    Generalized { ident: Option<String>, ty: Doc<'a> },
+pub(crate) enum ArgDecl {
+    Normal {
+        ident: String,
+        ty: Option<Expression>,
+    },
+    Generalized {
+        ident: Option<String>,
+        ty: Expression,
+    },
 }
 
 #[derive(Clone)]
@@ -267,7 +274,7 @@ impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
         name: &'a str,
-        parameters: &[ArgSpec<'a>],
+        parameters: &[ArgSpec],
         class: Expression,
         field: Doc<'a>,
         value: Doc<'a>,
@@ -305,17 +312,28 @@ impl<'a> Instance<'a> {
 impl Expression {
     pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
         match self {
-            Self::Application { func, arg } => paren(
+            Self::Application { func, param, arg } => paren(
                 with_paren,
-                group([func.to_doc(false), line(), arg.to_doc(true)]),
+                group([
+                    func.to_doc(false),
+                    line(),
+                    match param {
+                        Some(param) => render::round_brackets(group([
+                            text(param.to_owned()),
+                            text(" := "),
+                            arg.to_doc(true),
+                        ])),
+                        None => arg.to_doc(true),
+                    },
+                ]),
             ),
             Self::Variable(path) => path.to_doc(),
         }
     }
 }
 
-impl<'a> ArgSpec<'a> {
-    pub(crate) fn new(decl: &ArgDecl<'a>, kind: ArgSpecKind) -> Self {
+impl ArgSpec {
+    pub(crate) fn new(decl: &ArgDecl, kind: ArgSpecKind) -> Self {
         ArgSpec {
             decl: decl.to_owned(),
             kind,
@@ -326,13 +344,13 @@ impl<'a> ArgSpec<'a> {
         ArgSpec {
             decl: ArgDecl::Generalized {
                 ident: Some("H".to_string()),
-                ty: text("State.Trait"),
+                ty: Expression::Variable(Path::new(&["State", "Trait"])),
             },
             kind: ArgSpecKind::Implicit,
         }
     }
 
-    pub(crate) fn to_doc(&self) -> Doc<'a> {
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
         let brackets = match self.kind {
             ArgSpecKind::Explicit => render::round_brackets,
             ArgSpecKind::Implicit => render::curly_brackets,
@@ -341,7 +359,7 @@ impl<'a> ArgSpec<'a> {
             ArgDecl::Normal { ident, ty } => brackets(concat([
                 text(ident),
                 match ty {
-                    Some(ty) => concat([line(), text(":"), line(), ty]),
+                    Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
                     None => nil(),
                 },
             ])),
@@ -352,7 +370,7 @@ impl<'a> ArgSpec<'a> {
                         Some(ident) => concat([text(ident), line(), text(":"), line()]),
                         None => nil(),
                     },
-                    ty,
+                    ty.to_doc(false),
                 ])),
             ]),
         }
