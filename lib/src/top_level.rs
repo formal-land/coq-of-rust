@@ -1756,10 +1756,10 @@ impl TopLevelItem {
                 },
                 module(
                     name,
-                    vec![coq::TopLevelItem::add_context_in_section_if_necessary(
+                    coq::TopLevelItem::add_context_in_section_if_necessary(
                         name,
                         ty_params,
-                        group([
+                        &[coq::TopLevelItem::Code(group([
                             text("Unset Primitive Projections."),
                             hardline(),
                             nest([
@@ -1859,8 +1859,8 @@ impl TopLevelItem {
                             } else {
                                 nil()
                             },
-                        ]),
-                    )],
+                        ]))],
+                    ),
                 ),
                 hardline(),
                 nest([
@@ -1888,10 +1888,10 @@ impl TopLevelItem {
             } => group([
                 module(
                     name,
-                    vec![coq::TopLevelItem::add_context_in_section_if_necessary(
+                    coq::TopLevelItem::add_context_in_section_if_necessary(
                         name,
                         ty_params,
-                        group([
+                        &[coq::TopLevelItem::Code(group([
                             text("Unset Primitive Projections."),
                             hardline(),
                             nest([
@@ -1988,8 +1988,8 @@ impl TopLevelItem {
                                 }),
                                 [nil()],
                             ),
-                        ]),
-                    )],
+                        ]))],
+                    ),
                 ),
                 hardline(),
                 nest([
@@ -2007,10 +2007,10 @@ impl TopLevelItem {
             TopLevelItem::TypeStructUnit { name, ty_params } => group([
                 module(
                     name,
-                    vec![coq::TopLevelItem::add_context_in_section_if_necessary(
+                    coq::TopLevelItem::add_context_in_section_if_necessary(
                         name,
                         ty_params,
-                        group([
+                        &[coq::TopLevelItem::Code(group([
                             nest([
                                 text("Inductive"),
                                 line(),
@@ -2020,8 +2020,8 @@ impl TopLevelItem {
                             ]),
                             line(),
                             nest([text("Build"), text(".")]),
-                        ]),
-                    )],
+                        ]))],
+                    ),
                 ),
                 hardline(),
                 nest([

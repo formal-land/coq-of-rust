@@ -139,24 +139,25 @@ impl<'a> TopLevelItem<'a> {
     pub(crate) fn add_context_in_section_if_necessary(
         name: &'a str,
         ty_params: &Vec<String>,
-        doc: Doc<'a>,
-    ) -> Self {
+        doc: &[TopLevelItem<'a>],
+    ) -> Vec<Self> {
         if ty_params.is_empty() {
-            TopLevelItem::Code(doc)
+            doc.to_owned()
         } else {
-            TopLevelItem::Section(Section::new(
+            vec![TopLevelItem::Section(Section::new(
                 name,
                 &[
-                    TopLevelItem::Context(Context::new(&[ArgSpec::new(
+                    &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
                         &ArgDecl::Normal {
                             idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
                             ty: Some(Expression::set()),
                         },
                         ArgSpecKind::Implicit,
-                    )])),
-                    TopLevelItem::Code(doc),
-                ],
-            ))
+                    )]))],
+                    doc,
+                ]
+                .concat(),
+            ))]
         }
     }
 }
