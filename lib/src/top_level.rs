@@ -1001,7 +1001,7 @@ fn mt_impl_item(item: ImplItem) -> ImplItem {
                 name,
                 ty_params,
                 where_predicates,
-                signature_and_body: mt_fn_sig_and_body(signature_and_body),
+                signature_and_body: signature_and_body.mt(),
                 is_dead_code,
             },
             is_method,
@@ -1014,18 +1014,19 @@ fn mt_impl_items(items: Vec<ImplItem>) -> Vec<ImplItem> {
     items.into_iter().map(mt_impl_item).collect()
 }
 
-fn mt_fn_sig_and_body(signature_and_body: FnSigAndBody) -> FnSigAndBody {
-    let FnSigAndBody { args, ret_ty, body } = signature_and_body;
-    FnSigAndBody {
-        args,
-        ret_ty: CoqType::monad(mt_ty(ret_ty)),
-        body: match body {
-            None => body,
-            Some(body) => {
-                let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                Some(Box::new(Expr::Block(Box::new(body))))
-            }
-        },
+impl FnSigAndBody {
+    fn mt(self) -> Self {
+        FnSigAndBody {
+            args: self.args,
+            ret_ty: CoqType::monad(mt_ty(self.ret_ty)),
+            body: match self.body {
+                None => self.body,
+                Some(body) => {
+                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                    Some(Box::new(Expr::Block(Box::new(body))))
+                }
+            },
+        }
     }
 }
 
@@ -1048,7 +1049,7 @@ fn mt_trait_item(body: TraitItem) -> TraitItem {
         } => TraitItem::DefinitionWithDefault {
             ty_params,
             where_predicates,
-            signature_and_body: mt_fn_sig_and_body(signature_and_body),
+            signature_and_body: signature_and_body.mt(),
         },
     }
 }
@@ -1083,7 +1084,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             name,
             ty_params,
             where_predicates,
-            signature_and_body: mt_fn_sig_and_body(signature_and_body),
+            signature_and_body: signature_and_body.mt(),
             is_dead_code,
         }),
         TopLevelItem::TypeAlias { .. } => item,
