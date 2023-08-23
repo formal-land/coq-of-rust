@@ -56,18 +56,14 @@ pub(crate) fn reorder_definitions_inplace(
     }
 
     if env.configuration.debug_reorder {
-        eprintln!("Reorder debug: ------- crate: {} ---------", env.file);
         eprintln!(
-            "Reorder debug: Reordering definitions at {}",
-            get_context_name(tcx, &definitions[0].hir_id())
-        );
-        eprintln!(
-            "Reorder debug: {}",
+            "{}",
             definitions
                 .iter()
-                .map(|def| { tcx.hir().ident(def.hir_id()).as_str().to_string() })
+		.enumerate()
+                .map(|(i, def)| format!("\x1b[0;31mreorder before: {i:6} {}::{}::{}\x1b[0m", env.file, get_context_name(tcx, &def.hir_id()), get_name(tcx, def.hir_id())))
                 .collect::<Vec<String>>()
-                .join(",")
+                .join("\n")
         );
     }
 
@@ -97,6 +93,21 @@ pub(crate) fn reorder_definitions_inplace(
 	}
     };
 
+    if env.configuration.debug_reorder {
+        eprintln!(
+            "{}",
+            definitions
+                .iter()
+                .map(|def| {
+		    let id = def.hir_id();
+		    let pos = definitions_ids.iter().position(|x| *x == id).unwrap_or(0);
+		    format!("\x1b[0;32mreorder after:  {pos:6} {}::{}::{}\x1b[0m", env.file, get_context_name(tcx, &def.hir_id()), get_name(tcx, def.hir_id()))
+		})
+                .collect::<Vec<String>>()
+                .join("\n")
+        );
+    }
+
     let identifiers = definitions
         .iter()
         .filter_map(|def| {
@@ -109,22 +120,6 @@ pub(crate) fn reorder_definitions_inplace(
         })
         .unique()
         .collect::<Vec<String>>();
-
-    if env.configuration.debug_reorder {
-        eprintln!(
-            "Reorder debug: Reordered definitions at {}",
-            get_context_name(tcx, &definitions[0].hir_id())
-        );
-        eprintln!(
-            "Reorder debug: {}",
-            definitions
-                .iter()
-                .map(|def| { get_name(tcx, def.hir_id()) })
-                .collect::<Vec<String>>()
-                .join(",")
-        );
-        eprintln!("Reorder debug: ----------------------------");
-    }
 
     let context = get_context_name(tcx, &definitions[0].hir_id());
     env.reorder_map.insert(context, identifiers);
