@@ -170,8 +170,7 @@ Module storage.
     Global Instance
         Method_PreferredKey
         {PreferredKey}
-        `(Trait
-        (PreferredKey := PreferredKey))
+        `(Trait (PreferredKey := PreferredKey))
       : Notation.DoubleColonType Self "PreferredKey" := {
       Notation.double_colon_type := PreferredKey;
     }.
@@ -291,8 +290,7 @@ Module StorableHint.
   Global Instance
       Method_PreferredKey
       {PreferredKey}
-      `(Trait
-      (PreferredKey := PreferredKey))
+      `(Trait (PreferredKey := PreferredKey))
     : Notation.DoubleColonType Self "PreferredKey" := {
     Notation.double_colon_type := PreferredKey;
   }.

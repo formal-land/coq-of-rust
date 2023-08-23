@@ -177,8 +177,7 @@ Module codegen.
       Global Instance
           Method_EnvAccess
           {EnvAccess}
-          `(Trait
-          (EnvAccess := EnvAccess))
+          `(Trait (EnvAccess := EnvAccess))
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
@@ -197,8 +196,7 @@ Module codegen.
       Global Instance
           Method_EnvAccess
           {EnvAccess}
-          `(Trait
-          (EnvAccess := EnvAccess))
+          `(Trait (EnvAccess := EnvAccess))
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
@@ -275,8 +273,7 @@ Module codegen.
         Global Instance
             Method_LenTopics
             {LenTopics}
-            `(Trait
-            (LenTopics := LenTopics))
+            `(Trait (LenTopics := LenTopics))
           : Notation.DoubleColonType Self "LenTopics" := {
           Notation.double_colon_type := LenTopics;
         }.
@@ -332,8 +329,7 @@ Module codegen.
         Global Instance
             Method_Forwarder
             {Forwarder}
-            `(Trait
-            (Forwarder := Forwarder))
+            `(Trait (Forwarder := Forwarder))
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
@@ -374,8 +370,7 @@ Module codegen.
         Global Instance
             Method_Forwarder
             {Forwarder}
-            `(Trait
-            (Forwarder := Forwarder))
+            `(Trait (Forwarder := Forwarder))
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
@@ -610,8 +605,7 @@ Module env.
     Global Instance
         Method_EnvAccess
         {EnvAccess}
-        `(Trait
-        (EnvAccess := EnvAccess))
+        `(Trait (EnvAccess := EnvAccess))
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
@@ -630,8 +624,7 @@ Module env.
     Global Instance
         Method_EnvAccess
         {EnvAccess}
-        `(Trait
-        (EnvAccess := EnvAccess))
+        `(Trait (EnvAccess := EnvAccess))
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
@@ -740,8 +733,7 @@ Module event.
       Global Instance
           Method_LenTopics
           {LenTopics}
-          `(Trait
-          (LenTopics := LenTopics))
+          `(Trait (LenTopics := LenTopics))
         : Notation.DoubleColonType Self "LenTopics" := {
         Notation.double_colon_type := LenTopics;
       }.
@@ -836,8 +828,7 @@ Module topics.
     Global Instance
         Method_LenTopics
         {LenTopics}
-        `(Trait
-        (LenTopics := LenTopics))
+        `(Trait (LenTopics := LenTopics))
       : Notation.DoubleColonType Self "LenTopics" := {
       Notation.double_colon_type := LenTopics;
     }.
@@ -938,8 +929,7 @@ Module trait_def.
       Global Instance
           Method_Forwarder
           {Forwarder}
-          `(Trait
-          (Forwarder := Forwarder))
+          `(Trait (Forwarder := Forwarder))
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
@@ -976,8 +966,7 @@ Module trait_def.
       Global Instance
           Method_Forwarder
           {Forwarder}
-          `(Trait
-          (Forwarder := Forwarder))
+          `(Trait (Forwarder := Forwarder))
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
@@ -1050,8 +1039,7 @@ Module call_builder.
     Global Instance
         Method_Forwarder
         {Forwarder}
-        `(Trait
-        (Forwarder := Forwarder))
+        `(Trait (Forwarder := Forwarder))
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
@@ -1087,8 +1075,7 @@ Module call_builder.
     Global Instance
         Method_Forwarder
         {Forwarder}
-        `(Trait
-        (Forwarder := Forwarder))
+        `(Trait (Forwarder := Forwarder))
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
@@ -2362,8 +2349,7 @@ Module chain_extension.
     Global Instance
         Method_ErrorCode
         {ErrorCode}
-        `(Trait
-        (ErrorCode := ErrorCode))
+        `(Trait (ErrorCode := ErrorCode))
       : Notation.DoubleColonType Self "ErrorCode" := {
       Notation.double_colon_type := ErrorCode;
     }.
@@ -2402,8 +2388,7 @@ Module chain_extension.
     Global Instance
         Method_ReturnType
         {ReturnType}
-        `(Trait
-        (ReturnType := ReturnType))
+        `(Trait (ReturnType := ReturnType))
       : Notation.DoubleColonType Self "ReturnType" := {
       Notation.double_colon_type := ReturnType;
     }.
@@ -2495,8 +2480,7 @@ Module Output.
   Global Instance
       Method_ReturnType
       {ReturnType}
-      `(Trait
-      (ReturnType := ReturnType))
+      `(Trait (ReturnType := ReturnType))
     : Notation.DoubleColonType Self "ReturnType" := {
     Notation.double_colon_type := ReturnType;
   }.

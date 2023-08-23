@@ -118,8 +118,7 @@ Module types.
     Global Instance
         Method_AccountId
         {AccountId}
-        `(Trait
-        (AccountId := AccountId))
+        `(Trait (AccountId := AccountId))
       : Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
     }.
@@ -134,24 +133,21 @@ Module types.
     Global Instance
         Method_Timestamp
         {Timestamp}
-        `(Trait
-        (Timestamp := Timestamp))
+        `(Trait (Timestamp := Timestamp))
       : Notation.DoubleColonType Self "Timestamp" := {
       Notation.double_colon_type := Timestamp;
     }.
     Global Instance
         Method_BlockNumber
         {BlockNumber}
-        `(Trait
-        (BlockNumber := BlockNumber))
+        `(Trait (BlockNumber := BlockNumber))
       : Notation.DoubleColonType Self "BlockNumber" := {
       Notation.double_colon_type := BlockNumber;
     }.
     Global Instance
         Method_ChainExtension
         {ChainExtension}
-        `(Trait
-        (ChainExtension := ChainExtension))
+        `(Trait (ChainExtension := ChainExtension))
       : Notation.DoubleColonType Self "ChainExtension" := {
       Notation.double_colon_type := ChainExtension;
     }.
@@ -302,16 +298,14 @@ Module Environment.
   Global Instance
       Method_BlockNumber
       {BlockNumber}
-      `(Trait
-      (BlockNumber := BlockNumber))
+      `(Trait (BlockNumber := BlockNumber))
     : Notation.DoubleColonType Self "BlockNumber" := {
     Notation.double_colon_type := BlockNumber;
   }.
   Global Instance
       Method_ChainExtension
       {ChainExtension}
-      `(Trait
-      (ChainExtension := ChainExtension))
+      `(Trait (ChainExtension := ChainExtension))
     : Notation.DoubleColonType Self "ChainExtension" := {
     Notation.double_colon_type := ChainExtension;
   }.
@@ -4997,8 +4991,7 @@ Module topics.
     Global Instance
         Method_RemainingTopics
         {RemainingTopics}
-        `(Trait
-        (RemainingTopics := RemainingTopics))
+        `(Trait (RemainingTopics := RemainingTopics))
       : Notation.DoubleColonType Self "RemainingTopics" := {
       Notation.double_colon_type := RemainingTopics;
     }.
@@ -5168,8 +5161,7 @@ Module Topics.
   Global Instance
       Method_RemainingTopics
       {RemainingTopics}
-      `(Trait
-      (RemainingTopics := RemainingTopics))
+      `(Trait (RemainingTopics := RemainingTopics))
     : Notation.DoubleColonType Self "RemainingTopics" := {
     Notation.double_colon_type := RemainingTopics;
   }.
