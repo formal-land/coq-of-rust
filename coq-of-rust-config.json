@@ -1,6 +1,6 @@
 {
   "axiomatize": false,
-  "debug_reorder": true,
+  "debug_reorder": false,
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": {
@@ -23,6 +23,8 @@
     "ink_env": {
       "top_level": {
         "arithmetic": "types"
+      },
+      "top_level::arithmetic": {
       }
     }
   }
