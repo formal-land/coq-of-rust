@@ -39,8 +39,7 @@ pub(crate) struct Section<'a> {
 #[derive(Clone)]
 /// a coq `Context` item
 pub(crate) struct Context {
-    idents: Vec<String>,
-    ty: Expression,
+    args: Vec<ArgSpec>,
 }
 
 #[derive(Clone)]
@@ -86,11 +85,16 @@ pub(crate) struct ArgSpec {
 /// a variant of the argument specification
 pub(crate) enum ArgDecl {
     Normal {
-        ident: String,
+        // @TODO: try to make it really non-empty
+        /// a non-empty vector of identifiers
+        idents: Vec<String>,
+        /// a type of the identifiers
         ty: Option<Expression>,
     },
     Generalized {
-        ident: Option<String>,
+        /// a possibly empty vector of identifiers
+        idents: Vec<String>,
+        /// a type of the identifiers
         ty: Expression,
     },
 }
@@ -202,10 +206,9 @@ impl<'a> Section<'a> {
 }
 
 impl Context {
-    pub(crate) fn new(idents: &[String], ty: &Expression) -> Self {
+    pub(crate) fn new(args: &[ArgSpec]) -> Self {
         Context {
-            idents: idents.to_owned(),
-            ty: ty.to_owned(),
+            args: args.to_owned(),
         }
     }
 
@@ -213,20 +216,7 @@ impl Context {
         nest([
             text("Context"),
             line(),
-            if self.idents.is_empty() {
-                // I assume that an empty identifier list means a typeclass definition
-                group([text("`{"), self.ty.to_doc(false), text("}")])
-            } else {
-                group([
-                    text("{"),
-                    intersperse(self.idents.to_owned(), [line()]),
-                    line(),
-                    text(":"),
-                    line(),
-                    self.ty.to_doc(false),
-                    text("}"),
-                ])
-            },
+            intersperse(self.args.iter().map(|arg| arg.to_doc()), [line()]),
             text("."),
         ])
     }
@@ -343,7 +333,7 @@ impl ArgSpec {
     pub(crate) fn monadic_typeclass_parameter() -> Self {
         ArgSpec {
             decl: ArgDecl::Generalized {
-                ident: Some("H".to_string()),
+                idents: vec!["H".to_string()],
                 ty: Expression::Variable(Path::new(&["State", "Trait"])),
             },
             kind: ArgSpecKind::Implicit,
@@ -356,19 +346,20 @@ impl ArgSpec {
             ArgSpecKind::Implicit => render::curly_brackets,
         };
         match self.decl.to_owned() {
-            ArgDecl::Normal { ident, ty } => brackets(concat([
-                text(ident),
+            ArgDecl::Normal { idents, ty } => brackets(concat([
+                intersperse(idents, [line()]),
                 match ty {
                     Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
                     None => nil(),
                 },
             ])),
-            ArgDecl::Generalized { ident, ty } => group([
+            ArgDecl::Generalized { idents, ty } => group([
                 text("`"),
                 brackets(concat([
-                    match ident {
-                        Some(ident) => concat([text(ident), line(), text(":"), line()]),
-                        None => nil(),
+                    if idents.is_empty() {
+                        nil()
+                    } else {
+                        concat([intersperse(idents, [line()]), line(), text(":"), line()])
                     },
                     ty.to_doc(false),
                 ])),

@@ -2152,7 +2152,7 @@ impl TopLevelItem {
                                 coq::ArgSpec::monadic_typeclass_parameter(),
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
-                                        ident: None,
+                                        idents: vec![],
                                         ty: coq::Expression::Variable(Path::new(&["Trait"])),
                                     },
                                     coq::ArgSpecKind::Explicit,
@@ -2178,14 +2178,14 @@ impl TopLevelItem {
                             &[
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Normal {
-                                        ident: name.to_owned(),
+                                        idents: vec![name.to_owned()],
                                         ty: None,
                                     },
                                     coq::ArgSpecKind::Implicit,
                                 ),
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
-                                        ident: None,
+                                        idents: vec![],
                                         ty: coq::Expression::Application {
                                             func: Box::new(coq::Expression::Variable(Path::new(
                                                 &["Trait"],
@@ -2222,7 +2222,7 @@ impl TopLevelItem {
                                 coq::ArgSpec::monadic_typeclass_parameter(),
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
-                                        ident: None,
+                                        idents: vec![],
                                         ty: coq::Expression::Variable(Path::new(&["Trait"])),
                                     },
                                     coq::ArgSpecKind::Explicit,

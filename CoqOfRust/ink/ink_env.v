@@ -2317,7 +2317,16 @@ Module call.
     Module CreateBuilder.
       Section CreateBuilder.
         Context
-          {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+          {E
+          ContractRef
+          CodeHash
+          GasLimit
+          Endowment
+          Args
+          Salt
+          RetType
+          :
+          Set}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : CodeHash;
@@ -2944,7 +2953,16 @@ Module create_builder.
   Module CreateBuilder.
     Section CreateBuilder.
       Context
-        {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+        {E
+        ContractRef
+        CodeHash
+        GasLimit
+        Endowment
+        Args
+        Salt
+        RetType
+        :
+        Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : CodeHash;

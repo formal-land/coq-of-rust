@@ -232,10 +232,13 @@ pub(crate) fn add_context_in_section_if_necessary<'a>(
         coq::Section::new(
             name,
             &[
-                coq::Context::new(
-                    ty_params,
-                    &coq::Expression::Variable(Path::new(&["Set".to_string()])),
-                )
+                coq::Context::new(&[coq::ArgSpec::new(
+                    &coq::ArgDecl::Normal {
+                        idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
+                        ty: Some(coq::Expression::Variable(Path::new(&["Set".to_string()]))),
+                    },
+                    coq::ArgSpecKind::Implicit,
+                )])
                 .to_doc(),
                 doc,
             ],
