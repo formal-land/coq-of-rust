@@ -2148,7 +2148,10 @@ impl TopLevelItem {
                             ty: _,
                         } => coq::Instance::new(
                             name,
-                            &[monadic_typeclass_parameter(), text("`(Trait)")],
+                            &[
+                                coq::ArgSpec::monadic_typeclass_parameter(),
+                                coq::ArgSpec::new(&text("`(Trait)")),
+                            ],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),
@@ -2167,13 +2170,13 @@ impl TopLevelItem {
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[
-                                concat([text("{"), text(name), text("}")]),
-                                concat([
+                                coq::ArgSpec::new(&concat([text("{"), text(name), text("}")])),
+                                coq::ArgSpec::new(&concat([
                                     text("`(Trait"),
                                     line(),
                                     concat([text(format!("({name} := {name})"))]),
                                     text(")"),
-                                ]),
+                                ])),
                             ],
                             coq::Expression::Application {
                                 func: Box::new(coq::Expression::Variable(Path::new(&[
@@ -2193,7 +2196,10 @@ impl TopLevelItem {
                             signature_and_body,
                         } => coq::Instance::new(
                             name,
-                            &[monadic_typeclass_parameter(), text("`(Trait)")],
+                            &[
+                                coq::ArgSpec::monadic_typeclass_parameter(),
+                                coq::ArgSpec::new(&text("`(Trait)")),
+                            ],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),

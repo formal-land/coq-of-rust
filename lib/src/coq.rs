@@ -56,7 +56,7 @@ pub(crate) struct Class<'a> {
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
     name: &'a str,
-    parameters: Vec<Doc<'a>>,
+    parameters: Vec<ArgSpec<'a>>,
     class: Expression,
     field: Doc<'a>,
     value: Doc<'a>,
@@ -72,7 +72,6 @@ pub(crate) enum Expression {
     Variable(Path),
 }
 
-#[allow(dead_code)]
 #[derive(Clone)]
 /// a specification of an argument of a coq construction
 pub(crate) struct ArgSpec<'a> {
@@ -248,7 +247,7 @@ impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
         name: &'a str,
-        parameters: &[Doc<'a>],
+        parameters: &[ArgSpec<'a>],
         class: Expression,
         field: Doc<'a>,
         value: Doc<'a>,
@@ -264,7 +263,15 @@ impl<'a> Instance<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
-            render::new_instance_header(self.name, &self.parameters, self.class.to_doc(false)),
+            render::new_instance_header(
+                self.name,
+                &self
+                    .parameters
+                    .iter()
+                    .map(|p| p.to_doc())
+                    .collect::<Vec<Doc<'a>>>(),
+                self.class.to_doc(false),
+            ),
             nest([
                 hardline(),
                 render::new_instance_body(self.field.to_owned(), self.value.to_owned()),
@@ -284,5 +291,23 @@ impl Expression {
             ),
             Self::Variable(path) => path.to_doc(),
         }
+    }
+}
+
+impl<'a> ArgSpec<'a> {
+    pub(crate) fn new(spec: &Doc<'a>) -> Self {
+        ArgSpec {
+            spec: spec.to_owned(),
+        }
+    }
+
+    pub(crate) fn monadic_typeclass_parameter() -> Self {
+        ArgSpec {
+            spec: render::monadic_typeclass_parameter(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        self.spec.to_owned()
     }
 }
