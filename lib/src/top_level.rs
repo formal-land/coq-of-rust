@@ -2131,6 +2131,7 @@ impl TopLevelItem {
                     .map(|(name, item)| {
                         concat([match item {
                             TraitItem::Definition { .. } => new_instance::<_, String>(
+                                true,
                                 name,
                                 &vec![],
                                 text("Notation.Dot"),
@@ -2138,6 +2139,7 @@ impl TopLevelItem {
                                 text(name),
                             ),
                             TraitItem::Type { .. } => new_instance(
+                                true,
                                 name,
                                 &vec![name],
                                 group([text("Notation.DoubleColonType"), line(), text("Self")]),
@@ -2149,6 +2151,7 @@ impl TopLevelItem {
                                 where_predicates,
                                 signature_and_body,
                             } => new_instance::<_, String>(
+                                true,
                                 name,
                                 &vec![],
                                 text("Notation.Dot"),
