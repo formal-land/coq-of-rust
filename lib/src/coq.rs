@@ -134,6 +134,32 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Section(section) => section.to_doc(),
         }
     }
+
+    /// decides whether to enclose [doc] within a section with a context
+    pub(crate) fn add_context_in_section_if_necessary(
+        name: &'a str,
+        ty_params: &Vec<String>,
+        doc: Doc<'a>,
+    ) -> Self {
+        if ty_params.is_empty() {
+            TopLevelItem::Code(doc)
+        } else {
+            TopLevelItem::Section(Section::new(
+                name,
+                &[
+                    Context::new(&[ArgSpec::new(
+                        &ArgDecl::Normal {
+                            idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
+                            ty: Some(Expression::set()),
+                        },
+                        ArgSpecKind::Implicit,
+                    )])
+                    .to_doc(),
+                    doc,
+                ],
+            ))
+        }
+    }
 }
 
 impl<'a> Module<'a> {

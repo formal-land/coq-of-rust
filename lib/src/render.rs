@@ -220,33 +220,6 @@ pub(crate) fn module<'a>(name: &'a str, content: Vec<coq::TopLevelItem<'a>>) -> 
     coq::Module::new(name, content).to_doc()
 }
 
-/// decides whether to enclose [doc] within a section with a context
-pub(crate) fn add_context_in_section_if_necessary<'a>(
-    name: &'a str,
-    ty_params: &Vec<String>,
-    doc: Doc<'a>,
-) -> Doc<'a> {
-    if ty_params.is_empty() {
-        doc
-    } else {
-        coq::Section::new(
-            name,
-            &[
-                coq::Context::new(&[coq::ArgSpec::new(
-                    &coq::ArgDecl::Normal {
-                        idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                        ty: Some(coq::Expression::set()),
-                    },
-                    coq::ArgSpecKind::Implicit,
-                )])
-                .to_doc(),
-                doc,
-            ],
-        )
-        .to_doc()
-    }
-}
-
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
 pub(crate) fn new_trait_typeclass_header<'a>(
