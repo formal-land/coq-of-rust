@@ -33,7 +33,7 @@ pub(crate) struct Module<'a> {
 /// a coq section
 pub(crate) struct Section<'a> {
     name: &'a str,
-    content: Vec<Doc<'a>>,
+    content: Vec<TopLevelItem<'a>>,
 }
 
 #[derive(Clone)]
@@ -147,15 +147,14 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Section(Section::new(
                 name,
                 &[
-                    Context::new(&[ArgSpec::new(
+                    TopLevelItem::Context(Context::new(&[ArgSpec::new(
                         &ArgDecl::Normal {
                             idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
                             ty: Some(Expression::set()),
                         },
                         ArgSpecKind::Implicit,
-                    )])
-                    .to_doc(),
-                    doc,
+                    )])),
+                    TopLevelItem::Code(doc),
                 ],
             ))
         }
@@ -215,7 +214,7 @@ impl<'a> Module<'a> {
 
 impl<'a> Section<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &'a str, content: &[Doc<'a>]) -> Self {
+    pub(crate) fn new(name: &'a str, content: &[TopLevelItem<'a>]) -> Self {
         Section {
             name,
             content: content.to_owned(),
@@ -226,7 +225,7 @@ impl<'a> Section<'a> {
         render::enclose(
             "Section",
             self.name,
-            intersperse(self.content.clone(), [hardline()]),
+            intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
         )
     }
 }
