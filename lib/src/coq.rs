@@ -12,6 +12,7 @@ pub(crate) enum TopLevelItem<'a> {
     Comment(Comment),
     Context(Context),
     Instance(Instance<'a>),
+    Line,
     Module(Module<'a>),
     Section(Section<'a>),
 }
@@ -130,6 +131,7 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Comment(comment) => comment.to_doc(),
             TopLevelItem::Context(context) => context.to_doc(),
             TopLevelItem::Instance(instance) => instance.to_doc(),
+            TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
             TopLevelItem::Section(section) => section.to_doc(),
         }

@@ -1146,25 +1146,23 @@ pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
 }
 
 impl FunDefinition {
-    fn to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
+    fn to_coq<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Vec<coq::TopLevelItem<'a>> {
         let types_for_f = types_for_f(extra_data);
 
-        group([
+        [
             if self.is_dead_code {
-                concat([
-                    coq::Comment::new("#[allow(dead_code)] - function was ignored by the compiler")
-                        .to_doc(),
-                    hardline(),
-                ])
+                vec![coq::TopLevelItem::Comment(coq::Comment::new(
+                    "#[allow(dead_code)] - function was ignored by the compiler",
+                ))]
             } else {
-                nil()
+                vec![]
             },
             // Printing instance of DoubleColon Class for [f]
             // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
             if ((&self.name) == "fmt") && is_extra(extra_data) {
                 match &self.signature_and_body.body {
-                    Some(body) => group([
-                        nest([
+                    Some(body) => vec![
+                        coq::TopLevelItem::Code(nest([
                             text("Parameter "),
                             body.parameter_name_for_fmt(),
                             text(" : "),
@@ -1181,10 +1179,9 @@ impl FunDefinition {
                             types_for_f,
                             self.signature_and_body.ret_ty.to_doc(false),
                             text("."),
-                        ]),
-                        hardline(),
-                        hardline(),
-                        nest([
+                        ])),
+                        coq::TopLevelItem::Line,
+                        coq::TopLevelItem::Code(nest([
                             text("Global Instance Deb_"),
                             body.parameter_name_for_fmt(),
                             text(" : "),
@@ -1211,36 +1208,32 @@ impl FunDefinition {
                                 line(),
                             ]),
                             text("}."),
-                        ]),
-                        hardline(),
-                        hardline(),
-                    ]),
-                    None => nil(),
+                        ])),
+                        coq::TopLevelItem::Line,
+                    ],
+                    None => vec![],
                 }
             } else {
-                nil()
+                vec![]
             },
             match &self.signature_and_body.body {
-                None => concat([
+                None => [
                     // if the return type is opaque define a corresponding opaque type
                     // @TODO: use also the parameter
                     if self.signature_and_body.ret_ty.has_opaque_types() {
-                        concat([
-                            nest([
-                                text("Parameter"),
-                                line(),
-                                text([&self.name, "_", "ret_ty"].concat()),
-                                line(),
-                                text(":"),
-                                line(),
-                                text("Set."),
-                            ]),
-                            hardline(),
-                        ])
+                        vec![coq::TopLevelItem::Code(nest([
+                            text("Parameter"),
+                            line(),
+                            text([&self.name, "_", "ret_ty"].concat()),
+                            line(),
+                            text(":"),
+                            line(),
+                            text("Set."),
+                        ]))]
                     } else {
-                        nil()
+                        vec![]
                     },
-                    nest([nest([
+                    vec![coq::TopLevelItem::Code(nest([nest([
                         nest([
                             text("Parameter"),
                             line(),
@@ -1306,9 +1299,10 @@ impl FunDefinition {
                             self.signature_and_body.ret_ty.to_doc(false)
                         },
                         text("."),
-                    ])]),
-                ]),
-                Some(body) => nest([
+                    ])]))],
+                ]
+                .concat(),
+                Some(body) => vec![coq::TopLevelItem::Code(nest([
                     nest([
                         nest([text("Definition"), line(), text(&self.name)]),
                         line(),
@@ -1363,9 +1357,17 @@ impl FunDefinition {
                     line(),
                     body.to_doc(false),
                     text("."),
-                ]),
+                ]))],
             },
-        ])
+        ]
+        .concat()
+    }
+
+    fn to_doc<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> Doc<'a> {
+        intersperse(
+            self.to_coq(extra_data).iter().map(|item| item.to_doc()),
+            [hardline()],
+        )
     }
 }
 
