@@ -2131,6 +2131,7 @@ impl TopLevelItem {
                             where_predicates,
                             ty: _,
                         } => coq::Instance::new(
+                            true,
                             name,
                             &[],
                             coq::Expression::Variable(coq::Path::new(&[
@@ -2149,6 +2150,7 @@ impl TopLevelItem {
                             text(name),
                         ),
                         TraitItem::Type { .. } => coq::Instance::new(
+                            false,
                             name,
                             &[name],
                             coq::Expression::Application {
@@ -2168,6 +2170,7 @@ impl TopLevelItem {
                             where_predicates,
                             signature_and_body,
                         } => coq::Instance::new(
+                            true,
                             name,
                             &[],
                             coq::Expression::Variable(coq::Path::new(&[

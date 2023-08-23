@@ -21,6 +21,7 @@ pub(crate) struct Definition<'a, U> {
 
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
+    is_monadic: bool,
     name: &'a str,
     trait_parameters: Vec<&'a str>,
     class: Expression,
@@ -109,6 +110,7 @@ where
 impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
+        is_monadic: bool,
         name: &'a str,
         trait_parameters: &[&'a str],
         class: Expression,
@@ -116,6 +118,7 @@ impl<'a> Instance<'a> {
         value: Doc<'a>,
     ) -> Self {
         Instance {
+            is_monadic,
             name,
             trait_parameters: trait_parameters.to_vec(),
             class,
@@ -127,6 +130,7 @@ impl<'a> Instance<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
             render::new_instance_header(
+                self.is_monadic,
                 self.name,
                 &self.trait_parameters,
                 self.class.to_doc(false),

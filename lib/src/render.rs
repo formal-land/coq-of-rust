@@ -456,6 +456,7 @@ pub(crate) fn trait_notation_instances(instances: Vec<coq::Instance>) -> Doc {
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
 pub(crate) fn new_instance_header<'a, U, V>(
+    is_monadic: bool,
     name: U,
     trait_parameters: &Vec<V>,
     kind: Doc<'a>,
@@ -469,8 +470,11 @@ where
             text("Global Instance"),
             line(),
             text(format!("Method_{name}")),
-            line(),
-            monadic_typeclass_parameter(),
+            if is_monadic {
+                concat([line(), monadic_typeclass_parameter()])
+            } else {
+                nil()
+            },
             line(),
             if trait_parameters.is_empty() {
                 text("`(Trait)")
