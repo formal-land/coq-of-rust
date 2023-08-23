@@ -402,8 +402,6 @@ where
             line(),
             text(format!("Method_{name}")),
             line(),
-            monadic_typeclass_parameter(),
-            line(),
             intersperse(trait_parameters.to_owned(), [line()]),
         ]),
         line(),

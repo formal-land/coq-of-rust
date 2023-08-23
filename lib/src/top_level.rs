@@ -2148,7 +2148,7 @@ impl TopLevelItem {
                             ty: _,
                         } => coq::Instance::new(
                             name,
-                            &[text("`(Trait)")],
+                            &[monadic_typeclass_parameter(), text("`(Trait)")],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),
@@ -2193,7 +2193,7 @@ impl TopLevelItem {
                             signature_and_body,
                         } => coq::Instance::new(
                             name,
-                            &[text("`(Trait)")],
+                            &[monadic_typeclass_parameter(), text("`(Trait)")],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),
