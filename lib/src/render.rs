@@ -12,9 +12,19 @@ pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
     text("`{H : State.Trait}")
 }
 
+/// encloses an expression in curly brackets
+pub(crate) fn curly_brackets(doc: RcDoc<()>) -> RcDoc<()> {
+    RcDoc::concat([RcDoc::text("{"), doc, RcDoc::text("}")])
+}
+
+/// encloses an expression in regular brackets
+pub(crate) fn round_brackets(doc: RcDoc<()>) -> RcDoc<()> {
+    RcDoc::concat([RcDoc::text("("), doc, RcDoc::text(")")])
+}
+
 pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     if with_paren {
-        RcDoc::concat([RcDoc::text("("), doc, RcDoc::text(")")])
+        round_brackets(doc)
     } else {
         doc
     }

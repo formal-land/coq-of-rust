@@ -1,5 +1,7 @@
 use crate::path::Path;
-use crate::render::{self, concat, group, hardline, intersperse, line, nest, paren, text, Doc};
+use crate::render::{
+    self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
+};
 
 #[allow(dead_code)]
 #[derive(Clone)]
@@ -75,7 +77,25 @@ pub(crate) enum Expression {
 #[derive(Clone)]
 /// a specification of an argument of a coq construction
 pub(crate) struct ArgSpec<'a> {
-    spec: Doc<'a>,
+    decl: ArgDecl<'a>,
+    kind: ArgSpecKind,
+}
+
+#[derive(Clone)]
+/// a variant of the argument specification
+pub(crate) enum ArgDecl<'a> {
+    Normal { ident: String, ty: Option<Doc<'a>> },
+    Generalized { ident: Option<String>, ty: Doc<'a> },
+}
+
+#[derive(Clone)]
+/// a kind of an argument
+pub(crate) enum ArgSpecKind {
+    /// a regular argument
+    Explicit,
+    /// a maximally inserted implicit argument
+    /// (we do not use non-maximal insertion level)
+    Implicit,
 }
 
 impl Comment {
@@ -295,19 +315,46 @@ impl Expression {
 }
 
 impl<'a> ArgSpec<'a> {
-    pub(crate) fn new(spec: &Doc<'a>) -> Self {
+    pub(crate) fn new(decl: &ArgDecl<'a>, kind: ArgSpecKind) -> Self {
         ArgSpec {
-            spec: spec.to_owned(),
+            decl: decl.to_owned(),
+            kind,
         }
     }
 
     pub(crate) fn monadic_typeclass_parameter() -> Self {
         ArgSpec {
-            spec: render::monadic_typeclass_parameter(),
+            decl: ArgDecl::Generalized {
+                ident: Some("H".to_string()),
+                ty: text("State.Trait"),
+            },
+            kind: ArgSpecKind::Implicit,
         }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        self.spec.to_owned()
+        let brackets = match self.kind {
+            ArgSpecKind::Explicit => render::round_brackets,
+            ArgSpecKind::Implicit => render::curly_brackets,
+        };
+        match self.decl.to_owned() {
+            ArgDecl::Normal { ident, ty } => brackets(concat([
+                text(ident),
+                match ty {
+                    Some(ty) => concat([line(), text(":"), line(), ty]),
+                    None => nil(),
+                },
+            ])),
+            ArgDecl::Generalized { ident, ty } => group([
+                text("`"),
+                brackets(concat([
+                    match ident {
+                        Some(ident) => concat([text(ident), line(), text(":"), line()]),
+                        None => nil(),
+                    },
+                    ty,
+                ])),
+            ]),
+        }
     }
 }

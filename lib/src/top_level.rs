@@ -2150,7 +2150,13 @@ impl TopLevelItem {
                             name,
                             &[
                                 coq::ArgSpec::monadic_typeclass_parameter(),
-                                coq::ArgSpec::new(&text("`(Trait)")),
+                                coq::ArgSpec::new(
+                                    &coq::ArgDecl::Generalized {
+                                        ident: None,
+                                        ty: text("Trait"),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                ),
                             ],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
@@ -2170,13 +2176,24 @@ impl TopLevelItem {
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[
-                                coq::ArgSpec::new(&concat([text("{"), text(name), text("}")])),
-                                coq::ArgSpec::new(&concat([
-                                    text("`(Trait"),
-                                    line(),
-                                    concat([text(format!("({name} := {name})"))]),
-                                    text(")"),
-                                ])),
+                                coq::ArgSpec::new(
+                                    &coq::ArgDecl::Normal {
+                                        ident: name.to_owned(),
+                                        ty: None,
+                                    },
+                                    coq::ArgSpecKind::Implicit,
+                                ),
+                                coq::ArgSpec::new(
+                                    &coq::ArgDecl::Generalized {
+                                        ident: None,
+                                        ty: (concat([
+                                            text("Trait"),
+                                            line(),
+                                            concat([text(format!("({name} := {name})"))]),
+                                        ])),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                ),
                             ],
                             coq::Expression::Application {
                                 func: Box::new(coq::Expression::Variable(Path::new(&[
@@ -2198,7 +2215,13 @@ impl TopLevelItem {
                             name,
                             &[
                                 coq::ArgSpec::monadic_typeclass_parameter(),
-                                coq::ArgSpec::new(&text("`(Trait)")),
+                                coq::ArgSpec::new(
+                                    &coq::ArgDecl::Generalized {
+                                        ident: None,
+                                        ty: text("Trait"),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                ),
                             ],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
