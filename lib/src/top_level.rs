@@ -2080,7 +2080,7 @@ impl TopLevelItem {
                 predicates,
                 bounds,
                 body,
-            } => coq::TopLevelItem::Module(coq::Module::trait_module(
+            } => coq::TopLevelItem::trait_module(
                 name,
                 &ty_params
                     .iter()
@@ -2246,7 +2246,7 @@ impl TopLevelItem {
                         ),
                     })
                     .collect(),
-            ))
+            )
             .to_doc(),
             TopLevelItem::TraitImpl {
                 generic_tys,

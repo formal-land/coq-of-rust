@@ -135,6 +135,42 @@ impl<'a> TopLevelItem<'a> {
         }
     }
 
+    /// creates a module with the translation of the given trait
+    pub(crate) fn trait_module(
+        name: &'a str,
+        ty_params: &[(String, Option<Doc<'a>>)],
+        predicates: &[Doc<'a>],
+        bounds: &[Doc<'a>],
+        associated_types: &[(String, Vec<Doc<'a>>)],
+        items: Vec<Doc<'a>>,
+        instances: Vec<Instance<'a>>,
+    ) -> Self {
+        TopLevelItem::Module(Module::new(
+            name,
+            [
+                vec![TopLevelItem::Code(
+                    render::locally_unset_primitive_projections_if(
+                        items.is_empty(),
+                        &Class::new(
+                            "Trait",
+                            ty_params.to_vec(),
+                            predicates.to_vec(),
+                            bounds.to_vec(),
+                            associated_types.to_vec(),
+                            items,
+                        )
+                        .to_doc(),
+                    ),
+                )],
+                instances
+                    .iter()
+                    .map(|i| TopLevelItem::Instance(i.to_owned()))
+                    .collect(),
+            ]
+            .concat(),
+        ))
+    }
+
     /// decides whether to enclose [doc] within a section with a context
     pub(crate) fn add_context_in_section_if_necessary(
         name: &'a str,
@@ -173,42 +209,6 @@ impl<'a> Module<'a> {
             "Module",
             self.name,
             intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
-        )
-    }
-
-    /// creates a module with the translation of the given trait
-    pub(crate) fn trait_module(
-        name: &'a str,
-        ty_params: &[(String, Option<Doc<'a>>)],
-        predicates: &[Doc<'a>],
-        bounds: &[Doc<'a>],
-        associated_types: &[(String, Vec<Doc<'a>>)],
-        items: Vec<Doc<'a>>,
-        instances: Vec<Instance<'a>>,
-    ) -> Self {
-        Module::new(
-            name,
-            [
-                vec![TopLevelItem::Code(
-                    render::locally_unset_primitive_projections_if(
-                        items.is_empty(),
-                        &Class::new(
-                            "Trait",
-                            ty_params.to_vec(),
-                            predicates.to_vec(),
-                            bounds.to_vec(),
-                            associated_types.to_vec(),
-                            items,
-                        )
-                        .to_doc(),
-                    ),
-                )],
-                instances
-                    .iter()
-                    .map(|i| TopLevelItem::Instance(i.to_owned()))
-                    .collect(),
-            ]
-            .concat(),
         )
     }
 }
