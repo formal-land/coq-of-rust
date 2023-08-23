@@ -388,14 +388,13 @@ pub(crate) fn typeclass_definition_item<'a>(
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_header<'a, U, V>(
+pub(crate) fn new_instance_header<'a, U>(
     name: U,
-    trait_parameters: &Vec<V>,
+    trait_parameters: &[Doc<'a>],
     kind: Doc<'a>,
 ) -> Doc<'a>
 where
     U: std::fmt::Display,
-    V: std::fmt::Display,
 {
     nest([
         nest([
@@ -405,28 +404,7 @@ where
             line(),
             monadic_typeclass_parameter(),
             line(),
-            if trait_parameters.is_empty() {
-                text("`(Trait)")
-            } else {
-                concat([
-                    intersperse(
-                        trait_parameters
-                            .iter()
-                            .map(|name| concat([text("{"), text(format!("{name}")), text("}")])),
-                        [line()],
-                    ),
-                    line(),
-                    text("`(Trait"),
-                    line(),
-                    intersperse(
-                        trait_parameters
-                            .iter()
-                            .map(|name| concat([text(format!("({name} := {name})"))])),
-                        [line()],
-                    ),
-                    text(")"),
-                ])
-            },
+            intersperse(trait_parameters.to_owned(), [line()]),
         ]),
         line(),
         nest([

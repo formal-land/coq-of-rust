@@ -56,7 +56,7 @@ pub(crate) struct Class<'a> {
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
     name: &'a str,
-    trait_parameters: Vec<&'a str>,
+    parameters: Vec<Doc<'a>>,
     class: Expression,
     field: Doc<'a>,
     value: Doc<'a>,
@@ -70,6 +70,13 @@ pub(crate) enum Expression {
         arg: Box<Expression>,
     },
     Variable(Path),
+}
+
+#[allow(dead_code)]
+#[derive(Clone)]
+/// a specification of an argument of a coq construction
+pub(crate) struct ArgSpec<'a> {
+    spec: Doc<'a>,
 }
 
 impl Comment {
@@ -241,14 +248,14 @@ impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
         name: &'a str,
-        trait_parameters: &[&'a str],
+        parameters: &[Doc<'a>],
         class: Expression,
         field: Doc<'a>,
         value: Doc<'a>,
     ) -> Self {
         Instance {
             name,
-            trait_parameters: trait_parameters.to_vec(),
+            parameters: parameters.to_vec(),
             class,
             field,
             value,
@@ -257,11 +264,7 @@ impl<'a> Instance<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
-            render::new_instance_header(
-                self.name,
-                &self.trait_parameters,
-                self.class.to_doc(false),
-            ),
+            render::new_instance_header(self.name, &self.parameters, self.class.to_doc(false)),
             nest([
                 hardline(),
                 render::new_instance_body(self.field.to_owned(), self.value.to_owned()),

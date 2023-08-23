@@ -2148,7 +2148,7 @@ impl TopLevelItem {
                             ty: _,
                         } => coq::Instance::new(
                             name,
-                            &[],
+                            &[text("`(Trait)")],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),
@@ -2166,7 +2166,15 @@ impl TopLevelItem {
                         ),
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
-                            &[name],
+                            &[
+                                concat([text("{"), text(name), text("}")]),
+                                concat([
+                                    text("`(Trait"),
+                                    line(),
+                                    concat([text(format!("({name} := {name})"))]),
+                                    text(")"),
+                                ]),
+                            ],
                             coq::Expression::Application {
                                 func: Box::new(coq::Expression::Variable(Path::new(&[
                                     "Notation".to_string(),
@@ -2185,7 +2193,7 @@ impl TopLevelItem {
                             signature_and_body,
                         } => coq::Instance::new(
                             name,
-                            &[],
+                            &[text("`(Trait)")],
                             coq::Expression::Variable(Path::new(&[
                                 "Notation".to_string(),
                                 "Dot".to_string(),
