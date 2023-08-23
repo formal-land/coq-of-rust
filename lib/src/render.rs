@@ -431,48 +431,6 @@ pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
     nest([field, text(" :="), line(), value, text(";")])
 }
 
-/// produces a definition of the given function
-pub(crate) fn function_header<'a>(
-    name: &'a str,
-    ty_params: &'a Vec<String>,
-    bounds: Vec<Doc<'a>>,
-    args: &[(&'a String, Doc<'a>)],
-) -> Doc<'a> {
-    group([
-        text(name),
-        if ty_params.is_empty() {
-            nil()
-        } else {
-            group([
-                curly_brackets(group([
-                    // change here if it doesn't work with '{}' brackets
-                    intersperse(ty_params, [line()]),
-                    text(": Set"),
-                ])),
-                line(),
-            ])
-        },
-        if bounds.is_empty() {
-            nil()
-        } else {
-            group([intersperse(bounds, [line()]), line()])
-        },
-        concat(args.iter().map(|(name, ty)| {
-            concat([
-                line(),
-                nest([
-                    text("("),
-                    text(*name),
-                    line(),
-                    text(": "),
-                    ty.clone(),
-                    text(")"),
-                ]),
-            ])
-        })),
-    ])
-}
-
 pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>>,

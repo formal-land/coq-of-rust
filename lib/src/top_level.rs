@@ -2162,7 +2162,7 @@ impl TopLevelItem {
                                 "Notation".to_string(),
                                 "Dot".to_string(),
                             ])),
-                            nest([function_header(
+                            nest([coq::function_header(
                                 "Notation.dot",
                                 ty_params,
                                 where_predicates
@@ -2232,7 +2232,7 @@ impl TopLevelItem {
                                 "Notation".to_string(),
                                 "Dot".to_string(),
                             ])),
-                            nest([function_header(
+                            nest([coq::function_header(
                                 "Notation.dot",
                                 ty_params,
                                 where_predicates

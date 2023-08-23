@@ -376,3 +376,45 @@ impl ArgSpec {
         }
     }
 }
+
+/// produces a definition of the given function
+pub(crate) fn function_header<'a>(
+    name: &'a str,
+    ty_params: &'a Vec<String>,
+    bounds: Vec<Doc<'a>>,
+    args: &[(&'a String, Doc<'a>)],
+) -> Doc<'a> {
+    group([
+        text(name),
+        if ty_params.is_empty() {
+            nil()
+        } else {
+            group([
+                render::curly_brackets(group([
+                    // change here if it doesn't work with '{}' brackets
+                    intersperse(ty_params, [line()]),
+                    text(": Set"),
+                ])),
+                line(),
+            ])
+        },
+        if bounds.is_empty() {
+            nil()
+        } else {
+            group([intersperse(bounds, [line()]), line()])
+        },
+        concat(args.iter().map(|(name, ty)| {
+            concat([
+                line(),
+                nest([
+                    text("("),
+                    text(*name),
+                    line(),
+                    text(": "),
+                    ty.clone(),
+                    text(")"),
+                ]),
+            ])
+        })),
+    ])
+}
