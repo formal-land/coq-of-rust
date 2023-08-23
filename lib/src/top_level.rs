@@ -1188,8 +1188,7 @@ impl FunDefinition {
                             text("Global Instance Deb_"),
                             body.parameter_name_for_fmt(),
                             text(" : "),
-                            Path::new(&["Notation".to_string(), "DoubleColon".to_string()])
-                                .to_doc(),
+                            Path::new(&["Notation", "DoubleColon"]).to_doc(),
                             line(),
                             concat(self.signature_and_body.args.iter().map(|(name, ty)| {
                                 if name == "f" {
@@ -1205,8 +1204,7 @@ impl FunDefinition {
                             text("{"),
                             line(),
                             nest([
-                                Path::new(&["Notation".to_string(), "double_colon".to_string()])
-                                    .to_doc(),
+                                Path::new(&["Notation", "double_colon"]).to_doc(),
                                 text(" := "),
                                 body.parameter_name_for_fmt(),
                                 text(";"),
@@ -2158,10 +2156,7 @@ impl TopLevelItem {
                                     coq::ArgSpecKind::Explicit,
                                 ),
                             ],
-                            coq::Expression::Variable(Path::new(&[
-                                "Notation".to_string(),
-                                "Dot".to_string(),
-                            ])),
+                            coq::Expression::Variable(Path::new(&["Notation", "Dot"])),
                             nest([coq::function_header(
                                 "Notation.dot",
                                 ty_params,
@@ -2201,13 +2196,11 @@ impl TopLevelItem {
                             ],
                             coq::Expression::Application {
                                 func: Box::new(coq::Expression::Variable(Path::new(&[
-                                    "Notation".to_string(),
-                                    "DoubleColonType".to_string(),
+                                    "Notation",
+                                    "DoubleColonType",
                                 ]))),
                                 param: None,
-                                arg: Box::new(coq::Expression::Variable(Path::new(&[
-                                    "Self".to_string()
-                                ]))),
+                                arg: Box::new(coq::Expression::Variable(Path::new(&["Self"]))),
                             },
                             text("Notation.double_colon_type"),
                             text(name),
@@ -2228,10 +2221,7 @@ impl TopLevelItem {
                                     coq::ArgSpecKind::Explicit,
                                 ),
                             ],
-                            coq::Expression::Variable(Path::new(&[
-                                "Notation".to_string(),
-                                "Dot".to_string(),
-                            ])),
+                            coq::Expression::Variable(Path::new(&["Notation", "Dot"])),
                             nest([coq::function_header(
                                 "Notation.dot",
                                 ty_params,

@@ -235,7 +235,7 @@ pub(crate) fn add_context_in_section_if_necessary<'a>(
                 coq::Context::new(&[coq::ArgSpec::new(
                     &coq::ArgDecl::Normal {
                         idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                        ty: Some(coq::Expression::Variable(Path::new(&["Set".to_string()]))),
+                        ty: Some(coq::Expression::Variable(Path::new(&["Set"]))),
                     },
                     coq::ArgSpecKind::Implicit,
                 )])
