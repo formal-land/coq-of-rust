@@ -444,12 +444,11 @@ pub(crate) fn function_header<'a>(
             nil()
         } else {
             group([
-                group([
+                curly_brackets(group([
                     // change here if it doesn't work with '{}' brackets
-                    text("{"),
                     intersperse(ty_params, [line()]),
-                    text(": Set}"),
-                ]),
+                    text(": Set"),
+                ])),
                 line(),
             ])
         },
