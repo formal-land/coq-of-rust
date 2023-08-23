@@ -2,7 +2,7 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
-use crate::{coq, path::Path};
+use crate::coq;
 
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
@@ -235,7 +235,7 @@ pub(crate) fn add_context_in_section_if_necessary<'a>(
                 coq::Context::new(&[coq::ArgSpec::new(
                     &coq::ArgDecl::Normal {
                         idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                        ty: Some(coq::Expression::Variable(Path::new(&["Set"]))),
+                        ty: Some(coq::Expression::set()),
                     },
                     coq::ArgSpecKind::Implicit,
                 )])
@@ -267,7 +267,7 @@ pub(crate) fn new_trait_typeclass_header<'a>(
                 line(),
                 text(":"),
                 line(),
-                text("Set"),
+                coq::Expression::set().to_doc(false),
                 text(")"),
             ]),
             bounds_sequence(bounds),
@@ -292,7 +292,7 @@ pub(crate) fn new_trait_typeclass_header<'a>(
                         })),
                         text(":"),
                         line(),
-                        text("Set"),
+                        coq::Expression::set().to_doc(false),
                         text("}"),
                     ]),
                 ])
@@ -311,7 +311,7 @@ pub(crate) fn new_trait_typeclass_header<'a>(
                         text("{"),
                         text(item_name.to_owned()),
                         text(" : "),
-                        text("Set"),
+                        coq::Expression::set().to_doc(false),
                         text("}"),
                     ]),
                     bounds_sequence(bounds),

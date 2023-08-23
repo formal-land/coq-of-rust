@@ -320,6 +320,11 @@ impl Expression {
             Self::Variable(path) => path.to_doc(),
         }
     }
+
+    /// a coq Set
+    pub(crate) fn set() -> Self {
+        Expression::Variable(Path::new(&["Set"]))
+    }
 }
 
 impl ArgSpec {
