@@ -457,6 +457,7 @@ pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
 pub(crate) fn new_instance<'a, U, V>(
+    is_monadic: bool,
     name: U,
     trait_parameters: &Vec<V>,
     kind: Doc<'a>,
@@ -468,7 +469,7 @@ where
     V: std::fmt::Display,
 {
     concat([
-        new_instance_header(name, trait_parameters, kind),
+        new_instance_header(is_monadic, name, trait_parameters, kind),
         nest([hardline(), new_instance_body(field, value)]),
         hardline(),
         text("}."),
@@ -477,6 +478,7 @@ where
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
 pub(crate) fn new_instance_header<'a, U, V>(
+    is_monadic: bool,
     name: U,
     trait_parameters: &Vec<V>,
     kind: Doc<'a>,
@@ -490,8 +492,11 @@ where
             text("Global Instance"),
             line(),
             text(format!("Method_{name}")),
-            line(),
-            monadic_typeclass_parameter(),
+            if is_monadic {
+                concat([line(), monadic_typeclass_parameter()])
+            } else {
+                nil()
+            },
             line(),
             if trait_parameters.is_empty() {
                 text("`(Trait)")
