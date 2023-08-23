@@ -2139,7 +2139,7 @@ impl TopLevelItem {
                                 text(name),
                             ),
                             TraitItem::Type { .. } => new_instance(
-                                true,
+                                false,
                                 name,
                                 &vec![name],
                                 group([text("Notation.DoubleColonType"), line(), text("Self")]),
