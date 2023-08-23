@@ -79,7 +79,6 @@ pub(crate) fn reorder_definitions_inplace(
     parent_context: &str,
     definitions: &mut Vec<impl GetHirId>,
 ) {
-    println!("reordering ids in {parent_context}");
     if definitions.is_empty() {
         return;
     }
@@ -133,7 +132,9 @@ pub(crate) fn reorder_definitions_inplace(
                 }
                 let config_id_pos = config_id_pos.unwrap();
 
-                println!("reorder moving: ({file}/{context}) {def_name} from {pos} to {config_id_pos}, after {config_identifier}");
+                if env.configuration.debug_reorder {
+                    eprintln!("reorder moving: ({file}/{context}) {def_name} from {pos} to {config_id_pos}, after {config_identifier}");
+                }
                 let def = definitions.remove(pos);
                 definitions.insert(config_id_pos, def);
             }
