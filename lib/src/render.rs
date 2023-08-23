@@ -432,18 +432,12 @@ pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
 }
 
 /// produces a definition of the given function
-pub(crate) fn function_header<'a, U, V, W, X>(
-    name: U,
-    ty_params: &'a Vec<V>,
-    bounds: Vec<W>,
-    args: &[(X, Doc<'a>)],
-) -> Doc<'a>
-where
-    U: Into<std::borrow::Cow<'a, str>>,
-    &'a V: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    W: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    X: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
+pub(crate) fn function_header<'a>(
+    name: &'a str,
+    ty_params: &'a Vec<String>,
+    bounds: Vec<Doc<'a>>,
+    args: &[(&'a String, Doc<'a>)],
+) -> Doc<'a> {
     group([
         text(name),
         if ty_params.is_empty() {
