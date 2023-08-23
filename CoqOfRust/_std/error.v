@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.any.
+Require Import CoqOfRust.core.any.
 Require Import CoqOfRust._std.fmt.
 Require Import CoqOfRust.core.option.
 Require Import CoqOfRust.alloc.boxed.
