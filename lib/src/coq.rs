@@ -40,7 +40,7 @@ pub(crate) struct Module<'a> {
 /// a coq section
 pub(crate) struct Section<'a> {
     name: &'a str,
-    items: Vec<TopLevelItem<'a>>,
+    items: TopLevel<'a>,
 }
 
 #[derive(Clone)]
@@ -207,17 +207,19 @@ impl<'a> TopLevel<'a> {
             TopLevel {
                 items: vec![TopLevelItem::Section(Section::new(
                     name,
-                    &[
-                        &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
-                            &ArgDecl::Normal {
-                                idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                                ty: Some(Expression::set()),
-                            },
-                            ArgSpecKind::Implicit,
-                        )]))],
-                        items,
-                    ]
-                    .concat(),
+                    &TopLevel {
+                        items: [
+                            &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
+                                &ArgDecl::Normal {
+                                    idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
+                                    ty: Some(Expression::set()),
+                                },
+                                ArgSpecKind::Implicit,
+                            )]))],
+                            items,
+                        ]
+                        .concat(),
+                    },
                 ))],
             }
         }
@@ -290,7 +292,7 @@ impl<'a> Module<'a> {
 
 impl<'a> Section<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &'a str, content: &[TopLevelItem<'a>]) -> Self {
+    pub(crate) fn new(name: &'a str, content: &TopLevel<'a>) -> Self {
         Section {
             name,
             items: content.to_owned(),
@@ -298,11 +300,7 @@ impl<'a> Section<'a> {
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose(
-            "Section",
-            self.name,
-            intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()]),
-        )
+        render::enclose("Section", self.name, self.items.to_doc())
     }
 }
 
