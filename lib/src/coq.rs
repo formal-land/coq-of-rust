@@ -31,14 +31,14 @@ pub(crate) struct Comment {
 /// a coq module
 pub(crate) struct Module<'a> {
     name: &'a str,
-    content: Vec<TopLevelItem<'a>>,
+    items: Vec<TopLevelItem<'a>>,
 }
 
 #[derive(Clone)]
 /// a coq section
 pub(crate) struct Section<'a> {
     name: &'a str,
-    content: Vec<TopLevelItem<'a>>,
+    items: Vec<TopLevelItem<'a>>,
 }
 
 #[derive(Clone)]
@@ -260,14 +260,17 @@ impl<'a> TopLevelItem<'a> {
 impl<'a> Module<'a> {
     /// produces a new coq module
     pub(crate) fn new(name: &'a str, content: Vec<TopLevelItem<'a>>) -> Self {
-        Module { name, content }
+        Module {
+            name,
+            items: content,
+        }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         render::enclose(
             "Module",
             self.name,
-            intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
+            intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()]),
         )
     }
 }
@@ -277,7 +280,7 @@ impl<'a> Section<'a> {
     pub(crate) fn new(name: &'a str, content: &[TopLevelItem<'a>]) -> Self {
         Section {
             name,
-            content: content.to_owned(),
+            items: content.to_owned(),
         }
     }
 
@@ -285,7 +288,7 @@ impl<'a> Section<'a> {
         render::enclose(
             "Section",
             self.name,
-            intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
+            intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()]),
         )
     }
 }
