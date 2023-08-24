@@ -246,4 +246,13 @@ impl Path {
     pub(crate) fn to_name(&self) -> String {
         self.segments.join("_")
     }
+
+    pub(crate) fn concat(paths: &[Self]) -> Self {
+        Path {
+            segments: paths
+                .iter()
+                .flat_map(|path| path.segments.to_owned())
+                .collect(),
+        }
+    }
 }

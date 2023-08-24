@@ -1475,40 +1475,71 @@ impl ImplItem {
 
 impl WherePredicate {
     /// turns the predicate into its representation as constraint
+    fn to_coq(&self) -> coq::ArgSpec {
+        self.bound.to_coq(self.ty.to_coq())
+    }
+
+    /// turns the predicate into its representation as constraint
     fn to_doc(&self) -> Doc {
-        self.bound.to_doc(self.ty.to_doc(true))
+        self.to_coq().to_doc()
     }
 }
 
 impl TraitBound {
     /// turns the trait bound into its representation as constraint
-    fn to_doc<'a>(&'a self, self_doc: Doc<'a>) -> Doc<'a> {
-        nest([
-            text("`{"),
-            self.name.to_doc(),
-            text(".Trait"),
-            line(),
-            self_doc,
-            if self.ty_params.is_empty() {
-                nil()
-            } else {
-                concat([
-                    line(),
-                    intersperse(
-                        self.ty_params
-                            .iter()
-                            .map(|ty_param| ty_param.to_doc())
-                            .collect::<Vec<_>>(),
-                        [line()],
-                    ),
-                ])
+    fn to_coq(&self, self_ty: coq::Expression) -> coq::ArgSpec {
+        coq::ArgSpec::new(
+            &coq::ArgDecl::Generalized {
+                idents: vec![],
+                ty: self.ty_params.iter().fold(
+                    coq::Expression::Variable {
+                        ident: Path::concat(&[self.name.to_owned(), Path::new(&["Trait"])]),
+                        no_implicit: false,
+                    }
+                    .apply(&self_ty),
+                    |acc, ty_param| match *ty_param.to_owned() {
+                        TraitTyParamValue::JustValue { name, ty } => coq::Expression::Application {
+                            func: Box::new(acc),
+                            param: Some(name),
+                            arg: Box::new(ty.to_coq()),
+                        },
+                        TraitTyParamValue::ValWithDef { name, ty } => {
+                            coq::Expression::Application {
+                                func: Box::new(acc),
+                                param: Some(name),
+                                arg: Box::new(coq::Expression::Application {
+                                    func: Box::new(coq::Expression::Variable {
+                                        ident: Path::new(&["Some"]),
+                                        no_implicit: false,
+                                    }),
+                                    param: None,
+                                    arg: Box::new(ty.to_coq()),
+                                }),
+                            }
+                        }
+                        TraitTyParamValue::JustDefault { name } => coq::Expression::Application {
+                            func: Box::new(acc),
+                            param: Some(name),
+                            arg: Box::new(coq::Expression::Variable {
+                                ident: Path::new(&["None"]),
+                                no_implicit: false,
+                            }),
+                        },
+                    },
+                ),
             },
-            text("}"),
-        ])
+            coq::ArgSpecKind::Implicit,
+        )
+    }
+
+    /// turns the trait bound into its representation as constraint
+    fn to_doc<'a>(&self, self_ty: coq::Expression) -> Doc<'a> {
+        self.to_coq(self_ty).to_doc()
     }
 }
 
 impl TraitTyParamValue {
+    #[allow(dead_code)] // @TODO
     fn to_doc(&self) -> Doc {
         match self {
             TraitTyParamValue::ValWithDef { name, ty } => apply_argument(
@@ -2087,7 +2118,12 @@ impl TopLevelItem {
                     .collect::<Vec<_>>(),
                 &bounds
                     .iter()
-                    .map(|bound| bound.to_doc(text("Self")))
+                    .map(|bound| {
+                        bound.to_doc(coq::Expression::Variable {
+                            ident: Path::new(&["Self"]),
+                            no_implicit: false,
+                        })
+                    })
                     .collect::<Vec<_>>(),
                 &body
                     .iter()
@@ -2098,7 +2134,12 @@ impl TopLevelItem {
                             item_name.to_string(),
                             bounds
                                 .iter()
-                                .map(|bound| bound.to_doc(text(item_name)))
+                                .map(|bound| {
+                                    bound.to_doc(coq::Expression::Variable {
+                                        ident: Path::new(&[item_name]),
+                                        no_implicit: false,
+                                    })
+                                })
                                 .collect(),
                         )),
                     })
@@ -2149,22 +2190,25 @@ impl TopLevelItem {
                             },
                             nest([coq::function_header(
                                 &Path::new(&["Notation", "dot"]),
-                                &if ty_params.is_empty() {
-                                    None
-                                } else {
-                                    Some(coq::ArgSpec::new(
-                                        &coq::ArgDecl::Normal {
-                                            idents: ty_params.to_owned(),
-                                            ty: Some(coq::Expression::set()),
-                                        },
-                                        // change here if it doesn't work with '{}' brackets
-                                        coq::ArgSpecKind::Implicit,
-                                    ))
-                                },
-                                where_predicates
-                                    .iter()
-                                    .map(|predicate| predicate.to_doc())
-                                    .collect(),
+                                &[
+                                    if ty_params.is_empty() {
+                                        vec![]
+                                    } else {
+                                        vec![coq::ArgSpec::new(
+                                            &coq::ArgDecl::Normal {
+                                                idents: ty_params.to_owned(),
+                                                ty: Some(coq::Expression::set()),
+                                            },
+                                            // change here if it doesn't work with '{}' brackets
+                                            coq::ArgSpecKind::Implicit,
+                                        )]
+                                    },
+                                    where_predicates
+                                        .iter()
+                                        .map(|predicate| predicate.to_coq())
+                                        .collect(),
+                                ]
+                                .concat(),
                                 &Vec::<(&String, _)>::new(),
                             )]),
                             text(name),
@@ -2236,22 +2280,25 @@ impl TopLevelItem {
                             },
                             nest([coq::function_header(
                                 &Path::new(&["Notation", "dot"]),
-                                &if ty_params.is_empty() {
-                                    None
-                                } else {
-                                    Some(coq::ArgSpec::new(
-                                        &coq::ArgDecl::Normal {
-                                            idents: ty_params.to_owned(),
-                                            ty: Some(coq::Expression::set()),
-                                        },
-                                        // change here if it doesn't work with '{}' brackets
-                                        coq::ArgSpecKind::Implicit,
-                                    ))
-                                },
-                                where_predicates
-                                    .iter()
-                                    .map(|predicate| predicate.to_doc())
-                                    .collect(),
+                                &[
+                                    if ty_params.is_empty() {
+                                        vec![]
+                                    } else {
+                                        vec![coq::ArgSpec::new(
+                                            &coq::ArgDecl::Normal {
+                                                idents: ty_params.to_owned(),
+                                                ty: Some(coq::Expression::set()),
+                                            },
+                                            // change here if it doesn't work with '{}' brackets
+                                            coq::ArgSpecKind::Implicit,
+                                        )]
+                                    },
+                                    where_predicates
+                                        .iter()
+                                        .map(|predicate| predicate.to_coq())
+                                        .collect(),
+                                ]
+                                .concat(),
                                 &signature_and_body
                                     .args
                                     .iter()

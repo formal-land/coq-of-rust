@@ -468,7 +468,7 @@ impl Expression {
                         Some(param) => render::round_brackets(group([
                             text(param.to_owned()),
                             text(" := "),
-                            arg.to_doc(true),
+                            arg.to_doc(false),
                         ])),
                         None => arg.to_doc(true),
                     },
@@ -584,7 +584,7 @@ impl ArgSpec {
             ArgSpecKind::Implicit => render::curly_brackets,
         };
         match self.decl.to_owned() {
-            ArgDecl::Normal { idents, ty } => brackets(concat([
+            ArgDecl::Normal { idents, ty } => brackets(nest([
                 intersperse(idents, [line()]),
                 match ty {
                     Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
@@ -593,7 +593,7 @@ impl ArgSpec {
             ])),
             ArgDecl::Generalized { idents, ty } => group([
                 text("`"),
-                brackets(concat([
+                brackets(nest([
                     if idents.is_empty() {
                         nil()
                     } else {
@@ -609,21 +609,19 @@ impl ArgSpec {
 /// produces a definition of the given function
 pub(crate) fn function_header<'a>(
     name: &Path,
-    ty_params: &Option<ArgSpec>,
-    bounds: Vec<Doc<'a>>,
+    params: &Vec<ArgSpec>,
     args: &[(&'a String, Doc<'a>)],
 ) -> Doc<'a> {
     group([
         name.to_doc(),
         line(),
-        match ty_params {
-            Some(ty_params) => group([ty_params.to_doc(), line()]),
-            None => nil(),
-        },
-        if bounds.is_empty() {
+        if params.is_empty() {
             nil()
         } else {
-            group([intersperse(bounds, [line()]), line()])
+            group([
+                intersperse(params.iter().map(|param| param.to_doc()), [line()]),
+                line(),
+            ])
         },
         concat(args.iter().map(|(name, ty)| {
             concat([nest([
