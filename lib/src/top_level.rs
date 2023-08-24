@@ -1304,15 +1304,14 @@ impl FunDefinition {
                             },
                             concat(self.signature_and_body.args.iter().map(|(name, ty)| {
                                 concat([
-                                    nest([
-                                        text("("),
-                                        text(name),
-                                        line(),
-                                        text(":"),
-                                        line(),
-                                        ty.to_doc(false),
-                                        text(")"),
-                                    ]),
+                                    coq::ArgSpec::new(
+                                        &coq::ArgDecl::Normal {
+                                            idents: vec![name.to_owned()],
+                                            ty: Some(ty.to_coq()),
+                                        },
+                                        coq::ArgSpecKind::Explicit,
+                                    )
+                                    .to_doc(),
                                     line(),
                                 ])
                             })),
