@@ -102,7 +102,8 @@ Module storage.
     Global Instance Method_encode `{H : State.Trait} `(Trait)
       : Notation.Dot "encode" := {
       Notation.dot
-          {T : Set} `{parity_scale_codec.codec.Output.Trait T}
+          {T : Set}
+          `{parity_scale_codec.codec.Output.Trait T}
           `{core.marker.Sized.Trait T}
           :=
         encode;
@@ -217,7 +218,8 @@ Module Storable.
   Global Instance Method_encode `{H : State.Trait} `(Trait)
     : Notation.Dot "encode" := {
     Notation.dot
-        {T : Set} `{parity_scale_codec.codec.Output.Trait T}
+        {T : Set}
+        `{parity_scale_codec.codec.Output.Trait T}
         `{core.marker.Sized.Trait T}
         :=
       encode;

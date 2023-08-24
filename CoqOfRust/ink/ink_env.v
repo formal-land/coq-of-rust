@@ -464,8 +464,7 @@ Module api.
         forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
         `{core.convert.AsRef.Trait Salt (T := Slice u8)},
         forall
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait
-          R
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)},
         ref
         (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
@@ -704,8 +703,7 @@ Parameter instantiate_contract : forall `{H : State.Trait},
       forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
       `{core.convert.AsRef.Trait Salt (T := Slice u8)},
       forall
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        R
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
         (C := ContractRef)},
       ref
       (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
@@ -821,18 +819,18 @@ Module arithmetic.
           `{core.convert.From.Trait Self (T := u8)}
           `{num_traits.bounds.Bounded.Trait Self}
           `{core.cmp.Ord.Trait Self}
-          `{core.cmp.PartialOrd.Trait Self (Rhs := (Some Self))}
+          `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
           `{num_traits.identities.Zero.Trait Self}
           `{num_traits.identities.One.Trait Self}
           `{num_traits.bounds.Bounded.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.AddAssign.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.SubAssign.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.MulAssign.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.DivAssign.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
           `{num_traits.ops.checked.CheckedMul.Trait Self}
           `{ink_env.arithmetic.Saturating.Trait Self}
           `{core.convert.TryFrom.Trait Self (T := u16)}
@@ -908,18 +906,18 @@ Module BaseArithmetic.
         `{core.convert.From.Trait Self (T := u8)}
         `{num_traits.bounds.Bounded.Trait Self}
         `{core.cmp.Ord.Trait Self}
-        `{core.cmp.PartialOrd.Trait Self (Rhs := (Some Self))}
+        `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
         `{num_traits.identities.Zero.Trait Self}
         `{num_traits.identities.One.Trait Self}
         `{num_traits.bounds.Bounded.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.AddAssign.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.SubAssign.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.MulAssign.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.DivAssign.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
         `{num_traits.ops.checked.CheckedMul.Trait Self}
         `{ink_env.arithmetic.Saturating.Trait Self}
         `{core.convert.TryFrom.Trait Self (T := u16)}
@@ -1127,7 +1125,7 @@ Module backend.
         `{parity_scale_codec.codec.Decode.Trait T}
         `{core.convert.From.Trait E (T := ErrorCode)}
         `{core.ops.function.FnOnce.Trait F (Args := u32)}
-        `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+        `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
         :
         (mut_ref Self) ->
         u32 ->
@@ -1146,7 +1144,8 @@ Module backend.
     Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "set_contract_storage" := {
       Notation.dot
-          {K V : Set} `{parity_scale_codec.codec.Encode.Trait K}
+          {K V : Set}
+          `{parity_scale_codec.codec.Encode.Trait K}
           `{ink_storage_traits.storage.Storable.Trait V}
           :=
         set_contract_storage;
@@ -1154,7 +1153,8 @@ Module backend.
     Global Instance Method_get_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "get_contract_storage" := {
       Notation.dot
-          {K R : Set} `{parity_scale_codec.codec.Encode.Trait K}
+          {K R : Set}
+          `{parity_scale_codec.codec.Encode.Trait K}
           `{ink_storage_traits.storage.Storable.Trait R}
           :=
         get_contract_storage;
@@ -1162,7 +1162,8 @@ Module backend.
     Global Instance Method_take_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "take_contract_storage" := {
       Notation.dot
-          {K R : Set} `{parity_scale_codec.codec.Encode.Trait K}
+          {K R : Set}
+          `{parity_scale_codec.codec.Encode.Trait K}
           `{ink_storage_traits.storage.Storable.Trait R}
           :=
         take_contract_storage;
@@ -1198,7 +1199,8 @@ Module backend.
     Global Instance Method_hash_encoded `{H : State.Trait} `(Trait)
       : Notation.Dot "hash_encoded" := {
       Notation.dot
-          {H T : Set} `{ink_env.hash.CryptoHash.Trait H}
+          {H T : Set}
+          `{ink_env.hash.CryptoHash.Trait H}
           `{parity_scale_codec.codec.Encode.Trait T}
           :=
         hash_encoded;
@@ -1214,11 +1216,12 @@ Module backend.
     Global Instance Method_call_chain_extension `{H : State.Trait} `(Trait)
       : Notation.Dot "call_chain_extension" := {
       Notation.dot
-          {I T E ErrorCode F D : Set} `{parity_scale_codec.codec.Encode.Trait I}
+          {I T E ErrorCode F D : Set}
+          `{parity_scale_codec.codec.Encode.Trait I}
           `{parity_scale_codec.codec.Decode.Trait T}
           `{core.convert.From.Trait E (T := ErrorCode)}
           `{core.ops.function.FnOnce.Trait F (Args := u32)}
-          `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+          `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
           :=
         call_chain_extension;
     }.
@@ -1329,8 +1332,7 @@ Module backend.
         `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait
-          R
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)}
         :
         (mut_ref Self) ->
@@ -1441,7 +1443,8 @@ Module backend.
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
       Notation.dot
-          {E Event : Set} `{ink_env.types.Environment.Trait E}
+          {E Event : Set}
+          `{ink_env.types.Environment.Trait E}
           `{ink_env.topics.Topics.Trait Event}
           `{parity_scale_codec.codec.Encode.Trait Event}
           :=
@@ -1450,7 +1453,8 @@ Module backend.
     Global Instance Method_invoke_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "invoke_contract" := {
       Notation.dot
-          {E Args R : Set} `{ink_env.types.Environment.Trait E}
+          {E Args R : Set}
+          `{ink_env.types.Environment.Trait E}
           `{parity_scale_codec.codec.Encode.Trait Args}
           `{parity_scale_codec.codec.Decode.Trait R}
           :=
@@ -1459,7 +1463,8 @@ Module backend.
     Global Instance Method_invoke_contract_delegate `{H : State.Trait} `(Trait)
       : Notation.Dot "invoke_contract_delegate" := {
       Notation.dot
-          {E Args R : Set} `{ink_env.types.Environment.Trait E}
+          {E Args R : Set}
+          `{ink_env.types.Environment.Trait E}
           `{parity_scale_codec.codec.Encode.Trait Args}
           `{parity_scale_codec.codec.Decode.Trait R}
           :=
@@ -1468,14 +1473,13 @@ Module backend.
     Global Instance Method_instantiate_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "instantiate_contract" := {
       Notation.dot
-          {E ContractRef Args Salt R : Set} `{ink_env.types.Environment.Trait E}
-          `{ink_env.call.create_builder.FromAccountId.Trait
-            ContractRef
+          {E ContractRef Args Salt R : Set}
+          `{ink_env.types.Environment.Trait E}
+          `{ink_env.call.create_builder.FromAccountId.Trait ContractRef
             (T := E)}
           `{parity_scale_codec.codec.Encode.Trait Args}
           `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-          `{ink_env.call.create_builder.ConstructorReturnType.Trait
-            R
+          `{ink_env.call.create_builder.ConstructorReturnType.Trait R
             (C := ContractRef)}
           :=
         instantiate_contract;
@@ -1511,7 +1515,8 @@ Module backend.
     Global Instance Method_call_runtime `{H : State.Trait} `(Trait)
       : Notation.Dot "call_runtime" := {
       Notation.dot
-          {E Call : Set} `{ink_env.types.Environment.Trait E}
+          {E Call : Set}
+          `{ink_env.types.Environment.Trait E}
           `{parity_scale_codec.codec.Encode.Trait Call}
           :=
         call_runtime;
@@ -1659,7 +1664,7 @@ Module EnvBackend.
       `{parity_scale_codec.codec.Decode.Trait T}
       `{core.convert.From.Trait E (T := ErrorCode)}
       `{core.ops.function.FnOnce.Trait F (Args := u32)}
-      `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+      `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
       :
       (mut_ref Self) ->
       u32 ->
@@ -1678,7 +1683,8 @@ Module EnvBackend.
   Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "set_contract_storage" := {
     Notation.dot
-        {K V : Set} `{parity_scale_codec.codec.Encode.Trait K}
+        {K V : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait V}
         :=
       set_contract_storage;
@@ -1686,7 +1692,8 @@ Module EnvBackend.
   Global Instance Method_get_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "get_contract_storage" := {
     Notation.dot
-        {K R : Set} `{parity_scale_codec.codec.Encode.Trait K}
+        {K R : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait R}
         :=
       get_contract_storage;
@@ -1694,7 +1701,8 @@ Module EnvBackend.
   Global Instance Method_take_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "take_contract_storage" := {
     Notation.dot
-        {K R : Set} `{parity_scale_codec.codec.Encode.Trait K}
+        {K R : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait R}
         :=
       take_contract_storage;
@@ -1730,7 +1738,8 @@ Module EnvBackend.
   Global Instance Method_hash_encoded `{H : State.Trait} `(Trait)
     : Notation.Dot "hash_encoded" := {
     Notation.dot
-        {H T : Set} `{ink_env.hash.CryptoHash.Trait H}
+        {H T : Set}
+        `{ink_env.hash.CryptoHash.Trait H}
         `{parity_scale_codec.codec.Encode.Trait T}
         :=
       hash_encoded;
@@ -1746,11 +1755,12 @@ Module EnvBackend.
   Global Instance Method_call_chain_extension `{H : State.Trait} `(Trait)
     : Notation.Dot "call_chain_extension" := {
     Notation.dot
-        {I T E ErrorCode F D : Set} `{parity_scale_codec.codec.Encode.Trait I}
+        {I T E ErrorCode F D : Set}
+        `{parity_scale_codec.codec.Encode.Trait I}
         `{parity_scale_codec.codec.Decode.Trait T}
         `{core.convert.From.Trait E (T := ErrorCode)}
         `{core.ops.function.FnOnce.Trait F (Args := u32)}
-        `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+        `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
         :=
       call_chain_extension;
   }.
@@ -1861,8 +1871,7 @@ Module TypedEnvBackend.
       `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        R
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
         (C := ContractRef)}
       :
       (mut_ref Self) ->
@@ -1965,7 +1974,8 @@ Module TypedEnvBackend.
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
     Notation.dot
-        {E Event : Set} `{ink_env.types.Environment.Trait E}
+        {E Event : Set}
+        `{ink_env.types.Environment.Trait E}
         `{ink_env.topics.Topics.Trait Event}
         `{parity_scale_codec.codec.Encode.Trait Event}
         :=
@@ -1974,7 +1984,8 @@ Module TypedEnvBackend.
   Global Instance Method_invoke_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract" := {
     Notation.dot
-        {E Args R : Set} `{ink_env.types.Environment.Trait E}
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{parity_scale_codec.codec.Decode.Trait R}
         :=
@@ -1983,7 +1994,8 @@ Module TypedEnvBackend.
   Global Instance Method_invoke_contract_delegate `{H : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract_delegate" := {
     Notation.dot
-        {E Args R : Set} `{ink_env.types.Environment.Trait E}
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{parity_scale_codec.codec.Decode.Trait R}
         :=
@@ -1992,12 +2004,12 @@ Module TypedEnvBackend.
   Global Instance Method_instantiate_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "instantiate_contract" := {
     Notation.dot
-        {E ContractRef Args Salt R : Set} `{ink_env.types.Environment.Trait E}
+        {E ContractRef Args Salt R : Set}
+        `{ink_env.types.Environment.Trait E}
         `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait
-          R
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)}
         :=
       instantiate_contract;
@@ -2032,7 +2044,8 @@ Module TypedEnvBackend.
   Global Instance Method_call_runtime `{H : State.Trait} `(Trait)
     : Notation.Dot "call_runtime" := {
     Notation.dot
-        {E Call : Set} `{ink_env.types.Environment.Trait E}
+        {E Call : Set}
+        `{ink_env.types.Environment.Trait E}
         `{parity_scale_codec.codec.Encode.Trait Call}
         :=
       call_runtime;
@@ -2336,16 +2349,7 @@ Module call.
     Module CreateBuilder.
       Section CreateBuilder.
         Context
-          {E
-          ContractRef
-          CodeHash
-          GasLimit
-          Endowment
-          Args
-          Salt
-          RetType
-          :
-          Set}.
+          {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : CodeHash;
@@ -2972,16 +2976,7 @@ Module create_builder.
   Module CreateBuilder.
     Section CreateBuilder.
       Context
-        {E
-        ContractRef
-        CodeHash
-        GasLimit
-        Endowment
-        Args
-        Salt
-        RetType
-        :
-        Set}.
+        {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : CodeHash;
@@ -3640,7 +3635,7 @@ Module engine.
       on_instance
         `{H : State.Trait}
         {F R: Set}
-        `{core.ops.function.FnOnce.Trait F (Args := (mut_ref Self))}
+        `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
         :
         F -> (M (H := H) R);
     }.
@@ -3648,9 +3643,8 @@ Module engine.
     Global Instance Method_on_instance `{H : State.Trait} `(Trait)
       : Notation.Dot "on_instance" := {
       Notation.dot
-          {F R : Set} `{core.ops.function.FnOnce.Trait
-            F
-            (Args := (mut_ref Self))}
+          {F R : Set}
+          `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
           :=
         on_instance;
     }.
@@ -3740,8 +3734,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
               (T := list u8)},
             T::type["AccountId"] ->
           M (H := H) unit.
@@ -3750,8 +3743,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
               (T := list u8)},
             T::type["AccountId"] ->
           M (H := H) unit.
@@ -3760,8 +3752,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
               (T := list u8)},
             T::type["AccountId"] ->
           M (H := H) unit.
@@ -3770,8 +3761,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
               (T := list u8)},
             T::type["AccountId"] ->
           M (H := H) bool.
@@ -3824,12 +3814,10 @@ Module engine.
           forall
           {T : Set} {F : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.ops.function.FnOnce.Trait
-              F
-              (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
+            `{core.ops.function.FnOnce.Trait F
+              (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
             forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
               (T := list u8)},
             F ->
           M (H := H) (ink_env.error.Result unit).
@@ -3838,8 +3826,7 @@ Module engine.
           forall
           {T : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
               (T := list u8)},
             M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
       
@@ -3939,7 +3926,7 @@ Module OnInstance.
     on_instance
       `{H : State.Trait}
       {F R: Set}
-      `{core.ops.function.FnOnce.Trait F (Args := (mut_ref Self))}
+      `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
       :
       F -> (M (H := H) R);
   }.
@@ -3947,7 +3934,8 @@ Module OnInstance.
   Global Instance Method_on_instance `{H : State.Trait} `(Trait)
     : Notation.Dot "on_instance" := {
     Notation.dot
-        {F R : Set} `{core.ops.function.FnOnce.Trait F (Args := (mut_ref Self))}
+        {F R : Set}
+        `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
         :=
       on_instance;
   }.
@@ -4037,8 +4025,7 @@ Module off_chain.
         forall
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
             (T := list u8)},
           T::type["AccountId"] ->
         M (H := H) unit.
@@ -4047,8 +4034,7 @@ Module off_chain.
         forall
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
             (T := list u8)},
           T::type["AccountId"] ->
         M (H := H) unit.
@@ -4057,8 +4043,7 @@ Module off_chain.
         forall
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
             (T := list u8)},
           T::type["AccountId"] ->
         M (H := H) unit.
@@ -4067,8 +4052,7 @@ Module off_chain.
         forall
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
             (T := list u8)},
           T::type["AccountId"] ->
         M (H := H) bool.
@@ -4119,12 +4103,10 @@ Module off_chain.
         forall
         {T : Set} {F : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.ops.function.FnOnce.Trait
-            F
-            (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
+          `{core.ops.function.FnOnce.Trait F
+            (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
           forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
             (T := list u8)},
           F ->
         M (H := H) (ink_env.error.Result unit).
@@ -4133,8 +4115,7 @@ Module off_chain.
         forall
         {T : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
             (T := list u8)},
           M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
     
@@ -4331,8 +4312,7 @@ Module test_api.
       forall
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
         T::type["AccountId"] ->
       M (H := H) unit.
@@ -4341,8 +4321,7 @@ Module test_api.
       forall
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
         T::type["AccountId"] ->
       M (H := H) unit.
@@ -4351,8 +4330,7 @@ Module test_api.
       forall
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
         T::type["AccountId"] ->
       M (H := H) unit.
@@ -4361,8 +4339,7 @@ Module test_api.
       forall
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
         T::type["AccountId"] ->
       M (H := H) bool.
@@ -4413,12 +4390,10 @@ Module test_api.
       forall
       {T : Set} {F : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.ops.function.FnOnce.Trait
-          F
-          (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
+        `{core.ops.function.FnOnce.Trait F
+          (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
         forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
         F ->
       M (H := H) (ink_env.error.Result unit).
@@ -4427,8 +4402,7 @@ Module test_api.
       forall
       {T : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
         M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
   
@@ -4537,8 +4511,7 @@ Parameter set_caller : forall `{H : State.Trait},
     forall
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
         (T := list u8)},
       T::type["AccountId"] ->
     M (H := H) unit.
@@ -4547,8 +4520,7 @@ Parameter set_callee : forall `{H : State.Trait},
     forall
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
         (T := list u8)},
       T::type["AccountId"] ->
     M (H := H) unit.
@@ -4557,8 +4529,7 @@ Parameter set_contract : forall `{H : State.Trait},
     forall
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
         (T := list u8)},
       T::type["AccountId"] ->
     M (H := H) unit.
@@ -4567,8 +4538,7 @@ Parameter is_contract : forall `{H : State.Trait},
     forall
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
         (T := list u8)},
       T::type["AccountId"] ->
     M (H := H) bool.
@@ -4619,12 +4589,10 @@ Parameter run_test : forall `{H : State.Trait},
     forall
     {T : Set} {F : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.ops.function.FnOnce.Trait
-        F
-        (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
+      `{core.ops.function.FnOnce.Trait F
+        (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
       forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
         (T := list u8)},
       F ->
     M (H := H) (ink_env.error.Result unit).
@@ -4633,8 +4601,7 @@ Parameter default_accounts : forall `{H : State.Trait},
     forall
     {T : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
         (T := list u8)},
       M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 
@@ -5035,7 +5002,8 @@ Module topics.
     Global Instance Method_topics `{H : State.Trait} `(Trait)
       : Notation.Dot "topics" := {
       Notation.dot
-          {E B : Set} `{ink_env.types.Environment.Trait E}
+          {E B : Set}
+          `{ink_env.types.Environment.Trait E}
           `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
           :=
         topics;
@@ -5206,7 +5174,8 @@ Module Topics.
   Global Instance Method_topics `{H : State.Trait} `(Trait)
     : Notation.Dot "topics" := {
     Notation.dot
-        {E B : Set} `{ink_env.types.Environment.Trait E}
+        {E B : Set}
+        `{ink_env.types.Environment.Trait E}
         `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
         :=
       topics;

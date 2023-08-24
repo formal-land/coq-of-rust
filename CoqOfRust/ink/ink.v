@@ -218,8 +218,7 @@ Module codegen.
           emit_event
             `{H : State.Trait}
             {E: Set}
-            `{core.convert.Into.Trait
-              E
+            `{core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_)}
             :
             Self -> E -> (M (H := H) unit);
@@ -228,8 +227,8 @@ Module codegen.
         Global Instance Method_emit_event `{H : State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
           Notation.dot
-              {E : Set} `{core.convert.Into.Trait
-                E
+              {E : Set}
+              `{core.convert.Into.Trait E
                 (T := ink.reflect.event.ContractEventBase.Type_)}
               :=
             emit_event;
@@ -679,8 +678,7 @@ Module event.
         emit_event
           `{H : State.Trait}
           {E: Set}
-          `{core.convert.Into.Trait
-            E
+          `{core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_)}
           :
           Self -> E -> (M (H := H) unit);
@@ -689,8 +687,8 @@ Module event.
       Global Instance Method_emit_event `{H : State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
         Notation.dot
-            {E : Set} `{core.convert.Into.Trait
-              E
+            {E : Set}
+            `{core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_)}
             :=
           emit_event;
@@ -751,8 +749,7 @@ Module emit.
       emit_event
         `{H : State.Trait}
         {E: Set}
-        `{core.convert.Into.Trait
-          E
+        `{core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_)}
         :
         Self -> E -> (M (H := H) unit);
@@ -761,8 +758,8 @@ Module emit.
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
       Notation.dot
-          {E : Set} `{core.convert.Into.Trait
-            E
+          {E : Set}
+          `{core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_)}
           :=
         emit_event;
@@ -777,8 +774,7 @@ Module EmitEvent.
     emit_event
       `{H : State.Trait}
       {E: Set}
-      `{core.convert.Into.Trait
-        E
+      `{core.convert.Into.Trait E
         (T := ink.reflect.event.ContractEventBase.Type_)}
       :
       Self -> E -> (M (H := H) unit);
@@ -787,8 +783,8 @@ Module EmitEvent.
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
     Notation.dot
-        {E : Set} `{core.convert.Into.Trait
-          E
+        {E : Set}
+        `{core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_)}
         :=
       emit_event;

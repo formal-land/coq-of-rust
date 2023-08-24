@@ -1672,8 +1672,7 @@ Module
   Definition emit_event
       `{H : State.Trait}
       {E : Set}
-      `{core.convert.Into.Trait
-        E
+      `{core.convert.Into.Trait E
         (T := ink.reflect.event.ContractEventBase.Type_)}
       (self : Self)
       (event : E)
@@ -3960,9 +3959,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   Definition using_encoded
       `{H : State.Trait}
       {R F : Set}
-      `{core.ops.function.FnOnce.Trait
-        F
-        (Args := (ref (Slice Root.core.primitive.u8)))}
+      `{core.ops.function.FnOnce.Trait F
+        (Args := ref (Slice Root.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -4649,9 +4647,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   Definition using_encoded
       `{H : State.Trait}
       {R F : Set}
-      `{core.ops.function.FnOnce.Trait
-        F
-        (Args := (ref (Slice Root.core.primitive.u8)))}
+      `{core.ops.function.FnOnce.Trait F
+        (Args := ref (Slice Root.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
