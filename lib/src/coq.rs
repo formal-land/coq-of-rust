@@ -196,7 +196,7 @@ impl<'a> TopLevel<'a> {
     /// decides whether to enclose [items] within a section with a context
     pub(crate) fn add_context_in_section_if_necessary(
         name: &'a str,
-        ty_params: &Vec<String>,
+        ty_params: &[String],
         items: &[TopLevelItem<'a>],
     ) -> Self {
         if ty_params.is_empty() {
@@ -204,24 +204,32 @@ impl<'a> TopLevel<'a> {
                 items: items.to_owned(),
             }
         } else {
-            TopLevel {
-                items: vec![TopLevelItem::Section(Section::new(
-                    name,
-                    &TopLevel {
-                        items: [
-                            &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
-                                &ArgDecl::Normal {
-                                    idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                                    ty: Some(Expression::set()),
-                                },
-                                ArgSpecKind::Implicit,
-                            )]))],
-                            items,
-                        ]
-                        .concat(),
-                    },
-                ))],
-            }
+            TopLevel::add_context_in_section(name, ty_params, items)
+        }
+    }
+
+    pub(crate) fn add_context_in_section(
+        name: &'a str,
+        ty_params: &[String],
+        items: &[TopLevelItem<'a>],
+    ) -> Self {
+        TopLevel {
+            items: vec![TopLevelItem::Section(Section::new(
+                name,
+                &TopLevel {
+                    items: [
+                        &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
+                            &ArgDecl::Normal {
+                                idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
+                                ty: Some(Expression::set()),
+                            },
+                            ArgSpecKind::Implicit,
+                        )]))],
+                        items,
+                    ]
+                    .concat(),
+                },
+            ))],
         }
     }
 }
