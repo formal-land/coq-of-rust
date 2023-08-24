@@ -99,6 +99,8 @@ pub(crate) enum Expression {
     },
     Variable {
         ident: Path,
+        /// a flag set if implicit arguments are deactivated with '@'
+        no_implicit: bool,
     },
 }
 
@@ -464,7 +466,9 @@ impl Expression {
                     },
                 ]),
             ),
-            Self::Variable { ident } => ident.to_doc(),
+            Self::Variable { ident, no_implicit } => {
+                concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])
+            }
         }
     }
 
@@ -472,6 +476,7 @@ impl Expression {
     pub(crate) fn set() -> Self {
         Expression::Variable {
             ident: Path::new(&["Set"]),
+            no_implicit: false,
         }
     }
 }
@@ -490,6 +495,7 @@ impl ArgSpec {
                 idents: vec!["H".to_string()],
                 ty: Expression::Variable {
                     ident: Path::new(&["State", "Trait"]),
+                    no_implicit: false,
                 },
             },
             kind: ArgSpecKind::Implicit,
