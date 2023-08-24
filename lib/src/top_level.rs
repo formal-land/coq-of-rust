@@ -1621,7 +1621,7 @@ impl TopLevelItem {
                             VariantItem::Struct { fields } => concat([
                                 coq::Module::new(
                                     name,
-                                    coq::TopLevelItem::locally_unset_primitive_projections(&[
+                                    coq::TopLevel::locally_unset_primitive_projections(&[
                                         coq::TopLevelItem::Code(concat([
                                             nest([
                                                 text("Record"),
@@ -1747,7 +1747,7 @@ impl TopLevelItem {
                 },
                 coq::Module::new(
                     name,
-                    coq::TopLevelItem::add_context_in_section_if_necessary(
+                    coq::TopLevel::add_context_in_section_if_necessary(
                         name,
                         ty_params,
                         &[coq::TopLevelItem::Code(group([
@@ -1880,7 +1880,7 @@ impl TopLevelItem {
             } => group([
                 coq::Module::new(
                     name,
-                    coq::TopLevelItem::add_context_in_section_if_necessary(
+                    coq::TopLevel::add_context_in_section_if_necessary(
                         name,
                         ty_params,
                         &[coq::TopLevelItem::Code(group([
@@ -2000,7 +2000,7 @@ impl TopLevelItem {
             TopLevelItem::TypeStructUnit { name, ty_params } => group([
                 coq::Module::new(
                     name,
-                    coq::TopLevelItem::add_context_in_section_if_necessary(
+                    coq::TopLevel::add_context_in_section_if_necessary(
                         name,
                         ty_params,
                         &[coq::TopLevelItem::Code(group([

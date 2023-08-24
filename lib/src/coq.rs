@@ -3,6 +3,8 @@ use crate::render::{
     self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
 };
 
+#[derive(Clone)]
+/// a list of coq top level items
 pub(crate) struct TopLevel<'a> {
     items: Vec<TopLevelItem<'a>>,
 }
@@ -31,7 +33,7 @@ pub(crate) struct Comment {
 /// a coq module
 pub(crate) struct Module<'a> {
     name: &'a str,
-    items: Vec<TopLevelItem<'a>>,
+    items: TopLevel<'a>,
 }
 
 #[derive(Clone)]
@@ -156,6 +158,70 @@ impl<'a> TopLevel<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()])
     }
+
+    pub(crate) fn concat(tls: &[Self]) -> Self {
+        TopLevel {
+            items: tls.iter().flat_map(|tl| tl.items.to_owned()).collect(),
+        }
+    }
+
+    /// locally unsets primitive projecitons
+    pub(crate) fn locally_unset_primitive_projections(items: &[TopLevelItem<'a>]) -> Self {
+        TopLevel {
+            items: [
+                vec![TopLevelItem::Code(text("Unset Primitive Projections."))],
+                items.to_vec(),
+                vec![TopLevelItem::Code(text(
+                    "Global Set Primitive Projections.",
+                ))],
+            ]
+            .concat(),
+        }
+    }
+
+    /// locally unsets primitive projecitons if the condition is satisfied
+    pub(crate) fn locally_unset_primitive_projections_if(
+        condition: bool,
+        items: &[TopLevelItem<'a>],
+    ) -> Self {
+        if condition {
+            TopLevel::locally_unset_primitive_projections(items)
+        } else {
+            TopLevel {
+                items: [items.to_vec(), vec![TopLevelItem::Line]].concat(),
+            }
+        }
+    }
+
+    /// decides whether to enclose [items] within a section with a context
+    pub(crate) fn add_context_in_section_if_necessary(
+        name: &'a str,
+        ty_params: &Vec<String>,
+        items: &[TopLevelItem<'a>],
+    ) -> Self {
+        if ty_params.is_empty() {
+            TopLevel {
+                items: items.to_owned(),
+            }
+        } else {
+            TopLevel {
+                items: vec![TopLevelItem::Section(Section::new(
+                    name,
+                    &[
+                        &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
+                            &ArgDecl::Normal {
+                                idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
+                                ty: Some(Expression::set()),
+                            },
+                            ArgSpecKind::Implicit,
+                        )]))],
+                        items,
+                    ]
+                    .concat(),
+                ))],
+            }
+        }
+    }
 }
 
 impl<'a> TopLevelItem<'a> {
@@ -185,8 +251,8 @@ impl<'a> TopLevelItem<'a> {
     ) -> Self {
         TopLevelItem::Module(Module::new(
             name,
-            [
-                TopLevelItem::locally_unset_primitive_projections_if(
+            TopLevel::concat(&[
+                TopLevel::locally_unset_primitive_projections_if(
                     items.is_empty(),
                     &[TopLevelItem::Class(Class::new(
                         "Trait",
@@ -197,69 +263,20 @@ impl<'a> TopLevelItem<'a> {
                         items,
                     ))],
                 ),
-                instances
-                    .iter()
-                    .map(|i| TopLevelItem::Instance(i.to_owned()))
-                    .collect(),
-            ]
-            .concat(),
+                TopLevel {
+                    items: instances
+                        .iter()
+                        .map(|i| TopLevelItem::Instance(i.to_owned()))
+                        .collect(),
+                },
+            ]),
         ))
-    }
-
-    /// locally unsets primitive projecitons
-    pub(crate) fn locally_unset_primitive_projections(items: &[TopLevelItem<'a>]) -> Vec<Self> {
-        [
-            vec![TopLevelItem::Code(text("Unset Primitive Projections."))],
-            items.to_vec(),
-            vec![TopLevelItem::Code(text(
-                "Global Set Primitive Projections.",
-            ))],
-        ]
-        .concat()
-    }
-
-    /// locally unsets primitive projecitons if the condition is satisfied
-    pub(crate) fn locally_unset_primitive_projections_if(
-        condition: bool,
-        items: &[TopLevelItem<'a>],
-    ) -> Vec<Self> {
-        if condition {
-            TopLevelItem::locally_unset_primitive_projections(items)
-        } else {
-            [items.to_vec(), vec![TopLevelItem::Line]].concat()
-        }
-    }
-
-    /// decides whether to enclose [items] within a section with a context
-    pub(crate) fn add_context_in_section_if_necessary(
-        name: &'a str,
-        ty_params: &Vec<String>,
-        items: &[TopLevelItem<'a>],
-    ) -> Vec<Self> {
-        if ty_params.is_empty() {
-            items.to_owned()
-        } else {
-            vec![TopLevelItem::Section(Section::new(
-                name,
-                &[
-                    &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
-                        &ArgDecl::Normal {
-                            idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                            ty: Some(Expression::set()),
-                        },
-                        ArgSpecKind::Implicit,
-                    )]))],
-                    items,
-                ]
-                .concat(),
-            ))]
-        }
     }
 }
 
 impl<'a> Module<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &'a str, content: Vec<TopLevelItem<'a>>) -> Self {
+    pub(crate) fn new(name: &'a str, content: TopLevel<'a>) -> Self {
         Module {
             name,
             items: content,
@@ -267,11 +284,7 @@ impl<'a> Module<'a> {
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose(
-            "Module",
-            self.name,
-            intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()]),
-        )
+        render::enclose("Module", self.name, self.items.to_doc())
     }
 }
 
