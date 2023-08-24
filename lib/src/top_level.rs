@@ -1227,12 +1227,11 @@ impl FunDefinition {
                                     text(":"),
                                     line(),
                                 ]),
-                                nest([
-                                    text("forall"),
-                                    line(),
-                                    monadic_typeclass_parameter(),
-                                    text(","),
-                                ]),
+                                nest([coq::Expression::PiType {
+                                    args: vec![coq::ArgSpec::monadic_typeclass_parameter()],
+                                    image: Box::new(coq::Expression::Code(nil())),
+                                }
+                                .to_doc(false)]),
                                 line(),
                                 // Type parameters a, b, c... compiles to forall {a b c ... : Set},
                                 {
@@ -1324,7 +1323,7 @@ impl FunDefinition {
                             ]),
                         ]),
                         line(),
-                        body.to_doc(false),
+                        coq::Expression::Code(body.to_doc(false)).to_doc(false),
                         text("."),
                     ]))],
                 },
@@ -1468,7 +1467,7 @@ impl WherePredicate {
 
 impl TraitBound {
     /// turns the trait bound into its representation as constraint
-    fn to_coq(&self, self_ty: coq::Expression) -> coq::ArgSpec {
+    fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::ArgSpec<'a> {
         coq::ArgSpec::new(
             &coq::ArgDecl::Generalized {
                 idents: vec![],
@@ -1514,7 +1513,7 @@ impl TraitBound {
     }
 
     /// turns the trait bound into its representation as constraint
-    fn to_doc<'a>(&self, self_ty: coq::Expression) -> Doc<'a> {
+    fn to_doc<'a>(&self, self_ty: coq::Expression<'a>) -> Doc<'a> {
         self.to_coq(self_ty).to_doc()
     }
 }
@@ -2031,6 +2030,7 @@ impl TopLevelItem {
                 coq::TopLevelItem::Definition(coq::Definition::new(
                     name,
                     &coq::DefinitionKind::Alias {
+                        args: vec![],
                         ty: None,
                         body: coq::Expression::Variable {
                             ident: Path::new(&[name, &"t".to_string()]),
@@ -2057,6 +2057,7 @@ impl TopLevelItem {
                         coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
                             "Self",
                             &coq::DefinitionKind::Alias {
+                                args: vec![],
                                 ty: None,
                                 body: self_ty.to_coq(),
                             },

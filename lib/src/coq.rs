@@ -15,8 +15,8 @@ pub(crate) enum TopLevelItem<'a> {
     Code(Doc<'a>),
     Class(Class<'a>),
     Comment(Comment),
-    Context(Context),
-    Definition(Definition),
+    Context(Context<'a>),
+    Definition(Definition<'a>),
     Instance(Instance<'a>),
     Line,
     Module(Module<'a>),
@@ -45,15 +45,15 @@ pub(crate) struct Section<'a> {
 
 #[derive(Clone)]
 /// a coq constant definition
-pub(crate) struct Definition {
+pub(crate) struct Definition<'a> {
     name: String,
-    kind: DefinitionKind,
+    kind: DefinitionKind<'a>,
 }
 
 #[derive(Clone)]
 /// a coq `Context` item
-pub(crate) struct Context {
-    args: Vec<ArgSpec>,
+pub(crate) struct Context<'a> {
+    args: Vec<ArgSpec<'a>>,
 }
 
 #[derive(Clone)]
@@ -71,38 +71,44 @@ pub(crate) struct Class<'a> {
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
     name: &'a str,
-    parameters: Vec<ArgSpec>,
-    class: Expression,
+    parameters: Vec<ArgSpec<'a>>,
+    class: Expression<'a>,
     field: Doc<'a>,
     value: Doc<'a>,
 }
 
 #[derive(Clone)]
-pub(crate) enum DefinitionKind {
+pub(crate) enum DefinitionKind<'a> {
     Alias {
-        ty: Option<Expression>,
-        body: Expression,
+        args: Vec<ArgSpec<'a>>,
+        ty: Option<Expression<'a>>,
+        body: Expression<'a>,
     },
     Assumption {
-        ty: Expression,
+        ty: Expression<'a>,
     },
 }
 
 #[derive(Clone)]
 /// a coq expression
-pub(crate) enum Expression {
+pub(crate) enum Expression<'a> {
+    Code(Doc<'a>),
     Application {
-        func: Box<Expression>,
+        func: Box<Expression<'a>>,
         param: Option<String>,
-        arg: Box<Expression>,
+        arg: Box<Expression<'a>>,
     },
     Function {
-        domain: Box<Expression>,
-        image: Box<Expression>,
+        domain: Box<Expression<'a>>,
+        image: Box<Expression<'a>>,
+    },
+    PiType {
+        args: Vec<ArgSpec<'a>>,
+        image: Box<Expression<'a>>,
     },
     Product {
-        lhs: Box<Expression>,
-        rhs: Box<Expression>,
+        lhs: Box<Expression<'a>>,
+        rhs: Box<Expression<'a>>,
     },
     Set,
     Unit,
@@ -115,26 +121,26 @@ pub(crate) enum Expression {
 
 #[derive(Clone)]
 /// a specification of an argument of a coq construction
-pub(crate) struct ArgSpec {
-    decl: ArgDecl,
+pub(crate) struct ArgSpec<'a> {
+    decl: ArgDecl<'a>,
     kind: ArgSpecKind,
 }
 
 #[derive(Clone)]
 /// a variant of the argument specification
-pub(crate) enum ArgDecl {
+pub(crate) enum ArgDecl<'a> {
     Normal {
         // @TODO: try to make it really non-empty
         /// a non-empty vector of identifiers
         idents: Vec<String>,
         /// a type of the identifiers
-        ty: Option<Expression>,
+        ty: Option<Expression<'a>>,
     },
     Generalized {
         /// a possibly empty vector of identifiers
         idents: Vec<String>,
         /// a type of the identifiers
-        ty: Expression,
+        ty: Expression<'a>,
     },
 }
 
@@ -325,20 +331,25 @@ impl<'a> Section<'a> {
     }
 }
 
-impl Definition {
-    pub(crate) fn new(name: &str, kind: &DefinitionKind) -> Self {
+impl<'a> Definition<'a> {
+    pub(crate) fn new(name: &str, kind: &DefinitionKind<'a>) -> Self {
         Definition {
             name: name.to_owned(),
             kind: kind.to_owned(),
         }
     }
 
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
         match self.kind.to_owned() {
-            DefinitionKind::Alias { ty, body } => nest([
+            DefinitionKind::Alias { args, ty, body } => nest([
                 text("Definition"),
                 line(),
                 text(self.name.to_owned()),
+                if args.is_empty() {
+                    nil()
+                } else {
+                    concat([line(), concat(args.iter().map(|arg| arg.to_doc()))])
+                },
                 match ty {
                     Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
                     None => nil(),
@@ -363,14 +374,14 @@ impl Definition {
     }
 }
 
-impl Context {
-    pub(crate) fn new(args: &[ArgSpec]) -> Self {
+impl<'a> Context<'a> {
+    pub(crate) fn new(args: &[ArgSpec<'a>]) -> Self {
         Context {
             args: args.to_owned(),
         }
     }
 
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
         nest([
             text("Context"),
             line(),
@@ -422,8 +433,8 @@ impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
         name: &'a str,
-        parameters: &[ArgSpec],
-        class: Expression,
+        parameters: &[ArgSpec<'a>],
+        class: Expression<'a>,
         field: Doc<'a>,
         value: Doc<'a>,
     ) -> Self {
@@ -457,9 +468,10 @@ impl<'a> Instance<'a> {
     }
 }
 
-impl Expression {
-    pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
+impl<'a> Expression<'a> {
+    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc<'a> {
         match self {
+            Self::Code(doc) => paren(with_paren, doc.to_owned()),
             Self::Application { func, param, arg } => paren(
                 with_paren,
                 group([
@@ -482,6 +494,18 @@ impl Expression {
                     line(),
                     text("->"),
                     line(),
+                    image.to_doc(false),
+                ]),
+            ),
+            Self::PiType { args, image } => paren(
+                with_paren,
+                concat([
+                    group([
+                        text("forall"),
+                        line(),
+                        concat(args.iter().map(|arg| arg.to_doc())),
+                        text(","),
+                    ]),
                     image.to_doc(false),
                 ]),
             ),
@@ -547,8 +571,8 @@ impl Expression {
     }
 }
 
-impl ArgSpec {
-    pub(crate) fn new(decl: &ArgDecl, kind: ArgSpecKind) -> Self {
+impl<'a> ArgSpec<'a> {
+    pub(crate) fn new(decl: &ArgDecl<'a>, kind: ArgSpecKind) -> Self {
         ArgSpec {
             decl: decl.to_owned(),
             kind,
@@ -572,7 +596,7 @@ impl ArgSpec {
         }
     }
 
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
         let brackets = match self.kind {
             ArgSpecKind::Explicit => render::round_brackets,
             ArgSpecKind::Implicit => render::curly_brackets,
@@ -613,7 +637,7 @@ impl ArgSpec {
 /// produces a definition of the given function
 pub(crate) fn function_header<'a>(
     name: &Path,
-    params: &Vec<ArgSpec>,
+    params: &[ArgSpec<'a>],
     args: &[(&'a String, Doc<'a>)],
 ) -> Doc<'a> {
     group([

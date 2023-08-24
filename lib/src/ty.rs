@@ -214,7 +214,7 @@ pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<B
 }
 
 impl CoqType {
-    pub(crate) fn to_coq(&self) -> coq::Expression {
+    pub(crate) fn to_coq<'a>(&self) -> coq::Expression<'a> {
         match self {
             CoqType::Var(path) => coq::Expression::Variable {
                 ident: *path.clone(),
