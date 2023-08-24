@@ -317,7 +317,7 @@ Module ConstantTimeEq.
   }.
   Global Instance Method_ct_ne `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_ne" := {
-    Notation.dot (self : ref Self) (other : ref Self) :=
+    Notation.dot (self : ref Self)(other : ref Self):=
       (let* α0 := self.["ct_eq"] other in
       α0.["not"]
       : M (H := H) subtle.Choice);
@@ -654,9 +654,7 @@ Module ConditionallySelectable.
   Global Instance Method_conditional_assign `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_assign" := {
     Notation.dot
-        (self : mut_ref Self)
-        (other : ref Self)
-        (choice : subtle.Choice) :=
+        (self : mut_ref Self)(other : ref Self)(choice : subtle.Choice):=
       (let* _ :=
         let* α0 := self.["deref"] in
         let* α1 := Self::["conditional_select"] self other choice in
@@ -666,10 +664,7 @@ Module ConditionallySelectable.
   }.
   Global Instance Method_conditional_swap `{H : State.Trait} `(Trait)
     : Notation.Dot "conditional_swap" := {
-    Notation.dot
-        (a : mut_ref Self)
-        (b : mut_ref Self)
-        (choice : subtle.Choice) :=
+    Notation.dot (a : mut_ref Self)(b : mut_ref Self)(choice : subtle.Choice):=
       (let* t := a.["deref"] in
       let* _ := a.["conditional_assign"] (addr_of b) choice in
       let* _ := b.["conditional_assign"] (addr_of t) choice in
@@ -2032,7 +2027,7 @@ Module ConstantTimeLess.
   
   Global Instance Method_ct_lt `{H : State.Trait} `(Trait)
     : Notation.Dot "ct_lt" := {
-    Notation.dot (self : ref Self) (other : ref Self) :=
+    Notation.dot (self : ref Self)(other : ref Self):=
       (let* α0 := self.["ct_gt"] other in
       let* α1 := α0.["not"] in
       let* α2 := self.["ct_eq"] other in
