@@ -506,6 +506,7 @@ impl<'a> Expression<'a> {
                         concat(args.iter().map(|arg| arg.to_doc())),
                         text(","),
                     ]),
+                    line(),
                     image.to_doc(false),
                 ]),
             ),

@@ -1227,53 +1227,56 @@ impl FunDefinition {
                                     text(":"),
                                     line(),
                                 ]),
-                                nest([coq::Expression::PiType {
+                                coq::Expression::PiType {
                                     args: vec![coq::ArgSpec::monadic_typeclass_parameter()],
-                                    image: Box::new(coq::Expression::Code(nil())),
+                                    image: Box::new(coq::Expression::Code(concat([
+                                        // Type parameters a, b, c... compiles to forall {a b c ... : Set},
+                                        {
+                                            let ty_params = &self.ty_params;
+                                            if ty_params.is_empty() {
+                                                nil()
+                                            } else {
+                                                concat([
+                                                    text("forall"),
+                                                    line(),
+                                                    coq::ArgSpec::of_ty_params(ty_params).to_doc(),
+                                                    text(","),
+                                                    line(),
+                                                ])
+                                            }
+                                        },
+                                        // where predicates types
+                                        {
+                                            let where_predicates = &self.where_predicates;
+                                            concat(where_predicates.iter().map(|predicate| {
+                                                nest([
+                                                    text("forall"),
+                                                    line(),
+                                                    predicate.to_doc(),
+                                                    text(","),
+                                                    line(),
+                                                ])
+                                            }))
+                                        },
+                                        // argument types
+                                        concat(self.signature_and_body.args.iter().map(
+                                            |(_, ty)| {
+                                                concat([ty.to_doc(false), text(" ->"), line()])
+                                            },
+                                        )),
+                                        // return type
+                                        if self.signature_and_body.ret_ty.has_opaque_types() {
+                                            let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                                            let ret_ty =
+                                                &mut self.signature_and_body.ret_ty.clone();
+                                            ret_ty.subst_opaque_types(&ret_ty_name);
+                                            ret_ty.to_doc(false)
+                                        } else {
+                                            self.signature_and_body.ret_ty.to_doc(false)
+                                        },
+                                    ]))),
                                 }
-                                .to_doc(false)]),
-                                line(),
-                                // Type parameters a, b, c... compiles to forall {a b c ... : Set},
-                                {
-                                    let ty_params = &self.ty_params;
-                                    if ty_params.is_empty() {
-                                        nil()
-                                    } else {
-                                        concat([
-                                            text("forall"),
-                                            line(),
-                                            coq::ArgSpec::of_ty_params(ty_params).to_doc(),
-                                            text(","),
-                                            line(),
-                                        ])
-                                    }
-                                },
-                                // where predicates types
-                                {
-                                    let where_predicates = &self.where_predicates;
-                                    concat(where_predicates.iter().map(|predicate| {
-                                        nest([
-                                            text("forall"),
-                                            line(),
-                                            predicate.to_doc(),
-                                            text(","),
-                                            line(),
-                                        ])
-                                    }))
-                                },
-                                // argument types
-                                concat(self.signature_and_body.args.iter().map(|(_, ty)| {
-                                    concat([ty.to_doc(false), text(" ->"), line()])
-                                })),
-                                // return type
-                                if self.signature_and_body.ret_ty.has_opaque_types() {
-                                    let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
-                                    let ret_ty = &mut self.signature_and_body.ret_ty.clone();
-                                    ret_ty.subst_opaque_types(&ret_ty_name);
-                                    ret_ty.to_doc(false)
-                                } else {
-                                    self.signature_and_body.ret_ty.to_doc(false)
-                                },
+                                .to_doc(false),
                                 text("."),
                             ])]))],
                         ]
