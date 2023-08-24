@@ -97,7 +97,9 @@ pub(crate) enum Expression {
         param: Option<String>,
         arg: Box<Expression>,
     },
-    Variable(Path),
+    Variable {
+        ident: Path,
+    },
 }
 
 #[derive(Clone)]
@@ -462,13 +464,15 @@ impl Expression {
                     },
                 ]),
             ),
-            Self::Variable(path) => path.to_doc(),
+            Self::Variable { ident } => ident.to_doc(),
         }
     }
 
     /// a coq Set
     pub(crate) fn set() -> Self {
-        Expression::Variable(Path::new(&["Set"]))
+        Expression::Variable {
+            ident: Path::new(&["Set"]),
+        }
     }
 }
 
@@ -484,7 +488,9 @@ impl ArgSpec {
         ArgSpec {
             decl: ArgDecl::Generalized {
                 idents: vec!["H".to_string()],
-                ty: Expression::Variable(Path::new(&["State", "Trait"])),
+                ty: Expression::Variable {
+                    ident: Path::new(&["State", "Trait"]),
+                },
             },
             kind: ArgSpecKind::Implicit,
         }

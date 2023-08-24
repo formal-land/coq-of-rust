@@ -2139,12 +2139,16 @@ impl TopLevelItem {
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
                                         idents: vec![],
-                                        ty: coq::Expression::Variable(Path::new(&["Trait"])),
+                                        ty: coq::Expression::Variable {
+                                            ident: Path::new(&["Trait"]),
+                                        },
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
                             ],
-                            coq::Expression::Variable(Path::new(&["Notation", "Dot"])),
+                            coq::Expression::Variable {
+                                ident: Path::new(&["Notation", "Dot"]),
+                            },
                             nest([coq::function_header(
                                 "Notation.dot",
                                 ty_params,
@@ -2170,25 +2174,26 @@ impl TopLevelItem {
                                     &coq::ArgDecl::Generalized {
                                         idents: vec![],
                                         ty: coq::Expression::Application {
-                                            func: Box::new(coq::Expression::Variable(Path::new(
-                                                &["Trait"],
-                                            ))),
+                                            func: Box::new(coq::Expression::Variable {
+                                                ident: Path::new(&["Trait"]),
+                                            }),
                                             param: Some(name.to_string()),
-                                            arg: Box::new(coq::Expression::Variable(Path::new(&[
-                                                name,
-                                            ]))),
+                                            arg: Box::new(coq::Expression::Variable {
+                                                ident: Path::new(&[name]),
+                                            }),
                                         },
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
                             ],
                             coq::Expression::Application {
-                                func: Box::new(coq::Expression::Variable(Path::new(&[
-                                    "Notation",
-                                    "DoubleColonType",
-                                ]))),
+                                func: Box::new(coq::Expression::Variable {
+                                    ident: Path::new(&["Notation", "DoubleColonType"]),
+                                }),
                                 param: None,
-                                arg: Box::new(coq::Expression::Variable(Path::new(&["Self"]))),
+                                arg: Box::new(coq::Expression::Variable {
+                                    ident: Path::new(&["Self"]),
+                                }),
                             },
                             text("Notation.double_colon_type"),
                             text(name),
@@ -2204,12 +2209,16 @@ impl TopLevelItem {
                                 coq::ArgSpec::new(
                                     &coq::ArgDecl::Generalized {
                                         idents: vec![],
-                                        ty: coq::Expression::Variable(Path::new(&["Trait"])),
+                                        ty: coq::Expression::Variable {
+                                            ident: Path::new(&["Trait"]),
+                                        },
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
                             ],
-                            coq::Expression::Variable(Path::new(&["Notation", "Dot"])),
+                            coq::Expression::Variable {
+                                ident: Path::new(&["Notation", "Dot"]),
+                            },
                             nest([coq::function_header(
                                 "Notation.dot",
                                 ty_params,
