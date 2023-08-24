@@ -104,6 +104,7 @@ pub(crate) enum Expression {
         lhs: Box<Expression>,
         rhs: Box<Expression>,
     },
+    Set,
     Unit,
     Variable {
         ident: Path,
@@ -233,7 +234,7 @@ impl<'a> TopLevel<'a> {
                         &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
                             &ArgDecl::Normal {
                                 idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
-                                ty: Some(Expression::set()),
+                                ty: Some(Expression::Set),
                             },
                             ArgSpecKind::Implicit,
                         )]))],
@@ -494,18 +495,11 @@ impl Expression {
                     rhs.to_doc(true),
                 ]),
             ),
+            Self::Set => text("Set"),
             Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
                 concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])
             }
-        }
-    }
-
-    /// a coq Set
-    pub(crate) fn set() -> Self {
-        Expression::Variable {
-            ident: Path::new(&["Set"]),
-            no_implicit: false,
         }
     }
 

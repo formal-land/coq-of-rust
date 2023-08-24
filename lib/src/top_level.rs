@@ -1212,7 +1212,7 @@ impl FunDefinition {
                                 vec![coq::TopLevelItem::Definition(coq::Definition::new(
                                     &[&self.name, "_", "ret_ty"].concat(),
                                     &coq::DefinitionKind::Assumption {
-                                        ty: coq::Expression::set(),
+                                        ty: coq::Expression::Set,
                                     },
                                 ))]
                             } else {
@@ -2197,7 +2197,7 @@ impl TopLevelItem {
                                         vec![coq::ArgSpec::new(
                                             &coq::ArgDecl::Normal {
                                                 idents: ty_params.to_owned(),
-                                                ty: Some(coq::Expression::set()),
+                                                ty: Some(coq::Expression::Set),
                                             },
                                             // change here if it doesn't work with '{}' brackets
                                             coq::ArgSpecKind::Implicit,
@@ -2287,7 +2287,7 @@ impl TopLevelItem {
                                         vec![coq::ArgSpec::new(
                                             &coq::ArgDecl::Normal {
                                                 idents: ty_params.to_owned(),
-                                                ty: Some(coq::Expression::set()),
+                                                ty: Some(coq::Expression::Set),
                                             },
                                             // change here if it doesn't work with '{}' brackets
                                             coq::ArgSpecKind::Implicit,
