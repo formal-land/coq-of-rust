@@ -598,6 +598,16 @@ impl ArgSpec {
             ]),
         }
     }
+
+    pub(crate) fn of_ty_params(ty_params: &[String]) -> Self {
+        ArgSpec {
+            decl: ArgDecl::Normal {
+                idents: ty_params.to_owned(),
+                ty: Some(Expression::Set),
+            },
+            kind: ArgSpecKind::Implicit,
+        }
+    }
 }
 
 /// produces a definition of the given function

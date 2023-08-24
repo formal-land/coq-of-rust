@@ -2194,14 +2194,7 @@ impl TopLevelItem {
                                     if ty_params.is_empty() {
                                         vec![]
                                     } else {
-                                        vec![coq::ArgSpec::new(
-                                            &coq::ArgDecl::Normal {
-                                                idents: ty_params.to_owned(),
-                                                ty: Some(coq::Expression::Set),
-                                            },
-                                            // change here if it doesn't work with '{}' brackets
-                                            coq::ArgSpecKind::Implicit,
-                                        )]
+                                        vec![coq::ArgSpec::of_ty_params(ty_params)]
                                     },
                                     where_predicates
                                         .iter()
@@ -2284,14 +2277,7 @@ impl TopLevelItem {
                                     if ty_params.is_empty() {
                                         vec![]
                                     } else {
-                                        vec![coq::ArgSpec::new(
-                                            &coq::ArgDecl::Normal {
-                                                idents: ty_params.to_owned(),
-                                                ty: Some(coq::Expression::Set),
-                                            },
-                                            // change here if it doesn't work with '{}' brackets
-                                            coq::ArgSpecKind::Implicit,
-                                        )]
+                                        vec![coq::ArgSpec::of_ty_params(ty_params)]
                                     },
                                     where_predicates
                                         .iter()
