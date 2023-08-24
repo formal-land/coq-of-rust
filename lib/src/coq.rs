@@ -3,6 +3,10 @@ use crate::render::{
     self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
 };
 
+pub(crate) struct TopLevel<'a> {
+    items: Vec<TopLevelItem<'a>>,
+}
+
 #[derive(Clone)]
 /// any coq top level item
 pub(crate) enum TopLevelItem<'a> {
@@ -119,6 +123,18 @@ impl Comment {
 
     pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
         concat([text("(* "), text(self.text.to_string()), text(" *)")])
+    }
+}
+
+impl<'a> TopLevel<'a> {
+    pub(crate) fn new(items: &[TopLevelItem<'a>]) -> Self {
+        TopLevel {
+            items: items.to_vec(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()])
     }
 }
 
