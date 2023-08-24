@@ -1222,37 +1222,22 @@ impl FunDefinition {
                                 &self.name,
                                 &coq::DefinitionKind::Assumption {
                                     ty: coq::Expression::PiType {
-                                        args: vec![coq::ArgSpec::monadic_typeclass_parameter()],
-                                        image: Box::new(coq::Expression::Code(concat([
+                                        args: [
+                                            vec![coq::ArgSpec::monadic_typeclass_parameter()],
                                             // Type parameters a, b, c... compiles to forall {a b c ... : Set},
-                                            {
-                                                let ty_params = &self.ty_params;
-                                                if ty_params.is_empty() {
-                                                    nil()
-                                                } else {
-                                                    concat([
-                                                        text("forall"),
-                                                        line(),
-                                                        coq::ArgSpec::of_ty_params(ty_params)
-                                                            .to_doc(),
-                                                        text(","),
-                                                        line(),
-                                                    ])
-                                                }
+                                            if self.ty_params.is_empty() {
+                                                vec![]
+                                            } else {
+                                                vec![coq::ArgSpec::of_ty_params(&self.ty_params)]
                                             },
                                             // where predicates types
-                                            {
-                                                let where_predicates = &self.where_predicates;
-                                                concat(where_predicates.iter().map(|predicate| {
-                                                    nest([
-                                                        text("forall"),
-                                                        line(),
-                                                        predicate.to_doc(),
-                                                        text(","),
-                                                        line(),
-                                                    ])
-                                                }))
-                                            },
+                                            self.where_predicates
+                                                .iter()
+                                                .map(|predicate| predicate.to_coq())
+                                                .collect(),
+                                        ]
+                                        .concat(),
+                                        image: Box::new(coq::Expression::Code(concat([
                                             // argument types
                                             concat(self.signature_and_body.args.iter().map(
                                                 |(_, ty)| {

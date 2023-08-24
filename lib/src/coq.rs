@@ -505,7 +505,7 @@ impl<'a> Expression<'a> {
                     group([
                         text("forall"),
                         line(),
-                        concat(args.iter().map(|arg| arg.to_doc())),
+                        intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
                         text(","),
                     ]),
                     line(),
