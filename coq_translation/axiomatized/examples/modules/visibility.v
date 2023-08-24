@@ -11,7 +11,7 @@ Module my_mod.
   End nested.
   
   Parameter call_public_function_in_my_mod : forall `{H : State.Trait},
-      M (H := H) unit.
+    M (H := H) unit.
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
@@ -28,7 +28,7 @@ Module nested.
 End nested.
 
 Parameter call_public_function_in_my_mod : forall `{H : State.Trait},
-    M (H := H) unit.
+  M (H := H) unit.
 
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
