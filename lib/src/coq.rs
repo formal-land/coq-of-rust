@@ -492,9 +492,7 @@ impl<'a> Expression<'a> {
             Self::Function { domain, image } => paren(
                 with_paren,
                 group([
-                    domain.to_doc(true),
-                    line(),
-                    text("->"),
+                    group([domain.to_doc(true), line(), text("->")]),
                     line(),
                     image.to_doc(false),
                 ]),

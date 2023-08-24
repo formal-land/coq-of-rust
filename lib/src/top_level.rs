@@ -1237,13 +1237,7 @@ impl FunDefinition {
                                                 .collect(),
                                         ]
                                         .concat(),
-                                        image: Box::new(coq::Expression::Code(concat([
-                                            // argument types
-                                            concat(self.signature_and_body.args.iter().map(
-                                                |(_, ty)| {
-                                                    concat([ty.to_doc(false), text(" ->"), line()])
-                                                },
-                                            )),
+                                        image: Box::new(
                                             // return type
                                             if self.signature_and_body.ret_ty.has_opaque_types() {
                                                 let ret_ty_name =
@@ -1251,11 +1245,20 @@ impl FunDefinition {
                                                 let ret_ty =
                                                     &mut self.signature_and_body.ret_ty.clone();
                                                 ret_ty.subst_opaque_types(&ret_ty_name);
-                                                ret_ty.to_doc(false)
+                                                ret_ty.to_coq()
                                             } else {
-                                                self.signature_and_body.ret_ty.to_doc(false)
-                                            },
-                                        ]))),
+                                                self.signature_and_body.ret_ty.to_coq()
+                                            }
+                                            // argument types
+                                            .arrows_from(
+                                                &self
+                                                    .signature_and_body
+                                                    .args
+                                                    .iter()
+                                                    .map(|(_, ty)| ty.to_coq())
+                                                    .collect::<Vec<_>>(),
+                                            ),
+                                        ),
                                     },
                                 },
                             ))],
