@@ -2148,8 +2148,19 @@ impl TopLevelItem {
                                 no_implicit: false,
                             },
                             nest([coq::function_header(
-                                "Notation.dot",
-                                ty_params,
+                                &Path::new(&["Notation", "dot"]),
+                                &if ty_params.is_empty() {
+                                    None
+                                } else {
+                                    Some(coq::ArgSpec::new(
+                                        &coq::ArgDecl::Normal {
+                                            idents: ty_params.to_owned(),
+                                            ty: Some(coq::Expression::set()),
+                                        },
+                                        // change here if it doesn't work with '{}' brackets
+                                        coq::ArgSpecKind::Implicit,
+                                    ))
+                                },
                                 where_predicates
                                     .iter()
                                     .map(|predicate| predicate.to_doc())
@@ -2197,7 +2208,7 @@ impl TopLevelItem {
                                     no_implicit: false,
                                 }),
                             },
-                            text("Notation.double_colon_type"),
+                            text("Notation.double_colon_type "),
                             text(name),
                         ),
                         TraitItem::DefinitionWithDefault {
@@ -2224,8 +2235,19 @@ impl TopLevelItem {
                                 no_implicit: false,
                             },
                             nest([coq::function_header(
-                                "Notation.dot",
-                                ty_params,
+                                &Path::new(&["Notation", "dot"]),
+                                &if ty_params.is_empty() {
+                                    None
+                                } else {
+                                    Some(coq::ArgSpec::new(
+                                        &coq::ArgDecl::Normal {
+                                            idents: ty_params.to_owned(),
+                                            ty: Some(coq::Expression::set()),
+                                        },
+                                        // change here if it doesn't work with '{}' brackets
+                                        coq::ArgSpecKind::Implicit,
+                                    ))
+                                },
                                 where_predicates
                                     .iter()
                                     .map(|predicate| predicate.to_doc())

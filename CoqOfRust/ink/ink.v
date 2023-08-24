@@ -51,7 +51,7 @@ Module result_info.
     
     Global Instance Method_value `{H : State.Trait} `(Trait)
       : Notation.Dot "value" := {
-      Notation.dot (self : ref Self) := (axiom : M (H := H) bool);
+      Notation.dot (self : ref Self):= (axiom : M (H := H) bool);
     }.
   End IsResultErrFallback.
 End result_info.
@@ -105,7 +105,7 @@ Module IsResultErrFallback.
   
   Global Instance Method_value `{H : State.Trait} `(Trait)
     : Notation.Dot "value" := {
-    Notation.dot (self : ref Self) := (axiom : M (H := H) bool);
+    Notation.dot (self : ref Self):= (axiom : M (H := H) bool);
   }.
 End IsResultErrFallback.
 
@@ -227,10 +227,11 @@ Module codegen.
         
         Global Instance Method_emit_event `{H : State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
-          Notation.dot{E: Set} `{core.convert.Into.Trait
+          Notation.dot
+              {E : Set} `{core.convert.Into.Trait
                 E
                 (T := ink.reflect.event.ContractEventBase.Type_)}
-               :=
+              :=
             emit_event;
         }.
       End EmitEvent.
@@ -687,10 +688,11 @@ Module event.
       
       Global Instance Method_emit_event `{H : State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
-        Notation.dot{E: Set} `{core.convert.Into.Trait
+        Notation.dot
+            {E : Set} `{core.convert.Into.Trait
               E
               (T := ink.reflect.event.ContractEventBase.Type_)}
-             :=
+            :=
           emit_event;
       }.
     End EmitEvent.
@@ -758,10 +760,11 @@ Module emit.
     
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
-      Notation.dot{E: Set} `{core.convert.Into.Trait
+      Notation.dot
+          {E : Set} `{core.convert.Into.Trait
             E
             (T := ink.reflect.event.ContractEventBase.Type_)}
-           :=
+          :=
         emit_event;
     }.
   End EmitEvent.
@@ -783,10 +786,11 @@ Module EmitEvent.
   
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
-    Notation.dot{E: Set} `{core.convert.Into.Trait
+    Notation.dot
+        {E : Set} `{core.convert.Into.Trait
           E
           (T := ink.reflect.event.ContractEventBase.Type_)}
-         :=
+        :=
       emit_event;
   }.
 End EmitEvent.
@@ -1534,7 +1538,7 @@ Module reflect.
       
       Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
-        Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+        Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I} :=
           decode_dispatch;
       }.
     End DecodeDispatch.
@@ -1875,7 +1879,7 @@ Module dispatch.
     
     Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
       : Notation.Dot "decode_dispatch" := {
-      Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+      Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I} :=
         decode_dispatch;
     }.
   End DecodeDispatch.
@@ -2123,7 +2127,7 @@ Module DecodeDispatch.
   
   Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
     : Notation.Dot "decode_dispatch" := {
-    Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+    Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I} :=
       decode_dispatch;
   }.
 End DecodeDispatch.

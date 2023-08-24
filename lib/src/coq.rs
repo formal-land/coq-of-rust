@@ -608,24 +608,17 @@ impl ArgSpec {
 
 /// produces a definition of the given function
 pub(crate) fn function_header<'a>(
-    name: &'a str,
-    ty_params: &'a Vec<String>,
+    name: &Path,
+    ty_params: &Option<ArgSpec>,
     bounds: Vec<Doc<'a>>,
     args: &[(&'a String, Doc<'a>)],
 ) -> Doc<'a> {
     group([
-        text(name),
-        if ty_params.is_empty() {
-            nil()
-        } else {
-            group([
-                render::curly_brackets(group([
-                    // change here if it doesn't work with '{}' brackets
-                    intersperse(ty_params, [line()]),
-                    text(": Set"),
-                ])),
-                line(),
-            ])
+        name.to_doc(),
+        line(),
+        match ty_params {
+            Some(ty_params) => group([ty_params.to_doc(), line()]),
+            None => nil(),
         },
         if bounds.is_empty() {
             nil()
@@ -633,17 +626,14 @@ pub(crate) fn function_header<'a>(
             group([intersperse(bounds, [line()]), line()])
         },
         concat(args.iter().map(|(name, ty)| {
-            concat([
+            concat([nest([
+                text("("),
+                text(*name),
                 line(),
-                nest([
-                    text("("),
-                    text(*name),
-                    line(),
-                    text(": "),
-                    ty.clone(),
-                    text(")"),
-                ]),
-            ])
+                text(": "),
+                ty.clone(),
+                text(")"),
+            ])])
         })),
     ])
 }
