@@ -16,7 +16,7 @@ Module builders.
   
   Parameter constructor_exec_input : forall `{H : State.Trait},
       forall
-      {E : Set} {ContractRef : Set} {Args : Set} {R : Set},
+      {E ContractRef Args R : Set},
       forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
         `{ink_env.types.Environment.Trait E},
         ink_e2e.builders.CreateBuilderPartial E ContractRef Args R ->
@@ -36,7 +36,7 @@ Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :=
 
 Parameter constructor_exec_input : forall `{H : State.Trait},
     forall
-    {E : Set} {ContractRef : Set} {Args : Set} {R : Set},
+    {E ContractRef Args R : Set},
     forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
       `{ink_env.types.Environment.Trait E},
       ink_e2e.builders.CreateBuilderPartial E ContractRef Args R ->

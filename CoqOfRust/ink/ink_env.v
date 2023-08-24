@@ -387,7 +387,7 @@ Module api.
   
   Parameter emit_event : forall `{H : State.Trait},
       forall
-      {E : Set} {Event : Set},
+      {E Event : Set},
       forall `{ink_env.types.Environment.Trait E}, forall
         `{ink_env.topics.Topics.Trait Event},
         forall `{parity_scale_codec.codec.Encode.Trait Event}, Event ->
@@ -395,7 +395,7 @@ Module api.
   
   Parameter set_contract_storage : forall `{H : State.Trait},
       forall
-      {K : Set} {V : Set},
+      {K V : Set},
       forall `{parity_scale_codec.codec.Encode.Trait K}, forall
         `{ink_storage_traits.storage.Storable.Trait V},
         ref K ->
@@ -404,7 +404,7 @@ Module api.
   
   Parameter get_contract_storage : forall `{H : State.Trait},
       forall
-      {K : Set} {R : Set},
+      {K R : Set},
       forall `{parity_scale_codec.codec.Encode.Trait K}, forall
         `{ink_storage_traits.storage.Storable.Trait R},
         ref K ->
@@ -412,7 +412,7 @@ Module api.
   
   Parameter take_contract_storage : forall `{H : State.Trait},
       forall
-      {K : Set} {R : Set},
+      {K R : Set},
       forall `{parity_scale_codec.codec.Encode.Trait K}, forall
         `{ink_storage_traits.storage.Storable.Trait R},
         ref K ->
@@ -432,7 +432,7 @@ Module api.
   
   Parameter invoke_contract : forall `{H : State.Trait},
       forall
-      {E : Set} {Args : Set} {R : Set},
+      {E Args R : Set},
       forall `{ink_env.types.Environment.Trait E}, forall
         `{parity_scale_codec.codec.Encode.Trait Args},
         forall `{parity_scale_codec.codec.Decode.Trait R}, ref
@@ -445,7 +445,7 @@ Module api.
   
   Parameter invoke_contract_delegate : forall `{H : State.Trait},
       forall
-      {E : Set} {Args : Set} {R : Set},
+      {E Args R : Set},
       forall `{ink_env.types.Environment.Trait E}, forall
         `{parity_scale_codec.codec.Encode.Trait Args},
         forall `{parity_scale_codec.codec.Decode.Trait R}, ref
@@ -458,7 +458,7 @@ Module api.
   
   Parameter instantiate_contract : forall `{H : State.Trait},
       forall
-      {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+      {E ContractRef Args Salt R : Set},
       forall `{ink_env.types.Environment.Trait E}, forall
         `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)},
         forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
@@ -514,7 +514,7 @@ Module api.
   
   Parameter hash_encoded : forall `{H : State.Trait},
       forall
-      {H : Set} {T : Set},
+      {H T : Set},
       forall `{ink_env.hash.CryptoHash.Trait H}, forall
         `{parity_scale_codec.codec.Encode.Trait T},
         ref T ->
@@ -567,7 +567,7 @@ Module api.
   
   Parameter call_runtime : forall `{H : State.Trait},
       forall
-      {E : Set} {Call : Set},
+      {E Call : Set},
       forall `{ink_env.types.Environment.Trait E}, forall
         `{parity_scale_codec.codec.Encode.Trait Call},
         ref Call ->
@@ -626,7 +626,7 @@ Parameter minimum_balance : forall `{H : State.Trait},
 
 Parameter emit_event : forall `{H : State.Trait},
     forall
-    {E : Set} {Event : Set},
+    {E Event : Set},
     forall `{ink_env.types.Environment.Trait E}, forall
       `{ink_env.topics.Topics.Trait Event},
       forall `{parity_scale_codec.codec.Encode.Trait Event}, Event ->
@@ -634,7 +634,7 @@ Parameter emit_event : forall `{H : State.Trait},
 
 Parameter set_contract_storage : forall `{H : State.Trait},
     forall
-    {K : Set} {V : Set},
+    {K V : Set},
     forall `{parity_scale_codec.codec.Encode.Trait K}, forall
       `{ink_storage_traits.storage.Storable.Trait V},
       ref K ->
@@ -643,7 +643,7 @@ Parameter set_contract_storage : forall `{H : State.Trait},
 
 Parameter get_contract_storage : forall `{H : State.Trait},
     forall
-    {K : Set} {R : Set},
+    {K R : Set},
     forall `{parity_scale_codec.codec.Encode.Trait K}, forall
       `{ink_storage_traits.storage.Storable.Trait R},
       ref K ->
@@ -651,7 +651,7 @@ Parameter get_contract_storage : forall `{H : State.Trait},
 
 Parameter take_contract_storage : forall `{H : State.Trait},
     forall
-    {K : Set} {R : Set},
+    {K R : Set},
     forall `{parity_scale_codec.codec.Encode.Trait K}, forall
       `{ink_storage_traits.storage.Storable.Trait R},
       ref K ->
@@ -671,7 +671,7 @@ Parameter clear_contract_storage : forall `{H : State.Trait},
 
 Parameter invoke_contract : forall `{H : State.Trait},
     forall
-    {E : Set} {Args : Set} {R : Set},
+    {E Args R : Set},
     forall `{ink_env.types.Environment.Trait E}, forall
       `{parity_scale_codec.codec.Encode.Trait Args},
       forall `{parity_scale_codec.codec.Decode.Trait R}, ref
@@ -684,7 +684,7 @@ Parameter invoke_contract : forall `{H : State.Trait},
 
 Parameter invoke_contract_delegate : forall `{H : State.Trait},
     forall
-    {E : Set} {Args : Set} {R : Set},
+    {E Args R : Set},
     forall `{ink_env.types.Environment.Trait E}, forall
       `{parity_scale_codec.codec.Encode.Trait Args},
       forall `{parity_scale_codec.codec.Decode.Trait R}, ref
@@ -697,7 +697,7 @@ Parameter invoke_contract_delegate : forall `{H : State.Trait},
 
 Parameter instantiate_contract : forall `{H : State.Trait},
     forall
-    {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
+    {E ContractRef Args Salt R : Set},
     forall `{ink_env.types.Environment.Trait E}, forall
       `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)},
       forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
@@ -751,7 +751,7 @@ Parameter hash_bytes : forall `{H : State.Trait},
 
 Parameter hash_encoded : forall `{H : State.Trait},
     forall
-    {H : Set} {T : Set},
+    {H T : Set},
     forall `{ink_env.hash.CryptoHash.Trait H}, forall
       `{parity_scale_codec.codec.Encode.Trait T},
       ref T ->
@@ -804,7 +804,7 @@ Parameter set_code_hash2 : forall `{H : State.Trait},
 
 Parameter call_runtime : forall `{H : State.Trait},
     forall
-    {E : Set} {Call : Set},
+    {E Call : Set},
     forall `{ink_env.types.Environment.Trait E}, forall
       `{parity_scale_codec.codec.Encode.Trait Call},
       ref Call ->
@@ -3812,7 +3812,7 @@ Module engine.
       
       Parameter run_test : forall `{H : State.Trait},
           forall
-          {T : Set} {F : Set},
+          {T F : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.ops.function.FnOnce.Trait F
               (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
@@ -3872,7 +3872,7 @@ Module engine.
       
       Parameter assert_contract_termination : forall `{H : State.Trait},
           forall
-          {T : Set} {F : Set},
+          {T F : Set},
           forall `{ink_env.types.Environment.Trait T}, forall
             `{core.ops.function.FnMut.Trait F (Args := unit)},
             forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
@@ -4101,7 +4101,7 @@ Module off_chain.
     
     Parameter run_test : forall `{H : State.Trait},
         forall
-        {T : Set} {F : Set},
+        {T F : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.ops.function.FnOnce.Trait F
             (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
@@ -4161,7 +4161,7 @@ Module off_chain.
     
     Parameter assert_contract_termination : forall `{H : State.Trait},
         forall
-        {T : Set} {F : Set},
+        {T F : Set},
         forall `{ink_env.types.Environment.Trait T}, forall
           `{core.ops.function.FnMut.Trait F (Args := unit)},
           forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
@@ -4388,7 +4388,7 @@ Module test_api.
   
   Parameter run_test : forall `{H : State.Trait},
       forall
-      {T : Set} {F : Set},
+      {T F : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.ops.function.FnOnce.Trait F
           (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
@@ -4448,7 +4448,7 @@ Module test_api.
   
   Parameter assert_contract_termination : forall `{H : State.Trait},
       forall
-      {T : Set} {F : Set},
+      {T F : Set},
       forall `{ink_env.types.Environment.Trait T}, forall
         `{core.ops.function.FnMut.Trait F (Args := unit)},
         forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
@@ -4587,7 +4587,7 @@ Parameter set_block_number : forall `{H : State.Trait},
 
 Parameter run_test : forall `{H : State.Trait},
     forall
-    {T : Set} {F : Set},
+    {T F : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.ops.function.FnOnce.Trait F
         (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)},
@@ -4647,7 +4647,7 @@ Parameter recorded_events : forall `{H : State.Trait},
 
 Parameter assert_contract_termination : forall `{H : State.Trait},
     forall
-    {T : Set} {F : Set},
+    {T F : Set},
     forall `{ink_env.types.Environment.Trait T}, forall
       `{core.ops.function.FnMut.Trait F (Args := unit)},
       forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
