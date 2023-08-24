@@ -1218,7 +1218,7 @@ impl FunDefinition {
                             } else {
                                 vec![]
                             },
-                            vec![coq::TopLevelItem::Code(nest([coq::Definition::new(
+                            vec![coq::TopLevelItem::Definition(coq::Definition::new(
                                 &self.name,
                                 &coq::DefinitionKind::Assumption {
                                     ty: coq::Expression::PiType {
@@ -1273,8 +1273,7 @@ impl FunDefinition {
                                         ]))),
                                     },
                                 },
-                            )
-                            .to_doc()]))],
+                            ))],
                         ]
                         .concat()
                     }
