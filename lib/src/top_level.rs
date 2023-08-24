@@ -1300,15 +1300,7 @@ impl FunDefinition {
                                 if ty_params.is_empty() {
                                     nil()
                                 } else {
-                                    concat([
-                                        line(),
-                                        nest([
-                                            text("{"),
-                                            intersperse(ty_params.iter().map(text), [line()]),
-                                            line(),
-                                            text(": Set}"),
-                                        ]),
-                                    ])
+                                    concat([line(), coq::ArgSpec::of_ty_params(ty_params).to_doc()])
                                 }
                             },
                             line(),
