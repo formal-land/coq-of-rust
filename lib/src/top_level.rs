@@ -1234,7 +1234,7 @@ impl FunDefinition {
                                     text(","),
                                 ]),
                                 line(),
-                                // Type parameters a, b, c... compiles to forall {a : Set} {b : Set} ...,
+                                // Type parameters a, b, c... compiles to forall {a b c ... : Set},
                                 {
                                     let ty_params = &self.ty_params;
                                     if ty_params.is_empty() {
@@ -1243,17 +1243,7 @@ impl FunDefinition {
                                         concat([
                                             text("forall"),
                                             line(),
-                                            nest([intersperse(
-                                                ty_params.iter().map(|t| {
-                                                    concat([
-                                                        text("{"),
-                                                        text(t),
-                                                        text(" : "),
-                                                        text("Set}"),
-                                                    ])
-                                                }),
-                                                [line()],
-                                            )]),
+                                            coq::ArgSpec::of_ty_params(ty_params).to_doc(),
                                             text(","),
                                             line(),
                                         ])
