@@ -561,9 +561,13 @@ impl ArgSpec {
         }
     }
 
+    /// provides the instance of the Struct.Trait typeclass
+    /// for definitions of functions and constants
+    /// which types utilize the M monad constructor
     pub(crate) fn monadic_typeclass_parameter() -> Self {
         ArgSpec {
             decl: ArgDecl::Generalized {
+                // @TODO: check whether the name of the parameter is necessary
                 idents: vec!["H".to_string()],
                 ty: Expression::Variable {
                     ident: Path::new(&["State", "Trait"]),
