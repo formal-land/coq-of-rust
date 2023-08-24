@@ -1997,8 +1997,8 @@ impl TopLevelItem {
                     text(".t."),
                 ]),
             ]),
-            TopLevelItem::TypeStructUnit { name, ty_params } => group([
-                coq::Module::new(
+            TopLevelItem::TypeStructUnit { name, ty_params } => coq::TopLevel::new(&[
+                coq::TopLevelItem::Module(coq::Module::new(
                     name,
                     coq::TopLevel::add_context_in_section_if_necessary(
                         name,
@@ -2015,21 +2015,19 @@ impl TopLevelItem {
                             nest([text("Build"), text(".")]),
                         ]))],
                     ),
-                )
-                .to_doc(),
-                hardline(),
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":="),
-                    line(),
-                    text("@"),
-                    text(name),
-                    text(".t."),
-                ]),
-            ]),
+                )),
+                coq::TopLevelItem::Definition(coq::Definition::new(
+                    name,
+                    &coq::DefinitionKind::Alias {
+                        ty: None,
+                        body: coq::Expression::Variable {
+                            ident: Path::new(&[name, &"t".to_string()]),
+                            no_implicit: true,
+                        },
+                    },
+                )),
+            ])
+            .to_doc(),
             TopLevelItem::Impl {
                 self_ty,
                 counter,

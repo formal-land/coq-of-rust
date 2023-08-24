@@ -77,7 +77,6 @@ pub(crate) struct Instance<'a> {
     value: Doc<'a>,
 }
 
-#[allow(dead_code)]
 #[derive(Clone)]
 pub(crate) enum DefinitionKind {
     Alias {
