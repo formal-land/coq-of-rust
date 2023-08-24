@@ -14,6 +14,7 @@ pub(crate) enum TopLevelItem<'a> {
     Class(Class<'a>),
     Comment(Comment),
     Context(Context),
+    Definition(Definition),
     Instance(Instance<'a>),
     Line,
     Module(Module<'a>),
@@ -41,13 +42,20 @@ pub(crate) struct Section<'a> {
 }
 
 #[derive(Clone)]
+/// a coq constant definition
+pub(crate) struct Definition {
+    name: String,
+    kind: DefinitionKind,
+}
+
+#[derive(Clone)]
 /// a coq `Context` item
 pub(crate) struct Context {
     args: Vec<ArgSpec>,
 }
 
 #[derive(Clone)]
-/// a coq definition
+/// a coq typeclass definition
 pub(crate) struct Class<'a> {
     name: String,
     ty_params: Vec<(String, Option<Doc<'a>>)>,
@@ -65,6 +73,18 @@ pub(crate) struct Instance<'a> {
     class: Expression,
     field: Doc<'a>,
     value: Doc<'a>,
+}
+
+#[allow(dead_code)]
+#[derive(Clone)]
+pub(crate) enum DefinitionKind {
+    Alias {
+        ty: Option<Expression>,
+        body: Expression,
+    },
+    Assumption {
+        ty: Expression,
+    },
 }
 
 #[derive(Clone)]
@@ -145,6 +165,7 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Class(class) => class.to_doc(),
             TopLevelItem::Comment(comment) => comment.to_doc(),
             TopLevelItem::Context(context) => context.to_doc(),
+            TopLevelItem::Definition(definition) => definition.to_doc(),
             TopLevelItem::Instance(instance) => instance.to_doc(),
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
@@ -266,6 +287,44 @@ impl<'a> Section<'a> {
             self.name,
             intersperse(self.content.iter().map(|item| item.to_doc()), [hardline()]),
         )
+    }
+}
+
+impl Definition {
+    pub(crate) fn new(name: &str, kind: &DefinitionKind) -> Self {
+        Definition {
+            name: name.to_owned(),
+            kind: kind.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        match self.kind.to_owned() {
+            DefinitionKind::Alias { ty, body } => nest([
+                text("Definition"),
+                line(),
+                text(self.name.to_owned()),
+                match ty {
+                    Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
+                    None => nil(),
+                },
+                line(),
+                text(":="),
+                line(),
+                body.to_doc(false),
+                text("."),
+            ]),
+            DefinitionKind::Assumption { ty } => nest([
+                text("Parameter"),
+                line(),
+                text(self.name.to_owned()),
+                line(),
+                text(":"),
+                line(),
+                ty.to_doc(false),
+                text("."),
+            ]),
+        }
     }
 }
 

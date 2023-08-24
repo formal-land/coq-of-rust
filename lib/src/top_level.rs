@@ -1209,15 +1209,12 @@ impl FunDefinition {
                             // if the return type is opaque define a corresponding opaque type
                             // @TODO: use also the parameter
                             if self.signature_and_body.ret_ty.has_opaque_types() {
-                                vec![coq::TopLevelItem::Code(nest([
-                                    text("Parameter"),
-                                    line(),
-                                    text([&self.name, "_", "ret_ty"].concat()),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    text("Set."),
-                                ]))]
+                                vec![coq::TopLevelItem::Definition(coq::Definition::new(
+                                    &[&self.name, "_", "ret_ty"].concat(),
+                                    &coq::DefinitionKind::Assumption {
+                                        ty: coq::Expression::set(),
+                                    },
+                                ))]
                             } else {
                                 vec![]
                             },
