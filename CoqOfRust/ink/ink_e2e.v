@@ -19,7 +19,7 @@ Module builders.
     {E ContractRef Args R : Set}
     `{parity_scale_codec.codec.Encode.Trait Args}
     `{ink_env.types.Environment.Trait E},
-    ink_e2e.builders.CreateBuilderPartial E ContractRef Args R ->
+    (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
     M (H := H) (alloc.vec.Vec u8).
 End builders.
 
@@ -39,7 +39,7 @@ Parameter constructor_exec_input : forall
   {E ContractRef Args R : Set}
   `{parity_scale_codec.codec.Encode.Trait Args}
   `{ink_env.types.Environment.Trait E},
-  ink_e2e.builders.CreateBuilderPartial E ContractRef Args R ->
+  (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
   M (H := H) (alloc.vec.Vec u8).
 
 Module client.
@@ -962,10 +962,9 @@ Parameter LOG_PREFIX :
 Parameter log_prefix : forall `{H : State.Trait},
   M (H := H) alloc.string.String.
 
-Parameter log_info : forall `{H : State.Trait}, ref str -> M (H := H) unit.
+Parameter log_info : forall `{H : State.Trait}, (ref str) -> M (H := H) unit.
 
-Parameter log_error : forall `{H : State.Trait}, ref str -> M (H := H) unit.
+Parameter log_error : forall `{H : State.Trait}, (ref str) -> M (H := H) unit.
 
 Parameter account_id : forall `{H : State.Trait},
-  sp_keyring.sr25519.Keyring ->
-  M (H := H) ink_primitives.types.AccountId.
+  sp_keyring.sr25519.Keyring -> M (H := H) ink_primitives.types.AccountId.
