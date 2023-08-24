@@ -207,10 +207,10 @@ impl<'a> TopLevelItem<'a> {
     }
 
     /// locally unsets primitive projecitons
-    pub(crate) fn locally_unset_primitive_projections(doc: &[TopLevelItem<'a>]) -> Vec<Self> {
+    pub(crate) fn locally_unset_primitive_projections(items: &[TopLevelItem<'a>]) -> Vec<Self> {
         [
             vec![TopLevelItem::Code(text("Unset Primitive Projections."))],
-            doc.to_vec(),
+            items.to_vec(),
             vec![TopLevelItem::Code(text(
                 "Global Set Primitive Projections.",
             ))],
@@ -221,23 +221,23 @@ impl<'a> TopLevelItem<'a> {
     /// locally unsets primitive projecitons if the condition is satisfied
     pub(crate) fn locally_unset_primitive_projections_if(
         condition: bool,
-        doc: &[TopLevelItem<'a>],
+        items: &[TopLevelItem<'a>],
     ) -> Vec<Self> {
         if condition {
-            TopLevelItem::locally_unset_primitive_projections(doc)
+            TopLevelItem::locally_unset_primitive_projections(items)
         } else {
-            [doc.to_vec(), vec![TopLevelItem::Line]].concat()
+            [items.to_vec(), vec![TopLevelItem::Line]].concat()
         }
     }
 
-    /// decides whether to enclose [doc] within a section with a context
+    /// decides whether to enclose [items] within a section with a context
     pub(crate) fn add_context_in_section_if_necessary(
         name: &'a str,
         ty_params: &Vec<String>,
-        doc: &[TopLevelItem<'a>],
+        items: &[TopLevelItem<'a>],
     ) -> Vec<Self> {
         if ty_params.is_empty() {
-            doc.to_owned()
+            items.to_owned()
         } else {
             vec![TopLevelItem::Section(Section::new(
                 name,
@@ -249,7 +249,7 @@ impl<'a> TopLevelItem<'a> {
                         },
                         ArgSpecKind::Implicit,
                     )]))],
-                    doc,
+                    items,
                 ]
                 .concat(),
             ))]
