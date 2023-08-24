@@ -336,7 +336,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
-            vec![TopLevelItem::Definition(compile_fun_definition(
+            vec![TopLevelItem::Definition(FunDefinition::compile(
                 env,
                 &name,
                 generics,
@@ -574,7 +574,7 @@ fn compile_impl_item(
             }
         }
         ImplItemKind::Fn(fn_sig, body_id) => ImplItem::Definition {
-            definition: compile_fun_definition(
+            definition: FunDefinition::compile(
                 env,
                 &name,
                 item.generics,
@@ -588,25 +588,6 @@ fn compile_impl_item(
             name,
             ty: compile_type(env, ty),
         },
-    }
-}
-
-/// compiles a given function
-fn compile_fun_definition(
-    env: &mut Env,
-    name: &str,
-    generics: &rustc_hir::Generics,
-    fn_sig_and_body: &HirFnSigAndBody,
-    default: &str,
-    is_dead_code: bool,
-) -> FunDefinition {
-    let tcx = env.tcx;
-    FunDefinition {
-        name: name.to_owned(),
-        ty_params: get_ty_params_names(env, generics),
-        where_predicates: get_where_predicates(&tcx, env, generics),
-        signature_and_body: compile_fn_sig_and_body(env, fn_sig_and_body, default),
-        is_dead_code,
     }
 }
 
@@ -1122,6 +1103,25 @@ pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
 }
 
 impl FunDefinition {
+    /// compiles a given function
+    fn compile(
+        env: &mut Env,
+        name: &str,
+        generics: &rustc_hir::Generics,
+        fn_sig_and_body: &HirFnSigAndBody,
+        default: &str,
+        is_dead_code: bool,
+    ) -> Self {
+        let tcx = env.tcx;
+        FunDefinition {
+            name: name.to_owned(),
+            ty_params: get_ty_params_names(env, generics),
+            where_predicates: get_where_predicates(&tcx, env, generics),
+            signature_and_body: compile_fn_sig_and_body(env, fn_sig_and_body, default),
+            is_dead_code,
+        }
+    }
+
     fn mt(self) -> Self {
         FunDefinition {
             name: self.name,
