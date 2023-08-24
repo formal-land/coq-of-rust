@@ -229,7 +229,11 @@ Module codegen.
         
         Global Instance Method_emit_event `{H : State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
-          Notation.dot := emit_event;
+          Notation.dot{E: Set} `{core.convert.Into.Trait
+                E
+                (T := ink.reflect.event.ContractEventBase.Type_)}
+               :=
+            emit_event;
         }.
       End EmitEvent.
     End emit.
@@ -690,7 +694,11 @@ Module event.
       
       Global Instance Method_emit_event `{H : State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
-        Notation.dot := emit_event;
+        Notation.dot{E: Set} `{core.convert.Into.Trait
+              E
+              (T := ink.reflect.event.ContractEventBase.Type_)}
+             :=
+          emit_event;
       }.
     End EmitEvent.
   End emit.
@@ -758,7 +766,11 @@ Module emit.
     
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
-      Notation.dot := emit_event;
+      Notation.dot{E: Set} `{core.convert.Into.Trait
+            E
+            (T := ink.reflect.event.ContractEventBase.Type_)}
+           :=
+        emit_event;
     }.
   End EmitEvent.
 End emit.
@@ -779,7 +791,11 @@ Module EmitEvent.
   
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
-    Notation.dot := emit_event;
+    Notation.dot{E: Set} `{core.convert.Into.Trait
+          E
+          (T := ink.reflect.event.ContractEventBase.Type_)}
+         :=
+      emit_event;
   }.
 End EmitEvent.
 
@@ -1531,7 +1547,8 @@ Module reflect.
       
       Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
-        Notation.dot := decode_dispatch;
+        Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+          decode_dispatch;
       }.
     End DecodeDispatch.
   End dispatch.
@@ -1871,7 +1888,8 @@ Module dispatch.
     
     Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
       : Notation.Dot "decode_dispatch" := {
-      Notation.dot := decode_dispatch;
+      Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+        decode_dispatch;
     }.
   End DecodeDispatch.
 End dispatch.
@@ -2118,7 +2136,8 @@ Module DecodeDispatch.
   
   Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
     : Notation.Dot "decode_dispatch" := {
-    Notation.dot := decode_dispatch;
+    Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+      decode_dispatch;
   }.
 End DecodeDispatch.
 

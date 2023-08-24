@@ -1,4 +1,5 @@
 use crate::configuration::*;
+use crate::coq;
 use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
@@ -978,7 +979,8 @@ impl FunDefinition {
         group([
             if self.is_dead_code {
                 concat([
-                    text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
+                    coq::Comment::new("#[allow(dead_code)] - function was ignored by the compiler")
+                        .to_doc(),
                     hardline(),
                 ])
             } else {
@@ -1627,53 +1629,48 @@ impl TopLevelItem {
                     concat(variants.iter().map(|(name, fields)| match fields {
                         VariantItem::Tuple { .. } => nil(),
                         VariantItem::Struct { fields } => concat([
-                            nest([text("Module"), line(), text(name), text(".")]),
-                            nest([
-                                hardline(),
-                                text("Unset Primitive Projections."),
-                                hardline(),
-                                nest([
-                                    text("Record"),
-                                    line(),
-                                    text("t"),
-                                    line(),
-                                    text(":"),
-                                    line(),
-                                    text("Set"),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text("{"),
-                                ]),
-                                if fields.is_empty() {
-                                    text(" ")
-                                } else {
-                                    concat([
-                                        nest([
+                            module(
+                                name,
+                                locally_unset_primitive_projections(&concat([
+                                    nest([
+                                        text("Record"),
+                                        line(),
+                                        text("t"),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text("{"),
+                                    ]),
+                                    if fields.is_empty() {
+                                        text(" ")
+                                    } else {
+                                        concat([
+                                            nest([
+                                                hardline(),
+                                                intersperse(
+                                                    fields.iter().map(|(name, ty)| {
+                                                        nest([
+                                                            text(name),
+                                                            line(),
+                                                            text(":"),
+                                                            line(),
+                                                            ty.to_doc(false),
+                                                            text(";"),
+                                                        ])
+                                                    }),
+                                                    [hardline()],
+                                                ),
+                                            ]),
                                             hardline(),
-                                            intersperse(
-                                                fields.iter().map(|(name, ty)| {
-                                                    nest([
-                                                        text(name),
-                                                        line(),
-                                                        text(":"),
-                                                        line(),
-                                                        ty.to_doc(false),
-                                                        text(";"),
-                                                    ])
-                                                }),
-                                                [hardline()],
-                                            ),
-                                        ]),
-                                        hardline(),
-                                    ])
-                                },
-                                text("}."),
-                                hardline(),
-                                text("Global Set Primitive Projections."),
-                            ]),
-                            hardline(),
-                            nest([text("End"), line(), text(name), text(".")]),
+                                        ])
+                                    },
+                                    text("}."),
+                                ])),
+                            ),
                             hardline(),
                             hardline(),
                         ]),
@@ -2085,11 +2082,11 @@ impl TopLevelItem {
                 &ty_params
                     .iter()
                     .map(|(ty, default)| (ty, default.as_ref().map(|default| default.to_doc(true))))
-                    .collect(),
+                    .collect::<Vec<_>>(),
                 &predicates
                     .iter()
                     .map(|predicate| predicate.to_doc())
-                    .collect(),
+                    .collect::<Vec<_>>(),
                 &bounds
                     .iter()
                     .map(|bound| bound.to_doc(text("Self")))
@@ -2128,62 +2125,86 @@ impl TopLevelItem {
                     })
                     .collect(),
                 body.iter()
-                    .map(|(name, item)| {
-                        concat([match item {
-                            TraitItem::Definition { .. } => new_instance::<_, String>(
-                                true,
-                                name,
-                                &vec![],
-                                text("Notation.Dot"),
-                                text("Notation.dot"),
-                                text(name),
-                            ),
-                            TraitItem::Type { .. } => new_instance(
-                                false,
-                                name,
-                                &vec![name],
-                                group([text("Notation.DoubleColonType"), line(), text("Self")]),
-                                text("Notation.double_colon_type"),
-                                text(name),
-                            ),
-                            TraitItem::DefinitionWithDefault {
+                    .map(|(name, item)| match item {
+                        TraitItem::Definition {
+                            ty_params,
+                            where_predicates,
+                            ty: _,
+                        } => coq::Instance::new(
+                            true,
+                            name,
+                            &[],
+                            coq::Expression::Variable(coq::Path::new(&[
+                                "Notation".to_string(),
+                                "Dot".to_string(),
+                            ])),
+                            nest([function_header(
+                                "Notation.dot",
                                 ty_params,
-                                where_predicates,
-                                signature_and_body,
-                            } => new_instance::<_, String>(
-                                true,
-                                name,
-                                &vec![],
-                                text("Notation.Dot"),
-                                nest([function_header(
-                                    "Notation.dot",
-                                    ty_params,
-                                    where_predicates
-                                        .iter()
-                                        .map(|predicate| predicate.to_doc())
-                                        .collect(),
-                                    &signature_and_body
-                                        .args
-                                        .iter()
-                                        .map(|(name, ty)| (name, ty.to_doc(false)))
-                                        .collect::<Vec<_>>(),
-                                )]),
-                                group([
-                                    text("("),
-                                    match &signature_and_body.body {
-                                        None => text("axiom"),
-                                        Some(body) => body.to_doc(false),
-                                    },
+                                where_predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_doc())
+                                    .collect(),
+                                &Vec::<(&String, _)>::new(),
+                            )]),
+                            text(name),
+                        ),
+                        TraitItem::Type { .. } => coq::Instance::new(
+                            false,
+                            name,
+                            &[name],
+                            coq::Expression::Application {
+                                func: Box::new(coq::Expression::Variable(coq::Path::new(&[
+                                    "Notation".to_string(),
+                                    "DoubleColonType".to_string(),
+                                ]))),
+                                arg: Box::new(coq::Expression::Variable(coq::Path::new(&[
+                                    "Self".to_string()
+                                ]))),
+                            },
+                            text("Notation.double_colon_type"),
+                            text(name),
+                        ),
+                        TraitItem::DefinitionWithDefault {
+                            ty_params,
+                            where_predicates,
+                            signature_and_body,
+                        } => coq::Instance::new(
+                            true,
+                            name,
+                            &[],
+                            coq::Expression::Variable(coq::Path::new(&[
+                                "Notation".to_string(),
+                                "Dot".to_string(),
+                            ])),
+                            nest([function_header(
+                                "Notation.dot",
+                                ty_params,
+                                where_predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_doc())
+                                    .collect(),
+                                &signature_and_body
+                                    .args
+                                    .iter()
+                                    .map(|(name, ty)| (name, ty.to_doc(false)))
+                                    .collect::<Vec<_>>(),
+                            )]),
+                            group([
+                                text("("),
+                                match &signature_and_body.body {
+                                    None => text("axiom"),
+                                    Some(body) => body.to_doc(false),
+                                },
+                                line(),
+                                nest([
+                                    text(":"),
                                     line(),
-                                    nest([
-                                        text(":"),
-                                        line(),
-                                        signature_and_body.ret_ty.to_doc(false),
-                                        text(")"),
-                                    ]),
+                                    signature_and_body.ret_ty.to_doc(false),
+                                    text(")"),
                                 ]),
-                            ),
-                        }])
+                            ]),
+                        ),
                     })
                     .collect(),
             ),

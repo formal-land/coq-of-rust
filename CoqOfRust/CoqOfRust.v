@@ -179,6 +179,7 @@ End alloc.
 *)
 
 Require CoqOfRust.core.alloc.
+Require CoqOfRust.core.any.
 Require CoqOfRust.core.borrow.
 Require CoqOfRust.core.cell.
 Require CoqOfRust.core.clone.
@@ -193,6 +194,7 @@ Require CoqOfRust.core.panic.unwind_safe.
 
 Module core.
   Export CoqOfRust.core.alloc.
+  Export CoqOfRust.core.any.
   Export CoqOfRust.core.borrow.
   Export CoqOfRust.core.cell.
   Export CoqOfRust.core.clone.
@@ -990,7 +992,6 @@ Module core.
   End ops.
 End core.
 
-Require CoqOfRust._std.any.
 Require CoqOfRust._std.arch.
 Require CoqOfRust._std.array.
 Require CoqOfRust._std.ascii.
@@ -1033,7 +1034,6 @@ Require Import CoqOfRust._std.time.
 
 
 Module std.
-  Module any := _std.any.
   Module arch := _std.arch.
   Module array := _std.array.
   Module ascii := _std.ascii.

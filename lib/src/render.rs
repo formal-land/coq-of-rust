@@ -2,6 +2,8 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
+use crate::coq;
+
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
@@ -166,17 +168,27 @@ where
     RcDoc::intersperse(docs, RcDoc::concat(separator))
 }
 
+/// locally unsets primitive projecitons
+pub(crate) fn locally_unset_primitive_projections<'a>(doc: &Doc<'a>) -> Doc<'a> {
+    group([
+        text("Unset Primitive Projections."),
+        hardline(),
+        doc.clone(),
+        hardline(),
+        text("Global Set Primitive Projections."),
+    ])
+}
+
 /// locally unsets primitive projecitons if the condition is satisfied
-pub(crate) fn locally_unset_primitive_projections(condition: bool, doc: Doc) -> Doc {
-    group(if condition {
-        [
-            group([text("Unset Primitive Projections."), hardline()]),
-            doc,
-            group([hardline(), text("Global Set Primitive Projections.")]),
-        ]
+pub(crate) fn locally_unset_primitive_projections_if<'a>(
+    condition: bool,
+    doc: &Doc<'a>,
+) -> Doc<'a> {
+    if condition {
+        locally_unset_primitive_projections(doc)
     } else {
-        [nil(), doc, hardline()]
-    })
+        group([doc.clone(), hardline()])
+    }
 }
 
 /// puts [doc] in a section or a module (that depends on [kind])
@@ -242,23 +254,30 @@ where
 
 /// creates a module with the translation of the given trait
 pub(crate) fn trait_module<'a, U>(
-    name: U,
-    ty_params: &Vec<(U, Option<Doc>)>,
-    predicates: &Vec<Doc<'a>>,
+    name: &'a str,
+    ty_params: &[(U, Option<Doc<'a>>)],
+    predicates: &[Doc<'a>],
     bounds: &[Doc<'a>],
     associated_types: &[(U, Vec<Doc<'a>>)],
     items: Vec<Doc<'a>>,
-    instances: Vec<Doc<'a>>,
+    instances: Vec<coq::Instance<'a>>,
 ) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
-    module(
+    coq::Module::new(
         name,
-        group([
-            locally_unset_primitive_projections(
+        vec![
+            locally_unset_primitive_projections_if(
                 items.is_empty(),
-                trait_typeclass(ty_params, predicates, bounds, associated_types, items),
+                &coq::Definition::new(
+                    ty_params.to_vec(),
+                    predicates.to_vec(),
+                    bounds.to_vec(),
+                    associated_types.to_vec(),
+                    items,
+                )
+                .to_doc(),
             ),
             if instances.is_empty() {
                 nil()
@@ -266,37 +285,14 @@ where
                 hardline()
             },
             trait_notation_instances(instances),
-        ]),
+        ],
     )
+    .to_doc()
 }
 
 /// creates a definition of a typeclass corresponding
 /// to a trait with the given type parameters and bounds
-fn trait_typeclass<'a, U, I>(
-    ty_params: &Vec<(U, Option<Doc>)>,
-    predicates: &Vec<Doc<'a>>,
-    bounds: &[Doc<'a>],
-    associated_types: &[(U, Vec<Doc<'a>>)],
-    items: I,
-) -> Doc<'a>
-where
-    I: IntoIterator,
-    I::Item: pretty::Pretty<'a, pretty::RcAllocator, ()>,
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
-{
-    group([
-        nest([
-            new_trait_typeclass_header(ty_params, predicates, bounds, associated_types),
-            new_typeclass_body(items),
-        ]),
-        hardline(),
-        text("}."),
-    ])
-}
-
-/// creates a definition of a typeclass corresponding
-/// to a trait with the given type parameters and bounds
-fn new_trait_typeclass_header<'a, U>(
+pub(crate) fn new_trait_typeclass_header<'a, U>(
     ty_params: &Vec<(U, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[Doc<'a>],
@@ -451,29 +447,11 @@ where
 }
 
 /// separates definitions of instances with [hardline]s
-pub(crate) fn trait_notation_instances(instances: Vec<Doc>) -> Doc {
-    intersperse(instances, [hardline()])
-}
-
-/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance<'a, U, V>(
-    is_monadic: bool,
-    name: U,
-    trait_parameters: &Vec<V>,
-    kind: Doc<'a>,
-    field: Doc<'a>,
-    value: Doc<'a>,
-) -> Doc<'a>
-where
-    U: std::fmt::Display,
-    V: std::fmt::Display,
-{
-    concat([
-        new_instance_header(is_monadic, name, trait_parameters, kind),
-        nest([hardline(), new_instance_body(field, value)]),
-        hardline(),
-        text("}."),
-    ])
+pub(crate) fn trait_notation_instances(instances: Vec<coq::Instance>) -> Doc {
+    intersperse(
+        instances.iter().map(|i| i.to_doc()).collect::<Vec<Doc>>(),
+        [hardline()],
+    )
 }
 
 /// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
