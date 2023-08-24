@@ -1149,28 +1149,31 @@ impl FunDefinition {
                 if ((&self.name) == "fmt") && is_extra(extra_data) {
                     match &self.signature_and_body.body {
                         Some(body) => vec![
-                            coq::TopLevelItem::Code(nest([
-                                text("Parameter "),
-                                body.parameter_name_for_fmt(),
-                                text(" : "),
-                                // get type of argument named f
-                                // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                                concat(self.signature_and_body.args.iter().map(|(name, ty)| {
-                                    if name == "f" {
-                                        ty.to_doc_tuning(false)
-                                    } else {
-                                        nil()
-                                    }
-                                })),
-                                text(" -> "),
-                                types_for_f,
-                                self.signature_and_body.ret_ty.to_doc(false),
-                                text("."),
-                            ])),
+                            coq::TopLevelItem::Definition(coq::Definition::new(
+                                &body.parameter_name_for_fmt(),
+                                &coq::DefinitionKind::Assumption {
+                                    ty: coq::Expression::Code(concat([
+                                        // get type of argument named f
+                                        // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                                        concat(self.signature_and_body.args.iter().map(
+                                            |(name, ty)| {
+                                                if name == "f" {
+                                                    ty.to_doc_tuning(false)
+                                                } else {
+                                                    nil()
+                                                }
+                                            },
+                                        )),
+                                        text(" -> "),
+                                        types_for_f,
+                                        self.signature_and_body.ret_ty.to_doc(false),
+                                    ])),
+                                },
+                            )),
                             coq::TopLevelItem::Line,
                             coq::TopLevelItem::Code(nest([
                                 text("Global Instance Deb_"),
-                                body.parameter_name_for_fmt(),
+                                text(body.parameter_name_for_fmt()),
                                 text(" : "),
                                 Path::new(&["Notation", "DoubleColon"]).to_doc(),
                                 line(),
@@ -1182,7 +1185,7 @@ impl FunDefinition {
                                     }
                                 })),
                                 text(" \""),
-                                body.parameter_name_for_fmt(),
+                                text(body.parameter_name_for_fmt()),
                                 text("\""),
                                 text(" := "),
                                 text("{"),
@@ -1190,7 +1193,7 @@ impl FunDefinition {
                                 nest([
                                     Path::new(&["Notation", "double_colon"]).to_doc(),
                                     text(" := "),
-                                    body.parameter_name_for_fmt(),
+                                    text(body.parameter_name_for_fmt()),
                                     text(";"),
                                     line(),
                                 ]),
