@@ -1,3 +1,4 @@
+use crate::coq;
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
@@ -213,6 +214,44 @@ pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<B
 }
 
 impl CoqType {
+    pub(crate) fn to_coq(&self) -> coq::Expression {
+        match self {
+            CoqType::Var(path) => coq::Expression::Variable {
+                ident: *path.clone(),
+                no_implicit: false,
+            },
+            CoqType::Application { func, args } => coq::Expression::Variable {
+                ident: *func.clone(),
+                no_implicit: false,
+            }
+            .apply_many(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
+            CoqType::Function { args, ret } => ret
+                .to_coq()
+                .arrows_from(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
+            CoqType::Tuple(tys) => coq::Expression::multiply_many(
+                &tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>(),
+            ),
+            CoqType::Array(ty) => coq::Expression::Variable {
+                ident: Path::new(&["list"]),
+                no_implicit: false,
+            }
+            .apply(&ty.to_coq()),
+            CoqType::Ref(ty, mutbl) => coq::Expression::Variable {
+                ident: Path::new(&[match mutbl {
+                    rustc_hir::Mutability::Mut => "mut_ref",
+                    rustc_hir::Mutability::Not => "ref",
+                }]),
+                no_implicit: false,
+            }
+            .apply(&ty.to_coq()),
+            // @TODO: translate OpaqueType
+            CoqType::OpaqueType(_) => coq::Expression::Variable {
+                ident: Path::new(&["_ (* OpaqueTy *)"]),
+                no_implicit: false,
+            },
+        }
+    }
+
     pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
         match self {
             CoqType::Var(path) => path.to_doc(),

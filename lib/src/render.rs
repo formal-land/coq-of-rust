@@ -179,13 +179,12 @@ where
 }
 
 /// puts [doc] in a section or a module (that depends on [kind])
-pub(crate) fn enclose<'a, K, U>(kind: K, name: U, doc: Doc<'a>) -> Doc<'a>
+pub(crate) fn enclose<'a, K>(kind: K, name: String, doc: Doc<'a>) -> Doc<'a>
 where
-    U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
     K: Into<std::borrow::Cow<'a, str>>,
 {
     group([
-        group([text(kind), line(), text(name), text(".")]),
+        group([text(kind), line(), text(name.clone()), text(".")]),
         nest([hardline(), doc]),
         hardline(),
         group([text("End"), line(), text(name), text(".")]),

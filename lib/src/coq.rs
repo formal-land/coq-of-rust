@@ -32,7 +32,7 @@ pub(crate) struct Comment {
 #[derive(Clone)]
 /// a coq module
 pub(crate) struct Module<'a> {
-    name: &'a str,
+    name: String,
     items: TopLevel<'a>,
 }
 
@@ -96,6 +96,15 @@ pub(crate) enum Expression {
         param: Option<String>,
         arg: Box<Expression>,
     },
+    Function {
+        domain: Box<Expression>,
+        image: Box<Expression>,
+    },
+    Product {
+        lhs: Box<Expression>,
+        rhs: Box<Expression>,
+    },
+    Unit,
     Variable {
         ident: Path,
         /// a flag set if implicit arguments are deactivated with '@'
@@ -289,15 +298,15 @@ impl<'a> TopLevelItem<'a> {
 
 impl<'a> Module<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &'a str, content: TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, content: TopLevel<'a>) -> Self {
         Module {
-            name,
+            name: name.to_string(),
             items: content,
         }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose("Module", self.name, self.items.to_doc())
+        render::enclose("Module", self.name.to_owned(), self.items.to_doc())
     }
 }
 
@@ -311,7 +320,7 @@ impl<'a> Section<'a> {
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose("Section", self.name, self.items.to_doc())
+        render::enclose("Section", self.name.to_owned(), self.items.to_doc())
     }
 }
 
@@ -465,6 +474,27 @@ impl Expression {
                     },
                 ]),
             ),
+            Self::Function { domain, image } => paren(
+                with_paren,
+                group([
+                    domain.to_doc(true),
+                    line(),
+                    text("->"),
+                    line(),
+                    image.to_doc(false),
+                ]),
+            ),
+            Self::Product { lhs, rhs } => paren(
+                with_paren,
+                group([
+                    lhs.to_doc(true),
+                    line(),
+                    text("*"),
+                    line(),
+                    rhs.to_doc(true),
+                ]),
+            ),
+            Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
                 concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])
             }
@@ -476,6 +506,49 @@ impl Expression {
         Expression::Variable {
             ident: Path::new(&["Set"]),
             no_implicit: false,
+        }
+    }
+
+    pub(crate) fn apply(&self, arg: &Self) -> Self {
+        Expression::Application {
+            func: Box::new(self.clone()),
+            param: None,
+            arg: Box::new(arg.clone()),
+        }
+    }
+
+    pub(crate) fn apply_many(&self, args: &[Self]) -> Self {
+        args.iter().fold(self.clone(), |fun, arg| fun.apply(arg))
+    }
+
+    pub(crate) fn arrow_from(&self, domain: &Self) -> Self {
+        Expression::Function {
+            domain: Box::new(domain.clone()),
+            image: Box::new(self.clone()),
+        }
+    }
+
+    pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
+        domains
+            .iter()
+            .rfold(self.clone(), |image, domain| image.arrow_from(domain))
+    }
+
+    pub(crate) fn multiply(lhs: Self, rhs: Self) -> Self {
+        Expression::Product {
+            lhs: Box::new(lhs),
+            rhs: Box::new(rhs),
+        }
+    }
+
+    pub(crate) fn multiply_many(exprs: &[Self]) -> Self {
+        let product = exprs
+            .iter()
+            .map(|e| e.to_owned())
+            .reduce(Expression::multiply);
+        match product {
+            Some(product) => product,
+            None => Expression::Unit,
         }
     }
 }

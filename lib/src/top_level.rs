@@ -2033,38 +2033,36 @@ impl TopLevelItem {
                 counter,
                 items,
             } => {
-                let module_name = concat([
-                    text("Impl_"),
-                    text(self_ty.to_name()),
-                    if *counter != 1 {
-                        text(format!("_{counter}"))
-                    } else {
-                        nil()
-                    },
-                ]);
-                group([
-                    nest([text("Module"), line(), module_name.clone(), text(".")]),
-                    nest([
-                        hardline(),
-                        nest([
-                            text("Definition"),
-                            line(),
-                            text("Self"),
-                            line(),
-                            text(":="),
-                            line(),
-                            self_ty.to_doc(false),
-                            text("."),
-                        ]),
-                        concat(
-                            items.iter().map(|item| {
-                                concat([hardline(), hardline(), item.to_doc(extra_data)])
-                            }),
+                let message = self_ty.to_name();
+                let module_name = if *counter != 1 {
+                    format!("Impl_{message}_{counter}")
+                } else {
+                    format!("Impl_{message}")
+                };
+                coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
+                    &module_name,
+                    coq::TopLevel::concat(&[
+                        coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
+                            "Self",
+                            &coq::DefinitionKind::Alias {
+                                ty: None,
+                                body: self_ty.to_coq(),
+                            },
+                        ))]),
+                        coq::TopLevel::new(
+                            &items
+                                .iter()
+                                .flat_map(|item| {
+                                    [
+                                        coq::TopLevelItem::Line,
+                                        coq::TopLevelItem::Code(concat([item.to_doc(extra_data)])),
+                                    ]
+                                })
+                                .collect::<Vec<_>>(),
                         ),
                     ]),
-                    hardline(),
-                    nest([text("End"), line(), module_name, text(".")]),
-                ])
+                ))])
+                .to_doc()
             }
             TopLevelItem::Trait {
                 name,
