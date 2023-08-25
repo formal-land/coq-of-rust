@@ -1217,19 +1217,16 @@ impl FunDefinition {
                         // @TODO: use also the parameter
                         let (ret_ty_param_vec, ret_ty) =
                             if self.signature_and_body.ret_ty.has_opaque_return_types() {
-                                (
+                                let ret_ty_param_vec =
                                     vec![coq::TopLevelItem::Definition(coq::Definition::new(
                                         &ret_ty_name,
                                         &coq::DefinitionKind::Assumption {
                                             ty: coq::Expression::Set,
                                         },
-                                    ))],
-                                    {
-                                        let ret_ty = &mut self.signature_and_body.ret_ty.clone();
-                                        ret_ty.subst_opaque_types(&ret_ty_name);
-                                        ret_ty.to_coq()
-                                    },
-                                )
+                                    ))];
+                                let ret_ty = &mut self.signature_and_body.ret_ty.clone();
+                                ret_ty.subst_opaque_types(&ret_ty_name);
+                                (ret_ty_param_vec, ret_ty.to_coq())
                             } else {
                                 (vec![], self.signature_and_body.ret_ty.to_coq())
                             };
