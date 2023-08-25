@@ -344,15 +344,15 @@ impl<'a> Definition<'a> {
             DefinitionKind::Alias { args, ty, body } => nest([
                 nest([
                     group([text("Definition"), line(), text(self.name.to_owned())]),
-                    if args.is_empty() {
-                        nil()
-                    } else {
-                        concat([
-                            line(),
-                            intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
-                        ])
-                    },
                     group([
+                        if args.is_empty() {
+                            nil()
+                        } else {
+                            concat([
+                                line(),
+                                intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                            ])
+                        },
                         match ty {
                             Some(ty) => concat([line(), text(": "), ty.to_doc(false)]),
                             None => nil(),
