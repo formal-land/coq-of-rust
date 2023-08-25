@@ -1215,24 +1215,24 @@ impl FunDefinition {
                         let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
                         // if the return type is opaque define a corresponding opaque type
                         // @TODO: use also the parameter
-                        let ret_ty_param_vec =
+                        let (ret_ty_param_vec, ret_ty) =
                             if self.signature_and_body.ret_ty.has_opaque_return_types() {
-                                vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                                    &ret_ty_name,
-                                    &coq::DefinitionKind::Assumption {
-                                        ty: coq::Expression::Set,
+                                (
+                                    vec![coq::TopLevelItem::Definition(coq::Definition::new(
+                                        &ret_ty_name,
+                                        &coq::DefinitionKind::Assumption {
+                                            ty: coq::Expression::Set,
+                                        },
+                                    ))],
+                                    {
+                                        let ret_ty = &mut self.signature_and_body.ret_ty.clone();
+                                        ret_ty.subst_opaque_types(&ret_ty_name);
+                                        ret_ty.to_coq()
                                     },
-                                ))]
+                                )
                             } else {
-                                vec![]
+                                (vec![], self.signature_and_body.ret_ty.to_coq())
                             };
-                        let ret_ty = if self.signature_and_body.ret_ty.has_opaque_return_types() {
-                            let ret_ty = &mut self.signature_and_body.ret_ty.clone();
-                            ret_ty.subst_opaque_types(&ret_ty_name);
-                            ret_ty.to_coq()
-                        } else {
-                            self.signature_and_body.ret_ty.to_coq()
-                        };
                         [
                             ret_ty_param_vec,
                             vec![coq::TopLevelItem::Definition(coq::Definition::new(
