@@ -1213,17 +1213,40 @@ impl FunDefinition {
                 match &self.signature_and_body.body {
                     None => {
                         let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                        let opaque_return_tys_bounds =
+                            self.signature_and_body.ret_ty.opaque_types_bounds();
                         // if the return type is opaque define a corresponding opaque type
                         // @TODO: use also the parameter
                         let (ret_ty_param_vec, ret_ty) =
                             if self.signature_and_body.ret_ty.has_opaque_types() {
-                                let ret_ty_param_vec =
-                                    vec![coq::TopLevelItem::Definition(coq::Definition::new(
-                                        &ret_ty_name,
-                                        &coq::DefinitionKind::Assumption {
-                                            ty: coq::Expression::Set,
-                                        },
-                                    ))];
+                                let ret_ty_param_vec = opaque_return_tys_bounds
+                                    .iter()
+                                    .map(|bounds| {
+                                        coq::TopLevelItem::Definition(coq::Definition::new(
+                                            &ret_ty_name,
+                                            &coq::DefinitionKind::Assumption {
+                                                ty: coq::Expression::PiType {
+                                                    args: bounds
+                                                        .iter()
+                                                        .map(|bound| {
+                                                            coq::ArgSpec::new(
+                                                                &coq::ArgDecl::Generalized {
+                                                                    idents: vec![],
+                                                                    ty: coq::Expression::Variable {
+                                                                        ident: bound.to_owned(),
+                                                                        no_implicit: false,
+                                                                    },
+                                                                },
+                                                                coq::ArgSpecKind::Implicit,
+                                                            )
+                                                        })
+                                                        .collect(),
+                                                    image: Box::new(coq::Expression::Set),
+                                                },
+                                            },
+                                        ))
+                                    })
+                                    .collect();
 
                                 let ret_ty = &mut self.signature_and_body.ret_ty.clone();
                                 ret_ty.subst_opaque_types(&ret_ty_name);

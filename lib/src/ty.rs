@@ -380,6 +380,29 @@ impl CoqType {
         }
     }
 
+    /// returns the list of the parameters of opaque types in the subtree rooted in [self]
+    pub(crate) fn opaque_types_bounds(&self) -> Vec<Vec<Path>> {
+        match self {
+            CoqType::Var(_) => vec![],
+            CoqType::Application { args, .. } => args
+                .iter()
+                .flat_map(|ty| ty.opaque_types_bounds())
+                .collect(),
+            CoqType::Function { args, ret } => args
+                .iter()
+                .flat_map(|ty| ty.opaque_types_bounds())
+                .chain(ret.opaque_types_bounds())
+                .collect(),
+            CoqType::Tuple(types) => types
+                .iter()
+                .flat_map(|ty| ty.opaque_types_bounds())
+                .collect(),
+            CoqType::Array(ty) => ty.opaque_types_bounds(),
+            CoqType::Ref(ty, _) => ty.opaque_types_bounds(),
+            CoqType::OpaqueType(bounds) => vec![bounds.to_owned()],
+        }
+    }
+
     /// substitutes all occurences of OpaqueType with var(name)
     pub(crate) fn subst_opaque_types(&mut self, name: &String) {
         match self {
