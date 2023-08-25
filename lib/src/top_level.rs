@@ -1102,31 +1102,27 @@ impl FunDefinition {
                 is_dead_code: _,
                 .. // @TODO do generic params should be used here?
             }) => {
-                vec![
-                    text("string"),
-                    text(" ->"),
-                    line(),
-                    intersperse(
-                        fields.iter().map(|(_str, boxed_coq_type)| {
+                [
+                    vec![text("string")],
+                    fields
+                        .iter()
+                        .flat_map(|(_str, boxed_coq_type)| {
                             let nm = boxed_coq_type.to_name();
                             let nn = if nm == *"StaticRef_str" {
                                 String::from("string")
                             } else {
                                 boxed_coq_type.to_name()
                             };
-                            group([
+                            [
                                 // print field name
                                 text("string"),
-                                text(" -> "),
                                 // print field type
                                 text(nn),
-                                text(" -> "),
-                            ])
-                        }),
-                        [line()],
-                    ),
-                    line(),
+                            ]
+                        })
+                        .collect(),
                 ]
+                .concat()
             }
             // @TODO unreachable branch, extend to cover more cases
             _ => vec![],
@@ -1179,7 +1175,14 @@ impl FunDefinition {
                                             .to_coq_tuning()
                                         }),
                                         image: Box::new(coq::Expression::Code(concat([
-                                            concat(types_for_f),
+                                            if types_for_f.is_empty() {
+                                                nil()
+                                            } else {
+                                                concat([
+                                                    intersperse(types_for_f, [" -> "]),
+                                                    text(" -> "),
+                                                ])
+                                            },
                                             self.signature_and_body.ret_ty.to_doc(false),
                                         ]))),
                                     },

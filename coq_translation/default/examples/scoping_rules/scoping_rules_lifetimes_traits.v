@@ -18,9 +18,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
   Parameter debug_struct_field1_finish : core.fmt.Formatter ->
-    string ->
-    string -> StaticRef_i32 -> 
-    M (H := H) core.fmt.Result.
+    string -> string -> StaticRef_i32 -> M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field1_finish" := {
