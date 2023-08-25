@@ -343,20 +343,22 @@ impl<'a> Definition<'a> {
         match self.kind.to_owned() {
             DefinitionKind::Alias { args, ty, body } => nest([
                 nest([
-                    text("Definition"),
-                    line(),
-                    text(self.name.to_owned()),
+                    group([text("Definition"), line(), text(self.name.to_owned())]),
                     if args.is_empty() {
                         nil()
                     } else {
-                        concat([line(), concat(args.iter().map(|arg| arg.to_doc()))])
+                        concat([
+                            line(),
+                            intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                        ])
                     },
-                    match ty {
-                        Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
-                        None => nil(),
-                    },
-                    line(),
-                    text(":="),
+                    group([
+                        match ty {
+                            Some(ty) => concat([line(), text(": "), ty.to_doc(false)]),
+                            None => nil(),
+                        },
+                        text(" :="),
+                    ]),
                 ]),
                 line(),
                 body.to_doc(false),
