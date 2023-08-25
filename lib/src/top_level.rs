@@ -1155,33 +1155,21 @@ impl FunDefinition {
                                             .ret_ty
                                             .to_coq()
                                             .arrows_from(&FunDefinition::types_for_f(extra_data))
-                                            .arrow_from({
+                                            .arrows_from({
                                                 // get type of argument named f
                                                 // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                                                let ty_of_f = self
+                                                &self
                                                     .signature_and_body
                                                     .args
                                                     .iter()
-                                                    .fold(
-                                                        None,
-                                                        |option_ty_of_f, (name, ty)| match option_ty_of_f {
-                                                            Some(_) => panic!(
-                                                                "two arguments with the same name: f"
-                                                            ),
-                                                            None => {
-                                                                if name == "f" {
-                                                                    Some(ty)
-                                                                } else {
-                                                                    None
-                                                                }
-                                                            }
-                                                        },
-                                                    );
-                                                &match ty_of_f {
-                                                    Some(ty_of_f) => ty_of_f,
-                                                    None => panic!("no argument with name 'f'"),
-                                                }
-                                                .to_coq_tuning()
+                                                    .filter_map(|(name, ty)| {
+                                                        if name == "f" {
+                                                            Some(ty.to_coq_tuning())
+                                                        } else {
+                                                            None
+                                                        }
+                                                    })
+                                                    .collect::<Vec<_>>()
                                             }),
                                     },
                                 )),
@@ -1192,13 +1180,15 @@ impl FunDefinition {
                                     text(" : "),
                                     Path::new(&["Notation", "DoubleColon"]).to_doc(),
                                     line(),
-                                    concat(self.signature_and_body.args.iter().map(|(name, ty)| {
-                                        if name == "f" {
-                                            ty.to_coq_tuning().to_doc(false)
-                                        } else {
-                                            nil()
-                                        }
-                                    })),
+                                    concat(self.signature_and_body.args.iter().map(
+                                        |(name, ty)| {
+                                            if name == "f" {
+                                                ty.to_coq_tuning().to_doc(false)
+                                            } else {
+                                                nil()
+                                            }
+                                        },
+                                    )),
                                     text(format!(" \"{body_parameter_name_for_fmt}\"")),
                                     text(" := "),
                                     text("{"),
