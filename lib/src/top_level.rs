@@ -1149,8 +1149,12 @@ impl FunDefinition {
                             coq::TopLevelItem::Definition(coq::Definition::new(
                                 &body.parameter_name_for_fmt(),
                                 &coq::DefinitionKind::Assumption {
-                                    ty: coq::Expression::Function {
-                                        domain: Box::new({
+                                    ty: self
+                                        .signature_and_body
+                                        .ret_ty
+                                        .to_coq()
+                                        .arrows_from(&types_for_f)
+                                        .arrow_from({
                                             // get type of argument named f
                                             // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
                                             let ty_of_f = self.signature_and_body.args.iter().fold(
@@ -1168,19 +1172,12 @@ impl FunDefinition {
                                                     }
                                                 },
                                             );
-                                            match ty_of_f {
+                                            &match ty_of_f {
                                                 Some(ty_of_f) => ty_of_f,
                                                 None => panic!("no argument with name 'f'"),
                                             }
                                             .to_coq_tuning()
                                         }),
-                                        image: Box::new(
-                                            self.signature_and_body
-                                                .ret_ty
-                                                .to_coq()
-                                                .arrows_from(&types_for_f),
-                                        ),
-                                    },
                                 },
                             )),
                             coq::TopLevelItem::Line,
