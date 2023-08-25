@@ -3841,7 +3841,9 @@ Module engine.
       End DefaultAccounts.
       Definition DefaultAccounts := @DefaultAccounts.t.
       
-      Parameter recorded_events_ret_ty : Set.
+      Parameter recorded_events_ret_ty : forall
+        `{core.iter.traits.iterator.Iterator},
+        Set.
       Parameter recorded_events : forall `{H : State.Trait},
         M (H := H) recorded_events_ret_ty.
       
@@ -4120,7 +4122,9 @@ Module off_chain.
     End DefaultAccounts.
     Definition DefaultAccounts := @DefaultAccounts.t.
     
-    Parameter recorded_events_ret_ty : Set.
+    Parameter recorded_events_ret_ty : forall
+      `{core.iter.traits.iterator.Iterator},
+      Set.
     Parameter recorded_events : forall `{H : State.Trait},
       M (H := H) recorded_events_ret_ty.
     
@@ -4399,7 +4403,9 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts := @DefaultAccounts.t.
   
-  Parameter recorded_events_ret_ty : Set.
+  Parameter recorded_events_ret_ty : forall
+    `{core.iter.traits.iterator.Iterator},
+    Set.
   Parameter recorded_events : forall `{H : State.Trait},
     M (H := H) recorded_events_ret_ty.
   
@@ -4583,7 +4589,8 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts := @DefaultAccounts.t.
 
-Parameter recorded_events_ret_ty : Set.
+Parameter recorded_events_ret_ty : forall `{core.iter.traits.iterator.Iterator},
+  Set.
 Parameter recorded_events : forall `{H : State.Trait},
   M (H := H) recorded_events_ret_ty.
 
