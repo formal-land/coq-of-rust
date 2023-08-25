@@ -684,8 +684,10 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20Ref.
     
     Parameter debug_struct_field1_finish : core.fmt.Formatter ->
-      string -> string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> M (H := H)
-        core.fmt.Result.
+      string ->
+      string ->
+      ink_codegen_dispatch_info_ContractCallBuilder_Type_ ->
+      M (H := H) core.fmt.Result.
     
     Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
       core.fmt.Formatter "debug_struct_field1_finish" := {
@@ -4559,8 +4561,10 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Parameter debug_struct_field1_finish : core.fmt.Formatter ->
-    string -> string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> M (H := H)
-      core.fmt.Result.
+    string ->
+    string ->
+    ink_codegen_dispatch_info_ContractCallBuilder_Type_ ->
+    M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field1_finish" := {
