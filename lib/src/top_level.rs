@@ -1092,7 +1092,7 @@ impl FunDefinition {
     }
 
     // [types_for_f] is moved here because it is used only in to_coq below
-    fn types_for_f(extra_data: Option<&TopLevelItem>) -> Vec<Doc> {
+    fn types_for_f(extra_data: Option<&TopLevelItem>) -> Vec<coq::Expression> {
         match extra_data {
             // @TODO this is support for TypeStructStruct,
             // add support for more items
@@ -1103,7 +1103,7 @@ impl FunDefinition {
                 .. // @TODO do generic params should be used here?
             }) => {
                 [
-                    vec![text("string")],
+                    vec![coq::Expression::Variable { ident: Path::new(&["string"]), no_implicit: false }],
                     fields
                         .iter()
                         .flat_map(|(_str, boxed_coq_type)| {
@@ -1115,9 +1115,9 @@ impl FunDefinition {
                             };
                             [
                                 // print field name
-                                text("string"),
+                                coq::Expression::Variable { ident: Path::new(&["string"]), no_implicit: false },
                                 // print field type
-                                text(nn),
+                                coq::Expression::Variable { ident: Path::new(&[nn]), no_implicit: false },
                             ]
                         })
                         .collect(),
@@ -1174,17 +1174,12 @@ impl FunDefinition {
                                             }
                                             .to_coq_tuning()
                                         }),
-                                        image: Box::new(coq::Expression::Code(concat([
-                                            if types_for_f.is_empty() {
-                                                nil()
-                                            } else {
-                                                concat([
-                                                    intersperse(types_for_f, [" -> "]),
-                                                    text(" -> "),
-                                                ])
-                                            },
-                                            self.signature_and_body.ret_ty.to_doc(false),
-                                        ]))),
+                                        image: Box::new(
+                                            self.signature_and_body
+                                                .ret_ty
+                                                .to_coq()
+                                                .arrows_from(&types_for_f),
+                                        ),
                                     },
                                 },
                             )),
