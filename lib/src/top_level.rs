@@ -1092,7 +1092,7 @@ impl FunDefinition {
     }
 
     // [types_for_f] is moved here because it is used only in to_coq below
-    fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
+    fn types_for_f(extra_data: Option<&TopLevelItem>) -> Vec<Doc> {
         match extra_data {
             // @TODO this is support for TypeStructStruct,
             // add support for more items
@@ -1102,7 +1102,7 @@ impl FunDefinition {
                 is_dead_code: _,
                 .. // @TODO do generic params should be used here?
             }) => {
-                concat([
+                vec![
                     text("string"),
                     text(" ->"),
                     line(),
@@ -1126,10 +1126,10 @@ impl FunDefinition {
                         [line()],
                     ),
                     line(),
-                ])
+                ]
             }
             // @TODO unreachable branch, extend to cover more cases
-            _ => nil(),
+            _ => vec![],
         }
     }
 
@@ -1179,7 +1179,7 @@ impl FunDefinition {
                                             .to_coq_tuning()
                                         }),
                                         image: Box::new(coq::Expression::Code(concat([
-                                            types_for_f,
+                                            concat(types_for_f),
                                             self.signature_and_body.ret_ty.to_doc(false),
                                         ]))),
                                     },
