@@ -1212,9 +1212,9 @@ impl FunDefinition {
                 },
                 match &self.signature_and_body.body {
                     None => {
-                        [
-                            // if the return type is opaque define a corresponding opaque type
-                            // @TODO: use also the parameter
+                        // if the return type is opaque define a corresponding opaque type
+                        // @TODO: use also the parameter
+                        let ret_ty_param_vec =
                             if self.signature_and_body.ret_ty.has_opaque_return_types() {
                                 vec![coq::TopLevelItem::Definition(coq::Definition::new(
                                     &[&self.name, "_", "ret_ty"].concat(),
@@ -1224,7 +1224,17 @@ impl FunDefinition {
                                 ))]
                             } else {
                                 vec![]
-                            },
+                            };
+                        let ret_ty = if self.signature_and_body.ret_ty.has_opaque_return_types() {
+                            let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                            let ret_ty = &mut self.signature_and_body.ret_ty.clone();
+                            ret_ty.subst_opaque_types(&ret_ty_name);
+                            ret_ty.to_coq()
+                        } else {
+                            self.signature_and_body.ret_ty.to_coq()
+                        };
+                        [
+                            ret_ty_param_vec,
                             vec![coq::TopLevelItem::Definition(coq::Definition::new(
                                 &self.name,
                                 &coq::DefinitionKind::Assumption {
@@ -1246,29 +1256,16 @@ impl FunDefinition {
                                         .concat(),
                                         image: Box::new(
                                             // return type
-                                            if self
-                                                .signature_and_body
-                                                .ret_ty
-                                                .has_opaque_return_types()
-                                            {
-                                                let ret_ty_name =
-                                                    [&self.name, "_", "ret_ty"].concat();
-                                                let ret_ty =
-                                                    &mut self.signature_and_body.ret_ty.clone();
-                                                ret_ty.subst_opaque_types(&ret_ty_name);
-                                                ret_ty.to_coq()
-                                            } else {
-                                                self.signature_and_body.ret_ty.to_coq()
-                                            }
-                                            // argument types
-                                            .arrows_from(
-                                                &self
-                                                    .signature_and_body
-                                                    .args
-                                                    .iter()
-                                                    .map(|(_, ty)| ty.to_coq())
-                                                    .collect::<Vec<_>>(),
-                                            ),
+                                            ret_ty
+                                                // argument types
+                                                .arrows_from(
+                                                    &self
+                                                        .signature_and_body
+                                                        .args
+                                                        .iter()
+                                                        .map(|(_, ty)| ty.to_coq())
+                                                        .collect::<Vec<_>>(),
+                                                ),
                                         ),
                                     },
                                 },
