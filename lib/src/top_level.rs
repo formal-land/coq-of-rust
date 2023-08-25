@@ -1215,7 +1215,7 @@ impl FunDefinition {
                         [
                             // if the return type is opaque define a corresponding opaque type
                             // @TODO: use also the parameter
-                            if self.signature_and_body.ret_ty.has_opaque_types() {
+                            if self.signature_and_body.ret_ty.has_opaque_return_types() {
                                 vec![coq::TopLevelItem::Definition(coq::Definition::new(
                                     &[&self.name, "_", "ret_ty"].concat(),
                                     &coq::DefinitionKind::Assumption {
@@ -1246,7 +1246,11 @@ impl FunDefinition {
                                         .concat(),
                                         image: Box::new(
                                             // return type
-                                            if self.signature_and_body.ret_ty.has_opaque_types() {
+                                            if self
+                                                .signature_and_body
+                                                .ret_ty
+                                                .has_opaque_return_types()
+                                            {
                                                 let ret_ty_name =
                                                     [&self.name, "_", "ret_ty"].concat();
                                                 let ret_ty =
