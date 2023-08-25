@@ -1224,8 +1224,10 @@ impl FunDefinition {
                                             ty: coq::Expression::Set,
                                         },
                                     ))];
+
                                 let ret_ty = &mut self.signature_and_body.ret_ty.clone();
                                 ret_ty.subst_opaque_types(&ret_ty_name);
+
                                 (ret_ty_param_vec, ret_ty.to_coq())
                             } else {
                                 (vec![], self.signature_and_body.ret_ty.to_coq())
