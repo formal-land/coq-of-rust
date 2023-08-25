@@ -1104,7 +1104,7 @@ impl FunDefinition {
             }) => {
                 concat([
                     text("string"),
-                    text(" -> "),
+                    text(" ->"),
                     line(),
                     intersperse(
                         fields.iter().map(|(_str, boxed_coq_type)| {
@@ -1153,10 +1153,10 @@ impl FunDefinition {
                             coq::TopLevelItem::Definition(coq::Definition::new(
                                 &body.parameter_name_for_fmt(),
                                 &coq::DefinitionKind::Assumption {
-                                    ty: coq::Expression::Code(concat([
-                                        // get type of argument named f
-                                        // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                                        {
+                                    ty: coq::Expression::Function {
+                                        domain: Box::new({
+                                            // get type of argument named f
+                                            // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
                                             let ty_of_f = self.signature_and_body.args.iter().fold(
                                                 None,
                                                 |option_ty_of_f, (name, ty)| match option_ty_of_f {
@@ -1176,13 +1176,13 @@ impl FunDefinition {
                                                 Some(ty_of_f) => ty_of_f,
                                                 None => panic!("no argument with name 'f'"),
                                             }
-                                        }
-                                        .to_coq_tuning()
-                                        .to_doc(false),
-                                        text(" -> "),
-                                        types_for_f,
-                                        self.signature_and_body.ret_ty.to_doc(false),
-                                    ])),
+                                            .to_coq_tuning()
+                                        }),
+                                        image: Box::new(coq::Expression::Code(concat([
+                                            types_for_f,
+                                            self.signature_and_body.ret_ty.to_doc(false),
+                                        ]))),
+                                    },
                                 },
                             )),
                             coq::TopLevelItem::Line,
