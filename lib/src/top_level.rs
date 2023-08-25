@@ -706,7 +706,7 @@ fn compile_generic_bounds(
     generic_bounds
         .iter()
         .filter_map(|generic_bound| match generic_bound {
-            GenericBound::Trait(ptraitref, _) => Some(compile_trait_bound(tcx, env, ptraitref)),
+            GenericBound::Trait(ptraitref, _) => Some(TraitBound::compile(tcx, env, ptraitref)),
             GenericBound::LangItemTrait { .. } => {
                 let warning_msg = "LangItem trait bounds are not supported yet.";
                 let note_msg = "It will change in the future.";
@@ -720,19 +720,7 @@ fn compile_generic_bounds(
         .collect()
 }
 
-/// Get the generics for the trait
-fn compile_trait_bound(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> TraitBound {
-    TraitBound {
-        name: compile_path(env, ptraitref.trait_ref.path),
-        ty_params: get_ty_params_with_default_status(
-            env,
-            tcx.generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
-            ptraitref.trait_ref.path,
-        ),
-    }
-}
-
-/// computes tre list of actual type parameters with their default status
+//// computes tre list of actual type parameters with their default status
 fn get_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
@@ -1472,6 +1460,18 @@ impl WherePredicate {
 }
 
 impl TraitBound {
+    // Get the generics for the trait
+    fn compile(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> TraitBound {
+        TraitBound {
+            name: compile_path(env, ptraitref.trait_ref.path),
+            ty_params: get_ty_params_with_default_status(
+                env,
+                tcx.generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
+                ptraitref.trait_ref.path,
+            ),
+        }
+    }
+
     /// turns the trait bound into its representation as constraint
     fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::ArgSpec<'a> {
         coq::ArgSpec::new(
