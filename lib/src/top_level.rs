@@ -1091,6 +1091,7 @@ impl FunDefinition {
         }
     }
 
+    // [types_for_f] is moved here because it is used only in to_coq below
     fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
         match extra_data {
             // @TODO this is support for TypeStructStruct,
