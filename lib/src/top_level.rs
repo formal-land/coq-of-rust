@@ -1268,46 +1268,43 @@ impl FunDefinition {
                         ]
                         .concat()
                     }
-                    Some(body) => vec![coq::TopLevelItem::Code(
-                        coq::Definition::new(
-                            &self.name,
-                            &coq::DefinitionKind::Alias {
-                                args: [
-                                    vec![coq::ArgSpec::monadic_typeclass_parameter()],
-                                    // Type parameters a, b, c... compiles to forall {a b c ... : Set},
-                                    if self.ty_params.is_empty() {
-                                        vec![]
-                                    } else {
-                                        vec![coq::ArgSpec::of_ty_params(&self.ty_params)]
-                                    },
-                                    // where predicates types
-                                    self.where_predicates
-                                        .iter()
-                                        .map(|predicate| predicate.to_coq())
-                                        .collect(),
-                                    // argument types
-                                    self.signature_and_body
-                                        .args
-                                        .iter()
-                                        .map(|(name, ty)| {
-                                            coq::ArgSpec::new(
-                                                &coq::ArgDecl::Normal {
-                                                    idents: vec![name.to_owned()],
-                                                    ty: Some(ty.to_coq()),
-                                                },
-                                                coq::ArgSpecKind::Explicit,
-                                            )
-                                        })
-                                        .collect(),
-                                ]
-                                .concat(),
-                                // @TODO: improve for opaque types with trait bounds
-                                ty: Some(self.signature_and_body.ret_ty.to_coq()),
-                                body: coq::Expression::Code(body.to_doc(false)),
-                            },
-                        )
-                        .to_doc(),
-                    )],
+                    Some(body) => vec![coq::TopLevelItem::Definition(coq::Definition::new(
+                        &self.name,
+                        &coq::DefinitionKind::Alias {
+                            args: [
+                                vec![coq::ArgSpec::monadic_typeclass_parameter()],
+                                // Type parameters a, b, c... compiles to forall {a b c ... : Set},
+                                if self.ty_params.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![coq::ArgSpec::of_ty_params(&self.ty_params)]
+                                },
+                                // where predicates types
+                                self.where_predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_coq())
+                                    .collect(),
+                                // argument types
+                                self.signature_and_body
+                                    .args
+                                    .iter()
+                                    .map(|(name, ty)| {
+                                        coq::ArgSpec::new(
+                                            &coq::ArgDecl::Normal {
+                                                idents: vec![name.to_owned()],
+                                                ty: Some(ty.to_coq()),
+                                            },
+                                            coq::ArgSpecKind::Explicit,
+                                        )
+                                    })
+                                    .collect(),
+                            ]
+                            .concat(),
+                            // @TODO: improve for opaque types with trait bounds
+                            ty: Some(self.signature_and_body.ret_ty.to_coq()),
+                            body: coq::Expression::Code(body.to_doc(false)),
+                        },
+                    ))],
                 },
             ]
             .concat(),
