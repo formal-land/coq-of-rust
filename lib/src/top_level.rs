@@ -897,47 +897,6 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
-fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
-    match extra_data {
-        // @TODO this is support for TypeStructStruct,
-        // add support for more items
-        Some(TopLevelItem::TypeStructStruct {
-            name: _,
-            fields,
-            is_dead_code: _,
-            .. // @TODO do generic params should be used here?
-        }) => {
-            concat([
-                text("string"),
-                text(" -> "),
-                line(),
-                intersperse(
-                    fields.iter().map(|(_str, boxed_coq_type)| {
-                        let nm = boxed_coq_type.to_name();
-                        let nn = if nm == *"StaticRef_str" {
-                            String::from("string")
-                        } else {
-                            boxed_coq_type.to_name()
-                        };
-                        group([
-                            // print field name
-                            text("string"),
-                            text(" -> "),
-                            // print field type
-                            text(nn),
-                            text(" -> "),
-                        ])
-                    }),
-                    [line()],
-                ),
-                line(),
-            ])
-        }
-        // @TODO unreachable branch, extend to cover more cases
-        _ => nil(),
-    }
-}
-
 // additional check. can be eliminated when all possible cases will be covered
 fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
     match extra_data {
@@ -1132,8 +1091,49 @@ impl FunDefinition {
         }
     }
 
+    fn types_for_f(extra_data: Option<&TopLevelItem>) -> Doc {
+        match extra_data {
+            // @TODO this is support for TypeStructStruct,
+            // add support for more items
+            Some(TopLevelItem::TypeStructStruct {
+                name: _,
+                fields,
+                is_dead_code: _,
+                .. // @TODO do generic params should be used here?
+            }) => {
+                concat([
+                    text("string"),
+                    text(" -> "),
+                    line(),
+                    intersperse(
+                        fields.iter().map(|(_str, boxed_coq_type)| {
+                            let nm = boxed_coq_type.to_name();
+                            let nn = if nm == *"StaticRef_str" {
+                                String::from("string")
+                            } else {
+                                boxed_coq_type.to_name()
+                            };
+                            group([
+                                // print field name
+                                text("string"),
+                                text(" -> "),
+                                // print field type
+                                text(nn),
+                                text(" -> "),
+                            ])
+                        }),
+                        [line()],
+                    ),
+                    line(),
+                ])
+            }
+            // @TODO unreachable branch, extend to cover more cases
+            _ => nil(),
+        }
+    }
+
     fn to_coq<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> coq::TopLevel<'a> {
-        let types_for_f = types_for_f(extra_data);
+        let types_for_f = FunDefinition::types_for_f(extra_data);
 
         coq::TopLevel::new(
             &[
