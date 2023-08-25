@@ -366,16 +366,16 @@ impl CoqType {
     }
 
     /// returns true if the subtree rooted in [self] contains an opaque type
-    pub(crate) fn has_opaque_return_types(&self) -> bool {
+    pub(crate) fn has_opaque_types(&self) -> bool {
         match self {
             CoqType::Var(_) => false,
-            CoqType::Application { args, .. } => args.iter().any(|ty| ty.has_opaque_return_types()),
+            CoqType::Application { args, .. } => args.iter().any(|ty| ty.has_opaque_types()),
             CoqType::Function { args, ret } => {
-                args.iter().any(|ty| ty.has_opaque_return_types()) && ret.has_opaque_return_types()
+                args.iter().any(|ty| ty.has_opaque_types()) && ret.has_opaque_types()
             }
-            CoqType::Tuple(types) => types.iter().any(|ty| ty.has_opaque_return_types()),
-            CoqType::Array(ty) => ty.has_opaque_return_types(),
-            CoqType::Ref(ty, _) => ty.has_opaque_return_types(),
+            CoqType::Tuple(types) => types.iter().any(|ty| ty.has_opaque_types()),
+            CoqType::Array(ty) => ty.has_opaque_types(),
+            CoqType::Ref(ty, _) => ty.has_opaque_types(),
             CoqType::OpaqueType(_) => true,
         }
     }
