@@ -17,7 +17,8 @@ Definition Number : Set := @Number.t.
 Module Impl_core_fmt_Debug_for_from_Number.
   Definition Self := from.Number.
   
-  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+  Parameter debug_struct_field1_finish : core.fmt.Formatter ->
+    string ->
     string -> i32 -> 
     M (H := H) core.fmt.Result.
   

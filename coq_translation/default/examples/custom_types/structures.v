@@ -21,7 +21,8 @@ Definition Person : Set := @Person.t.
 Module Impl_core_fmt_Debug_for_structures_Person.
   Definition Self := structures.Person.
   
-  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
+  Parameter debug_struct_field2_finish : core.fmt.Formatter ->
+    string ->
     string -> alloc_string_String -> 
     string -> u8 -> 
     M (H := H) core.fmt.Result.

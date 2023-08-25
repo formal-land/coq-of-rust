@@ -683,7 +683,8 @@ Module erc20.
   Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+    Parameter debug_struct_field1_finish : core.fmt.Formatter ->
+      string ->
       string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> 
       M (H := H) core.fmt.Result.
     
@@ -3889,7 +3890,8 @@ Definition CallBuilder : Set := @CallBuilder.t.
 Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+  Parameter debug_struct_field1_finish : core.fmt.Formatter ->
+    string ->
     string -> erc20_erc20_AccountId -> 
     M (H := H) core.fmt.Result.
   
@@ -4559,7 +4561,8 @@ Definition Erc20Ref : Set := @Erc20Ref.t.
 Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
+  Parameter debug_struct_field1_finish : core.fmt.Formatter ->
+    string ->
     string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> 
     M (H := H) core.fmt.Result.
   
