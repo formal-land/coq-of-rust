@@ -1143,72 +1143,78 @@ impl FunDefinition {
                 // (fmt;  #[derive(Debug)]; Struct std::fmt::Formatter)
                 if ((&self.name) == "fmt") && is_extra(extra_data) {
                     match &self.signature_and_body.body {
-                        Some(body) => vec![
-                            coq::TopLevelItem::Definition(coq::Definition::new(
-                                &body.parameter_name_for_fmt(),
-                                &coq::DefinitionKind::Assumption {
-                                    ty: self
-                                        .signature_and_body
-                                        .ret_ty
-                                        .to_coq()
-                                        .arrows_from(&FunDefinition::types_for_f(extra_data))
-                                        .arrow_from({
-                                            // get type of argument named f
-                                            // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                                            let ty_of_f = self.signature_and_body.args.iter().fold(
-                                                None,
-                                                |option_ty_of_f, (name, ty)| match option_ty_of_f {
-                                                    Some(_) => panic!(
-                                                        "two arguments with the same name: f"
-                                                    ),
-                                                    None => {
-                                                        if name == "f" {
-                                                            Some(ty)
-                                                        } else {
-                                                            None
-                                                        }
-                                                    }
-                                                },
-                                            );
-                                            &match ty_of_f {
-                                                Some(ty_of_f) => ty_of_f,
-                                                None => panic!("no argument with name 'f'"),
-                                            }
-                                            .to_coq_tuning()
-                                        }),
-                                },
-                            )),
-                            coq::TopLevelItem::Line,
-                            coq::TopLevelItem::Code(nest([
-                                text("Global Instance Deb_"),
-                                text(body.parameter_name_for_fmt()),
-                                text(" : "),
-                                Path::new(&["Notation", "DoubleColon"]).to_doc(),
-                                line(),
-                                concat(self.signature_and_body.args.iter().map(|(name, ty)| {
-                                    if name == "f" {
-                                        ty.to_coq_tuning().to_doc(false)
-                                    } else {
-                                        nil()
-                                    }
-                                })),
-                                text(" \""),
-                                text(body.parameter_name_for_fmt()),
-                                text("\""),
-                                text(" := "),
-                                text("{"),
-                                line(),
-                                nest([
-                                    Path::new(&["Notation", "double_colon"]).to_doc(),
-                                    text(" := "),
-                                    text(body.parameter_name_for_fmt()),
-                                    text(";"),
+                        Some(body) => {
+                            let body_parameter_name_for_fmt = body.parameter_name_for_fmt();
+
+                            vec![
+                                coq::TopLevelItem::Definition(coq::Definition::new(
+                                    &body_parameter_name_for_fmt,
+                                    &coq::DefinitionKind::Assumption {
+                                        ty: self
+                                            .signature_and_body
+                                            .ret_ty
+                                            .to_coq()
+                                            .arrows_from(&FunDefinition::types_for_f(extra_data))
+                                            .arrow_from({
+                                                // get type of argument named f
+                                                // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
+                                                let ty_of_f = self
+                                                    .signature_and_body
+                                                    .args
+                                                    .iter()
+                                                    .fold(
+                                                        None,
+                                                        |option_ty_of_f, (name, ty)| match option_ty_of_f {
+                                                            Some(_) => panic!(
+                                                                "two arguments with the same name: f"
+                                                            ),
+                                                            None => {
+                                                                if name == "f" {
+                                                                    Some(ty)
+                                                                } else {
+                                                                    None
+                                                                }
+                                                            }
+                                                        },
+                                                    );
+                                                &match ty_of_f {
+                                                    Some(ty_of_f) => ty_of_f,
+                                                    None => panic!("no argument with name 'f'"),
+                                                }
+                                                .to_coq_tuning()
+                                            }),
+                                    },
+                                )),
+                                coq::TopLevelItem::Line,
+                                coq::TopLevelItem::Code(nest([
+                                    text("Global Instance "),
+                                    text(format!("Deb_{body_parameter_name_for_fmt}")),
+                                    text(" : "),
+                                    Path::new(&["Notation", "DoubleColon"]).to_doc(),
                                     line(),
-                                ]),
-                                text("}."),
-                            ])),
-                            coq::TopLevelItem::Line,
-                        ],
+                                    concat(self.signature_and_body.args.iter().map(|(name, ty)| {
+                                        if name == "f" {
+                                            ty.to_coq_tuning().to_doc(false)
+                                        } else {
+                                            nil()
+                                        }
+                                    })),
+                                    text(format!(" \"{body_parameter_name_for_fmt}\"")),
+                                    text(" := "),
+                                    text("{"),
+                                    line(),
+                                    nest([
+                                        Path::new(&["Notation", "double_colon"]).to_doc(),
+                                        text(" := "),
+                                        text(body_parameter_name_for_fmt),
+                                        text(";"),
+                                        line(),
+                                    ]),
+                                    text("}."),
+                                ])),
+                                coq::TopLevelItem::Line,
+                            ]
+                        }
                         None => vec![],
                     }
                 } else {
