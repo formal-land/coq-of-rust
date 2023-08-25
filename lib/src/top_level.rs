@@ -1130,8 +1130,6 @@ impl FunDefinition {
     }
 
     fn to_coq<'a>(&'a self, extra_data: Option<&'a TopLevelItem>) -> coq::TopLevel<'a> {
-        let types_for_f = FunDefinition::types_for_f(extra_data);
-
         coq::TopLevel::new(
             &[
                 if self.is_dead_code {
@@ -1153,7 +1151,7 @@ impl FunDefinition {
                                         .signature_and_body
                                         .ret_ty
                                         .to_coq()
-                                        .arrows_from(&types_for_f)
+                                        .arrows_from(&FunDefinition::types_for_f(extra_data))
                                         .arrow_from({
                                             // get type of argument named f
                                             // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
