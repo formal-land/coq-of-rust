@@ -1179,7 +1179,7 @@ impl FunDefinition {
                                 line(),
                                 concat(self.signature_and_body.args.iter().map(|(name, ty)| {
                                     if name == "f" {
-                                        ty.to_doc_tuning(false)
+                                        ty.to_coq_tuning().to_doc(false)
                                     } else {
                                         nil()
                                     }

@@ -252,6 +252,14 @@ impl CoqType {
         }
     }
 
+    // we need this function to fix aligning
+    pub(crate) fn to_coq_tuning(&self) -> coq::Expression {
+        match self {
+            CoqType::Ref(ty, _) => ty.to_coq(),
+            _ => self.to_coq(),
+        }
+    }
+
     pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
         match self {
             CoqType::Var(path) => path.to_doc(),
