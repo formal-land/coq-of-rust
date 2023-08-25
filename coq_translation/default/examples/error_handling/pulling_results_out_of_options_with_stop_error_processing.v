@@ -4,11 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Definition double_first
     `{H : State.Trait}
     (vec : alloc.vec.Vec (ref str))
-    :
-      M (H := H)
-        (core.result.Result
-          (core.option.Option i32)
-          core.num.error.ParseIntError) :=
+    : M (H := H)
+    (core.result.Result (core.option.Option i32)
+    core.num.error.ParseIntError) :=
   let* opt :=
     let* α0 := vec.["first"] in
     α0.["map"]
