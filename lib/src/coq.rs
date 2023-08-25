@@ -342,20 +342,22 @@ impl<'a> Definition<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         match self.kind.to_owned() {
             DefinitionKind::Alias { args, ty, body } => nest([
-                text("Definition"),
-                line(),
-                text(self.name.to_owned()),
-                if args.is_empty() {
-                    nil()
-                } else {
-                    concat([line(), concat(args.iter().map(|arg| arg.to_doc()))])
-                },
-                match ty {
-                    Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
-                    None => nil(),
-                },
-                line(),
-                text(":="),
+                nest([
+                    text("Definition"),
+                    line(),
+                    text(self.name.to_owned()),
+                    if args.is_empty() {
+                        nil()
+                    } else {
+                        concat([line(), concat(args.iter().map(|arg| arg.to_doc()))])
+                    },
+                    match ty {
+                        Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
+                        None => nil(),
+                    },
+                    line(),
+                    text(":="),
+                ]),
                 line(),
                 body.to_doc(false),
                 text("."),
