@@ -1155,18 +1155,22 @@ impl FunDefinition {
                                     ty: coq::Expression::Code(concat([
                                         // get type of argument named f
                                         // (see: https://doc.rust-lang.org/std/fmt/struct.Formatter.html)
-                                        intersperse(
-                                            self.signature_and_body.args.iter().filter_map(
-                                                |(name, ty)| {
-                                                    if name == "f" {
+                                        {
+                                            let ty_of_f = self.signature_and_body.args.iter().fold(None, |option_ty_of_f, (name, ty)| {
+                                                match option_ty_of_f {
+                                                    Some(_) => panic!("two arguments with the same name: f"),
+                                                    None => if name == "f" {
                                                         Some(ty.to_coq_tuning().to_doc(false))
                                                     } else {
                                                         None
                                                     }
-                                                },
-                                            ),
-                                            ["->"],
-                                        ),
+                                                }
+                                            });
+                                            match ty_of_f {
+                                                Some(ty_of_f) => ty_of_f,
+                                                None => panic!("no argument with name 'f'"),
+                                            }
+                                        },
                                         text(" -> "),
                                         types_for_f,
                                         self.signature_and_body.ret_ty.to_doc(false),
