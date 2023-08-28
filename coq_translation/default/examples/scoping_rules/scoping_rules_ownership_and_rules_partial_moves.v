@@ -75,13 +75,14 @@ Module
     :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
-  Parameter debug_struct_field2_finish : core.fmt.Formatter ->
-      string ->
+  Parameter debug_struct_field2_finish :
+      core.fmt.Formatter ->
         string ->
-        alloc_string_String ->
-        string ->
-        alloc_boxed_Box_u8 ->
-        M (H := H) core.fmt.Result.
+          string ->
+          alloc_string_String ->
+          string ->
+          alloc_boxed_Box_u8 ->
+          M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field2_finish" := {
