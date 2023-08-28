@@ -1,6 +1,6 @@
 {
   "axiomatize": false,
-  "debug_reorder": true,
+  "debug_reorder": false,
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": {
@@ -18,6 +18,14 @@
       },
       "top_level::inner_mod::nested_mod": {
         "tick": { "move": "down", "after": "tack" }
+      }
+    },
+    "ink_env": {
+      "top_level": {
+        "arithmetic": { "move": "up", "before": "types" }
+      },
+      "top_level::arithmetic": { 
+        "Saturating": { "move": "up", "before": "BaseArithmetic" }
       }
     }
   }
