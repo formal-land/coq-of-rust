@@ -341,21 +341,21 @@ Module chain_extension.
   
   Module ChainExtension.
     Class Trait (Self : Set) : Set := {
-      func_id `{H : State.Trait} : (ref Self) -> (M (H := H) u32);
+      func_id `{H' : State.Trait} : (ref Self) -> (M (H := H') u32);
       call
-        `{H : State.Trait}
+        `{H' : State.Trait}
         :
         (mut_ref Self) ->
         (ref (Slice u8)) ->
         (mut_ref (alloc.vec.Vec u8)) ->
-        (M (H := H) u32);
+        (M (H := H') u32);
     }.
     
-    Global Instance Method_func_id `{H : State.Trait} `(Trait)
+    Global Instance Method_func_id `{H' : State.Trait} `(Trait)
       : Notation.Dot "func_id" := {
       Notation.dot := func_id;
     }.
-    Global Instance Method_call `{H : State.Trait} `(Trait)
+    Global Instance Method_call `{H' : State.Trait} `(Trait)
       : Notation.Dot "call" := {
       Notation.dot := call;
     }.
@@ -398,21 +398,21 @@ Definition ExtensionId := @ExtensionId.t.
 
 Module ChainExtension.
   Class Trait (Self : Set) : Set := {
-    func_id `{H : State.Trait} : (ref Self) -> (M (H := H) u32);
+    func_id `{H' : State.Trait} : (ref Self) -> (M (H := H') u32);
     call
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :
       (mut_ref Self) ->
       (ref (Slice u8)) ->
       (mut_ref (alloc.vec.Vec u8)) ->
-      (M (H := H) u32);
+      (M (H := H') u32);
   }.
   
-  Global Instance Method_func_id `{H : State.Trait} `(Trait)
+  Global Instance Method_func_id `{H' : State.Trait} `(Trait)
     : Notation.Dot "func_id" := {
     Notation.dot := func_id;
   }.
-  Global Instance Method_call `{H : State.Trait} `(Trait)
+  Global Instance Method_call `{H' : State.Trait} `(Trait)
     : Notation.Dot "call" := {
     Notation.dot := call;
   }.
@@ -420,12 +420,12 @@ End ChainExtension.
 
 Module database.
   Parameter balance_of_key :
-      forall `{H : State.Trait},
-      (ref (Slice u8)) -> M (H := H) (list u8).
+      forall `{H' : State.Trait},
+      (ref (Slice u8)) -> M (H := H') (list u8).
   
   Parameter storage_of_contract_key :
-      forall `{H : State.Trait},
-      (ref (Slice u8)) -> (ref (Slice u8)) -> M (H := H) (list u8).
+      forall `{H' : State.Trait},
+      (ref (Slice u8)) -> (ref (Slice u8)) -> M (H := H') (list u8).
   
   Module Database.
     Unset Primitive Projections.
@@ -444,12 +444,12 @@ Module database.
 End database.
 
 Parameter balance_of_key :
-    forall `{H : State.Trait},
-    (ref (Slice u8)) -> M (H := H) (list u8).
+    forall `{H' : State.Trait},
+    (ref (Slice u8)) -> M (H := H') (list u8).
 
 Parameter storage_of_contract_key :
-    forall `{H : State.Trait},
-    (ref (Slice u8)) -> (ref (Slice u8)) -> M (H := H) (list u8).
+    forall `{H' : State.Trait},
+    (ref (Slice u8)) -> (ref (Slice u8)) -> M (H := H') (list u8).
 
 Module Database.
   Unset Primitive Projections.
@@ -537,37 +537,37 @@ Definition ExecContext : Set := @ExecContext.t.
 
 Module hashing.
   Parameter blake2b_256 :
-      forall `{H : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+      forall `{H' : State.Trait},
+      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
   
   Parameter blake2b_128 :
-      forall `{H : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+      forall `{H' : State.Trait},
+      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
   
   Parameter keccak_256 :
-      forall `{H : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+      forall `{H' : State.Trait},
+      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
   
   Parameter sha2_256 :
-      forall `{H : State.Trait},
-      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+      forall `{H' : State.Trait},
+      (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
 End hashing.
 
 Parameter blake2b_256 :
-    forall `{H : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+    forall `{H' : State.Trait},
+    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
 
 Parameter blake2b_128 :
-    forall `{H : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+    forall `{H' : State.Trait},
+    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
 
 Parameter keccak_256 :
-    forall `{H : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+    forall `{H' : State.Trait},
+    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
 
 Parameter sha2_256 :
-    forall `{H : State.Trait},
-    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H) unit.
+    forall `{H' : State.Trait},
+    (ref (Slice u8)) -> (mut_ref (list u8)) -> M (H := H') unit.
 
 Module types.
   Definition BlockNumber : Set := u32.

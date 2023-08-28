@@ -16,12 +16,12 @@ Module builders.
   
   Parameter constructor_exec_input :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {E ContractRef Args R : Set}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{ink_env.types.Environment.Trait E},
       (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-        M (H := H) (alloc.vec.Vec u8).
+        M (H := H') (alloc.vec.Vec u8).
 End builders.
 
 Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :=
@@ -37,12 +37,12 @@ Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :=
 
 Parameter constructor_exec_input :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {E ContractRef Args R : Set}
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{ink_env.types.Environment.Trait E},
     (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-      M (H := H) (alloc.vec.Vec u8).
+      M (H := H') (alloc.vec.Vec u8).
 
 Module client.
   Definition CallBuilderFinal (E Args RetType : Set) : Set :=
@@ -364,188 +364,188 @@ Definition Client : Set := @Client.t.
 Module default_accounts.
   Parameter alice :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter bob :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter charlie :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter dave :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter eve :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter ferdie :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter one :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter two :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 End default_accounts.
 
 Parameter alice :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter bob :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter charlie :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter dave :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter eve :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter ferdie :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter one :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter two :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Module node_proc.
   Module TestNodeProcess.
@@ -979,20 +979,20 @@ Definition PolkadotConfig : Set :=
 Definition Signer (C : Set) : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
-Parameter INIT : forall `{H : State.Trait}, std.sync.once.Once.
+Parameter INIT : forall `{H' : State.Trait}, std.sync.once.Once.
 
 Parameter LOG_PREFIX :
-  forall `{H : State.Trait},
+  forall `{H' : State.Trait},
   std.thread.local.LocalKey (core.cell.RefCell alloc.string.String).
 
 Parameter log_prefix :
-    forall `{H : State.Trait},
-    M (H := H) alloc.string.String.
+    forall `{H' : State.Trait},
+    M (H := H') alloc.string.String.
 
-Parameter log_info : forall `{H : State.Trait}, (ref str) -> M (H := H) unit.
+Parameter log_info : forall `{H' : State.Trait}, (ref str) -> M (H := H') unit.
 
-Parameter log_error : forall `{H : State.Trait}, (ref str) -> M (H := H) unit.
+Parameter log_error : forall `{H' : State.Trait}, (ref str) -> M (H := H') unit.
 
 Parameter account_id :
-    forall `{H : State.Trait},
-    sp_keyring.sr25519.Keyring -> M (H := H) ink_primitives.types.AccountId.
+    forall `{H' : State.Trait},
+    sp_keyring.sr25519.Keyring -> M (H := H') ink_primitives.types.AccountId.

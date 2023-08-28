@@ -84,22 +84,22 @@ Module storage.
   Module Storable.
     Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
       encode
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {T: Set}
         `{parity_scale_codec.codec.Output.Trait T}
         `{core.marker.Sized.Trait T}
         :
-        (ref Self) -> (mut_ref T) -> (M (H := H) unit);
+        (ref Self) -> (mut_ref T) -> (M (H := H') unit);
       decode
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {I: Set}
         `{parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
-        (M (H := H) (core.result.Result Self parity_scale_codec.error.Error));
+        (M (H := H') (core.result.Result Self parity_scale_codec.error.Error));
     }.
     
-    Global Instance Method_encode `{H : State.Trait} `(Trait)
+    Global Instance Method_encode `{H' : State.Trait} `(Trait)
       : Notation.Dot "encode" := {
       Notation.dot
           {T : Set}
@@ -108,7 +108,7 @@ Module storage.
         :=
         encode;
     }.
-    Global Instance Method_decode `{H : State.Trait} `(Trait)
+    Global Instance Method_decode `{H' : State.Trait} `(Trait)
       : Notation.Dot "decode" := {
       Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
         :=
@@ -139,18 +139,18 @@ Module storage.
   
   Module StorageKey.
     Class Trait (Self : Set) : Set := {
-      KEY `{H : State.Trait} : ink_primitives.key.Key;
+      KEY `{H' : State.Trait} : ink_primitives.key.Key;
     }.
     
-    Global Instance Method_KEY `{H : State.Trait} `(Trait)
+    Global Instance Method_KEY `{H' : State.Trait} `(Trait)
       : Notation.Dot "KEY" := {
       Notation.dot := KEY;
     }.
-    (* Global Instance Method_key `{H : State.Trait} `(Trait)
+    (* Global Instance Method_key `{H' : State.Trait} `(Trait)
       : Notation.Dot "key" := {
       Notation.dot (self : ref Self)
         :=
-        (axiom : M (H := H) ink_primitives.key.Key);
+        (axiom : M (H := H') ink_primitives.key.Key);
     }.
   *) End StorageKey.
   
@@ -202,22 +202,22 @@ End storage.
 Module Storable.
   Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
     encode
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {T: Set}
       `{parity_scale_codec.codec.Output.Trait T}
       `{core.marker.Sized.Trait T}
       :
-      (ref Self) -> (mut_ref T) -> (M (H := H) unit);
+      (ref Self) -> (mut_ref T) -> (M (H := H') unit);
     decode
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {I: Set}
       `{parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
-      (M (H := H) (core.result.Result Self parity_scale_codec.error.Error));
+      (M (H := H') (core.result.Result Self parity_scale_codec.error.Error));
   }.
   
-  Global Instance Method_encode `{H : State.Trait} `(Trait)
+  Global Instance Method_encode `{H' : State.Trait} `(Trait)
     : Notation.Dot "encode" := {
     Notation.dot
         {T : Set}
@@ -226,7 +226,7 @@ Module Storable.
       :=
       encode;
   }.
-  Global Instance Method_decode `{H : State.Trait} `(Trait)
+  Global Instance Method_decode `{H' : State.Trait} `(Trait)
     : Notation.Dot "decode" := {
     Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I} := decode;
   }.
@@ -262,18 +262,18 @@ End Packed.
 
 Module StorageKey.
   Class Trait (Self : Set) : Set := {
-    KEY `{H : State.Trait} : ink_primitives.key.Key;
+    KEY `{H' : State.Trait} : ink_primitives.key.Key;
   }.
   
-  Global Instance Method_KEY `{H : State.Trait} `(Trait)
+  Global Instance Method_KEY `{H' : State.Trait} `(Trait)
     : Notation.Dot "KEY" := {
     Notation.dot := KEY;
   }.
-  (* Global Instance Method_key `{H : State.Trait} `(Trait)
+  (* Global Instance Method_key `{H' : State.Trait} `(Trait)
     : Notation.Dot "key" := {
     Notation.dot (self : ref Self)
       :=
-      (axiom : M (H := H) ink_primitives.key.Key);
+      (axiom : M (H := H') ink_primitives.key.Key);
   }.
 *) End StorageKey.
 
@@ -325,12 +325,13 @@ Module layout.
   Module StorageLayout.
     Class Trait (Self : Set) : Set := {
       layout
-        `{H : State.Trait}
+        `{H' : State.Trait}
         :
-        (ref ink_primitives.key.Key) -> (M (H := H) ink_metadata.layout.Layout);
+        (ref ink_primitives.key.Key) ->
+        (M (H := H') ink_metadata.layout.Layout);
     }.
     
-    Global Instance Method_layout `{H : State.Trait} `(Trait)
+    Global Instance Method_layout `{H' : State.Trait} `(Trait)
       : Notation.Dot "layout" := {
       Notation.dot := layout;
     }.
@@ -340,12 +341,12 @@ End layout.
 Module StorageLayout.
   Class Trait (Self : Set) : Set := {
     layout
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :
-      (ref ink_primitives.key.Key) -> (M (H := H) ink_metadata.layout.Layout);
+      (ref ink_primitives.key.Key) -> (M (H := H') ink_metadata.layout.Layout);
   }.
   
-  Global Instance Method_layout `{H : State.Trait} `(Trait)
+  Global Instance Method_layout `{H' : State.Trait} `(Trait)
     : Notation.Dot "layout" := {
     Notation.dot := layout;
   }.
