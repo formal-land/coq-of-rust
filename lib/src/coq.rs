@@ -95,11 +95,12 @@ pub(crate) enum Expression<'a> {
     Code(Doc<'a>),
     Application {
         func: Box<Expression<'a>>,
-        param: Option<String>,
-        arg: Box<Expression<'a>>,
+        /// a nonempty list of arguments
+        args: Vec<(Option<String>, Expression<'a>)>,
     },
     Function {
-        domain: Box<Expression<'a>>,
+        /// a nonempty list of domains
+        domains: Vec<Expression<'a>>,
         image: Box<Expression<'a>>,
     },
     PiType {
@@ -478,26 +479,34 @@ impl<'a> Expression<'a> {
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc<'a> {
         match self {
             Self::Code(doc) => paren(with_paren, doc.to_owned()),
-            Self::Application { func, param, arg } => paren(
+            Self::Application { func, args } => paren(
                 with_paren,
-                group([
+                nest([
                     func.to_doc(false),
-                    line(),
-                    match param {
-                        Some(param) => render::round_brackets(group([
-                            text(param.to_owned()),
-                            text(" := "),
-                            arg.to_doc(false),
-                        ])),
-                        None => arg.to_doc(true),
-                    },
+                    if args.is_empty() { nil() } else { line() },
+                    intersperse(
+                        args.iter().map(|(param, arg)| match param {
+                            Some(param) => render::round_brackets(group([
+                                text(param.to_owned()),
+                                text(" := "),
+                                arg.to_doc(false),
+                            ])),
+                            None => arg.to_doc(true),
+                        }),
+                        [line()],
+                    ),
                 ]),
             ),
-            Self::Function { domain, image } => paren(
+            Self::Function { domains, image } => paren(
                 with_paren,
-                group([
-                    group([domain.to_doc(true), line(), text("->")]),
-                    line(),
+                nest([
+                    intersperse(
+                        domains
+                            .iter()
+                            .map(|domain| group([domain.to_doc(true), line(), text("->")])),
+                        [line()],
+                    ),
+                    if domains.is_empty() { nil() } else { line() },
                     image.to_doc(false),
                 ]),
             ),
@@ -535,26 +544,22 @@ impl<'a> Expression<'a> {
     pub(crate) fn apply(&self, arg: &Self) -> Self {
         Expression::Application {
             func: Box::new(self.clone()),
-            param: None,
-            arg: Box::new(arg.clone()),
+            args: vec![(None, arg.clone())],
         }
     }
 
     pub(crate) fn apply_many(&self, args: &[Self]) -> Self {
-        args.iter().fold(self.clone(), |fun, arg| fun.apply(arg))
-    }
-
-    pub(crate) fn arrow_from(&self, domain: &Self) -> Self {
-        Expression::Function {
-            domain: Box::new(domain.clone()),
-            image: Box::new(self.clone()),
+        Expression::Application {
+            func: Box::new(self.to_owned()),
+            args: args.iter().map(|arg| (None, arg.to_owned())).collect(),
         }
     }
 
     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
-        domains
-            .iter()
-            .rfold(self.clone(), |image, domain| image.arrow_from(domain))
+        Expression::Function {
+            domains: domains.to_owned(),
+            image: Box::new(self.to_owned()),
+        }
     }
 
     pub(crate) fn multiply(lhs: Self, rhs: Self) -> Self {

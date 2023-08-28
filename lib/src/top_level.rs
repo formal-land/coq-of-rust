@@ -1477,42 +1477,37 @@ impl TraitBound {
         coq::ArgSpec::new(
             &coq::ArgDecl::Generalized {
                 idents: vec![],
-                ty: self.ty_params.iter().fold(
-                    coq::Expression::Variable {
-                        ident: Path::concat(&[self.name.to_owned(), Path::new(&["Trait"])]),
-                        no_implicit: false,
-                    }
-                    .apply(&self_ty),
-                    |acc, ty_param| match *ty_param.to_owned() {
-                        TraitTyParamValue::JustValue { name, ty } => coq::Expression::Application {
-                            func: Box::new(acc),
-                            param: Some(name),
-                            arg: Box::new(ty.to_coq()),
-                        },
-                        TraitTyParamValue::ValWithDef { name, ty } => {
-                            coq::Expression::Application {
-                                func: Box::new(acc),
-                                param: Some(name),
-                                arg: Box::new(coq::Expression::Application {
-                                    func: Box::new(coq::Expression::Variable {
-                                        ident: Path::new(&["Some"]),
-                                        no_implicit: false,
-                                    }),
-                                    param: None,
-                                    arg: Box::new(ty.to_coq()),
-                                }),
-                            }
+                ty: coq::Expression::Application {
+                    func: Box::new(
+                        coq::Expression::Variable {
+                            ident: Path::concat(&[self.name.to_owned(), Path::new(&["Trait"])]),
+                            no_implicit: false,
                         }
-                        TraitTyParamValue::JustDefault { name } => coq::Expression::Application {
-                            func: Box::new(acc),
-                            param: Some(name),
-                            arg: Box::new(coq::Expression::Variable {
-                                ident: Path::new(&["None"]),
-                                no_implicit: false,
-                            }),
-                        },
-                    },
-                ),
+                        .apply(&self_ty),
+                    ),
+                    args: self
+                        .ty_params
+                        .iter()
+                        .map(|ty_param| match *ty_param.to_owned() {
+                            TraitTyParamValue::JustValue { name, ty } => (Some(name), ty.to_coq()),
+                            TraitTyParamValue::ValWithDef { name, ty } => (
+                                Some(name),
+                                coq::Expression::Variable {
+                                    ident: Path::new(&["Some"]),
+                                    no_implicit: false,
+                                }
+                                .apply(&ty.to_coq()),
+                            ),
+                            TraitTyParamValue::JustDefault { name } => (
+                                Some(name),
+                                coq::Expression::Variable {
+                                    ident: Path::new(&["None"]),
+                                    no_implicit: false,
+                                },
+                            ),
+                        })
+                        .collect(),
+                },
             },
             coq::ArgSpecKind::Implicit,
         )
@@ -2212,27 +2207,26 @@ impl TopLevelItem {
                                                 ident: Path::new(&["Trait"]),
                                                 no_implicit: false,
                                             }),
-                                            param: Some(name.to_string()),
-                                            arg: Box::new(coq::Expression::Variable {
-                                                ident: Path::new(&[name]),
-                                                no_implicit: false,
-                                            }),
+                                            args: vec![(
+                                                Some(name.to_string()),
+                                                coq::Expression::Variable {
+                                                    ident: Path::new(&[name]),
+                                                    no_implicit: false,
+                                                },
+                                            )],
                                         },
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
                             ],
-                            coq::Expression::Application {
-                                func: Box::new(coq::Expression::Variable {
-                                    ident: Path::new(&["Notation", "DoubleColonType"]),
-                                    no_implicit: false,
-                                }),
-                                param: None,
-                                arg: Box::new(coq::Expression::Variable {
-                                    ident: Path::new(&["Self"]),
-                                    no_implicit: false,
-                                }),
-                            },
+                            coq::Expression::Variable {
+                                ident: Path::new(&["Notation", "DoubleColonType"]),
+                                no_implicit: false,
+                            }
+                            .apply(&coq::Expression::Variable {
+                                ident: Path::new(&["Self"]),
+                                no_implicit: false,
+                            }),
                             text("Notation.double_colon_type "),
                             text(name),
                         ),
