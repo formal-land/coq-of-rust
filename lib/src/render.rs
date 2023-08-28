@@ -8,7 +8,7 @@ use crate::coq;
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
 pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
-    coq::ArgSpec::monadic_typeclass_parameter().to_doc()
+    coq::ArgDecl::monadic_typeclass_parameter().to_doc()
 }
 
 /// encloses an expression in curly brackets

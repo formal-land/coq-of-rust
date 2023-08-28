@@ -1217,8 +1217,8 @@ impl FunDefinition {
                                                     args: bounds
                                                         .iter()
                                                         .map(|bound| {
-                                                            coq::ArgSpec::new(
-                                                                &coq::ArgDecl::Generalized {
+                                                            coq::ArgDecl::new(
+                                                                &coq::ArgDeclVar::Generalized {
                                                                     idents: vec![],
                                                                     ty: coq::Expression::Variable {
                                                                         ident: bound.to_owned(),
@@ -1250,12 +1250,12 @@ impl FunDefinition {
                                 &coq::DefinitionKind::Assumption {
                                     ty: coq::Expression::PiType {
                                         args: [
-                                            vec![coq::ArgSpec::monadic_typeclass_parameter()],
+                                            vec![coq::ArgDecl::monadic_typeclass_parameter()],
                                             // Type parameters a, b, c... compiles to forall {a b c ... : Set},
                                             if self.ty_params.is_empty() {
                                                 vec![]
                                             } else {
-                                                vec![coq::ArgSpec::of_ty_params(&self.ty_params)]
+                                                vec![coq::ArgDecl::of_ty_params(&self.ty_params)]
                                             },
                                             // where predicates types
                                             self.where_predicates
@@ -1287,12 +1287,12 @@ impl FunDefinition {
                         &self.name,
                         &coq::DefinitionKind::Alias {
                             args: [
-                                vec![coq::ArgSpec::monadic_typeclass_parameter()],
+                                vec![coq::ArgDecl::monadic_typeclass_parameter()],
                                 // Type parameters a, b, c... compiles to forall {a b c ... : Set},
                                 if self.ty_params.is_empty() {
                                     vec![]
                                 } else {
-                                    vec![coq::ArgSpec::of_ty_params(&self.ty_params)]
+                                    vec![coq::ArgDecl::of_ty_params(&self.ty_params)]
                                 },
                                 // where predicates types
                                 self.where_predicates
@@ -1304,8 +1304,8 @@ impl FunDefinition {
                                     .args
                                     .iter()
                                     .map(|(name, ty)| {
-                                        coq::ArgSpec::new(
-                                            &coq::ArgDecl::Normal {
+                                        coq::ArgDecl::new(
+                                            &coq::ArgDeclVar::Normal {
                                                 idents: vec![name.to_owned()],
                                                 ty: Some(ty.to_coq()),
                                             },
@@ -1449,7 +1449,7 @@ impl ImplItem {
 
 impl WherePredicate {
     /// turns the predicate into its representation as constraint
-    fn to_coq(&self) -> coq::ArgSpec {
+    fn to_coq(&self) -> coq::ArgDecl {
         self.bound.to_coq(self.ty.to_coq())
     }
 
@@ -1473,9 +1473,9 @@ impl TraitBound {
     }
 
     /// turns the trait bound into its representation as constraint
-    fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::ArgSpec<'a> {
-        coq::ArgSpec::new(
-            &coq::ArgDecl::Generalized {
+    fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::ArgDecl<'a> {
+        coq::ArgDecl::new(
+            &coq::ArgDeclVar::Generalized {
                 idents: vec![],
                 ty: coq::Expression::Application {
                     func: Box::new(
@@ -2155,9 +2155,9 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[
-                                coq::ArgSpec::monadic_typeclass_parameter(),
-                                coq::ArgSpec::new(
-                                    &coq::ArgDecl::Generalized {
+                                coq::ArgDecl::monadic_typeclass_parameter(),
+                                coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Generalized {
                                         idents: vec![],
                                         ty: coq::Expression::Variable {
                                             ident: Path::new(&["Trait"]),
@@ -2177,7 +2177,7 @@ impl TopLevelItem {
                                     if ty_params.is_empty() {
                                         vec![]
                                     } else {
-                                        vec![coq::ArgSpec::of_ty_params(ty_params)]
+                                        vec![coq::ArgDecl::of_ty_params(ty_params)]
                                     },
                                     where_predicates
                                         .iter()
@@ -2192,15 +2192,15 @@ impl TopLevelItem {
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
                             &[
-                                coq::ArgSpec::new(
-                                    &coq::ArgDecl::Normal {
+                                coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Normal {
                                         idents: vec![name.to_owned()],
                                         ty: None,
                                     },
                                     coq::ArgSpecKind::Implicit,
                                 ),
-                                coq::ArgSpec::new(
-                                    &coq::ArgDecl::Generalized {
+                                coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Generalized {
                                         idents: vec![],
                                         ty: coq::Expression::Application {
                                             func: Box::new(coq::Expression::Variable {
@@ -2237,9 +2237,9 @@ impl TopLevelItem {
                         } => coq::Instance::new(
                             name,
                             &[
-                                coq::ArgSpec::monadic_typeclass_parameter(),
-                                coq::ArgSpec::new(
-                                    &coq::ArgDecl::Generalized {
+                                coq::ArgDecl::monadic_typeclass_parameter(),
+                                coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Generalized {
                                         idents: vec![],
                                         ty: coq::Expression::Variable {
                                             ident: Path::new(&["Trait"]),
@@ -2259,7 +2259,7 @@ impl TopLevelItem {
                                     if ty_params.is_empty() {
                                         vec![]
                                     } else {
-                                        vec![coq::ArgSpec::of_ty_params(ty_params)]
+                                        vec![coq::ArgDecl::of_ty_params(ty_params)]
                                     },
                                     where_predicates
                                         .iter()

@@ -12,6 +12,8 @@ pub(crate) struct TopLevel<'a> {
 #[derive(Clone)]
 /// any coq top level item
 pub(crate) enum TopLevelItem<'a> {
+    /// the Code variant is for those constructions
+    /// that are not yet represented by the types in this file
     Code(Doc<'a>),
     Class(Class<'a>),
     Comment(Comment),
@@ -24,7 +26,7 @@ pub(crate) enum TopLevelItem<'a> {
 }
 
 #[derive(Clone)]
-/// a coq comment
+/// a coq comment (always occupies whole lines)
 pub(crate) struct Comment {
     text: String,
 }
@@ -53,7 +55,7 @@ pub(crate) struct Definition<'a> {
 #[derive(Clone)]
 /// a coq `Context` item
 pub(crate) struct Context<'a> {
-    args: Vec<ArgSpec<'a>>,
+    args: Vec<ArgDecl<'a>>,
 }
 
 #[derive(Clone)]
@@ -71,65 +73,92 @@ pub(crate) struct Class<'a> {
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
     name: &'a str,
-    parameters: Vec<ArgSpec<'a>>,
+    parameters: Vec<ArgDecl<'a>>,
     class: Expression<'a>,
     field: Doc<'a>,
     value: Doc<'a>,
 }
 
 #[derive(Clone)]
+/// the kind of a coq definition
 pub(crate) enum DefinitionKind<'a> {
+    /// an alias for an expression
+    /// (using `Definition`)
     Alias {
-        args: Vec<ArgSpec<'a>>,
+        args: Vec<ArgDecl<'a>>,
         ty: Option<Expression<'a>>,
         body: Expression<'a>,
     },
-    Assumption {
-        ty: Expression<'a>,
-    },
+    /// an opaque constant
+    /// (using `Parameter`)
+    Assumption { ty: Expression<'a> },
 }
 
 #[derive(Clone)]
 /// a coq expression
+/// (sutable also for coq type expressions,
+///     because in coq types are like any other values)
 pub(crate) enum Expression<'a> {
+    /// the Code variant is for those constructions
+    /// that are not yet represented by the types in this file
     Code(Doc<'a>),
+    /// an (curried) application of a function to some arguments
     Application {
+        /// the function that is applied
         func: Box<Expression<'a>>,
         /// a nonempty list of arguments
+        /// (we accept many arguments to control their indentation better,
+        ///     the application is curried when it gets printed)
         args: Vec<(Option<String>, Expression<'a>)>,
     },
+    /// a (curried) function type
     Function {
         /// a nonempty list of domains
+        /// (we accept many domains to control their indentation in the type better,
+        ///     the type is curried when it gets printed)
         domains: Vec<Expression<'a>>,
+        /// the image (range, co-domain) of functions of the type
         image: Box<Expression<'a>>,
     },
+    /// a dependent product of types
+    /// (like `forall (x : A), B(x)`)
     PiType {
-        args: Vec<ArgSpec<'a>>,
+        /// a list of arguments of `forall`
+        args: Vec<ArgDecl<'a>>,
+        /// the expression for the resulting type
         image: Box<Expression<'a>>,
     },
+    /// a product of two variables (they can be types or numbers)
     Product {
+        /// left hand side
         lhs: Box<Expression<'a>>,
+        /// right hand side
         rhs: Box<Expression<'a>>,
     },
+    /// Set constant (the type of our types)
     Set,
+    /// the unit type
     Unit,
+    /// a single variable
     Variable {
+        /// a list of names (a path) used to refer to the variable
         ident: Path,
-        /// a flag set if implicit arguments are deactivated with '@'
+        /// a flag, set if implicit arguments are deactivated with '@'
         no_implicit: bool,
     },
 }
 
 #[derive(Clone)]
-/// a specification of an argument of a coq construction
-pub(crate) struct ArgSpec<'a> {
-    decl: ArgDecl<'a>,
+/// a declaration of an argument of a coq construction
+pub(crate) struct ArgDecl<'a> {
+    decl: ArgDeclVar<'a>,
     kind: ArgSpecKind,
 }
 
 #[derive(Clone)]
-/// a variant of the argument specification
-pub(crate) enum ArgDecl<'a> {
+/// a variant of the argument declaration
+pub(crate) enum ArgDeclVar<'a> {
+    /// a regular declaration
     Normal {
         // @TODO: try to make it really non-empty
         /// a non-empty vector of identifiers
@@ -137,6 +166,7 @@ pub(crate) enum ArgDecl<'a> {
         /// a type of the identifiers
         ty: Option<Expression<'a>>,
     },
+    /// a generalized declaration (preceded by `` ` ``)
     Generalized {
         /// a possibly empty vector of identifiers
         idents: Vec<String>,
@@ -149,8 +179,10 @@ pub(crate) enum ArgDecl<'a> {
 /// a kind of an argument
 pub(crate) enum ArgSpecKind {
     /// a regular argument
+    /// (with `()` brackets)
     Explicit,
     /// a maximally inserted implicit argument
+    /// (with `{}` brackets)
     /// (we do not use non-maximal insertion level)
     Implicit,
 }
@@ -169,6 +201,7 @@ impl Comment {
 }
 
 impl<'a> TopLevel<'a> {
+    /// produces a new list of coq items
     pub(crate) fn new(items: &[TopLevelItem<'a>]) -> Self {
         TopLevel {
             items: items.to_vec(),
@@ -179,6 +212,7 @@ impl<'a> TopLevel<'a> {
         intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()])
     }
 
+    /// joins a list of lists of items into one list
     pub(crate) fn concat(tls: &[Self]) -> Self {
         TopLevel {
             items: tls.iter().flat_map(|tl| tl.items.to_owned()).collect(),
@@ -228,6 +262,8 @@ impl<'a> TopLevel<'a> {
         }
     }
 
+    /// creates a section with a context with type variables
+    /// with the given variable names
     pub(crate) fn add_context_in_section(
         name: &'a str,
         ty_params: &[String],
@@ -238,8 +274,8 @@ impl<'a> TopLevel<'a> {
                 name,
                 &TopLevel {
                     items: [
-                        &[TopLevelItem::Context(Context::new(&[ArgSpec::new(
-                            &ArgDecl::Normal {
+                        &[TopLevelItem::Context(Context::new(&[ArgDecl::new(
+                            &ArgDeclVar::Normal {
                                 idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
                                 ty: Some(Expression::Set),
                             },
@@ -319,7 +355,7 @@ impl<'a> Module<'a> {
 }
 
 impl<'a> Section<'a> {
-    /// produces a new coq module
+    /// produces a new coq section
     pub(crate) fn new(name: &'a str, content: &TopLevel<'a>) -> Self {
         Section {
             name,
@@ -333,6 +369,7 @@ impl<'a> Section<'a> {
 }
 
 impl<'a> Definition<'a> {
+    /// produces a new coq definition
     pub(crate) fn new(name: &str, kind: &DefinitionKind<'a>) -> Self {
         Definition {
             name: name.to_owned(),
@@ -382,7 +419,8 @@ impl<'a> Definition<'a> {
 }
 
 impl<'a> Context<'a> {
-    pub(crate) fn new(args: &[ArgSpec<'a>]) -> Self {
+    /// produces a new coq `Context`
+    pub(crate) fn new(args: &[ArgDecl<'a>]) -> Self {
         Context {
             args: args.to_owned(),
         }
@@ -440,7 +478,7 @@ impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
         name: &'a str,
-        parameters: &[ArgSpec<'a>],
+        parameters: &[ArgDecl<'a>],
         class: Expression<'a>,
         field: Doc<'a>,
         value: Doc<'a>,
@@ -541,6 +579,7 @@ impl<'a> Expression<'a> {
         }
     }
 
+    /// apply the expression as a function to one argument
     pub(crate) fn apply(&self, arg: &Self) -> Self {
         Expression::Application {
             func: Box::new(self.clone()),
@@ -548,6 +587,7 @@ impl<'a> Expression<'a> {
         }
     }
 
+    /// apply the expression as a function to many arguments
     pub(crate) fn apply_many(&self, args: &[Self]) -> Self {
         Expression::Application {
             func: Box::new(self.to_owned()),
@@ -581,9 +621,10 @@ impl<'a> Expression<'a> {
     }
 }
 
-impl<'a> ArgSpec<'a> {
-    pub(crate) fn new(decl: &ArgDecl<'a>, kind: ArgSpecKind) -> Self {
-        ArgSpec {
+impl<'a> ArgDecl<'a> {
+    /// produces a new coq argument
+    pub(crate) fn new(decl: &ArgDeclVar<'a>, kind: ArgSpecKind) -> Self {
+        ArgDecl {
             decl: decl.to_owned(),
             kind,
         }
@@ -593,8 +634,8 @@ impl<'a> ArgSpec<'a> {
     /// for definitions of functions and constants
     /// which types utilize the M monad constructor
     pub(crate) fn monadic_typeclass_parameter() -> Self {
-        ArgSpec {
-            decl: ArgDecl::Generalized {
+        ArgDecl {
+            decl: ArgDeclVar::Generalized {
                 // @TODO: check whether the name of the parameter is necessary
                 idents: vec!["H".to_string()],
                 ty: Expression::Variable {
@@ -612,14 +653,14 @@ impl<'a> ArgSpec<'a> {
             ArgSpecKind::Implicit => render::curly_brackets,
         };
         match self.decl.to_owned() {
-            ArgDecl::Normal { idents, ty } => brackets(nest([
+            ArgDeclVar::Normal { idents, ty } => brackets(nest([
                 intersperse(idents, [line()]),
                 match ty {
                     Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
                     None => nil(),
                 },
             ])),
-            ArgDecl::Generalized { idents, ty } => group([
+            ArgDeclVar::Generalized { idents, ty } => group([
                 text("`"),
                 brackets(nest([
                     if idents.is_empty() {
@@ -634,8 +675,8 @@ impl<'a> ArgSpec<'a> {
     }
 
     pub(crate) fn of_ty_params(ty_params: &[String]) -> Self {
-        ArgSpec {
-            decl: ArgDecl::Normal {
+        ArgDecl {
+            decl: ArgDeclVar::Normal {
                 idents: ty_params.to_owned(),
                 ty: Some(Expression::Set),
             },
@@ -647,7 +688,7 @@ impl<'a> ArgSpec<'a> {
 /// produces a definition of the given function
 pub(crate) fn function_header<'a>(
     name: &Path,
-    params: &[ArgSpec<'a>],
+    params: &[ArgDecl<'a>],
     args: &[(&'a String, Doc<'a>)],
 ) -> Doc<'a> {
     group([
