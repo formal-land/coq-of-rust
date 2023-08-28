@@ -373,10 +373,8 @@ impl<'a> Definition<'a> {
                     line(),
                     text(self.name.to_owned()),
                     line(),
-                    text(":"),
-                    line(),
                 ]),
-                ty.to_doc(false),
+                nest([text(":"), line(), ty.to_doc(false)]),
                 text("."),
             ]),
         }
@@ -515,7 +513,7 @@ impl<'a> Expression<'a> {
             Self::PiType { args, image } => paren(
                 with_paren,
                 concat([
-                    group([
+                    nest([
                         text("forall"),
                         line(),
                         intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
