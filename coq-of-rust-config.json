@@ -22,7 +22,8 @@
     },
     "ink_env": {
       "top_level": {
-        "arithmetic": "types"
+        "arithmetic": "types",
+        "topics": "api"
       },
       "top_level::arithmetic": {
         "BaseArithmetic": "Saturating"
