@@ -219,7 +219,7 @@ Module codegen.
             `{H : State.Trait}
             {E: Set}
             `{core.convert.Into.Trait E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
+                (T := ink.reflect.event.ContractEventBase.Type_)}
             :
             Self -> E -> (M (H := H) unit);
         }.
@@ -229,7 +229,7 @@ Module codegen.
           Notation.dot
               {E : Set}
               `{core.convert.Into.Trait E
-                (T := ink.reflect.event.ContractEventBase.Type_)}
+                  (T := ink.reflect.event.ContractEventBase.Type_)}
               :=
             emit_event;
         }.
@@ -321,7 +321,7 @@ Module codegen.
             (Self : Set)
             {Forwarder : Set}
             `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-              Forwarder} :
+                  Forwarder} :
             Set := {
           Forwarder := Forwarder;
         }.
@@ -340,7 +340,7 @@ Module codegen.
             (Self : Set)
             {Forwarder : Set}
             `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-              Forwarder} :
+                  Forwarder} :
             Set := {
           Forwarder := Forwarder;
           forward
@@ -677,7 +677,7 @@ Module event.
           `{H : State.Trait}
           {E: Set}
           `{core.convert.Into.Trait E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
+              (T := ink.reflect.event.ContractEventBase.Type_)}
           :
           Self -> E -> (M (H := H) unit);
       }.
@@ -687,7 +687,7 @@ Module event.
         Notation.dot
             {E : Set}
             `{core.convert.Into.Trait E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
+                (T := ink.reflect.event.ContractEventBase.Type_)}
             :=
           emit_event;
       }.
@@ -748,7 +748,7 @@ Module emit.
         `{H : State.Trait}
         {E: Set}
         `{core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_)}
+            (T := ink.reflect.event.ContractEventBase.Type_)}
         :
         Self -> E -> (M (H := H) unit);
     }.
@@ -758,7 +758,7 @@ Module emit.
       Notation.dot
           {E : Set}
           `{core.convert.Into.Trait E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
+              (T := ink.reflect.event.ContractEventBase.Type_)}
           :=
         emit_event;
     }.
@@ -773,7 +773,7 @@ Module EmitEvent.
       `{H : State.Trait}
       {E: Set}
       `{core.convert.Into.Trait E
-        (T := ink.reflect.event.ContractEventBase.Type_)}
+          (T := ink.reflect.event.ContractEventBase.Type_)}
       :
       Self -> E -> (M (H := H) unit);
   }.
@@ -783,7 +783,7 @@ Module EmitEvent.
     Notation.dot
         {E : Set}
         `{core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_)}
+            (T := ink.reflect.event.ContractEventBase.Type_)}
         :=
       emit_event;
   }.
@@ -919,7 +919,7 @@ Module trait_def.
           (Self : Set)
           {Forwarder : Set}
           `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-            Forwarder} :
+                Forwarder} :
           Set := {
         Forwarder := Forwarder;
       }.
@@ -938,7 +938,7 @@ Module trait_def.
           (Self : Set)
           {Forwarder : Set}
           `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-            Forwarder} :
+                Forwarder} :
           Set := {
         Forwarder := Forwarder;
         forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
