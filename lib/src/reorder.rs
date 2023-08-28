@@ -61,6 +61,11 @@ pub fn get_full_name(tcx: &TyCtxt, id: HirId) -> String {
     format!("{}::{}", get_context_name(tcx, id), get_name(tcx, id))
 }
 
+pub fn vec_move<T>(v: &mut Vec<T>, src: usize, dst: usize) {
+    let x = v.remove(src);
+    v.insert(dst, x);
+}
+
 /// Reorder a vector of definitions to match the contents of the
 /// configuration file. The reordering happens before the compilation
 /// i.e. before calling the `compile_...` functions, in the
@@ -110,18 +115,22 @@ pub(crate) fn reorder_definitions_inplace(
         if context != parent_context {
             continue;
         }
-        let pos = definitions_ids
+        eprintln!("--------------> {context}::{def_name}");
+        let pos = definitions
             .iter()
-            .position(|elm| elm == def_id)
+            .position(|elm| elm.hir_id() == *def_id)
             .unwrap();
 
         match config_get_reorder(env, &context, &def_name) {
-            Some(config_identifier) => {
-                // found a `def_name: config_identifier in the configuration file
-                // move def_name to the config_identifier position
-                let config_id_pos = definitions_ids
+            Some(move_) => {
+                let move_up = move_.move_ == "up";
+                let move_before = move_.is_before();
+                let direction = &move_.move_;
+                let befaft = if move_before { "before" } else { "after" };
+                let config_identifier = move_.get_ident();
+                let config_id_pos = definitions
                     .iter()
-                    .map(|hir_id| get_name(tcx, *hir_id))
+                    .map(|def| get_name(tcx, def.hir_id()))
                     .position(|elm| elm == config_identifier);
                 let file = &env.file;
                 if config_id_pos.is_none() {
@@ -130,21 +139,25 @@ pub(crate) fn reorder_definitions_inplace(
                     eprintln!("Warning: Example `cargo coq-of-rust 2>&1 | grep -e 'reorder before: .* {file}/{context} '`");
                     continue;
                 }
-                let config_id_pos = config_id_pos.unwrap();
-
-                let (src_pos, dest_pos, src_name, dst_name) = if pos > config_id_pos {
-                    (pos, config_id_pos, def_name, config_identifier)
-                } else {
-                    (config_id_pos, pos, config_identifier, def_name)
-                };
+                let config_id_pos = config_id_pos.unwrap()
+                    + (if (!move_before && move_up) || (move_before && !move_up) {
+                        1
+                    } else {
+                        0
+                    });
+                if (move_up && config_id_pos > pos) || (!move_up && config_id_pos < pos) {
+                    eprintln!("ERROR: Asked to move {def_name} {direction}, {befaft} of {config_identifier}, but it already comes {befaft} it, ignoring");
+                    continue;
+                }
 
                 if env.configuration.debug_reorder {
-                    eprintln!("reorder moving >>>: ({file}/{context}) {src_name} from {src_pos} to {dest_pos} before {dst_name}");
+                    eprintln!("reoder: moving {def_name} ({pos}) {direction} {befaft} of {config_identifier} ({config_id_pos})");
                 }
-                let def = definitions.remove(src_pos);
-                definitions.insert(dest_pos, def);
+                vec_move(definitions, pos, config_id_pos);
             }
-            None => continue,
+            None => {
+                continue;
+            }
         }
     }
 

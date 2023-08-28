@@ -1,31 +1,23 @@
 {
   "axiomatize": false,
-  "debug_reorder": false,
+  "debug_reorder": true,
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": {
-	"depends_on_trait_impl": "Impl_SomeTrait_for_OtherType",
-        "main": "foo"
-      },
-      "top_level::Impl_SomeTrait_for_SomeType": {
-        "some_trait_bar": "some_trait_foo"
+	"depends_on_trait_impl": { "move": "down", "after": "Impl_SomeTrait_for_OtherType" },
+        "foo": { "move": "up", "before": "main" }
       },
       "top_level::Impl_SomeType": {
-        "meth2": "meth1"
+        "meth2": { "move": "up","before": "meth1" }
+      },
+      "top_level::Impl_SomeTrait_for_SomeType": {
+        "some_trait_foo": { "move": "down", "after": "some_trait_bar" }
       },
       "top_level::inner_mod": {
-        "tar": "bar"
+        "bar": { "move": "down", "after": "tar" }
       },
       "top_level::inner_mod::nested_mod": {
-        "tack": "tick"
-      }
-    },
-    "ink_env": {
-      "top_level": {
-        "arithmetic": "types"
-      },
-      "top_level::arithmetic": {
-        "BaseArithmetic": "Saturating"
+        "tick": { "move": "down", "after": "tack" }
       }
     }
   }

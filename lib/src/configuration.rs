@@ -3,11 +3,35 @@ use crate::env::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+#[derive(Debug, Default, Serialize, Deserialize)]
+pub(crate) struct DefinitionMove {
+    #[serde(rename = "move")]
+    pub(crate) move_: String,
+    pub(crate) after: Option<String>,
+    pub(crate) before: Option<String>,
+}
+
+impl DefinitionMove {
+    pub(crate) fn get_ident(&self) -> String {
+        match &self.before {
+            Some(x) => x.clone(),
+            None => match &self.after {
+                Some(x) => x.clone(),
+                None => panic!("Expecting before or after to be present in DefinitionMove"),
+            },
+        }
+    }
+
+    pub(crate) fn is_before(&self) -> bool {
+        self.before.is_some()
+    }
+}
+
 type File = String; // Represents a file path, ex: examples/foo/bar.rs"
 type Context = String; // Represents a context inside a file, ex: "top_level::some_mod"
 type Identifier = String; // Represents a identifier inside a context ex: "SomeType"
 
-type Reorder = HashMap<File, HashMap<Context, HashMap<Identifier, String>>>;
+type Reorder = HashMap<File, HashMap<Context, HashMap<Identifier, DefinitionMove>>>;
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub(crate) struct Configuration {
@@ -48,10 +72,14 @@ pub(crate) fn get_configuration(configuration_file_path: &str) -> Configuration 
     Configuration::default()
 }
 
-pub(crate) fn config_get_reorder(env: &Env, context: &str, id: &str) -> Option<String> {
+pub(crate) fn config_get_reorder<'a>(
+    env: &'a Env,
+    context: &str,
+    id: &str,
+) -> Option<&'a DefinitionMove> {
     match env.configuration.reorder.get(&env.file) {
         Some(contexts) => match contexts.get(context) {
-            Some(identifiers) => identifiers.get(id).map(ToOwned::to_owned),
+            Some(identifiers) => identifiers.get(id),
             None => None,
         },
         None => None,
