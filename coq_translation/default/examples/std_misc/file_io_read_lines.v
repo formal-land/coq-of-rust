@@ -5,7 +5,7 @@ Definition read_lines
     `{H : State.Trait}
     (filename : alloc.string.String)
     : M (H := H)
-    (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
+      (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
     α0.["unwrap"] in

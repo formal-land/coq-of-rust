@@ -42,8 +42,8 @@ Definition read_lines
     `{core.convert.AsRef.Trait P (T := std.path.Path)}
     (filename : P)
     : M (H := H)
-    (std.io.error.Result
-    (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
+      (std.io.error.Result
+        (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
     let* α1 := α0.["branch"] in
