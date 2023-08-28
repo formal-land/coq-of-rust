@@ -181,8 +181,9 @@ Section
   Definition clone
       `{H : State.Trait}
       (self : ref Self)
-      : M (H := H)
-        (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+      :
+        M (H := H)
+          (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
     let* α0 := core.clone.Clone.clone (addr_of (self.[0])) in
     let* α1 := core.clone.Clone.clone (addr_of (self.[1])) in
     Pure
@@ -236,8 +237,9 @@ Section
       `{H : State.Trait}
       (self : Self)
       (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
-      : M (H := H)
-        (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+      :
+        M (H := H)
+          (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
     let* α0 := (self.[0]).["add"] (rhs.[0]) in
     Pure
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t

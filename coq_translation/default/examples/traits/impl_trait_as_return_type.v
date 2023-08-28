@@ -5,11 +5,12 @@ Definition combine_vecs_explicit_return_type
     `{H : State.Trait}
     (v : alloc.vec.Vec i32)
     (u : alloc.vec.Vec i32)
-    : M (H := H)
-      (core.iter.adapters.cycle.Cycle
-        (core.iter.adapters.chain.Chain
-          (alloc.vec.into_iter.IntoIter i32)
-          (alloc.vec.into_iter.IntoIter i32))) :=
+    :
+      M (H := H)
+        (core.iter.adapters.cycle.Cycle
+          (core.iter.adapters.chain.Chain
+            (alloc.vec.into_iter.IntoIter i32)
+            (alloc.vec.into_iter.IntoIter i32))) :=
   let* α0 := v.["into_iter"] in
   let* α1 := u.["into_iter"] in
   let* α2 := α0.["chain"] α1 in
