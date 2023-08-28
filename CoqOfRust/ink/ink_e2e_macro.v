@@ -2,18 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.proc_macro.
 Require CoqOfRust.ink.syn.
-Require CoqOfRust.ink.proc_macro.
-Require CoqOfRust.ink.syn.
-Require CoqOfRust.ink.proc_macro.
-Require CoqOfRust.ink.syn.
-Require CoqOfRust.ink.proc_macro.
-Require CoqOfRust.ink.syn.
-Require CoqOfRust.ink.proc_macro.
-Require CoqOfRust.ink.syn.
-Require CoqOfRust.ink.proc_macro.
-Require CoqOfRust.ink.syn.
-Require CoqOfRust.ink.proc_macro.
-Require CoqOfRust.ink.syn.
 
 Module codegen.
   Parameter ALREADY_BUILT_CONTRACTS :
