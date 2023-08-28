@@ -25,6 +25,7 @@
         "arithmetic": "types"
       },
       "top_level::arithmetic": {
+        "BaseArithmetic": "Saturating"
       }
     }
   }
