@@ -10,6 +10,32 @@ Require CoqOfRust.ink.scale_decode.
 Require CoqOfRust.ink.scale_encode.
 
 Module arithmetic.
+  Module Saturating.
+    Class Trait (Self : Set) : Set := {
+      saturating_add `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_sub `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_mul `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_pow `{H : State.Trait} : Self -> usize -> (M (H := H) Self);
+    }.
+    
+    Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_add" := {
+      Notation.dot := saturating_add;
+    }.
+    Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_sub" := {
+      Notation.dot := saturating_sub;
+    }.
+    Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_mul" := {
+      Notation.dot := saturating_mul;
+    }.
+    Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_pow" := {
+      Notation.dot := saturating_pow;
+    }.
+  End Saturating.
+  
   Module BaseArithmetic.
     Unset Primitive Projections.
     Class Trait
@@ -69,32 +95,6 @@ Module arithmetic.
     }.
     Global Set Primitive Projections.
   End AtLeast32BitUnsigned.
-  
-  Module Saturating.
-    Class Trait (Self : Set) : Set := {
-      saturating_add `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_sub `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_mul `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_pow `{H : State.Trait} : Self -> usize -> (M (H := H) Self);
-    }.
-    
-    Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_add" := {
-      Notation.dot := saturating_add;
-    }.
-    Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_sub" := {
-      Notation.dot := saturating_sub;
-    }.
-    Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_mul" := {
-      Notation.dot := saturating_mul;
-    }.
-    Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_pow" := {
-      Notation.dot := saturating_pow;
-    }.
-  End Saturating.
 End arithmetic.
 
 Module types.
