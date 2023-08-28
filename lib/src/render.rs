@@ -374,7 +374,7 @@ where
 
 /// produces the body of an instance of [Notation.Dot] or [Notation.DoubleColonType]
 pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
-    nest([field, text(":="), line(), value, text(";")])
+    nest([field, line(), text(":="), line(), value, text(";")])
 }
 
 pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>

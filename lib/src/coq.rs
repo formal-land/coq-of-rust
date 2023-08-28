@@ -652,17 +652,17 @@ pub(crate) fn function_header<'a>(
 ) -> Doc<'a> {
     group([
         name.to_doc(),
-        line(),
         if params.is_empty() {
             nil()
         } else {
             group([
-                intersperse(params.iter().map(|param| param.to_doc()), [line()]),
                 line(),
+                intersperse(params.iter().map(|param| param.to_doc()), [line()]),
             ])
         },
         concat(args.iter().map(|(name, ty)| {
             concat([nest([
+                line(),
                 text("("),
                 text(*name),
                 line(),

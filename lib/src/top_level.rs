@@ -2227,7 +2227,7 @@ impl TopLevelItem {
                                 ident: Path::new(&["Self"]),
                                 no_implicit: false,
                             }),
-                            text("Notation.double_colon_type "),
+                            text("Notation.double_colon_type"),
                             text(name),
                         ),
                         TraitItem::DefinitionWithDefault {
