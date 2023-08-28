@@ -3,6 +3,9 @@ use crate::render::{
     self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
 };
 
+/// the
+pub(crate) const LOCAL_STATE_TRAIT_INSTANCE: &str = "H'";
+
 #[derive(Clone)]
 /// a list of coq top level items
 pub(crate) struct TopLevel<'a> {
@@ -637,7 +640,7 @@ impl<'a> ArgDecl<'a> {
         ArgDecl {
             decl: ArgDeclVar::Generalized {
                 // @TODO: check whether the name of the parameter is necessary
-                idents: vec!["H".to_string()],
+                idents: vec![LOCAL_STATE_TRAIT_INSTANCE.to_string()],
                 ty: Expression::Variable {
                     ident: Path::new(&["State", "Trait"]),
                     no_implicit: false,

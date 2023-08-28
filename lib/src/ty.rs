@@ -1,4 +1,4 @@
-use crate::coq;
+use crate::coq::{self, LOCAL_STATE_TRAIT_INSTANCE};
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
@@ -35,7 +35,9 @@ impl CoqType {
     pub(crate) fn monad(ty: Box<CoqType>) -> Box<CoqType> {
         Box::new(CoqType::Application {
             // TODO: try to remove the explicit parameter
-            func: Box::new(Path::local("M (H := H)".to_string())),
+            func: Box::new(Path::local(format!(
+                "M (H := {LOCAL_STATE_TRAIT_INSTANCE})"
+            ))),
             args: vec![ty],
         })
     }
