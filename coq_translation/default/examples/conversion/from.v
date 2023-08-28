@@ -19,50 +19,50 @@ Module Impl_core_fmt_Debug_for_from_Number.
   
   Parameter debug_struct_field1_finish :
       core.fmt.Formatter ->
-        string -> string -> i32 -> M (H := H) core.fmt.Result.
+        string -> string -> i32 -> M (H := H') core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field1_finish" := {
     Notation.double_colon := debug_struct_field1_finish; }.
   
   Definition fmt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M (H := H') core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Number"
       "value"
       (addr_of (addr_of self.["value"])).
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_from_Number.
 
 Module Impl_core_convert_From_for_from_Number.
   Definition Self := from.Number.
   
-  Definition from `{H : State.Trait} (item : i32) : M (H := H) Self :=
+  Definition from `{H' : State.Trait} (item : i32) : M (H := H') Self :=
     Pure {| from.Number.value := item; |}.
   
-  Global Instance AssociatedFunction_from `{H : State.Trait} :
+  Global Instance AssociatedFunction_from `{H' : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
   Global Instance I : core.convert.From.Trait Self (T := i32) := {
-    core.convert.From.from `{H : State.Trait} := from;
+    core.convert.From.from `{H' : State.Trait} := from;
   }.
 End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* num := from.Number::["from"] 30 in
   let* _ :=
     let* _ :=

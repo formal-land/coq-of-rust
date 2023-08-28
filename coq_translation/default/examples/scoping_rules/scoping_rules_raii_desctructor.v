@@ -9,7 +9,10 @@ Definition ToDrop := @ToDrop.t.
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Definition Self := scoping_rules_raii_desctructor.ToDrop.
   
-  Definition drop `{H : State.Trait} (self : mut_ref Self) : M (H := H) unit :=
+  Definition drop
+      `{H' : State.Trait}
+      (self : mut_ref Self)
+      : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -20,17 +23,17 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_drop `{H : State.Trait} : Notation.Dot "drop" := {
+  Global Instance Method_drop `{H' : State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
   }.
   
   Global Instance I : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop `{H : State.Trait} := drop;
+    core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
   }.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let x := scoping_rules_raii_desctructor.ToDrop.Build in
   let* _ :=
     let* _ :=

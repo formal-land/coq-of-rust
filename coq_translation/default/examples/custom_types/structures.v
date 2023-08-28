@@ -28,17 +28,17 @@ Module Impl_core_fmt_Debug_for_structures_Person.
           alloc_string_String ->
           string ->
           u8 ->
-          M (H := H) core.fmt.Result.
+          M (H := H') core.fmt.Result.
   
   Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field2_finish" := {
     Notation.double_colon := debug_struct_field2_finish; }.
   
   Definition fmt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M (H := H') core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
@@ -47,12 +47,12 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       "age"
       (addr_of (addr_of self.["age"])).
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Debug_for_structures_Person.
 
@@ -113,7 +113,7 @@ End Rectangle.
 Definition Rectangle : Set := @Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* name := alloc.string.String::["from"] "Peter" in
   let age := 27 in
   let peter :=

@@ -2,16 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {F : Set}
     `{core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   let* _ := f in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let x := 7 in
   let print :=
     fun  =>

@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition analyze_slice
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (slice : ref (Slice i32))
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of slice[0]) in
@@ -29,7 +29,7 @@ Definition analyze_slice
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let xs : list i32 := [ 1; 2; 3; 4; 5 ] in
   let* ys := repeat 0 in
   let* _ :=

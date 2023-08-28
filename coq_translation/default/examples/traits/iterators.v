@@ -24,9 +24,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Definition Item : Set := u32.
   
   Definition next
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : mut_ref Self)
-      : M (H := H) (core.option.Option Item) :=
+      : M (H := H') (core.option.Option Item) :=
     let current := self.["curr"] in
     let* _ := assign self.["curr"] self.["next"] in
     let* _ :=
@@ -34,20 +34,20 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
       assign self.["next"] α0 in
     Pure (core.option.Option.Some current).
   
-  Global Instance Method_next `{H : State.Trait} : Notation.Dot "next" := {
+  Global Instance Method_next `{H' : State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   
   Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
-    core.iter.traits.iterator.Iterator.next `{H : State.Trait} := next;
+    core.iter.traits.iterator.Iterator.next `{H' : State.Trait} := next;
   }.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Definition fibonacci `{H : State.Trait} : M (H := H) iterators.Fibonacci :=
+Definition fibonacci `{H' : State.Trait} : M (H := H') iterators.Fibonacci :=
   Pure {| iterators.Fibonacci.curr := 0; iterators.Fibonacci.next := 1; |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let sequence := {| std.ops.Range.start := 0; std.ops.Range._end := 3; |} in
   let* _ :=
     let* _ :=

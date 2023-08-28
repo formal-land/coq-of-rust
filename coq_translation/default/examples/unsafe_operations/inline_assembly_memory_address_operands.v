@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit := Pure tt.
+Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
 
 Definition load_fpu_control_word
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (control : u16)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   let _ := InlineAsm in
   Pure tt.

@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := functions.fizzbuzz_to 100 in
   Pure tt.
 
 Definition is_divisible_by
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (lhs : u32)
     (rhs : u32)
-    : M (H := H) bool :=
+    : M (H := H') bool :=
   let* _ :=
     let* α0 := rhs.["eq"] 0 in
     if (α0 : bool) then
@@ -21,7 +21,7 @@ Definition is_divisible_by
   let* α0 := lhs.["rem"] rhs in
   α0.["eq"] 0.
 
-Definition fizzbuzz `{H : State.Trait} (n : u32) : M (H := H) unit :=
+Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
   let* α0 := functions.is_divisible_by n 15 in
   if (α0 : bool) then
     let* _ :=
@@ -64,7 +64,7 @@ Definition fizzbuzz `{H : State.Trait} (n : u32) : M (H := H) unit :=
           Pure tt in
         Pure tt.
 
-Definition fizzbuzz_to `{H : State.Trait} (n : u32) : M (H := H) unit :=
+Definition fizzbuzz_to `{H' : State.Trait} (n : u32) : M (H := H') unit :=
   let* α0 := std.ops.RangeInclusive::["new"] 1 n in
   let* α1 := α0.["into_iter"] in
   match α1 with

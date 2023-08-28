@@ -18,10 +18,10 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Definition Self := converting_to_string.Circle.
   
   Definition fmt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M (H := H') core.fmt.Result :=
     let* α0 := format_argument::["new_display"] (addr_of self.["radius"]) in
     let* α1 :=
       format_arguments::["new_v1"]
@@ -29,17 +29,17 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
         (addr_of [ α0 ]) in
     f.["write_fmt"] α1.
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt `{H : State.Trait} := fmt;
+    core.fmt.Display.fmt `{H' : State.Trait} := fmt;
   }.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let circle := {| converting_to_string.Circle.radius := 6; |} in
   let* _ := circle.["to_string"] in
   Pure tt.

@@ -21,9 +21,9 @@ End WebEvent.
 Definition WebEvent := WebEvent.t.
 
 Definition inspect
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (event : enums.WebEvent)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   match event with
   | enums.WebEvent.PageLoad =>
     let* _ :=
@@ -84,7 +84,7 @@ Definition inspect
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let pressed := enums.WebEvent.KeyPress "x"%char in
   let* pasted :=
     let* α0 := "my text".["to_owned"] in

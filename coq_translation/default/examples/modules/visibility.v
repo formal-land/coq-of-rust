@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
-  Definition private_function `{H : State.Trait} : M (H := H) unit :=
+  Definition private_function `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -13,7 +13,7 @@ Module my_mod.
       Pure tt in
     Pure tt.
   
-  Definition function `{H : State.Trait} : M (H := H) unit :=
+  Definition function `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -24,7 +24,7 @@ Module my_mod.
       Pure tt in
     Pure tt.
   
-  Definition indirect_access `{H : State.Trait} : M (H := H) unit :=
+  Definition indirect_access `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -37,7 +37,7 @@ Module my_mod.
     Pure tt.
   
   Module nested.
-    Definition function `{H : State.Trait} : M (H := H) unit :=
+    Definition function `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -49,7 +49,7 @@ Module my_mod.
       Pure tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition private_function `{H : State.Trait} : M (H := H) unit :=
+    Definition private_function `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -60,7 +60,9 @@ Module my_mod.
         Pure tt in
       Pure tt.
     
-    Definition public_function_in_my_mod `{H : State.Trait} : M (H := H) unit :=
+    Definition public_function_in_my_mod
+        `{H' : State.Trait}
+        : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -75,7 +77,9 @@ Module my_mod.
       let* _ := visibility.my_mod.nested.public_function_in_nested in
       Pure tt.
     
-    Definition public_function_in_nested `{H : State.Trait} : M (H := H) unit :=
+    Definition public_function_in_nested
+        `{H' : State.Trait}
+        : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -88,8 +92,8 @@ Module my_mod.
       Pure tt.
     
     Definition public_function_in_super_mod
-        `{H : State.Trait}
-        : M (H := H) unit :=
+        `{H' : State.Trait}
+        : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -104,8 +108,8 @@ Module my_mod.
   End nested.
   
   Definition call_public_function_in_my_mod
-      `{H : State.Trait}
-      : M (H := H) unit :=
+      `{H' : State.Trait}
+      : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -125,7 +129,7 @@ Module my_mod.
     let* _ := visibility.my_mod.nested.public_function_in_super_mod in
     Pure tt.
   
-  Definition public_function_in_crate `{H : State.Trait} : M (H := H) unit :=
+  Definition public_function_in_crate `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -138,7 +142,7 @@ Module my_mod.
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition function `{H : State.Trait} : M (H := H) unit :=
+    Definition function `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -150,7 +154,7 @@ Module my_mod.
       Pure tt.
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Definition restricted_function `{H : State.Trait} : M (H := H) unit :=
+    Definition restricted_function `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
@@ -165,7 +169,7 @@ Module my_mod.
   End private_nested.
 End my_mod.
 
-Definition private_function `{H : State.Trait} : M (H := H) unit :=
+Definition private_function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -176,7 +180,7 @@ Definition private_function `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   Pure tt.
 
-Definition function `{H : State.Trait} : M (H := H) unit :=
+Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -187,7 +191,7 @@ Definition function `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   Pure tt.
 
-Definition indirect_access `{H : State.Trait} : M (H := H) unit :=
+Definition indirect_access `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -200,7 +204,7 @@ Definition indirect_access `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 Module nested.
-  Definition function `{H : State.Trait} : M (H := H) unit :=
+  Definition function `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -212,7 +216,7 @@ Module nested.
     Pure tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition private_function `{H : State.Trait} : M (H := H) unit :=
+  Definition private_function `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -223,7 +227,7 @@ Module nested.
       Pure tt in
     Pure tt.
   
-  Definition public_function_in_my_mod `{H : State.Trait} : M (H := H) unit :=
+  Definition public_function_in_my_mod `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -237,7 +241,7 @@ Module nested.
     let* _ := visibility.my_mod.nested.public_function_in_nested in
     Pure tt.
   
-  Definition public_function_in_nested `{H : State.Trait} : M (H := H) unit :=
+  Definition public_function_in_nested `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -250,8 +254,8 @@ Module nested.
     Pure tt.
   
   Definition public_function_in_super_mod
-      `{H : State.Trait}
-      : M (H := H) unit :=
+      `{H' : State.Trait}
+      : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -264,7 +268,7 @@ Module nested.
     Pure tt.
 End nested.
 
-Definition function `{H : State.Trait} : M (H := H) unit :=
+Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -276,7 +280,7 @@ Definition function `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition private_function `{H : State.Trait} : M (H := H) unit :=
+Definition private_function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -287,7 +291,7 @@ Definition private_function `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   Pure tt.
 
-Definition public_function_in_my_mod `{H : State.Trait} : M (H := H) unit :=
+Definition public_function_in_my_mod `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -301,7 +305,7 @@ Definition public_function_in_my_mod `{H : State.Trait} : M (H := H) unit :=
   let* _ := visibility.my_mod.nested.public_function_in_nested in
   Pure tt.
 
-Definition public_function_in_nested `{H : State.Trait} : M (H := H) unit :=
+Definition public_function_in_nested `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -313,7 +317,9 @@ Definition public_function_in_nested `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   Pure tt.
 
-Definition public_function_in_super_mod `{H : State.Trait} : M (H := H) unit :=
+Definition public_function_in_super_mod
+    `{H' : State.Trait}
+    : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -326,8 +332,8 @@ Definition public_function_in_super_mod `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 Definition call_public_function_in_my_mod
-    `{H : State.Trait}
-    : M (H := H) unit :=
+    `{H' : State.Trait}
+    : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -346,7 +352,7 @@ Definition call_public_function_in_my_mod
   let* _ := visibility.my_mod.nested.public_function_in_super_mod in
   Pure tt.
 
-Definition public_function_in_crate `{H : State.Trait} : M (H := H) unit :=
+Definition public_function_in_crate `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -359,7 +365,7 @@ Definition public_function_in_crate `{H : State.Trait} : M (H := H) unit :=
 
 Module private_nested.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition function `{H : State.Trait} : M (H := H) unit :=
+  Definition function `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -371,7 +377,7 @@ Module private_nested.
     Pure tt.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition restricted_function `{H : State.Trait} : M (H := H) unit :=
+  Definition restricted_function `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -385,7 +391,7 @@ Module private_nested.
 End private_nested.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition function `{H : State.Trait} : M (H := H) unit :=
+Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -397,7 +403,7 @@ Definition function `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition restricted_function `{H : State.Trait} : M (H := H) unit :=
+Definition restricted_function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -409,7 +415,7 @@ Definition restricted_function `{H : State.Trait} : M (H := H) unit :=
     Pure tt in
   Pure tt.
 
-Definition function `{H : State.Trait} : M (H := H) unit :=
+Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -420,7 +426,7 @@ Definition function `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := visibility.function in
   let* _ := visibility.my_mod.function in
   let* _ := visibility.my_mod.indirect_access in

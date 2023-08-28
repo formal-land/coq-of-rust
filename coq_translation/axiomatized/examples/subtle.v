@@ -17,60 +17,60 @@ Definition Choice := @Choice.t.
 Module ConstantTimeEq.
   Class Trait (Self : Set) : Set := {
     ct_eq
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :
-      (ref Self) -> (ref Self) -> (M (H := H) subtle.Choice);
+      (ref Self) -> (ref Self) -> (M (H := H') subtle.Choice);
   }.
   
-  Global Instance Method_ct_eq `{H : State.Trait} `(Trait)
+  Global Instance Method_ct_eq `{H' : State.Trait} `(Trait)
     : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
-  Global Instance Method_ct_ne `{H : State.Trait} `(Trait)
+  Global Instance Method_ct_ne `{H' : State.Trait} `(Trait)
     : Notation.Dot "ct_ne" := {
     Notation.dot (self : ref Self) (other : ref Self)
       :=
-      (axiom : M (H := H) subtle.Choice);
+      (axiom : M (H := H') subtle.Choice);
   }.
 End ConstantTimeEq.
 
 Module ConditionallySelectable.
   Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Set := {
     conditional_select
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :
-      (ref Self) -> (ref Self) -> subtle.Choice -> (M (H := H) Self);
+      (ref Self) -> (ref Self) -> subtle.Choice -> (M (H := H') Self);
   }.
   
-  Global Instance Method_conditional_select `{H : State.Trait} `(Trait)
+  Global Instance Method_conditional_select `{H' : State.Trait} `(Trait)
     : Notation.Dot "conditional_select" := {
     Notation.dot := conditional_select;
   }.
-  Global Instance Method_conditional_assign `{H : State.Trait} `(Trait)
+  Global Instance Method_conditional_assign `{H' : State.Trait} `(Trait)
     : Notation.Dot "conditional_assign" := {
     Notation.dot (self : mut_ref Self) (other : ref Self)
           (choice
           : subtle.Choice)
       :=
-      (axiom : M (H := H) unit);
+      (axiom : M (H := H') unit);
   }.
-  Global Instance Method_conditional_swap `{H : State.Trait} `(Trait)
+  Global Instance Method_conditional_swap `{H' : State.Trait} `(Trait)
     : Notation.Dot "conditional_swap" := {
     Notation.dot (a : mut_ref Self) (b : mut_ref Self) (choice : subtle.Choice)
       :=
-      (axiom : M (H := H) unit);
+      (axiom : M (H := H') unit);
   }.
 End ConditionallySelectable.
 
 Module ConditionallyNegatable.
   Class Trait (Self : Set) : Set := {
     conditional_negate
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :
-      (mut_ref Self) -> subtle.Choice -> (M (H := H) unit);
+      (mut_ref Self) -> subtle.Choice -> (M (H := H') unit);
   }.
   
-  Global Instance Method_conditional_negate `{H : State.Trait} `(Trait)
+  Global Instance Method_conditional_negate `{H' : State.Trait} `(Trait)
     : Notation.Dot "conditional_negate" := {
     Notation.dot := conditional_negate;
   }.
@@ -99,12 +99,12 @@ Definition CtOption : Set := @CtOption.t.
 Module ConstantTimeGreater.
   Class Trait (Self : Set) : Set := {
     ct_gt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :
-      (ref Self) -> (ref Self) -> (M (H := H) subtle.Choice);
+      (ref Self) -> (ref Self) -> (M (H := H') subtle.Choice);
   }.
   
-  Global Instance Method_ct_gt `{H : State.Trait} `(Trait)
+  Global Instance Method_ct_gt `{H' : State.Trait} `(Trait)
     : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
   }.
@@ -118,10 +118,10 @@ Module ConstantTimeLess.
       Set := {
   }.
   
-  Global Instance Method_ct_lt `{H : State.Trait} `(Trait)
+  Global Instance Method_ct_lt `{H' : State.Trait} `(Trait)
     : Notation.Dot "ct_lt" := {
     Notation.dot (self : ref Self) (other : ref Self)
       :=
-      (axiom : M (H := H) subtle.Choice);
+      (axiom : M (H := H') subtle.Choice);
   }.
 End ConstantTimeLess.

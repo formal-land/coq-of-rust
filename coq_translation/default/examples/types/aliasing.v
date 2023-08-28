@@ -8,7 +8,7 @@ Definition Inch : Set := u64.
 Definition U64 : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let nanoseconds : aliasing.NanoSecond := cast 5 aliasing.U64 in
   let inches : aliasing.Inch := cast 2 aliasing.U64 in
   let* _ :=

@@ -23,12 +23,12 @@ Module Contains.
     A := A;
     B := B;
     contains
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :
-      (ref Self) -> (ref A) -> (ref B) -> (M (H := H) bool);
-    first `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
-    last `{H : State.Trait} : (ref Self) -> (M (H := H) i32);
-    a `{H : State.Trait} : (ref Self) -> (M (H := H) A);
+      (ref Self) -> (ref A) -> (ref B) -> (M (H := H') bool);
+    first `{H' : State.Trait} : (ref Self) -> (M (H := H') i32);
+    last `{H' : State.Trait} : (ref Self) -> (M (H := H') i32);
+    a `{H' : State.Trait} : (ref Self) -> (M (H := H') A);
   }.
   
   Global Instance Method_A {A} `(Trait (A := A))
@@ -39,19 +39,19 @@ Module Contains.
     : Notation.DoubleColonType Self "B" := {
     Notation.double_colon_type := B;
   }.
-  Global Instance Method_contains `{H : State.Trait} `(Trait)
+  Global Instance Method_contains `{H' : State.Trait} `(Trait)
     : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
-  Global Instance Method_first `{H : State.Trait} `(Trait)
+  Global Instance Method_first `{H' : State.Trait} `(Trait)
     : Notation.Dot "first" := {
     Notation.dot := first;
   }.
-  Global Instance Method_last `{H : State.Trait} `(Trait)
+  Global Instance Method_last `{H' : State.Trait} `(Trait)
     : Notation.Dot "last" := {
     Notation.dot := last;
   }.
-  Global Instance Method_a `{H : State.Trait} `(Trait) : Notation.Dot "a" := {
+  Global Instance Method_a `{H' : State.Trait} `(Trait) : Notation.Dot "a" := {
     Notation.dot := a;
   }.
 End Contains.
@@ -65,77 +65,80 @@ Module
   Definition B : Set := i32.
   
   Definition contains
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (number_1 : ref i32)
       (number_2 : ref i32)
-      : M (H := H) bool :=
+      : M (H := H') bool :=
     let* α0 := (addr_of (self.[0])).["eq"] number_1 in
     let* α1 := (addr_of (self.[1])).["eq"] number_2 in
     α0.["andb"] α1.
   
-  Global Instance Method_contains `{H : State.Trait} :
+  Global Instance Method_contains `{H' : State.Trait} :
     Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Definition first `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
+  Definition first `{H' : State.Trait} (self : ref Self) : M (H := H') i32 :=
     Pure (self.[0]).
   
-  Global Instance Method_first `{H : State.Trait} : Notation.Dot "first" := {
+  Global Instance Method_first `{H' : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Definition last `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
+  Definition last `{H' : State.Trait} (self : ref Self) : M (H := H') i32 :=
     Pure (self.[1]).
   
-  Global Instance Method_last `{H : State.Trait} : Notation.Dot "last" := {
+  Global Instance Method_last `{H' : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
   }.
   
-  Definition a `{H : State.Trait} (self : ref Self) : M (H := H) i32 :=
+  Definition a `{H' : State.Trait} (self : ref Self) : M (H := H') i32 :=
     Pure (self.[0]).
   
-  Global Instance Method_a `{H : State.Trait} : Notation.Dot "a" := {
+  Global Instance Method_a `{H' : State.Trait} : Notation.Dot "a" := {
     Notation.dot := a;
   }.
   
   Global Instance I :
       generics_associated_types_solution.Contains.Trait Self := {
     generics_associated_types_solution.Contains.contains
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :=
       contains;
     generics_associated_types_solution.Contains.first
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :=
       first;
-    generics_associated_types_solution.Contains.last `{H : State.Trait} := last;
-    generics_associated_types_solution.Contains.a `{H : State.Trait} := a;
+    generics_associated_types_solution.Contains.last
+      `{H' : State.Trait}
+      :=
+      last;
+    generics_associated_types_solution.Contains.a `{H' : State.Trait} := a;
   }.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Definition difference
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {C : Set}
     `{generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
-    : M (H := H) i32 :=
+    : M (H := H') i32 :=
   let* α0 := container.["last"] in
   let* α1 := container.["first"] in
   α0.["sub"] α1.
 
 Definition get_a
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {C : Set}
     `{generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
-    : M (H := H) C::type["A"] :=
+    : M (H := H') C::type["A"] :=
   container.["a"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let number_1 := 3 in
   let number_2 := 10 in
   let container :=

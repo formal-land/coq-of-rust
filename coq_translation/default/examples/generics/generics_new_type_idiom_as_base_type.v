@@ -15,7 +15,7 @@ End Years.
 Definition Years := @Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let years := generics_new_type_idiom_as_base_type.Years.Build_t 42 in
   let years_as_primitive_1 : i64 := years.[0] in
   let
