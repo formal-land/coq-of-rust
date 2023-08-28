@@ -132,11 +132,17 @@ pub(crate) fn reorder_definitions_inplace(
                 }
                 let config_id_pos = config_id_pos.unwrap();
 
+                let (src_pos, dest_pos, src_name, dst_name) = if pos > config_id_pos {
+                    (pos, config_id_pos, def_name, config_identifier)
+                } else {
+                    (config_id_pos, pos, config_identifier, def_name)
+                };
+
                 if env.configuration.debug_reorder {
-                    eprintln!("reorder moving: ({file}/{context}) {def_name} from {pos} to {config_id_pos}, after {config_identifier}");
+                    eprintln!("reorder moving >>>: ({file}/{context}) {src_name} from {src_pos} to {dest_pos} before {dst_name}");
                 }
-                let def = definitions.remove(pos);
-                definitions.insert(config_id_pos, def);
+                let def = definitions.remove(src_pos);
+                definitions.insert(dest_pos, def);
             }
             None => continue,
         }
