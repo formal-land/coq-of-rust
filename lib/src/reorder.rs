@@ -73,10 +73,11 @@ pub fn vec_move<T>(v: &mut Vec<T>, src: usize, dst: usize) {
 ///
 /// In the configuration file:
 ///
-/// `{ "reorder": { "somefile.rs": { "area": "height", ...}, ... }, ... }`
+/// `{ "reorder": { "somefile.rs": { "area": { "move": "down", "after": "height" }, ... }}}
 ///
-/// This means that "area" should appear after "height". The identifier
-/// in the key is always moved to the value's position.
+/// This means that "area" should be moved down, after "height".
+/// If the area already happens after height a warning is reported
+/// the move is not performed and the compilation continues
 #[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
 pub(crate) fn reorder_definitions_inplace(
     tcx: &TyCtxt,

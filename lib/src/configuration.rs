@@ -3,9 +3,12 @@ use crate::env::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+/// Used for moving definitions up and down
+/// by specifing it in the configuration file
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub(crate) struct DefinitionMove {
     #[serde(rename = "move")]
+    /// "up" | "down"
     pub(crate) move_: String,
     pub(crate) after: Option<String>,
     pub(crate) before: Option<String>,
@@ -37,10 +40,10 @@ type Reorder = HashMap<File, HashMap<Context, HashMap<Identifier, DefinitionMove
 pub(crate) struct Configuration {
     pub(crate) axiomatize: bool,
     /// [reorder] states the order that definitions should
-    /// appear in the translation output:
+    /// appear in the translation output, example:
     /// "reorder": {
     ///   "some/path/some_file.rs": {
-    ///     "top_level::some_mod": { "bar": "foo", ... },
+    ///     "top_level::some_mod": { "bar": { "move": "down", "after", "foo" }, ... },
     ///      ...
     ///   },
     ///  ...
