@@ -355,7 +355,9 @@ impl<'a> Definition<'a> {
                             ])
                         },
                         match ty {
-                            Some(ty) => concat([line(), text(": "), ty.to_doc(false)]),
+                            Some(ty) => {
+                                concat([line(), nest([text(":"), line(), ty.to_doc(false)])])
+                            }
                             None => nil(),
                         },
                         text(" :="),
