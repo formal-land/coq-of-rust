@@ -103,10 +103,10 @@ Parameter generate""",
         )
     content = \
         sub_exactly_once(
-            r"""M \(H := H\) \(syn.error.Result proc_macro2.TokenStream\).
+            r"""M \(H := H'\) \(syn.error.Result proc_macro2.TokenStream\).
 
 Module trait_def.""",
-            """M (H := H) (syn.error.Result proc_macro2.TokenStream). *)
+            """M (H := H') (syn.error.Result proc_macro2.TokenStream). *)
 
 Module trait_def.""",
             content,
