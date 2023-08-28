@@ -115,7 +115,6 @@ pub(crate) fn reorder_definitions_inplace(
         if context != parent_context {
             continue;
         }
-        eprintln!("--------------> {context}::{def_name}");
         let pos = definitions
             .iter()
             .position(|elm| elm.hir_id() == *def_id)
@@ -146,7 +145,7 @@ pub(crate) fn reorder_definitions_inplace(
                         0
                     });
                 if (move_up && config_id_pos > pos) || (!move_up && config_id_pos < pos) {
-                    eprintln!("ERROR: Asked to move {def_name} {direction}, {befaft} of {config_identifier}, but it already comes {befaft} it, ignoring");
+                    eprintln!("Warning: Asked to move {def_name} {direction}, {befaft} of {config_identifier}, but it already comes {befaft} it, ignoring");
                     continue;
                 }
 
