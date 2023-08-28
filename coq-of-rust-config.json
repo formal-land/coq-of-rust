@@ -23,7 +23,11 @@
     "ink_env": {
       "top_level": {
         "arithmetic": "types",
-        "topics": "api"
+        "topics": "error",
+        "error": "hash",
+        "hash": "backend",
+        "backend": "call",
+        "call": "api"
       },
       "top_level::arithmetic": {
         "BaseArithmetic": "Saturating"
