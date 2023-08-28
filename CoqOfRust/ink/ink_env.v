@@ -9,6 +9,94 @@ Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.scale_decode.
 Require CoqOfRust.ink.scale_encode.
 
+Module arithmetic.
+  Module Saturating.
+    Class Trait (Self : Set) : Set := {
+      saturating_add `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_sub `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_mul `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
+      saturating_pow `{H : State.Trait} : Self -> usize -> (M (H := H) Self);
+    }.
+    
+    Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_add" := {
+      Notation.dot := saturating_add;
+    }.
+    Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_sub" := {
+      Notation.dot := saturating_sub;
+    }.
+    Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_mul" := {
+      Notation.dot := saturating_mul;
+    }.
+    Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
+      : Notation.Dot "saturating_pow" := {
+      Notation.dot := saturating_pow;
+    }.
+  End Saturating.
+  
+  Module BaseArithmetic.
+    Unset Primitive Projections.
+    Class Trait
+        (Self : Set)
+          `{core.marker.Sized.Trait Self}
+          `{core.convert.From.Trait Self (T := u8)}
+          `{num_traits.bounds.Bounded.Trait Self}
+          `{core.cmp.Ord.Trait Self}
+          `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
+          `{num_traits.identities.Zero.Trait Self}
+          `{num_traits.identities.One.Trait Self}
+          `{num_traits.bounds.Bounded.Trait Self}
+          `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
+          `{num_traits.ops.checked.CheckedMul.Trait Self}
+          `{ink_env.arithmetic.Saturating.Trait Self}
+          `{core.convert.TryFrom.Trait Self (T := u16)}
+          `{core.convert.TryFrom.Trait Self (T := u32)}
+          `{core.convert.TryFrom.Trait Self (T := u64)}
+          `{core.convert.TryFrom.Trait Self (T := u128)}
+          `{core.convert.TryFrom.Trait Self (T := usize)}
+          `{core.convert.TryInto.Trait Self (T := u16)}
+          `{core.convert.TryInto.Trait Self (T := u32)}
+          `{core.convert.TryInto.Trait Self (T := u64)}
+          `{core.convert.TryInto.Trait Self (T := u128)}
+          `{core.convert.TryInto.Trait Self (T := usize)} :
+        Set := {
+    }.
+    Global Set Primitive Projections.
+  End BaseArithmetic.
+  
+  Module AtLeast32Bit.
+    Unset Primitive Projections.
+    Class Trait
+        (Self : Set)
+          `{ink_env.arithmetic.BaseArithmetic.Trait Self}
+          `{core.convert.From.Trait Self (T := u16)}
+          `{core.convert.From.Trait Self (T := u32)} :
+        Set := {
+    }.
+    Global Set Primitive Projections.
+  End AtLeast32Bit.
+  
+  Module AtLeast32BitUnsigned.
+    Unset Primitive Projections.
+    Class Trait
+        (Self : Set)
+          `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
+          `{num_traits.sign.Unsigned.Trait Self} :
+        Set := {
+    }.
+    Global Set Primitive Projections.
+  End AtLeast32BitUnsigned.
+End arithmetic.
+
 Module types.
   Module FromLittleEndian.
     Class Trait
@@ -772,94 +860,6 @@ Parameter call_runtime :
       `{ink_env.types.Environment.Trait E}
       `{parity_scale_codec.codec.Encode.Trait Call},
     (ref Call) -> M (H := H) (ink_env.error.Result unit).
-
-Module arithmetic.
-  Module BaseArithmetic.
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-          `{core.marker.Sized.Trait Self}
-          `{core.convert.From.Trait Self (T := u8)}
-          `{num_traits.bounds.Bounded.Trait Self}
-          `{core.cmp.Ord.Trait Self}
-          `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
-          `{num_traits.identities.Zero.Trait Self}
-          `{num_traits.identities.One.Trait Self}
-          `{num_traits.bounds.Bounded.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
-          `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
-          `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
-          `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
-          `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
-          `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
-          `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
-          `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
-          `{num_traits.ops.checked.CheckedMul.Trait Self}
-          `{ink_env.arithmetic.Saturating.Trait Self}
-          `{core.convert.TryFrom.Trait Self (T := u16)}
-          `{core.convert.TryFrom.Trait Self (T := u32)}
-          `{core.convert.TryFrom.Trait Self (T := u64)}
-          `{core.convert.TryFrom.Trait Self (T := u128)}
-          `{core.convert.TryFrom.Trait Self (T := usize)}
-          `{core.convert.TryInto.Trait Self (T := u16)}
-          `{core.convert.TryInto.Trait Self (T := u32)}
-          `{core.convert.TryInto.Trait Self (T := u64)}
-          `{core.convert.TryInto.Trait Self (T := u128)}
-          `{core.convert.TryInto.Trait Self (T := usize)} :
-        Set := {
-    }.
-    Global Set Primitive Projections.
-  End BaseArithmetic.
-  
-  Module AtLeast32Bit.
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-          `{ink_env.arithmetic.BaseArithmetic.Trait Self}
-          `{core.convert.From.Trait Self (T := u16)}
-          `{core.convert.From.Trait Self (T := u32)} :
-        Set := {
-    }.
-    Global Set Primitive Projections.
-  End AtLeast32Bit.
-  
-  Module AtLeast32BitUnsigned.
-    Unset Primitive Projections.
-    Class Trait
-        (Self : Set)
-          `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
-          `{num_traits.sign.Unsigned.Trait Self} :
-        Set := {
-    }.
-    Global Set Primitive Projections.
-  End AtLeast32BitUnsigned.
-  
-  Module Saturating.
-    Class Trait (Self : Set) : Set := {
-      saturating_add `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_sub `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_mul `{H : State.Trait} : Self -> Self -> (M (H := H) Self);
-      saturating_pow `{H : State.Trait} : Self -> usize -> (M (H := H) Self);
-    }.
-    
-    Global Instance Method_saturating_add `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_add" := {
-      Notation.dot := saturating_add;
-    }.
-    Global Instance Method_saturating_sub `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_sub" := {
-      Notation.dot := saturating_sub;
-    }.
-    Global Instance Method_saturating_mul `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_mul" := {
-      Notation.dot := saturating_mul;
-    }.
-    Global Instance Method_saturating_pow `{H : State.Trait} `(Trait)
-      : Notation.Dot "saturating_pow" := {
-      Notation.dot := saturating_pow;
-    }.
-  End Saturating.
-End arithmetic.
 
 Module BaseArithmetic.
   Unset Primitive Projections.

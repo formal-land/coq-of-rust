@@ -1,13 +1,9 @@
 /// This module implements the reordering of the definitions in the output
-/// and also the `--generate-reorder` option. The order is read from
-/// the configuration file and applied before the compilation  with
-/// the compile_* functions, and happens at top_level.rs module
 use crate::configuration::*;
 use crate::env::*;
 use itertools::Itertools;
 use rustc_hir::{HirId, Impl, ImplItemRef, Item, ItemId, ItemKind, Node, QPath, Ty, TyKind};
 use rustc_middle::ty::TyCtxt;
-use std::cmp::Ordering;
 use std::string::ToString;
 
 pub(crate) trait GetHirId {
@@ -26,69 +22,153 @@ impl GetHirId for ImplItemRef {
     }
 }
 
+pub fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
+    let a_name = tcx.hir().ident(a_id).as_str().to_string();
+    if a_name.is_empty() {
+        let a_node_opt = tcx.hir().find(a_id);
+        match a_node_opt {
+            Some(node) => get_impl_type_opt(node).unwrap_or(a_name),
+            None => a_name,
+        }
+    } else {
+        a_name
+    }
+}
+
+/// Given a HirId returns the name of the context/scope
+/// where such item is. Example top_level::inner_mod::other_mod
+pub(crate) fn get_context_name(tcx: &TyCtxt, id: HirId) -> String {
+    let name = tcx
+        .hir()
+        .parent_iter(id)
+        .filter_map(|(_, parent)| match get_impl_type_opt(parent) {
+            Some(typ) => Some(typ),
+            None => parent.ident().map(|ident| ident.as_str().to_string()),
+        })
+        .collect::<Vec<String>>()
+        .into_iter()
+        .rev()
+        .collect::<Vec<String>>()
+        .join("::");
+    if name.is_empty() {
+        "top_level".to_string()
+    } else {
+        format!("top_level::{}", name)
+    }
+}
+
+pub fn get_full_name(tcx: &TyCtxt, id: HirId) -> String {
+    format!("{}::{}", get_context_name(tcx, id), get_name(tcx, id))
+}
+
 /// Reorder a vector of definitions to match the contents of the
 /// configuration file. The reordering happens before the compilation
 /// i.e. before calling the `compile_...` functions, in the
 /// HIR.
+///
+/// In the configuration file:
+///
+/// `{ "reorder": { "somefile.rs": { "area": "height", ...}, ... }, ... }`
+///
+/// This means that "area" should appear after "height". The identifier
+/// in the key is always moved to the value's position.
 #[allow(clippy::ptr_arg)] // Disable warning over &mut Vec<...>, using &mut[...] wont compile
 pub(crate) fn reorder_definitions_inplace(
     tcx: &TyCtxt,
     env: &mut Env,
+    parent_context: &str,
     definitions: &mut Vec<impl GetHirId>,
 ) {
-    // If we have only one element we still want it to show up
-    // in the output of `--generate-reorder`, even if there
-    // is no sorting going on
     if definitions.is_empty() {
         return;
     }
 
-    definitions.sort_by(|a, b| {
-        let a_id = a.hir_id();
-        let b_id = b.hir_id();
-        let a_context = get_context_name(tcx, &a_id);
-        let b_context = get_context_name(tcx, &b_id);
+    if env.configuration.debug_reorder {
+        eprintln!(
+            "{}",
+            definitions
+                .iter()
+                .enumerate()
+                .map(|(i, def)| format!(
+                    // \x1b[0;31m <- red
+                    // \x1b[0m <- reset
+                    "\x1b[0;31mreorder before: {i:6} {}/{} {}\x1b[0m",
+                    env.file,
+                    get_context_name(tcx, def.hir_id()),
+                    get_name(tcx, def.hir_id())
+                ))
+                .collect::<Vec<String>>()
+                .join("\n")
+        );
+    }
 
-        if a_context != b_context {
-            return Ordering::Equal;
-        };
+    let definitions_ids: Vec<HirId> = definitions.iter().map(|def| def.hir_id()).collect();
 
-        let order = config_get_reorder(env, &a_context);
-        let a_name = tcx.hir().ident(a_id).as_str().to_string();
-        let b_name = tcx.hir().ident(b_id).as_str().to_string();
-
-        if a_name.is_empty() || b_name.is_empty() {
-            return Ordering::Equal;
+    for def_id in &definitions_ids {
+        let def_name = get_name(tcx, *def_id);
+        let context = get_context_name(tcx, *def_id);
+        if context != parent_context {
+            continue;
         }
+        let pos = definitions_ids
+            .iter()
+            .position(|elm| elm == def_id)
+            .unwrap();
 
-        let a_position = order.iter().position(|elm| *elm == a_name);
-        if a_position.is_none() {
-            return Ordering::Equal;
-        }
+        match config_get_reorder(env, &context, &def_name) {
+            Some(config_identifier) => {
+                // found a `def_name: config_identifier in the configuration file
+                // move def_name to the config_identifier position
+                let config_id_pos = definitions_ids
+                    .iter()
+                    .map(|hir_id| get_name(tcx, *hir_id))
+                    .position(|elm| elm == config_identifier);
+                let file = &env.file;
+                if config_id_pos.is_none() {
+                    eprintln!("Warning: No symbol {config_identifier} found in the context {file}/{context}, is this a typo?");
+                    eprintln!("Warning: Enable `debug_reorder` to see the identifiers in {file}/{context} scope");
+                    eprintln!("Warning: Example `cargo coq-of-rust 2>&1 | grep -e 'reorder before: .* {file}/{context} '`");
+                    continue;
+                }
+                let config_id_pos = config_id_pos.unwrap();
 
-        let b_position = order.iter().position(|elm| *elm == b_name);
-        if b_position.is_none() {
-            return Ordering::Equal;
-        };
+                let (src_pos, dest_pos, src_name, dst_name) = if pos > config_id_pos {
+                    (pos, config_id_pos, def_name, config_identifier)
+                } else {
+                    (config_id_pos, pos, config_identifier, def_name)
+                };
 
-        a_position.cmp(&b_position)
-    });
-
-    let identifiers = definitions
-        .iter()
-        .filter_map(|def| {
-            let name = tcx.hir().ident(def.hir_id()).as_str().to_string();
-            if !name.is_empty() && name != "test" && name != "std" {
-                Some(name)
-            } else {
-                None
+                if env.configuration.debug_reorder {
+                    eprintln!("reorder moving >>>: ({file}/{context}) {src_name} from {src_pos} to {dest_pos} before {dst_name}");
+                }
+                let def = definitions.remove(src_pos);
+                definitions.insert(dest_pos, def);
             }
-        })
-        .unique()
-        .collect::<Vec<String>>();
+            None => continue,
+        }
+    }
 
-    let context = get_context_name(tcx, &definitions[0].hir_id());
-    env.reorder_map.insert(context, identifiers);
+    if env.configuration.debug_reorder {
+        eprintln!(
+            "{}",
+            definitions
+                .iter()
+                .map(|def| {
+                    let id = def.hir_id();
+                    let pos = definitions_ids.iter().position(|x| *x == id).unwrap_or(0);
+                    format!(
+                        // \x1b[0;32m <- green
+                        // \x1b[0m <- reset
+                        "\x1b[0;32mreorder after:  {pos:6} {}/{} {}\x1b[0m",
+                        env.file,
+                        get_context_name(tcx, def.hir_id()),
+                        get_name(tcx, def.hir_id())
+                    )
+                })
+                .collect::<Vec<String>>()
+                .join("\n")
+        );
+    }
 }
 
 /// Extract the type name for a node if is a trait
@@ -118,27 +198,5 @@ fn get_impl_type_opt(node: Node) -> Option<String> {
             }
         }
         _ => None,
-    }
-}
-
-/// Given a HirId returns the name of the context/scope
-/// where such item is. Example top_level::inner_mod::other_mod
-pub(crate) fn get_context_name(tcx: &TyCtxt, id: &HirId) -> String {
-    let name = tcx
-        .hir()
-        .parent_iter(*id)
-        .filter_map(|(_, parent)| match get_impl_type_opt(parent) {
-            Some(typ) => Some(typ),
-            None => parent.ident().map(|ident| ident.as_str().to_string()),
-        })
-        .collect::<Vec<String>>()
-        .into_iter()
-        .rev()
-        .collect::<Vec<String>>()
-        .join("::");
-    if name.is_empty() {
-        "top_level".to_string()
-    } else {
-        format!("top_level::{}", name)
     }
 }

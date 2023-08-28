@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-fn print_stacktrace(n: usize) {
+pub fn print_stacktrace(n: usize) {
     eprintln!("------------ Backtrace ------------");
     for frame in std::backtrace::Backtrace::capture()
         .frames()
