@@ -3,21 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.ink_metadata.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.parity_scale_codec.
-Require CoqOfRust.ink.ink_metadata.
-Require CoqOfRust.ink.ink_primitives.
-Require CoqOfRust.ink.parity_scale_codec.
-Require CoqOfRust.ink.ink_metadata.
-Require CoqOfRust.ink.ink_primitives.
-Require CoqOfRust.ink.parity_scale_codec.
-Require CoqOfRust.ink.ink_metadata.
-Require CoqOfRust.ink.ink_primitives.
-Require CoqOfRust.ink.parity_scale_codec.
-Require CoqOfRust.ink.ink_metadata.
-Require CoqOfRust.ink.ink_primitives.
-Require CoqOfRust.ink.parity_scale_codec.
-Require CoqOfRust.ink.ink_metadata.
-Require CoqOfRust.ink.ink_primitives.
-Require CoqOfRust.ink.parity_scale_codec.
 
 Module impls.
   Module AutoKey.
@@ -157,12 +142,12 @@ Module storage.
       : Notation.Dot "KEY" := {
       Notation.dot := KEY;
     }.
-    (* (* (* (* (* (* Global Instance Method_key `{H : State.Trait} `(Trait)
+    (* Global Instance Method_key `{H : State.Trait} `(Trait)
       : Notation.Dot "key" := {
       Notation.dot (self : ref Self) :=
         (axiom : M (H := H) ink_primitives.key.Key);
     }.
-  *) *) *) *) *) *) End StorageKey.
+  *) End StorageKey.
   
   Module StorableHint.
     Class Trait
@@ -278,12 +263,12 @@ Module StorageKey.
     : Notation.Dot "KEY" := {
     Notation.dot := KEY;
   }.
-  (* (* (* (* (* (* Global Instance Method_key `{H : State.Trait} `(Trait)
+  (* Global Instance Method_key `{H : State.Trait} `(Trait)
     : Notation.Dot "key" := {
     Notation.dot (self : ref Self) :=
       (axiom : M (H := H) ink_primitives.key.Key);
   }.
-*) *) *) *) *) *) End StorageKey.
+*) End StorageKey.
 
 Module StorableHint.
   Class Trait
