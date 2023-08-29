@@ -46,52 +46,6 @@ Module Impl_functions_order_SomeType.
   }.
 End Impl_functions_order_SomeType.
 
-Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Definition Self := functions_order.OtherType.
-  
-  Definition some_trait_foo
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') unit :=
-    Pure tt.
-  
-  Global Instance Method_some_trait_foo `{H' : State.Trait} :
-    Notation.Dot "some_trait_foo" := {
-    Notation.dot := some_trait_foo;
-  }.
-  
-  Definition some_trait_bar
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') unit :=
-    Pure tt.
-  
-  Global Instance Method_some_trait_bar `{H' : State.Trait} :
-    Notation.Dot "some_trait_bar" := {
-    Notation.dot := some_trait_bar;
-  }.
-  
-  Global Instance I : functions_order.SomeTrait.Trait Self := {
-    functions_order.SomeTrait.some_trait_foo
-      `{H' : State.Trait}
-      :=
-      some_trait_foo;
-    functions_order.SomeTrait.some_trait_bar
-      `{H' : State.Trait}
-      :=
-      some_trait_bar;
-  }.
-End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-
-Definition depends_on_trait_impl
-    `{H' : State.Trait}
-    (u : u32)
-    (b : bool)
-    : M (H := H') unit :=
-  let* _ := (functions_order.OtherType.Build_t b).["some_trait_foo"] in
-  let* _ := (functions_order.SomeType.Build_t u).["some_trait_foo"] in
-  Pure tt.
-
 Module SomeTrait.
   Class Trait (Self : Set) : Set := {
     some_trait_foo `{H' : State.Trait} : (ref Self) -> (M (H := H') unit);
@@ -144,6 +98,52 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       some_trait_bar;
   }.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
+
+Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+  Definition Self := functions_order.OtherType.
+  
+  Definition some_trait_foo
+      `{H' : State.Trait}
+      (self : ref Self)
+      : M (H := H') unit :=
+    Pure tt.
+  
+  Global Instance Method_some_trait_foo `{H' : State.Trait} :
+    Notation.Dot "some_trait_foo" := {
+    Notation.dot := some_trait_foo;
+  }.
+  
+  Definition some_trait_bar
+      `{H' : State.Trait}
+      (self : ref Self)
+      : M (H := H') unit :=
+    Pure tt.
+  
+  Global Instance Method_some_trait_bar `{H' : State.Trait} :
+    Notation.Dot "some_trait_bar" := {
+    Notation.dot := some_trait_bar;
+  }.
+  
+  Global Instance I : functions_order.SomeTrait.Trait Self := {
+    functions_order.SomeTrait.some_trait_foo
+      `{H' : State.Trait}
+      :=
+      some_trait_foo;
+    functions_order.SomeTrait.some_trait_bar
+      `{H' : State.Trait}
+      :=
+      some_trait_bar;
+  }.
+End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
+
+Definition depends_on_trait_impl
+    `{H' : State.Trait}
+    (u : u32)
+    (b : bool)
+    : M (H := H') unit :=
+  let* _ := (functions_order.OtherType.Build_t b).["some_trait_foo"] in
+  let* _ := (functions_order.SomeType.Build_t u).["some_trait_foo"] in
+  Pure tt.
 
 Module inner_mod.
   Definition tar `{H' : State.Trait} : M (H := H') unit := Pure tt.

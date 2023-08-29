@@ -417,296 +417,457 @@ Definition Timestamp : Set := u64.
 
 Definition Gas : Set := u64.
 
-Module TypedEnvBackend.
-  Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Set := {
-    caller
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') E::type["AccountId"]);
-    transferred_value
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') E::type["Balance"]);
-    weight_to_fee
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> u64 -> (M (H := H') E::type["Balance"]);
-    gas_left
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') u64);
-    block_timestamp
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') E::type["Timestamp"]);
-    account_id
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') E::type["AccountId"]);
-    balance
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') E::type["Balance"]);
-    block_number
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') E::type["BlockNumber"]);
-    minimum_balance
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') E::type["Balance"]);
-    emit_event
-      `{H' : State.Trait}
-      {E Event: Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.topics.Topics.Trait Event}
-      `{parity_scale_codec.codec.Encode.Trait Event}
-      :
-      (mut_ref Self) -> Event -> (M (H := H') unit);
-    invoke_contract
-      `{H' : State.Trait}
-      {E Args R: Set}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{parity_scale_codec.codec.Decode.Trait R}
-      :
-      (mut_ref Self) ->
-      (ref
-        (ink_env.call.call_builder.CallParams
-          E
-          (ink_env.call.call_builder.Call E)
-          Args
-          R)) ->
-      (M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)));
-    invoke_contract_delegate
-      `{H' : State.Trait}
-      {E Args R: Set}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{parity_scale_codec.codec.Decode.Trait R}
-      :
-      (mut_ref Self) ->
-      (ref
-        (ink_env.call.call_builder.CallParams
-          E
-          (ink_env.call.call_builder.DelegateCall E)
-          Args
-          R)) ->
-      (M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)));
-    instantiate_contract
-      `{H' : State.Trait}
-      {E ContractRef Args Salt R: Set}
-      `{ink_env.types.Environment.Trait E}
-      `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-      `{parity_scale_codec.codec.Encode.Trait Args}
-      `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
-          (C := ContractRef)}
-      :
-      (mut_ref Self) ->
-      (ref
-        (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)) ->
-      (M (H := H')
-        (ink_env.error.Result
-          (ink_primitives.ConstructorResult
-            ink_env.call.create_builder.ConstructorReturnType.Output)));
-    terminate_contract
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> E::type["AccountId"] -> (M (H := H') Empty_set);
-    transfer
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) ->
-      E::type["AccountId"] ->
-      E::type["Balance"] ->
-      (M (H := H') (ink_env.error.Result unit));
-    is_contract
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (ref E::type["AccountId"]) -> (M (H := H') bool);
-    caller_is_origin
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') bool);
-    code_hash
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) ->
-      (ref E::type["AccountId"]) ->
-      (M (H := H') (ink_env.error.Result E::type["Hash"]));
-    own_code_hash
-      `{H' : State.Trait}
-      {E: Set}
-      `{ink_env.types.Environment.Trait E}
-      :
-      (mut_ref Self) -> (M (H := H') (ink_env.error.Result E::type["Hash"]));
-    call_runtime
-      `{H' : State.Trait}
-      {E Call: Set}
-      `{ink_env.types.Environment.Trait E}
-      `{parity_scale_codec.codec.Encode.Trait Call}
-      :
-      (mut_ref Self) -> (ref Call) -> (M (H := H') (ink_env.error.Result unit));
-  }.
-  
-  Global Instance Method_caller `{H' : State.Trait} `(Trait)
-    : Notation.Dot "caller" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := caller;
-  }.
-  Global Instance Method_transferred_value `{H' : State.Trait} `(Trait)
-    : Notation.Dot "transferred_value" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
-      :=
-      transferred_value;
-  }.
-  Global Instance Method_weight_to_fee `{H' : State.Trait} `(Trait)
-    : Notation.Dot "weight_to_fee" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
-      :=
-      weight_to_fee;
-  }.
-  Global Instance Method_gas_left `{H' : State.Trait} `(Trait)
-    : Notation.Dot "gas_left" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := gas_left;
-  }.
-  Global Instance Method_block_timestamp `{H' : State.Trait} `(Trait)
-    : Notation.Dot "block_timestamp" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
-      :=
-      block_timestamp;
-  }.
-  Global Instance Method_account_id `{H' : State.Trait} `(Trait)
-    : Notation.Dot "account_id" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := account_id;
-  }.
-  Global Instance Method_balance `{H' : State.Trait} `(Trait)
-    : Notation.Dot "balance" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := balance;
-  }.
-  Global Instance Method_block_number `{H' : State.Trait} `(Trait)
-    : Notation.Dot "block_number" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := block_number;
-  }.
-  Global Instance Method_minimum_balance `{H' : State.Trait} `(Trait)
-    : Notation.Dot "minimum_balance" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
-      :=
-      minimum_balance;
-  }.
-  Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
-    : Notation.Dot "emit_event" := {
-    Notation.dot
-        {E Event : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.topics.Topics.Trait Event}
-        `{parity_scale_codec.codec.Encode.Trait Event}
-      :=
-      emit_event;
-  }.
-  Global Instance Method_invoke_contract `{H' : State.Trait} `(Trait)
-    : Notation.Dot "invoke_contract" := {
-    Notation.dot
-        {E Args R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{parity_scale_codec.codec.Decode.Trait R}
-      :=
-      invoke_contract;
-  }.
-  Global Instance Method_invoke_contract_delegate `{H' : State.Trait} `(Trait)
-    : Notation.Dot "invoke_contract_delegate" := {
-    Notation.dot
-        {E Args R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{parity_scale_codec.codec.Decode.Trait R}
-      :=
-      invoke_contract_delegate;
-  }.
-  Global Instance Method_instantiate_contract `{H' : State.Trait} `(Trait)
-    : Notation.Dot "instantiate_contract" := {
-    Notation.dot
-        {E ContractRef Args Salt R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
-            (C := ContractRef)}
-      :=
-      instantiate_contract;
-  }.
-  Global Instance Method_terminate_contract `{H' : State.Trait} `(Trait)
-    : Notation.Dot "terminate_contract" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
-      :=
-      terminate_contract;
-  }.
-  Global Instance Method_transfer `{H' : State.Trait} `(Trait)
-    : Notation.Dot "transfer" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := transfer;
-  }.
-  Global Instance Method_is_contract `{H' : State.Trait} `(Trait)
-    : Notation.Dot "is_contract" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := is_contract;
-  }.
-  Global Instance Method_caller_is_origin `{H' : State.Trait} `(Trait)
-    : Notation.Dot "caller_is_origin" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
-      :=
-      caller_is_origin;
-  }.
-  Global Instance Method_code_hash `{H' : State.Trait} `(Trait)
-    : Notation.Dot "code_hash" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := code_hash;
-  }.
-  Global Instance Method_own_code_hash `{H' : State.Trait} `(Trait)
-    : Notation.Dot "own_code_hash" := {
-    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
-      :=
-      own_code_hash;
-  }.
-  Global Instance Method_call_runtime `{H' : State.Trait} `(Trait)
-    : Notation.Dot "call_runtime" := {
-    Notation.dot
-        {E Call : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Call}
-      :=
-      call_runtime;
-  }.
-End TypedEnvBackend.
-
 Definition BlockNumber : Set := u32.
+
+Module call.
+  Module call_builder.
+    Module CallParams.
+      Section CallParams.
+        Context {E CallType Args R : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          call_type : CallType;
+          call_flags : ink_env.backend.CallFlags;
+          _return_type : ink_env.call.common.ReturnType R;
+          exec_input : ink_env.call.execution_input.ExecutionInput Args;
+          _phantom : core.marker.PhantomData (E);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_call_type : Notation.Dot "call_type" := {
+          Notation.dot '(Build_t x0 _ _ _ _) := x0;
+        }.
+        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+          Notation.dot '(Build_t _ x1 _ _ _) := x1;
+        }.
+        Global Instance Get__return_type : Notation.Dot "_return_type" := {
+          Notation.dot '(Build_t _ _ x2 _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _) := x3;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ x4) := x4;
+        }.
+      End CallParams.
+    End CallParams.
+    Definition CallParams := @CallParams.t.
+    
+    Parameter build_call :
+        forall
+          `{H' : State.Trait}
+          {E : Set}
+          `{ink_env.types.Environment.Trait E},
+        M (H := H')
+            (ink_env.call.call_builder.CallBuilder
+              E
+              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+              (ink_env.call.common.Unset
+                (ink_env.call.execution_input.ExecutionInput
+                  ink_env.call.execution_input.EmptyArgumentList))
+              (ink_env.call.common.Unset
+                (ink_env.call.common.ReturnType unit))).
+    
+    Module Call.
+      Section Call.
+        Context {E : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          callee : E::type["AccountId"];
+          gas_limit : ink_env.types.Gas;
+          transferred_value : E::type["Balance"];
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_callee : Notation.Dot "callee" := {
+          Notation.dot '(Build_t x0 _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _) := x1;
+        }.
+        Global Instance Get_transferred_value :
+            Notation.Dot "transferred_value" := {
+          Notation.dot '(Build_t _ _ x2) := x2;
+        }.
+      End Call.
+    End Call.
+    Definition Call := @Call.t.
+    
+    Module DelegateCall.
+      Section DelegateCall.
+        Context {E : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : E::type["Hash"];
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End DelegateCall.
+    End DelegateCall.
+    Definition DelegateCall := @DelegateCall.t.
+    
+    Module CallBuilder.
+      Section CallBuilder.
+        Context {E CallType Args RetType : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          call_type : CallType;
+          call_flags : ink_env.backend.CallFlags;
+          exec_input : Args;
+          return_type : RetType;
+          _phantom : core.marker.PhantomData (E);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_call_type : Notation.Dot "call_type" := {
+          Notation.dot '(Build_t x0 _ _ _ _) := x0;
+        }.
+        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
+          Notation.dot '(Build_t _ x1 _ _ _) := x1;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ x2 _ _) := x2;
+        }.
+        Global Instance Get_return_type : Notation.Dot "return_type" := {
+          Notation.dot '(Build_t _ _ _ x3 _) := x3;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ x4) := x4;
+        }.
+      End CallBuilder.
+    End CallBuilder.
+    Definition CallBuilder := @CallBuilder.t.
+  End call_builder.
+  
+  Module common.
+    Module ReturnType.
+      Section ReturnType.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End ReturnType.
+    End ReturnType.
+    Definition ReturnType := @ReturnType.t.
+    
+    Module Set.
+      Section Set.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Set.
+    End Set.
+    Definition Set := @Set.t.
+    
+    Module Unset.
+      Section Unset.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Unset.
+    End Unset.
+    Definition Unset := @Unset.t.
+    
+    Module Unwrap.
+      Class Trait (Self : Set) {Output : Set} : Set := {
+        Output := Output;
+        unwrap_or_else
+          `{H' : State.Trait}
+          {F: Set}
+          `{core.ops.function.FnOnce.Trait F (Args := unit)}
+          :
+          Self -> F -> (M (H := H') Output);
+      }.
+      
+      Global Instance Method_Output {Output} `(Trait (Output := Output))
+        : Notation.DoubleColonType Self "Output" := {
+        Notation.double_colon_type := Output;
+      }.
+      Global Instance Method_unwrap_or_else `{H' : State.Trait} `(Trait)
+        : Notation.Dot "unwrap_or_else" := {
+        Notation.dot
+            {F : Set}
+            `{core.ops.function.FnOnce.Trait F (Args := unit)}
+          :=
+          unwrap_or_else;
+      }.
+    End Unwrap.
+  End common.
+  
+  Module create_builder.
+    Module state.
+      Module Salt.
+        Inductive t : Set :=
+        .
+      End Salt.
+      Definition Salt := Salt.t.
+    End state.
+    
+    Module FromAccountId.
+      Class Trait
+          (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+          Set := {
+        from_account_id
+          `{H' : State.Trait}
+          :
+          ink_env.types.Environment.AccountId -> (M (H := H') Self);
+      }.
+      
+      Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
+        : Notation.Dot "from_account_id" := {
+        Notation.dot := from_account_id;
+      }.
+    End FromAccountId.
+    
+    Module ConstructorReturnType.
+      Class Trait
+          (Self : Set) {C : Set}
+          {Output : Set}
+          {Error : Set}
+          `{parity_scale_codec.codec.Decode.Trait Error} :
+          Set := {
+        IS_RESULT `{H' : State.Trait} : bool;
+        Output := Output;
+        Error := Error;
+        ok `{H' : State.Trait} : C -> (M (H := H') Output);
+      }.
+      
+      Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
+        : Notation.Dot "IS_RESULT" := {
+        Notation.dot := IS_RESULT;
+      }.
+      Global Instance Method_Output {Output} `(Trait (Output := Output))
+        : Notation.DoubleColonType Self "Output" := {
+        Notation.double_colon_type := Output;
+      }.
+      Global Instance Method_Error {Error} `(Trait (Error := Error))
+        : Notation.DoubleColonType Self "Error" := {
+        Notation.double_colon_type := Error;
+      }.
+      Global Instance Method_ok `{H' : State.Trait} `(Trait)
+        : Notation.Dot "ok" := {
+        Notation.dot := ok;
+      }.
+      Global Instance Method_err `{H' : State.Trait} `(Trait)
+        : Notation.Dot "err" := {
+        Notation.dot (_err : Error)
+          :=
+          (axiom : M (H := H') (core.option.Option Output));
+      }.
+    End ConstructorReturnType.
+    
+    Module CreateParams.
+      Section CreateParams.
+        Context {E ContractRef Args Salt R : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : E::type["Hash"];
+          gas_limit : u64;
+          endowment : E::type["Balance"];
+          exec_input : ink_env.call.execution_input.ExecutionInput Args;
+          salt_bytes : Salt;
+          _return_type : ink_env.call.common.ReturnType R;
+          _phantom : core.marker.PhantomData (ContractRef);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
+          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
+          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
+        Global Instance Get__return_type : Notation.Dot "_return_type" := {
+          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+      End CreateParams.
+    End CreateParams.
+    Definition CreateParams := @CreateParams.t.
+    
+    Module CreateBuilder.
+      Section CreateBuilder.
+        Context
+          {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : CodeHash;
+          gas_limit : GasLimit;
+          endowment : Endowment;
+          exec_input : Args;
+          salt : Salt;
+          return_type : RetType;
+          _phantom : core.marker.PhantomData ((E * ContractRef));
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
+        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
+          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_endowment : Notation.Dot "endowment" := {
+          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
+        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
+          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_salt : Notation.Dot "salt" := {
+          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
+        Global Instance Get_return_type : Notation.Dot "return_type" := {
+          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
+        Global Instance Get__phantom : Notation.Dot "_phantom" := {
+          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+      End CreateBuilder.
+    End CreateBuilder.
+    Definition CreateBuilder := @CreateBuilder.t.
+    
+    Parameter build_create :
+        forall
+          `{H' : State.Trait}
+          {ContractRef : Set}
+          `{ink_env.contract.ContractEnv.Trait ContractRef},
+        M (H := H')
+            (ink_env.call.create_builder.CreateBuilder
+              ink_env.contract.ContractEnv.Env
+              ContractRef
+              (ink_env.call.common.Unset ink_env.types.Environment.Hash)
+              (ink_env.call.common.Unset u64)
+              (ink_env.call.common.Unset ink_env.types.Environment.Balance)
+              (ink_env.call.common.Unset
+                (ink_env.call.execution_input.ExecutionInput
+                  ink_env.call.execution_input.EmptyArgumentList))
+              (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
+              (ink_env.call.common.Unset
+                (ink_env.call.common.ReturnType unit))).
+  End create_builder.
+  
+  Module execution_input.
+    Module ExecutionInput.
+      Section ExecutionInput.
+        Context {Args : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          selector : ink_env.call.selector.Selector;
+          args : Args;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_selector : Notation.Dot "selector" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_args : Notation.Dot "args" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ExecutionInput.
+    End ExecutionInput.
+    Definition ExecutionInput := @ExecutionInput.t.
+    
+    Module ArgumentList.
+      Section ArgumentList.
+        Context {Head Rest : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          head : Head;
+          rest : Rest;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_head : Notation.Dot "head" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_rest : Notation.Dot "rest" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ArgumentList.
+    End ArgumentList.
+    Definition ArgumentList := @ArgumentList.t.
+    
+    Definition ArgsList (Head Rest : Set) : Set :=
+      ink_env.call.execution_input.ArgumentList
+        (ink_env.call.execution_input.Argument Head)
+        Rest.
+    
+    Module Argument.
+      Section Argument.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          arg : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_arg : Notation.Dot "arg" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Argument.
+    End Argument.
+    Definition Argument := @Argument.t.
+    
+    Module ArgumentListEnd.
+      Inductive t : Set := Build.
+    End ArgumentListEnd.
+    Definition ArgumentListEnd := @ArgumentListEnd.t.
+    
+    Definition EmptyArgumentList : Set :=
+      ink_env.call.execution_input.ArgumentList
+        ink_env.call.execution_input.ArgumentListEnd
+        ink_env.call.execution_input.ArgumentListEnd.
+  End execution_input.
+  
+  Module selector.
+    Module Selector.
+      Unset Primitive Projections.
+      Record t : Set := {
+        bytes : list u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_bytes : Notation.Dot "bytes" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Selector.
+    Definition Selector := @Selector.t.
+  End selector.
+End call.
 
 Module api.
   Parameter caller :
@@ -1236,457 +1397,75 @@ Module Saturating.
   }.
 End Saturating.
 
-Definition Result (T : Set) : Set := core.result.Result T ink_env.error.Error.
-
-Module call.
-  Module call_builder.
-    Module CallParams.
-      Section CallParams.
-        Context {E CallType Args R : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          call_type : CallType;
-          call_flags : ink_env.backend.CallFlags;
-          _return_type : ink_env.call.common.ReturnType R;
-          exec_input : ink_env.call.execution_input.ExecutionInput Args;
-          _phantom : core.marker.PhantomData (E);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_call_type : Notation.Dot "call_type" := {
-          Notation.dot '(Build_t x0 _ _ _ _) := x0;
-        }.
-        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-          Notation.dot '(Build_t _ x1 _ _ _) := x1;
-        }.
-        Global Instance Get__return_type : Notation.Dot "_return_type" := {
-          Notation.dot '(Build_t _ _ x2 _ _) := x2;
-        }.
-        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-          Notation.dot '(Build_t _ _ _ x3 _) := x3;
-        }.
-        Global Instance Get__phantom : Notation.Dot "_phantom" := {
-          Notation.dot '(Build_t _ _ _ _ x4) := x4;
-        }.
-      End CallParams.
-    End CallParams.
-    Definition CallParams := @CallParams.t.
+Module hash.
+  Module HashOutput.
+    Class Trait
+        (Self : Set) `{ink_env.hash.private.Sealed.Trait Self}
+        {Type_ : Set}
+        `{core.default.Default.Trait Type_} :
+        Set := {
+      Type_ := Type_;
+    }.
     
-    Parameter build_call :
-        forall
-          `{H' : State.Trait}
-          {E : Set}
-          `{ink_env.types.Environment.Trait E},
-        M (H := H')
-            (ink_env.call.call_builder.CallBuilder
-              E
-              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-              (ink_env.call.common.Unset
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.execution_input.EmptyArgumentList))
-              (ink_env.call.common.Unset
-                (ink_env.call.common.ReturnType unit))).
-    
-    Module Call.
-      Section Call.
-        Context {E : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          callee : E::type["AccountId"];
-          gas_limit : ink_env.types.Gas;
-          transferred_value : E::type["Balance"];
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_callee : Notation.Dot "callee" := {
-          Notation.dot '(Build_t x0 _ _) := x0;
-        }.
-        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-          Notation.dot '(Build_t _ x1 _) := x1;
-        }.
-        Global Instance Get_transferred_value :
-            Notation.Dot "transferred_value" := {
-          Notation.dot '(Build_t _ _ x2) := x2;
-        }.
-      End Call.
-    End Call.
-    Definition Call := @Call.t.
-    
-    Module DelegateCall.
-      Section DelegateCall.
-        Context {E : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          code_hash : E::type["Hash"];
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End DelegateCall.
-    End DelegateCall.
-    Definition DelegateCall := @DelegateCall.t.
-    
-    Module CallBuilder.
-      Section CallBuilder.
-        Context {E CallType Args RetType : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          call_type : CallType;
-          call_flags : ink_env.backend.CallFlags;
-          exec_input : Args;
-          return_type : RetType;
-          _phantom : core.marker.PhantomData (E);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_call_type : Notation.Dot "call_type" := {
-          Notation.dot '(Build_t x0 _ _ _ _) := x0;
-        }.
-        Global Instance Get_call_flags : Notation.Dot "call_flags" := {
-          Notation.dot '(Build_t _ x1 _ _ _) := x1;
-        }.
-        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-          Notation.dot '(Build_t _ _ x2 _ _) := x2;
-        }.
-        Global Instance Get_return_type : Notation.Dot "return_type" := {
-          Notation.dot '(Build_t _ _ _ x3 _) := x3;
-        }.
-        Global Instance Get__phantom : Notation.Dot "_phantom" := {
-          Notation.dot '(Build_t _ _ _ _ x4) := x4;
-        }.
-      End CallBuilder.
-    End CallBuilder.
-    Definition CallBuilder := @CallBuilder.t.
-  End call_builder.
+    Global Instance Method_Type_ {Type_} `(Trait (Type_ := Type_))
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
+    }.
+  End HashOutput.
   
-  Module common.
-    Module ReturnType.
-      Section ReturnType.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : core.marker.PhantomData (T);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End ReturnType.
-    End ReturnType.
-    Definition ReturnType := @ReturnType.t.
+  Module CryptoHash.
+    Class Trait
+        (Self : Set)
+          `{ink_env.hash.HashOutput.Trait Self}
+          `{ink_env.hash.private.Sealed.Trait Self} :
+        Set := {
+      hash
+        `{H' : State.Trait}
+        :
+        (ref (Slice u8)) ->
+        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (M (H := H') unit);
+    }.
     
-    Module Set.
-      Section Set.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End Set.
-    End Set.
-    Definition Set := @Set.t.
-    
-    Module Unset.
-      Section Unset.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : core.marker.PhantomData (T);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End Unset.
-    End Unset.
-    Definition Unset := @Unset.t.
-    
-    Module Unwrap.
-      Class Trait (Self : Set) {Output : Set} : Set := {
-        Output := Output;
-        unwrap_or_else
-          `{H' : State.Trait}
-          {F: Set}
-          `{core.ops.function.FnOnce.Trait F (Args := unit)}
-          :
-          Self -> F -> (M (H := H') Output);
-      }.
-      
-      Global Instance Method_Output {Output} `(Trait (Output := Output))
-        : Notation.DoubleColonType Self "Output" := {
-        Notation.double_colon_type := Output;
-      }.
-      Global Instance Method_unwrap_or_else `{H' : State.Trait} `(Trait)
-        : Notation.Dot "unwrap_or_else" := {
-        Notation.dot
-            {F : Set}
-            `{core.ops.function.FnOnce.Trait F (Args := unit)}
-          :=
-          unwrap_or_else;
-      }.
-    End Unwrap.
-  End common.
+    Global Instance Method_hash `{H' : State.Trait} `(Trait)
+      : Notation.Dot "hash" := {
+      Notation.dot := hash;
+    }.
+  End CryptoHash.
   
-  Module create_builder.
-    Module state.
-      Module Salt.
-        Inductive t : Set :=
-        .
-      End Salt.
-      Definition Salt := Salt.t.
-    End state.
-    
-    Module FromAccountId.
-      Class Trait
-          (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
-          Set := {
-        from_account_id
-          `{H' : State.Trait}
-          :
-          ink_env.types.Environment.AccountId -> (M (H := H') Self);
-      }.
-      
-      Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
-        : Notation.Dot "from_account_id" := {
-        Notation.dot := from_account_id;
-      }.
-    End FromAccountId.
-    
-    Module ConstructorReturnType.
-      Class Trait
-          (Self : Set) {C : Set}
-          {Output : Set}
-          {Error : Set}
-          `{parity_scale_codec.codec.Decode.Trait Error} :
-          Set := {
-        IS_RESULT `{H' : State.Trait} : bool;
-        Output := Output;
-        Error := Error;
-        ok `{H' : State.Trait} : C -> (M (H := H') Output);
-      }.
-      
-      Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
-        : Notation.Dot "IS_RESULT" := {
-        Notation.dot := IS_RESULT;
-      }.
-      Global Instance Method_Output {Output} `(Trait (Output := Output))
-        : Notation.DoubleColonType Self "Output" := {
-        Notation.double_colon_type := Output;
-      }.
-      Global Instance Method_Error {Error} `(Trait (Error := Error))
-        : Notation.DoubleColonType Self "Error" := {
-        Notation.double_colon_type := Error;
-      }.
-      Global Instance Method_ok `{H' : State.Trait} `(Trait)
-        : Notation.Dot "ok" := {
-        Notation.dot := ok;
-      }.
-      Global Instance Method_err `{H' : State.Trait} `(Trait)
-        : Notation.Dot "err" := {
-        Notation.dot (_err : Error)
-          :=
-          (axiom : M (H := H') (core.option.Option Output));
-      }.
-    End ConstructorReturnType.
-    
-    Module CreateParams.
-      Section CreateParams.
-        Context {E ContractRef Args Salt R : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          code_hash : E::type["Hash"];
-          gas_limit : u64;
-          endowment : E::type["Balance"];
-          exec_input : ink_env.call.execution_input.ExecutionInput Args;
-          salt_bytes : Salt;
-          _return_type : ink_env.call.common.ReturnType R;
-          _phantom : core.marker.PhantomData (ContractRef);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-        }.
-        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-        }.
-        Global Instance Get_endowment : Notation.Dot "endowment" := {
-          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-        }.
-        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-        }.
-        Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
-          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-        }.
-        Global Instance Get__return_type : Notation.Dot "_return_type" := {
-          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-        }.
-        Global Instance Get__phantom : Notation.Dot "_phantom" := {
-          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-        }.
-      End CreateParams.
-    End CreateParams.
-    Definition CreateParams := @CreateParams.t.
-    
-    Module CreateBuilder.
-      Section CreateBuilder.
-        Context
-          {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          code_hash : CodeHash;
-          gas_limit : GasLimit;
-          endowment : Endowment;
-          exec_input : Args;
-          salt : Salt;
-          return_type : RetType;
-          _phantom : core.marker.PhantomData ((E * ContractRef));
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-          Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
-        }.
-        Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
-          Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
-        }.
-        Global Instance Get_endowment : Notation.Dot "endowment" := {
-          Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
-        }.
-        Global Instance Get_exec_input : Notation.Dot "exec_input" := {
-          Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
-        }.
-        Global Instance Get_salt : Notation.Dot "salt" := {
-          Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
-        }.
-        Global Instance Get_return_type : Notation.Dot "return_type" := {
-          Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
-        }.
-        Global Instance Get__phantom : Notation.Dot "_phantom" := {
-          Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
-        }.
-      End CreateBuilder.
-    End CreateBuilder.
-    Definition CreateBuilder := @CreateBuilder.t.
-    
-    Parameter build_create :
-        forall
-          `{H' : State.Trait}
-          {ContractRef : Set}
-          `{ink_env.contract.ContractEnv.Trait ContractRef},
-        M (H := H')
-            (ink_env.call.create_builder.CreateBuilder
-              ink_env.contract.ContractEnv.Env
-              ContractRef
-              (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-              (ink_env.call.common.Unset u64)
-              (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-              (ink_env.call.common.Unset
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.execution_input.EmptyArgumentList))
-              (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-              (ink_env.call.common.Unset
-                (ink_env.call.common.ReturnType unit))).
-  End create_builder.
+  Module Sha2x256.
+    Inductive t : Set :=
+    .
+  End Sha2x256.
+  Definition Sha2x256 := Sha2x256.t.
   
-  Module execution_input.
-    Module ExecutionInput.
-      Section ExecutionInput.
-        Context {Args : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          selector : ink_env.call.selector.Selector;
-          args : Args;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_selector : Notation.Dot "selector" := {
-          Notation.dot '(Build_t x0 _) := x0;
-        }.
-        Global Instance Get_args : Notation.Dot "args" := {
-          Notation.dot '(Build_t _ x1) := x1;
-        }.
-      End ExecutionInput.
-    End ExecutionInput.
-    Definition ExecutionInput := @ExecutionInput.t.
-    
-    Module ArgumentList.
-      Section ArgumentList.
-        Context {Head Rest : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          head : Head;
-          rest : Rest;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_head : Notation.Dot "head" := {
-          Notation.dot '(Build_t x0 _) := x0;
-        }.
-        Global Instance Get_rest : Notation.Dot "rest" := {
-          Notation.dot '(Build_t _ x1) := x1;
-        }.
-      End ArgumentList.
-    End ArgumentList.
-    Definition ArgumentList := @ArgumentList.t.
-    
-    Definition ArgsList (Head Rest : Set) : Set :=
-      ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument Head)
-        Rest.
-    
-    Module Argument.
-      Section Argument.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          arg : T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_arg : Notation.Dot "arg" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End Argument.
-    End Argument.
-    Definition Argument := @Argument.t.
-    
-    Module ArgumentListEnd.
-      Inductive t : Set := Build.
-    End ArgumentListEnd.
-    Definition ArgumentListEnd := @ArgumentListEnd.t.
-    
-    Definition EmptyArgumentList : Set :=
-      ink_env.call.execution_input.ArgumentList
-        ink_env.call.execution_input.ArgumentListEnd
-        ink_env.call.execution_input.ArgumentListEnd.
-  End execution_input.
+  Module Keccak256.
+    Inductive t : Set :=
+    .
+  End Keccak256.
+  Definition Keccak256 := Keccak256.t.
   
-  Module selector.
-    Module Selector.
+  Module Blake2x256.
+    Inductive t : Set :=
+    .
+  End Blake2x256.
+  Definition Blake2x256 := Blake2x256.t.
+  
+  Module Blake2x128.
+    Inductive t : Set :=
+    .
+  End Blake2x128.
+  Definition Blake2x128 := Blake2x128.t.
+  
+  Module private.
+    Module Sealed.
       Unset Primitive Projections.
-      Record t : Set := {
-        bytes : list u8;
+      Class Trait (Self : Set) : Set := {
       }.
       Global Set Primitive Projections.
-      
-      Global Instance Get_bytes : Notation.Dot "bytes" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End Selector.
-    Definition Selector := @Selector.t.
-  End selector.
-End call.
+    End Sealed.
+  End private.
+End hash.
 
 Module backend.
   Module ReturnFlags.
@@ -2493,6 +2272,295 @@ Module EnvBackend.
     Notation.dot := set_code_hash;
   }.
 End EnvBackend.
+
+Module TypedEnvBackend.
+  Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Set := {
+    caller
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') E::type["AccountId"]);
+    transferred_value
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') E::type["Balance"]);
+    weight_to_fee
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> u64 -> (M (H := H') E::type["Balance"]);
+    gas_left
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') u64);
+    block_timestamp
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') E::type["Timestamp"]);
+    account_id
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') E::type["AccountId"]);
+    balance
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') E::type["Balance"]);
+    block_number
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') E::type["BlockNumber"]);
+    minimum_balance
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') E::type["Balance"]);
+    emit_event
+      `{H' : State.Trait}
+      {E Event: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.Topics.Trait Event}
+      `{parity_scale_codec.codec.Encode.Trait Event}
+      :
+      (mut_ref Self) -> Event -> (M (H := H') unit);
+    invoke_contract
+      `{H' : State.Trait}
+      {E Args R: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
+      :
+      (mut_ref Self) ->
+      (ref
+        (ink_env.call.call_builder.CallParams
+          E
+          (ink_env.call.call_builder.Call E)
+          Args
+          R)) ->
+      (M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)));
+    invoke_contract_delegate
+      `{H' : State.Trait}
+      {E Args R: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
+      :
+      (mut_ref Self) ->
+      (ref
+        (ink_env.call.call_builder.CallParams
+          E
+          (ink_env.call.call_builder.DelegateCall E)
+          Args
+          R)) ->
+      (M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)));
+    instantiate_contract
+      `{H' : State.Trait}
+      {E ContractRef Args Salt R: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+          (C := ContractRef)}
+      :
+      (mut_ref Self) ->
+      (ref
+        (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)) ->
+      (M (H := H')
+        (ink_env.error.Result
+          (ink_primitives.ConstructorResult
+            ink_env.call.create_builder.ConstructorReturnType.Output)));
+    terminate_contract
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> E::type["AccountId"] -> (M (H := H') Empty_set);
+    transfer
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) ->
+      E::type["AccountId"] ->
+      E::type["Balance"] ->
+      (M (H := H') (ink_env.error.Result unit));
+    is_contract
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (ref E::type["AccountId"]) -> (M (H := H') bool);
+    caller_is_origin
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') bool);
+    code_hash
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) ->
+      (ref E::type["AccountId"]) ->
+      (M (H := H') (ink_env.error.Result E::type["Hash"]));
+    own_code_hash
+      `{H' : State.Trait}
+      {E: Set}
+      `{ink_env.types.Environment.Trait E}
+      :
+      (mut_ref Self) -> (M (H := H') (ink_env.error.Result E::type["Hash"]));
+    call_runtime
+      `{H' : State.Trait}
+      {E Call: Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Call}
+      :
+      (mut_ref Self) -> (ref Call) -> (M (H := H') (ink_env.error.Result unit));
+  }.
+  
+  Global Instance Method_caller `{H' : State.Trait} `(Trait)
+    : Notation.Dot "caller" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := caller;
+  }.
+  Global Instance Method_transferred_value `{H' : State.Trait} `(Trait)
+    : Notation.Dot "transferred_value" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      transferred_value;
+  }.
+  Global Instance Method_weight_to_fee `{H' : State.Trait} `(Trait)
+    : Notation.Dot "weight_to_fee" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      weight_to_fee;
+  }.
+  Global Instance Method_gas_left `{H' : State.Trait} `(Trait)
+    : Notation.Dot "gas_left" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := gas_left;
+  }.
+  Global Instance Method_block_timestamp `{H' : State.Trait} `(Trait)
+    : Notation.Dot "block_timestamp" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      block_timestamp;
+  }.
+  Global Instance Method_account_id `{H' : State.Trait} `(Trait)
+    : Notation.Dot "account_id" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := account_id;
+  }.
+  Global Instance Method_balance `{H' : State.Trait} `(Trait)
+    : Notation.Dot "balance" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := balance;
+  }.
+  Global Instance Method_block_number `{H' : State.Trait} `(Trait)
+    : Notation.Dot "block_number" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := block_number;
+  }.
+  Global Instance Method_minimum_balance `{H' : State.Trait} `(Trait)
+    : Notation.Dot "minimum_balance" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      minimum_balance;
+  }.
+  Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
+    : Notation.Dot "emit_event" := {
+    Notation.dot
+        {E Event : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.Topics.Trait Event}
+        `{parity_scale_codec.codec.Encode.Trait Event}
+      :=
+      emit_event;
+  }.
+  Global Instance Method_invoke_contract `{H' : State.Trait} `(Trait)
+    : Notation.Dot "invoke_contract" := {
+    Notation.dot
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
+      :=
+      invoke_contract;
+  }.
+  Global Instance Method_invoke_contract_delegate `{H' : State.Trait} `(Trait)
+    : Notation.Dot "invoke_contract_delegate" := {
+    Notation.dot
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R}
+      :=
+      invoke_contract_delegate;
+  }.
+  Global Instance Method_instantiate_contract `{H' : State.Trait} `(Trait)
+    : Notation.Dot "instantiate_contract" := {
+    Notation.dot
+        {E ContractRef Args Salt R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+            (C := ContractRef)}
+      :=
+      instantiate_contract;
+  }.
+  Global Instance Method_terminate_contract `{H' : State.Trait} `(Trait)
+    : Notation.Dot "terminate_contract" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      terminate_contract;
+  }.
+  Global Instance Method_transfer `{H' : State.Trait} `(Trait)
+    : Notation.Dot "transfer" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := transfer;
+  }.
+  Global Instance Method_is_contract `{H' : State.Trait} `(Trait)
+    : Notation.Dot "is_contract" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := is_contract;
+  }.
+  Global Instance Method_caller_is_origin `{H' : State.Trait} `(Trait)
+    : Notation.Dot "caller_is_origin" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      caller_is_origin;
+  }.
+  Global Instance Method_code_hash `{H' : State.Trait} `(Trait)
+    : Notation.Dot "code_hash" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := code_hash;
+  }.
+  Global Instance Method_own_code_hash `{H' : State.Trait} `(Trait)
+    : Notation.Dot "own_code_hash" := {
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      own_code_hash;
+  }.
+  Global Instance Method_call_runtime `{H' : State.Trait} `(Trait)
+    : Notation.Dot "call_runtime" := {
+    Notation.dot
+        {E Call : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Call}
+      :=
+      call_runtime;
+  }.
+End TypedEnvBackend.
 
 Module call_builder.
   Module CallParams.
@@ -4850,76 +4918,6 @@ Module topics.
   Definition PrefixedValue := @PrefixedValue.t.
 End topics.
 
-Module hash.
-  Module HashOutput.
-    Class Trait
-        (Self : Set) `{ink_env.hash.private.Sealed.Trait Self}
-        {Type_ : Set}
-        `{core.default.Default.Trait Type_} :
-        Set := {
-      Type_ := Type_;
-    }.
-    
-    Global Instance Method_Type_ {Type_} `(Trait (Type_ := Type_))
-      : Notation.DoubleColonType Self "Type_" := {
-      Notation.double_colon_type := Type_;
-    }.
-  End HashOutput.
-  
-  Module CryptoHash.
-    Class Trait
-        (Self : Set)
-          `{ink_env.hash.HashOutput.Trait Self}
-          `{ink_env.hash.private.Sealed.Trait Self} :
-        Set := {
-      hash
-        `{H' : State.Trait}
-        :
-        (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
-        (M (H := H') unit);
-    }.
-    
-    Global Instance Method_hash `{H' : State.Trait} `(Trait)
-      : Notation.Dot "hash" := {
-      Notation.dot := hash;
-    }.
-  End CryptoHash.
-  
-  Module Sha2x256.
-    Inductive t : Set :=
-    .
-  End Sha2x256.
-  Definition Sha2x256 := Sha2x256.t.
-  
-  Module Keccak256.
-    Inductive t : Set :=
-    .
-  End Keccak256.
-  Definition Keccak256 := Keccak256.t.
-  
-  Module Blake2x256.
-    Inductive t : Set :=
-    .
-  End Blake2x256.
-  Definition Blake2x256 := Blake2x256.t.
-  
-  Module Blake2x128.
-    Inductive t : Set :=
-    .
-  End Blake2x128.
-  Definition Blake2x128 := Blake2x128.t.
-  
-  Module private.
-    Module Sealed.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
-      }.
-      Global Set Primitive Projections.
-    End Sealed.
-  End private.
-End hash.
-
 Module error.
   Module Error.
     Inductive t : Set :=
@@ -4961,6 +4959,8 @@ Module Error.
   | EcdsaRecoveryFailed.
 End Error.
 Definition Error := Error.t.
+
+Definition Result (T : Set) : Set := core.result.Result T ink_env.error.Error.
 
 Module HashOutput.
   Class Trait

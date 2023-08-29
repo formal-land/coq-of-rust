@@ -4,33 +4,33 @@
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": {
-	"depends_on_trait_impl": "Impl_SomeTrait_for_OtherType",
-        "main": "foo"
-      },
-      "top_level::Impl_SomeTrait_for_SomeType": {
-        "some_trait_bar": "some_trait_foo"
+	"depends_on_trait_impl": { "move": "down", "after": "Impl_SomeTrait_for_OtherType" },
+        "foo": { "move": "up", "before": "main" }
       },
       "top_level::Impl_SomeType": {
-        "meth2": "meth1"
+        "meth2": { "move": "up","before": "meth1" }
+      },
+      "top_level::Impl_SomeTrait_for_SomeType": {
+        "some_trait_foo": { "move": "down", "after": "some_trait_bar" }
       },
       "top_level::inner_mod": {
-        "tar": "bar"
+        "bar": { "move": "down", "after": "tar" }
       },
       "top_level::inner_mod::nested_mod": {
-        "tack": "tick"
+        "tick": { "move": "down", "after": "tack" }
       }
     },
     "ink_env": {
       "top_level": {
-        "arithmetic": "types",
-        "topics": "error",
-        "error": "hash",
-        "hash": "backend",
-        "backend": "call",
-        "call": "api"
+        "arithmetic": { "move": "up", "before": "types" },
+        "topics": {"move": "up", "before": "error"},
+        "error": {"move": "up", "before": "hash"},
+        "hash": {"move": "up", "before": "backend"},
+        "backend": {"move": "up", "before": "call"},
+        "call": {"move": "up", "before": "api"}
       },
-      "top_level::arithmetic": {
-        "BaseArithmetic": "Saturating"
+      "top_level::arithmetic": { 
+        "Saturating": { "move": "up", "before": "BaseArithmetic" }
       }
     }
   }
