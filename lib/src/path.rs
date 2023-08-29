@@ -224,6 +224,12 @@ pub(crate) fn to_valid_coq_name(str: String) -> String {
     if str == "Type" {
         return "Type_".to_string();
     }
+    if str == "Set" {
+        return "Set_".to_string();
+    }
+    if str == "Unset" {
+        return "Unset_".to_string();
+    }
     let str = str::replace(&str, "$", "_");
     let str = str::replace(&str, "{{root}}", "Root");
     str::replace(&str, "::", ".")
