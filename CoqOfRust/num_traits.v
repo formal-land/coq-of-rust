@@ -4249,10 +4249,9 @@ Module Num.
         `{core.cmp.PartialEq.Trait Self (Rhs := None)}
         `{num_traits.identities.Zero.Trait Self}
         `{num_traits.identities.One.Trait Self}
-        `{num_traits.NumOps.Trait Self (Rhs := None) (Output := None)}
-      {FromStrRadixErr : Set} :
-      Set := {
-    FromStrRadixErr := FromStrRadixErr;
+        `{num_traits.NumOps.Trait Self (Rhs := None) (Output := None)} :
+      Type := {
+    FromStrRadixErr : Set;
     from_str_radix
       `{H : State.Trait}
       :
@@ -4264,9 +4263,7 @@ Module Num.
   Global Instance
       Method_FromStrRadixErr
       `{H : State.Trait}
-      {FromStrRadixErr}
-      `(Trait
-      (FromStrRadixErr := FromStrRadixErr))
+      `(Trait)
     : Notation.DoubleColonType Self "FromStrRadixErr" := {
     Notation.double_colon_type := FromStrRadixErr;
   }.
