@@ -1228,6 +1228,169 @@ Module backend.
 End backend.
 
 Module call.
+  Module common.
+    Module ReturnType.
+      Section ReturnType.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End ReturnType.
+    End ReturnType.
+    Definition ReturnType := @ReturnType.t.
+    
+    Module Set.
+      Section Set.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Set.
+    End Set.
+    Definition Set := @Set.t.
+    
+    Module Unset.
+      Section Unset.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          _ : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_0 : Notation.Dot 0 := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Unset.
+    End Unset.
+    Definition Unset := @Unset.t.
+    
+    Module Unwrap.
+      Class Trait (Self : Set) {Output : Set} : Set := {
+        Output := Output;
+        unwrap_or_else
+          `{H' : State.Trait}
+          {F: Set}
+          `{core.ops.function.FnOnce.Trait F (Args := unit)}
+          :
+          Self -> F -> (M (H := H') Output);
+      }.
+      
+      Global Instance Method_Output {Output} `(Trait (Output := Output))
+        : Notation.DoubleColonType Self "Output" := {
+        Notation.double_colon_type := Output;
+      }.
+      Global Instance Method_unwrap_or_else `{H' : State.Trait} `(Trait)
+        : Notation.Dot "unwrap_or_else" := {
+        Notation.dot
+            {F : Set}
+            `{core.ops.function.FnOnce.Trait F (Args := unit)}
+          :=
+          unwrap_or_else;
+      }.
+    End Unwrap.
+  End common.
+  
+  Module selector.
+    Module Selector.
+      Unset Primitive Projections.
+      Record t : Set := {
+        bytes : list u8;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_bytes : Notation.Dot "bytes" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End Selector.
+    Definition Selector := @Selector.t.
+  End selector.
+  
+  Module execution_input.
+    Module ExecutionInput.
+      Section ExecutionInput.
+        Context {Args : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          selector : ink_env.call.selector.Selector;
+          args : Args;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_selector : Notation.Dot "selector" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_args : Notation.Dot "args" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ExecutionInput.
+    End ExecutionInput.
+    Definition ExecutionInput := @ExecutionInput.t.
+    
+    Module ArgumentList.
+      Section ArgumentList.
+        Context {Head Rest : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          head : Head;
+          rest : Rest;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_head : Notation.Dot "head" := {
+          Notation.dot '(Build_t x0 _) := x0;
+        }.
+        Global Instance Get_rest : Notation.Dot "rest" := {
+          Notation.dot '(Build_t _ x1) := x1;
+        }.
+      End ArgumentList.
+    End ArgumentList.
+    Definition ArgumentList := @ArgumentList.t.
+    
+    Definition ArgsList (Head Rest : Set) : Set :=
+      ink_env.call.execution_input.ArgumentList
+        (ink_env.call.execution_input.Argument Head)
+        Rest.
+    
+    Module Argument.
+      Section Argument.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          arg : T;
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_arg : Notation.Dot "arg" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End Argument.
+    End Argument.
+    Definition Argument := @Argument.t.
+    
+    Module ArgumentListEnd.
+      Inductive t : Set := Build.
+    End ArgumentListEnd.
+    Definition ArgumentListEnd := @ArgumentListEnd.t.
+    
+    Definition EmptyArgumentList : Set :=
+      ink_env.call.execution_input.ArgumentList
+        ink_env.call.execution_input.ArgumentListEnd
+        ink_env.call.execution_input.ArgumentListEnd.
+  End execution_input.
+  
   Module call_builder.
     Module CallParams.
       Section CallParams.
@@ -1349,81 +1512,6 @@ Module call.
     End CallBuilder.
     Definition CallBuilder := @CallBuilder.t.
   End call_builder.
-  
-  Module common.
-    Module ReturnType.
-      Section ReturnType.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : core.marker.PhantomData (T);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End ReturnType.
-    End ReturnType.
-    Definition ReturnType := @ReturnType.t.
-    
-    Module Set.
-      Section Set.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End Set.
-    End Set.
-    Definition Set := @Set.t.
-    
-    Module Unset.
-      Section Unset.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          _ : core.marker.PhantomData (T);
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End Unset.
-    End Unset.
-    Definition Unset := @Unset.t.
-    
-    Module Unwrap.
-      Class Trait (Self : Set) {Output : Set} : Set := {
-        Output := Output;
-        unwrap_or_else
-          `{H' : State.Trait}
-          {F: Set}
-          `{core.ops.function.FnOnce.Trait F (Args := unit)}
-          :
-          Self -> F -> (M (H := H') Output);
-      }.
-      
-      Global Instance Method_Output {Output} `(Trait (Output := Output))
-        : Notation.DoubleColonType Self "Output" := {
-        Notation.double_colon_type := Output;
-      }.
-      Global Instance Method_unwrap_or_else `{H' : State.Trait} `(Trait)
-        : Notation.Dot "unwrap_or_else" := {
-        Notation.dot
-            {F : Set}
-            `{core.ops.function.FnOnce.Trait F (Args := unit)}
-          :=
-          unwrap_or_else;
-      }.
-    End Unwrap.
-  End common.
   
   Module create_builder.
     Module state.
@@ -1587,94 +1675,6 @@ Module call.
               (ink_env.call.common.Unset
                 (ink_env.call.common.ReturnType unit))).
   End create_builder.
-  
-  Module execution_input.
-    Module ExecutionInput.
-      Section ExecutionInput.
-        Context {Args : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          selector : ink_env.call.selector.Selector;
-          args : Args;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_selector : Notation.Dot "selector" := {
-          Notation.dot '(Build_t x0 _) := x0;
-        }.
-        Global Instance Get_args : Notation.Dot "args" := {
-          Notation.dot '(Build_t _ x1) := x1;
-        }.
-      End ExecutionInput.
-    End ExecutionInput.
-    Definition ExecutionInput := @ExecutionInput.t.
-    
-    Module ArgumentList.
-      Section ArgumentList.
-        Context {Head Rest : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          head : Head;
-          rest : Rest;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_head : Notation.Dot "head" := {
-          Notation.dot '(Build_t x0 _) := x0;
-        }.
-        Global Instance Get_rest : Notation.Dot "rest" := {
-          Notation.dot '(Build_t _ x1) := x1;
-        }.
-      End ArgumentList.
-    End ArgumentList.
-    Definition ArgumentList := @ArgumentList.t.
-    
-    Definition ArgsList (Head Rest : Set) : Set :=
-      ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument Head)
-        Rest.
-    
-    Module Argument.
-      Section Argument.
-        Context {T : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          arg : T;
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_arg : Notation.Dot "arg" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End Argument.
-    End Argument.
-    Definition Argument := @Argument.t.
-    
-    Module ArgumentListEnd.
-      Inductive t : Set := Build.
-    End ArgumentListEnd.
-    Definition ArgumentListEnd := @ArgumentListEnd.t.
-    
-    Definition EmptyArgumentList : Set :=
-      ink_env.call.execution_input.ArgumentList
-        ink_env.call.execution_input.ArgumentListEnd
-        ink_env.call.execution_input.ArgumentListEnd.
-  End execution_input.
-  
-  Module selector.
-    Module Selector.
-      Unset Primitive Projections.
-      Record t : Set := {
-        bytes : list u8;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_bytes : Notation.Dot "bytes" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End Selector.
-    Definition Selector := @Selector.t.
-  End selector.
 End call.
 
 Module api.

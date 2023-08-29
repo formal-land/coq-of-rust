@@ -34,6 +34,11 @@
       },
       "top_level::hash": {
         "private": { "move": "up", "before": "HashOutput" }
+      },
+      "top_level::call": {
+        "selector": { "move": "up", "before": "execution_input" },
+        "common": { "move": "up", "before": "call_builder" },
+        "execution_input": { "move": "up", "before": "call_builder" }
       }
     }
   }
