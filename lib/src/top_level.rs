@@ -721,7 +721,7 @@ fn compile_generic_bounds(
         .collect()
 }
 
-//// computes tre list of actual type parameters with their default status
+//// computes the list of actual type parameters with their default status
 fn get_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
