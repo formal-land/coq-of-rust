@@ -515,7 +515,7 @@ Module core.
   Module ops.
     Module arith.
       Module Add.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           add `{State.Trait} : Self -> Rhs -> M Output;
@@ -540,7 +540,7 @@ Module core.
       End AddAssign.
 
       Module Sub.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           sub `{State.Trait} : Self -> Rhs -> M Output;
@@ -565,7 +565,7 @@ Module core.
       End SubAssign.
 
       Module Mul.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           mul `{State.Trait} : Self -> Rhs -> M Output;
@@ -590,7 +590,7 @@ Module core.
       End MulAssign.
 
       Module Div.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           div `{State.Trait} : Self -> Rhs -> M Output;
@@ -615,7 +615,7 @@ Module core.
       End DivAssign.
 
       Module Rem.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           rem `{State.Trait} : Self -> Rhs -> M Output;
@@ -640,7 +640,7 @@ Module core.
       End RemAssign.
 
       Module BitXor.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           bitxor `{State.Trait} : Self -> Rhs -> M Output;
@@ -665,7 +665,7 @@ Module core.
       End BitXorAssign.
 
       Module BitAnd.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           bitand `{State.Trait} : Self -> Rhs -> M Output;
@@ -690,7 +690,7 @@ Module core.
       End BitAndAssign.
 
       Module BitOr.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           bitor `{State.Trait} : Self -> Rhs -> M Output;
@@ -715,7 +715,7 @@ Module core.
       End BitOrAssign.
 
       Module Shl.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           shl `{State.Trait} : Self -> Rhs -> M Output;
@@ -740,7 +740,7 @@ Module core.
       End ShlAssign.
 
       Module Shr.
-        Class Trait {Output : Set} (Self : Set) {Rhs : option Set} : Set := {
+        Class Trait (Self : Set) {Output : Set} {Rhs : option Set} : Set := {
           Output := Output;
           Rhs := defaultType Rhs Self;
           shr `{State.Trait} : Self -> Rhs -> M Output;
@@ -765,7 +765,7 @@ Module core.
       End ShrAssign.
 
       Module Neg.
-        Class Trait {Output : Set} (Self : Set) : Set := {
+        Class Trait (Self : Set) {Output : Set} : Set := {
           Output := Output;
           neg `{State.Trait} : Self -> M Output;
         }.
@@ -777,7 +777,7 @@ Module core.
       End Neg.
 
       Module Not.
-        Class Trait {Output : Set} (Self : Set) : Set := {
+        Class Trait (Self : Set) {Output : Set} : Set := {
           Output := Output;
           not `{State.Trait} : Self -> M Output;
         }.
@@ -790,7 +790,7 @@ Module core.
     End arith.
 
     Module Deref.
-      Class Trait {Target : Set} (Self : Set) : Set := {
+      Class Trait (Self : Set) {Target : Set} : Set := {
         Target := Target;
         deref `{State.Trait} : ref Self -> M (ref Target);
       }.
@@ -803,19 +803,18 @@ Module core.
 
     Module function.
       Module FnOnce.
-        Class Trait {Args Output : Set} (Self : Set) : Set := {
+        Class Trait (Self : Set) {Args Output : Set} : Set := {
           Output := Output;
           call_once `{State.Trait} : Self -> Args -> M Output;
         }.
       End FnOnce.
 
       Module FnMut.
-        Class Trait {Args Output : Set} (Self : Set)
+        Class Trait (Self : Set) {Args Output : Set}
           `{FnOnce.Trait (Args := Args) (Output := Output) Self} : Set := {
           call_mut `{State.Trait} : mut_ref Self -> Args -> M Output;
         }.
       End FnMut.
-      
     End function.
     
 
