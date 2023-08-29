@@ -73,8 +73,8 @@ pub trait From<T>: Sized {
 }
 *)
 Module From.
-  Class Trait (Self T : Set) : Set := { 
-    from : T -> Self;
+  Class Trait (Self : Set) {T : Set} : Set := {
+    from `{H : State.Trait}: T -> M Self;
   }.
 End From.
 
