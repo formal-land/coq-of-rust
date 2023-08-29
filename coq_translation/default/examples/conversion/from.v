@@ -14,37 +14,6 @@ Module Number.
 End Number.
 Definition Number : Set := @Number.t.
 
-Module Impl_core_fmt_Debug_for_from_Number.
-  Definition Self := from.Number.
-  
-  Parameter debug_struct_field1_finish :
-      core.fmt.Formatter ->
-        string -> string -> i32 -> M (H := H) core.fmt.Result.
-  
-  Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field1_finish" := {
-    Notation.double_colon := debug_struct_field1_finish; }.
-  
-  Definition fmt
-      `{H : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field1_finish"]
-      f
-      "Number"
-      "value"
-      (addr_of (addr_of self.["value"])).
-  
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_from_Number.
-
 Module Impl_core_convert_From_for_from_Number.
   Definition Self := from.Number.
   
@@ -63,15 +32,5 @@ End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H : State.Trait} : M (H := H) unit :=
-  let* num := from.Number::["from"] 30 in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of num) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "My number is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
+  let* _ := from.Number::["from"] 30 in
   Pure tt.
