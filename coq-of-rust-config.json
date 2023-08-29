@@ -27,6 +27,7 @@
         "error": { "move": "up", "before": "backend" },
         "hash": { "move": "up", "before": "backend" },
         "backend": { "move": "up", "before": "api" },
+        "contract": { "move": "up", "before": "call" },
         "call": { "move": "up", "before": "api" }
       },
       "top_level::arithmetic": { 

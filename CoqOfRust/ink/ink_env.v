@@ -1227,6 +1227,34 @@ Module backend.
   End TypedEnvBackend.
 End backend.
 
+Module contract.
+  Module ContractEnv.
+    Class Trait
+        (Self : Set)
+        {Env : Set}
+        `{ink_env.types.Environment.Trait Env} :
+        Set := {
+      Env := Env;
+    }.
+    
+    Global Instance Method_Env {Env} `(Trait (Env := Env))
+      : Notation.DoubleColonType Self "Env" := {
+      Notation.double_colon_type := Env;
+    }.
+  End ContractEnv.
+  
+  Module ContractReference.
+    Class Trait (Self : Set) {Type_ : Set} : Set := {
+      Type_ := Type_;
+    }.
+    
+    Global Instance Method_Type_ {Type_} `(Trait (Type_ := Type_))
+      : Notation.DoubleColonType Self "Type_" := {
+      Notation.double_colon_type := Type_;
+    }.
+  End ContractReference.
+End contract.
+
 Module call.
   Module common.
     Module ReturnType.
@@ -3828,34 +3856,6 @@ Module IsResultTypeSealed.
   }.
   Global Set Primitive Projections.
 End IsResultTypeSealed.
-
-Module contract.
-  Module ContractEnv.
-    Class Trait
-        (Self : Set)
-        {Env : Set}
-        `{ink_env.types.Environment.Trait Env} :
-        Set := {
-      Env := Env;
-    }.
-    
-    Global Instance Method_Env {Env} `(Trait (Env := Env))
-      : Notation.DoubleColonType Self "Env" := {
-      Notation.double_colon_type := Env;
-    }.
-  End ContractEnv.
-  
-  Module ContractReference.
-    Class Trait (Self : Set) {Type_ : Set} : Set := {
-      Type_ := Type_;
-    }.
-    
-    Global Instance Method_Type_ {Type_} `(Trait (Type_ := Type_))
-      : Notation.DoubleColonType Self "Type_" := {
-      Notation.double_colon_type := Type_;
-    }.
-  End ContractReference.
-End contract.
 
 Module ContractEnv.
   Class Trait
