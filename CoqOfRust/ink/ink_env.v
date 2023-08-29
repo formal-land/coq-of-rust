@@ -1359,11 +1359,6 @@ Module call.
     End ArgumentList.
     Definition ArgumentList := @ArgumentList.t.
     
-    Definition ArgsList (Head Rest : Set) : Set :=
-      ink_env.call.execution_input.ArgumentList
-        (ink_env.call.execution_input.Argument Head)
-        Rest.
-    
     Module Argument.
       Section Argument.
         Context {T : Set}.
@@ -1379,6 +1374,11 @@ Module call.
       End Argument.
     End Argument.
     Definition Argument := @Argument.t.
+    
+    Definition ArgsList (Head Rest : Set) : Set :=
+      ink_env.call.execution_input.ArgumentList
+        (ink_env.call.execution_input.Argument Head)
+        Rest.
     
     Module ArgumentListEnd.
       Inductive t : Set := Build.
@@ -1424,21 +1424,6 @@ Module call.
     End CallParams.
     Definition CallParams := @CallParams.t.
     
-    Parameter build_call :
-        forall
-          `{H' : State.Trait}
-          {E : Set}
-          `{ink_env.types.Environment.Trait E},
-        M (H := H')
-            (ink_env.call.call_builder.CallBuilder
-              E
-              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-              (ink_env.call.common.Unset
-                (ink_env.call.execution_input.ExecutionInput
-                  ink_env.call.execution_input.EmptyArgumentList))
-              (ink_env.call.common.Unset
-                (ink_env.call.common.ReturnType unit))).
-    
     Module Call.
       Section Call.
         Context {E : Set}.
@@ -1463,22 +1448,6 @@ Module call.
       End Call.
     End Call.
     Definition Call := @Call.t.
-    
-    Module DelegateCall.
-      Section DelegateCall.
-        Context {E : Set}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          code_hash : E::type["Hash"];
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End DelegateCall.
-    End DelegateCall.
-    Definition DelegateCall := @DelegateCall.t.
     
     Module CallBuilder.
       Section CallBuilder.
@@ -1511,6 +1480,37 @@ Module call.
       End CallBuilder.
     End CallBuilder.
     Definition CallBuilder := @CallBuilder.t.
+    
+    Parameter build_call :
+        forall
+          `{H' : State.Trait}
+          {E : Set}
+          `{ink_env.types.Environment.Trait E},
+        M (H := H')
+            (ink_env.call.call_builder.CallBuilder
+              E
+              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+              (ink_env.call.common.Unset
+                (ink_env.call.execution_input.ExecutionInput
+                  ink_env.call.execution_input.EmptyArgumentList))
+              (ink_env.call.common.Unset
+                (ink_env.call.common.ReturnType unit))).
+    
+    Module DelegateCall.
+      Section DelegateCall.
+        Context {E : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : E::type["Hash"];
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End DelegateCall.
+    End DelegateCall.
+    Definition DelegateCall := @DelegateCall.t.
   End call_builder.
   
   Module create_builder.
@@ -2777,17 +2777,6 @@ Module call_builder.
   End CallParams.
   Definition CallParams := @CallParams.t.
   
-  Parameter build_call :
-      forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
-      M (H := H')
-          (ink_env.call.call_builder.CallBuilder
-            E
-            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-            (ink_env.call.common.Unset
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
-  
   Module Call.
     Section Call.
       Context {E : Set}.
@@ -2812,22 +2801,6 @@ Module call_builder.
     End Call.
   End Call.
   Definition Call := @Call.t.
-  
-  Module DelegateCall.
-    Section DelegateCall.
-      Context {E : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        code_hash : E::type["Hash"];
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End DelegateCall.
-  End DelegateCall.
-  Definition DelegateCall := @DelegateCall.t.
   
   Module CallBuilder.
     Section CallBuilder.
@@ -2860,6 +2833,33 @@ Module call_builder.
     End CallBuilder.
   End CallBuilder.
   Definition CallBuilder := @CallBuilder.t.
+  
+  Parameter build_call :
+      forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H')
+          (ink_env.call.call_builder.CallBuilder
+            E
+            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+            (ink_env.call.common.Unset
+              (ink_env.call.execution_input.ExecutionInput
+                ink_env.call.execution_input.EmptyArgumentList))
+            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+  
+  Module DelegateCall.
+    Section DelegateCall.
+      Context {E : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : E::type["Hash"];
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End DelegateCall.
+  End DelegateCall.
+  Definition DelegateCall := @DelegateCall.t.
 End call_builder.
 
 Module CallParams.
@@ -3490,11 +3490,6 @@ Module execution_input.
   End ArgumentList.
   Definition ArgumentList := @ArgumentList.t.
   
-  Definition ArgsList (Head Rest : Set) : Set :=
-    ink_env.call.execution_input.ArgumentList
-      (ink_env.call.execution_input.Argument Head)
-      Rest.
-  
   Module Argument.
     Section Argument.
       Context {T : Set}.
@@ -3510,6 +3505,11 @@ Module execution_input.
     End Argument.
   End Argument.
   Definition Argument := @Argument.t.
+  
+  Definition ArgsList (Head Rest : Set) : Set :=
+    ink_env.call.execution_input.ArgumentList
+      (ink_env.call.execution_input.Argument Head)
+      Rest.
   
   Module ArgumentListEnd.
     Inductive t : Set := Build.

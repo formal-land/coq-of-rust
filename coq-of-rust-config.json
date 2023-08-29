@@ -39,6 +39,13 @@
         "selector": { "move": "up", "before": "execution_input" },
         "common": { "move": "up", "before": "call_builder" },
         "execution_input": { "move": "up", "before": "call_builder" }
+      },
+      "top_level::call::execution_input": {
+        "Argument": { "move": "up", "before": "ArgsList" }
+      },
+      "top_level::call::call_builder": {
+        "CallBuilder": { "move": "up", "before": "build_call" },
+        "Call": { "move": "up", "before": "build_call" }
       }
     }
   }
