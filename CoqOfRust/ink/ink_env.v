@@ -1245,8 +1245,8 @@ Module call.
     End ReturnType.
     Definition ReturnType := @ReturnType.t.
     
-    Module Set.
-      Section Set.
+    Module Set_.
+      Section Set_.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
@@ -1257,12 +1257,12 @@ Module call.
         Global Instance Get_0 : Notation.Dot 0 := {
           Notation.dot '(Build_t x0) := x0;
         }.
-      End Set.
-    End Set.
-    Definition Set := @Set.t.
+      End Set_.
+    End Set_.
+    Definition Set_ := @Set_.t.
     
-    Module Unset.
-      Section Unset.
+    Module Unset_.
+      Section Unset_.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t : Set := {
@@ -1273,9 +1273,9 @@ Module call.
         Global Instance Get_0 : Notation.Dot 0 := {
           Notation.dot '(Build_t x0) := x0;
         }.
-      End Unset.
-    End Unset.
-    Definition Unset := @Unset.t.
+      End Unset_.
+    End Unset_.
+    Definition Unset_ := @Unset_.t.
     
     Module Unwrap.
       Class Trait (Self : Set) {Output : Set} : Set := {
@@ -1489,11 +1489,11 @@ Module call.
         M (H := H')
             (ink_env.call.call_builder.CallBuilder
               E
-              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-              (ink_env.call.common.Unset
+              (ink_env.call.common.Unset_ (ink_env.call.call_builder.Call E))
+              (ink_env.call.common.Unset_
                 (ink_env.call.execution_input.ExecutionInput
                   ink_env.call.execution_input.EmptyArgumentList))
-              (ink_env.call.common.Unset
+              (ink_env.call.common.Unset_
                 (ink_env.call.common.ReturnType unit))).
     
     Module DelegateCall.
@@ -1665,14 +1665,15 @@ Module call.
             (ink_env.call.create_builder.CreateBuilder
               ink_env.contract.ContractEnv.Env
               ContractRef
-              (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-              (ink_env.call.common.Unset u64)
-              (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-              (ink_env.call.common.Unset
+              (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+              (ink_env.call.common.Unset_ u64)
+              (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+              (ink_env.call.common.Unset_
                 (ink_env.call.execution_input.ExecutionInput
                   ink_env.call.execution_input.EmptyArgumentList))
-              (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-              (ink_env.call.common.Unset
+              (ink_env.call.common.Unset_
+                ink_env.call.create_builder.state.Salt)
+              (ink_env.call.common.Unset_
                 (ink_env.call.common.ReturnType unit))).
   End create_builder.
 End call.
@@ -2839,11 +2840,11 @@ Module call_builder.
       M (H := H')
           (ink_env.call.call_builder.CallBuilder
             E
-            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-            (ink_env.call.common.Unset
+            (ink_env.call.common.Unset_ (ink_env.call.call_builder.Call E))
+            (ink_env.call.common.Unset_
               (ink_env.call.execution_input.ExecutionInput
                 ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+            (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
   
   Module DelegateCall.
     Section DelegateCall.
@@ -2899,11 +2900,11 @@ Parameter build_call :
     M (H := H')
         (ink_env.call.call_builder.CallBuilder
           E
-          (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-          (ink_env.call.common.Unset
+          (ink_env.call.common.Unset_ (ink_env.call.call_builder.Call E))
+          (ink_env.call.common.Unset_
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
 
 Module Call.
   Section Call.
@@ -2995,8 +2996,8 @@ Module common.
   End ReturnType.
   Definition ReturnType := @ReturnType.t.
   
-  Module Set.
-    Section Set.
+  Module Set_.
+    Section Set_.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
@@ -3007,12 +3008,12 @@ Module common.
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
       }.
-    End Set.
-  End Set.
-  Definition Set := @Set.t.
+    End Set_.
+  End Set_.
+  Definition Set_ := @Set_.t.
   
-  Module Unset.
-    Section Unset.
+  Module Unset_.
+    Section Unset_.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
@@ -3023,9 +3024,9 @@ Module common.
       Global Instance Get_0 : Notation.Dot 0 := {
         Notation.dot '(Build_t x0) := x0;
       }.
-    End Unset.
-  End Unset.
-  Definition Unset := @Unset.t.
+    End Unset_.
+  End Unset_.
+  Definition Unset_ := @Unset_.t.
   
   Module Unwrap.
     Class Trait (Self : Set) {Output : Set} : Set := {
@@ -3067,8 +3068,8 @@ Module ReturnType.
 End ReturnType.
 Definition ReturnType := @ReturnType.t.
 
-Module Set.
-  Section Set.
+Module Set_.
+  Section Set_.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
@@ -3079,12 +3080,12 @@ Module Set.
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
-  End Set.
-End Set.
-Definition Set := @Set.t.
+  End Set_.
+End Set_.
+Definition Set_ := @Set_.t.
 
-Module Unset.
-  Section Unset.
+Module Unset_.
+  Section Unset_.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
@@ -3095,9 +3096,9 @@ Module Unset.
     Global Instance Get_0 : Notation.Dot 0 := {
       Notation.dot '(Build_t x0) := x0;
     }.
-  End Unset.
-End Unset.
-Definition Unset := @Unset.t.
+  End Unset_.
+End Unset_.
+Definition Unset_ := @Unset_.t.
 
 Module Unwrap.
   Class Trait (Self : Set) {Output : Set} : Set := {
@@ -3274,14 +3275,14 @@ Module create_builder.
           (ink_env.call.create_builder.CreateBuilder
             ink_env.contract.ContractEnv.Env
             ContractRef
-            (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-            (ink_env.call.common.Unset u64)
-            (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-            (ink_env.call.common.Unset
+            (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+            (ink_env.call.common.Unset_ u64)
+            (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+            (ink_env.call.common.Unset_
               (ink_env.call.execution_input.ExecutionInput
                 ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+            (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
+            (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
 End create_builder.
 
 Module state.
@@ -3440,14 +3441,14 @@ Parameter build_create :
         (ink_env.call.create_builder.CreateBuilder
           ink_env.contract.ContractEnv.Env
           ContractRef
-          (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-          (ink_env.call.common.Unset u64)
-          (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-          (ink_env.call.common.Unset
+          (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+          (ink_env.call.common.Unset_ u64)
+          (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+          (ink_env.call.common.Unset_
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+          (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
+          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
 
 Module execution_input.
   Module ExecutionInput.

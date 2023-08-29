@@ -821,16 +821,17 @@ Module erc20.
             (ink_env.call.create_builder.CreateBuilder
               erc20.erc20.Environment
               Self
-              (ink_env.call.common.Unset erc20.erc20.Hash)
-              (ink_env.call.common.Unset u64)
-              (ink_env.call.common.Unset erc20.erc20.Balance)
-              (ink_env.call.common.Set
+              (ink_env.call.common.Unset_ erc20.erc20.Hash)
+              (ink_env.call.common.Unset_ u64)
+              (ink_env.call.common.Unset_ erc20.erc20.Balance)
+              (ink_env.call.common.Set_
                 (ink_env.call.execution_input.ExecutionInput
                   (ink_env.call.execution_input.ArgumentList
                     (ink_env.call.execution_input.Argument erc20.erc20.Balance)
                     ink_env.call.execution_input.EmptyArgumentList)))
-              (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-              (ink_env.call.common.Set
+              (ink_env.call.common.Unset_
+                ink_env.call.create_builder.state.Salt)
+              (ink_env.call.common.Set_
                 (ink_env.call.common.ReturnType Self))) :=
       let* α0 := ink_env.call.create_builder.build_create in
       let* α1 :=
@@ -4387,12 +4388,12 @@ Module Impl_erc20_erc20___CallBuilder_18.
         M (H := H')
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.call_builder.Call erc20.erc20.Environment))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
@@ -4415,14 +4416,14 @@ Module Impl_erc20_erc20___CallBuilder_18.
         M (H := H')
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.call_builder.Call erc20.erc20.Environment))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
                   (ink_env.call.execution_input.Argument erc20.erc20.AccountId)
                   ink_env.call.execution_input.EmptyArgumentList)))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
@@ -4447,9 +4448,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
         M (H := H')
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.call_builder.Call erc20.erc20.Environment))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
                   (ink_env.call.execution_input.Argument erc20.erc20.AccountId)
@@ -4457,7 +4458,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
                     (ink_env.call.execution_input.Argument
                       erc20.erc20.AccountId)
                     ink_env.call.execution_input.EmptyArgumentList))))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
@@ -4483,9 +4484,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
         M (H := H')
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.call_builder.Call erc20.erc20.Environment))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
                   (ink_env.call.execution_input.Argument erc20.erc20.Balance)
@@ -4493,7 +4494,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
                     (ink_env.call.execution_input.Argument
                       erc20.erc20.AccountId)
                     ink_env.call.execution_input.EmptyArgumentList))))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
@@ -4519,9 +4520,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
         M (H := H')
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.call_builder.Call erc20.erc20.Environment))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
                   (ink_env.call.execution_input.Argument erc20.erc20.Balance)
@@ -4529,7 +4530,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
                     (ink_env.call.execution_input.Argument
                       erc20.erc20.AccountId)
                     ink_env.call.execution_input.EmptyArgumentList))))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
@@ -4556,9 +4557,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
         M (H := H')
           (ink_env.call.call_builder.CallBuilder
             erc20.erc20.Environment
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.call_builder.Call erc20.erc20.Environment))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
                   (ink_env.call.execution_input.Argument erc20.erc20.Balance)
@@ -4569,7 +4570,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
                       (ink_env.call.execution_input.Argument
                         erc20.erc20.AccountId)
                       ink_env.call.execution_input.EmptyArgumentList)))))
-            (ink_env.call.common.Set
+            (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
@@ -4993,16 +4994,16 @@ Module Impl_erc20_erc20_Erc20Ref_26.
           (ink_env.call.create_builder.CreateBuilder
             erc20.erc20.Environment
             Self
-            (ink_env.call.common.Unset erc20.erc20.Hash)
-            (ink_env.call.common.Unset u64)
-            (ink_env.call.common.Unset erc20.erc20.Balance)
-            (ink_env.call.common.Set
+            (ink_env.call.common.Unset_ erc20.erc20.Hash)
+            (ink_env.call.common.Unset_ u64)
+            (ink_env.call.common.Unset_ erc20.erc20.Balance)
+            (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 (ink_env.call.execution_input.ArgumentList
                   (ink_env.call.execution_input.Argument erc20.erc20.Balance)
                   ink_env.call.execution_input.EmptyArgumentList)))
-            (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-            (ink_env.call.common.Set (ink_env.call.common.ReturnType Self))) :=
+            (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
+            (ink_env.call.common.Set_ (ink_env.call.common.ReturnType Self))) :=
     let* α0 := ink_env.call.create_builder.build_create in
     let* α1 := ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
     let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
