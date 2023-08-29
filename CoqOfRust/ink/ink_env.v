@@ -118,8 +118,7 @@ Module types.
     Global Instance
         Method_AccountId
         {AccountId}
-        `(Trait
-        (AccountId := AccountId))
+        `(Trait (AccountId := AccountId))
       : Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
     }.
@@ -134,24 +133,21 @@ Module types.
     Global Instance
         Method_Timestamp
         {Timestamp}
-        `(Trait
-        (Timestamp := Timestamp))
+        `(Trait (Timestamp := Timestamp))
       : Notation.DoubleColonType Self "Timestamp" := {
       Notation.double_colon_type := Timestamp;
     }.
     Global Instance
         Method_BlockNumber
         {BlockNumber}
-        `(Trait
-        (BlockNumber := BlockNumber))
+        `(Trait (BlockNumber := BlockNumber))
       : Notation.DoubleColonType Self "BlockNumber" := {
       Notation.double_colon_type := BlockNumber;
     }.
     Global Instance
         Method_ChainExtension
         {ChainExtension}
-        `(Trait
-        (ChainExtension := ChainExtension))
+        `(Trait (ChainExtension := ChainExtension))
       : Notation.DoubleColonType Self "ChainExtension" := {
       Notation.double_colon_type := ChainExtension;
     }.
@@ -302,16 +298,14 @@ Module Environment.
   Global Instance
       Method_BlockNumber
       {BlockNumber}
-      `(Trait
-      (BlockNumber := BlockNumber))
+      `(Trait (BlockNumber := BlockNumber))
     : Notation.DoubleColonType Self "BlockNumber" := {
     Notation.double_colon_type := BlockNumber;
   }.
   Global Instance
       Method_ChainExtension
       {ChainExtension}
-      `(Trait
-      (ChainExtension := ChainExtension))
+      `(Trait (ChainExtension := ChainExtension))
     : Notation.DoubleColonType Self "ChainExtension" := {
     Notation.double_colon_type := ChainExtension;
   }.
@@ -338,485 +332,446 @@ Definition Gas : Set := u64.
 Definition BlockNumber : Set := u32.
 
 Module api.
-  Parameter caller : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        E::type["AccountId"].
+  Parameter caller :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) E::type["AccountId"].
   
-  Parameter transferred_value : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        E::type["Balance"].
-  
-  Parameter weight_to_fee : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, ink_env.types.Gas ->
+  Parameter transferred_value :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
       M (H := H) E::type["Balance"].
   
-  Parameter gas_left : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H) ink_env.types.Gas.
+  Parameter weight_to_fee :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      ink_env.types.Gas -> M (H := H) E::type["Balance"].
   
-  Parameter block_timestamp : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        E::type["Timestamp"].
+  Parameter gas_left :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) ink_env.types.Gas.
   
-  Parameter account_id : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        E::type["AccountId"].
+  Parameter block_timestamp :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) E::type["Timestamp"].
   
-  Parameter balance : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        E::type["Balance"].
+  Parameter account_id :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) E::type["AccountId"].
   
-  Parameter block_number : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        E::type["BlockNumber"].
+  Parameter balance :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) E::type["Balance"].
   
-  Parameter minimum_balance : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        E::type["Balance"].
+  Parameter block_number :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) E::type["BlockNumber"].
   
-  Parameter emit_event : forall `{H : State.Trait},
-      forall
-      {E : Set} {Event : Set},
-      forall `{ink_env.types.Environment.Trait E}, forall
-        `{ink_env.topics.Topics.Trait Event},
-        forall `{parity_scale_codec.codec.Encode.Trait Event}, Event ->
-      M (H := H) unit.
+  Parameter minimum_balance :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) E::type["Balance"].
   
-  Parameter set_contract_storage : forall `{H : State.Trait},
+  Parameter emit_event :
       forall
-      {K : Set} {V : Set},
-      forall `{parity_scale_codec.codec.Encode.Trait K}, forall
+        `{H : State.Trait}
+        {E Event : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.Topics.Trait Event}
+        `{parity_scale_codec.codec.Encode.Trait Event},
+      Event -> M (H := H) unit.
+  
+  Parameter set_contract_storage :
+      forall
+        `{H : State.Trait}
+        {K V : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait V},
-        ref K ->
-      ref V ->
-      M (H := H) (core.option.Option u32).
+      (ref K) -> (ref V) -> M (H := H) (core.option.Option u32).
   
-  Parameter get_contract_storage : forall `{H : State.Trait},
+  Parameter get_contract_storage :
       forall
-      {K : Set} {R : Set},
-      forall `{parity_scale_codec.codec.Encode.Trait K}, forall
+        `{H : State.Trait}
+        {K R : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait R},
-        ref K ->
-      M (H := H) (ink_env.error.Result (core.option.Option R)).
+      (ref K) -> M (H := H) (ink_env.error.Result (core.option.Option R)).
   
-  Parameter take_contract_storage : forall `{H : State.Trait},
+  Parameter take_contract_storage :
       forall
-      {K : Set} {R : Set},
-      forall `{parity_scale_codec.codec.Encode.Trait K}, forall
+        `{H : State.Trait}
+        {K R : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait R},
-        ref K ->
-      M (H := H) (ink_env.error.Result (core.option.Option R)).
+      (ref K) -> M (H := H) (ink_env.error.Result (core.option.Option R)).
   
-  Parameter contains_contract_storage : forall `{H : State.Trait},
+  Parameter contains_contract_storage :
       forall
-      {K : Set},
-      forall `{parity_scale_codec.codec.Encode.Trait K}, ref K ->
-      M (H := H) (core.option.Option u32).
+        `{H : State.Trait}
+        {K : Set}
+        `{parity_scale_codec.codec.Encode.Trait K},
+      (ref K) -> M (H := H) (core.option.Option u32).
   
-  Parameter clear_contract_storage : forall `{H : State.Trait},
+  Parameter clear_contract_storage :
       forall
-      {K : Set},
-      forall `{parity_scale_codec.codec.Encode.Trait K}, ref K ->
-      M (H := H) (core.option.Option u32).
+        `{H : State.Trait}
+        {K : Set}
+        `{parity_scale_codec.codec.Encode.Trait K},
+      (ref K) -> M (H := H) (core.option.Option u32).
   
-  Parameter invoke_contract : forall `{H : State.Trait},
+  Parameter invoke_contract :
       forall
-      {E : Set} {Args : Set} {R : Set},
-      forall `{ink_env.types.Environment.Trait E}, forall
-        `{parity_scale_codec.codec.Encode.Trait Args},
-        forall `{parity_scale_codec.codec.Decode.Trait R}, ref
+        `{H : State.Trait}
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R},
+      (ref
+          (ink_env.call.call_builder.CallParams
+            E
+            (ink_env.call.call_builder.Call E)
+            Args
+            R))
+        ->
+        M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Parameter invoke_contract_delegate :
+      forall
+        `{H : State.Trait}
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R},
+      (ref
+          (ink_env.call.call_builder.CallParams
+            E
+            (ink_env.call.call_builder.DelegateCall E)
+            Args
+            R))
+        ->
+        M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Parameter instantiate_contract :
+      forall
+        `{H : State.Trait}
+        {E ContractRef Args Salt R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+            (C := ContractRef)},
+      (ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
+        ->
+        M (H := H)
+          (ink_env.error.Result
+            (ink_primitives.ConstructorResult
+              ink_env.call.create_builder.ConstructorReturnType.Output)).
+  
+  Parameter terminate_contract :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      E::type["AccountId"] -> M (H := H) Empty_set.
+  
+  Parameter transfer :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      E::type["AccountId"] ->
+        E::type["Balance"] ->
+        M (H := H) (ink_env.error.Result unit).
+  
+  Parameter decode_input :
+      forall
+        `{H : State.Trait}
+        {T : Set}
+        `{parity_scale_codec.codec.Decode.Trait T},
+      M (H := H) (ink_env.error.Result T).
+  
+  Parameter return_value :
+      forall
+        `{H : State.Trait}
+        {R : Set}
+        `{parity_scale_codec.codec.Encode.Trait R},
+      ink_env.backend.ReturnFlags -> (ref R) -> M (H := H) Empty_set.
+  
+  Parameter debug_message :
+      forall `{H : State.Trait},
+      (ref str) -> M (H := H) unit.
+  
+  Parameter hash_bytes :
+      forall `{H : State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
+      (ref (Slice u8)) ->
+        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        M (H := H) unit.
+  
+  Parameter hash_encoded :
+      forall
+        `{H : State.Trait}
+        {H T : Set}
+        `{ink_env.hash.CryptoHash.Trait H}
+        `{parity_scale_codec.codec.Encode.Trait T},
+      (ref T) -> (mut_ref ink_env.hash.HashOutput.Type_) -> M (H := H) unit.
+  
+  Parameter ecdsa_recover :
+      forall `{H : State.Trait},
+      (ref (list u8)) ->
+        (ref (list u8)) ->
+        (mut_ref (list u8)) ->
+        M (H := H) (ink_env.error.Result unit).
+  
+  Parameter ecdsa_to_eth_address :
+      forall `{H : State.Trait},
+      (ref (list u8)) ->
+        (mut_ref (list u8)) ->
+        M (H := H) (ink_env.error.Result unit).
+  
+  Parameter is_contract :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      (ref E::type["AccountId"]) -> M (H := H) bool.
+  
+  Parameter code_hash :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      (ref E::type["AccountId"]) ->
+        M (H := H) (ink_env.error.Result E::type["Hash"]).
+  
+  Parameter own_code_hash :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) (ink_env.error.Result E::type["Hash"]).
+  
+  Parameter caller_is_origin :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) bool.
+  
+  Parameter set_code_hash :
+      forall `{H : State.Trait},
+      (ref (list u8)) -> M (H := H) (ink_env.error.Result unit).
+  
+  Parameter set_code_hash2 :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      (ref E::type["Hash"]) -> M (H := H) (ink_env.error.Result unit).
+  
+  Parameter call_runtime :
+      forall
+        `{H : State.Trait}
+        {E Call : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Call},
+      (ref Call) -> M (H := H) (ink_env.error.Result unit).
+End api.
+
+Parameter caller :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) E::type["AccountId"].
+
+Parameter transferred_value :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) E::type["Balance"].
+
+Parameter weight_to_fee :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    ink_env.types.Gas -> M (H := H) E::type["Balance"].
+
+Parameter gas_left :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) ink_env.types.Gas.
+
+Parameter block_timestamp :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) E::type["Timestamp"].
+
+Parameter account_id :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) E::type["AccountId"].
+
+Parameter balance :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) E::type["Balance"].
+
+Parameter block_number :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) E::type["BlockNumber"].
+
+Parameter minimum_balance :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) E::type["Balance"].
+
+Parameter emit_event :
+    forall
+      `{H : State.Trait}
+      {E Event : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.Topics.Trait Event}
+      `{parity_scale_codec.codec.Encode.Trait Event},
+    Event -> M (H := H) unit.
+
+Parameter set_contract_storage :
+    forall
+      `{H : State.Trait}
+      {K V : Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait V},
+    (ref K) -> (ref V) -> M (H := H) (core.option.Option u32).
+
+Parameter get_contract_storage :
+    forall
+      `{H : State.Trait}
+      {K R : Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R},
+    (ref K) -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+
+Parameter take_contract_storage :
+    forall
+      `{H : State.Trait}
+      {K R : Set}
+      `{parity_scale_codec.codec.Encode.Trait K}
+      `{ink_storage_traits.storage.Storable.Trait R},
+    (ref K) -> M (H := H) (ink_env.error.Result (core.option.Option R)).
+
+Parameter contains_contract_storage :
+    forall
+      `{H : State.Trait}
+      {K : Set}
+      `{parity_scale_codec.codec.Encode.Trait K},
+    (ref K) -> M (H := H) (core.option.Option u32).
+
+Parameter clear_contract_storage :
+    forall
+      `{H : State.Trait}
+      {K : Set}
+      `{parity_scale_codec.codec.Encode.Trait K},
+    (ref K) -> M (H := H) (core.option.Option u32).
+
+Parameter invoke_contract :
+    forall
+      `{H : State.Trait}
+      {E Args R : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R},
+    (ref
         (ink_env.call.call_builder.CallParams
           E
           (ink_env.call.call_builder.Call E)
           Args
-          R) ->
+          R))
+      ->
       M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-  
-  Parameter invoke_contract_delegate : forall `{H : State.Trait},
-      forall
-      {E : Set} {Args : Set} {R : Set},
-      forall `{ink_env.types.Environment.Trait E}, forall
-        `{parity_scale_codec.codec.Encode.Trait Args},
-        forall `{parity_scale_codec.codec.Decode.Trait R}, ref
+
+Parameter invoke_contract_delegate :
+    forall
+      `{H : State.Trait}
+      {E Args R : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R},
+    (ref
         (ink_env.call.call_builder.CallParams
           E
           (ink_env.call.call_builder.DelegateCall E)
           Args
-          R) ->
+          R))
+      ->
       M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-  
-  Parameter instantiate_contract : forall `{H : State.Trait},
-      forall
-      {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
-      forall `{ink_env.types.Environment.Trait E}, forall
-        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)},
-        forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
-        `{core.convert.AsRef.Trait Salt (T := Slice u8)},
-        forall
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait
-          R
+
+Parameter instantiate_contract :
+    forall
+      `{H : State.Trait}
+      {E ContractRef Args Salt R : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
           (C := ContractRef)},
-        ref
-        (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
+    (ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
+      ->
       M (H := H)
         (ink_env.error.Result
           (ink_primitives.ConstructorResult
             ink_env.call.create_builder.ConstructorReturnType.Output)).
-  
-  Parameter terminate_contract : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, E::type["AccountId"] ->
-      M (H := H) Empty_set.
-  
-  Parameter transfer : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, E::type["AccountId"] ->
+
+Parameter terminate_contract :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    E::type["AccountId"] -> M (H := H) Empty_set.
+
+Parameter transfer :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    E::type["AccountId"] ->
       E::type["Balance"] ->
       M (H := H) (ink_env.error.Result unit).
-  
-  Parameter decode_input : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{parity_scale_codec.codec.Decode.Trait T}, M (H := H)
-        (ink_env.error.Result T).
-  
-  Parameter return_value : forall `{H : State.Trait},
-      forall
-      {R : Set},
-      forall
-        `{parity_scale_codec.codec.Encode.Trait R},
-        ink_env.backend.ReturnFlags ->
-      ref R ->
-      M (H := H) Empty_set.
-  
-  Parameter debug_message : forall `{H : State.Trait},
-      ref str ->
-      M (H := H) unit.
-  
-  Parameter hash_bytes : forall `{H : State.Trait},
-      forall
-      {H : Set},
-      forall `{ink_env.hash.CryptoHash.Trait H}, ref (Slice u8) ->
-      mut_ref ink_env.hash.HashOutput.Type_ ->
-      M (H := H) unit.
-  
-  Parameter hash_encoded : forall `{H : State.Trait},
-      forall
-      {H : Set} {T : Set},
-      forall `{ink_env.hash.CryptoHash.Trait H}, forall
-        `{parity_scale_codec.codec.Encode.Trait T},
-        ref T ->
-      mut_ref ink_env.hash.HashOutput.Type_ ->
-      M (H := H) unit.
-  
-  Parameter ecdsa_recover : forall `{H : State.Trait},
-      ref (list u8) ->
-      ref (list u8) ->
-      mut_ref (list u8) ->
-      M (H := H) (ink_env.error.Result unit).
-  
-  Parameter ecdsa_to_eth_address : forall `{H : State.Trait},
-      ref (list u8) ->
-      mut_ref (list u8) ->
-      M (H := H) (ink_env.error.Result unit).
-  
-  Parameter is_contract : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, ref E::type["AccountId"] ->
-      M (H := H) bool.
-  
-  Parameter code_hash : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, ref E::type["AccountId"] ->
-      M (H := H) (ink_env.error.Result E::type["Hash"]).
-  
-  Parameter own_code_hash : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        (ink_env.error.Result E::type["Hash"]).
-  
-  Parameter caller_is_origin : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H) bool.
-  
-  Parameter set_code_hash : forall `{H : State.Trait},
-      ref (list u8) ->
-      M (H := H) (ink_env.error.Result unit).
-  
-  Parameter set_code_hash2 : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, ref E::type["Hash"] ->
-      M (H := H) (ink_env.error.Result unit).
-  
-  Parameter call_runtime : forall `{H : State.Trait},
-      forall
-      {E : Set} {Call : Set},
-      forall `{ink_env.types.Environment.Trait E}, forall
-        `{parity_scale_codec.codec.Encode.Trait Call},
-        ref Call ->
-      M (H := H) (ink_env.error.Result unit).
-End api.
 
-Parameter caller : forall `{H : State.Trait},
+Parameter decode_input :
     forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H)
-      E::type["AccountId"].
+      `{H : State.Trait}
+      {T : Set}
+      `{parity_scale_codec.codec.Decode.Trait T},
+    M (H := H) (ink_env.error.Result T).
 
-Parameter transferred_value : forall `{H : State.Trait},
+Parameter return_value :
     forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H) E::type["Balance"].
-
-Parameter weight_to_fee : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, ink_env.types.Gas ->
-    M (H := H) E::type["Balance"].
-
-Parameter gas_left : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H) ink_env.types.Gas.
-
-Parameter block_timestamp : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H)
-      E::type["Timestamp"].
-
-Parameter account_id : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H)
-      E::type["AccountId"].
-
-Parameter balance : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H) E::type["Balance"].
-
-Parameter block_number : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H)
-      E::type["BlockNumber"].
-
-Parameter minimum_balance : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H) E::type["Balance"].
-
-Parameter emit_event : forall `{H : State.Trait},
-    forall
-    {E : Set} {Event : Set},
-    forall `{ink_env.types.Environment.Trait E}, forall
-      `{ink_env.topics.Topics.Trait Event},
-      forall `{parity_scale_codec.codec.Encode.Trait Event}, Event ->
-    M (H := H) unit.
-
-Parameter set_contract_storage : forall `{H : State.Trait},
-    forall
-    {K : Set} {V : Set},
-    forall `{parity_scale_codec.codec.Encode.Trait K}, forall
-      `{ink_storage_traits.storage.Storable.Trait V},
-      ref K ->
-    ref V ->
-    M (H := H) (core.option.Option u32).
-
-Parameter get_contract_storage : forall `{H : State.Trait},
-    forall
-    {K : Set} {R : Set},
-    forall `{parity_scale_codec.codec.Encode.Trait K}, forall
-      `{ink_storage_traits.storage.Storable.Trait R},
-      ref K ->
-    M (H := H) (ink_env.error.Result (core.option.Option R)).
-
-Parameter take_contract_storage : forall `{H : State.Trait},
-    forall
-    {K : Set} {R : Set},
-    forall `{parity_scale_codec.codec.Encode.Trait K}, forall
-      `{ink_storage_traits.storage.Storable.Trait R},
-      ref K ->
-    M (H := H) (ink_env.error.Result (core.option.Option R)).
-
-Parameter contains_contract_storage : forall `{H : State.Trait},
-    forall
-    {K : Set},
-    forall `{parity_scale_codec.codec.Encode.Trait K}, ref K ->
-    M (H := H) (core.option.Option u32).
-
-Parameter clear_contract_storage : forall `{H : State.Trait},
-    forall
-    {K : Set},
-    forall `{parity_scale_codec.codec.Encode.Trait K}, ref K ->
-    M (H := H) (core.option.Option u32).
-
-Parameter invoke_contract : forall `{H : State.Trait},
-    forall
-    {E : Set} {Args : Set} {R : Set},
-    forall `{ink_env.types.Environment.Trait E}, forall
-      `{parity_scale_codec.codec.Encode.Trait Args},
-      forall `{parity_scale_codec.codec.Decode.Trait R}, ref
-      (ink_env.call.call_builder.CallParams
-        E
-        (ink_env.call.call_builder.Call E)
-        Args
-        R) ->
-    M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-
-Parameter invoke_contract_delegate : forall `{H : State.Trait},
-    forall
-    {E : Set} {Args : Set} {R : Set},
-    forall `{ink_env.types.Environment.Trait E}, forall
-      `{parity_scale_codec.codec.Encode.Trait Args},
-      forall `{parity_scale_codec.codec.Decode.Trait R}, ref
-      (ink_env.call.call_builder.CallParams
-        E
-        (ink_env.call.call_builder.DelegateCall E)
-        Args
-        R) ->
-    M (H := H) (ink_env.error.Result (ink_primitives.MessageResult R)).
-
-Parameter instantiate_contract : forall `{H : State.Trait},
-    forall
-    {E : Set} {ContractRef : Set} {Args : Set} {Salt : Set} {R : Set},
-    forall `{ink_env.types.Environment.Trait E}, forall
-      `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)},
-      forall `{parity_scale_codec.codec.Encode.Trait Args}, forall
-      `{core.convert.AsRef.Trait Salt (T := Slice u8)},
-      forall
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        R
-        (C := ContractRef)},
-      ref
-      (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R) ->
-    M (H := H)
-      (ink_env.error.Result
-        (ink_primitives.ConstructorResult
-          ink_env.call.create_builder.ConstructorReturnType.Output)).
-
-Parameter terminate_contract : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, E::type["AccountId"] ->
-    M (H := H) Empty_set.
-
-Parameter transfer : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, E::type["AccountId"] ->
-    E::type["Balance"] ->
-    M (H := H) (ink_env.error.Result unit).
-
-Parameter decode_input : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{parity_scale_codec.codec.Decode.Trait T}, M (H := H)
-      (ink_env.error.Result T).
-
-Parameter return_value : forall `{H : State.Trait},
-    forall
-    {R : Set},
-    forall
+      `{H : State.Trait}
+      {R : Set}
       `{parity_scale_codec.codec.Encode.Trait R},
-      ink_env.backend.ReturnFlags ->
-    ref R ->
-    M (H := H) Empty_set.
+    ink_env.backend.ReturnFlags -> (ref R) -> M (H := H) Empty_set.
 
-Parameter debug_message : forall `{H : State.Trait}, ref str -> M (H := H) unit.
+Parameter debug_message :
+    forall `{H : State.Trait},
+    (ref str) -> M (H := H) unit.
 
-Parameter hash_bytes : forall `{H : State.Trait},
+Parameter hash_bytes :
+    forall `{H : State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
+    (ref (Slice u8)) ->
+      (mut_ref ink_env.hash.HashOutput.Type_) ->
+      M (H := H) unit.
+
+Parameter hash_encoded :
     forall
-    {H : Set},
-    forall `{ink_env.hash.CryptoHash.Trait H}, ref (Slice u8) ->
-    mut_ref ink_env.hash.HashOutput.Type_ ->
-    M (H := H) unit.
-
-Parameter hash_encoded : forall `{H : State.Trait},
-    forall
-    {H : Set} {T : Set},
-    forall `{ink_env.hash.CryptoHash.Trait H}, forall
+      `{H : State.Trait}
+      {H T : Set}
+      `{ink_env.hash.CryptoHash.Trait H}
       `{parity_scale_codec.codec.Encode.Trait T},
-      ref T ->
-    mut_ref ink_env.hash.HashOutput.Type_ ->
-    M (H := H) unit.
+    (ref T) -> (mut_ref ink_env.hash.HashOutput.Type_) -> M (H := H) unit.
 
-Parameter ecdsa_recover : forall `{H : State.Trait},
-    ref (list u8) ->
-    ref (list u8) ->
-    mut_ref (list u8) ->
-    M (H := H) (ink_env.error.Result unit).
+Parameter ecdsa_recover :
+    forall `{H : State.Trait},
+    (ref (list u8)) ->
+      (ref (list u8)) ->
+      (mut_ref (list u8)) ->
+      M (H := H) (ink_env.error.Result unit).
 
-Parameter ecdsa_to_eth_address : forall `{H : State.Trait},
-    ref (list u8) ->
-    mut_ref (list u8) ->
-    M (H := H) (ink_env.error.Result unit).
+Parameter ecdsa_to_eth_address :
+    forall `{H : State.Trait},
+    (ref (list u8)) ->
+      (mut_ref (list u8)) ->
+      M (H := H) (ink_env.error.Result unit).
 
-Parameter is_contract : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, ref E::type["AccountId"] ->
-    M (H := H) bool.
+Parameter is_contract :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    (ref E::type["AccountId"]) -> M (H := H) bool.
 
-Parameter code_hash : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, ref E::type["AccountId"] ->
+Parameter code_hash :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    (ref E::type["AccountId"]) ->
+      M (H := H) (ink_env.error.Result E::type["Hash"]).
+
+Parameter own_code_hash :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
     M (H := H) (ink_env.error.Result E::type["Hash"]).
 
-Parameter own_code_hash : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H)
-      (ink_env.error.Result E::type["Hash"]).
+Parameter caller_is_origin :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) bool.
 
-Parameter caller_is_origin : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H) bool.
+Parameter set_code_hash :
+    forall `{H : State.Trait},
+    (ref (list u8)) -> M (H := H) (ink_env.error.Result unit).
 
-Parameter set_code_hash : forall `{H : State.Trait},
-    ref (list u8) ->
-    M (H := H) (ink_env.error.Result unit).
+Parameter set_code_hash2 :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    (ref E::type["Hash"]) -> M (H := H) (ink_env.error.Result unit).
 
-Parameter set_code_hash2 : forall `{H : State.Trait},
+Parameter call_runtime :
     forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, ref E::type["Hash"] ->
-    M (H := H) (ink_env.error.Result unit).
-
-Parameter call_runtime : forall `{H : State.Trait},
-    forall
-    {E : Set} {Call : Set},
-    forall `{ink_env.types.Environment.Trait E}, forall
+      `{H : State.Trait}
+      {E Call : Set}
+      `{ink_env.types.Environment.Trait E}
       `{parity_scale_codec.codec.Encode.Trait Call},
-      ref Call ->
-    M (H := H) (ink_env.error.Result unit).
+    (ref Call) -> M (H := H) (ink_env.error.Result unit).
 
 Module arithmetic.
   Module BaseArithmetic.
@@ -827,18 +782,18 @@ Module arithmetic.
           `{core.convert.From.Trait Self (T := u8)}
           `{num_traits.bounds.Bounded.Trait Self}
           `{core.cmp.Ord.Trait Self}
-          `{core.cmp.PartialOrd.Trait Self (Rhs := (Some Self))}
+          `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
           `{num_traits.identities.Zero.Trait Self}
           `{num_traits.identities.One.Trait Self}
           `{num_traits.bounds.Bounded.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.AddAssign.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.SubAssign.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.MulAssign.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.DivAssign.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
+          `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
           `{num_traits.ops.checked.CheckedMul.Trait Self}
           `{ink_env.arithmetic.Saturating.Trait Self}
           `{core.convert.TryFrom.Trait Self (T := u16)}
@@ -914,18 +869,18 @@ Module BaseArithmetic.
         `{core.convert.From.Trait Self (T := u8)}
         `{num_traits.bounds.Bounded.Trait Self}
         `{core.cmp.Ord.Trait Self}
-        `{core.cmp.PartialOrd.Trait Self (Rhs := (Some Self))}
+        `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
         `{num_traits.identities.Zero.Trait Self}
         `{num_traits.identities.One.Trait Self}
         `{num_traits.bounds.Bounded.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.AddAssign.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.SubAssign.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.MulAssign.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.DivAssign.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
         `{num_traits.ops.checked.CheckedMul.Trait Self}
         `{ink_env.arithmetic.Saturating.Trait Self}
         `{core.convert.TryFrom.Trait Self (T := u16)}
@@ -1133,7 +1088,7 @@ Module backend.
         `{parity_scale_codec.codec.Decode.Trait T}
         `{core.convert.From.Trait E (T := ErrorCode)}
         `{core.ops.function.FnOnce.Trait F (Args := u32)}
-        `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+        `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
         :
         (mut_ref Self) ->
         u32 ->
@@ -1151,43 +1106,53 @@ Module backend.
     
     Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "set_contract_storage" := {
-      Notation.dot{K V: Set} `{parity_scale_codec.codec.Encode.Trait K}
+      Notation.dot
+          {K V : Set}
+          `{parity_scale_codec.codec.Encode.Trait K}
           `{ink_storage_traits.storage.Storable.Trait V}
-           :=
+        :=
         set_contract_storage;
     }.
     Global Instance Method_get_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "get_contract_storage" := {
-      Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+      Notation.dot
+          {K R : Set}
+          `{parity_scale_codec.codec.Encode.Trait K}
           `{ink_storage_traits.storage.Storable.Trait R}
-           :=
+        :=
         get_contract_storage;
     }.
     Global Instance Method_take_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "take_contract_storage" := {
-      Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+      Notation.dot
+          {K R : Set}
+          `{parity_scale_codec.codec.Encode.Trait K}
           `{ink_storage_traits.storage.Storable.Trait R}
-           :=
+        :=
         take_contract_storage;
     }.
     Global Instance Method_contains_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "contains_contract_storage" := {
-      Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+      Notation.dot {K : Set} `{parity_scale_codec.codec.Encode.Trait K}
+        :=
         contains_contract_storage;
     }.
     Global Instance Method_clear_contract_storage `{H : State.Trait} `(Trait)
       : Notation.Dot "clear_contract_storage" := {
-      Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+      Notation.dot {K : Set} `{parity_scale_codec.codec.Encode.Trait K}
+        :=
         clear_contract_storage;
     }.
     Global Instance Method_decode_input `{H : State.Trait} `(Trait)
       : Notation.Dot "decode_input" := {
-      Notation.dot{T: Set} `{parity_scale_codec.codec.Decode.Trait T}  :=
+      Notation.dot {T : Set} `{parity_scale_codec.codec.Decode.Trait T}
+        :=
         decode_input;
     }.
     Global Instance Method_return_value `{H : State.Trait} `(Trait)
       : Notation.Dot "return_value" := {
-      Notation.dot{R: Set} `{parity_scale_codec.codec.Encode.Trait R}  :=
+      Notation.dot {R : Set} `{parity_scale_codec.codec.Encode.Trait R}
+        :=
         return_value;
     }.
     Global Instance Method_debug_message `{H : State.Trait} `(Trait)
@@ -1196,13 +1161,15 @@ Module backend.
     }.
     Global Instance Method_hash_bytes `{H : State.Trait} `(Trait)
       : Notation.Dot "hash_bytes" := {
-      Notation.dot{H: Set} `{ink_env.hash.CryptoHash.Trait H}  := hash_bytes;
+      Notation.dot {H : Set} `{ink_env.hash.CryptoHash.Trait H} := hash_bytes;
     }.
     Global Instance Method_hash_encoded `{H : State.Trait} `(Trait)
       : Notation.Dot "hash_encoded" := {
-      Notation.dot{H T: Set} `{ink_env.hash.CryptoHash.Trait H}
+      Notation.dot
+          {H T : Set}
+          `{ink_env.hash.CryptoHash.Trait H}
           `{parity_scale_codec.codec.Encode.Trait T}
-           :=
+        :=
         hash_encoded;
     }.
     Global Instance Method_ecdsa_recover `{H : State.Trait} `(Trait)
@@ -1215,13 +1182,14 @@ Module backend.
     }.
     Global Instance Method_call_chain_extension `{H : State.Trait} `(Trait)
       : Notation.Dot "call_chain_extension" := {
-      Notation.dot{I T E ErrorCode F D: Set}
+      Notation.dot
+          {I T E ErrorCode F D : Set}
           `{parity_scale_codec.codec.Encode.Trait I}
           `{parity_scale_codec.codec.Decode.Trait T}
           `{core.convert.From.Trait E (T := ErrorCode)}
           `{core.ops.function.FnOnce.Trait F (Args := u32)}
-          `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
-           :=
+          `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
+        :=
         call_chain_extension;
     }.
     Global Instance Method_set_code_hash `{H : State.Trait} `(Trait)
@@ -1331,9 +1299,8 @@ Module backend.
         `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait
-          R
-          (C := ContractRef)}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+            (C := ContractRef)}
         :
         (mut_ref Self) ->
         (ref
@@ -1401,116 +1368,133 @@ Module backend.
     
     Global Instance Method_caller `{H : State.Trait} `(Trait)
       : Notation.Dot "caller" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := caller;
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := caller;
     }.
     Global Instance Method_transferred_value `{H : State.Trait} `(Trait)
       : Notation.Dot "transferred_value" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         transferred_value;
     }.
     Global Instance Method_weight_to_fee `{H : State.Trait} `(Trait)
       : Notation.Dot "weight_to_fee" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         weight_to_fee;
     }.
     Global Instance Method_gas_left `{H : State.Trait} `(Trait)
       : Notation.Dot "gas_left" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := gas_left;
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := gas_left;
     }.
     Global Instance Method_block_timestamp `{H : State.Trait} `(Trait)
       : Notation.Dot "block_timestamp" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         block_timestamp;
     }.
     Global Instance Method_account_id `{H : State.Trait} `(Trait)
       : Notation.Dot "account_id" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := account_id;
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := account_id;
     }.
     Global Instance Method_balance `{H : State.Trait} `(Trait)
       : Notation.Dot "balance" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := balance;
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := balance;
     }.
     Global Instance Method_block_number `{H : State.Trait} `(Trait)
       : Notation.Dot "block_number" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         block_number;
     }.
     Global Instance Method_minimum_balance `{H : State.Trait} `(Trait)
       : Notation.Dot "minimum_balance" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         minimum_balance;
     }.
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
-      Notation.dot{E Event: Set} `{ink_env.types.Environment.Trait E}
+      Notation.dot
+          {E Event : Set}
+          `{ink_env.types.Environment.Trait E}
           `{ink_env.topics.Topics.Trait Event}
           `{parity_scale_codec.codec.Encode.Trait Event}
-           :=
+        :=
         emit_event;
     }.
     Global Instance Method_invoke_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "invoke_contract" := {
-      Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+      Notation.dot
+          {E Args R : Set}
+          `{ink_env.types.Environment.Trait E}
           `{parity_scale_codec.codec.Encode.Trait Args}
           `{parity_scale_codec.codec.Decode.Trait R}
-           :=
+        :=
         invoke_contract;
     }.
     Global Instance Method_invoke_contract_delegate `{H : State.Trait} `(Trait)
       : Notation.Dot "invoke_contract_delegate" := {
-      Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+      Notation.dot
+          {E Args R : Set}
+          `{ink_env.types.Environment.Trait E}
           `{parity_scale_codec.codec.Encode.Trait Args}
           `{parity_scale_codec.codec.Decode.Trait R}
-           :=
+        :=
         invoke_contract_delegate;
     }.
     Global Instance Method_instantiate_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "instantiate_contract" := {
-      Notation.dot{E ContractRef Args Salt R: Set}
+      Notation.dot
+          {E ContractRef Args Salt R : Set}
           `{ink_env.types.Environment.Trait E}
-          `{ink_env.call.create_builder.FromAccountId.Trait
-            ContractRef
-            (T := E)}
+          `{ink_env.call.create_builder.FromAccountId.Trait ContractRef
+              (T := E)}
           `{parity_scale_codec.codec.Encode.Trait Args}
           `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-          `{ink_env.call.create_builder.ConstructorReturnType.Trait
-            R
-            (C := ContractRef)}
-           :=
+          `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+              (C := ContractRef)}
+        :=
         instantiate_contract;
     }.
     Global Instance Method_terminate_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "terminate_contract" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         terminate_contract;
     }.
     Global Instance Method_transfer `{H : State.Trait} `(Trait)
       : Notation.Dot "transfer" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := transfer;
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := transfer;
     }.
     Global Instance Method_is_contract `{H : State.Trait} `(Trait)
       : Notation.Dot "is_contract" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := is_contract;
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
+        is_contract;
     }.
     Global Instance Method_caller_is_origin `{H : State.Trait} `(Trait)
       : Notation.Dot "caller_is_origin" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         caller_is_origin;
     }.
     Global Instance Method_code_hash `{H : State.Trait} `(Trait)
       : Notation.Dot "code_hash" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := code_hash;
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := code_hash;
     }.
     Global Instance Method_own_code_hash `{H : State.Trait} `(Trait)
       : Notation.Dot "own_code_hash" := {
-      Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+      Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+        :=
         own_code_hash;
     }.
     Global Instance Method_call_runtime `{H : State.Trait} `(Trait)
       : Notation.Dot "call_runtime" := {
-      Notation.dot{E Call: Set} `{ink_env.types.Environment.Trait E}
+      Notation.dot
+          {E Call : Set}
+          `{ink_env.types.Environment.Trait E}
           `{parity_scale_codec.codec.Encode.Trait Call}
-           :=
+        :=
         call_runtime;
     }.
   End TypedEnvBackend.
@@ -1656,7 +1640,7 @@ Module EnvBackend.
       `{parity_scale_codec.codec.Decode.Trait T}
       `{core.convert.From.Trait E (T := ErrorCode)}
       `{core.ops.function.FnOnce.Trait F (Args := u32)}
-      `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
+      `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
       :
       (mut_ref Self) ->
       u32 ->
@@ -1674,43 +1658,53 @@ Module EnvBackend.
   
   Global Instance Method_set_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "set_contract_storage" := {
-    Notation.dot{K V: Set} `{parity_scale_codec.codec.Encode.Trait K}
+    Notation.dot
+        {K V : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait V}
-         :=
+      :=
       set_contract_storage;
   }.
   Global Instance Method_get_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "get_contract_storage" := {
-    Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+    Notation.dot
+        {K R : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait R}
-         :=
+      :=
       get_contract_storage;
   }.
   Global Instance Method_take_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "take_contract_storage" := {
-    Notation.dot{K R: Set} `{parity_scale_codec.codec.Encode.Trait K}
+    Notation.dot
+        {K R : Set}
+        `{parity_scale_codec.codec.Encode.Trait K}
         `{ink_storage_traits.storage.Storable.Trait R}
-         :=
+      :=
       take_contract_storage;
   }.
   Global Instance Method_contains_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "contains_contract_storage" := {
-    Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+    Notation.dot {K : Set} `{parity_scale_codec.codec.Encode.Trait K}
+      :=
       contains_contract_storage;
   }.
   Global Instance Method_clear_contract_storage `{H : State.Trait} `(Trait)
     : Notation.Dot "clear_contract_storage" := {
-    Notation.dot{K: Set} `{parity_scale_codec.codec.Encode.Trait K}  :=
+    Notation.dot {K : Set} `{parity_scale_codec.codec.Encode.Trait K}
+      :=
       clear_contract_storage;
   }.
   Global Instance Method_decode_input `{H : State.Trait} `(Trait)
     : Notation.Dot "decode_input" := {
-    Notation.dot{T: Set} `{parity_scale_codec.codec.Decode.Trait T}  :=
+    Notation.dot {T : Set} `{parity_scale_codec.codec.Decode.Trait T}
+      :=
       decode_input;
   }.
   Global Instance Method_return_value `{H : State.Trait} `(Trait)
     : Notation.Dot "return_value" := {
-    Notation.dot{R: Set} `{parity_scale_codec.codec.Encode.Trait R}  :=
+    Notation.dot {R : Set} `{parity_scale_codec.codec.Encode.Trait R}
+      :=
       return_value;
   }.
   Global Instance Method_debug_message `{H : State.Trait} `(Trait)
@@ -1719,13 +1713,15 @@ Module EnvBackend.
   }.
   Global Instance Method_hash_bytes `{H : State.Trait} `(Trait)
     : Notation.Dot "hash_bytes" := {
-    Notation.dot{H: Set} `{ink_env.hash.CryptoHash.Trait H}  := hash_bytes;
+    Notation.dot {H : Set} `{ink_env.hash.CryptoHash.Trait H} := hash_bytes;
   }.
   Global Instance Method_hash_encoded `{H : State.Trait} `(Trait)
     : Notation.Dot "hash_encoded" := {
-    Notation.dot{H T: Set} `{ink_env.hash.CryptoHash.Trait H}
+    Notation.dot
+        {H T : Set}
+        `{ink_env.hash.CryptoHash.Trait H}
         `{parity_scale_codec.codec.Encode.Trait T}
-         :=
+      :=
       hash_encoded;
   }.
   Global Instance Method_ecdsa_recover `{H : State.Trait} `(Trait)
@@ -1738,13 +1734,14 @@ Module EnvBackend.
   }.
   Global Instance Method_call_chain_extension `{H : State.Trait} `(Trait)
     : Notation.Dot "call_chain_extension" := {
-    Notation.dot{I T E ErrorCode F D: Set}
+    Notation.dot
+        {I T E ErrorCode F D : Set}
         `{parity_scale_codec.codec.Encode.Trait I}
         `{parity_scale_codec.codec.Decode.Trait T}
         `{core.convert.From.Trait E (T := ErrorCode)}
         `{core.ops.function.FnOnce.Trait F (Args := u32)}
-        `{core.ops.function.FnOnce.Trait D (Args := (ref (Slice u8)))}
-         :=
+        `{core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
+      :=
       call_chain_extension;
   }.
   Global Instance Method_set_code_hash `{H : State.Trait} `(Trait)
@@ -1854,9 +1851,8 @@ Module TypedEnvBackend.
       `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-      `{ink_env.call.create_builder.ConstructorReturnType.Trait
-        R
-        (C := ContractRef)}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+          (C := ContractRef)}
       :
       (mut_ref Self) ->
       (ref
@@ -1917,111 +1913,128 @@ Module TypedEnvBackend.
   
   Global Instance Method_caller `{H : State.Trait} `(Trait)
     : Notation.Dot "caller" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := caller;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := caller;
   }.
   Global Instance Method_transferred_value `{H : State.Trait} `(Trait)
     : Notation.Dot "transferred_value" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
       transferred_value;
   }.
   Global Instance Method_weight_to_fee `{H : State.Trait} `(Trait)
     : Notation.Dot "weight_to_fee" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := weight_to_fee;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      weight_to_fee;
   }.
   Global Instance Method_gas_left `{H : State.Trait} `(Trait)
     : Notation.Dot "gas_left" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := gas_left;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := gas_left;
   }.
   Global Instance Method_block_timestamp `{H : State.Trait} `(Trait)
     : Notation.Dot "block_timestamp" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
       block_timestamp;
   }.
   Global Instance Method_account_id `{H : State.Trait} `(Trait)
     : Notation.Dot "account_id" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := account_id;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := account_id;
   }.
   Global Instance Method_balance `{H : State.Trait} `(Trait)
     : Notation.Dot "balance" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := balance;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := balance;
   }.
   Global Instance Method_block_number `{H : State.Trait} `(Trait)
     : Notation.Dot "block_number" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := block_number;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := block_number;
   }.
   Global Instance Method_minimum_balance `{H : State.Trait} `(Trait)
     : Notation.Dot "minimum_balance" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
       minimum_balance;
   }.
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
-    Notation.dot{E Event: Set} `{ink_env.types.Environment.Trait E}
+    Notation.dot
+        {E Event : Set}
+        `{ink_env.types.Environment.Trait E}
         `{ink_env.topics.Topics.Trait Event}
         `{parity_scale_codec.codec.Encode.Trait Event}
-         :=
+      :=
       emit_event;
   }.
   Global Instance Method_invoke_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract" := {
-    Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+    Notation.dot
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{parity_scale_codec.codec.Decode.Trait R}
-         :=
+      :=
       invoke_contract;
   }.
   Global Instance Method_invoke_contract_delegate `{H : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract_delegate" := {
-    Notation.dot{E Args R: Set} `{ink_env.types.Environment.Trait E}
+    Notation.dot
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{parity_scale_codec.codec.Decode.Trait R}
-         :=
+      :=
       invoke_contract_delegate;
   }.
   Global Instance Method_instantiate_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "instantiate_contract" := {
-    Notation.dot{E ContractRef Args Salt R: Set}
+    Notation.dot
+        {E ContractRef Args Salt R : Set}
         `{ink_env.types.Environment.Trait E}
         `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait
-          R
-          (C := ContractRef)}
-         :=
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+            (C := ContractRef)}
+      :=
       instantiate_contract;
   }.
   Global Instance Method_terminate_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "terminate_contract" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
       terminate_contract;
   }.
   Global Instance Method_transfer `{H : State.Trait} `(Trait)
     : Notation.Dot "transfer" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := transfer;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := transfer;
   }.
   Global Instance Method_is_contract `{H : State.Trait} `(Trait)
     : Notation.Dot "is_contract" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := is_contract;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := is_contract;
   }.
   Global Instance Method_caller_is_origin `{H : State.Trait} `(Trait)
     : Notation.Dot "caller_is_origin" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  :=
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
       caller_is_origin;
   }.
   Global Instance Method_code_hash `{H : State.Trait} `(Trait)
     : Notation.Dot "code_hash" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := code_hash;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E} := code_hash;
   }.
   Global Instance Method_own_code_hash `{H : State.Trait} `(Trait)
     : Notation.Dot "own_code_hash" := {
-    Notation.dot{E: Set} `{ink_env.types.Environment.Trait E}  := own_code_hash;
+    Notation.dot {E : Set} `{ink_env.types.Environment.Trait E}
+      :=
+      own_code_hash;
   }.
   Global Instance Method_call_runtime `{H : State.Trait} `(Trait)
     : Notation.Dot "call_runtime" := {
-    Notation.dot{E Call: Set} `{ink_env.types.Environment.Trait E}
+    Notation.dot
+        {E Call : Set}
+        `{ink_env.types.Environment.Trait E}
         `{parity_scale_codec.codec.Encode.Trait Call}
-         :=
+      :=
       call_runtime;
   }.
 End TypedEnvBackend.
@@ -2060,17 +2073,20 @@ Module call.
     End CallParams.
     Definition CallParams := @CallParams.t.
     
-    Parameter build_call : forall `{H : State.Trait},
+    Parameter build_call :
         forall
-        {E : Set},
-        forall `{ink_env.types.Environment.Trait E}, M (H := H)
-          (ink_env.call.call_builder.CallBuilder
-            E
-            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-            (ink_env.call.common.Unset
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+          `{H : State.Trait}
+          {E : Set}
+          `{ink_env.types.Environment.Trait E},
+        M (H := H)
+            (ink_env.call.call_builder.CallBuilder
+              E
+              (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+              (ink_env.call.common.Unset
+                (ink_env.call.execution_input.ExecutionInput
+                  ink_env.call.execution_input.EmptyArgumentList))
+              (ink_env.call.common.Unset
+                (ink_env.call.common.ReturnType unit))).
     
     Module Call.
       Section Call.
@@ -2212,8 +2228,10 @@ Module call.
       }.
       Global Instance Method_unwrap_or_else `{H : State.Trait} `(Trait)
         : Notation.Dot "unwrap_or_else" := {
-        Notation.dot{F: Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}
-             :=
+        Notation.dot
+            {F : Set}
+            `{core.ops.function.FnOnce.Trait F (Args := unit)}
+          :=
           unwrap_or_else;
       }.
     End Unwrap.
@@ -2275,7 +2293,8 @@ Module call.
       }.
       Global Instance Method_err `{H : State.Trait} `(Trait)
         : Notation.Dot "err" := {
-        Notation.dot (_err : Error) :=
+        Notation.dot (_err : Error)
+          :=
           (axiom : M (H := H) (core.option.Option Output));
       }.
     End ConstructorReturnType.
@@ -2323,15 +2342,7 @@ Module call.
     Module CreateBuilder.
       Section CreateBuilder.
         Context
-          {E
-          ContractRef
-          CodeHash
-          GasLimit
-          Endowment
-          Args
-          Salt
-          RetType
-          : Set}.
+          {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : CodeHash;
@@ -2369,21 +2380,24 @@ Module call.
     End CreateBuilder.
     Definition CreateBuilder := @CreateBuilder.t.
     
-    Parameter build_create : forall `{H : State.Trait},
+    Parameter build_create :
         forall
-        {ContractRef : Set},
-        forall `{ink_env.contract.ContractEnv.Trait ContractRef}, M (H := H)
-          (ink_env.call.create_builder.CreateBuilder
-            ink_env.contract.ContractEnv.Env
-            ContractRef
-            (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-            (ink_env.call.common.Unset u64)
-            (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-            (ink_env.call.common.Unset
-              (ink_env.call.execution_input.ExecutionInput
-                ink_env.call.execution_input.EmptyArgumentList))
-            (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+          `{H : State.Trait}
+          {ContractRef : Set}
+          `{ink_env.contract.ContractEnv.Trait ContractRef},
+        M (H := H)
+            (ink_env.call.create_builder.CreateBuilder
+              ink_env.contract.ContractEnv.Env
+              ContractRef
+              (ink_env.call.common.Unset ink_env.types.Environment.Hash)
+              (ink_env.call.common.Unset u64)
+              (ink_env.call.common.Unset ink_env.types.Environment.Balance)
+              (ink_env.call.common.Unset
+                (ink_env.call.execution_input.ExecutionInput
+                  ink_env.call.execution_input.EmptyArgumentList))
+              (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
+              (ink_env.call.common.Unset
+                (ink_env.call.common.ReturnType unit))).
   End create_builder.
   
   Module execution_input.
@@ -2508,17 +2522,16 @@ Module call_builder.
   End CallParams.
   Definition CallParams := @CallParams.t.
   
-  Parameter build_call : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        (ink_env.call.call_builder.CallBuilder
-          E
-          (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+  Parameter build_call :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H)
+          (ink_env.call.call_builder.CallBuilder
+            E
+            (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+            (ink_env.call.common.Unset
+              (ink_env.call.execution_input.ExecutionInput
+                ink_env.call.execution_input.EmptyArgumentList))
+            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
   
   Module Call.
     Section Call.
@@ -2626,17 +2639,16 @@ Module CallParams.
 End CallParams.
 Definition CallParams := @CallParams.t.
 
-Parameter build_call : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H)
-      (ink_env.call.call_builder.CallBuilder
-        E
-        (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+Parameter build_call :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H)
+        (ink_env.call.call_builder.CallBuilder
+          E
+          (ink_env.call.common.Unset (ink_env.call.call_builder.Call E))
+          (ink_env.call.common.Unset
+            (ink_env.call.execution_input.ExecutionInput
+              ink_env.call.execution_input.EmptyArgumentList))
+          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
 
 Module Call.
   Section Call.
@@ -2777,8 +2789,8 @@ Module common.
     }.
     Global Instance Method_unwrap_or_else `{H : State.Trait} `(Trait)
       : Notation.Dot "unwrap_or_else" := {
-      Notation.dot{F: Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}
-           :=
+      Notation.dot {F : Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}
+        :=
         unwrap_or_else;
     }.
   End Unwrap.
@@ -2849,7 +2861,8 @@ Module Unwrap.
   }.
   Global Instance Method_unwrap_or_else `{H : State.Trait} `(Trait)
     : Notation.Dot "unwrap_or_else" := {
-    Notation.dot{F: Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}  :=
+    Notation.dot {F : Set} `{core.ops.function.FnOnce.Trait F (Args := unit)}
+      :=
       unwrap_or_else;
   }.
 End Unwrap.
@@ -2910,7 +2923,8 @@ Module create_builder.
     }.
     Global Instance Method_err `{H : State.Trait} `(Trait)
       : Notation.Dot "err" := {
-      Notation.dot (_err : Error) :=
+      Notation.dot (_err : Error)
+        :=
         (axiom : M (H := H) (core.option.Option Output));
     }.
   End ConstructorReturnType.
@@ -2958,15 +2972,7 @@ Module create_builder.
   Module CreateBuilder.
     Section CreateBuilder.
       Context
-        {E
-        ContractRef
-        CodeHash
-        GasLimit
-        Endowment
-        Args
-        Salt
-        RetType
-        : Set}.
+        {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : CodeHash;
@@ -3004,21 +3010,23 @@ Module create_builder.
   End CreateBuilder.
   Definition CreateBuilder := @CreateBuilder.t.
   
-  Parameter build_create : forall `{H : State.Trait},
+  Parameter build_create :
       forall
-      {ContractRef : Set},
-      forall `{ink_env.contract.ContractEnv.Trait ContractRef}, M (H := H)
-        (ink_env.call.create_builder.CreateBuilder
-          ink_env.contract.ContractEnv.Env
-          ContractRef
-          (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-          (ink_env.call.common.Unset u64)
-          (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-          (ink_env.call.common.Unset
-            (ink_env.call.execution_input.ExecutionInput
-              ink_env.call.execution_input.EmptyArgumentList))
-          (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+        `{H : State.Trait}
+        {ContractRef : Set}
+        `{ink_env.contract.ContractEnv.Trait ContractRef},
+      M (H := H)
+          (ink_env.call.create_builder.CreateBuilder
+            ink_env.contract.ContractEnv.Env
+            ContractRef
+            (ink_env.call.common.Unset ink_env.types.Environment.Hash)
+            (ink_env.call.common.Unset u64)
+            (ink_env.call.common.Unset ink_env.types.Environment.Balance)
+            (ink_env.call.common.Unset
+              (ink_env.call.execution_input.ExecutionInput
+                ink_env.call.execution_input.EmptyArgumentList))
+            (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
+            (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
 End create_builder.
 
 Module state.
@@ -3081,7 +3089,8 @@ Module ConstructorReturnType.
   }.
   Global Instance Method_err `{H : State.Trait} `(Trait)
     : Notation.Dot "err" := {
-    Notation.dot (_err : Error) :=
+    Notation.dot (_err : Error)
+      :=
       (axiom : M (H := H) (core.option.Option Output));
   }.
 End ConstructorReturnType.
@@ -3166,21 +3175,23 @@ Module CreateBuilder.
 End CreateBuilder.
 Definition CreateBuilder := @CreateBuilder.t.
 
-Parameter build_create : forall `{H : State.Trait},
+Parameter build_create :
     forall
-    {ContractRef : Set},
-    forall `{ink_env.contract.ContractEnv.Trait ContractRef}, M (H := H)
-      (ink_env.call.create_builder.CreateBuilder
-        ink_env.contract.ContractEnv.Env
-        ContractRef
-        (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-        (ink_env.call.common.Unset u64)
-        (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-        (ink_env.call.common.Unset
-          (ink_env.call.execution_input.ExecutionInput
-            ink_env.call.execution_input.EmptyArgumentList))
-        (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-        (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
+      `{H : State.Trait}
+      {ContractRef : Set}
+      `{ink_env.contract.ContractEnv.Trait ContractRef},
+    M (H := H)
+        (ink_env.call.create_builder.CreateBuilder
+          ink_env.contract.ContractEnv.Env
+          ContractRef
+          (ink_env.call.common.Unset ink_env.types.Environment.Hash)
+          (ink_env.call.common.Unset u64)
+          (ink_env.call.common.Unset ink_env.types.Environment.Balance)
+          (ink_env.call.common.Unset
+            (ink_env.call.execution_input.ExecutionInput
+              ink_env.call.execution_input.EmptyArgumentList))
+          (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
+          (ink_env.call.common.Unset (ink_env.call.common.ReturnType unit))).
 
 Module execution_input.
   Module ExecutionInput.
@@ -3625,17 +3636,17 @@ Module engine.
       on_instance
         `{H : State.Trait}
         {F R: Set}
-        `{core.ops.function.FnOnce.Trait F (Args := (mut_ref Self))}
+        `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
         :
         F -> (M (H := H) R);
     }.
     
     Global Instance Method_on_instance `{H : State.Trait} `(Trait)
       : Notation.Dot "on_instance" := {
-      Notation.dot{F R: Set} `{core.ops.function.FnOnce.Trait
-            F
-            (Args := (mut_ref Self))}
-           :=
+      Notation.dot
+          {F R : Set}
+          `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
+        :=
         on_instance;
     }.
   End OnInstance.
@@ -3689,143 +3700,147 @@ Module engine.
       End EmittedEvent.
       Definition EmittedEvent := @EmittedEvent.t.
       
-      Parameter set_account_balance : forall `{H : State.Trait},
+      Parameter set_account_balance :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-          T::type["Balance"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
       
-      Parameter get_account_balance : forall `{H : State.Trait},
+      Parameter get_account_balance :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-          M (H := H) (ink_env.error.Result T::type["Balance"]).
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          T::type["AccountId"] ->
+            M (H := H) (ink_env.error.Result T::type["Balance"]).
       
-      Parameter register_chain_extension : forall `{H : State.Trait},
+      Parameter register_chain_extension :
           forall
-          {E : Set},
-          forall `{ink_engine.chain_extension.ChainExtension.Trait E}, E ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {E : Set}
+            `{ink_engine.chain_extension.ChainExtension.Trait E},
+          E -> M (H := H) unit.
       
-      Parameter recorded_debug_messages : forall `{H : State.Trait},
+      Parameter recorded_debug_messages :
+          forall `{H : State.Trait},
           M (H := H) ink_engine.test_api.RecordedDebugMessages.
       
-      Parameter set_clear_storage_disabled : forall `{H : State.Trait},
-          bool ->
+      Parameter set_clear_storage_disabled :
+          forall `{H : State.Trait},
+          bool -> M (H := H) unit.
+      
+      Parameter advance_block :
+          forall
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
           M (H := H) unit.
       
-      Parameter advance_block : forall `{H : State.Trait},
+      Parameter set_caller :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T}
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
+                (T := list u8)},
+          T::type["AccountId"] -> M (H := H) unit.
       
-      Parameter set_caller : forall `{H : State.Trait},
+      Parameter set_callee :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
-              (T := list u8)},
-            T::type["AccountId"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T}
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
+                (T := list u8)},
+          T::type["AccountId"] -> M (H := H) unit.
       
-      Parameter set_callee : forall `{H : State.Trait},
+      Parameter set_contract :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
-              (T := list u8)},
-            T::type["AccountId"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T}
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
+                (T := list u8)},
+          T::type["AccountId"] -> M (H := H) unit.
       
-      Parameter set_contract : forall `{H : State.Trait},
+      Parameter is_contract :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
-              (T := list u8)},
-            T::type["AccountId"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T}
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
+                (T := list u8)},
+          T::type["AccountId"] -> M (H := H) bool.
       
-      Parameter is_contract : forall `{H : State.Trait},
+      Parameter callee :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
-              (T := list u8)},
-            T::type["AccountId"] ->
-          M (H := H) bool.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          M (H := H) T::type["AccountId"].
       
-      Parameter callee : forall `{H : State.Trait},
+      Parameter get_contract_storage_rw :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, M (H := H)
-            T::type["AccountId"].
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          (ref T::type["AccountId"]) -> M (H := H) (usize * usize).
       
-      Parameter get_contract_storage_rw : forall `{H : State.Trait},
+      Parameter set_value_transferred :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, ref
-            T::type["AccountId"] ->
-          M (H := H) (usize * usize).
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          T::type["Balance"] -> M (H := H) unit.
       
-      Parameter set_value_transferred : forall `{H : State.Trait},
+      Parameter transfer_in :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          T::type["Balance"] -> M (H := H) unit.
       
-      Parameter transfer_in : forall `{H : State.Trait},
+      Parameter count_used_storage_cells :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          (ref T::type["AccountId"]) -> M (H := H) (ink_env.error.Result usize).
       
-      Parameter count_used_storage_cells : forall `{H : State.Trait},
+      Parameter set_block_timestamp :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, ref
-            T::type["AccountId"] ->
-          M (H := H) (ink_env.error.Result usize).
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          T::type["Timestamp"] -> M (H := H) unit.
       
-      Parameter set_block_timestamp : forall `{H : State.Trait},
+      Parameter set_block_number :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["Timestamp"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T},
+          T::type["BlockNumber"] -> M (H := H) unit.
       
-      Parameter set_block_number : forall `{H : State.Trait},
+      Parameter run_test :
           forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
-          M (H := H) unit.
+            `{H : State.Trait}
+            {T F : Set}
+            `{ink_env.types.Environment.Trait T}
+            `{core.ops.function.FnOnce.Trait F
+                (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)}
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
+                (T := list u8)},
+          F -> M (H := H) (ink_env.error.Result unit).
       
-      Parameter run_test : forall `{H : State.Trait},
+      Parameter default_accounts :
           forall
-          {T : Set} {F : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.ops.function.FnOnce.Trait
-              F
-              (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
-            forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
-              (T := list u8)},
-            F ->
-          M (H := H) (ink_env.error.Result unit).
-      
-      Parameter default_accounts : forall `{H : State.Trait},
-          forall
-          {T : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.convert.From.Trait
-              ink_env.types.Environment.AccountId
-              (T := list u8)},
-            M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+            `{H : State.Trait}
+            {T : Set}
+            `{ink_env.types.Environment.Trait T}
+            `{core.convert.From.Trait ink_env.types.Environment.AccountId
+                (T := list u8)},
+          M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
       
       Module DefaultAccounts.
         Section DefaultAccounts.
@@ -3863,23 +3878,23 @@ Module engine.
       End DefaultAccounts.
       Definition DefaultAccounts := @DefaultAccounts.t.
       
-      Parameter recorded_events_ret_ty : Set.
-      Parameter recorded_events : forall `{H : State.Trait},
+      Parameter recorded_events_ret_ty :
+          forall `{core.iter.traits.iterator.Iterator},
+          Set.
+      Parameter recorded_events :
+          forall `{H : State.Trait},
           M (H := H) recorded_events_ret_ty.
       
-      Parameter assert_contract_termination : forall `{H : State.Trait},
+      Parameter assert_contract_termination :
           forall
-          {T : Set} {F : Set},
-          forall `{ink_env.types.Environment.Trait T}, forall
-            `{core.ops.function.FnMut.Trait F (Args := unit)},
-            forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
-            `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId},
-            forall
+            `{H : State.Trait}
+            {T F : Set}
+            `{ink_env.types.Environment.Trait T}
+            `{core.ops.function.FnMut.Trait F (Args := unit)}
+            `{core.panic.unwind_safe.UnwindSafe.Trait F}
+            `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
             `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
-            F ->
-          T::type["AccountId"] ->
-          T::type["Balance"] ->
-          M (H := H) unit.
+          F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
     End test_api.
     
     Module EnvInstance.
@@ -3923,17 +3938,17 @@ Module OnInstance.
     on_instance
       `{H : State.Trait}
       {F R: Set}
-      `{core.ops.function.FnOnce.Trait F (Args := (mut_ref Self))}
+      `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
       :
       F -> (M (H := H) R);
   }.
   
   Global Instance Method_on_instance `{H : State.Trait} `(Trait)
     : Notation.Dot "on_instance" := {
-    Notation.dot{F R: Set} `{core.ops.function.FnOnce.Trait
-          F
-          (Args := (mut_ref Self))}
-         :=
+    Notation.dot
+        {F R : Set}
+        `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
+      :=
       on_instance;
   }.
 End OnInstance.
@@ -3987,141 +4002,147 @@ Module off_chain.
     End EmittedEvent.
     Definition EmittedEvent := @EmittedEvent.t.
     
-    Parameter set_account_balance : forall `{H : State.Trait},
+    Parameter set_account_balance :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-        T::type["Balance"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
     
-    Parameter get_account_balance : forall `{H : State.Trait},
+    Parameter get_account_balance :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-        M (H := H) (ink_env.error.Result T::type["Balance"]).
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        T::type["AccountId"] ->
+          M (H := H) (ink_env.error.Result T::type["Balance"]).
     
-    Parameter register_chain_extension : forall `{H : State.Trait},
+    Parameter register_chain_extension :
         forall
-        {E : Set},
-        forall `{ink_engine.chain_extension.ChainExtension.Trait E}, E ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {E : Set}
+          `{ink_engine.chain_extension.ChainExtension.Trait E},
+        E -> M (H := H) unit.
     
-    Parameter recorded_debug_messages : forall `{H : State.Trait},
+    Parameter recorded_debug_messages :
+        forall `{H : State.Trait},
         M (H := H) ink_engine.test_api.RecordedDebugMessages.
     
-    Parameter set_clear_storage_disabled : forall `{H : State.Trait},
-        bool ->
+    Parameter set_clear_storage_disabled :
+        forall `{H : State.Trait},
+        bool -> M (H := H) unit.
+    
+    Parameter advance_block :
+        forall
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
         M (H := H) unit.
     
-    Parameter advance_block : forall `{H : State.Trait},
+    Parameter set_caller :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T}
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
+              (T := list u8)},
+        T::type["AccountId"] -> M (H := H) unit.
     
-    Parameter set_caller : forall `{H : State.Trait},
+    Parameter set_callee :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
-            (T := list u8)},
-          T::type["AccountId"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T}
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
+              (T := list u8)},
+        T::type["AccountId"] -> M (H := H) unit.
     
-    Parameter set_callee : forall `{H : State.Trait},
+    Parameter set_contract :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
-            (T := list u8)},
-          T::type["AccountId"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T}
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
+              (T := list u8)},
+        T::type["AccountId"] -> M (H := H) unit.
     
-    Parameter set_contract : forall `{H : State.Trait},
+    Parameter is_contract :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
-            (T := list u8)},
-          T::type["AccountId"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T}
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
+              (T := list u8)},
+        T::type["AccountId"] -> M (H := H) bool.
     
-    Parameter is_contract : forall `{H : State.Trait},
+    Parameter callee :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
-            (T := list u8)},
-          T::type["AccountId"] ->
-        M (H := H) bool.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        M (H := H) T::type["AccountId"].
     
-    Parameter callee : forall `{H : State.Trait},
+    Parameter get_contract_storage_rw :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, M (H := H)
-          T::type["AccountId"].
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        (ref T::type["AccountId"]) -> M (H := H) (usize * usize).
     
-    Parameter get_contract_storage_rw : forall `{H : State.Trait},
+    Parameter set_value_transferred :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, ref T::type["AccountId"] ->
-        M (H := H) (usize * usize).
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        T::type["Balance"] -> M (H := H) unit.
     
-    Parameter set_value_transferred : forall `{H : State.Trait},
+    Parameter transfer_in :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        T::type["Balance"] -> M (H := H) unit.
     
-    Parameter transfer_in : forall `{H : State.Trait},
+    Parameter count_used_storage_cells :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        (ref T::type["AccountId"]) -> M (H := H) (ink_env.error.Result usize).
     
-    Parameter count_used_storage_cells : forall `{H : State.Trait},
+    Parameter set_block_timestamp :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, ref T::type["AccountId"] ->
-        M (H := H) (ink_env.error.Result usize).
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        T::type["Timestamp"] -> M (H := H) unit.
     
-    Parameter set_block_timestamp : forall `{H : State.Trait},
+    Parameter set_block_number :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, T::type["Timestamp"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T},
+        T::type["BlockNumber"] -> M (H := H) unit.
     
-    Parameter set_block_number : forall `{H : State.Trait},
+    Parameter run_test :
         forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T F : Set}
+          `{ink_env.types.Environment.Trait T}
+          `{core.ops.function.FnOnce.Trait F
+              (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)}
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
+              (T := list u8)},
+        F -> M (H := H) (ink_env.error.Result unit).
     
-    Parameter run_test : forall `{H : State.Trait},
+    Parameter default_accounts :
         forall
-        {T : Set} {F : Set},
-        forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.ops.function.FnOnce.Trait
-            F
-            (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
-          forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
-            (T := list u8)},
-          F ->
-        M (H := H) (ink_env.error.Result unit).
-    
-    Parameter default_accounts : forall `{H : State.Trait},
-        forall
-        {T : Set},
-        forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.convert.From.Trait
-            ink_env.types.Environment.AccountId
-            (T := list u8)},
-          M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+          `{H : State.Trait}
+          {T : Set}
+          `{ink_env.types.Environment.Trait T}
+          `{core.convert.From.Trait ink_env.types.Environment.AccountId
+              (T := list u8)},
+        M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
     
     Module DefaultAccounts.
       Section DefaultAccounts.
@@ -4159,21 +4180,23 @@ Module off_chain.
     End DefaultAccounts.
     Definition DefaultAccounts := @DefaultAccounts.t.
     
-    Parameter recorded_events_ret_ty : Set.
-    Parameter recorded_events : forall `{H : State.Trait},
+    Parameter recorded_events_ret_ty :
+        forall `{core.iter.traits.iterator.Iterator},
+        Set.
+    Parameter recorded_events :
+        forall `{H : State.Trait},
         M (H := H) recorded_events_ret_ty.
     
-    Parameter assert_contract_termination : forall `{H : State.Trait},
+    Parameter assert_contract_termination :
         forall
-        {T : Set} {F : Set},
-        forall `{ink_env.types.Environment.Trait T}, forall
-          `{core.ops.function.FnMut.Trait F (Args := unit)},
-          forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
-          `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId},
-          forall `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}, F ->
-        T::type["AccountId"] ->
-        T::type["Balance"] ->
-        M (H := H) unit.
+          `{H : State.Trait}
+          {T F : Set}
+          `{ink_env.types.Environment.Trait T}
+          `{core.ops.function.FnMut.Trait F (Args := unit)}
+          `{core.panic.unwind_safe.UnwindSafe.Trait F}
+          `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
+          `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
+        F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
   End test_api.
   
   Module EnvInstance.
@@ -4281,141 +4304,117 @@ Module test_api.
   End EmittedEvent.
   Definition EmittedEvent := @EmittedEvent.t.
   
-  Parameter set_account_balance : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-      T::type["Balance"] ->
-      M (H := H) unit.
+  Parameter set_account_balance :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
   
-  Parameter get_account_balance : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-      M (H := H) (ink_env.error.Result T::type["Balance"]).
+  Parameter get_account_balance :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      T::type["AccountId"] ->
+        M (H := H) (ink_env.error.Result T::type["Balance"]).
   
-  Parameter register_chain_extension : forall `{H : State.Trait},
+  Parameter register_chain_extension :
       forall
-      {E : Set},
-      forall `{ink_engine.chain_extension.ChainExtension.Trait E}, E ->
-      M (H := H) unit.
+        `{H : State.Trait}
+        {E : Set}
+        `{ink_engine.chain_extension.ChainExtension.Trait E},
+      E -> M (H := H) unit.
   
-  Parameter recorded_debug_messages : forall `{H : State.Trait},
+  Parameter recorded_debug_messages :
+      forall `{H : State.Trait},
       M (H := H) ink_engine.test_api.RecordedDebugMessages.
   
-  Parameter set_clear_storage_disabled : forall `{H : State.Trait},
-      bool ->
+  Parameter set_clear_storage_disabled :
+      forall `{H : State.Trait},
+      bool -> M (H := H) unit.
+  
+  Parameter advance_block :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
       M (H := H) unit.
   
-  Parameter advance_block : forall `{H : State.Trait},
+  Parameter set_caller :
       forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
+        `{H : State.Trait}
+        {T : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      T::type["AccountId"] -> M (H := H) unit.
   
-  Parameter set_caller : forall `{H : State.Trait},
+  Parameter set_callee :
       forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
-          (T := list u8)},
-        T::type["AccountId"] ->
-      M (H := H) unit.
+        `{H : State.Trait}
+        {T : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      T::type["AccountId"] -> M (H := H) unit.
   
-  Parameter set_callee : forall `{H : State.Trait},
+  Parameter set_contract :
       forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
-          (T := list u8)},
-        T::type["AccountId"] ->
-      M (H := H) unit.
+        `{H : State.Trait}
+        {T : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      T::type["AccountId"] -> M (H := H) unit.
   
-  Parameter set_contract : forall `{H : State.Trait},
+  Parameter is_contract :
       forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
-          (T := list u8)},
-        T::type["AccountId"] ->
-      M (H := H) unit.
+        `{H : State.Trait}
+        {T : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      T::type["AccountId"] -> M (H := H) bool.
   
-  Parameter is_contract : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
-          (T := list u8)},
-        T::type["AccountId"] ->
-      M (H := H) bool.
+  Parameter callee :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      M (H := H) T::type["AccountId"].
   
-  Parameter callee : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, M (H := H)
-        T::type["AccountId"].
+  Parameter get_contract_storage_rw :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      (ref T::type["AccountId"]) -> M (H := H) (usize * usize).
   
-  Parameter get_contract_storage_rw : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, ref T::type["AccountId"] ->
-      M (H := H) (usize * usize).
+  Parameter set_value_transferred :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      T::type["Balance"] -> M (H := H) unit.
   
-  Parameter set_value_transferred : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-      M (H := H) unit.
+  Parameter transfer_in :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      T::type["Balance"] -> M (H := H) unit.
   
-  Parameter transfer_in : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-      M (H := H) unit.
+  Parameter count_used_storage_cells :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      (ref T::type["AccountId"]) -> M (H := H) (ink_env.error.Result usize).
   
-  Parameter count_used_storage_cells : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, ref T::type["AccountId"] ->
-      M (H := H) (ink_env.error.Result usize).
+  Parameter set_block_timestamp :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      T::type["Timestamp"] -> M (H := H) unit.
   
-  Parameter set_block_timestamp : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, T::type["Timestamp"] ->
-      M (H := H) unit.
+  Parameter set_block_number :
+      forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      T::type["BlockNumber"] -> M (H := H) unit.
   
-  Parameter set_block_number : forall `{H : State.Trait},
+  Parameter run_test :
       forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
-      M (H := H) unit.
+        `{H : State.Trait}
+        {T F : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.ops.function.FnOnce.Trait F
+            (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      F -> M (H := H) (ink_env.error.Result unit).
   
-  Parameter run_test : forall `{H : State.Trait},
+  Parameter default_accounts :
       forall
-      {T : Set} {F : Set},
-      forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.ops.function.FnOnce.Trait
-          F
-          (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
-        forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
-          (T := list u8)},
-        F ->
-      M (H := H) (ink_env.error.Result unit).
-  
-  Parameter default_accounts : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.convert.From.Trait
-          ink_env.types.Environment.AccountId
-          (T := list u8)},
-        M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+        `{H : State.Trait}
+        {T : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
   
   Module DefaultAccounts.
     Section DefaultAccounts.
@@ -4453,21 +4452,23 @@ Module test_api.
   End DefaultAccounts.
   Definition DefaultAccounts := @DefaultAccounts.t.
   
-  Parameter recorded_events_ret_ty : Set.
-  Parameter recorded_events : forall `{H : State.Trait},
+  Parameter recorded_events_ret_ty :
+      forall `{core.iter.traits.iterator.Iterator},
+      Set.
+  Parameter recorded_events :
+      forall `{H : State.Trait},
       M (H := H) recorded_events_ret_ty.
   
-  Parameter assert_contract_termination : forall `{H : State.Trait},
+  Parameter assert_contract_termination :
       forall
-      {T : Set} {F : Set},
-      forall `{ink_env.types.Environment.Trait T}, forall
-        `{core.ops.function.FnMut.Trait F (Args := unit)},
-        forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
-        `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId},
-        forall `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}, F ->
-      T::type["AccountId"] ->
-      T::type["Balance"] ->
-      M (H := H) unit.
+        `{H : State.Trait}
+        {T F : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.ops.function.FnMut.Trait F (Args := unit)}
+        `{core.panic.unwind_safe.UnwindSafe.Trait F}
+        `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
+        `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
+      F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
 End test_api.
 
 Module EmittedEvent.
@@ -4487,141 +4488,117 @@ Module EmittedEvent.
 End EmittedEvent.
 Definition EmittedEvent := @EmittedEvent.t.
 
-Parameter set_account_balance : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-    T::type["Balance"] ->
-    M (H := H) unit.
+Parameter set_account_balance :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
 
-Parameter get_account_balance : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, T::type["AccountId"] ->
-    M (H := H) (ink_env.error.Result T::type["Balance"]).
+Parameter get_account_balance :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    T::type["AccountId"] ->
+      M (H := H) (ink_env.error.Result T::type["Balance"]).
 
-Parameter register_chain_extension : forall `{H : State.Trait},
+Parameter register_chain_extension :
     forall
-    {E : Set},
-    forall `{ink_engine.chain_extension.ChainExtension.Trait E}, E ->
-    M (H := H) unit.
+      `{H : State.Trait}
+      {E : Set}
+      `{ink_engine.chain_extension.ChainExtension.Trait E},
+    E -> M (H := H) unit.
 
-Parameter recorded_debug_messages : forall `{H : State.Trait},
+Parameter recorded_debug_messages :
+    forall `{H : State.Trait},
     M (H := H) ink_engine.test_api.RecordedDebugMessages.
 
-Parameter set_clear_storage_disabled : forall `{H : State.Trait},
-    bool ->
+Parameter set_clear_storage_disabled :
+    forall `{H : State.Trait},
+    bool -> M (H := H) unit.
+
+Parameter advance_block :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
     M (H := H) unit.
 
-Parameter advance_block : forall `{H : State.Trait},
+Parameter set_caller :
     forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, M (H := H) unit.
+      `{H : State.Trait}
+      {T : Set}
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+          (T := list u8)},
+    T::type["AccountId"] -> M (H := H) unit.
 
-Parameter set_caller : forall `{H : State.Trait},
+Parameter set_callee :
     forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
-        (T := list u8)},
-      T::type["AccountId"] ->
-    M (H := H) unit.
+      `{H : State.Trait}
+      {T : Set}
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+          (T := list u8)},
+    T::type["AccountId"] -> M (H := H) unit.
 
-Parameter set_callee : forall `{H : State.Trait},
+Parameter set_contract :
     forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
-        (T := list u8)},
-      T::type["AccountId"] ->
-    M (H := H) unit.
+      `{H : State.Trait}
+      {T : Set}
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+          (T := list u8)},
+    T::type["AccountId"] -> M (H := H) unit.
 
-Parameter set_contract : forall `{H : State.Trait},
+Parameter is_contract :
     forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
-        (T := list u8)},
-      T::type["AccountId"] ->
-    M (H := H) unit.
+      `{H : State.Trait}
+      {T : Set}
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+          (T := list u8)},
+    T::type["AccountId"] -> M (H := H) bool.
 
-Parameter is_contract : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
-        (T := list u8)},
-      T::type["AccountId"] ->
-    M (H := H) bool.
+Parameter callee :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    M (H := H) T::type["AccountId"].
 
-Parameter callee : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, M (H := H)
-      T::type["AccountId"].
+Parameter get_contract_storage_rw :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    (ref T::type["AccountId"]) -> M (H := H) (usize * usize).
 
-Parameter get_contract_storage_rw : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, ref T::type["AccountId"] ->
-    M (H := H) (usize * usize).
+Parameter set_value_transferred :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    T::type["Balance"] -> M (H := H) unit.
 
-Parameter set_value_transferred : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-    M (H := H) unit.
+Parameter transfer_in :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    T::type["Balance"] -> M (H := H) unit.
 
-Parameter transfer_in : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, T::type["Balance"] ->
-    M (H := H) unit.
+Parameter count_used_storage_cells :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    (ref T::type["AccountId"]) -> M (H := H) (ink_env.error.Result usize).
 
-Parameter count_used_storage_cells : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, ref T::type["AccountId"] ->
-    M (H := H) (ink_env.error.Result usize).
+Parameter set_block_timestamp :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    T::type["Timestamp"] -> M (H := H) unit.
 
-Parameter set_block_timestamp : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, T::type["Timestamp"] ->
-    M (H := H) unit.
+Parameter set_block_number :
+    forall `{H : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+    T::type["BlockNumber"] -> M (H := H) unit.
 
-Parameter set_block_number : forall `{H : State.Trait},
+Parameter run_test :
     forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, T::type["BlockNumber"] ->
-    M (H := H) unit.
+      `{H : State.Trait}
+      {T F : Set}
+      `{ink_env.types.Environment.Trait T}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)}
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+          (T := list u8)},
+    F -> M (H := H) (ink_env.error.Result unit).
 
-Parameter run_test : forall `{H : State.Trait},
+Parameter default_accounts :
     forall
-    {T : Set} {F : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.ops.function.FnOnce.Trait
-        F
-        (Args := (ink_env.engine.off_chain.test_api.DefaultAccounts T))},
-      forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
-        (T := list u8)},
-      F ->
-    M (H := H) (ink_env.error.Result unit).
-
-Parameter default_accounts : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.convert.From.Trait
-        ink_env.types.Environment.AccountId
-        (T := list u8)},
-      M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
+      `{H : State.Trait}
+      {T : Set}
+      `{ink_env.types.Environment.Trait T}
+      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+          (T := list u8)},
+    M (H := H) (ink_env.engine.off_chain.test_api.DefaultAccounts T).
 
 Module DefaultAccounts.
   Section DefaultAccounts.
@@ -4659,21 +4636,23 @@ Module DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts := @DefaultAccounts.t.
 
-Parameter recorded_events_ret_ty : Set.
-Parameter recorded_events : forall `{H : State.Trait},
+Parameter recorded_events_ret_ty :
+    forall `{core.iter.traits.iterator.Iterator},
+    Set.
+Parameter recorded_events :
+    forall `{H : State.Trait},
     M (H := H) recorded_events_ret_ty.
 
-Parameter assert_contract_termination : forall `{H : State.Trait},
+Parameter assert_contract_termination :
     forall
-    {T : Set} {F : Set},
-    forall `{ink_env.types.Environment.Trait T}, forall
-      `{core.ops.function.FnMut.Trait F (Args := unit)},
-      forall `{core.panic.unwind_safe.UnwindSafe.Trait F}, forall
-      `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId},
-      forall `{core.fmt.Debug.Trait ink_env.types.Environment.Balance}, F ->
-    T::type["AccountId"] ->
-    T::type["Balance"] ->
-    M (H := H) unit.
+      `{H : State.Trait}
+      {T F : Set}
+      `{ink_env.types.Environment.Trait T}
+      `{core.ops.function.FnMut.Trait F (Args := unit)}
+      `{core.panic.unwind_safe.UnwindSafe.Trait F}
+      `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
+      `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
+    F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H) unit.
 
 Module EnvInstance.
   Unset Primitive Projections.
@@ -4921,7 +4900,8 @@ Module topics.
     }.
     Global Instance Method_push_topic `{H : State.Trait} `(Trait)
       : Notation.Dot "push_topic" := {
-      Notation.dot{T: Set} `{parity_scale_codec.codec.Encode.Trait T}  :=
+      Notation.dot {T : Set} `{parity_scale_codec.codec.Encode.Trait T}
+        :=
         push_topic;
     }.
     Global Instance Method_output `{H : State.Trait} `(Trait)
@@ -5013,16 +4993,17 @@ Module topics.
     Global Instance
         Method_RemainingTopics
         {RemainingTopics}
-        `(Trait
-        (RemainingTopics := RemainingTopics))
+        `(Trait (RemainingTopics := RemainingTopics))
       : Notation.DoubleColonType Self "RemainingTopics" := {
       Notation.double_colon_type := RemainingTopics;
     }.
     Global Instance Method_topics `{H : State.Trait} `(Trait)
       : Notation.Dot "topics" := {
-      Notation.dot{E B: Set} `{ink_env.types.Environment.Trait E}
+      Notation.dot
+          {E B : Set}
+          `{ink_env.types.Environment.Trait E}
           `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-           :=
+        :=
         topics;
     }.
   End Topics.
@@ -5074,7 +5055,8 @@ Module TopicsBuilderBackend.
   }.
   Global Instance Method_push_topic `{H : State.Trait} `(Trait)
     : Notation.Dot "push_topic" := {
-    Notation.dot{T: Set} `{parity_scale_codec.codec.Encode.Trait T}  :=
+    Notation.dot {T : Set} `{parity_scale_codec.codec.Encode.Trait T}
+      :=
       push_topic;
   }.
   Global Instance Method_output `{H : State.Trait} `(Trait)
@@ -5184,16 +5166,17 @@ Module Topics.
   Global Instance
       Method_RemainingTopics
       {RemainingTopics}
-      `(Trait
-      (RemainingTopics := RemainingTopics))
+      `(Trait (RemainingTopics := RemainingTopics))
     : Notation.DoubleColonType Self "RemainingTopics" := {
     Notation.double_colon_type := RemainingTopics;
   }.
   Global Instance Method_topics `{H : State.Trait} `(Trait)
     : Notation.Dot "topics" := {
-    Notation.dot{E B: Set} `{ink_env.types.Environment.Trait E}
+    Notation.dot
+        {E B : Set}
+        `{ink_env.types.Environment.Trait E}
         `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-         :=
+      :=
       topics;
   }.
 End Topics.

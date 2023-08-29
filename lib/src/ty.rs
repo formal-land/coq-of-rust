@@ -1,3 +1,4 @@
+use crate::coq;
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
@@ -213,6 +214,52 @@ pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<B
 }
 
 impl CoqType {
+    pub(crate) fn to_coq<'a>(&self) -> coq::Expression<'a> {
+        match self {
+            CoqType::Var(path) => coq::Expression::Variable {
+                ident: *path.clone(),
+                no_implicit: false,
+            },
+            CoqType::Application { func, args } => coq::Expression::Variable {
+                ident: *func.clone(),
+                no_implicit: false,
+            }
+            .apply_many(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
+            CoqType::Function { args, ret } => ret
+                .to_coq()
+                .arrows_from(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
+            CoqType::Tuple(tys) => coq::Expression::multiply_many(
+                &tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>(),
+            ),
+            CoqType::Array(ty) => coq::Expression::Variable {
+                ident: Path::new(&["list"]),
+                no_implicit: false,
+            }
+            .apply(&ty.to_coq()),
+            CoqType::Ref(ty, mutbl) => coq::Expression::Variable {
+                ident: Path::new(&[match mutbl {
+                    rustc_hir::Mutability::Mut => "mut_ref",
+                    rustc_hir::Mutability::Not => "ref",
+                }]),
+                no_implicit: false,
+            }
+            .apply(&ty.to_coq()),
+            // @TODO: translate OpaqueType
+            CoqType::OpaqueType(_) => coq::Expression::Variable {
+                ident: Path::new(&["_ (* OpaqueTy *)"]),
+                no_implicit: false,
+            },
+        }
+    }
+
+    // we need this function to fix aligning
+    pub(crate) fn to_coq_tuning(&self) -> coq::Expression {
+        match self {
+            CoqType::Ref(ty, _) => ty.to_coq(),
+            _ => self.to_coq(),
+        }
+    }
+
     pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
         match self {
             CoqType::Var(path) => path.to_doc(),
@@ -257,14 +304,6 @@ impl CoqType {
             ),
             // @TODO: translate OpaqueType
             CoqType::OpaqueType(_) => text("_ (* OpaqueTy *)"),
-        }
-    }
-
-    // we need this function to fix aligning
-    pub(crate) fn to_doc_tuning(&self, with_paren: bool) -> Doc {
-        match self {
-            CoqType::Ref(ty, _) => paren(with_paren, ty.to_doc(true)),
-            _ => self.to_doc(with_paren),
         }
     }
 
@@ -338,6 +377,29 @@ impl CoqType {
             CoqType::Array(ty) => ty.has_opaque_types(),
             CoqType::Ref(ty, _) => ty.has_opaque_types(),
             CoqType::OpaqueType(_) => true,
+        }
+    }
+
+    /// returns the list of the parameters of opaque types in the subtree rooted in [self]
+    pub(crate) fn opaque_types_bounds(&self) -> Vec<Vec<Path>> {
+        match self {
+            CoqType::Var(_) => vec![],
+            CoqType::Application { args, .. } => args
+                .iter()
+                .flat_map(|ty| ty.opaque_types_bounds())
+                .collect(),
+            CoqType::Function { args, ret } => args
+                .iter()
+                .flat_map(|ty| ty.opaque_types_bounds())
+                .chain(ret.opaque_types_bounds())
+                .collect(),
+            CoqType::Tuple(types) => types
+                .iter()
+                .flat_map(|ty| ty.opaque_types_bounds())
+                .collect(),
+            CoqType::Array(ty) => ty.opaque_types_bounds(),
+            CoqType::Ref(ty, _) => ty.opaque_types_bounds(),
+            CoqType::OpaqueType(bounds) => vec![bounds.to_owned()],
         }
     }
 

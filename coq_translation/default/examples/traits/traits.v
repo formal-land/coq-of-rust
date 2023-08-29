@@ -39,7 +39,8 @@ Module Animal.
   }.
   Global Instance Method_talk `{H : State.Trait} `(Trait)
     : Notation.Dot "talk" := {
-    Notation.dot (self : ref Self) :=
+    Notation.dot (self : ref Self)
+      :=
       (let* _ :=
         let* _ :=
           let* α0 := self.["name"] in

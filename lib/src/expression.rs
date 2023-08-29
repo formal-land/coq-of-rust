@@ -1297,26 +1297,26 @@ impl Expr {
     // in fmt Definition (...crate_fmt_Debug...)
     // get the name and arg_types of the associated function
     // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
-    pub fn parameter_name_for_fmt(&self) -> Doc {
+    pub fn parameter_name_for_fmt(&self) -> String {
         match self {
             Expr::Block(bx) => bx.parameter_for_fmt(),
-            _ => text("struct_parameter_for_fmt"),
+            _ => "struct_parameter_for_fmt".to_string(),
         }
     }
 
-    pub fn parameter_for_fmt_print_name(&self) -> Doc {
+    fn parameter_for_fmt_print_name(&self) -> String {
         match self {
-            Expr::AssociatedFunction { ty: _, func } => text(func),
-            _ => text("struct_parameter_for_fmt"),
+            Expr::AssociatedFunction { ty: _, func } => func.to_owned(),
+            _ => "struct_parameter_for_fmt".to_string(),
         }
     }
 
     // get the name and the arg_types of the associated function match step2
-    pub fn parameter_for_fmt2(&self) -> Doc {
+    fn parameter_for_fmt2(&self) -> String {
         match self {
             Expr::Call { func, args: _ } => func.parameter_for_fmt_print_name(),
             // intersperse(args.iter().map(|arg| arg.to_type()), [line()]),
-            _ => text("struct_parameter_for_fmt"),
+            _ => "struct_parameter_for_fmt".to_string(),
         }
     }
 }
@@ -1360,10 +1360,10 @@ impl Stmt {
     }
 
     // @TODO cover more cases instead of template text("struct_parameter_for_fmt"),
-    pub fn parameter_for_fmt(&self) -> Doc {
+    pub fn parameter_for_fmt(&self) -> String {
         match self {
             Stmt::Expr(expr) => expr.parameter_for_fmt2(),
-            _ => text("struct_parameter_for_fmt"),
+            _ => "struct_parameter_for_fmt".to_string(),
         }
     }
 }

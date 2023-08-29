@@ -12,17 +12,18 @@ Module codegen.
           alloc.string.String
           alloc.string.String)).
   
-  Parameter already_built_contracts : forall `{H : State.Trait},
+  Parameter already_built_contracts :
+      forall `{H : State.Trait},
       M (H := H)
-        (std.collections.hash.map.HashMap
-          alloc.string.String
-          alloc.string.String).
+          (std.collections.hash.map.HashMap
+            alloc.string.String
+            alloc.string.String).
   
-  Parameter set_already_built_contracts : forall `{H : State.Trait},
-      std.collections.hash.map.HashMap
-        alloc.string.String
-        alloc.string.String ->
-      M (H := H) unit.
+  Parameter set_already_built_contracts :
+      forall `{H : State.Trait},
+      (std.collections.hash.map.HashMap alloc.string.String alloc.string.String)
+        ->
+        M (H := H) unit.
   
   Module InkE2ETest.
     Unset Primitive Projections.
@@ -46,15 +47,18 @@ Parameter ALREADY_BUILT_CONTRACTS :
         alloc.string.String
         alloc.string.String)).
 
-Parameter already_built_contracts : forall `{H : State.Trait},
+Parameter already_built_contracts :
+    forall `{H : State.Trait},
     M (H := H)
-      (std.collections.hash.map.HashMap
-        alloc.string.String
-        alloc.string.String).
+        (std.collections.hash.map.HashMap
+          alloc.string.String
+          alloc.string.String).
 
-Parameter set_already_built_contracts : forall `{H : State.Trait},
-    std.collections.hash.map.HashMap alloc.string.String alloc.string.String ->
-    M (H := H) unit.
+Parameter set_already_built_contracts :
+    forall `{H : State.Trait},
+    (std.collections.hash.map.HashMap alloc.string.String alloc.string.String)
+      ->
+      M (H := H) unit.
 
 Module InkE2ETest.
   Unset Primitive Projections.
@@ -179,7 +183,8 @@ Module E2EFn.
 End E2EFn.
 Definition E2EFn : Set := @E2EFn.t.
 
-Parameter test : forall `{H : State.Trait},
+Parameter test :
+    forall `{H : State.Trait},
     proc_macro.TokenStream ->
-    proc_macro.TokenStream ->
-    M (H := H) proc_macro.TokenStream.
+      proc_macro.TokenStream ->
+      M (H := H) proc_macro.TokenStream.

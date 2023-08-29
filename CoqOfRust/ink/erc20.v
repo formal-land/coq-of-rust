@@ -683,9 +683,12 @@ Module erc20.
   Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-      string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> 
-      M (H := H) core.fmt.Result.
+    Parameter debug_struct_field1_finish :
+        core.fmt.Formatter ->
+          string ->
+            string ->
+            ink_codegen_dispatch_info_ContractCallBuilder_Type_ ->
+            M (H := H) core.fmt.Result.
     
     Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
       core.fmt.Formatter "debug_struct_field1_finish" := {
@@ -1672,9 +1675,8 @@ Module
   Definition emit_event
       `{H : State.Trait}
       {E : Set}
-      `{core.convert.Into.Trait
-        E
-        (T := ink.reflect.event.ContractEventBase.Type_)}
+      `{core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_)}
       (self : Self)
       (event : E)
       : M (H := H) unit :=
@@ -3898,9 +3900,9 @@ Definition CallBuilder : Set := @CallBuilder.t.
 Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-    string -> erc20_erc20_AccountId -> 
-    M (H := H) core.fmt.Result.
+  Parameter debug_struct_field1_finish :
+      core.fmt.Formatter ->
+        string -> string -> erc20_erc20_AccountId -> M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field1_finish" := {
@@ -3960,9 +3962,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
   Definition using_encoded
       `{H : State.Trait}
       {R F : Set}
-      `{core.ops.function.FnOnce.Trait
-        F
-        (Args := (ref (Slice Root.core.primitive.u8)))}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice Root.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=
@@ -4588,9 +4589,12 @@ Definition Erc20Ref : Set := @Erc20Ref.t.
 Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Parameter debug_struct_field1_finish : core.fmt.Formatter -> string -> 
-    string -> ink_codegen_dispatch_info_ContractCallBuilder_Type_ -> 
-    M (H := H) core.fmt.Result.
+  Parameter debug_struct_field1_finish :
+      core.fmt.Formatter ->
+        string ->
+          string ->
+          ink_codegen_dispatch_info_ContractCallBuilder_Type_ ->
+          M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field1_finish" := {
@@ -4649,9 +4653,8 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
   Definition using_encoded
       `{H : State.Trait}
       {R F : Set}
-      `{core.ops.function.FnOnce.Trait
-        F
-        (Args := (ref (Slice Root.core.primitive.u8)))}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice Root.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H) R :=

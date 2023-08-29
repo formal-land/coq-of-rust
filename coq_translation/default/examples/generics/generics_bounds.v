@@ -47,10 +47,9 @@ Definition Rectangle : Set := @Rectangle.t.
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Parameter debug_struct_field2_finish : core.fmt.Formatter -> string -> 
-    string -> f64 -> 
-    string -> f64 -> 
-    M (H := H) core.fmt.Result.
+  Parameter debug_struct_field2_finish :
+      core.fmt.Formatter ->
+        string -> string -> f64 -> string -> f64 -> M (H := H) core.fmt.Result.
   
   Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field2_finish" := {

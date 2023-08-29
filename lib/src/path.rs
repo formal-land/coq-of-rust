@@ -230,14 +230,29 @@ pub(crate) fn to_valid_coq_name(str: String) -> String {
 }
 
 impl Path {
+    pub(crate) fn new<S: ToString>(segments: &[S]) -> Self {
+        Path {
+            segments: segments.iter().map(|s| s.to_string()).collect(),
+        }
+    }
+
     pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
         // clone to be able to consume
         let segments = self.segments.clone();
         // consume (by into_iter) to let the result live arbitrarily long
-        intersperse(segments.into_iter().map(text), [text(".")])
+        intersperse(segments, [text(".")])
     }
 
     pub(crate) fn to_name(&self) -> String {
         self.segments.join("_")
+    }
+
+    pub(crate) fn concat(paths: &[Self]) -> Self {
+        Path {
+            segments: paths
+                .iter()
+                .flat_map(|path| path.segments.to_owned())
+                .collect(),
+        }
     }
 }

@@ -12,9 +12,7 @@ Definition
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
 Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-  Definition
-    Self
-    :=
+  Definition Self :=
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
   
   Definition run

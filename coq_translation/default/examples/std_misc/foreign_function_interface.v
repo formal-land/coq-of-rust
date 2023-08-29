@@ -90,10 +90,9 @@ End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
-  Parameter struct_parameter_for_fmt : core.fmt.Formatter -> string -> 
-    string -> f32 -> 
-    string -> f32 -> 
-    M (H := H) core.fmt.Result.
+  Parameter struct_parameter_for_fmt :
+      core.fmt.Formatter ->
+        string -> string -> f32 -> string -> f32 -> M (H := H) core.fmt.Result.
   
   Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
     core.fmt.Formatter "struct_parameter_for_fmt" := {

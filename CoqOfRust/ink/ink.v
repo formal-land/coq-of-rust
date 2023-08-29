@@ -112,11 +112,13 @@ End IsResultErrFallback.
 Module codegen.
   Module dispatch.
     Module execution.
-      Parameter deny_payment : forall `{H : State.Trait},
+      Parameter deny_payment :
           forall
-          {E : Set},
-          forall `{ink_env.types.Environment.Trait E}, M (H := H)
-            (core.result.Result unit ink.reflect.dispatch.DispatchError).
+            `{H : State.Trait}
+            {E : Set}
+            `{ink_env.types.Environment.Trait E},
+          M (H := H)
+              (core.result.Result unit ink.reflect.dispatch.DispatchError).
     End execution.
     
     Module info.
@@ -177,8 +179,7 @@ Module codegen.
       Global Instance
           Method_EnvAccess
           {EnvAccess}
-          `(Trait
-          (EnvAccess := EnvAccess))
+          `(Trait (EnvAccess := EnvAccess))
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
@@ -197,8 +198,7 @@ Module codegen.
       Global Instance
           Method_EnvAccess
           {EnvAccess}
-          `(Trait
-          (EnvAccess := EnvAccess))
+          `(Trait (EnvAccess := EnvAccess))
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
@@ -220,19 +220,19 @@ Module codegen.
           emit_event
             `{H : State.Trait}
             {E: Set}
-            `{core.convert.Into.Trait
-              E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
+            `{core.convert.Into.Trait E
+                (T := ink.reflect.event.ContractEventBase.Type_)}
             :
             Self -> E -> (M (H := H) unit);
         }.
         
         Global Instance Method_emit_event `{H : State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
-          Notation.dot{E: Set} `{core.convert.Into.Trait
-                E
-                (T := ink.reflect.event.ContractEventBase.Type_)}
-               :=
+          Notation.dot
+              {E : Set}
+              `{core.convert.Into.Trait E
+                  (T := ink.reflect.event.ContractEventBase.Type_)}
+            :=
             emit_event;
         }.
       End EmitEvent.
@@ -275,8 +275,7 @@ Module codegen.
         Global Instance
             Method_LenTopics
             {LenTopics}
-            `(Trait
-            (LenTopics := LenTopics))
+            `(Trait (LenTopics := LenTopics))
           : Notation.DoubleColonType Self "LenTopics" := {
           Notation.double_colon_type := LenTopics;
         }.
@@ -324,7 +323,7 @@ Module codegen.
             (Self : Set)
             {Forwarder : Set}
             `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-              Forwarder} :
+                  Forwarder} :
             Set := {
           Forwarder := Forwarder;
         }.
@@ -332,8 +331,7 @@ Module codegen.
         Global Instance
             Method_Forwarder
             {Forwarder}
-            `(Trait
-            (Forwarder := Forwarder))
+            `(Trait (Forwarder := Forwarder))
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
@@ -344,7 +342,7 @@ Module codegen.
             (Self : Set)
             {Forwarder : Set}
             `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-              Forwarder} :
+                  Forwarder} :
             Set := {
           Forwarder := Forwarder;
           forward
@@ -374,8 +372,7 @@ Module codegen.
         Global Instance
             Method_Forwarder
             {Forwarder}
-            `(Trait
-            (Forwarder := Forwarder))
+            `(Trait (Forwarder := Forwarder))
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
@@ -413,9 +410,8 @@ Module codegen.
   
   Module utils.
     Module identity_type.
-      Parameter consume_type : forall `{H : State.Trait},
-          forall
-          {T : Set},
+      Parameter consume_type :
+          forall `{H : State.Trait} {T : Set},
           M (H := H) unit.
     End identity_type.
     
@@ -441,11 +437,12 @@ End codegen.
 
 Module dispatch.
   Module execution.
-    Parameter deny_payment : forall `{H : State.Trait},
+    Parameter deny_payment :
         forall
-        {E : Set},
-        forall `{ink_env.types.Environment.Trait E}, M (H := H)
-          (core.result.Result unit ink.reflect.dispatch.DispatchError).
+          `{H : State.Trait}
+          {E : Set}
+          `{ink_env.types.Environment.Trait E},
+        M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
   End execution.
   
   Module info.
@@ -497,18 +494,14 @@ Module dispatch.
 End dispatch.
 
 Module execution.
-  Parameter deny_payment : forall `{H : State.Trait},
-      forall
-      {E : Set},
-      forall `{ink_env.types.Environment.Trait E}, M (H := H)
-        (core.result.Result unit ink.reflect.dispatch.DispatchError).
+  Parameter deny_payment :
+      forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
 End execution.
 
-Parameter deny_payment : forall `{H : State.Trait},
-    forall
-    {E : Set},
-    forall `{ink_env.types.Environment.Trait E}, M (H := H)
-      (core.result.Result unit ink.reflect.dispatch.DispatchError).
+Parameter deny_payment :
+    forall `{H : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H) (core.result.Result unit ink.reflect.dispatch.DispatchError).
 
 Module info.
   Module ContractCallBuilder.
@@ -610,8 +603,7 @@ Module env.
     Global Instance
         Method_EnvAccess
         {EnvAccess}
-        `(Trait
-        (EnvAccess := EnvAccess))
+        `(Trait (EnvAccess := EnvAccess))
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
@@ -630,8 +622,7 @@ Module env.
     Global Instance
         Method_EnvAccess
         {EnvAccess}
-        `(Trait
-        (EnvAccess := EnvAccess))
+        `(Trait (EnvAccess := EnvAccess))
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
@@ -685,19 +676,19 @@ Module event.
         emit_event
           `{H : State.Trait}
           {E: Set}
-          `{core.convert.Into.Trait
-            E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
+          `{core.convert.Into.Trait E
+              (T := ink.reflect.event.ContractEventBase.Type_)}
           :
           Self -> E -> (M (H := H) unit);
       }.
       
       Global Instance Method_emit_event `{H : State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
-        Notation.dot{E: Set} `{core.convert.Into.Trait
-              E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
-             :=
+        Notation.dot
+            {E : Set}
+            `{core.convert.Into.Trait E
+                (T := ink.reflect.event.ContractEventBase.Type_)}
+          :=
           emit_event;
       }.
     End EmitEvent.
@@ -740,8 +731,7 @@ Module event.
       Global Instance
           Method_LenTopics
           {LenTopics}
-          `(Trait
-          (LenTopics := LenTopics))
+          `(Trait (LenTopics := LenTopics))
         : Notation.DoubleColonType Self "LenTopics" := {
         Notation.double_colon_type := LenTopics;
       }.
@@ -757,19 +747,19 @@ Module emit.
       emit_event
         `{H : State.Trait}
         {E: Set}
-        `{core.convert.Into.Trait
-          E
-          (T := ink.reflect.event.ContractEventBase.Type_)}
+        `{core.convert.Into.Trait E
+            (T := ink.reflect.event.ContractEventBase.Type_)}
         :
         Self -> E -> (M (H := H) unit);
     }.
     
     Global Instance Method_emit_event `{H : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
-      Notation.dot{E: Set} `{core.convert.Into.Trait
-            E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
-           :=
+      Notation.dot
+          {E : Set}
+          `{core.convert.Into.Trait E
+              (T := ink.reflect.event.ContractEventBase.Type_)}
+        :=
         emit_event;
     }.
   End EmitEvent.
@@ -782,19 +772,19 @@ Module EmitEvent.
     emit_event
       `{H : State.Trait}
       {E: Set}
-      `{core.convert.Into.Trait
-        E
-        (T := ink.reflect.event.ContractEventBase.Type_)}
+      `{core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_)}
       :
       Self -> E -> (M (H := H) unit);
   }.
   
   Global Instance Method_emit_event `{H : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
-    Notation.dot{E: Set} `{core.convert.Into.Trait
-          E
-          (T := ink.reflect.event.ContractEventBase.Type_)}
-         :=
+    Notation.dot
+        {E : Set}
+        `{core.convert.Into.Trait E
+            (T := ink.reflect.event.ContractEventBase.Type_)}
+      :=
       emit_event;
   }.
 End EmitEvent.
@@ -836,8 +826,7 @@ Module topics.
     Global Instance
         Method_LenTopics
         {LenTopics}
-        `(Trait
-        (LenTopics := LenTopics))
+        `(Trait (LenTopics := LenTopics))
       : Notation.DoubleColonType Self "LenTopics" := {
       Notation.double_colon_type := LenTopics;
     }.
@@ -930,7 +919,7 @@ Module trait_def.
           (Self : Set)
           {Forwarder : Set}
           `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-            Forwarder} :
+                Forwarder} :
           Set := {
         Forwarder := Forwarder;
       }.
@@ -938,8 +927,7 @@ Module trait_def.
       Global Instance
           Method_Forwarder
           {Forwarder}
-          `(Trait
-          (Forwarder := Forwarder))
+          `(Trait (Forwarder := Forwarder))
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
@@ -950,7 +938,7 @@ Module trait_def.
           (Self : Set)
           {Forwarder : Set}
           `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-            Forwarder} :
+                Forwarder} :
           Set := {
         Forwarder := Forwarder;
         forward `{H : State.Trait} : (ref Self) -> (M (H := H) (ref Forwarder));
@@ -976,8 +964,7 @@ Module trait_def.
       Global Instance
           Method_Forwarder
           {Forwarder}
-          `(Trait
-          (Forwarder := Forwarder))
+          `(Trait (Forwarder := Forwarder))
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
@@ -1050,8 +1037,7 @@ Module call_builder.
     Global Instance
         Method_Forwarder
         {Forwarder}
-        `(Trait
-        (Forwarder := Forwarder))
+        `(Trait (Forwarder := Forwarder))
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
@@ -1087,8 +1073,7 @@ Module call_builder.
     Global Instance
         Method_Forwarder
         {Forwarder}
-        `(Trait
-        (Forwarder := Forwarder))
+        `(Trait (Forwarder := Forwarder))
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
@@ -1222,9 +1207,8 @@ Definition TraitMessageSelector := @TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
-    Parameter consume_type : forall `{H : State.Trait},
-        forall
-        {T : Set},
+    Parameter consume_type :
+        forall `{H : State.Trait} {T : Set},
         M (H := H) unit.
   End identity_type.
   
@@ -1248,16 +1232,10 @@ Module utils.
 End utils.
 
 Module identity_type.
-  Parameter consume_type : forall `{H : State.Trait},
-      forall
-      {T : Set},
-      M (H := H) unit.
+  Parameter consume_type : forall `{H : State.Trait} {T : Set}, M (H := H) unit.
 End identity_type.
 
-Parameter consume_type : forall `{H : State.Trait},
-    forall
-    {T : Set},
-    M (H := H) unit.
+Parameter consume_type : forall `{H : State.Trait} {T : Set}, M (H := H) unit.
 
 Module same_type.
   Module IsSameType.
@@ -1547,7 +1525,8 @@ Module reflect.
       
       Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
-        Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+        Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+          :=
           decode_dispatch;
       }.
     End DecodeDispatch.
@@ -1888,7 +1867,8 @@ Module dispatch.
     
     Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
       : Notation.Dot "decode_dispatch" := {
-      Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+      Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+        :=
         decode_dispatch;
     }.
   End DecodeDispatch.
@@ -2136,7 +2116,8 @@ Module DecodeDispatch.
   
   Global Instance Method_decode_dispatch `{H : State.Trait} `(Trait)
     : Notation.Dot "decode_dispatch" := {
-    Notation.dot{I: Set} `{parity_scale_codec.codec.Input.Trait I}  :=
+    Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+      :=
       decode_dispatch;
   }.
 End DecodeDispatch.
@@ -2362,8 +2343,7 @@ Module chain_extension.
     Global Instance
         Method_ErrorCode
         {ErrorCode}
-        `(Trait
-        (ErrorCode := ErrorCode))
+        `(Trait (ErrorCode := ErrorCode))
       : Notation.DoubleColonType Self "ErrorCode" := {
       Notation.double_colon_type := ErrorCode;
     }.
@@ -2402,8 +2382,7 @@ Module chain_extension.
     Global Instance
         Method_ReturnType
         {ReturnType}
-        `(Trait
-        (ReturnType := ReturnType))
+        `(Trait (ReturnType := ReturnType))
       : Notation.DoubleColonType Self "ReturnType" := {
       Notation.double_colon_type := ReturnType;
     }.
@@ -2495,8 +2474,7 @@ Module Output.
   Global Instance
       Method_ReturnType
       {ReturnType}
-      `(Trait
-      (ReturnType := ReturnType))
+      `(Trait (ReturnType := ReturnType))
     : Notation.DoubleColonType Self "ReturnType" := {
     Notation.double_colon_type := ReturnType;
   }.

@@ -10,7 +10,8 @@ Module my_mod.
     Parameter function : forall `{H : State.Trait}, M (H := H) unit.
   End nested.
   
-  Parameter call_public_function_in_my_mod : forall `{H : State.Trait},
+  Parameter call_public_function_in_my_mod :
+      forall `{H : State.Trait},
       M (H := H) unit.
   
   Module private_nested.
@@ -27,7 +28,8 @@ Module nested.
   Parameter function : forall `{H : State.Trait}, M (H := H) unit.
 End nested.
 
-Parameter call_public_function_in_my_mod : forall `{H : State.Trait},
+Parameter call_public_function_in_my_mod :
+    forall `{H : State.Trait},
     M (H := H) unit.
 
 Module private_nested.
