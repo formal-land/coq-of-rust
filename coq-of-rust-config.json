@@ -23,6 +23,7 @@
     "ink_env": {
       "top_level": {
         "arithmetic": { "move": "up", "before": "types" },
+        "topics": { "move": "up", "before": "error" },
         "error": { "move": "up", "before": "backend" },
         "hash": { "move": "up", "before": "backend" },
         "backend": { "move": "up", "before": "api" },

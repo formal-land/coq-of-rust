@@ -419,6 +419,165 @@ Definition Gas : Set := u64.
 
 Definition BlockNumber : Set := u32.
 
+Module topics.
+  Module TopicsBuilderBackend.
+    Class Trait
+        (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E}
+        {Output : Set} :
+        Set := {
+      Output := Output;
+      expect
+        `{H' : State.Trait}
+        :
+        (mut_ref Self) -> usize -> (M (H := H') unit);
+      push_topic
+        `{H' : State.Trait}
+        {T: Set}
+        `{parity_scale_codec.codec.Encode.Trait T}
+        :
+        (mut_ref Self) -> (ref T) -> (M (H := H') unit);
+      output `{H' : State.Trait} : Self -> (M (H := H') Output);
+    }.
+    
+    Global Instance Method_Output {Output} `(Trait (Output := Output))
+      : Notation.DoubleColonType Self "Output" := {
+      Notation.double_colon_type := Output;
+    }.
+    Global Instance Method_expect `{H' : State.Trait} `(Trait)
+      : Notation.Dot "expect" := {
+      Notation.dot := expect;
+    }.
+    Global Instance Method_push_topic `{H' : State.Trait} `(Trait)
+      : Notation.Dot "push_topic" := {
+      Notation.dot {T : Set} `{parity_scale_codec.codec.Encode.Trait T}
+        :=
+        push_topic;
+    }.
+    Global Instance Method_output `{H' : State.Trait} `(Trait)
+      : Notation.Dot "output" := {
+      Notation.dot := output;
+    }.
+  End TopicsBuilderBackend.
+  
+  Module TopicsBuilder.
+    Section TopicsBuilder.
+      Context {S E B : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        backend : B;
+        state : core.marker.PhantomData ((S * E));
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_backend : Notation.Dot "backend" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_state : Notation.Dot "state" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End TopicsBuilder.
+  End TopicsBuilder.
+  Definition TopicsBuilder := @TopicsBuilder.t.
+  
+  Module state.
+    Module Uninit.
+      Inductive t : Set :=
+      .
+    End Uninit.
+    Definition Uninit := Uninit.t.
+    
+    Module HasRemainingTopics.
+      Inductive t : Set :=
+      .
+    End HasRemainingTopics.
+    Definition HasRemainingTopics := HasRemainingTopics.t.
+    
+    Module NoRemainingTopics.
+      Inductive t : Set :=
+      .
+    End NoRemainingTopics.
+    Definition NoRemainingTopics := NoRemainingTopics.t.
+  End state.
+  
+  Module SomeRemainingTopics.
+    Class Trait (Self : Set) {Next : Set} : Set := {
+      Next := Next;
+    }.
+    
+    Global Instance Method_Next {Next} `(Trait (Next := Next))
+      : Notation.DoubleColonType Self "Next" := {
+      Notation.double_colon_type := Next;
+    }.
+  End SomeRemainingTopics.
+  
+  Module EventTopicsAmount.
+    Class Trait (Self : Set) : Set := {
+      AMOUNT `{H' : State.Trait} : usize;
+    }.
+    
+    Global Instance Method_AMOUNT `{H' : State.Trait} `(Trait)
+      : Notation.Dot "AMOUNT" := {
+      Notation.dot := AMOUNT;
+    }.
+  End EventTopicsAmount.
+  
+  Module Topics.
+    Class Trait
+        (Self : Set)
+        {RemainingTopics : Set}
+        `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} :
+        Set := {
+      RemainingTopics := RemainingTopics;
+      topics
+        `{H' : State.Trait}
+        {E B: Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        :
+        (ref Self) ->
+        (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
+        (M (H := H') ink_env.topics.TopicsBuilderBackend.Output);
+    }.
+    
+    Global Instance
+        Method_RemainingTopics
+        {RemainingTopics}
+        `(Trait (RemainingTopics := RemainingTopics))
+      : Notation.DoubleColonType Self "RemainingTopics" := {
+      Notation.double_colon_type := RemainingTopics;
+    }.
+    Global Instance Method_topics `{H' : State.Trait} `(Trait)
+      : Notation.Dot "topics" := {
+      Notation.dot
+          {E B : Set}
+          `{ink_env.types.Environment.Trait E}
+          `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+        :=
+        topics;
+    }.
+  End Topics.
+  
+  Module PrefixedValue.
+    Section PrefixedValue.
+      Context {T : Set}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        prefix : ref (Slice u8);
+        value : ref T;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_prefix : Notation.Dot "prefix" := {
+        Notation.dot '(Build_t x0 _) := x0;
+      }.
+      Global Instance Get_value : Notation.Dot "value" := {
+        Notation.dot '(Build_t _ x1) := x1;
+      }.
+    End PrefixedValue.
+  End PrefixedValue.
+  Definition PrefixedValue := @PrefixedValue.t.
+End topics.
+
 Module error.
   Module Error.
     Inductive t : Set :=
@@ -4877,165 +5036,6 @@ Module Sealed.
   }.
   Global Set Primitive Projections.
 End Sealed.
-
-Module topics.
-  Module TopicsBuilderBackend.
-    Class Trait
-        (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E}
-        {Output : Set} :
-        Set := {
-      Output := Output;
-      expect
-        `{H' : State.Trait}
-        :
-        (mut_ref Self) -> usize -> (M (H := H') unit);
-      push_topic
-        `{H' : State.Trait}
-        {T: Set}
-        `{parity_scale_codec.codec.Encode.Trait T}
-        :
-        (mut_ref Self) -> (ref T) -> (M (H := H') unit);
-      output `{H' : State.Trait} : Self -> (M (H := H') Output);
-    }.
-    
-    Global Instance Method_Output {Output} `(Trait (Output := Output))
-      : Notation.DoubleColonType Self "Output" := {
-      Notation.double_colon_type := Output;
-    }.
-    Global Instance Method_expect `{H' : State.Trait} `(Trait)
-      : Notation.Dot "expect" := {
-      Notation.dot := expect;
-    }.
-    Global Instance Method_push_topic `{H' : State.Trait} `(Trait)
-      : Notation.Dot "push_topic" := {
-      Notation.dot {T : Set} `{parity_scale_codec.codec.Encode.Trait T}
-        :=
-        push_topic;
-    }.
-    Global Instance Method_output `{H' : State.Trait} `(Trait)
-      : Notation.Dot "output" := {
-      Notation.dot := output;
-    }.
-  End TopicsBuilderBackend.
-  
-  Module TopicsBuilder.
-    Section TopicsBuilder.
-      Context {S E B : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        backend : B;
-        state : core.marker.PhantomData ((S * E));
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_backend : Notation.Dot "backend" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_state : Notation.Dot "state" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
-    End TopicsBuilder.
-  End TopicsBuilder.
-  Definition TopicsBuilder := @TopicsBuilder.t.
-  
-  Module state.
-    Module Uninit.
-      Inductive t : Set :=
-      .
-    End Uninit.
-    Definition Uninit := Uninit.t.
-    
-    Module HasRemainingTopics.
-      Inductive t : Set :=
-      .
-    End HasRemainingTopics.
-    Definition HasRemainingTopics := HasRemainingTopics.t.
-    
-    Module NoRemainingTopics.
-      Inductive t : Set :=
-      .
-    End NoRemainingTopics.
-    Definition NoRemainingTopics := NoRemainingTopics.t.
-  End state.
-  
-  Module SomeRemainingTopics.
-    Class Trait (Self : Set) {Next : Set} : Set := {
-      Next := Next;
-    }.
-    
-    Global Instance Method_Next {Next} `(Trait (Next := Next))
-      : Notation.DoubleColonType Self "Next" := {
-      Notation.double_colon_type := Next;
-    }.
-  End SomeRemainingTopics.
-  
-  Module EventTopicsAmount.
-    Class Trait (Self : Set) : Set := {
-      AMOUNT `{H' : State.Trait} : usize;
-    }.
-    
-    Global Instance Method_AMOUNT `{H' : State.Trait} `(Trait)
-      : Notation.Dot "AMOUNT" := {
-      Notation.dot := AMOUNT;
-    }.
-  End EventTopicsAmount.
-  
-  Module Topics.
-    Class Trait
-        (Self : Set)
-        {RemainingTopics : Set}
-        `{ink_env.topics.EventTopicsAmount.Trait RemainingTopics} :
-        Set := {
-      RemainingTopics := RemainingTopics;
-      topics
-        `{H' : State.Trait}
-        {E B: Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :
-        (ref Self) ->
-        (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-        (M (H := H') ink_env.topics.TopicsBuilderBackend.Output);
-    }.
-    
-    Global Instance
-        Method_RemainingTopics
-        {RemainingTopics}
-        `(Trait (RemainingTopics := RemainingTopics))
-      : Notation.DoubleColonType Self "RemainingTopics" := {
-      Notation.double_colon_type := RemainingTopics;
-    }.
-    Global Instance Method_topics `{H' : State.Trait} `(Trait)
-      : Notation.Dot "topics" := {
-      Notation.dot
-          {E B : Set}
-          `{ink_env.types.Environment.Trait E}
-          `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
-        :=
-        topics;
-    }.
-  End Topics.
-  
-  Module PrefixedValue.
-    Section PrefixedValue.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        prefix : ref (Slice u8);
-        value : ref T;
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_prefix : Notation.Dot "prefix" := {
-        Notation.dot '(Build_t x0 _) := x0;
-      }.
-      Global Instance Get_value : Notation.Dot "value" := {
-        Notation.dot '(Build_t _ x1) := x1;
-      }.
-    End PrefixedValue.
-  End PrefixedValue.
-  Definition PrefixedValue := @PrefixedValue.t.
-End topics.
 
 Module TopicsBuilderBackend.
   Class Trait
