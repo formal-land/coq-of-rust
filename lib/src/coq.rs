@@ -96,7 +96,7 @@ pub(crate) enum DefinitionKind<'a> {
 
 #[derive(Clone)]
 /// a coq expression
-/// (sutable also for coq type expressions,
+/// (suitable also for coq type expressions,
 ///     because in coq types are like any other values)
 pub(crate) enum Expression<'a> {
     /// the Code variant is for those constructions
