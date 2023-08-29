@@ -198,6 +198,8 @@ Module types.
       BlockNumber := BlockNumber;
       ChainExtension := ChainExtension;
     }.
+
+    Set Typeclasses Debug.
     
     Global Instance Method_MAX_EVENT_TOPICS `{H : State.Trait} `(Trait)
       : Notation.Dot "MAX_EVENT_TOPICS" := {
