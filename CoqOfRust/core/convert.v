@@ -74,7 +74,7 @@ pub trait From<T>: Sized {
 *)
 Module From.
   Class Trait (Self : Set) {T : Set} : Set := {
-    from `{H : State.Trait}: T -> M Self;
+    from `{H : State.Trait} : T -> M Self;
   }.
 End From.
 
@@ -85,10 +85,29 @@ pub trait Into<T>: Sized {
 }
 *)
 Module Into.
-  Class Trait (Self T : Set) : Set := { 
-    into : Self -> T;
+  Class Trait (Self : Set) {T : Set } : Set := {
+    into `{H : State.Trait} : Self -> M T;
   }.
 End Into.
+
+Module Impl_Into_for_T.
+  Section Impl_Into_for_T.
+    Context {T U : Set}.
+    Context `{From.Trait U (T := T)}.
+
+    Definition Self := T.
+
+    Definition into `{State.Trait} : Self -> M U := From.from.
+
+    Global Instance Method_into `{State.Trait} : Notation.Dot "into" := {
+      Notation.dot := into;
+    }.
+
+    Global Instance Into_for_T : Into.Trait T := {
+      Into.into `{State.Trait} := into;
+    }.
+  End Impl_Into_for_T.
+End Impl_Into_for_T.
 
 (* 
 pub trait TryFrom<T>: Sized {
