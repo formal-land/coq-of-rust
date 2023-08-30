@@ -31,12 +31,10 @@ Module Contains.
     a `{H' : State.Trait} : (ref Self) -> (M (H := H') A);
   }.
   
-  Global Instance Method_A {A} `(Trait (A := A))
-    : Notation.DoubleColonType Self "A" := {
+  Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
     Notation.double_colon_type := A;
   }.
-  Global Instance Method_B {B} `(Trait (B := B))
-    : Notation.DoubleColonType Self "B" := {
+  Global Instance Method_B `(Trait) : Notation.DoubleColonType Self "B" := {
     Notation.double_colon_type := B;
   }.
   Global Instance Method_contains `{H' : State.Trait} `(Trait)

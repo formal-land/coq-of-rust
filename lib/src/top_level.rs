@@ -2211,34 +2211,16 @@ impl TopLevelItem {
                         ),
                         TraitItem::Type { .. } => coq::Instance::new(
                             name,
-                            &[
-                                coq::ArgDecl::new(
-                                    &coq::ArgDeclVar::Normal {
-                                        idents: vec![name.to_owned()],
-                                        ty: None,
+                            &[coq::ArgDecl::new(
+                                &coq::ArgDeclVar::Generalized {
+                                    idents: vec![],
+                                    ty: coq::Expression::Variable {
+                                        ident: Path::new(&["Trait"]),
+                                        no_implicit: false,
                                     },
-                                    coq::ArgSpecKind::Implicit,
-                                ),
-                                coq::ArgDecl::new(
-                                    &coq::ArgDeclVar::Generalized {
-                                        idents: vec![],
-                                        ty: coq::Expression::Application {
-                                            func: Box::new(coq::Expression::Variable {
-                                                ident: Path::new(&["Trait"]),
-                                                no_implicit: false,
-                                            }),
-                                            args: vec![(
-                                                Some(name.to_string()),
-                                                coq::Expression::Variable {
-                                                    ident: Path::new(&[name]),
-                                                    no_implicit: false,
-                                                },
-                                            )],
-                                        },
-                                    },
-                                    coq::ArgSpecKind::Explicit,
-                                ),
-                            ],
+                                },
+                                coq::ArgSpecKind::Explicit,
+                            )],
                             coq::Expression::Variable {
                                 ident: Path::new(&["Notation", "DoubleColonType"]),
                                 no_implicit: false,
