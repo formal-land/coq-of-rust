@@ -57,6 +57,9 @@ Module client.
   Module InstantiationResult.
     Section InstantiationResult.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         account_id : E::type["AccountId"];
@@ -85,6 +88,9 @@ Module client.
   Module UploadResult.
     Section UploadResult.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : E::type["Hash"];
@@ -113,6 +119,9 @@ Module client.
   Module CallResult.
     Section CallResult.
       Context {C E V : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         dry_run : ink_e2e.client.CallDryRunResult E V;
@@ -133,6 +142,7 @@ Module client.
   Module CallDryRunResult.
     Section CallDryRunResult.
       Context {E V : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         exec_result
@@ -183,6 +193,9 @@ Module client.
   Module Client.
     Section Client.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         api : ink_e2e.xts.ContractsApi C E;
@@ -216,6 +229,7 @@ Definition CallBuilderFinal (E Args RetType : Set) : Set :=
 Module InstantiationResult.
   Section InstantiationResult.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       account_id : E::type["AccountId"];
@@ -244,6 +258,7 @@ Definition InstantiationResult : Set := @InstantiationResult.t.
 Module UploadResult.
   Section UploadResult.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : E::type["Hash"];
@@ -272,6 +287,7 @@ Definition UploadResult : Set := @UploadResult.t.
 Module CallResult.
   Section CallResult.
     Context {C E V : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       dry_run : ink_e2e.client.CallDryRunResult E V;
@@ -292,6 +308,7 @@ Definition CallResult : Set := @CallResult.t.
 Module CallDryRunResult.
   Section CallDryRunResult.
     Context {E V : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       exec_result
@@ -342,6 +359,7 @@ Definition Error := Error.t.
 Module Client.
   Section Client.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       api : ink_e2e.xts.ContractsApi C E;
@@ -553,6 +571,7 @@ Module node_proc.
   Module TestNodeProcess.
     Section TestNodeProcess.
       Context {R : Set}.
+      Context `{subxt.config.Config.Trait R}.
       Unset Primitive Projections.
       Record t : Set := {
         proc : std.process.Child;
@@ -602,6 +621,7 @@ End node_proc.
 Module TestNodeProcess.
   Section TestNodeProcess.
     Context {R : Set}.
+    Context `{subxt.config.Config.Trait R}.
     Unset Primitive Projections.
     Record t : Set := {
       proc : std.process.Child;
@@ -668,6 +688,7 @@ Module xts.
   Module InstantiateWithCode.
     Section InstantiateWithCode.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         value : E::type["Balance"];
@@ -705,6 +726,7 @@ Module xts.
   Module Call.
     Section Call.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
@@ -738,6 +760,9 @@ Module xts.
   Module Transfer.
     Section Transfer.
       Context {E C : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{subxt.config.Config.Trait C}.
       Unset Primitive Projections.
       Record t : Set := {
         dest : subxt.utils.static_type.Static C::type["Address"];
@@ -765,6 +790,7 @@ Module xts.
   Module UploadCode.
     Section UploadCode.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         code : alloc.vec.Vec u8;
@@ -790,6 +816,9 @@ Module xts.
   Module ContractsApi.
     Section ContractsApi.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         client : subxt.client.online_client.OnlineClient C;
@@ -828,6 +857,7 @@ Definition Weight : Set := @Weight.t.
 Module InstantiateWithCode.
   Section InstantiateWithCode.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       value : E::type["Balance"];
@@ -865,6 +895,7 @@ Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
 Module Call.
   Section Call.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
@@ -898,6 +929,7 @@ Definition Call : Set := @Call.t.
 Module Transfer.
   Section Transfer.
     Context {E C : Set}.
+    Context `{ink_env.types.Environment.Trait E} `{subxt.config.Config.Trait C}.
     Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.static_type.Static C::type["Address"];
@@ -925,6 +957,7 @@ Definition Determinism := Determinism.t.
 Module UploadCode.
   Section UploadCode.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       code : alloc.vec.Vec u8;
@@ -950,6 +983,7 @@ Definition UploadCode : Set := @UploadCode.t.
 Module ContractsApi.
   Section ContractsApi.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;

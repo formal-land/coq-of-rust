@@ -242,6 +242,10 @@ Module codegen.
       Module EventRespectsTopicLimit.
         Section EventRespectsTopicLimit.
           Context {Event : Set}.
+          Context
+            `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+            `{ink.codegen.event.topics.RespectTopicLimit.Trait
+                  ink.codegen.event.topics.EventLenTopics.LenTopics}.
           Unset Primitive Projections.
           Record t : Set := {
             marker : core.marker.PhantomData (Event);
@@ -699,6 +703,10 @@ Module event.
     Module EventRespectsTopicLimit.
       Section EventRespectsTopicLimit.
         Context {Event : Set}.
+        Context
+          `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+          `{ink.codegen.event.topics.RespectTopicLimit.Trait
+                ink.codegen.event.topics.EventLenTopics.LenTopics}.
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (Event);
@@ -794,6 +802,10 @@ Module topics.
   Module EventRespectsTopicLimit.
     Section EventRespectsTopicLimit.
       Context {Event : Set}.
+      Context
+        `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+        `{ink.codegen.event.topics.RespectTopicLimit.Trait
+              ink.codegen.event.topics.EventLenTopics.LenTopics}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (Event);
@@ -837,6 +849,10 @@ End topics.
 Module EventRespectsTopicLimit.
   Section EventRespectsTopicLimit.
     Context {Event : Set}.
+    Context
+      `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+      `{ink.codegen.event.topics.RespectTopicLimit.Trait
+            ink.codegen.event.topics.EventLenTopics.LenTopics}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (Event);

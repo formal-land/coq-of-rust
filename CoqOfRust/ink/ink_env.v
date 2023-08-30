@@ -1423,6 +1423,7 @@ Module call.
     Module CallParams.
       Section CallParams.
         Context {E CallType Args R : Set}.
+        Context `{ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
         Record t : Set := {
           call_type : CallType;
@@ -1455,6 +1456,7 @@ Module call.
     Module Call.
       Section Call.
         Context {E : Set}.
+        Context `{ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
         Record t : Set := {
           callee : E::type["AccountId"];
@@ -1480,6 +1482,7 @@ Module call.
     Module CallBuilder.
       Section CallBuilder.
         Context {E CallType Args RetType : Set}.
+        Context `{ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
         Record t : Set := {
           call_type : CallType;
@@ -1527,6 +1530,7 @@ Module call.
     Module DelegateCall.
       Section DelegateCall.
         Context {E : Set}.
+        Context `{ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : E::type["Hash"];
@@ -1606,6 +1610,7 @@ Module call.
     Module CreateParams.
       Section CreateParams.
         Context {E ContractRef Args Salt R : Set}.
+        Context `{ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : E::type["Hash"];
@@ -1647,6 +1652,7 @@ Module call.
       Section CreateBuilder.
         Context
           {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+        Context `{ink_env.types.Environment.Trait E}.
         Unset Primitive Projections.
         Record t : Set := {
           code_hash : CodeHash;
@@ -2777,6 +2783,7 @@ Module call_builder.
   Module CallParams.
     Section CallParams.
       Context {E CallType Args R : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
@@ -2809,6 +2816,7 @@ Module call_builder.
   Module Call.
     Section Call.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         callee : E::type["AccountId"];
@@ -2834,6 +2842,7 @@ Module call_builder.
   Module CallBuilder.
     Section CallBuilder.
       Context {E CallType Args RetType : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         call_type : CallType;
@@ -2877,6 +2886,7 @@ Module call_builder.
   Module DelegateCall.
     Section DelegateCall.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : E::type["Hash"];
@@ -2894,6 +2904,7 @@ End call_builder.
 Module CallParams.
   Section CallParams.
     Context {E CallType Args R : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
@@ -2937,6 +2948,7 @@ Parameter build_call :
 Module Call.
   Section Call.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       callee : E::type["AccountId"];
@@ -2962,6 +2974,7 @@ Definition Call := @Call.t.
 Module DelegateCall.
   Section DelegateCall.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : E::type["Hash"];
@@ -2978,6 +2991,7 @@ Definition DelegateCall := @DelegateCall.t.
 Module CallBuilder.
   Section CallBuilder.
     Context {E CallType Args RetType : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       call_type : CallType;
@@ -3216,6 +3230,7 @@ Module create_builder.
   Module CreateParams.
     Section CreateParams.
       Context {E ContractRef Args Salt R : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : E::type["Hash"];
@@ -3257,6 +3272,7 @@ Module create_builder.
     Section CreateBuilder.
       Context
         {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : CodeHash;
@@ -3383,6 +3399,7 @@ End ConstructorReturnType.
 Module CreateParams.
   Section CreateParams.
     Context {E ContractRef Args Salt R : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : E::type["Hash"];
@@ -3423,6 +3440,7 @@ Definition CreateParams := @CreateParams.t.
 Module CreateBuilder.
   Section CreateBuilder.
     Context {E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : CodeHash;
@@ -4103,6 +4121,7 @@ Module engine.
       Module DefaultAccounts.
         Section DefaultAccounts.
           Context {T : Set}.
+          Context `{ink_env.types.Environment.Trait T}.
           Unset Primitive Projections.
           Record t : Set := {
             alice : T::type["AccountId"];
@@ -4405,6 +4424,7 @@ Module off_chain.
     Module DefaultAccounts.
       Section DefaultAccounts.
         Context {T : Set}.
+        Context `{ink_env.types.Environment.Trait T}.
         Unset Primitive Projections.
         Record t : Set := {
           alice : T::type["AccountId"];
@@ -4677,6 +4697,7 @@ Module test_api.
   Module DefaultAccounts.
     Section DefaultAccounts.
       Context {T : Set}.
+      Context `{ink_env.types.Environment.Trait T}.
       Unset Primitive Projections.
       Record t : Set := {
         alice : T::type["AccountId"];
@@ -4861,6 +4882,7 @@ Parameter default_accounts :
 Module DefaultAccounts.
   Section DefaultAccounts.
     Context {T : Set}.
+    Context `{ink_env.types.Environment.Trait T}.
     Unset Primitive Projections.
     Record t : Set := {
       alice : T::type["AccountId"];
