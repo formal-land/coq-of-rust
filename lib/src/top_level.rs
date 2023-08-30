@@ -2132,14 +2132,6 @@ impl TopLevelItem {
                         )
                     })
                     .collect::<Vec<_>>(),
-                &body
-                    .iter()
-                    .filter_map(|(item_name, item)| match item {
-                        TraitItem::Definition { .. } => None,
-                        TraitItem::DefinitionWithDefault { .. } => None,
-                        TraitItem::Type(_) => Some((item_name.to_string(), vec![])),
-                    })
-                    .collect::<Vec<_>>(),
                 body.iter()
                     .map(|(name, item)| match item {
                         TraitItem::Definition {

@@ -197,7 +197,6 @@ pub(crate) fn new_trait_typeclass_header<'a>(
     ty_params: &Vec<(String, Option<Doc>)>,
     predicates: &Vec<Doc<'a>>,
     bounds: &[Doc<'a>],
-    associated_types: &[(String, Vec<Doc<'a>>)],
 ) -> Doc<'a> {
     nest([
         text("Class "),
@@ -246,22 +245,6 @@ pub(crate) fn new_trait_typeclass_header<'a>(
                 concat([line(), concat(predicates.clone())])
             },
         ]),
-        intersperse(
-            associated_types.iter().map(|(item_name, bounds)| {
-                concat([
-                    line(),
-                    nest([
-                        text("{"),
-                        text(item_name.to_owned()),
-                        text(" : "),
-                        coq::Expression::Set.to_doc(false),
-                        text("}"),
-                    ]),
-                    bounds_sequence(bounds),
-                ])
-            }),
-            [nil()],
-        ),
         text(" :"),
         line(),
         coq::Expression::Type.to_doc(false),

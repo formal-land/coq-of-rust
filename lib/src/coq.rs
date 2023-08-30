@@ -68,7 +68,6 @@ pub(crate) struct Class<'a> {
     ty_params: Vec<(String, Option<Doc<'a>>)>,
     predicates: Vec<Doc<'a>>,
     bounds: Vec<Doc<'a>>,
-    associated_types: Vec<(String, Vec<Doc<'a>>)>,
     items: Vec<Doc<'a>>,
 }
 
@@ -316,7 +315,6 @@ impl<'a> TopLevelItem<'a> {
         ty_params: &[(String, Option<Doc<'a>>)],
         predicates: &[Doc<'a>],
         bounds: &[Doc<'a>],
-        associated_types: &[(String, Vec<Doc<'a>>)],
         items: Vec<Doc<'a>>,
         instances: Vec<Instance<'a>>,
     ) -> Self {
@@ -330,7 +328,6 @@ impl<'a> TopLevelItem<'a> {
                         ty_params.to_vec(),
                         predicates.to_vec(),
                         bounds.to_vec(),
-                        associated_types.to_vec(),
                         items,
                     ))],
                 ),
@@ -448,7 +445,6 @@ impl<'a> Class<'a> {
         ty_params: Vec<(String, Option<Doc<'a>>)>,
         predicates: Vec<Doc<'a>>,
         bounds: Vec<Doc<'a>>,
-        associated_types: Vec<(String, Vec<Doc<'a>>)>,
         items: Vec<Doc<'a>>,
     ) -> Self {
         Class {
@@ -456,7 +452,6 @@ impl<'a> Class<'a> {
             ty_params: ty_params.to_owned(),
             predicates,
             bounds,
-            associated_types: associated_types.to_owned(),
             items,
         }
     }
@@ -469,7 +464,6 @@ impl<'a> Class<'a> {
                     &self.ty_params,
                     &self.predicates,
                     &self.bounds,
-                    &self.associated_types,
                 ),
                 render::new_typeclass_body(self.items.clone()),
             ]),
