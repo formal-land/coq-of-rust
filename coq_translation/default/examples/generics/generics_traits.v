@@ -12,7 +12,7 @@ End Null.
 Definition Null := @Null.t.
 
 Module DoubleDrop.
-  Class Trait (Self : Set) {T : Set} : Set := {
+  Class Trait (Self : Set) {T : Set} : Type := {
     double_drop `{H' : State.Trait} : Self -> T -> (M (H := H') unit);
   }.
   

@@ -19,7 +19,7 @@ End Sheep.
 Definition Sheep : Set := @Sheep.t.
 
 Module Animal.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     new `{H' : State.Trait} : (ref str) -> (M (H := H') Self);
     name `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref str));
     noise `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref str));

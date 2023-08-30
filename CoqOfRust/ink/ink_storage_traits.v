@@ -82,7 +82,7 @@ Definition ResolverKey := @ResolverKey.t.
 
 Module storage.
   Module Storable.
-    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
+    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
       encode
         `{H' : State.Trait}
         {T: Set}
@@ -119,7 +119,7 @@ Module storage.
   Module private.
     Module Sealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
       }.
       Global Set Primitive Projections.
     End Sealed.
@@ -132,13 +132,13 @@ Module storage.
           `{ink_storage_traits.storage.Storable.Trait Self}
           `{parity_scale_codec.codec.Codec.Trait Self}
           `{ink_storage_traits.storage.private.Sealed.Trait Self} :
-        Set := {
+        Type := {
     }.
     Global Set Primitive Projections.
   End Packed.
   
   Module StorageKey.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       KEY `{H' : State.Trait} : ink_primitives.key.Key;
     }.
     
@@ -158,14 +158,16 @@ Module storage.
     Class Trait
         (Self : Set)
           {Key : Set}
-          `{ink_storage_traits.storage.StorageKey.Trait Key}
-        {Type_ : Set}
-        `(ink_storage_traits.storage.Storable.Trait Type_)
-        {PreferredKey : Set}
-        `(ink_storage_traits.storage.StorageKey.Trait PreferredKey) :
-        Set := {
-      Type_ := Type_;
-      PreferredKey := PreferredKey;
+          `{ink_storage_traits.storage.StorageKey.Trait Key} :
+        Type := {
+      Type_ : Set;
+      _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
+      PreferredKey : Set;
+      _
+        :
+        exists
+        `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
+        True;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -182,11 +184,10 @@ Module storage.
     Class Trait
         (Self : Set)
           {Key : Set}
-          `{ink_storage_traits.storage.StorageKey.Trait Key}
-        {Type_ : Set}
-        `(ink_storage_traits.storage.Storable.Trait Type_) :
-        Set := {
-      Type_ := Type_;
+          `{ink_storage_traits.storage.StorageKey.Trait Key} :
+        Type := {
+      Type_ : Set;
+      _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -197,7 +198,7 @@ Module storage.
 End storage.
 
 Module Storable.
-  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
+  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
     encode
       `{H' : State.Trait}
       {T: Set}
@@ -232,7 +233,7 @@ End Storable.
 Module private.
   Module Sealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End Sealed.
@@ -240,7 +241,7 @@ End private.
 
 Module Sealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End Sealed.
@@ -252,13 +253,13 @@ Module Packed.
         `{ink_storage_traits.storage.Storable.Trait Self}
         `{parity_scale_codec.codec.Codec.Trait Self}
         `{ink_storage_traits.storage.private.Sealed.Trait Self} :
-      Set := {
+      Type := {
   }.
   Global Set Primitive Projections.
 End Packed.
 
 Module StorageKey.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     KEY `{H' : State.Trait} : ink_primitives.key.Key;
   }.
   
@@ -278,14 +279,16 @@ Module StorableHint.
   Class Trait
       (Self : Set)
         {Key : Set}
-        `{ink_storage_traits.storage.StorageKey.Trait Key}
-      {Type_ : Set}
-      `(ink_storage_traits.storage.Storable.Trait Type_)
-      {PreferredKey : Set}
-      `(ink_storage_traits.storage.StorageKey.Trait PreferredKey) :
-      Set := {
-    Type_ := Type_;
-    PreferredKey := PreferredKey;
+        `{ink_storage_traits.storage.StorageKey.Trait Key} :
+      Type := {
+    Type_ : Set;
+    _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
+    PreferredKey : Set;
+    _
+      :
+      exists
+      `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
+      True;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -302,11 +305,10 @@ Module AutoStorableHint.
   Class Trait
       (Self : Set)
         {Key : Set}
-        `{ink_storage_traits.storage.StorageKey.Trait Key}
-      {Type_ : Set}
-      `(ink_storage_traits.storage.Storable.Trait Type_) :
-      Set := {
-    Type_ := Type_;
+        `{ink_storage_traits.storage.StorageKey.Trait Key} :
+      Type := {
+    Type_ : Set;
+    _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -317,7 +319,7 @@ End AutoStorableHint.
 
 Module layout.
   Module StorageLayout.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       layout
         `{H' : State.Trait}
         :
@@ -333,7 +335,7 @@ Module layout.
 End layout.
 
 Module StorageLayout.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     layout
       `{H' : State.Trait}
       :

@@ -59,7 +59,7 @@ Module types.
   Definition Hash := @Hash.t.
   
   Module Clear.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       CLEAR_HASH `{H' : State.Trait} : Self;
       is_clear `{H' : State.Trait} : (ref Self) -> (M (H := H') bool);
     }.
@@ -115,7 +115,7 @@ End Hash.
 Definition Hash := @Hash.t.
 
 Module Clear.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     CLEAR_HASH `{H' : State.Trait} : Self;
     is_clear `{H' : State.Trait} : (ref Self) -> (M (H := H') bool);
   }.

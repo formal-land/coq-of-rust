@@ -15,7 +15,7 @@ End Choice.
 Definition Choice := @Choice.t.
 
 Module ConstantTimeEq.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     ct_eq
       `{H' : State.Trait}
       :
@@ -35,7 +35,7 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Set := {
+  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Type := {
     conditional_select
       `{H' : State.Trait}
       :
@@ -63,7 +63,7 @@ Module ConditionallySelectable.
 End ConditionallySelectable.
 
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     conditional_negate
       `{H' : State.Trait}
       :
@@ -97,7 +97,7 @@ End CtOption.
 Definition CtOption : Set := @CtOption.t.
 
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     ct_gt
       `{H' : State.Trait}
       :
@@ -115,7 +115,7 @@ Module ConstantTimeLess.
       (Self : Set)
         `{subtle.ConstantTimeEq.Trait Self}
         `{subtle.ConstantTimeGreater.Trait Self} :
-      Set := {
+      Type := {
   }.
   
   Global Instance Method_ct_lt `{H' : State.Trait} `(Trait)

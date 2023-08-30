@@ -19,7 +19,7 @@ End Container.
 Definition Container := @Container.t.
 
 Module Contains.
-  Class Trait (Self : Set) {A B : Set} : Set := {
+  Class Trait (Self : Set) {A B : Set} : Type := {
     contains
       `{H' : State.Trait}
       :

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module HasArea.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     area `{H' : State.Trait} : (ref Self) -> (M (H := H') f64);
   }.
   

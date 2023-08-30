@@ -340,7 +340,7 @@ Module chain_extension.
   Definition ExtensionId := @ExtensionId.t.
   
   Module ChainExtension.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       func_id `{H' : State.Trait} : (ref Self) -> (M (H := H') u32);
       call
         `{H' : State.Trait}
@@ -397,7 +397,7 @@ End ExtensionId.
 Definition ExtensionId := @ExtensionId.t.
 
 Module ChainExtension.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     func_id `{H' : State.Trait} : (ref Self) -> (M (H := H') u32);
     call
       `{H' : State.Trait}

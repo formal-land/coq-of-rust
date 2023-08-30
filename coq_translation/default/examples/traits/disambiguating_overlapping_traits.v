@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     get `{H' : State.Trait} : (ref Self) -> (M (H := H') alloc.string.String);
   }.
   
@@ -13,7 +13,7 @@ Module UsernameWidget.
 End UsernameWidget.
 
 Module AgeWidget.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     get `{H' : State.Trait} : (ref Self) -> (M (H := H') u8);
   }.
   

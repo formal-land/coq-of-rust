@@ -316,7 +316,7 @@ Module Impl_core_convert_From_for_subtle_Choice.
 End Impl_core_convert_From_for_subtle_Choice.
 
 Module ConstantTimeEq.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     ct_eq
       `{H' : State.Trait}
       :
@@ -653,7 +653,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Set := {
+  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Type := {
     conditional_select
       `{H' : State.Trait}
       :
@@ -1372,7 +1372,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     conditional_negate
       `{H' : State.Trait}
       :
@@ -1800,7 +1800,7 @@ End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     ct_gt
       `{H' : State.Trait}
       :
@@ -2038,7 +2038,7 @@ Module ConstantTimeLess.
       (Self : Set)
         `{subtle.ConstantTimeEq.Trait Self}
         `{subtle.ConstantTimeGreater.Trait Self} :
-      Set := {
+      Type := {
   }.
   
   Global Instance Method_ct_lt `{H' : State.Trait} `(Trait)

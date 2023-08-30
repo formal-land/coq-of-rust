@@ -11,7 +11,7 @@ Require CoqOfRust.ink.scale_encode.
 
 Module arithmetic.
   Module Saturating.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       saturating_add `{H' : State.Trait} : Self -> Self -> (M (H := H') Self);
       saturating_sub `{H' : State.Trait} : Self -> Self -> (M (H := H') Self);
       saturating_mul `{H' : State.Trait} : Self -> Self -> (M (H := H') Self);
@@ -68,7 +68,7 @@ Module arithmetic.
           `{core.convert.TryInto.Trait Self (T := u64)}
           `{core.convert.TryInto.Trait Self (T := u128)}
           `{core.convert.TryInto.Trait Self (T := usize)} :
-        Set := {
+        Type := {
     }.
     Global Set Primitive Projections.
   End BaseArithmetic.
@@ -80,7 +80,7 @@ Module arithmetic.
           `{ink_env.arithmetic.BaseArithmetic.Trait Self}
           `{core.convert.From.Trait Self (T := u16)}
           `{core.convert.From.Trait Self (T := u32)} :
-        Set := {
+        Type := {
     }.
     Global Set Primitive Projections.
   End AtLeast32Bit.
@@ -91,7 +91,7 @@ Module arithmetic.
         (Self : Set)
           `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
           `{num_traits.sign.Unsigned.Trait Self} :
-        Set := {
+        Type := {
     }.
     Global Set Primitive Projections.
   End AtLeast32BitUnsigned.
@@ -99,14 +99,15 @@ End arithmetic.
 
 Module types.
   Module FromLittleEndian.
-    Class Trait
-        (Self : Set)
-        {Bytes : Set}
+    Class Trait (Self : Set) : Type := {
+      Bytes : Set;
+      _
+        :
+        exists
         `(core.default.Default.Trait Bytes)
         `(core.convert.AsRef.Trait Bytes (T := Slice u8))
-        `(core.convert.AsMut.Trait Bytes (T := Slice u8)) :
-        Set := {
-      Bytes := Bytes;
+        `(core.convert.AsMut.Trait Bytes (T := Slice u8)),
+        True;
       from_le_bytes `{H' : State.Trait} : Bytes -> (M (H := H') Self);
     }.
     
@@ -122,7 +123,7 @@ Module types.
   
   Module AccountIdGuard.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End AccountIdGuard.
@@ -133,15 +134,18 @@ Module types.
         (Self : Set)
           `{scale_decode.DecodeAsType.Trait Self}
           `{scale_encode.EncodeAsType.Trait Self} :
-        Set := {
+        Type := {
     }.
     Global Set Primitive Projections.
   End CodecAsType.
   
   Module Environment.
-    Class Trait
-        (Self : Set)
-        {AccountId : Set}
+    Class Trait (Self : Set) : Type := {
+      MAX_EVENT_TOPICS `{H' : State.Trait} : usize;
+      AccountId : Set;
+      _
+        :
+        exists
         `(parity_scale_codec.codec.Codec.Trait AccountId)
         `(ink_env.types.CodecAsType.Trait AccountId)
         `(core.clone.Clone.Trait AccountId)
@@ -149,8 +153,12 @@ Module types.
         `(core.cmp.Eq.Trait AccountId)
         `(core.cmp.Ord.Trait AccountId)
         `(core.convert.AsRef.Trait AccountId (T := Slice u8))
-        `(core.convert.AsMut.Trait AccountId (T := Slice u8))
-        {Balance : Set}
+        `(core.convert.AsMut.Trait AccountId (T := Slice u8)),
+        True;
+      Balance : Set;
+      _
+        :
+        exists
         `(parity_scale_codec.codec.Codec.Trait Balance)
         `(ink_env.types.CodecAsType.Trait Balance)
         `(core.marker.Copy.Trait Balance)
@@ -158,8 +166,12 @@ Module types.
         `(core.cmp.PartialEq.Trait Balance (Rhs := None))
         `(core.cmp.Eq.Trait Balance)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
-        `(ink_env.types.FromLittleEndian.Trait Balance)
-        {Hash : Set}
+        `(ink_env.types.FromLittleEndian.Trait Balance),
+        True;
+      Hash : Set;
+      _
+        :
+        exists
         `(parity_scale_codec.codec.Codec.Trait Hash)
         `(ink_env.types.CodecAsType.Trait Hash)
         `(core.marker.Copy.Trait Hash)
@@ -169,8 +181,12 @@ Module types.
         `(core.cmp.Eq.Trait Hash)
         `(core.cmp.Ord.Trait Hash)
         `(core.convert.AsRef.Trait Hash (T := Slice u8))
-        `(core.convert.AsMut.Trait Hash (T := Slice u8))
-        {Timestamp : Set}
+        `(core.convert.AsMut.Trait Hash (T := Slice u8)),
+        True;
+      Timestamp : Set;
+      _
+        :
+        exists
         `(parity_scale_codec.codec.Codec.Trait Timestamp)
         `(ink_env.types.CodecAsType.Trait Timestamp)
         `(core.marker.Copy.Trait Timestamp)
@@ -178,8 +194,12 @@ Module types.
         `(core.cmp.PartialEq.Trait Timestamp (Rhs := None))
         `(core.cmp.Eq.Trait Timestamp)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
-        `(ink_env.types.FromLittleEndian.Trait Timestamp)
-        {BlockNumber : Set}
+        `(ink_env.types.FromLittleEndian.Trait Timestamp),
+        True;
+      BlockNumber : Set;
+      _
+        :
+        exists
         `(parity_scale_codec.codec.Codec.Trait BlockNumber)
         `(ink_env.types.CodecAsType.Trait BlockNumber)
         `(core.marker.Copy.Trait BlockNumber)
@@ -187,16 +207,9 @@ Module types.
         `(core.cmp.PartialEq.Trait BlockNumber (Rhs := None))
         `(core.cmp.Eq.Trait BlockNumber)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
-        `(ink_env.types.FromLittleEndian.Trait BlockNumber)
-        {ChainExtension : Set} :
-        Set := {
-      MAX_EVENT_TOPICS `{H' : State.Trait} : usize;
-      AccountId := AccountId;
-      Balance := Balance;
-      Hash := Hash;
-      Timestamp := Timestamp;
-      BlockNumber := BlockNumber;
-      ChainExtension := ChainExtension;
+        `(ink_env.types.FromLittleEndian.Trait BlockNumber),
+        True;
+      ChainExtension : Set;
     }.
     
     Global Instance Method_MAX_EVENT_TOPICS `{H' : State.Trait} `(Trait)
@@ -251,14 +264,15 @@ Module types.
 End types.
 
 Module FromLittleEndian.
-  Class Trait
-      (Self : Set)
-      {Bytes : Set}
+  Class Trait (Self : Set) : Type := {
+    Bytes : Set;
+    _
+      :
+      exists
       `(core.default.Default.Trait Bytes)
       `(core.convert.AsRef.Trait Bytes (T := Slice u8))
-      `(core.convert.AsMut.Trait Bytes (T := Slice u8)) :
-      Set := {
-    Bytes := Bytes;
+      `(core.convert.AsMut.Trait Bytes (T := Slice u8)),
+      True;
     from_le_bytes `{H' : State.Trait} : Bytes -> (M (H := H') Self);
   }.
   
@@ -274,7 +288,7 @@ End FromLittleEndian.
 
 Module AccountIdGuard.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End AccountIdGuard.
@@ -285,15 +299,18 @@ Module CodecAsType.
       (Self : Set)
         `{scale_decode.DecodeAsType.Trait Self}
         `{scale_encode.EncodeAsType.Trait Self} :
-      Set := {
+      Type := {
   }.
   Global Set Primitive Projections.
 End CodecAsType.
 
 Module Environment.
-  Class Trait
-      (Self : Set)
-      {AccountId : Set}
+  Class Trait (Self : Set) : Type := {
+    MAX_EVENT_TOPICS `{H' : State.Trait} : usize;
+    AccountId : Set;
+    _
+      :
+      exists
       `(parity_scale_codec.codec.Codec.Trait AccountId)
       `(ink_env.types.CodecAsType.Trait AccountId)
       `(core.clone.Clone.Trait AccountId)
@@ -301,8 +318,12 @@ Module Environment.
       `(core.cmp.Eq.Trait AccountId)
       `(core.cmp.Ord.Trait AccountId)
       `(core.convert.AsRef.Trait AccountId (T := Slice u8))
-      `(core.convert.AsMut.Trait AccountId (T := Slice u8))
-      {Balance : Set}
+      `(core.convert.AsMut.Trait AccountId (T := Slice u8)),
+      True;
+    Balance : Set;
+    _
+      :
+      exists
       `(parity_scale_codec.codec.Codec.Trait Balance)
       `(ink_env.types.CodecAsType.Trait Balance)
       `(core.marker.Copy.Trait Balance)
@@ -310,8 +331,12 @@ Module Environment.
       `(core.cmp.PartialEq.Trait Balance (Rhs := None))
       `(core.cmp.Eq.Trait Balance)
       `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
-      `(ink_env.types.FromLittleEndian.Trait Balance)
-      {Hash : Set}
+      `(ink_env.types.FromLittleEndian.Trait Balance),
+      True;
+    Hash : Set;
+    _
+      :
+      exists
       `(parity_scale_codec.codec.Codec.Trait Hash)
       `(ink_env.types.CodecAsType.Trait Hash)
       `(core.marker.Copy.Trait Hash)
@@ -321,8 +346,12 @@ Module Environment.
       `(core.cmp.Eq.Trait Hash)
       `(core.cmp.Ord.Trait Hash)
       `(core.convert.AsRef.Trait Hash (T := Slice u8))
-      `(core.convert.AsMut.Trait Hash (T := Slice u8))
-      {Timestamp : Set}
+      `(core.convert.AsMut.Trait Hash (T := Slice u8)),
+      True;
+    Timestamp : Set;
+    _
+      :
+      exists
       `(parity_scale_codec.codec.Codec.Trait Timestamp)
       `(ink_env.types.CodecAsType.Trait Timestamp)
       `(core.marker.Copy.Trait Timestamp)
@@ -330,8 +359,12 @@ Module Environment.
       `(core.cmp.PartialEq.Trait Timestamp (Rhs := None))
       `(core.cmp.Eq.Trait Timestamp)
       `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
-      `(ink_env.types.FromLittleEndian.Trait Timestamp)
-      {BlockNumber : Set}
+      `(ink_env.types.FromLittleEndian.Trait Timestamp),
+      True;
+    BlockNumber : Set;
+    _
+      :
+      exists
       `(parity_scale_codec.codec.Codec.Trait BlockNumber)
       `(ink_env.types.CodecAsType.Trait BlockNumber)
       `(core.marker.Copy.Trait BlockNumber)
@@ -339,16 +372,9 @@ Module Environment.
       `(core.cmp.PartialEq.Trait BlockNumber (Rhs := None))
       `(core.cmp.Eq.Trait BlockNumber)
       `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
-      `(ink_env.types.FromLittleEndian.Trait BlockNumber)
-      {ChainExtension : Set} :
-      Set := {
-    MAX_EVENT_TOPICS `{H' : State.Trait} : usize;
-    AccountId := AccountId;
-    Balance := Balance;
-    Hash := Hash;
-    Timestamp := Timestamp;
-    BlockNumber := BlockNumber;
-    ChainExtension := ChainExtension;
+      `(ink_env.types.FromLittleEndian.Trait BlockNumber),
+      True;
+    ChainExtension : Set;
   }.
   
   Global Instance Method_MAX_EVENT_TOPICS `{H' : State.Trait} `(Trait)
@@ -404,10 +430,9 @@ Definition BlockNumber : Set := u32.
 Module topics.
   Module TopicsBuilderBackend.
     Class Trait
-        (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E}
-        {Output : Set} :
-        Set := {
-      Output := Output;
+        (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E} :
+        Type := {
+      Output : Set;
       expect
         `{H' : State.Trait}
         :
@@ -482,8 +507,8 @@ Module topics.
   End state.
   
   Module SomeRemainingTopics.
-    Class Trait (Self : Set) {Next : Set} : Set := {
-      Next := Next;
+    Class Trait (Self : Set) : Type := {
+      Next : Set;
     }.
     
     Global Instance Method_Next `(Trait)
@@ -493,7 +518,7 @@ Module topics.
   End SomeRemainingTopics.
   
   Module EventTopicsAmount.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       AMOUNT `{H' : State.Trait} : usize;
     }.
     
@@ -504,12 +529,13 @@ Module topics.
   End EventTopicsAmount.
   
   Module Topics.
-    Class Trait
-        (Self : Set)
-        {RemainingTopics : Set}
-        `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics) :
-        Set := {
-      RemainingTopics := RemainingTopics;
+    Class Trait (Self : Set) : Type := {
+      RemainingTopics : Set;
+      _
+        :
+        exists
+        `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics),
+        True;
       topics
         `{H' : State.Trait}
         {E B: Set}
@@ -584,7 +610,7 @@ Module hash.
   Module private.
     Module Sealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
       }.
       Global Set Primitive Projections.
     End Sealed.
@@ -592,11 +618,10 @@ Module hash.
   
   Module HashOutput.
     Class Trait
-        (Self : Set) `{ink_env.hash.private.Sealed.Trait Self}
-        {Type_ : Set}
-        `(core.default.Default.Trait Type_) :
-        Set := {
-      Type_ := Type_;
+        (Self : Set) `{ink_env.hash.private.Sealed.Trait Self} :
+        Type := {
+      Type_ : Set;
+      _ : exists `(core.default.Default.Trait Type_), True;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -610,7 +635,7 @@ Module hash.
         (Self : Set)
           `{ink_env.hash.HashOutput.Trait Self}
           `{ink_env.hash.private.Sealed.Trait Self} :
-        Set := {
+        Type := {
       hash
         `{H' : State.Trait}
         :
@@ -690,7 +715,7 @@ Module backend.
   Definition CallFlags := @CallFlags.t.
   
   Module EnvBackend.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       set_contract_storage
         `{H' : State.Trait}
         {K V: Set}
@@ -905,7 +930,9 @@ Module backend.
   End EnvBackend.
   
   Module TypedEnvBackend.
-    Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Set := {
+    Class Trait
+        (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} :
+        Type := {
       caller
         `{H' : State.Trait}
         {E: Set}
@@ -1208,12 +1235,9 @@ End backend.
 
 Module contract.
   Module ContractEnv.
-    Class Trait
-        (Self : Set)
-        {Env : Set}
-        `(ink_env.types.Environment.Trait Env) :
-        Set := {
-      Env := Env;
+    Class Trait (Self : Set) : Type := {
+      Env : Set;
+      _ : exists `(ink_env.types.Environment.Trait Env), True;
     }.
     
     Global Instance Method_Env `(Trait)
@@ -1223,8 +1247,8 @@ Module contract.
   End ContractEnv.
   
   Module ContractReference.
-    Class Trait (Self : Set) {Type_ : Set} : Set := {
-      Type_ := Type_;
+    Class Trait (Self : Set) : Type := {
+      Type_ : Set;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -1285,8 +1309,8 @@ Module call.
     Definition Unset_ := @Unset_.t.
     
     Module Unwrap.
-      Class Trait (Self : Set) {Output : Set} : Set := {
-        Output := Output;
+      Class Trait (Self : Set) : Type := {
+        Output : Set;
         unwrap_or_else
           `{H' : State.Trait}
           {F: Set}
@@ -1536,7 +1560,7 @@ Module call.
     Module FromAccountId.
       Class Trait
           (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
-          Set := {
+          Type := {
         from_account_id
           `{H' : State.Trait}
           :
@@ -1550,15 +1574,11 @@ Module call.
     End FromAccountId.
     
     Module ConstructorReturnType.
-      Class Trait
-          (Self : Set) {C : Set}
-          {Output : Set}
-          {Error : Set}
-          `(parity_scale_codec.codec.Decode.Trait Error) :
-          Set := {
+      Class Trait (Self : Set) {C : Set} : Type := {
         IS_RESULT `{H' : State.Trait} : bool;
-        Output := Output;
-        Error := Error;
+        Output : Set;
+        Error : Set;
+        _ : exists `(parity_scale_codec.codec.Decode.Trait Error), True;
         ok `{H' : State.Trait} : C -> (M (H := H') Output);
       }.
       
@@ -2165,7 +2185,7 @@ Module BaseArithmetic.
         `{core.convert.TryInto.Trait Self (T := u64)}
         `{core.convert.TryInto.Trait Self (T := u128)}
         `{core.convert.TryInto.Trait Self (T := usize)} :
-      Set := {
+      Type := {
   }.
   Global Set Primitive Projections.
 End BaseArithmetic.
@@ -2177,7 +2197,7 @@ Module AtLeast32Bit.
         `{ink_env.arithmetic.BaseArithmetic.Trait Self}
         `{core.convert.From.Trait Self (T := u16)}
         `{core.convert.From.Trait Self (T := u32)} :
-      Set := {
+      Type := {
   }.
   Global Set Primitive Projections.
 End AtLeast32Bit.
@@ -2188,13 +2208,13 @@ Module AtLeast32BitUnsigned.
       (Self : Set)
         `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
         `{num_traits.sign.Unsigned.Trait Self} :
-      Set := {
+      Type := {
   }.
   Global Set Primitive Projections.
 End AtLeast32BitUnsigned.
 
 Module Saturating.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     saturating_add `{H' : State.Trait} : Self -> Self -> (M (H := H') Self);
     saturating_sub `{H' : State.Trait} : Self -> Self -> (M (H := H') Self);
     saturating_mul `{H' : State.Trait} : Self -> Self -> (M (H := H') Self);
@@ -2258,7 +2278,7 @@ End CallFlags.
 Definition CallFlags := @CallFlags.t.
 
 Module EnvBackend.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     set_contract_storage
       `{H' : State.Trait}
       {K V: Set}
@@ -2470,7 +2490,7 @@ Module EnvBackend.
 End EnvBackend.
 
 Module TypedEnvBackend.
-  Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Set := {
+  Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Type := {
     caller
       `{H' : State.Trait}
       {E: Set}
@@ -3050,8 +3070,8 @@ Module common.
   Definition Unset_ := @Unset_.t.
   
   Module Unwrap.
-    Class Trait (Self : Set) {Output : Set} : Set := {
-      Output := Output;
+    Class Trait (Self : Set) : Type := {
+      Output : Set;
       unwrap_or_else
         `{H' : State.Trait}
         {F: Set}
@@ -3122,8 +3142,8 @@ End Unset_.
 Definition Unset_ := @Unset_.t.
 
 Module Unwrap.
-  Class Trait (Self : Set) {Output : Set} : Set := {
-    Output := Output;
+  Class Trait (Self : Set) : Type := {
+    Output : Set;
     unwrap_or_else
       `{H' : State.Trait}
       {F: Set}
@@ -3156,7 +3176,7 @@ Module create_builder.
   Module FromAccountId.
     Class Trait
         (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
-        Set := {
+        Type := {
       from_account_id
         `{H' : State.Trait}
         :
@@ -3170,15 +3190,11 @@ Module create_builder.
   End FromAccountId.
   
   Module ConstructorReturnType.
-    Class Trait
-        (Self : Set) {C : Set}
-        {Output : Set}
-        {Error : Set}
-        `(parity_scale_codec.codec.Decode.Trait Error) :
-        Set := {
+    Class Trait (Self : Set) {C : Set} : Type := {
       IS_RESULT `{H' : State.Trait} : bool;
-      Output := Output;
-      Error := Error;
+      Output : Set;
+      Error : Set;
+      _ : exists `(parity_scale_codec.codec.Decode.Trait Error), True;
       ok `{H' : State.Trait} : C -> (M (H := H') Output);
     }.
     
@@ -3325,7 +3341,7 @@ Definition Salt := Salt.t.
 Module FromAccountId.
   Class Trait
       (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
-      Set := {
+      Type := {
     from_account_id
       `{H' : State.Trait}
       :
@@ -3339,15 +3355,11 @@ Module FromAccountId.
 End FromAccountId.
 
 Module ConstructorReturnType.
-  Class Trait
-      (Self : Set) {C : Set}
-      {Output : Set}
-      {Error : Set}
-      `(parity_scale_codec.codec.Decode.Trait Error) :
-      Set := {
+  Class Trait (Self : Set) {C : Set} : Type := {
     IS_RESULT `{H' : State.Trait} : bool;
-    Output := Output;
-    Error := Error;
+    Output : Set;
+    Error : Set;
+    _ : exists `(parity_scale_codec.codec.Decode.Trait Error), True;
     ok `{H' : State.Trait} : C -> (M (H := H') Output);
   }.
   
@@ -3649,7 +3661,7 @@ Definition Selector := @Selector.t.
 
 Module chain_extension.
   Module FromStatusCode.
-    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
+    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
       from_status_code
         `{H' : State.Trait}
         :
@@ -3709,12 +3721,10 @@ Module chain_extension.
   Module IsResultType.
     Class Trait
         (Self : Set)
-          `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
-        {Ok : Set}
-        {Err : Set} :
-        Set := {
-      Ok := Ok;
-      Err := Err;
+          `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
+        Type := {
+      Ok : Set;
+      Err : Set;
     }.
     
     Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
@@ -3729,7 +3739,7 @@ Module chain_extension.
   Module private.
     Module IsResultTypeSealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
       }.
       Global Set Primitive Projections.
     End IsResultTypeSealed.
@@ -3737,7 +3747,7 @@ Module chain_extension.
 End chain_extension.
 
 Module FromStatusCode.
-  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Set := {
+  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
     from_status_code
       `{H' : State.Trait}
       :
@@ -3819,12 +3829,10 @@ Definition HandleErrorCode := @HandleErrorCode.t.
 Module IsResultType.
   Class Trait
       (Self : Set)
-        `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
-      {Ok : Set}
-      {Err : Set} :
-      Set := {
-    Ok := Ok;
-    Err := Err;
+        `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
+      Type := {
+    Ok : Set;
+    Err : Set;
   }.
   
   Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
@@ -3838,7 +3846,7 @@ End IsResultType.
 Module private.
   Module IsResultTypeSealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End IsResultTypeSealed.
@@ -3846,18 +3854,15 @@ End private.
 
 Module IsResultTypeSealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End IsResultTypeSealed.
 
 Module ContractEnv.
-  Class Trait
-      (Self : Set)
-      {Env : Set}
-      `(ink_env.types.Environment.Trait Env) :
-      Set := {
-    Env := Env;
+  Class Trait (Self : Set) : Type := {
+    Env : Set;
+    _ : exists `(ink_env.types.Environment.Trait Env), True;
   }.
   
   Global Instance Method_Env `(Trait) : Notation.DoubleColonType Self "Env" := {
@@ -3866,8 +3871,8 @@ Module ContractEnv.
 End ContractEnv.
 
 Module ContractReference.
-  Class Trait (Self : Set) {Type_ : Set} : Set := {
-    Type_ := Type_;
+  Class Trait (Self : Set) : Type := {
+    Type_ : Set;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -3882,7 +3887,7 @@ Module engine.
         (Self : Set)
           `{ink_env.backend.EnvBackend.Trait Self}
           `{ink_env.backend.TypedEnvBackend.Trait Self} :
-        Set := {
+        Type := {
       on_instance
         `{H' : State.Trait}
         {F R: Set}
@@ -4186,7 +4191,7 @@ Module OnInstance.
       (Self : Set)
         `{ink_env.backend.EnvBackend.Trait Self}
         `{ink_env.backend.TypedEnvBackend.Trait Self} :
-      Set := {
+      Type := {
     on_instance
       `{H' : State.Trait}
       {F R: Set}
@@ -4961,12 +4966,9 @@ Definition Error := Error.t.
 Definition Result (T : Set) : Set := core.result.Result T ink_env.error.Error.
 
 Module HashOutput.
-  Class Trait
-      (Self : Set) `{ink_env.hash.private.Sealed.Trait Self}
-      {Type_ : Set}
-      `(core.default.Default.Trait Type_) :
-      Set := {
-    Type_ := Type_;
+  Class Trait (Self : Set) `{ink_env.hash.private.Sealed.Trait Self} : Type := {
+    Type_ : Set;
+    _ : exists `(core.default.Default.Trait Type_), True;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -4980,7 +4982,7 @@ Module CryptoHash.
       (Self : Set)
         `{ink_env.hash.HashOutput.Trait Self}
         `{ink_env.hash.private.Sealed.Trait Self} :
-      Set := {
+      Type := {
     hash
       `{H' : State.Trait}
       :
@@ -5022,7 +5024,7 @@ Definition Blake2x128 := Blake2x128.t.
 Module private.
   Module Sealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End Sealed.
@@ -5030,17 +5032,16 @@ End private.
 
 Module Sealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End Sealed.
 
 Module TopicsBuilderBackend.
   Class Trait
-      (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E}
-      {Output : Set} :
-      Set := {
-    Output := Output;
+      (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E} :
+      Type := {
+    Output : Set;
     expect `{H' : State.Trait} : (mut_ref Self) -> usize -> (M (H := H') unit);
     push_topic
       `{H' : State.Trait}
@@ -5130,8 +5131,8 @@ End NoRemainingTopics.
 Definition NoRemainingTopics := NoRemainingTopics.t.
 
 Module SomeRemainingTopics.
-  Class Trait (Self : Set) {Next : Set} : Set := {
-    Next := Next;
+  Class Trait (Self : Set) : Type := {
+    Next : Set;
   }.
   
   Global Instance Method_Next `(Trait)
@@ -5141,7 +5142,7 @@ Module SomeRemainingTopics.
 End SomeRemainingTopics.
 
 Module EventTopicsAmount.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     AMOUNT `{H' : State.Trait} : usize;
   }.
   
@@ -5152,12 +5153,9 @@ Module EventTopicsAmount.
 End EventTopicsAmount.
 
 Module Topics.
-  Class Trait
-      (Self : Set)
-      {RemainingTopics : Set}
-      `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics) :
-      Set := {
-    RemainingTopics := RemainingTopics;
+  Class Trait (Self : Set) : Type := {
+    RemainingTopics : Set;
+    _ : exists `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics), True;
     topics
       `{H' : State.Trait}
       {E B: Set}

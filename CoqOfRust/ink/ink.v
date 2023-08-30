@@ -19,7 +19,7 @@ Module result_info.
   Definition IsResultType : Set := @IsResultType.t.
   
   Module IsResultTypeFallback.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       VALUE `{H' : State.Trait} : bool;
     }.
     
@@ -46,7 +46,7 @@ Module result_info.
   Definition IsResultErr := @IsResultErr.t.
   
   Module IsResultErrFallback.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     
     Global Instance Method_value `{H' : State.Trait} `(Trait)
@@ -73,7 +73,7 @@ End IsResultType.
 Definition IsResultType : Set := @IsResultType.t.
 
 Module IsResultTypeFallback.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     VALUE `{H' : State.Trait} : bool;
   }.
   
@@ -100,7 +100,7 @@ End IsResultErr.
 Definition IsResultErr := @IsResultErr.t.
 
 Module IsResultErrFallback.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   
   Global Instance Method_value `{H' : State.Trait} `(Trait)
@@ -123,8 +123,8 @@ Module codegen.
     
     Module info.
       Module ContractCallBuilder.
-        Class Trait (Self : Set) {Type_ : Set} : Set := {
-          Type_ := Type_;
+        Class Trait (Self : Set) : Type := {
+          Type_ : Set;
         }.
         
         Global Instance Method_Type_ `(Trait)
@@ -171,8 +171,8 @@ Module codegen.
   
   Module env.
     Module Env.
-      Class Trait (Self : Set) {EnvAccess : Set} : Set := {
-        EnvAccess := EnvAccess;
+      Class Trait (Self : Set) : Type := {
+        EnvAccess : Set;
         env `{H' : State.Trait} : Self -> (M (H := H') EnvAccess);
       }.
       
@@ -187,8 +187,8 @@ Module codegen.
     End Env.
     
     Module StaticEnv.
-      Class Trait (Self : Set) {EnvAccess : Set} : Set := {
-        EnvAccess := EnvAccess;
+      Class Trait (Self : Set) : Type := {
+        EnvAccess : Set;
         env `{H' : State.Trait} : (M (H := H') EnvAccess);
       }.
       
@@ -210,7 +210,7 @@ Module codegen.
             (Self : Set)
               {C : Set}
               `{ink.reflect.event.ContractEventBase.Trait C} :
-            Set := {
+            Type := {
           emit_event
             `{H' : State.Trait}
             {E: Set}
@@ -255,7 +255,7 @@ Module codegen.
       
       Module RespectTopicLimit.
         Unset Primitive Projections.
-        Class Trait (Self : Set) : Set := {
+        Class Trait (Self : Set) : Type := {
         }.
         Global Set Primitive Projections.
       End RespectTopicLimit.
@@ -266,8 +266,8 @@ Module codegen.
       Definition EventTopics := @EventTopics.t.
       
       Module EventLenTopics.
-        Class Trait (Self : Set) {LenTopics : Set} : Set := {
-          LenTopics := LenTopics;
+        Class Trait (Self : Set) : Type := {
+          LenTopics : Set;
         }.
         
         Global Instance Method_LenTopics `(Trait)
@@ -281,7 +281,7 @@ Module codegen.
   Module implies_return.
     Module ImpliesReturn.
       Unset Primitive Projections.
-      Class Trait (Self : Set) {T : Set} : Set := {
+      Class Trait (Self : Set) {T : Set} : Type := {
       }.
       Global Set Primitive Projections.
     End ImpliesReturn.
@@ -290,8 +290,8 @@ Module codegen.
   Module trait_def.
     Module call_builder.
       Module TraitCallBuilder.
-        Class Trait (Self : Set) {Builder : Set} : Set := {
-          Builder := Builder;
+        Class Trait (Self : Set) : Type := {
+          Builder : Set;
           call `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Builder));
           call_mut
             `{H' : State.Trait}
@@ -314,13 +314,14 @@ Module codegen.
       End TraitCallBuilder.
       
       Module TraitCallForwarder.
-        Class Trait
-            (Self : Set)
-            {Forwarder : Set}
+        Class Trait (Self : Set) : Type := {
+          Forwarder : Set;
+          _
+            :
+            exists
             `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                  Forwarder) :
-            Set := {
-          Forwarder := Forwarder;
+                  Forwarder),
+            True;
         }.
         
         Global Instance Method_Forwarder `(Trait)
@@ -330,13 +331,14 @@ Module codegen.
       End TraitCallForwarder.
       
       Module TraitCallForwarderFor.
-        Class Trait
-            (Self : Set)
-            {Forwarder : Set}
+        Class Trait (Self : Set) : Type := {
+          Forwarder : Set;
+          _
+            :
+            exists
             `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                  Forwarder) :
-            Set := {
-          Forwarder := Forwarder;
+                  Forwarder),
+            True;
           forward
             `{H' : State.Trait}
             :
@@ -437,8 +439,8 @@ Module dispatch.
   
   Module info.
     Module ContractCallBuilder.
-      Class Trait (Self : Set) {Type_ : Set} : Set := {
-        Type_ := Type_;
+      Class Trait (Self : Set) : Type := {
+        Type_ : Set;
       }.
       
       Global Instance Method_Type_ `(Trait)
@@ -495,8 +497,8 @@ Parameter deny_payment :
 
 Module info.
   Module ContractCallBuilder.
-    Class Trait (Self : Set) {Type_ : Set} : Set := {
-      Type_ := Type_;
+    Class Trait (Self : Set) : Type := {
+      Type_ : Set;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -507,8 +509,8 @@ Module info.
 End info.
 
 Module ContractCallBuilder.
-  Class Trait (Self : Set) {Type_ : Set} : Set := {
-    Type_ := Type_;
+  Class Trait (Self : Set) : Type := {
+    Type_ : Set;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -585,8 +587,8 @@ Definition DispatchOutput := @DispatchOutput.t.
 
 Module env.
   Module Env.
-    Class Trait (Self : Set) {EnvAccess : Set} : Set := {
-      EnvAccess := EnvAccess;
+    Class Trait (Self : Set) : Type := {
+      EnvAccess : Set;
       env `{H' : State.Trait} : Self -> (M (H := H') EnvAccess);
     }.
     
@@ -601,8 +603,8 @@ Module env.
   End Env.
   
   Module StaticEnv.
-    Class Trait (Self : Set) {EnvAccess : Set} : Set := {
-      EnvAccess := EnvAccess;
+    Class Trait (Self : Set) : Type := {
+      EnvAccess : Set;
       env `{H' : State.Trait} : (M (H := H') EnvAccess);
     }.
     
@@ -618,8 +620,8 @@ Module env.
 End env.
 
 Module Env.
-  Class Trait (Self : Set) {EnvAccess : Set} : Set := {
-    EnvAccess := EnvAccess;
+  Class Trait (Self : Set) : Type := {
+    EnvAccess : Set;
     env `{H' : State.Trait} : Self -> (M (H := H') EnvAccess);
   }.
   
@@ -634,8 +636,8 @@ Module Env.
 End Env.
 
 Module StaticEnv.
-  Class Trait (Self : Set) {EnvAccess : Set} : Set := {
-    EnvAccess := EnvAccess;
+  Class Trait (Self : Set) : Type := {
+    EnvAccess : Set;
     env `{H' : State.Trait} : (M (H := H') EnvAccess);
   }.
   
@@ -656,7 +658,7 @@ Module event.
           (Self : Set)
             {C : Set}
             `{ink.reflect.event.ContractEventBase.Trait C} :
-          Set := {
+          Type := {
         emit_event
           `{H' : State.Trait}
           {E: Set}
@@ -701,7 +703,7 @@ Module event.
     
     Module RespectTopicLimit.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
       }.
       Global Set Primitive Projections.
     End RespectTopicLimit.
@@ -712,8 +714,8 @@ Module event.
     Definition EventTopics := @EventTopics.t.
     
     Module EventLenTopics.
-      Class Trait (Self : Set) {LenTopics : Set} : Set := {
-        LenTopics := LenTopics;
+      Class Trait (Self : Set) : Type := {
+        LenTopics : Set;
       }.
       
       Global Instance Method_LenTopics `(Trait)
@@ -728,7 +730,7 @@ Module emit.
   Module EmitEvent.
     Class Trait
         (Self : Set) {C : Set} `{ink.reflect.event.ContractEventBase.Trait C} :
-        Set := {
+        Type := {
       emit_event
         `{H' : State.Trait}
         {E: Set}
@@ -753,7 +755,7 @@ End emit.
 Module EmitEvent.
   Class Trait
       (Self : Set) {C : Set} `{ink.reflect.event.ContractEventBase.Trait C} :
-      Set := {
+      Type := {
     emit_event
       `{H' : State.Trait}
       {E: Set}
@@ -797,7 +799,7 @@ Module topics.
   
   Module RespectTopicLimit.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End RespectTopicLimit.
@@ -808,8 +810,8 @@ Module topics.
   Definition EventTopics := @EventTopics.t.
   
   Module EventLenTopics.
-    Class Trait (Self : Set) {LenTopics : Set} : Set := {
-      LenTopics := LenTopics;
+    Class Trait (Self : Set) : Type := {
+      LenTopics : Set;
     }.
     
     Global Instance Method_LenTopics `(Trait)
@@ -841,7 +843,7 @@ Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End RespectTopicLimit.
@@ -852,8 +854,8 @@ End EventTopics.
 Definition EventTopics := @EventTopics.t.
 
 Module EventLenTopics.
-  Class Trait (Self : Set) {LenTopics : Set} : Set := {
-    LenTopics := LenTopics;
+  Class Trait (Self : Set) : Type := {
+    LenTopics : Set;
   }.
   
   Global Instance Method_LenTopics `(Trait)
@@ -865,7 +867,7 @@ End EventLenTopics.
 Module implies_return.
   Module ImpliesReturn.
     Unset Primitive Projections.
-    Class Trait (Self : Set) {T : Set} : Set := {
+    Class Trait (Self : Set) {T : Set} : Type := {
     }.
     Global Set Primitive Projections.
   End ImpliesReturn.
@@ -873,7 +875,7 @@ End implies_return.
 
 Module ImpliesReturn.
   Unset Primitive Projections.
-  Class Trait (Self : Set) {T : Set} : Set := {
+  Class Trait (Self : Set) {T : Set} : Type := {
   }.
   Global Set Primitive Projections.
 End ImpliesReturn.
@@ -881,8 +883,8 @@ End ImpliesReturn.
 Module trait_def.
   Module call_builder.
     Module TraitCallBuilder.
-      Class Trait (Self : Set) {Builder : Set} : Set := {
-        Builder := Builder;
+      Class Trait (Self : Set) : Type := {
+        Builder : Set;
         call `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Builder));
         call_mut
           `{H' : State.Trait}
@@ -905,13 +907,14 @@ Module trait_def.
     End TraitCallBuilder.
     
     Module TraitCallForwarder.
-      Class Trait
-          (Self : Set)
-          {Forwarder : Set}
+      Class Trait (Self : Set) : Type := {
+        Forwarder : Set;
+        _
+          :
+          exists
           `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                Forwarder) :
-          Set := {
-        Forwarder := Forwarder;
+                Forwarder),
+          True;
       }.
       
       Global Instance Method_Forwarder `(Trait)
@@ -921,13 +924,14 @@ Module trait_def.
     End TraitCallForwarder.
     
     Module TraitCallForwarderFor.
-      Class Trait
-          (Self : Set)
-          {Forwarder : Set}
+      Class Trait (Self : Set) : Type := {
+        Forwarder : Set;
+        _
+          :
+          exists
           `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                Forwarder) :
-          Set := {
-        Forwarder := Forwarder;
+                Forwarder),
+          True;
         forward
           `{H' : State.Trait}
           :
@@ -989,8 +993,8 @@ End trait_def.
 
 Module call_builder.
   Module TraitCallBuilder.
-    Class Trait (Self : Set) {Builder : Set} : Set := {
-      Builder := Builder;
+    Class Trait (Self : Set) : Type := {
+      Builder : Set;
       call `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Builder));
       call_mut
         `{H' : State.Trait}
@@ -1013,12 +1017,13 @@ Module call_builder.
   End TraitCallBuilder.
   
   Module TraitCallForwarder.
-    Class Trait
-        (Self : Set)
-        {Forwarder : Set}
-        `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
-        Set := {
-      Forwarder := Forwarder;
+    Class Trait (Self : Set) : Type := {
+      Forwarder : Set;
+      _
+        :
+        exists
+        `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder),
+        True;
     }.
     
     Global Instance Method_Forwarder `(Trait)
@@ -1028,12 +1033,13 @@ Module call_builder.
   End TraitCallForwarder.
   
   Module TraitCallForwarderFor.
-    Class Trait
-        (Self : Set)
-        {Forwarder : Set}
-        `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
-        Set := {
-      Forwarder := Forwarder;
+    Class Trait (Self : Set) : Type := {
+      Forwarder : Set;
+      _
+        :
+        exists
+        `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder),
+        True;
       forward `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Forwarder));
       forward_mut
         `{H' : State.Trait}
@@ -1078,8 +1084,8 @@ Module call_builder.
 End call_builder.
 
 Module TraitCallBuilder.
-  Class Trait (Self : Set) {Builder : Set} : Set := {
-    Builder := Builder;
+  Class Trait (Self : Set) : Type := {
+    Builder : Set;
     call `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Builder));
     call_mut
       `{H' : State.Trait}
@@ -1102,12 +1108,13 @@ Module TraitCallBuilder.
 End TraitCallBuilder.
 
 Module TraitCallForwarder.
-  Class Trait
-      (Self : Set)
-      {Forwarder : Set}
-      `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
-      Set := {
-    Forwarder := Forwarder;
+  Class Trait (Self : Set) : Type := {
+    Forwarder : Set;
+    _
+      :
+      exists
+      `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder),
+      True;
   }.
   
   Global Instance Method_Forwarder `(Trait)
@@ -1117,12 +1124,13 @@ Module TraitCallForwarder.
 End TraitCallForwarder.
 
 Module TraitCallForwarderFor.
-  Class Trait
-      (Self : Set)
-      {Forwarder : Set}
-      `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
-      Set := {
-    Forwarder := Forwarder;
+  Class Trait (Self : Set) : Type := {
+    Forwarder : Set;
+    _
+      :
+      exists
+      `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder),
+      True;
     forward `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Forwarder));
     forward_mut
       `{H' : State.Trait}
@@ -1257,7 +1265,7 @@ Definition IsSameType : Set := @IsSameType.t.
 Module reflect.
   Module contract.
     Module ContractName.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
         NAME `{H' : State.Trait} : ref str;
       }.
       
@@ -1270,15 +1278,10 @@ Module reflect.
   
   Module dispatch.
     Module DispatchableMessageInfo.
-      Class Trait
-          (Self : Set)
-          {Input : Set}
-          {Output : Set}
-          {Storage : Set} :
-          Set := {
-        Input := Input;
-        Output := Output;
-        Storage := Storage;
+      Class Trait (Self : Set) : Type := {
+        Input : Set;
+        Output : Set;
+        Storage : Set;
         CALLABLE
           `{H' : State.Trait}
           :
@@ -1324,17 +1327,11 @@ Module reflect.
     End DispatchableMessageInfo.
     
     Module DispatchableConstructorInfo.
-      Class Trait
-          (Self : Set)
-          {Input : Set}
-          {Storage : Set}
-          {Output : Set}
-          {Error : Set} :
-          Set := {
-        Input := Input;
-        Storage := Storage;
-        Output := Output;
-        Error := Error;
+      Class Trait (Self : Set) : Type := {
+        Input : Set;
+        Storage : Set;
+        Output : Set;
+        Error : Set;
         IS_RESULT `{H' : State.Trait} : bool;
         CALLABLE `{H' : State.Trait} : Input -> (M (H := H') Output);
         PAYABLE `{H' : State.Trait} : bool;
@@ -1383,7 +1380,7 @@ Module reflect.
     Module private.
       Module Sealed.
         Unset Primitive Projections.
-        Class Trait (Self : Set) : Set := {
+        Class Trait (Self : Set) : Type := {
         }.
         Global Set Primitive Projections.
       End Sealed.
@@ -1393,11 +1390,10 @@ Module reflect.
       Class Trait
           (Self : Set)
             `{ink.reflect.dispatch.private.Sealed.Trait Self}
-            {C : Set}
-          {Error : Set} :
-          Set := {
+            {C : Set} :
+          Type := {
         IS_RESULT `{H' : State.Trait} : bool;
-        Error := Error;
+        Error : Set;
         as_result
           `{H' : State.Trait}
           :
@@ -1435,13 +1431,14 @@ Module reflect.
     Definition ConstructorOutputValue := @ConstructorOutputValue.t.
     
     Module ContractMessageDecoder.
-      Class Trait
-          (Self : Set)
-          {Type_ : Set}
+      Class Trait (Self : Set) : Type := {
+        Type_ : Set;
+        _
+          :
+          exists
           `(parity_scale_codec.codec.Decode.Trait Type_)
-          `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
-          Set := {
-        Type_ := Type_;
+          `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_),
+          True;
       }.
       
       Global Instance Method_Type_ `(Trait)
@@ -1451,13 +1448,14 @@ Module reflect.
     End ContractMessageDecoder.
     
     Module ContractConstructorDecoder.
-      Class Trait
-          (Self : Set)
-          {Type_ : Set}
+      Class Trait (Self : Set) : Type := {
+        Type_ : Set;
+        _
+          :
+          exists
           `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
-          `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
-          Set := {
-        Type_ := Type_;
+          `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_),
+          True;
       }.
       
       Global Instance Method_Type_ `(Trait)
@@ -1467,7 +1465,7 @@ Module reflect.
     End ContractConstructorDecoder.
     
     Module ExecuteDispatchable.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
         execute_dispatchable
           `{H' : State.Trait}
           :
@@ -1495,7 +1493,7 @@ Module reflect.
     Module DecodeDispatch.
       Class Trait
           (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
-          Set := {
+          Type := {
         decode_dispatch
           `{H' : State.Trait}
           {I: Set}
@@ -1517,8 +1515,8 @@ Module reflect.
   
   Module event.
     Module ContractEventBase.
-      Class Trait (Self : Set) {Type_ : Set} : Set := {
-        Type_ := Type_;
+      Class Trait (Self : Set) : Type := {
+        Type_ : Set;
       }.
       
       Global Instance Method_Type_ `(Trait)
@@ -1531,7 +1529,7 @@ Module reflect.
   Module trait_def.
     Module info.
       Module TraitMessageInfo.
-        Class Trait (Self : Set) : Set := {
+        Class Trait (Self : Set) : Type := {
           PAYABLE `{H' : State.Trait} : bool;
           SELECTOR `{H' : State.Trait} : list u8;
         }.
@@ -1547,7 +1545,7 @@ Module reflect.
       End TraitMessageInfo.
       
       Module TraitInfo.
-        Class Trait (Self : Set) : Set := {
+        Class Trait (Self : Set) : Type := {
           ID `{H' : State.Trait} : u32;
           PATH `{H' : State.Trait} : ref str;
           NAME `{H' : State.Trait} : ref str;
@@ -1590,7 +1588,7 @@ End reflect.
 
 Module contract.
   Module ContractName.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       NAME `{H' : State.Trait} : ref str;
     }.
     
@@ -1602,7 +1600,7 @@ Module contract.
 End contract.
 
 Module ContractName.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     NAME `{H' : State.Trait} : ref str;
   }.
   
@@ -1614,15 +1612,10 @@ End ContractName.
 
 Module dispatch.
   Module DispatchableMessageInfo.
-    Class Trait
-        (Self : Set)
-        {Input : Set}
-        {Output : Set}
-        {Storage : Set} :
-        Set := {
-      Input := Input;
-      Output := Output;
-      Storage := Storage;
+    Class Trait (Self : Set) : Type := {
+      Input : Set;
+      Output : Set;
+      Storage : Set;
       CALLABLE
         `{H' : State.Trait}
         :
@@ -1668,17 +1661,11 @@ Module dispatch.
   End DispatchableMessageInfo.
   
   Module DispatchableConstructorInfo.
-    Class Trait
-        (Self : Set)
-        {Input : Set}
-        {Storage : Set}
-        {Output : Set}
-        {Error : Set} :
-        Set := {
-      Input := Input;
-      Storage := Storage;
-      Output := Output;
-      Error := Error;
+    Class Trait (Self : Set) : Type := {
+      Input : Set;
+      Storage : Set;
+      Output : Set;
+      Error : Set;
       IS_RESULT `{H' : State.Trait} : bool;
       CALLABLE `{H' : State.Trait} : Input -> (M (H := H') Output);
       PAYABLE `{H' : State.Trait} : bool;
@@ -1727,7 +1714,7 @@ Module dispatch.
   Module private.
     Module Sealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
       }.
       Global Set Primitive Projections.
     End Sealed.
@@ -1735,11 +1722,12 @@ Module dispatch.
   
   Module ConstructorOutput.
     Class Trait
-        (Self : Set) `{ink.reflect.dispatch.private.Sealed.Trait Self} {C : Set}
-        {Error : Set} :
-        Set := {
+        (Self : Set)
+          `{ink.reflect.dispatch.private.Sealed.Trait Self}
+          {C : Set} :
+        Type := {
       IS_RESULT `{H' : State.Trait} : bool;
-      Error := Error;
+      Error : Set;
       as_result
         `{H' : State.Trait}
         :
@@ -1777,13 +1765,14 @@ Module dispatch.
   Definition ConstructorOutputValue := @ConstructorOutputValue.t.
   
   Module ContractMessageDecoder.
-    Class Trait
-        (Self : Set)
-        {Type_ : Set}
+    Class Trait (Self : Set) : Type := {
+      Type_ : Set;
+      _
+        :
+        exists
         `(parity_scale_codec.codec.Decode.Trait Type_)
-        `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
-        Set := {
-      Type_ := Type_;
+        `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_),
+        True;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -1793,13 +1782,14 @@ Module dispatch.
   End ContractMessageDecoder.
   
   Module ContractConstructorDecoder.
-    Class Trait
-        (Self : Set)
-        {Type_ : Set}
+    Class Trait (Self : Set) : Type := {
+      Type_ : Set;
+      _
+        :
+        exists
         `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
-        `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
-        Set := {
-      Type_ := Type_;
+        `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_),
+        True;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -1809,7 +1799,7 @@ Module dispatch.
   End ContractConstructorDecoder.
   
   Module ExecuteDispatchable.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       execute_dispatchable
         `{H' : State.Trait}
         :
@@ -1837,7 +1827,7 @@ Module dispatch.
   Module DecodeDispatch.
     Class Trait
         (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
-        Set := {
+        Type := {
       decode_dispatch
         `{H' : State.Trait}
         {I: Set}
@@ -1858,15 +1848,10 @@ Module dispatch.
 End dispatch.
 
 Module DispatchableMessageInfo.
-  Class Trait
-      (Self : Set)
-      {Input : Set}
-      {Output : Set}
-      {Storage : Set} :
-      Set := {
-    Input := Input;
-    Output := Output;
-    Storage := Storage;
+  Class Trait (Self : Set) : Type := {
+    Input : Set;
+    Output : Set;
+    Storage : Set;
     CALLABLE
       `{H' : State.Trait}
       :
@@ -1912,17 +1897,11 @@ Module DispatchableMessageInfo.
 End DispatchableMessageInfo.
 
 Module DispatchableConstructorInfo.
-  Class Trait
-      (Self : Set)
-      {Input : Set}
-      {Storage : Set}
-      {Output : Set}
-      {Error : Set} :
-      Set := {
-    Input := Input;
-    Storage := Storage;
-    Output := Output;
-    Error := Error;
+  Class Trait (Self : Set) : Type := {
+    Input : Set;
+    Storage : Set;
+    Output : Set;
+    Error : Set;
     IS_RESULT `{H' : State.Trait} : bool;
     CALLABLE `{H' : State.Trait} : Input -> (M (H := H') Output);
     PAYABLE `{H' : State.Trait} : bool;
@@ -1971,7 +1950,7 @@ End DispatchableConstructorInfo.
 Module private.
   Module Sealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End Sealed.
@@ -1979,18 +1958,17 @@ End private.
 
 Module Sealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End Sealed.
 
 Module ConstructorOutput.
   Class Trait
-      (Self : Set) `{ink.reflect.dispatch.private.Sealed.Trait Self} {C : Set}
-      {Error : Set} :
-      Set := {
+      (Self : Set) `{ink.reflect.dispatch.private.Sealed.Trait Self} {C : Set} :
+      Type := {
     IS_RESULT `{H' : State.Trait} : bool;
-    Error := Error;
+    Error : Set;
     as_result
       `{H' : State.Trait}
       :
@@ -2028,13 +2006,14 @@ End ConstructorOutputValue.
 Definition ConstructorOutputValue := @ConstructorOutputValue.t.
 
 Module ContractMessageDecoder.
-  Class Trait
-      (Self : Set)
-      {Type_ : Set}
+  Class Trait (Self : Set) : Type := {
+    Type_ : Set;
+    _
+      :
+      exists
       `(parity_scale_codec.codec.Decode.Trait Type_)
-      `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
-      Set := {
-    Type_ := Type_;
+      `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_),
+      True;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -2044,13 +2023,14 @@ Module ContractMessageDecoder.
 End ContractMessageDecoder.
 
 Module ContractConstructorDecoder.
-  Class Trait
-      (Self : Set)
-      {Type_ : Set}
+  Class Trait (Self : Set) : Type := {
+    Type_ : Set;
+    _
+      :
+      exists
       `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
-      `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
-      Set := {
-    Type_ := Type_;
+      `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_),
+      True;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -2060,7 +2040,7 @@ Module ContractConstructorDecoder.
 End ContractConstructorDecoder.
 
 Module ExecuteDispatchable.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     execute_dispatchable
       `{H' : State.Trait}
       :
@@ -2088,7 +2068,7 @@ Definition DispatchError := DispatchError.t.
 Module DecodeDispatch.
   Class Trait
       (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
-      Set := {
+      Type := {
     decode_dispatch
       `{H' : State.Trait}
       {I: Set}
@@ -2109,8 +2089,8 @@ End DecodeDispatch.
 
 Module event.
   Module ContractEventBase.
-    Class Trait (Self : Set) {Type_ : Set} : Set := {
-      Type_ := Type_;
+    Class Trait (Self : Set) : Type := {
+      Type_ : Set;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -2121,8 +2101,8 @@ Module event.
 End event.
 
 Module ContractEventBase.
-  Class Trait (Self : Set) {Type_ : Set} : Set := {
-    Type_ := Type_;
+  Class Trait (Self : Set) : Type := {
+    Type_ : Set;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -2134,7 +2114,7 @@ End ContractEventBase.
 Module trait_def.
   Module info.
     Module TraitMessageInfo.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
         PAYABLE `{H' : State.Trait} : bool;
         SELECTOR `{H' : State.Trait} : list u8;
       }.
@@ -2150,7 +2130,7 @@ Module trait_def.
     End TraitMessageInfo.
     
     Module TraitInfo.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
         ID `{H' : State.Trait} : u32;
         PATH `{H' : State.Trait} : ref str;
         NAME `{H' : State.Trait} : ref str;
@@ -2192,7 +2172,7 @@ End trait_def.
 
 Module info.
   Module TraitMessageInfo.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       PAYABLE `{H' : State.Trait} : bool;
       SELECTOR `{H' : State.Trait} : list u8;
     }.
@@ -2208,7 +2188,7 @@ Module info.
   End TraitMessageInfo.
   
   Module TraitInfo.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
       ID `{H' : State.Trait} : u32;
       PATH `{H' : State.Trait} : ref str;
       NAME `{H' : State.Trait} : ref str;
@@ -2230,7 +2210,7 @@ Module info.
 End info.
 
 Module TraitMessageInfo.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     PAYABLE `{H' : State.Trait} : bool;
     SELECTOR `{H' : State.Trait} : list u8;
   }.
@@ -2246,7 +2226,7 @@ Module TraitMessageInfo.
 End TraitMessageInfo.
 
 Module TraitInfo.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
     ID `{H' : State.Trait} : u32;
     PATH `{H' : State.Trait} : ref str;
     NAME `{H' : State.Trait} : ref str;
@@ -2302,8 +2282,8 @@ Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
 
 Module chain_extension.
   Module ChainExtensionInstance.
-    Class Trait (Self : Set) {Instance : Set} : Set := {
-      Instance := Instance;
+    Class Trait (Self : Set) : Type := {
+      Instance : Set;
       instantiate `{H' : State.Trait} : (M (H := H') Instance);
     }.
     
@@ -2318,12 +2298,13 @@ Module chain_extension.
   End ChainExtensionInstance.
   
   Module ChainExtension.
-    Class Trait
-        (Self : Set)
-        {ErrorCode : Set}
-        `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode) :
-        Set := {
-      ErrorCode := ErrorCode;
+    Class Trait (Self : Set) : Type := {
+      ErrorCode : Set;
+      _
+        :
+        exists
+        `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode),
+        True;
     }.
     
     Global Instance Method_ErrorCode `(Trait)
@@ -2334,12 +2315,10 @@ Module chain_extension.
   
   Module IsResultType.
     Class Trait
-        (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self}
-        {Ok : Set}
-        {Err : Set} :
-        Set := {
-      Ok := Ok;
-      Err := Err;
+        (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self} :
+        Type := {
+      Ok : Set;
+      Err : Set;
     }.
     
     Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
@@ -2355,10 +2334,9 @@ Module chain_extension.
     Class Trait
         (Self : Set)
           `{ink.chain_extension.private.OutputSealed.Trait Self}
-          {T E : Set}
-        {ReturnType : Set} :
-        Set := {
-      ReturnType := ReturnType;
+          {T E : Set} :
+        Type := {
+      ReturnType : Set;
     }.
     
     Global Instance Method_ReturnType `(Trait)
@@ -2375,14 +2353,14 @@ Module chain_extension.
   Module private.
     Module IsResultSealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
       }.
       Global Set Primitive Projections.
     End IsResultSealed.
     
     Module OutputSealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
+      Class Trait (Self : Set) : Type := {
       }.
       Global Set Primitive Projections.
     End OutputSealed.
@@ -2390,8 +2368,8 @@ Module chain_extension.
 End chain_extension.
 
 Module ChainExtensionInstance.
-  Class Trait (Self : Set) {Instance : Set} : Set := {
-    Instance := Instance;
+  Class Trait (Self : Set) : Type := {
+    Instance : Set;
     instantiate `{H' : State.Trait} : (M (H := H') Instance);
   }.
   
@@ -2406,12 +2384,9 @@ Module ChainExtensionInstance.
 End ChainExtensionInstance.
 
 Module ChainExtension.
-  Class Trait
-      (Self : Set)
-      {ErrorCode : Set}
-      `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode) :
-      Set := {
-    ErrorCode := ErrorCode;
+  Class Trait (Self : Set) : Type := {
+    ErrorCode : Set;
+    _ : exists `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode), True;
   }.
   
   Global Instance Method_ErrorCode `(Trait)
@@ -2422,12 +2397,10 @@ End ChainExtension.
 
 Module IsResultType.
   Class Trait
-      (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self}
-      {Ok : Set}
-      {Err : Set} :
-      Set := {
-    Ok := Ok;
-    Err := Err;
+      (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self} :
+      Type := {
+    Ok : Set;
+    Err : Set;
   }.
   
   Global Instance Method_Ok `(Trait) : Notation.DoubleColonType Self "Ok" := {
@@ -2442,10 +2415,9 @@ Module Output.
   Class Trait
       (Self : Set)
         `{ink.chain_extension.private.OutputSealed.Trait Self}
-        {T E : Set}
-      {ReturnType : Set} :
-      Set := {
-    ReturnType := ReturnType;
+        {T E : Set} :
+      Type := {
+    ReturnType : Set;
   }.
   
   Global Instance Method_ReturnType `(Trait)
@@ -2462,14 +2434,14 @@ Definition ValueReturned := @ValueReturned.t.
 Module private.
   Module IsResultSealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End IsResultSealed.
   
   Module OutputSealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Set := {
+    Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
   End OutputSealed.
@@ -2477,14 +2449,14 @@ End private.
 
 Module IsResultSealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End IsResultSealed.
 
 Module OutputSealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End OutputSealed.
@@ -2493,7 +2465,7 @@ Module contract_ref.
   Module ToAccountId.
     Class Trait
         (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
-        Set := {
+        Type := {
       to_account_id
         `{H' : State.Trait}
         :
@@ -2510,7 +2482,7 @@ End contract_ref.
 Module ToAccountId.
   Class Trait
       (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
-      Set := {
+      Type := {
     to_account_id
       `{H' : State.Trait}
       :
