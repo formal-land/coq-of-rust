@@ -160,9 +160,9 @@ Module storage.
           {Key : Set}
           `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
-        `{ink_storage_traits.storage.Storable.Trait Type_}
+        `(ink_storage_traits.storage.Storable.Trait Type_)
         {PreferredKey : Set}
-        `{ink_storage_traits.storage.StorageKey.Trait PreferredKey} :
+        `(ink_storage_traits.storage.StorageKey.Trait PreferredKey) :
         Set := {
       Type_ := Type_;
       PreferredKey := PreferredKey;
@@ -184,7 +184,7 @@ Module storage.
           {Key : Set}
           `{ink_storage_traits.storage.StorageKey.Trait Key}
         {Type_ : Set}
-        `{ink_storage_traits.storage.Storable.Trait Type_} :
+        `(ink_storage_traits.storage.Storable.Trait Type_) :
         Set := {
       Type_ := Type_;
     }.
@@ -280,9 +280,9 @@ Module StorableHint.
         {Key : Set}
         `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}
-      `{ink_storage_traits.storage.Storable.Trait Type_}
+      `(ink_storage_traits.storage.Storable.Trait Type_)
       {PreferredKey : Set}
-      `{ink_storage_traits.storage.StorageKey.Trait PreferredKey} :
+      `(ink_storage_traits.storage.StorageKey.Trait PreferredKey) :
       Set := {
     Type_ := Type_;
     PreferredKey := PreferredKey;
@@ -304,7 +304,7 @@ Module AutoStorableHint.
         {Key : Set}
         `{ink_storage_traits.storage.StorageKey.Trait Key}
       {Type_ : Set}
-      `{ink_storage_traits.storage.Storable.Trait Type_} :
+      `(ink_storage_traits.storage.Storable.Trait Type_) :
       Set := {
     Type_ := Type_;
   }.

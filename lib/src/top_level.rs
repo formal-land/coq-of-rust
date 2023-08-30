@@ -1454,7 +1454,8 @@ impl ImplItem {
 impl WherePredicate {
     /// turns the predicate into its representation as constraint
     fn to_coq(&self) -> coq::ArgDecl {
-        self.bound.to_coq(self.ty.to_coq())
+        self.bound
+            .to_coq(self.ty.to_coq(), coq::ArgSpecKind::Implicit)
     }
 
     /// turns the predicate into its representation as constraint
@@ -1477,7 +1478,7 @@ impl TraitBound {
     }
 
     /// turns the trait bound into its representation as constraint
-    fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::ArgDecl<'a> {
+    fn to_coq<'a>(&self, self_ty: coq::Expression<'a>, kind: coq::ArgSpecKind) -> coq::ArgDecl<'a> {
         coq::ArgDecl::new(
             &coq::ArgDeclVar::Generalized {
                 idents: vec![],
@@ -1513,13 +1514,13 @@ impl TraitBound {
                         .collect(),
                 },
             },
-            coq::ArgSpecKind::Implicit,
+            kind,
         )
     }
 
     /// turns the trait bound into its representation as constraint
-    fn to_doc<'a>(&self, self_ty: coq::Expression<'a>) -> Doc<'a> {
-        self.to_coq(self_ty).to_doc()
+    fn to_doc<'a>(&self, self_ty: coq::Expression<'a>, kind: coq::ArgSpecKind) -> Doc<'a> {
+        self.to_coq(self_ty, kind).to_doc()
     }
 }
 
@@ -2122,10 +2123,13 @@ impl TopLevelItem {
                 &bounds
                     .iter()
                     .map(|bound| {
-                        bound.to_doc(coq::Expression::Variable {
-                            ident: Path::new(&["Self"]),
-                            no_implicit: false,
-                        })
+                        bound.to_doc(
+                            coq::Expression::Variable {
+                                ident: Path::new(&["Self"]),
+                                no_implicit: false,
+                            },
+                            coq::ArgSpecKind::Implicit,
+                        )
                     })
                     .collect::<Vec<_>>(),
                 &body
@@ -2138,10 +2142,13 @@ impl TopLevelItem {
                             bounds
                                 .iter()
                                 .map(|bound| {
-                                    bound.to_doc(coq::Expression::Variable {
-                                        ident: Path::new(&[item_name]),
-                                        no_implicit: false,
-                                    })
+                                    bound.to_doc(
+                                        coq::Expression::Variable {
+                                            ident: Path::new(&[item_name]),
+                                            no_implicit: false,
+                                        },
+                                        coq::ArgSpecKind::Explicit,
+                                    )
                                 })
                                 .collect(),
                         )),

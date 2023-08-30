@@ -26,9 +26,9 @@ Module SomeTrait.
   Class Trait
       (Self : Set)
       {SomeType : Set}
-      `{traits_parms.Foo.Trait SomeType}
-      `{traits_parms.Bar.Trait SomeType}
-      `{traits_parms.Tar.Trait SomeType} :
+      `(traits_parms.Foo.Trait SomeType)
+      `(traits_parms.Bar.Trait SomeType)
+      `(traits_parms.Tar.Trait SomeType) :
       Set := {
     SomeType := SomeType;
     some_fn `{H' : State.Trait} : (M (H := H') unit);

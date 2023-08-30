@@ -317,8 +317,8 @@ Module codegen.
         Class Trait
             (Self : Set)
             {Forwarder : Set}
-            `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                  Forwarder} :
+            `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                  Forwarder) :
             Set := {
           Forwarder := Forwarder;
         }.
@@ -333,8 +333,8 @@ Module codegen.
         Class Trait
             (Self : Set)
             {Forwarder : Set}
-            `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                  Forwarder} :
+            `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                  Forwarder) :
             Set := {
           Forwarder := Forwarder;
           forward
@@ -908,8 +908,8 @@ Module trait_def.
       Class Trait
           (Self : Set)
           {Forwarder : Set}
-          `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                Forwarder} :
+          `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                Forwarder) :
           Set := {
         Forwarder := Forwarder;
       }.
@@ -924,8 +924,8 @@ Module trait_def.
       Class Trait
           (Self : Set)
           {Forwarder : Set}
-          `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                Forwarder} :
+          `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                Forwarder) :
           Set := {
         Forwarder := Forwarder;
         forward
@@ -1016,7 +1016,7 @@ Module call_builder.
     Class Trait
         (Self : Set)
         {Forwarder : Set}
-        `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
+        `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
         Set := {
       Forwarder := Forwarder;
     }.
@@ -1031,7 +1031,7 @@ Module call_builder.
     Class Trait
         (Self : Set)
         {Forwarder : Set}
-        `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
+        `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
         Set := {
       Forwarder := Forwarder;
       forward `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Forwarder));
@@ -1105,7 +1105,7 @@ Module TraitCallForwarder.
   Class Trait
       (Self : Set)
       {Forwarder : Set}
-      `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
+      `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
       Set := {
     Forwarder := Forwarder;
   }.
@@ -1120,7 +1120,7 @@ Module TraitCallForwarderFor.
   Class Trait
       (Self : Set)
       {Forwarder : Set}
-      `{ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder} :
+      `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder) :
       Set := {
     Forwarder := Forwarder;
     forward `{H' : State.Trait} : (ref Self) -> (M (H := H') (ref Forwarder));
@@ -1438,8 +1438,8 @@ Module reflect.
       Class Trait
           (Self : Set)
           {Type_ : Set}
-          `{parity_scale_codec.codec.Decode.Trait Type_}
-          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
+          `(parity_scale_codec.codec.Decode.Trait Type_)
+          `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
           Set := {
         Type_ := Type_;
       }.
@@ -1454,8 +1454,8 @@ Module reflect.
       Class Trait
           (Self : Set)
           {Type_ : Set}
-          `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
-          `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
+          `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
+          `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
           Set := {
         Type_ := Type_;
       }.
@@ -1780,8 +1780,8 @@ Module dispatch.
     Class Trait
         (Self : Set)
         {Type_ : Set}
-        `{parity_scale_codec.codec.Decode.Trait Type_}
-        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
+        `(parity_scale_codec.codec.Decode.Trait Type_)
+        `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
         Set := {
       Type_ := Type_;
     }.
@@ -1796,8 +1796,8 @@ Module dispatch.
     Class Trait
         (Self : Set)
         {Type_ : Set}
-        `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
-        `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
+        `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
+        `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
         Set := {
       Type_ := Type_;
     }.
@@ -2031,8 +2031,8 @@ Module ContractMessageDecoder.
   Class Trait
       (Self : Set)
       {Type_ : Set}
-      `{parity_scale_codec.codec.Decode.Trait Type_}
-      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
+      `(parity_scale_codec.codec.Decode.Trait Type_)
+      `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
       Set := {
     Type_ := Type_;
   }.
@@ -2047,8 +2047,8 @@ Module ContractConstructorDecoder.
   Class Trait
       (Self : Set)
       {Type_ : Set}
-      `{ink.reflect.dispatch.DecodeDispatch.Trait Type_}
-      `{ink.reflect.dispatch.ExecuteDispatchable.Trait Type_} :
+      `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
+      `(ink.reflect.dispatch.ExecuteDispatchable.Trait Type_) :
       Set := {
     Type_ := Type_;
   }.
@@ -2321,7 +2321,7 @@ Module chain_extension.
     Class Trait
         (Self : Set)
         {ErrorCode : Set}
-        `{ink_env.chain_extension.FromStatusCode.Trait ErrorCode} :
+        `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode) :
         Set := {
       ErrorCode := ErrorCode;
     }.
@@ -2409,7 +2409,7 @@ Module ChainExtension.
   Class Trait
       (Self : Set)
       {ErrorCode : Set}
-      `{ink_env.chain_extension.FromStatusCode.Trait ErrorCode} :
+      `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode) :
       Set := {
     ErrorCode := ErrorCode;
   }.
