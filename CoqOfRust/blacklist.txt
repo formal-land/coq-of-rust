@@ -1,6 +1,4 @@
 examples/cargo/concurrent_tests.v
-examples/conversion/from.v
-examples/conversion/into.v
 examples/custom_types/enums_c_like.v
 examples/custom_types/enums_testcase_linked_list.v
 examples/custom_types/enums_type_aliases_v1.v

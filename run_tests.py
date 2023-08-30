@@ -8,6 +8,7 @@ done using the `git diff` command.
 import os
 import subprocess
 import sys
+import multiprocessing as mp
 
 
 test_folder = "examples"
@@ -36,7 +37,8 @@ for root, _dirs, files in os.walk(test_folder):
         os.path.join(root, file) for file in files if os.path.splitext(file)[1] == ".rs"
     ]
 
-for index, file in enumerate(rs_files):
+
+def compile(index, file):
     print()
     print(f"Translating file {index + 1}/{len(rs_files)}: {file}")
     base = os.path.splitext(file)[0]
@@ -62,3 +64,8 @@ for index, file in enumerate(rs_files):
     except KeyboardInterrupt:
         print("Ctrl-C pressed, interrupting the script.")
         sys.exit(1)
+
+
+# run in parallel
+pool = mp.Pool(processes=(1 if os.environ.get("RUN_TESTS_SINGLE_PROCESS") else None))
+pool.starmap(compile, enumerate(rs_files))
