@@ -1764,47 +1764,48 @@ impl TopLevelItem {
                         name,
                         ty_params,
                         &[coq::TopLevelItem::Code(group([
-                            text("Unset Primitive Projections."),
-                            hardline(),
-                            nest([
-                                text("Record"),
-                                line(),
-                                text("t"),
-                                line(),
-                                text(":"),
-                                line(),
-                                text("Set"),
-                                line(),
-                                text(":="),
-                                line(),
-                                text("{"),
-                            ]),
-                            if fields.is_empty() {
-                                text(" ")
-                            } else {
-                                concat([
+                            coq::TopLevel::locally_unset_primitive_projections(&[
+                                coq::TopLevelItem::Code(group([
                                     nest([
-                                        hardline(),
-                                        intersperse(
-                                            fields.iter().map(|(name, ty)| {
-                                                nest([
-                                                    text(name),
-                                                    line(),
-                                                    text(":"),
-                                                    line(),
-                                                    ty.to_doc(false),
-                                                    text(";"),
-                                                ])
-                                            }),
-                                            [hardline()],
-                                        ),
+                                        text("Record"),
+                                        line(),
+                                        text("t"),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text("{"),
                                     ]),
-                                    hardline(),
-                                ])
-                            },
-                            text("}."),
-                            hardline(),
-                            text("Global Set Primitive Projections."),
+                                    if fields.is_empty() {
+                                        text(" ")
+                                    } else {
+                                        concat([
+                                            nest([
+                                                hardline(),
+                                                intersperse(
+                                                    fields.iter().map(|(name, ty)| {
+                                                        nest([
+                                                            text(name),
+                                                            line(),
+                                                            text(":"),
+                                                            line(),
+                                                            ty.to_doc(false),
+                                                            text(";"),
+                                                        ])
+                                                    }),
+                                                    [hardline()],
+                                                ),
+                                            ]),
+                                            hardline(),
+                                        ])
+                                    },
+                                    text("}."),
+                                ])),
+                            ])
+                            .to_doc(),
                             // gy@TODO: I think the below code blocks, since { and } are not at the same level, can be
                             // optimized. I will work on eliminating redundant wrappers...
                             if !fields.is_empty() {
