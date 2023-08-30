@@ -20,3 +20,23 @@ Require Import CoqOfRust.lib.lib.
 [ ] u8
 [ ] usize
 *)
+
+Module Impl_f32.
+  Parameter NAN : f32.
+
+  Global Instance AssociatedFunction_NAN :
+    Notation.DoubleColon f32 "NAN" := {
+    Notation.double_colon := NAN;
+  }.
+
+  Definition Self : Set := f32.
+
+  Parameter to_int_unchecked :
+    forall `{H : State.Trait} {Int : Set} (*`{FloatToInt.Trait Int}*),
+    Self -> M (H := H) Int.
+
+  Global Instance Method_to_int_unchecked `{State.Trait} {Int : Set} :
+    Notation.Dot "to_int_unchecked" := {
+    Notation.dot := to_int_unchecked (Int := Int);
+  }.
+End Impl_f32.

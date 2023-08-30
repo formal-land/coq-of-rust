@@ -188,6 +188,7 @@ Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
 Require CoqOfRust.core.hash.
 Require CoqOfRust.core.marker.
+Require CoqOfRust.core.mem.
 Require CoqOfRust.core.option.
 Require CoqOfRust.core.result.
 Require CoqOfRust.core.panic.unwind_safe.
@@ -203,6 +204,7 @@ Module core.
   Export CoqOfRust.core.default.
   Export CoqOfRust.core.hash.
   Export CoqOfRust.core.marker.
+  Export CoqOfRust.core.mem.
   Export CoqOfRust.core.option.
   Export CoqOfRust.core.result.
 
@@ -1010,7 +1012,6 @@ Require CoqOfRust._std.intrinsics.
 Require CoqOfRust._std.io.
 (* Require CoqOfRust._std.iter. *)
 (* Require Import CoqOfRust._std.iter_type. *)
-Require Import CoqOfRust._std.mem.
 (* Require Import CoqOfRust._std.net. *)
 Require Import CoqOfRust._std.num.
 Require Import CoqOfRust._std.ops.
@@ -1052,7 +1053,6 @@ Module std.
   Module intrinsics := _std.intrinsics.
   Module io := _std.io.
   (* Module iter := _std.iter. *)
-  Module mem := _std.mem.
   (* Module net := _std.net. *)
   Module num := _std.num.
   Module ops := _std.ops.
@@ -1103,6 +1103,14 @@ Module hash_Instances.
   Global Instance Hash_for_i64 : core.hash.Hash.Trait i64. Admitted.
   Global Instance Hash_for_u64 : core.hash.Hash.Trait u64. Admitted.
 End hash_Instances.
+
+Module unit_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait unit.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait unit.
+  Admitted.
+End unit_Instances.
 
 Module bool_Instances.
   Global Instance IDisplay : core.fmt.Display.Trait bool.

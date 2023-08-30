@@ -108,3 +108,29 @@ Definition Vec (T : Set) (*(A : option Set)*) := Vec.t T (*(defaultType A Global
     `{Allocator.Trait A_type} 
     := unit in
     Vec.t T A_type. *)
+
+Module Impl_Vec.
+Section Impl_Vec.
+  Context {T : Set}.
+
+  Definition Self : Set := Vec T.
+
+  Parameter new :
+    forall `{H : State.Trait},
+    M (H := H) Self.
+
+  Global Instance AssociatedFunction_new `{State.Trait} :
+    Notation.DoubleColon Self "new" := {
+    Notation.double_colon := new;
+  }.
+
+  Parameter push :
+    forall `{H : State.Trait},
+    Self -> T -> M (H := H) unit.
+
+  Global Instance Method_push `{State.Trait} :
+    Notation.Dot "push" := {
+    Notation.dot := push;
+  }.
+End Impl_Vec.
+End Impl_Vec.

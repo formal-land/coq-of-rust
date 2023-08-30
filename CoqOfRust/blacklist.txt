@@ -124,9 +124,7 @@ examples/traits/iterators.v
 examples/traits/returning_traits_with_dyn.v
 examples/traits/supertraits.v
 examples/traits/traits.v
-examples/types/casting.v
 examples/types/inference.v
-examples/types/literals.v
 examples/unsafe_operations/calling_unsafe_functions.v
 examples/unsafe_operations/inline_assembly_clobbered_registers.v
 examples/unsafe_operations/inline_assembly_explicit_register_operands.v
@@ -146,7 +144,6 @@ examples/unsafe_operations/inline_assembly_symbol_operands_and_abi_clobbers.v
 examples/unsafe_operations/inline_assembly.v
 examples/unsafe_operations/raw_pointers.v
 examples/variable_bindings/declare_first.v
-examples/variable_bindings/variable_bindings.v
 examples_axiomatized/conversion/from.v
 examples_axiomatized/conversion/into.v
 examples_axiomatized/conversion/try_from_and_try_into.v
