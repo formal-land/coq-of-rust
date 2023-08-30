@@ -140,6 +140,8 @@ pub(crate) enum Expression<'a> {
     },
     /// Set constant (the type of our types)
     Set,
+    /// Type constant
+    Type,
     /// the unit type
     Unit,
     /// a single variable
@@ -575,6 +577,7 @@ impl<'a> Expression<'a> {
                 ]),
             ),
             Self::Set => text("Set"),
+            Self::Type => text("Type"),
             Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
                 concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])

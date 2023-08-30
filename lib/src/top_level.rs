@@ -2137,21 +2137,7 @@ impl TopLevelItem {
                     .filter_map(|(item_name, item)| match item {
                         TraitItem::Definition { .. } => None,
                         TraitItem::DefinitionWithDefault { .. } => None,
-                        TraitItem::Type(bounds) => Some((
-                            item_name.to_string(),
-                            bounds
-                                .iter()
-                                .map(|bound| {
-                                    bound.to_doc(
-                                        coq::Expression::Variable {
-                                            ident: Path::new(&[item_name]),
-                                            no_implicit: false,
-                                        },
-                                        coq::ArgSpecKind::Explicit,
-                                    )
-                                })
-                                .collect(),
-                        )),
+                        TraitItem::Type(_) => Some((item_name.to_string(), vec![])),
                     })
                     .collect::<Vec<_>>(),
                 body.iter()
@@ -2170,7 +2156,21 @@ impl TopLevelItem {
                             ty.to_doc(false),
                         ),
                         TraitItem::DefinitionWithDefault { .. } => nil(),
-                        TraitItem::Type { .. } => typeclass_type_item(name),
+                        TraitItem::Type(bounds) => typeclass_type_item(
+                            name,
+                            &bounds
+                                .iter()
+                                .map(|bound| {
+                                    bound.to_doc(
+                                        coq::Expression::Variable {
+                                            ident: Path::new(&[name]),
+                                            no_implicit: false,
+                                        },
+                                        coq::ArgSpecKind::Explicit,
+                                    )
+                                })
+                                .collect(),
+                        ),
                     })
                     .collect(),
                 body.iter()

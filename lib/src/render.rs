@@ -264,7 +264,8 @@ pub(crate) fn new_trait_typeclass_header<'a>(
         ),
         text(" :"),
         line(),
-        text("Set := {"),
+        coq::Expression::Type.to_doc(false),
+        text(" := {"),
     ])
 }
 
@@ -286,7 +287,7 @@ where
 }
 
 /// creates a type parameter as a field of a typeclass
-pub(crate) fn typeclass_type_item<'a, U>(name: U) -> Doc<'a>
+pub(crate) fn typeclass_type_item<'a, U>(name: U, bounds: &Vec<Doc<'a>>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>> + std::marker::Copy,
 {
@@ -295,11 +296,31 @@ where
         nest([
             text(name),
             line(),
-            text(":="),
+            text(":"),
             line(),
-            text(name),
+            text("Set"),
             text(";"),
         ]),
+        if bounds.is_empty() {
+            nil()
+        } else {
+            concat([
+                hardline(),
+                nest([
+                    text("_"),
+                    line(),
+                    text(":"),
+                    line(),
+                    text("exists"),
+                    line(),
+                    intersperse(bounds.to_owned(), [line()]),
+                    text(","),
+                    line(),
+                    text("True"),
+                    text(";"),
+                ]),
+            ])
+        },
     ])
 }
 
