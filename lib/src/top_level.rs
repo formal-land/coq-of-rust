@@ -132,6 +132,7 @@ enum TopLevelItem {
     TypeStructStruct {
         name: String,
         ty_params: Vec<String>,
+        predicates: Vec<WherePredicate>,
         fields: Vec<(String, Box<CoqType>)>,
         is_dead_code: bool,
     },
@@ -411,6 +412,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         ItemKind::Struct(body, generics) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let ty_params = get_ty_params_names(env, generics);
+            let predicates = get_where_predicates(tcx, env, generics);
 
             match body {
                 VariantData::Struct(fields, _) => {
@@ -421,6 +423,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     vec![TopLevelItem::TypeStructStruct {
                         name,
                         ty_params,
+                        predicates,
                         fields,
                         is_dead_code,
                     }]
@@ -1747,6 +1750,7 @@ impl TopLevelItem {
             TopLevelItem::TypeStructStruct {
                 name,
                 ty_params,
+                predicates,
                 fields,
                 is_dead_code,
             } => group([
@@ -1764,6 +1768,20 @@ impl TopLevelItem {
                         name,
                         ty_params,
                         &[coq::TopLevelItem::Code(group([
+                            if predicates.is_empty() {
+                                nil()
+                            } else {
+                                concat([
+                                    coq::TopLevelItem::Context(coq::Context::new(
+                                        &predicates
+                                            .iter()
+                                            .map(|predicate| predicate.to_coq())
+                                            .collect::<Vec<_>>(),
+                                    ))
+                                    .to_doc(),
+                                    hardline(),
+                                ])
+                            },
                             coq::TopLevel::locally_unset_primitive_projections(&[
                                 coq::TopLevelItem::Code(group([
                                     nest([
