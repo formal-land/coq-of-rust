@@ -251,6 +251,7 @@ Section
   }.
   
   Global Instance I : core.ops.arith.Add.Trait Self (Rhs := None) := {
+    core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add `{H' : State.Trait} := add;
   }.
 End

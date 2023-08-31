@@ -86,6 +86,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
   }.
   
   Global Instance I : core.convert.TryFrom.Trait Self (T := i32) := {
+    core.convert.TryFrom.Error := Error;
     core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
   }.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.

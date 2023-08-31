@@ -8,6 +8,7 @@ Module erc20.
     Definition Env : Set := ink_env.types.DefaultEnvironment.
     
     Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+      ink_env.contract.ContractEnv.Env := Env;
     }.
   End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   
@@ -86,6 +87,7 @@ Module erc20.
     Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
     
     Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
     }.
   End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
   
@@ -95,6 +97,7 @@ Module erc20.
     Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
     
     Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
     }.
   End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
   
@@ -192,6 +195,10 @@ Module erc20.
     
     Global Instance I :
         ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
+      ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
+      ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
+      ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
       ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
         `{H' : State.Trait}
         :=
@@ -265,6 +272,9 @@ Module erc20.
     
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+      ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
         `{H' : State.Trait}
         :=
@@ -338,6 +348,9 @@ Module erc20.
     
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+      ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
         `{H' : State.Trait}
         :=
@@ -414,6 +427,9 @@ Module erc20.
     
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+      ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
         `{H' : State.Trait}
         :=
@@ -490,6 +506,9 @@ Module erc20.
     
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+      ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
         `{H' : State.Trait}
         :=
@@ -566,6 +585,9 @@ Module erc20.
     
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+      ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
         `{H' : State.Trait}
         :=
@@ -644,6 +666,9 @@ Module erc20.
     
     Global Instance I :
         ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+      ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+      ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
         `{H' : State.Trait}
         :=
@@ -1312,6 +1337,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   Definition Env : Set := ink_env.types.DefaultEnvironment.
   
   Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+    ink_env.contract.ContractEnv.Env := Env;
   }.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
 
@@ -1400,6 +1426,8 @@ Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
       ink_storage_traits.storage.StorableHint.Trait
         Self
         (Key := __ink_generic_salt) := {
+    ink_storage_traits.storage.StorableHint.Type := Type;
+    ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
   }.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
@@ -1568,6 +1596,7 @@ AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
+    scale_info.TypeInfo.Identity := Identity;
     scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
@@ -1655,6 +1684,7 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
   }.
   
   Global Instance I : ink.codegen.env.Env.Trait Self := {
+    ink.codegen.env.Env.EnvAccess := EnvAccess;
     ink.codegen.env.Env.env `{H' : State.Trait} := env;
   }.
 End Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
@@ -1674,6 +1704,7 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   }.
   
   Global Instance I : ink.codegen.env.StaticEnv.Trait Self := {
+    ink.codegen.env.StaticEnv.EnvAccess := EnvAccess;
     ink.codegen.env.StaticEnv.env `{H' : State.Trait} := env;
   }.
 End Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
@@ -1858,6 +1889,7 @@ Module Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
   Definition Type : Set := erc20.erc20.__ink_EventBase.
   
   Global Instance I : ink.reflect.event.ContractEventBase.Trait Self := {
+    ink.reflect.event.ContractEventBase.Type := Type;
   }.
 End Impl_ink_reflect_event_ContractEventBase_for_erc20_erc20_Erc20.
 
@@ -1952,6 +1984,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
+    ink_env.topics.Topics.RemainingTopics := RemainingTopics;
     ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
   }.
 End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
@@ -1962,6 +1995,7 @@ Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
   Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
   
   Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+    ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
   }.
 End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
 
@@ -1971,6 +2005,7 @@ Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
   Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
   
   Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+    ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
   }.
 End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
 
@@ -2259,6 +2294,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
+    ink_env.topics.Topics.RemainingTopics := RemainingTopics;
     ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
   }.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
@@ -2312,6 +2348,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
+    ink_env.topics.Topics.RemainingTopics := RemainingTopics;
     ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
   }.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
@@ -2367,6 +2404,10 @@ Module
   
   Global Instance I :
       ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
+    ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
+    ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
+    ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
     ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
       `{H' : State.Trait}
       :=
@@ -2438,6 +2479,9 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
       `{H' : State.Trait}
       :=
@@ -2510,6 +2554,9 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
       `{H' : State.Trait}
       :=
@@ -2585,6 +2632,9 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
       `{H' : State.Trait}
       :=
@@ -2660,6 +2710,9 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
       `{H' : State.Trait}
       :=
@@ -2732,6 +2785,9 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
       `{H' : State.Trait}
       :=
@@ -2809,6 +2865,9 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
+    ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
       `{H' : State.Trait}
       :=
@@ -3008,6 +3067,7 @@ Module
   
   Global Instance I :
       ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
+    ink.reflect.dispatch.ContractConstructorDecoder.Type := Type;
   }.
 End Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
 
@@ -3668,6 +3728,7 @@ Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
+    ink.reflect.dispatch.ContractMessageDecoder.Type := Type;
   }.
 End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
 
@@ -4239,6 +4300,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
+    scale_info.TypeInfo.Identity := Identity;
     scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
@@ -4276,6 +4338,7 @@ Module Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
   
   Global Instance I :
       ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
+    ink.codegen.dispatch.info.ContractCallBuilder.Type := Type;
   }.
 End Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
 
@@ -4285,6 +4348,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
   Definition Env : Set := ink_env.contract.ContractEnv.Env.
   
   Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+    ink_env.contract.ContractEnv.Env := Env;
   }.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
 
@@ -4850,6 +4914,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
+    scale_info.TypeInfo.Identity := Identity;
     scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
@@ -4885,6 +4950,7 @@ Module Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
   Definition Type : Set := erc20.erc20.Erc20Ref.
   
   Global Instance I : ink_env.contract.ContractReference.Trait Self := {
+    ink_env.contract.ContractReference.Type := Type;
   }.
 End Impl_ink_env_contract_ContractReference_for_erc20_erc20_Erc20.
 
@@ -4911,6 +4977,8 @@ Module
       ink_env.call.create_builder.ConstructorReturnType.Trait
         Self
         (C := erc20.erc20.Erc20Ref) := {
+    ink_env.call.create_builder.ConstructorReturnType.Output := Output;
+    ink_env.call.create_builder.ConstructorReturnType.Error := Error;
     ink_env.call.create_builder.ConstructorReturnType.ok
       `{H' : State.Trait}
       :=
@@ -4964,6 +5032,8 @@ Section
       ink_env.call.create_builder.ConstructorReturnType.Trait
         Self
         (C := erc20.erc20.Erc20Ref) := {
+    ink_env.call.create_builder.ConstructorReturnType.Output := Output;
+    ink_env.call.create_builder.ConstructorReturnType.Error := Error;
     ink_env.call.create_builder.ConstructorReturnType.ok
       `{H' : State.Trait}
       :=
@@ -4980,6 +5050,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   Definition Env : Set := ink_env.contract.ContractEnv.Env.
   
   Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+    ink_env.contract.ContractEnv.Env := Env;
   }.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 
@@ -5314,6 +5385,7 @@ Module
   
   Global Instance I :
       ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
+    ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder := Builder;
     ink.codegen.trait_def.call_builder.TraitCallBuilder.call
       `{H' : State.Trait}
       :=
@@ -5857,6 +5929,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   }.
   
   Global Instance I : scale_info.TypeInfo.Trait Self := {
+    scale_info.TypeInfo.Identity := Identity;
     scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
   }.
 End Impl_scale_info_TypeInfo_for_erc20_erc20_Error.

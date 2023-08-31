@@ -87,6 +87,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
       core.ops.arith.Add.Trait
         Self
         (Rhs := (Some operator_overloading.Bar)) := {
+    core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add `{H' : State.Trait} := add;
   }.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
@@ -119,6 +120,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
       core.ops.arith.Add.Trait
         Self
         (Rhs := (Some operator_overloading.Foo)) := {
+    core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add `{H' : State.Trait} := add;
   }.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.

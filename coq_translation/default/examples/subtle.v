@@ -126,6 +126,7 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   }.
   
   Global Instance I : core.ops.bit.BitAnd.Trait Self (Rhs := None) := {
+    core.ops.bit.BitAnd.Output := Output;
     core.ops.bit.BitAnd.bitand `{H' : State.Trait} := bitand;
   }.
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
@@ -176,6 +177,7 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
   }.
   
   Global Instance I : core.ops.bit.BitOr.Trait Self (Rhs := None) := {
+    core.ops.bit.BitOr.Output := Output;
     core.ops.bit.BitOr.bitor `{H' : State.Trait} := bitor;
   }.
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
@@ -223,6 +225,7 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
   }.
   
   Global Instance I : core.ops.bit.BitXor.Trait Self (Rhs := None) := {
+    core.ops.bit.BitXor.Output := Output;
     core.ops.bit.BitXor.bitxor `{H' : State.Trait} := bitxor;
   }.
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
@@ -273,6 +276,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   }.
   
   Global Instance I : core.ops.bit.Not.Trait Self := {
+    core.ops.bit.Not.Output := Output;
     core.ops.bit.Not.not `{H' : State.Trait} := not;
   }.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
