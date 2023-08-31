@@ -406,8 +406,8 @@ Section Impl_subtle_ConstantTimeEq_for_Slice_T.
   Global Instance I : subtle.ConstantTimeEq.Trait Self := {
     subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
   }.
-  Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_Slice_T.
+Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -1448,8 +1448,8 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
       :=
       conditional_negate;
   }.
-  Global Hint Resolve I : core.
 End Impl_subtle_ConditionallyNegatable_for_T.
+Global Hint Resolve I : core.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
@@ -1493,8 +1493,8 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
-  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
+Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -1505,8 +1505,8 @@ Section Impl_core_marker_Copy_for_subtle_CtOption_T.
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
-  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
+Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -1535,8 +1535,8 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
-  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
+Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_for_core_option_Option_T.
@@ -1565,8 +1565,8 @@ Section Impl_core_convert_From_for_core_option_Option_T.
   Global Instance I : core.convert.From.Trait Self (T := subtle.CtOption T) := {
     core.convert.From.from `{H' : State.Trait} := from;
   }.
-  Global Hint Resolve I : core.
 End Impl_core_convert_From_for_core_option_Option_T.
+Global Hint Resolve I : core.
 End Impl_core_convert_From_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T_4.
@@ -1807,8 +1807,8 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       :=
       conditional_select;
   }.
-  Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -1839,8 +1839,8 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Global Instance I : subtle.ConstantTimeEq.Trait Self := {
     subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
   }.
-  Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.

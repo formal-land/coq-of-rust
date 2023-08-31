@@ -45,8 +45,8 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
       :=
       print_in_option;
   }.
-  Global Hint Resolve I : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
+Global Hint Resolve I : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

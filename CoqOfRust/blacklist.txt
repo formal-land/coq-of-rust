@@ -124,8 +124,6 @@ examples/traits/iterators.v
 examples/traits/returning_traits_with_dyn.v
 examples/traits/supertraits.v
 examples/traits/traits.v
-# TODO:
-examples/traits/traits_parms.v
 examples/types/casting.v
 examples/types/inference.v
 examples/types/literals.v

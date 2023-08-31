@@ -1457,8 +1457,8 @@ Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
     ink_storage_traits.storage.StorableHint.Type := Type;
     ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
   }.
-  Global Hint Resolve I : core.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+Global Hint Resolve I : core.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 
 Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
@@ -5142,9 +5142,9 @@ Section
       :=
       ok;
   }.
-  Global Hint Resolve I : core.
 End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+Global Hint Resolve I : core.
 End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
 

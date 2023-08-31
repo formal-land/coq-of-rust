@@ -31,9 +31,9 @@ Section
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
-  Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
@@ -59,8 +59,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
-  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
+Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
 Module PhantomStruct.
@@ -93,9 +93,9 @@ Section
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
-  Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
@@ -121,8 +121,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
-  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
+Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
