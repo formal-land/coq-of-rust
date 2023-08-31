@@ -169,7 +169,7 @@ enum TopLevelItem {
         self_ty: Box<CoqType>,
         of_trait: Path,
         items: Vec<ImplItem>,
-        trait_non_default_items: Vec<String>,
+        trait_non_default_items: Vec<(String, bool)>,
     },
     Error(String),
 }
@@ -489,8 +489,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
                         .filter(|item| !item.defaultness(*tcx).has_value())
-                        .filter(|item| item.kind != rustc_middle::ty::AssocKind::Type)
-                        .map(|item| item.name.to_string())
+                        .map(|item| {
+                            (
+                                item.name.to_string(),
+                                item.kind == rustc_middle::ty::AssocKind::Type,
+                            )
+                        })
                         .collect();
 
                     // Get the generics for the trait
@@ -2429,15 +2433,18 @@ impl TopLevelItem {
                                 text(" {")
                             },
                         ]),
-                        nest(trait_non_default_items.iter().map(|name| {
+                        nest(trait_non_default_items.iter().map(|(name, is_type)| {
                             concat([
                                 hardline(),
                                 nest([
                                     of_trait.to_doc(),
                                     text("."),
                                     text(name),
-                                    line(),
-                                    monadic_typeclass_parameter(),
+                                    if *is_type {
+                                        nil()
+                                    } else {
+                                        concat([line(), monadic_typeclass_parameter()])
+                                    },
                                     line(),
                                     text(":="),
                                     line(),
