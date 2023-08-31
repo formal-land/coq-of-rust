@@ -170,6 +170,7 @@ enum TopLevelItem {
         of_trait: Path,
         items: Vec<ImplItem>,
         trait_non_default_items: Vec<(String, bool)>,
+        has_predicates_on_assoc_ty: bool,
     },
     Error(String),
 }
@@ -485,10 +486,13 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
 
             match of_trait {
                 Some(trait_ref) => {
-                    let trait_non_default_items = tcx
+                    let rustc_non_default_items: Vec<_> = tcx
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
                         .filter(|item| !item.defaultness(*tcx).has_value())
+                        .collect();
+                    let trait_non_default_items = rustc_non_default_items
+                        .iter()
                         .map(|item| {
                             (
                                 item.name.to_string(),
@@ -496,6 +500,24 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                             )
                         })
                         .collect();
+                    let has_predicates_on_assoc_ty = rustc_non_default_items.iter().any(|item| {
+                        if let Some(item_id) = item.trait_item_def_id {
+                            let trait_item = tcx.hir().get_if_local(item_id);
+                            if let Some(trait_item) = trait_item {
+                                if let rustc_hir::TraitItemKind::Type(bounds, _) =
+                                    trait_item.expect_trait_item().kind
+                                {
+                                    !bounds.is_empty()
+                                } else {
+                                    false
+                                }
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    });
 
                     // Get the generics for the trait
                     let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
@@ -507,6 +529,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         of_trait: compile_path(env, trait_ref.path),
                         items,
                         trait_non_default_items,
+                        has_predicates_on_assoc_ty,
                     }]
                 }
                 None => {
@@ -1041,6 +1064,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             of_trait,
             items,
             trait_non_default_items,
+            has_predicates_on_assoc_ty,
         } => TopLevelItem::TraitImpl {
             generic_tys,
             ty_params,
@@ -1048,6 +1072,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             of_trait,
             items: mt_impl_items(items),
             trait_non_default_items,
+            has_predicates_on_assoc_ty,
         },
         TopLevelItem::Error(_) => item,
     }
@@ -2304,6 +2329,7 @@ impl TopLevelItem {
                 of_trait,
                 items,
                 trait_non_default_items,
+                has_predicates_on_assoc_ty,
             } => {
                 let module_name = format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name());
                 group([
@@ -2365,6 +2391,11 @@ impl TopLevelItem {
                         ),
                         nest([
                             nest([
+                                if *has_predicates_on_assoc_ty {
+                                    concat([text("#[refine]"), hardline()])
+                                } else {
+                                    nil()
+                                },
                                 text("Global Instance I :"),
                                 line(),
                                 nest([
@@ -2458,6 +2489,7 @@ impl TopLevelItem {
                         } else {
                             group([hardline(), text("}.")])
                         },
+                        // @TODO
                     ]),
                     hardline(),
                     if generic_tys.is_empty() {
@@ -2513,6 +2545,7 @@ impl TopLevel {
                         of_trait,
                         items: _,
                         trait_non_default_items: _,
+                        has_predicates_on_assoc_ty: _,
                     } =>
                     // if item is DeriveDebug we are getting missing datatypes for Struct, and
                     // printing DoubleColon instance for fmt function

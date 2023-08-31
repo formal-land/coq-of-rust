@@ -91,7 +91,9 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
     Notation.double_colon := some_fn;
   }.
   
-  Global Instance I : traits_parms.SomeTrait.Trait Self := {
+  #[refine]
+      Global Instance I :
+      traits_parms.SomeTrait.Trait Self := {
     traits_parms.SomeTrait.SomeType := SomeType;
     traits_parms.SomeTrait.some_fn `{H' : State.Trait} := some_fn;
   }.
