@@ -140,6 +140,14 @@ def update_storage():
     file_name = "ink_storage.v"
     with open(file_name, "r") as f:
         content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = \
+        sub_exactly_once(
+            pattern,
+            pattern + """
+Require CoqOfRust.ink.ink_storage_traits.""",
+            content,
+        )
     content = \
         sub_exactly_n(
             ": Set := @",
