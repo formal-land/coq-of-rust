@@ -2489,7 +2489,13 @@ impl TopLevelItem {
                         } else {
                             group([hardline(), text("}.")])
                         },
-                        // @TODO
+                        if *has_predicates_on_assoc_ty {
+                            concat([hardline(), text("eauto."), hardline(), text("Defined.")])
+                        } else {
+                            nil()
+                        },
+                        hardline(),
+                        text("Global Hint Resolve I : core."),
                     ]),
                     hardline(),
                     if generic_tys.is_empty() {
