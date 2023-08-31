@@ -43,6 +43,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
@@ -59,6 +60,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Global Instance I : core.default.Default.Trait Self := {
     core.default.Default.default `{H' : State.Trait} := default;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

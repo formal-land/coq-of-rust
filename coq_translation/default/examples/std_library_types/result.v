@@ -35,6 +35,7 @@ Module checked.
     Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
     }.
+    Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Definition MathResult : Set :=
@@ -108,6 +109,7 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
 Definition MathResult : Set := core.result.Result f64 result.checked.MathError.

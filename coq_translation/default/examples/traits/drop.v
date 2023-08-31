@@ -40,6 +40,7 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
   Global Instance I : core.ops.drop.Drop.Trait Self := {
     core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

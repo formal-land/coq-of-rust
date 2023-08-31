@@ -30,6 +30,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Global Instance I : core.ops.drop.Drop.Trait Self := {
     core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

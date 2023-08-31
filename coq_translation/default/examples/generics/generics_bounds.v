@@ -25,6 +25,7 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Global Instance I : generics_bounds.HasArea.Trait Self := {
     generics_bounds.HasArea.area `{H' : State.Trait} := area;
   }.
+  Global Hint Resolve I : core.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Module Rectangle.
@@ -75,6 +76,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)

@@ -19,6 +19,7 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
@@ -38,6 +39,7 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
@@ -58,6 +60,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
     core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
@@ -93,6 +96,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches_2.

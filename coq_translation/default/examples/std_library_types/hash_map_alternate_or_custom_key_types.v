@@ -24,6 +24,7 @@ Module
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
+  Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -47,6 +48,7 @@ Module
   Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module
@@ -55,6 +57,7 @@ Module
   
   Global Instance I : core.marker.StructuralEq.Trait Self :=
     core.marker.StructuralEq.Build_Trait _.
+  Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
@@ -76,6 +79,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   
   Global Instance I : core.cmp.Eq.Trait Self := {
   }.
+  Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
@@ -98,6 +102,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Global Instance I : core.hash.Hash.Trait Self := {
     core.hash.Hash.hash `{H' : State.Trait} := hash;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module AccountInfo.

@@ -28,6 +28,7 @@ Module Impl_core_convert_From_for_from_Number.
   Global Instance I : core.convert.From.Trait Self (T := i32) := {
     core.convert.From.from `{H' : State.Trait} := from;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

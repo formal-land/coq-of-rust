@@ -26,6 +26,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
@@ -44,6 +45,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
@@ -66,6 +68,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Global Instance I : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Definition double_first

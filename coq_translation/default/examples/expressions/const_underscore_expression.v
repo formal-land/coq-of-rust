@@ -55,5 +55,6 @@ Module
   Global Instance I : const_underscore_expression.BarTrait.Trait Self := {
     const_underscore_expression.BarTrait.show `{H' : State.Trait} := show;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.

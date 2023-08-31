@@ -43,6 +43,7 @@ Section Impl_generics_traits_DoubleDrop_for_U.
   Global Instance I : generics_traits.DoubleDrop.Trait Self (T := T) := {
     generics_traits.DoubleDrop.double_drop `{H' : State.Trait} := double_drop;
   }.
+  Global Hint Resolve I : core.
 End Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 

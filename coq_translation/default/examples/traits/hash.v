@@ -43,6 +43,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Global Instance I : core.hash.Hash.Trait Self := {
     core.hash.Hash.hash `{H' : State.Trait} := hash;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash

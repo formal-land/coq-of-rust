@@ -36,6 +36,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -42,6 +42,7 @@ Module
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 

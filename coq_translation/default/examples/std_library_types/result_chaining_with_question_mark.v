@@ -41,6 +41,7 @@ Module checked.
     Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
     }.
+    Global Hint Resolve I : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
@@ -180,6 +181,7 @@ Module
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 

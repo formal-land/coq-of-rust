@@ -56,6 +56,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

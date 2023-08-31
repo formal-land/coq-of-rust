@@ -1804,3 +1804,6 @@ Module Impl_Iterator_for_RangeInclusive_Z.
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_RangeInclusive_Z.
+
+(* a hint for eauto to automatically solve existential goals *)
+Global Hint Resolve ex_intro : core.

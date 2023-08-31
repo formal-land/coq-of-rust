@@ -35,6 +35,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
@@ -42,6 +43,7 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

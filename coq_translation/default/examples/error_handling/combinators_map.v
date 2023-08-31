@@ -32,6 +32,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 Module Peeled.
@@ -67,6 +68,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 Module Chopped.
@@ -102,6 +104,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 Module Cooked.
@@ -137,6 +140,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Definition peel

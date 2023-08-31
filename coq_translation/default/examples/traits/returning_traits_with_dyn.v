@@ -43,6 +43,7 @@ Module
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise `{H' : State.Trait} := noise;
   }.
+  Global Hint Resolve I : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
@@ -61,6 +62,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise `{H' : State.Trait} := noise;
   }.
+  Global Hint Resolve I : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Definition random_animal

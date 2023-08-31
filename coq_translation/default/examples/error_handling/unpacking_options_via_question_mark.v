@@ -51,6 +51,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
@@ -58,6 +59,7 @@ Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 Module PhoneNumber.
@@ -96,6 +98,7 @@ Module
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module
@@ -104,6 +107,7 @@ Module
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_unpacking_options_via_question_mark_Person.

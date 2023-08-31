@@ -33,6 +33,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
 Module BarFoo.
@@ -57,6 +58,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
@@ -90,6 +92,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add `{H' : State.Trait} := add;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
@@ -123,6 +126,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add `{H' : State.Trait} := add;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

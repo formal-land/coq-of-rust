@@ -61,6 +61,7 @@ Module
       :=
       get;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
@@ -79,6 +80,7 @@ Module
       disambiguating_overlapping_traits.AgeWidget.Trait Self := {
     disambiguating_overlapping_traits.AgeWidget.get `{H' : State.Trait} := get;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 

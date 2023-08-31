@@ -136,6 +136,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     traits.Animal.name `{H' : State.Trait} := name;
     traits.Animal.noise `{H' : State.Trait} := noise;
   }.
+  Global Hint Resolve I : core.
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_3.

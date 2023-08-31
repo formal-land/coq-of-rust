@@ -34,6 +34,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module
@@ -42,6 +43,7 @@ Module
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
@@ -61,6 +63,7 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
     core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
@@ -89,6 +92,7 @@ Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
     core.convert.TryFrom.Error := Error;
     core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

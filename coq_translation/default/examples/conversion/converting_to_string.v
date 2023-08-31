@@ -36,6 +36,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Global Instance I : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

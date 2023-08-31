@@ -23,6 +23,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
@@ -41,6 +42,7 @@ Module Impl_core_clone_Clone_for_clone_Unit.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
@@ -48,6 +50,7 @@ Module Impl_core_marker_Copy_for_clone_Unit.
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
@@ -85,6 +88,7 @@ Module Impl_core_clone_Clone_for_clone_Pair.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
@@ -108,6 +112,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

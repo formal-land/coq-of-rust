@@ -26,6 +26,7 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
@@ -44,6 +45,7 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
@@ -66,6 +68,7 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Global Instance I : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
@@ -73,6 +76,7 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
   
   Global Instance I : core.error.Error.Trait Self :=
     core.error.Error.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Definition double_first

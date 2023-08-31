@@ -116,6 +116,7 @@ Module
       last;
     generics_associated_types_solution.Contains.a `{H' : State.Trait} := a;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 

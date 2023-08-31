@@ -97,6 +97,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       :=
       some_trait_bar;
   }.
+  Global Hint Resolve I : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
@@ -134,6 +135,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
       :=
       some_trait_bar;
   }.
+  Global Hint Resolve I : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Definition depends_on_trait_impl

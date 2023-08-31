@@ -90,6 +90,7 @@ Module
       first;
     generics_associated_types_problem.Contains.last `{H' : State.Trait} := last;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
 

@@ -42,6 +42,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
     core.iter.traits.iterator.Iterator.Item := Item;
     core.iter.traits.iterator.Iterator.next `{H' : State.Trait} := next;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Definition fibonacci `{H' : State.Trait} : M (H := H') iterators.Fibonacci :=

@@ -78,6 +78,7 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Global Instance I : core.clone.Clone.Trait Self := {
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
@@ -85,6 +86,7 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
@@ -129,4 +131,5 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Global Instance I : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
