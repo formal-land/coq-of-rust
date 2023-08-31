@@ -2494,18 +2494,18 @@ impl TopLevelItem {
                         } else {
                             nil()
                         },
-                        hardline(),
-                        text("Global Hint Resolve I : core."),
                     ]),
-                    hardline(),
                     if generic_tys.is_empty() {
-                        nil()
+                        nest([hardline(), text("Global Hint Resolve I : core.")])
                     } else {
                         concat([
+                            hardline(),
                             nest([text("End"), line(), text(module_name.clone()), text(".")]),
                             hardline(),
+                            text("Global Hint Resolve I : core."),
                         ])
                     },
+                    hardline(),
                     nest([text("End"), line(), text(module_name), text(".")]),
                 ])
             }
