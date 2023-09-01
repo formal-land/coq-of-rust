@@ -34,13 +34,36 @@
         "hash": { "move": "up", "before": "backend" },
         "backend": { "move": "up", "before": "api" },
         "contract": { "move": "up", "before": "call" },
-        "call": { "move": "up", "before": "api" }
+        "call": { "move": "up", "before": "api" },
+        "invoke_contract": { "move": "up" },
+        "invoke_contract_delegate": { "move": "up" },
+        "instantiate_contract": { "move": "up" },
+        "build_create": { "move": "up" }
       },
       "top_level::arithmetic": { 
         "Saturating": { "move": "up", "before": "BaseArithmetic" }
       },
+      "top_level::engine": { 
+        "OnInstance": { "move": "up" }
+      },
+      "top_level::engine::off_chain": {
+        "EnvInstance": { "move": "up" },
+        "AccountError": { "move": "up", "before": "OffChainError" }
+      },
+      "top_level::engine::off_chain::test_api": {
+        "get_account_balance": { "move": "up" },
+        "register_chain_extension": { "move": "up" },
+        "recorded_debug_messages": { "move": "up" },
+        "count_used_storage_cells": { "move": "up" },
+        "run_test": { "move": "up" },
+        "default_accounts": { "move": "up" },
+        "recorded_events": { "move": "up" }
+      },
       "top_level::hash": {
         "private": { "move": "up", "before": "HashOutput" }
+      },
+      "top_level::backend": {
+        "TypedEnvBackend": { "move": "up" }
       },
       "top_level::call": {
         "selector": { "move": "up", "before": "execution_input" },
@@ -51,8 +74,18 @@
         "Argument": { "move": "up", "before": "ArgsList" }
       },
       "top_level::call::call_builder": {
-        "CallBuilder": { "move": "up", "before": "build_call" },
-        "Call": { "move": "up", "before": "build_call" }
+        "build_call": { "move": "up" }
+      },
+      "top_level::call::create_builder": {
+        "build_create": { "move": "up" }
+      },
+      "top_level::api": {
+        "invoke_contract": { "move": "up" },
+        "invoke_contract_delegate": { "move": "up" },
+        "instantiate_contract": { "move": "up" }
+      },
+      "top_level::chain_extension": {
+        "private": { "move": "up", "before": "IsResultType" }
       }
     }
   }
