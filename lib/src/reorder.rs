@@ -127,33 +127,38 @@ pub(crate) fn reorder_definitions_inplace(
                 let move_before = move_.is_before();
                 let direction = &move_.move_;
                 let befaft = if move_before { "before" } else { "after" };
-                let config_identifier = move_.get_ident();
-                let config_id_pos = definitions
-                    .iter()
-                    .map(|def| get_name(tcx, def.hir_id()))
-                    .position(|elm| elm == config_identifier);
-                let file = &env.file;
-                if config_id_pos.is_none() {
-                    eprintln!("Warning: No symbol {config_identifier} found in the context {file}/{context}, is this a typo?");
-                    eprintln!("Warning: Enable `debug_reorder` to see the identifiers in {file}/{context} scope");
-                    eprintln!("Warning: Example `cargo coq-of-rust 2>&1 | grep -e 'reorder before: .* {file}/{context} '`");
-                    continue;
-                }
-                let config_id_pos = config_id_pos.unwrap()
-                    + (if (!move_before && move_up) || (move_before && !move_up) {
-                        1
-                    } else {
-                        0
-                    });
-                if (move_up && config_id_pos > pos) || (!move_up && config_id_pos < pos) {
-                    eprintln!("Warning: Asked to move {def_name} {direction}, {befaft} of {config_identifier}, but it already comes {befaft} it, ignoring");
-                    continue;
-                }
+                if let Some(config_identifier) = move_.get_ident() {
+                    let config_id_pos = definitions
+                        .iter()
+                        .map(|def| get_name(tcx, def.hir_id()))
+                        .position(|elm| elm == config_identifier);
+                    let file = &env.file;
+                    if config_id_pos.is_none() {
+                        eprintln!("Warning: No symbol {config_identifier} found in the context {file}/{context}, is this a typo?");
+                        eprintln!("Warning: Enable `debug_reorder` to see the identifiers in {file}/{context} scope");
+                        eprintln!("Warning: Example `cargo coq-of-rust 2>&1 | grep -e 'reorder before: .* {file}/{context} '`");
+                        continue;
+                    }
+                    let config_id_pos = config_id_pos.unwrap()
+                        + (if (!move_before && move_up) || (move_before && !move_up) {
+                            1
+                        } else {
+                            0
+                        });
+                    if (move_up && config_id_pos > pos) || (!move_up && config_id_pos < pos) {
+                        eprintln!("Warning: Asked to move {def_name} {direction}, {befaft} of {config_identifier}, but it already comes {befaft} it, ignoring");
+                        continue;
+                    }
 
-                if env.configuration.debug_reorder {
-                    eprintln!("reoder: moving {def_name} ({pos}) {direction} {befaft} of {config_identifier} ({config_id_pos})");
+                    if env.configuration.debug_reorder {
+                        eprintln!("reoder: moving {def_name} ({pos}) {direction} {befaft} of {config_identifier} ({config_id_pos})");
+                    }
+                    vec_move(definitions, pos, config_id_pos);
+                } else {
+                    // if the destination is not specified it means an item should be removed
+                    // this change was introduced to temporarily remove blocking modules from a file
+                    definitions.remove(pos);
                 }
-                vec_move(definitions, pos, config_id_pos);
             }
             None => {
                 continue;
