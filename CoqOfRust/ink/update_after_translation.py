@@ -16,6 +16,7 @@ def update_ink_env():
 Require CoqOfRust.num_traits.
 
 Require CoqOfRust.ink.alloc.
+Require CoqOfRust.ink.ink_engine.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.

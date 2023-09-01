@@ -20,10 +20,16 @@
         "tick": { "move": "down", "after": "tack" }
       }
     },
+    "ink_engine": {
+      "top_level": {
+        "database": { "move": "up", "before": "ext" }
+      }
+    },
     "ink_env": {
       "top_level": {
         "arithmetic": { "move": "up", "before": "types" },
         "topics": { "move": "up", "before": "error" },
+        "engine": { "move": "up", "before": "backend" },
         "error": { "move": "up", "before": "backend" },
         "hash": { "move": "up", "before": "backend" },
         "backend": { "move": "up", "before": "api" },
