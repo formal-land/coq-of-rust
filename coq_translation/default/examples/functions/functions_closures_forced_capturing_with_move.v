@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* haystack :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
     (Slice _)::["into_vec"] α0 in

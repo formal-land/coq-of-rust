@@ -25,17 +25,17 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter debug_struct_field2_finish :
       core.fmt.Formatter ->
-        string -> string -> f64 -> string -> f64 -> M (H := H) core.fmt.Result.
+        string -> string -> f64 -> string -> f64 -> M (H := H') core.fmt.Result.
   
   Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
     core.fmt.Formatter "debug_struct_field2_finish" := {
     Notation.double_colon := debug_struct_field2_finish; }.
   
   Definition fmt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M (H := H') core.fmt.Result :=
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Point"
@@ -44,13 +44,14 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       "y"
       (addr_of (addr_of self.["y"])).
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point.
 
 Module Impl_core_clone_Clone_for_box_stack_heap_Point.
@@ -58,19 +59,20 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H) box_stack_heap.Point :=
+      : M (H := H') box_stack_heap.Point :=
     let _ : core.clone.AssertParamIsClone f64 := tt in
     self.["deref"].
   
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
+    core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_box_stack_heap_Point.
 
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
@@ -78,6 +80,7 @@ Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
@@ -98,7 +101,7 @@ Module Rectangle.
 End Rectangle.
 Definition Rectangle : Set := @Rectangle.t.
 
-Definition origin `{H : State.Trait} : M (H := H) box_stack_heap.Point :=
+Definition origin `{H' : State.Trait} : M (H := H') box_stack_heap.Point :=
   Pure
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -106,8 +109,8 @@ Definition origin `{H : State.Trait} : M (H := H) box_stack_heap.Point :=
     |}.
 
 Definition boxed_origin
-    `{H : State.Trait}
-    : M (H := H) (alloc.boxed.Box box_stack_heap.Point) :=
+    `{H' : State.Trait}
+    : M (H := H') (alloc.boxed.Box box_stack_heap.Point) :=
   alloc.boxed.Box::["new"]
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
@@ -115,7 +118,7 @@ Definition boxed_origin
     |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* point := box_stack_heap.origin in
   let* rectangle :=
     let* α0 := box_stack_heap.origin in

@@ -19,45 +19,48 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   
   Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
     core.marker.StructuralPartialEq.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
   Definition eq
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (other : ref derive.Centimeters)
-      : M (H := H) bool :=
+      : M (H := H') bool :=
     (self.[0]).["eq"] (other.[0]).
   
-  Global Instance Method_eq `{H : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
   Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
-    core.cmp.PartialEq.eq `{H : State.Trait} := eq;
+    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   Definition Self := derive.Centimeters.
   
   Definition partial_cmp
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (other : ref derive.Centimeters)
-      : M (H := H) (core.option.Option core.cmp.Ordering) :=
+      : M (H := H') (core.option.Option core.cmp.Ordering) :=
     core.cmp.PartialOrd.partial_cmp (addr_of (self.[0])) (addr_of (other.[0])).
   
-  Global Instance Method_partial_cmp `{H : State.Trait} :
+  Global Instance Method_partial_cmp `{H' : State.Trait} :
     Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
   }.
   
   Global Instance I : core.cmp.PartialOrd.Trait Self (Rhs := None) := {
-    core.cmp.PartialOrd.partial_cmp `{H : State.Trait} := partial_cmp;
+    core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
@@ -77,36 +80,37 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self := derive.Inches.
   
   Definition fmt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M (H := H') core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Inches"
       (addr_of (addr_of (self.[0]))).
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches_2.
   Definition Self := derive.Inches.
   
   Definition to_centimeters
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H) derive.Centimeters :=
+      : M (H := H') derive.Centimeters :=
     let 'derive.Inches.Build_t inches := self in
     let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in
     Pure (derive.Centimeters.Build_t α0).
   
-  Global Instance Method_to_centimeters `{H : State.Trait} :
+  Global Instance Method_to_centimeters `{H' : State.Trait} :
     Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
   }.
@@ -126,7 +130,7 @@ End Seconds.
 Definition Seconds := @Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let _one_second := derive.Seconds.Build_t 1 in
   let foot := derive.Inches.Build_t 12 in
   let* _ :=

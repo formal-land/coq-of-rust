@@ -103,10 +103,10 @@ Parameter generate""",
         )
     content = \
         sub_exactly_once(
-            r"""M \(H := H\) \(syn.error.Result proc_macro2.TokenStream\).
+            r"""M \(H := H'\) \(syn.error.Result proc_macro2.TokenStream\).
 
 Module trait_def.""",
-            """M (H := H) (syn.error.Result proc_macro2.TokenStream). *)
+            """M (H := H') (syn.error.Result proc_macro2.TokenStream). *)
 
 Module trait_def.""",
             content,
@@ -140,6 +140,14 @@ def update_storage():
     file_name = "ink_storage.v"
     with open(file_name, "r") as f:
         content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = \
+        sub_exactly_once(
+            pattern,
+            pattern + """
+Require CoqOfRust.ink.ink_storage_traits.""",
+            content,
+        )
     content = \
         sub_exactly_n(
             ": Set := @",

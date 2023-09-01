@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition foo
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {A : Set}
     (o : core.option.Option A)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   match o with
   | core.option.Option.Some _a =>
     let* _ :=
@@ -22,7 +22,7 @@ Definition foo
   end.
 
 Module tests.
-  Definition test_file `{H : State.Trait} : M (H := H) unit :=
+  Definition test_file `{H' : State.Trait} : M (H := H') unit :=
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := α0.["append"] true in
@@ -49,7 +49,7 @@ Module tests.
         Pure tt)
     end.
   
-  Definition test_file_also `{H : State.Trait} : M (H := H) unit :=
+  Definition test_file_also `{H' : State.Trait} : M (H := H') unit :=
     let* file :=
       let* α0 := std.fs.OpenOptions::["new"] in
       let* α1 := α0.["append"] true in
@@ -77,7 +77,7 @@ Module tests.
     end.
 End tests.
 
-Definition test_file `{H : State.Trait} : M (H := H) unit :=
+Definition test_file `{H' : State.Trait} : M (H := H') unit :=
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := α0.["append"] true in
@@ -104,7 +104,7 @@ Definition test_file `{H : State.Trait} : M (H := H) unit :=
       Pure tt)
   end.
 
-Definition test_file_also `{H : State.Trait} : M (H := H) unit :=
+Definition test_file_also `{H' : State.Trait} : M (H := H') unit :=
   let* file :=
     let* α0 := std.fs.OpenOptions::["new"] in
     let* α1 := α0.["append"] true in

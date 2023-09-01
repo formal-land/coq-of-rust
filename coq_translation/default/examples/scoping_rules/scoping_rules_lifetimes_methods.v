@@ -18,18 +18,18 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   Definition Self := scoping_rules_lifetimes_methods.Owner.
   
   Definition add_one
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : mut_ref Self)
-      : M (H := H) unit :=
+      : M (H := H') unit :=
     let* _ := (self.[0]).["add_assign"] 1 in
     Pure tt.
   
-  Global Instance Method_add_one `{H : State.Trait} :
+  Global Instance Method_add_one `{H' : State.Trait} :
     Notation.Dot "add_one" := {
     Notation.dot := add_one;
   }.
   
-  Definition print `{H : State.Trait} (self : ref Self) : M (H := H) unit :=
+  Definition print `{H' : State.Trait} (self : ref Self) : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of (self.[0])) in
@@ -42,13 +42,13 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_print `{H : State.Trait} : Notation.Dot "print" := {
+  Global Instance Method_print `{H' : State.Trait} : Notation.Dot "print" := {
     Notation.dot := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let owner := scoping_rules_lifetimes_methods.Owner.Build_t 18 in
   let* _ := owner.["add_one"] in
   let* _ := owner.["print"] in

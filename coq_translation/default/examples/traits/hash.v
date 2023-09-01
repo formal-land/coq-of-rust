@@ -26,37 +26,38 @@ Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.
   
   Definition hash
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
-      : M (H := H) unit :=
+      : M (H := H') unit :=
     let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
     let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
     core.hash.Hash.hash (addr_of self.["phone"]) state.
   
-  Global Instance Method_hash `{H : State.Trait} : Notation.Dot "hash" := {
+  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
     Notation.dot := hash;
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H : State.Trait} := hash;
+    core.hash.Hash.hash `{H' : State.Trait} := hash;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {T : Set}
     `{core.hash.Hash.Trait T}
     (t : ref T)
-    : M (H := H) u64 :=
+    : M (H := H') u64 :=
   let* s := std.collections.hash.map.DefaultHasher::["new"] in
   let* _ := t.["hash"] (addr_of s) in
   s.["finish"].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* person1 :=
     let* α0 := "Janet".["to_string"] in
     Pure

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
   match α0 with
   | core.result.Result.Ok lines =>
@@ -37,12 +37,12 @@ Definition main `{H : State.Trait} : M (H := H) unit :=
   end.
 
 Definition read_lines
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {P : Set}
     `{core.convert.AsRef.Trait P (T := std.path.Path)}
     (filename : P)
     :
-      M (H := H)
+      M (H := H')
         (std.io.error.Result
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=

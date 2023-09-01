@@ -118,8 +118,8 @@ pub trait TryFrom<T>: Sized {
 }
 *)
 Module TryFrom.
-  Class Trait (Self : Set) {T Error : Set} : Set := {
-    Error := Error;
+  Class Trait (Self : Set) {T : Set} : Type := {
+    Error : Set;
 
     try_from `{State.Trait} : T -> M (Result Self Error);
   }.
@@ -139,8 +139,8 @@ pub trait TryInto<T>: Sized {
 }
 *)
 Module TryInto.
-  Class Trait (Self T Error : Set) : Set := { 
-    Error := Error;
+  Class Trait (Self T : Set) : Type := { 
+    Error : Set;
     try_into `{State.Trait} : Self -> M (Result T Error);
   }.
 
@@ -170,13 +170,13 @@ Module Impl_TryInto_for_T.
 
     Definition Self := T.
 
-    Definition try_into `{State.Trait} : Self -> M (Result U Error) := TryFrom.try_from.
+    Definition try_into `{State.Trait} : Self -> M (Result U TryFrom.Error) := TryFrom.try_from.
 
     Global Instance Method_try_into `{State.Trait} : Notation.Dot "try_into" := {
       Notation.dot := try_into;
     }.
 
-    Global Instance TryInto_for_T : TryInto.Trait T U Error := {
+    Global Instance TryInto_for_T : TryInto.Trait T U := {
       TryInto.try_into `{State.Trait} := try_into;
     }.
   End Impl_TryInto_for_T.

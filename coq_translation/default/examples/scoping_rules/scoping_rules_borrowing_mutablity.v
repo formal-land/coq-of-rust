@@ -28,21 +28,22 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H) scoping_rules_borrowing_mutablity.Book :=
+      : M (H := H') scoping_rules_borrowing_mutablity.Book :=
     let _ : core.clone.AssertParamIsClone (ref str) := tt in
     let _ : core.clone.AssertParamIsClone (ref str) := tt in
     let _ : core.clone.AssertParamIsClone u32 := tt in
     self.["deref"].
   
-  Global Instance Method_clone `{H : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
   Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H : State.Trait} := clone;
+    core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
@@ -50,12 +51,13 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   
   Global Instance I : core.marker.Copy.Trait Self :=
     core.marker.Copy.Build_Trait _.
+  Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Definition borrow_book
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (book : ref scoping_rules_borrowing_mutablity.Book)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
@@ -70,9 +72,9 @@ Definition borrow_book
   Pure tt.
 
 Definition new_edition
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (book : mut_ref scoping_rules_borrowing_mutablity.Book)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   let* _ := assign book.["year"] 2014 in
   let* _ :=
     let* _ :=
@@ -88,7 +90,7 @@ Definition new_edition
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let immutabook :=
     {|
       scoping_rules_borrowing_mutablity.Book.author := "Douglas Hofstadter";

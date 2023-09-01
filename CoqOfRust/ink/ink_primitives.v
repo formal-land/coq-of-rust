@@ -59,16 +59,16 @@ Module types.
   Definition Hash := @Hash.t.
   
   Module Clear.
-    Class Trait (Self : Set) : Set := {
-      CLEAR_HASH `{H : State.Trait} : Self;
-      is_clear `{H : State.Trait} : (ref Self) -> (M (H := H) bool);
+    Class Trait (Self : Set) : Type := {
+      CLEAR_HASH `{H' : State.Trait} : Self;
+      is_clear `{H' : State.Trait} : (ref Self) -> (M (H := H') bool);
     }.
     
-    Global Instance Method_CLEAR_HASH `{H : State.Trait} `(Trait)
+    Global Instance Method_CLEAR_HASH `{H' : State.Trait} `(Trait)
       : Notation.Dot "CLEAR_HASH" := {
       Notation.dot := CLEAR_HASH;
     }.
-    Global Instance Method_is_clear `{H : State.Trait} `(Trait)
+    Global Instance Method_is_clear `{H' : State.Trait} `(Trait)
       : Notation.Dot "is_clear" := {
       Notation.dot := is_clear;
     }.
@@ -115,16 +115,16 @@ End Hash.
 Definition Hash := @Hash.t.
 
 Module Clear.
-  Class Trait (Self : Set) : Set := {
-    CLEAR_HASH `{H : State.Trait} : Self;
-    is_clear `{H : State.Trait} : (ref Self) -> (M (H := H) bool);
+  Class Trait (Self : Set) : Type := {
+    CLEAR_HASH `{H' : State.Trait} : Self;
+    is_clear `{H' : State.Trait} : (ref Self) -> (M (H := H') bool);
   }.
   
-  Global Instance Method_CLEAR_HASH `{H : State.Trait} `(Trait)
+  Global Instance Method_CLEAR_HASH `{H' : State.Trait} `(Trait)
     : Notation.Dot "CLEAR_HASH" := {
     Notation.dot := CLEAR_HASH;
   }.
-  Global Instance Method_is_clear `{H : State.Trait} `(Trait)
+  Global Instance Method_is_clear `{H' : State.Trait} `(Trait)
     : Notation.Dot "is_clear" := {
     Notation.dot := is_clear;
   }.

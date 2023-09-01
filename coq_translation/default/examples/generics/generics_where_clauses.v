@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
-  Class Trait (Self : Set) : Set := {
-    print_in_option `{H : State.Trait} : Self -> (M (H := H) unit);
+  Class Trait (Self : Set) : Type := {
+    print_in_option `{H' : State.Trait} : Self -> (M (H := H') unit);
   }.
   
-  Global Instance Method_print_in_option `{H : State.Trait} `(Trait)
+  Global Instance Method_print_in_option `{H' : State.Trait} `(Trait)
     : Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
   }.
@@ -19,9 +19,9 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   Definition Self := T.
   
   Definition print_in_option
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : Self)
-      : M (H := H) unit :=
+      : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -34,22 +34,23 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
       Pure tt in
     Pure tt.
   
-  Global Instance Method_print_in_option `{H : State.Trait} :
+  Global Instance Method_print_in_option `{H' : State.Trait} :
     Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
   }.
   
   Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
     generics_where_clauses.PrintInOption.print_in_option
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :=
       print_in_option;
   }.
 End Impl_generics_where_clauses_PrintInOption_for_T.
+Global Hint Resolve I : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* vec :=
     let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
     (Slice _)::["into_vec"] α0 in

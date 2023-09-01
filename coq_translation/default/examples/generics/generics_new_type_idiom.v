@@ -31,13 +31,13 @@ Module Impl_generics_new_type_idiom_Years.
   Definition Self := generics_new_type_idiom.Years.
   
   Definition to_days
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H) generics_new_type_idiom.Days :=
+      : M (H := H') generics_new_type_idiom.Days :=
     let* α0 := (self.[0]).["mul"] 365 in
     Pure (generics_new_type_idiom.Days.Build_t α0).
   
-  Global Instance Method_to_days `{H : State.Trait} :
+  Global Instance Method_to_days `{H' : State.Trait} :
     Notation.Dot "to_days" := {
     Notation.dot := to_days;
   }.
@@ -47,26 +47,26 @@ Module Impl_generics_new_type_idiom_Days.
   Definition Self := generics_new_type_idiom.Days.
   
   Definition to_years
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H) generics_new_type_idiom.Years :=
+      : M (H := H') generics_new_type_idiom.Years :=
     let* α0 := (self.[0]).["div"] 365 in
     Pure (generics_new_type_idiom.Years.Build_t α0).
   
-  Global Instance Method_to_years `{H : State.Trait} :
+  Global Instance Method_to_years `{H' : State.Trait} :
     Notation.Dot "to_years" := {
     Notation.dot := to_years;
   }.
 End Impl_generics_new_type_idiom_Days.
 
 Definition old_enough
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (age : ref generics_new_type_idiom.Years)
-    : M (H := H) bool :=
+    : M (H := H') bool :=
   (age.[0]).["ge"] 18.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let age := generics_new_type_idiom.Years.Build_t 5 in
   let* age_days := age.["to_days"] in
   let* _ :=

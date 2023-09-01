@@ -8,7 +8,7 @@ End Foo.
 Definition Foo := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let a := if_let_challenge.Foo.Bar in
   match a with
   | if_let_challenge.Foo.Bar =>

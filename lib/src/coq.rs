@@ -3,6 +3,9 @@ use crate::render::{
     self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
 };
 
+/// the
+pub(crate) const LOCAL_STATE_TRAIT_INSTANCE: &str = "H'";
+
 #[derive(Clone)]
 /// a list of coq top level items
 pub(crate) struct TopLevel<'a> {
@@ -65,7 +68,6 @@ pub(crate) struct Class<'a> {
     ty_params: Vec<(String, Option<Doc<'a>>)>,
     predicates: Vec<Doc<'a>>,
     bounds: Vec<Doc<'a>>,
-    associated_types: Vec<(String, Vec<Doc<'a>>)>,
     items: Vec<Doc<'a>>,
 }
 
@@ -137,6 +139,8 @@ pub(crate) enum Expression<'a> {
     },
     /// Set constant (the type of our types)
     Set,
+    /// Type constant
+    Type,
     /// the unit type
     Unit,
     /// a single variable
@@ -311,7 +315,6 @@ impl<'a> TopLevelItem<'a> {
         ty_params: &[(String, Option<Doc<'a>>)],
         predicates: &[Doc<'a>],
         bounds: &[Doc<'a>],
-        associated_types: &[(String, Vec<Doc<'a>>)],
         items: Vec<Doc<'a>>,
         instances: Vec<Instance<'a>>,
     ) -> Self {
@@ -325,7 +328,6 @@ impl<'a> TopLevelItem<'a> {
                         ty_params.to_vec(),
                         predicates.to_vec(),
                         bounds.to_vec(),
-                        associated_types.to_vec(),
                         items,
                     ))],
                 ),
@@ -443,7 +445,6 @@ impl<'a> Class<'a> {
         ty_params: Vec<(String, Option<Doc<'a>>)>,
         predicates: Vec<Doc<'a>>,
         bounds: Vec<Doc<'a>>,
-        associated_types: Vec<(String, Vec<Doc<'a>>)>,
         items: Vec<Doc<'a>>,
     ) -> Self {
         Class {
@@ -451,7 +452,6 @@ impl<'a> Class<'a> {
             ty_params: ty_params.to_owned(),
             predicates,
             bounds,
-            associated_types: associated_types.to_owned(),
             items,
         }
     }
@@ -464,7 +464,6 @@ impl<'a> Class<'a> {
                     &self.ty_params,
                     &self.predicates,
                     &self.bounds,
-                    &self.associated_types,
                 ),
                 render::new_typeclass_body(self.items.clone()),
             ]),
@@ -572,6 +571,7 @@ impl<'a> Expression<'a> {
                 ]),
             ),
             Self::Set => text("Set"),
+            Self::Type => text("Type"),
             Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
                 concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])
@@ -637,7 +637,7 @@ impl<'a> ArgDecl<'a> {
         ArgDecl {
             decl: ArgDeclVar::Generalized {
                 // @TODO: check whether the name of the parameter is necessary
-                idents: vec!["H".to_string()],
+                idents: vec![LOCAL_STATE_TRAIT_INSTANCE.to_string()],
                 ty: Expression::Variable {
                     ident: Path::new(&["State", "Trait"]),
                     no_implicit: false,

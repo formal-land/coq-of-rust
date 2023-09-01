@@ -15,5 +15,7 @@ impl Bar for SomeOtherType {}
 impl Tar for SomeOtherType {}
 
 impl SomeTrait for SomeOtherType {
+    type SomeType = SomeOtherType;
+
     fn some_fn() {}
 }

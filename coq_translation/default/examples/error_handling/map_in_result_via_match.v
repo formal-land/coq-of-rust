@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : M (H := H) (core.result.Result i32 core.num.error.ParseIntError) :=
+    : M (H := H') (core.result.Result i32 core.num.error.ParseIntError) :=
   let* α0 := first_number_str.["parse"] : M i32 in
   match α0 with
   | core.result.Result.Ok first_number =>
@@ -20,9 +20,9 @@ Definition multiply
   end.
 
 Definition print
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (result : core.result.Result i32 core.num.error.ParseIntError)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
@@ -47,7 +47,7 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* twenty := map_in_result_via_match.multiply "10" "2" in
   let* _ := map_in_result_via_match.print twenty in
   let* tt := map_in_result_via_match.multiply "t" "2" in

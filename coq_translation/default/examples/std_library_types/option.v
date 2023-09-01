@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition checked_division
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (dividend : i32)
     (divisor : i32)
-    : M (H := H) (core.option.Option i32) :=
+    : M (H := H') (core.option.Option i32) :=
   let* α0 := divisor.["eq"] 0 in
   if (α0 : bool) then
     Pure core.option.Option.None
@@ -14,10 +14,10 @@ Definition checked_division
     Pure (core.option.Option.Some α0).
 
 Definition try_division
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (dividend : i32)
     (divisor : i32)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   let* α0 := option.checked_division dividend divisor in
   match α0 with
   | core.option.Option.None =>
@@ -46,7 +46,7 @@ Definition try_division
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := option.try_division 4 2 in
   let* _ := option.try_division 1 0 in
   let none : core.option.Option i32 := core.option.Option.None in

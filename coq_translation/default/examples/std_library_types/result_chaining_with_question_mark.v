@@ -15,10 +15,10 @@ Module checked.
     Definition Self := result_chaining_with_question_mark.checked.MathError.
     
     Definition fmt
-        `{H : State.Trait}
+        `{H' : State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M (H := H) core.fmt.Result :=
+        : M (H := H') core.fmt.Result :=
       let* α0 :=
         match self with
         | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
@@ -34,13 +34,14 @@ Module checked.
         end in
       core.fmt.Formatter::["write_str"] f α0.
     
-    Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
     Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
     }.
+    Global Hint Resolve I : core.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
@@ -48,10 +49,10 @@ Module checked.
     core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
   
   Definition div
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (x : f64)
       (y : f64)
-      : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
     let* α0 := y.["eq"] 0 (* 0.0 *) in
     if (α0 : bool) then
       Pure
@@ -62,9 +63,9 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition sqrt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (x : f64)
-      : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
     let* α0 := x.["lt"] 0 (* 0.0 *) in
     if (α0 : bool) then
       Pure
@@ -75,9 +76,9 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition ln
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (x : f64)
-      : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
     let* α0 := x.["le"] 0 (* 0.0 *) in
     if (α0 : bool) then
       Pure
@@ -88,10 +89,10 @@ Module checked.
       Pure (core.result.Result.Ok α0).
   
   Definition op_
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (x : f64)
       (y : f64)
-      : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+      : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
       let* α1 := α0.["branch"] in
@@ -112,7 +113,7 @@ Module checked.
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
-  Definition op `{H : State.Trait} (x : f64) (y : f64) : M (H := H) unit :=
+  Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') unit :=
     let* α0 := result_chaining_with_question_mark.checked.op_ x y in
     match α0 with
     | core.result.Result.Err why =>
@@ -154,10 +155,10 @@ Module
   Definition Self := result_chaining_with_question_mark.checked.MathError.
   
   Definition fmt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M (H := H') core.fmt.Result :=
     let* α0 :=
       match self with
       | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
@@ -173,13 +174,14 @@ Module
       end in
     core.fmt.Formatter::["write_str"] f α0.
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
@@ -187,10 +189,10 @@ Definition MathResult : Set :=
   core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
 
 Definition div
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (x : f64)
     (y : f64)
-    : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
   let* α0 := y.["eq"] 0 (* 0.0 *) in
   if (α0 : bool) then
     Pure
@@ -201,9 +203,9 @@ Definition div
     Pure (core.result.Result.Ok α0).
 
 Definition sqrt
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (x : f64)
-    : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
   let* α0 := x.["lt"] 0 (* 0.0 *) in
   if (α0 : bool) then
     Pure
@@ -214,9 +216,9 @@ Definition sqrt
     Pure (core.result.Result.Ok α0).
 
 Definition ln
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (x : f64)
-    : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
   let* α0 := x.["le"] 0 (* 0.0 *) in
   if (α0 : bool) then
     Pure
@@ -227,10 +229,10 @@ Definition ln
     Pure (core.result.Result.Ok α0).
 
 Definition op_
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (x : f64)
     (y : f64)
-    : M (H := H) result_chaining_with_question_mark.checked.MathResult :=
+    : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
     let* α1 := α0.["branch"] in
@@ -251,7 +253,7 @@ Definition op_
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 
-Definition op `{H : State.Trait} (x : f64) (y : f64) : M (H := H) unit :=
+Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') unit :=
   let* α0 := result_chaining_with_question_mark.checked.op_ x y in
   match α0 with
   | core.result.Result.Err why =>
@@ -280,7 +282,7 @@ Definition op `{H : State.Trait} (x : f64) (y : f64) : M (H := H) unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     result_chaining_with_question_mark.checked.op 1 (* 1.0 *) 10 (* 10.0 *) in
   Pure tt.

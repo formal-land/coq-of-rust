@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition reverse
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (pair : i32 * bool)
-    : M (H := H) (bool * i32) :=
+    : M (H := H') (bool * i32) :=
   let '(int_param, bool_param) := pair in
   Pure (bool_param, int_param).
 
@@ -37,10 +37,10 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self := tuples.Matrix.
   
   Definition fmt
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H) core.fmt.Result :=
+      : M (H := H') core.fmt.Result :=
     core.fmt.Formatter::["debug_tuple_field4_finish"]
       f
       "Matrix"
@@ -49,17 +49,18 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       (addr_of (self.[2]))
       (addr_of (addr_of (self.[3]))).
   
-  Global Instance Method_fmt `{H : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
   Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H : State.Trait} := fmt;
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
+  Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* long_tuple :=
     let* α0 := 1.["neg"] in
     let* α1 := 2.["neg"] in

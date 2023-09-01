@@ -22,10 +22,31 @@
     },
     "ink_env": {
       "top_level": {
-        "arithmetic": { "move": "up", "before": "types" }
+        "arithmetic": { "move": "up", "before": "types" },
+        "topics": { "move": "up", "before": "error" },
+        "error": { "move": "up", "before": "backend" },
+        "hash": { "move": "up", "before": "backend" },
+        "backend": { "move": "up", "before": "api" },
+        "contract": { "move": "up", "before": "call" },
+        "call": { "move": "up", "before": "api" }
       },
       "top_level::arithmetic": { 
         "Saturating": { "move": "up", "before": "BaseArithmetic" }
+      },
+      "top_level::hash": {
+        "private": { "move": "up", "before": "HashOutput" }
+      },
+      "top_level::call": {
+        "selector": { "move": "up", "before": "execution_input" },
+        "common": { "move": "up", "before": "call_builder" },
+        "execution_input": { "move": "up", "before": "call_builder" }
+      },
+      "top_level::call::execution_input": {
+        "Argument": { "move": "up", "before": "ArgsList" }
+      },
+      "top_level::call::call_builder": {
+        "CallBuilder": { "move": "up", "before": "build_call" },
+        "Call": { "move": "up", "before": "build_call" }
       }
     }
   }

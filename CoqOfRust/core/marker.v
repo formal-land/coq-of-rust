@@ -114,7 +114,7 @@ End Sync.
 (* pub trait Sized { } *)
 Module Sized.
   Unset Primitive Projections.
-  Class Trait (Self : Set) (A : option Set) : Set := { }.
+  Class Trait (Self : Set) : Set := { }.
   Set Primitive Projections.
 End Sized.
 

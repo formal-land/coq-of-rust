@@ -2,22 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
-  Class Trait (Self : Set) : Set := {
-    get `{H : State.Trait} : (ref Self) -> (M (H := H) alloc.string.String);
+  Class Trait (Self : Set) : Type := {
+    get `{H' : State.Trait} : (ref Self) -> (M (H := H') alloc.string.String);
   }.
   
-  Global Instance Method_get `{H : State.Trait} `(Trait)
+  Global Instance Method_get `{H' : State.Trait} `(Trait)
     : Notation.Dot "get" := {
     Notation.dot := get;
   }.
 End UsernameWidget.
 
 Module AgeWidget.
-  Class Trait (Self : Set) : Set := {
-    get `{H : State.Trait} : (ref Self) -> (M (H := H) u8);
+  Class Trait (Self : Set) : Type := {
+    get `{H' : State.Trait} : (ref Self) -> (M (H := H') u8);
   }.
   
-  Global Instance Method_get `{H : State.Trait} `(Trait)
+  Global Instance Method_get `{H' : State.Trait} `(Trait)
     : Notation.Dot "get" := {
     Notation.dot := get;
   }.
@@ -45,22 +45,23 @@ Module
   Definition Self := disambiguating_overlapping_traits.Form.
   
   Definition get
-      `{H : State.Trait}
+      `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H) alloc.string.String :=
+      : M (H := H') alloc.string.String :=
     self.["username"].["clone"].
   
-  Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
+  Global Instance Method_get `{H' : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
   Global Instance I :
       disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
     disambiguating_overlapping_traits.UsernameWidget.get
-      `{H : State.Trait}
+      `{H' : State.Trait}
       :=
       get;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
@@ -68,22 +69,23 @@ Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
   Definition Self := disambiguating_overlapping_traits.Form.
   
-  Definition get `{H : State.Trait} (self : ref Self) : M (H := H) u8 :=
+  Definition get `{H' : State.Trait} (self : ref Self) : M (H := H') u8 :=
     Pure self.["age"].
   
-  Global Instance Method_get `{H : State.Trait} : Notation.Dot "get" := {
+  Global Instance Method_get `{H' : State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
   Global Instance I :
       disambiguating_overlapping_traits.AgeWidget.Trait Self := {
-    disambiguating_overlapping_traits.AgeWidget.get `{H : State.Trait} := get;
+    disambiguating_overlapping_traits.AgeWidget.get `{H' : State.Trait} := get;
   }.
+  Global Hint Resolve I : core.
 End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* form :=
     let* α0 := "rustacean".["to_owned"] in
     Pure

@@ -18,14 +18,14 @@ Definition Turkey := @Turkey.t.
 
 Module Red.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End Red.
 
 Module Blue.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
 End Blue.
@@ -36,6 +36,7 @@ Module
   
   Global Instance I : generics_bounds_test_case_empty_bounds.Red.Trait Self :=
     generics_bounds_test_case_empty_bounds.Red.Build_Trait _.
+  Global Hint Resolve I : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
 
@@ -45,27 +46,28 @@ Module
   
   Global Instance I : generics_bounds_test_case_empty_bounds.Blue.Trait Self :=
     generics_bounds_test_case_empty_bounds.Blue.Build_Trait _.
+  Global Hint Resolve I : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Definition red
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {T : Set}
     `{generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
-    : M (H := H) (ref str) :=
+    : M (H := H') (ref str) :=
   Pure "red".
 
 Definition blue
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {T : Set}
     `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
-    : M (H := H) (ref str) :=
+    : M (H := H') (ref str) :=
   Pure "blue".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
   let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
   let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in

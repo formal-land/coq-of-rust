@@ -6,56 +6,60 @@ Module builders.
     ink_env.call.create_builder.CreateBuilder
       E
       ContractRef
-      (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-      (ink_env.call.common.Unset u64)
-      (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-      (ink_env.call.common.Set
+      (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+      (ink_env.call.common.Unset_ u64)
+      (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+      (ink_env.call.common.Set_
         (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
+      (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
+      (ink_env.call.common.Set_ (ink_env.call.common.ReturnType R)).
   
   Parameter constructor_exec_input :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {E ContractRef Args R : Set}
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{ink_env.types.Environment.Trait E},
       (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-        M (H := H) (alloc.vec.Vec u8).
+        M (H := H') (alloc.vec.Vec u8).
 End builders.
 
 Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :=
   ink_env.call.create_builder.CreateBuilder
     E
     ContractRef
-    (ink_env.call.common.Unset ink_env.types.Environment.Hash)
-    (ink_env.call.common.Unset u64)
-    (ink_env.call.common.Unset ink_env.types.Environment.Balance)
-    (ink_env.call.common.Set (ink_env.call.execution_input.ExecutionInput Args))
-    (ink_env.call.common.Unset ink_env.call.create_builder.state.Salt)
-    (ink_env.call.common.Set (ink_env.call.common.ReturnType R)).
+    (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+    (ink_env.call.common.Unset_ u64)
+    (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+    (ink_env.call.common.Set_
+      (ink_env.call.execution_input.ExecutionInput Args))
+    (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
+    (ink_env.call.common.Set_ (ink_env.call.common.ReturnType R)).
 
 Parameter constructor_exec_input :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {E ContractRef Args R : Set}
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{ink_env.types.Environment.Trait E},
     (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-      M (H := H) (alloc.vec.Vec u8).
+      M (H := H') (alloc.vec.Vec u8).
 
 Module client.
   Definition CallBuilderFinal (E Args RetType : Set) : Set :=
     ink_env.call.call_builder.CallBuilder
       E
-      (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-      (ink_env.call.common.Set
+      (ink_env.call.common.Set_ (ink_env.call.call_builder.Call E))
+      (ink_env.call.common.Set_
         (ink_env.call.execution_input.ExecutionInput Args))
-      (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
+      (ink_env.call.common.Set_ (ink_env.call.common.ReturnType RetType)).
   
   Module InstantiationResult.
     Section InstantiationResult.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         account_id : E::type["AccountId"];
@@ -84,6 +88,9 @@ Module client.
   Module UploadResult.
     Section UploadResult.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         code_hash : E::type["Hash"];
@@ -112,6 +119,9 @@ Module client.
   Module CallResult.
     Section CallResult.
       Context {C E V : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         dry_run : ink_e2e.client.CallDryRunResult E V;
@@ -132,6 +142,7 @@ Module client.
   Module CallDryRunResult.
     Section CallDryRunResult.
       Context {E V : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         exec_result
@@ -182,6 +193,9 @@ Module client.
   Module Client.
     Section Client.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         api : ink_e2e.xts.ContractsApi C E;
@@ -207,13 +221,15 @@ End client.
 Definition CallBuilderFinal (E Args RetType : Set) : Set :=
   ink_env.call.call_builder.CallBuilder
     E
-    (ink_env.call.common.Set (ink_env.call.call_builder.Call E))
-    (ink_env.call.common.Set (ink_env.call.execution_input.ExecutionInput Args))
-    (ink_env.call.common.Set (ink_env.call.common.ReturnType RetType)).
+    (ink_env.call.common.Set_ (ink_env.call.call_builder.Call E))
+    (ink_env.call.common.Set_
+      (ink_env.call.execution_input.ExecutionInput Args))
+    (ink_env.call.common.Set_ (ink_env.call.common.ReturnType RetType)).
 
 Module InstantiationResult.
   Section InstantiationResult.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       account_id : E::type["AccountId"];
@@ -242,6 +258,7 @@ Definition InstantiationResult : Set := @InstantiationResult.t.
 Module UploadResult.
   Section UploadResult.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       code_hash : E::type["Hash"];
@@ -270,6 +287,7 @@ Definition UploadResult : Set := @UploadResult.t.
 Module CallResult.
   Section CallResult.
     Context {C E V : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       dry_run : ink_e2e.client.CallDryRunResult E V;
@@ -290,6 +308,7 @@ Definition CallResult : Set := @CallResult.t.
 Module CallDryRunResult.
   Section CallDryRunResult.
     Context {E V : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       exec_result
@@ -340,6 +359,7 @@ Definition Error := Error.t.
 Module Client.
   Section Client.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       api : ink_e2e.xts.ContractsApi C E;
@@ -364,193 +384,194 @@ Definition Client : Set := @Client.t.
 Module default_accounts.
   Parameter alice :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter bob :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter charlie :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter dave :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter eve :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter ferdie :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter one :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
   
   Parameter two :
       forall
-        `{H : State.Trait}
+        `{H' : State.Trait}
         {C : Set}
         `{subxt.config.Config.Trait C}
         `{core.convert.From.Trait C::type["Signature"]
             (T := sp_core.sr25519.Signature)}
         `{core.convert.From.Trait C::type["AccountId"]
             (T := sp_core.crypto.AccountId32)},
-      M (H := H)
+      M (H := H')
           (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 End default_accounts.
 
 Parameter alice :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter bob :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter charlie :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter dave :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter eve :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter ferdie :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter one :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Parameter two :
     forall
-      `{H : State.Trait}
+      `{H' : State.Trait}
       {C : Set}
       `{subxt.config.Config.Trait C}
       `{core.convert.From.Trait C::type["Signature"]
           (T := sp_core.sr25519.Signature)}
       `{core.convert.From.Trait C::type["AccountId"]
           (T := sp_core.crypto.AccountId32)},
-    M (H := H) (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
+    M (H := H') (subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair).
 
 Module node_proc.
   Module TestNodeProcess.
     Section TestNodeProcess.
       Context {R : Set}.
+      Context `{subxt.config.Config.Trait R}.
       Unset Primitive Projections.
       Record t : Set := {
         proc : std.process.Child;
@@ -600,6 +621,7 @@ End node_proc.
 Module TestNodeProcess.
   Section TestNodeProcess.
     Context {R : Set}.
+    Context `{subxt.config.Config.Trait R}.
     Unset Primitive Projections.
     Record t : Set := {
       proc : std.process.Child;
@@ -666,6 +688,7 @@ Module xts.
   Module InstantiateWithCode.
     Section InstantiateWithCode.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         value : E::type["Balance"];
@@ -703,6 +726,7 @@ Module xts.
   Module Call.
     Section Call.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
@@ -736,6 +760,9 @@ Module xts.
   Module Transfer.
     Section Transfer.
       Context {E C : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{subxt.config.Config.Trait C}.
       Unset Primitive Projections.
       Record t : Set := {
         dest : subxt.utils.static_type.Static C::type["Address"];
@@ -763,6 +790,7 @@ Module xts.
   Module UploadCode.
     Section UploadCode.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         code : alloc.vec.Vec u8;
@@ -788,6 +816,9 @@ Module xts.
   Module ContractsApi.
     Section ContractsApi.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
         client : subxt.client.online_client.OnlineClient C;
@@ -826,6 +857,7 @@ Definition Weight : Set := @Weight.t.
 Module InstantiateWithCode.
   Section InstantiateWithCode.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       value : E::type["Balance"];
@@ -863,6 +895,7 @@ Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
 Module Call.
   Section Call.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit;
@@ -896,6 +929,7 @@ Definition Call : Set := @Call.t.
 Module Transfer.
   Section Transfer.
     Context {E C : Set}.
+    Context `{ink_env.types.Environment.Trait E} `{subxt.config.Config.Trait C}.
     Unset Primitive Projections.
     Record t : Set := {
       dest : subxt.utils.static_type.Static C::type["Address"];
@@ -923,6 +957,7 @@ Definition Determinism := Determinism.t.
 Module UploadCode.
   Section UploadCode.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       code : alloc.vec.Vec u8;
@@ -948,6 +983,7 @@ Definition UploadCode : Set := @UploadCode.t.
 Module ContractsApi.
   Section ContractsApi.
     Context {C E : Set}.
+    Context `{subxt.config.Config.Trait C} `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
@@ -979,20 +1015,20 @@ Definition PolkadotConfig : Set :=
 Definition Signer (C : Set) : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
-Parameter INIT : forall `{H : State.Trait}, std.sync.once.Once.
+Parameter INIT : forall `{H' : State.Trait}, std.sync.once.Once.
 
 Parameter LOG_PREFIX :
-  forall `{H : State.Trait},
+  forall `{H' : State.Trait},
   std.thread.local.LocalKey (core.cell.RefCell alloc.string.String).
 
 Parameter log_prefix :
-    forall `{H : State.Trait},
-    M (H := H) alloc.string.String.
+    forall `{H' : State.Trait},
+    M (H := H') alloc.string.String.
 
-Parameter log_info : forall `{H : State.Trait}, (ref str) -> M (H := H) unit.
+Parameter log_info : forall `{H' : State.Trait}, (ref str) -> M (H := H') unit.
 
-Parameter log_error : forall `{H : State.Trait}, (ref str) -> M (H := H) unit.
+Parameter log_error : forall `{H' : State.Trait}, (ref str) -> M (H := H') unit.
 
 Parameter account_id :
-    forall `{H : State.Trait},
-    sp_keyring.sr25519.Keyring -> M (H := H) ink_primitives.types.AccountId.
+    forall `{H' : State.Trait},
+    sp_keyring.sr25519.Keyring -> M (H := H') ink_primitives.types.AccountId.

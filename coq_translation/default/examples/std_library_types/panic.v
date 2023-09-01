@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition division
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (dividend : i32)
     (divisor : i32)
-    : M (H := H) i32 :=
+    : M (H := H') i32 :=
   let* α0 := divisor.["eq"] 0 in
   if (α0 : bool) then
     let* _ := std.panicking.begin_panic "division by zero" in
@@ -14,7 +14,7 @@ Definition division
     dividend.["div"] divisor.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _x := alloc.boxed.Box::["new"] 0 in
   let* _ := panic.division 3 0 in
   let* _ :=

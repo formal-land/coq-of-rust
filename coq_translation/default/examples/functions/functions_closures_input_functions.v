@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition call_me
-    `{H : State.Trait}
+    `{H' : State.Trait}
     {F : Set}
     `{core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
-    : M (H := H) unit :=
+    : M (H := H') unit :=
   let* _ := f in
   Pure tt.
 
-Definition function `{H : State.Trait} : M (H := H) unit :=
+Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -21,7 +21,7 @@ Definition function `{H : State.Trait} : M (H := H) unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let closure :=
     fun  =>
       let* _ :=

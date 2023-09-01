@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition some_number
-    `{H : State.Trait}
-    : M (H := H) (core.option.Option u32) :=
+    `{H' : State.Trait}
+    : M (H := H') (core.option.Option u32) :=
   Pure (core.option.Option.Some 42).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* α0 := match_binding_destructure_enum_variants.some_number in
   match α0 with
   | core.option.Option.Some (42 as n) =>

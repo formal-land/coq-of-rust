@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition cat
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (path : ref std.path.Path)
-    : M (H := H) (std.io.error.Result alloc.string.String) :=
+    : M (H := H') (std.io.error.Result alloc.string.String) :=
   let* f :=
     let* α0 := std.fs.File::["open"] path in
     let* α1 := α0.["branch"] in
@@ -22,10 +22,10 @@ Definition cat
   end.
 
 Definition echo
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (s : ref str)
     (path : ref std.path.Path)
-    : M (H := H) (std.io.error.Result unit) :=
+    : M (H := H') (std.io.error.Result unit) :=
   let* f :=
     let* α0 := std.fs.File::["create"] path in
     let* α1 := α0.["branch"] in
@@ -39,9 +39,9 @@ Definition echo
   f.["write_all"] α0.
 
 Definition touch
-    `{H : State.Trait}
+    `{H' : State.Trait}
     (path : ref std.path.Path)
-    : M (H := H) (std.io.error.Result unit) :=
+    : M (H := H') (std.io.error.Result unit) :=
   let* α0 := std.fs.OpenOptions::["new"] in
   let* α1 := α0.["create"] true in
   let* α2 := α1.["write"] true in
@@ -52,7 +52,7 @@ Definition touch
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H : State.Trait} : M (H := H) unit :=
+Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`
