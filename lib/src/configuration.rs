@@ -21,12 +21,6 @@ impl DefinitionMove {
         match &self.before {
             Some(x) => Some(x.clone()),
             None => self.after.clone(),
-            /*original:
-            match &self.after {
-                Some(x) => Some(x.clone()),
-                None => panic!("Expecting before or after to be present in DefinitionMove"),
-            },
-            */
         }
     }
 
