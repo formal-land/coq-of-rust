@@ -2202,7 +2202,7 @@ impl TopLevelItem {
                             ty: _,
                         } => coq::Instance::new(
                             false,
-                            name,
+                            &format!("Method_{name}"),
                             &[
                                 coq::ArgDecl::monadic_typeclass_parameter(),
                                 coq::ArgDecl::new(
@@ -2219,33 +2219,37 @@ impl TopLevelItem {
                             coq::Expression::Variable {
                                 ident: Path::new(&["Notation", "Dot"]),
                                 no_implicit: false,
+                            }
+                            .apply(&coq::Expression::String(name.to_owned())),
+                            &coq::Expression::Record {
+                                fields: vec![nest([
+                                    nest([coq::function_header(
+                                        &Path::new(&["Notation", "dot"]),
+                                        &[
+                                            if ty_params.is_empty() {
+                                                vec![]
+                                            } else {
+                                                vec![coq::ArgDecl::of_ty_params(ty_params)]
+                                            },
+                                            where_predicates
+                                                .iter()
+                                                .map(|predicate| predicate.to_coq())
+                                                .collect(),
+                                        ]
+                                        .concat(),
+                                        &Vec::<(&String, _)>::new(),
+                                    )]),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text(name),
+                                ])],
                             },
-                            &[nest([
-                                nest([coq::function_header(
-                                    &Path::new(&["Notation", "dot"]),
-                                    &[
-                                        if ty_params.is_empty() {
-                                            vec![]
-                                        } else {
-                                            vec![coq::ArgDecl::of_ty_params(ty_params)]
-                                        },
-                                        where_predicates
-                                            .iter()
-                                            .map(|predicate| predicate.to_coq())
-                                            .collect(),
-                                    ]
-                                    .concat(),
-                                    &Vec::<(&String, _)>::new(),
-                                )]),
-                                line(),
-                                text(":="),
-                                line(),
-                                text(name),
-                            ])],
+                            nil(),
                         ),
                         TraitItem::Type { .. } => coq::Instance::new(
                             false,
-                            name,
+                            &format!("Method_{name}"),
                             &[coq::ArgDecl::new(
                                 &coq::ArgDeclVar::Generalized {
                                     idents: vec![],
@@ -2263,14 +2267,18 @@ impl TopLevelItem {
                             .apply(&coq::Expression::Variable {
                                 ident: Path::new(&["Self"]),
                                 no_implicit: false,
-                            }),
-                            &[nest([
-                                text("Notation.double_colon_type"),
-                                line(),
-                                text(":="),
-                                line(),
-                                text(name),
-                            ])],
+                            })
+                            .apply(&coq::Expression::String(name.to_owned())),
+                            &coq::Expression::Record {
+                                fields: vec![nest([
+                                    text("Notation.double_colon_type"),
+                                    line(),
+                                    text(":="),
+                                    line(),
+                                    text(name),
+                                ])],
+                            },
+                            nil(),
                         ),
                         TraitItem::DefinitionWithDefault {
                             ty_params,
@@ -2278,7 +2286,7 @@ impl TopLevelItem {
                             signature_and_body,
                         } => coq::Instance::new(
                             false,
-                            name,
+                            &format!("Method_{name}"),
                             &[
                                 coq::ArgDecl::monadic_typeclass_parameter(),
                                 coq::ArgDecl::new(
@@ -2295,46 +2303,50 @@ impl TopLevelItem {
                             coq::Expression::Variable {
                                 ident: Path::new(&["Notation", "Dot"]),
                                 no_implicit: false,
-                            },
-                            &[nest([
-                                nest([nest([coq::function_header(
-                                    &Path::new(&["Notation", "dot"]),
-                                    &[
-                                        if ty_params.is_empty() {
-                                            vec![]
-                                        } else {
-                                            vec![coq::ArgDecl::of_ty_params(ty_params)]
-                                        },
-                                        where_predicates
+                            }
+                            .apply(&coq::Expression::String(name.to_owned())),
+                            &coq::Expression::Record {
+                                fields: vec![nest([
+                                    nest([nest([coq::function_header(
+                                        &Path::new(&["Notation", "dot"]),
+                                        &[
+                                            if ty_params.is_empty() {
+                                                vec![]
+                                            } else {
+                                                vec![coq::ArgDecl::of_ty_params(ty_params)]
+                                            },
+                                            where_predicates
+                                                .iter()
+                                                .map(|predicate| predicate.to_coq())
+                                                .collect(),
+                                        ]
+                                        .concat(),
+                                        &signature_and_body
+                                            .args
                                             .iter()
-                                            .map(|predicate| predicate.to_coq())
-                                            .collect(),
-                                    ]
-                                    .concat(),
-                                    &signature_and_body
-                                        .args
-                                        .iter()
-                                        .map(|(name, ty)| (name, ty.to_doc(false)))
-                                        .collect::<Vec<_>>(),
-                                )])]),
-                                line(),
-                                text(":="),
-                                line(),
-                                group([
-                                    text("("),
-                                    match &signature_and_body.body {
-                                        None => text("axiom"),
-                                        Some(body) => body.to_doc(false),
-                                    },
+                                            .map(|(name, ty)| (name, ty.to_doc(false)))
+                                            .collect::<Vec<_>>(),
+                                    )])]),
                                     line(),
-                                    nest([
-                                        text(":"),
+                                    text(":="),
+                                    line(),
+                                    group([
+                                        text("("),
+                                        match &signature_and_body.body {
+                                            None => text("axiom"),
+                                            Some(body) => body.to_doc(false),
+                                        },
                                         line(),
-                                        signature_and_body.ret_ty.to_doc(false),
-                                        text(")"),
+                                        nest([
+                                            text(":"),
+                                            line(),
+                                            signature_and_body.ret_ty.to_doc(false),
+                                            text(")"),
+                                        ]),
                                     ]),
-                                ]),
-                            ])],
+                                ])],
+                            },
+                            nil(),
                         ),
                     })
                     .collect(),
@@ -2357,122 +2369,97 @@ impl TopLevelItem {
                             &module_name,
                             generic_tys,
                             &[
-                                coq::TopLevelItem::Definition(coq::Definition::new(
-                                    "Self",
-                                    &coq::DefinitionKind::Alias {
-                                        args: vec![],
-                                        ty: None,
-                                        body: self_ty.to_coq(),
-                                    },
-                                )),
-                                coq::TopLevelItem::Line,
-                                coq::TopLevelItem::Code(group([
-                                    concat(items.iter().map(|item| {
-                                        concat([item.to_doc(extra_data), hardline(), hardline()])
-                                    })),
-                                    nest([
-                                        nest([
-                                            if *has_predicates_on_assoc_ty {
-                                                concat([text("#[refine]"), hardline()])
-                                            } else {
-                                                nil()
-                                            },
-                                            text("Global Instance I :"),
-                                            line(),
-                                            nest([
-                                                of_trait.to_doc(),
-                                                text(".Trait"),
-                                                line(),
-                                                text("Self"),
-                                                concat(ty_params.iter().map(|ty_param| {
-                                                    let ty_param = *ty_param.clone();
-                                                    concat([
-                                                        line(),
-                                                        match ty_param {
-                                                            TraitTyParamValue::ValWithDef {
-                                                                name,
-                                                                ty,
-                                                            } => nest([
-                                                                text("("),
-                                                                text(name),
-                                                                line(),
-                                                                text(":="),
-                                                                line(),
-                                                                nest([
-                                                                    text("(Some"),
-                                                                    line(),
-                                                                    ty.to_doc(false),
-                                                                    text(")"),
-                                                                    text(")"),
-                                                                ]),
-                                                            ]),
-                                                            TraitTyParamValue::JustValue {
-                                                                name,
-                                                                ty,
-                                                            } => nest([
-                                                                text("("),
-                                                                text(name),
-                                                                line(),
-                                                                text(":="),
-                                                                line(),
-                                                                ty.to_doc(false),
-                                                                text(")"),
-                                                            ]),
-                                                            TraitTyParamValue::JustDefault {
-                                                                name,
-                                                            } => nest([
-                                                                text("("),
-                                                                text(name),
-                                                                line(),
-                                                                text(":="),
-                                                                line(),
-                                                                text("None"),
-                                                                text(")"),
-                                                            ]),
-                                                        },
-                                                    ])
-                                                })),
-                                            ]),
-                                        ]),
-                                        text(" :="),
-                                        if items.is_empty() {
-                                            concat([
-                                                line(),
-                                                nest([
-                                                    of_trait.to_doc(),
-                                                    text(".Build_Trait"),
-                                                    line(),
-                                                    text("_"),
-                                                ]),
-                                            ])
-                                        } else {
-                                            text(" {")
+                                vec![
+                                    coq::TopLevelItem::Definition(coq::Definition::new(
+                                        "Self",
+                                        &coq::DefinitionKind::Alias {
+                                            args: vec![],
+                                            ty: None,
+                                            body: self_ty.to_coq(),
                                         },
-                                    ]),
-                                    nest(trait_non_default_items.iter().map(|(name, is_type)| {
-                                        concat([
-                                            hardline(),
-                                            nest([
-                                                of_trait.to_doc(),
-                                                text("."),
-                                                text(name),
-                                                if *is_type {
-                                                    nil()
-                                                } else {
-                                                    concat([line(), monadic_typeclass_parameter()])
-                                                },
-                                                line(),
-                                                text(":="),
-                                                line(),
-                                                text(name),
-                                                text(";"),
+                                    )),
+                                    coq::TopLevelItem::Line,
+                                ],
+                                items
+                                    .iter()
+                                    .map(|item| {
+                                        vec![
+                                            coq::TopLevelItem::Code(item.to_doc(extra_data)),
+                                            coq::TopLevelItem::Line,
+                                        ]
+                                    })
+                                    .concat(),
+                                vec![coq::TopLevelItem::Instance(coq::Instance::new(
+                                    *has_predicates_on_assoc_ty,
+                                    "I",
+                                    &[],
+                                    coq::Expression::Variable {
+                                        ident: Path::concat(&[
+                                            of_trait.to_owned(),
+                                            Path::new(&["Trait"]),
+                                        ]),
+                                        no_implicit: false,
+                                    }
+                                    .apply(&coq::Expression::Variable {
+                                        ident: Path::new(&["Self"]),
+                                        no_implicit: false,
+                                    })
+                                    .apply_many_args(
+                                        &ty_params
+                                            .iter()
+                                            .map(|ty_param| {
+                                                let ty_param = *ty_param.clone();
+                                                match ty_param {
+                                                    TraitTyParamValue::ValWithDef { name, ty } => (
+                                                        Some(name),
+                                                        coq::Expression::just_name("Self")
+                                                            .apply(&ty.to_coq()),
+                                                    ),
+                                                    TraitTyParamValue::JustValue { name, ty } => {
+                                                        (Some(name), ty.to_coq())
+                                                    }
+                                                    TraitTyParamValue::JustDefault { name } => (
+                                                        Some(name),
+                                                        coq::Expression::just_name("None"),
+                                                    ),
+                                                }
+                                            })
+                                            .collect::<Vec<_>>(),
+                                    ),
+                                    &if items.is_empty() {
+                                        coq::Expression::Variable {
+                                            ident: Path::concat(&[
+                                                of_trait.to_owned(),
+                                                Path::new(&["Build_Trait"]),
                                             ]),
-                                        ])
-                                    })),
-                                    if items.is_empty() {
-                                        text(".")
+                                            no_implicit: false,
+                                        }
+                                        .apply(&coq::Expression::Wild)
                                     } else {
-                                        group([hardline(), text("}.")])
+                                        coq::Expression::Record {
+                                            fields: trait_non_default_items
+                                                .iter()
+                                                .map(|(name, is_type)| {
+                                                    nest([
+                                                        of_trait.to_doc(),
+                                                        text("."),
+                                                        text(name),
+                                                        if *is_type {
+                                                            nil()
+                                                        } else {
+                                                            concat([
+                                                                line(),
+                                                                monadic_typeclass_parameter(),
+                                                            ])
+                                                        },
+                                                        line(),
+                                                        text(":="),
+                                                        line(),
+                                                        text(name),
+                                                    ])
+                                                })
+                                                .collect::<Vec<_>>(),
+                                        }
                                     },
                                     if *has_predicates_on_assoc_ty {
                                         concat([
@@ -2484,8 +2471,9 @@ impl TopLevelItem {
                                     } else {
                                         nil()
                                     },
-                                ])),
-                            ],
+                                ))],
+                            ]
+                            .concat(),
                         ),
                         coq::TopLevel::new(&[coq::TopLevelItem::Hint(
                             coq::Hint::standard_resolve(),

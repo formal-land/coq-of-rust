@@ -347,45 +347,6 @@ pub(crate) fn typeclass_definition_item<'a>(
     ])
 }
 
-/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_header<'a, U>(
-    name: U,
-    trait_parameters: &[Doc<'a>],
-    kind: Doc<'a>,
-) -> Doc<'a>
-where
-    U: std::fmt::Display,
-{
-    nest([
-        nest([
-            text("Global Instance"),
-            line(),
-            text(format!("Method_{name}")),
-            line(),
-            intersperse(trait_parameters.to_owned(), [line()]),
-        ]),
-        line(),
-        nest([
-            text(": "),
-            kind,
-            line(),
-            text(format!("\"{name}\"")),
-            line(),
-            text(":= {"),
-        ]),
-    ])
-}
-
-/// produces the body of an instance of a typeclass
-pub(crate) fn new_instance_body(fields: Vec<Doc>) -> Doc {
-    intersperse(
-        fields
-            .iter()
-            .map(|field| concat([field.to_owned(), text(";")])),
-        [hardline()],
-    )
-}
-
 pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>>,

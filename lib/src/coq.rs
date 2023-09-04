@@ -76,10 +76,11 @@ pub(crate) struct Class<'a> {
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
     refine_attribute: bool,
-    name: &'a str,
+    name: String,
     parameters: Vec<ArgDecl<'a>>,
     class: Expression<'a>,
-    fields: Vec<Doc<'a>>,
+    bulid_expr: Expression<'a>,
+    proof: Doc<'a>,
 }
 
 #[derive(Clone)]
@@ -145,8 +146,13 @@ pub(crate) enum Expression<'a> {
         /// right hand side
         rhs: Box<Expression<'a>>,
     },
+    Record {
+        fields: Vec<Doc<'a>>,
+    },
     /// Set constant (the type of our types)
     Set,
+    /// a string
+    String(String),
     /// Type constant
     Type,
     /// the unit type
@@ -158,6 +164,8 @@ pub(crate) enum Expression<'a> {
         /// a flag, set if implicit arguments are deactivated with '@'
         no_implicit: bool,
     },
+    /// a wildcard: '_'
+    Wild,
 }
 
 #[derive(Clone)]
@@ -486,17 +494,19 @@ impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
         refine_attribute: bool,
-        name: &'a str,
+        name: &str,
         parameters: &[ArgDecl<'a>],
         class: Expression<'a>,
-        fields: &[Doc<'a>],
+        bulid_expr: &Expression<'a>,
+        proof_mode: Doc<'a>,
     ) -> Self {
         Instance {
             refine_attribute,
-            name,
+            name: name.to_owned(),
             parameters: parameters.to_vec(),
             class,
-            fields: fields.to_vec(),
+            bulid_expr: bulid_expr.to_owned(),
+            proof: proof_mode,
         }
     }
 
@@ -507,21 +517,26 @@ impl<'a> Instance<'a> {
             } else {
                 nil()
             },
-            render::new_instance_header(
-                self.name,
-                &self
-                    .parameters
-                    .iter()
-                    .map(|p| p.to_doc())
-                    .collect::<Vec<Doc<'a>>>(),
-                self.class.to_doc(false),
-            ),
             nest([
-                hardline(),
-                render::new_instance_body(self.fields.to_owned()),
+                nest([
+                    text("Global Instance"),
+                    line(),
+                    text(self.name.to_owned()),
+                    if self.parameters.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            line(),
+                            intersperse(self.parameters.iter().map(|p| p.to_doc()), [line()]),
+                        ])
+                    },
+                ]),
+                line(),
+                nest([text(": "), self.class.to_doc(false), line(), text(":= ")]),
             ]),
-            hardline(),
-            text("}."),
+            self.bulid_expr.to_doc(false),
+            text("."),
+            self.proof.to_owned(),
         ])
     }
 }
@@ -610,29 +625,71 @@ impl<'a> Expression<'a> {
                     rhs.to_doc(true),
                 ]),
             ),
+            Self::Record { fields } => concat([
+                text("{"),
+                if fields.is_empty() {
+                    nil()
+                } else {
+                    nest([
+                        hardline(),
+                        intersperse(
+                            fields
+                                .iter()
+                                .map(|field| concat([field.to_owned(), text(";")])),
+                            [hardline()],
+                        ),
+                    ])
+                },
+                hardline(),
+                text("}"),
+            ]),
             Self::Set => text("Set"),
+            Self::String(string) => text(format!("\"{string}\"")),
             Self::Type => text("Type"),
             Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
                 concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])
             }
+            Self::Wild => text("_"),
+        }
+    }
+
+    pub(crate) fn just_name(name: &str) -> Self {
+        Expression::Variable {
+            ident: Path::new(&[name]),
+            no_implicit: false,
+        }
+    }
+
+    /// apply the expression as a function to one argument
+    pub(crate) fn apply_arg(&self, name: &Option<String>, arg: &Self) -> Self {
+        Expression::Application {
+            func: Box::new(self.clone()),
+            args: vec![(name.clone(), arg.clone())],
         }
     }
 
     /// apply the expression as a function to one argument
     pub(crate) fn apply(&self, arg: &Self) -> Self {
+        self.apply_arg(&None, arg)
+    }
+
+    /// apply the expression as a function to many arguments
+    pub(crate) fn apply_many_args(&self, args: &[(Option<String>, Self)]) -> Self {
         Expression::Application {
-            func: Box::new(self.clone()),
-            args: vec![(None, arg.clone())],
+            func: Box::new(self.to_owned()),
+            args: args.to_vec(),
         }
     }
 
     /// apply the expression as a function to many arguments
     pub(crate) fn apply_many(&self, args: &[Self]) -> Self {
-        Expression::Application {
-            func: Box::new(self.to_owned()),
-            args: args.iter().map(|arg| (None, arg.to_owned())).collect(),
-        }
+        self.apply_many_args(
+            &args
+                .iter()
+                .map(|arg| (None, arg.to_owned()))
+                .collect::<Vec<_>>(),
+        )
     }
 
     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
