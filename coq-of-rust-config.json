@@ -81,6 +81,11 @@
       "top_level::chain_extension": {
         "private": { "move": "up", "before": "IsResultType" }
       }
+    },
+    "erc20": {
+      "top_level::erc20": {
+        "Erc20": { "move": "up", "before": "Impl_{{root}}::ink::env::ContractEnv_for_Erc20" }
+      }
     }
   }
 }

@@ -9,10 +9,10 @@ def update_ink_env():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = \
-        sub_exactly_once(
-            pattern,
-            pattern + """
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
 Require CoqOfRust.num_traits.
 
 Require CoqOfRust.ink.alloc.
@@ -21,12 +21,11 @@ Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.scale_decode.
 Require CoqOfRust.ink.scale_encode.""",
-# TODO: add Require CoqOfRust.ink.ink_engine.
-            content,
-        )
-    content = \
-        content.replace(
-            """Parameter invoke_contract :
+        # TODO: add Require CoqOfRust.ink.ink_engine.
+        content,
+    )
+    content = content.replace(
+        """Parameter invoke_contract :
     forall
       `{H' : State.Trait}
       {E Args R : Set}
@@ -41,11 +40,10 @@ Require CoqOfRust.ink.scale_encode.""",
           R))
       ->
       M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)).""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter invoke_contract_delegate :
+        "",
+    )
+    content = content.replace(
+        """Parameter invoke_contract_delegate :
     forall
       `{H' : State.Trait}
       {E Args R : Set}
@@ -60,11 +58,10 @@ Require CoqOfRust.ink.scale_encode.""",
           R))
       ->
       M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)).""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter instantiate_contract :
+        "",
+    )
+    content = content.replace(
+        """Parameter instantiate_contract :
     forall
       `{H' : State.Trait}
       {E ContractRef Args Salt R : Set}
@@ -80,11 +77,10 @@ Require CoqOfRust.ink.scale_encode.""",
         (ink_env.error.Result
           (ink_primitives.ConstructorResult
             ink_env.call.create_builder.ConstructorReturnType.Output)).""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Module TypedEnvBackend.
+        "",
+    )
+    content = content.replace(
+        """Module TypedEnvBackend.
   Class Trait (Self : Set) `{ink_env.backend.EnvBackend.Trait Self} : Type := {
     caller
       `{H' : State.Trait}
@@ -372,11 +368,10 @@ Require CoqOfRust.ink.scale_encode.""",
       call_runtime;
   }.
 End TypedEnvBackend.""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter build_call :
+        "",
+    )
+    content = content.replace(
+        """Parameter build_call :
     forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
     M (H := H')
         (ink_env.call.call_builder.CallBuilder
@@ -386,11 +381,10 @@ End TypedEnvBackend.""",
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter build_create :
+        "",
+    )
+    content = content.replace(
+        """Parameter build_create :
     forall
       `{H' : State.Trait}
       {ContractRef : Set}
@@ -407,19 +401,18 @@ End TypedEnvBackend.""",
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
           (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).""",
-            "",
-        )
-    content = \
-        content.replace(
-            """
+        "",
+    )
+    content = content.replace(
+        """
 Module state.
   Module IgnoreErrorCode.
 """,
-            """
+        """
 Module state_.
   Module IgnoreErrorCode.
 """,
-        )
+    )
     content = \
         content.replace(
             """HandleErrorCode.t (T := T).
@@ -429,9 +422,8 @@ End state.
 End state_.
 """,
         )
-    content = \
-        content.replace(
-            """Module OnInstance.
+    content = content.replace(
+        """Module OnInstance.
   Class Trait
       (Self : Set)
         `{ink_env.backend.EnvBackend.Trait Self}
@@ -454,28 +446,25 @@ End state_.
       on_instance;
   }.
 End OnInstance.""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter register_chain_extension :
+        "",
+    )
+    content = content.replace(
+        """Parameter register_chain_extension :
     forall
       `{H' : State.Trait}
       {E : Set}
       `{ink_engine.chain_extension.ChainExtension.Trait E},
     E -> M (H := H') unit.""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter recorded_debug_messages :
+        "",
+    )
+    content = content.replace(
+        """Parameter recorded_debug_messages :
     forall `{H' : State.Trait},
     M (H := H') ink_engine.test_api.RecordedDebugMessages.""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter is_contract :
+        "",
+    )
+    content = content.replace(
+        """Parameter is_contract :
     forall
       `{H' : State.Trait}
       {T : Set}
@@ -483,11 +472,10 @@ End OnInstance.""",
       `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') bool.""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter run_test :
+        "",
+    )
+    content = content.replace(
+        """Parameter run_test :
     forall
       `{H' : State.Trait}
       {T F : Set}
@@ -497,11 +485,10 @@ End OnInstance.""",
       `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
     F -> M (H := H') (ink_env.error.Result unit).""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter default_accounts :
+        "",
+    )
+    content = content.replace(
+        """Parameter default_accounts :
     forall
       `{H' : State.Trait}
       {T : Set}
@@ -509,21 +496,21 @@ End OnInstance.""",
       `{core.convert.From.Trait ink_env.types.Environment.AccountId
           (T := list u8)},
     M (H := H') (ink_env.engine.off_chain.test_api.DefaultAccounts T).""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Parameter recorded_events_ret_ty :
-    forall `{"""+"core.iter.traits.iterator.Iterator"+"""},
+        "",
+    )
+    content = content.replace(
+        """Parameter recorded_events_ret_ty :
+    forall `{"""
+        + "core.iter.traits.iterator.Iterator"
+        + """},
     Set.
 Parameter recorded_events :
     forall `{H' : State.Trait},
     M (H := H') recorded_events_ret_ty.""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Module EnvInstance.
+        "",
+    )
+    content = content.replace(
+        """Module EnvInstance.
   Unset Primitive Projections.
   Record t : Set := {
     engine : ink_engine.ext.Engine;
@@ -534,16 +521,15 @@ Parameter recorded_events :
     Notation.dot '(Build_t x0) := x0;
   }.
 End EnvInstance.""",
-            """Module EnvInstance.
+        """Module EnvInstance.
   Unset Primitive Projections.
   Record t : Set := {
   }.
   Global Set Primitive Projections.
 End EnvInstance.""",
-        )
-    content = \
-        content.replace(
-            """Module private.
+    )
+    content = content.replace(
+        """Module private.
   Module Sealed.
     Unset Primitive Projections.
     Class Trait (Self : Set) : Type := {
@@ -551,11 +537,10 @@ End EnvInstance.""",
     Global Set Primitive Projections.
   End Sealed.
 End private.""",
-            "",
-        )
-    content = \
-        content.replace(
-            """Module TopicsBuilder.
+        "",
+    )
+    content = content.replace(
+        """Module TopicsBuilder.
   Section TopicsBuilder.
     Context {S E B : Set}.
     Unset Primitive Projections.
@@ -574,11 +559,10 @@ End private.""",
   End TopicsBuilder.
 End TopicsBuilder.
 Definition TopicsBuilder""",
-            "Definition TopicsBuilder_",
-        )
-    content = \
-        content.replace(
-            """Module state.
+        "Definition TopicsBuilder_",
+    )
+    content = content.replace(
+        """Module state.
   Module Uninit.
     Inductive t : Set :=
     .
@@ -597,7 +581,7 @@ Definition TopicsBuilder""",
   End NoRemainingTopics.
   Definition NoRemainingTopics := NoRemainingTopics.t.
 End state.""",
-            """Module state__.
+        """Module state__.
   Module Uninit.
     Inductive t : Set :=
     .
@@ -616,7 +600,7 @@ End state.""",
   End NoRemainingTopics.
   Definition NoRemainingTopics := NoRemainingTopics.t.
 End state__.""",
-        )
+    )
     content = \
         content.replace(
             """Definition TopicsBuilder_ (S E B : Set) : Set :=
@@ -640,8 +624,8 @@ def sub_exactly_n(pattern, replacement, text, times) -> str:
         )
     else:
         raise ValueError(
-            f"Pattern {pattern} not found exactly {times} times in text\n" +
-            f"It was found {len(matches)} times."
+            f"Pattern {pattern} not found exactly {times} times in text\n"
+            + f"It was found {len(matches)} times."
         )
 
 
@@ -658,14 +642,14 @@ def update_ink_e2e_macro():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = \
-        sub_exactly_once(
-            pattern,
-            pattern + """
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
 Require CoqOfRust.ink.proc_macro.
 Require CoqOfRust.ink.syn.""",
-            content,
-        )
+        content,
+    )
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -675,36 +659,34 @@ def update_ink_macro():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = \
-        sub_exactly_once(
-            pattern,
-            pattern + """
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
 Require CoqOfRust.ink.proc_macro.
 Require CoqOfRust.ink.proc_macro2.
 Require CoqOfRust.ink.syn.
 Require CoqOfRust.ink.synstructure.""",
-            content,
-        )
-    content = \
-        sub_exactly_once(
-            """End storage_item.
+        content,
+    )
+    content = sub_exactly_once(
+        """End storage_item.
 
 Parameter generate""",
-            """End storage_item.
+        """End storage_item.
 
 (* Parameter generate""",
-            content,
-        )
-    content = \
-        sub_exactly_once(
-            r"""M \(H := H'\) \(syn.error.Result proc_macro2.TokenStream\).
+        content,
+    )
+    content = sub_exactly_once(
+        r"""M \(H := H'\) \(syn.error.Result proc_macro2.TokenStream\).
 
 Module trait_def.""",
-            """M (H := H') (syn.error.Result proc_macro2.TokenStream). *)
+        """M (H := H') (syn.error.Result proc_macro2.TokenStream). *)
 
 Module trait_def.""",
-            content,
-        )
+        content,
+    )
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -735,13 +717,13 @@ def update_storage():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = \
-        sub_exactly_once(
-            pattern,
-            pattern + """
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
 Require CoqOfRust.ink.ink_storage_traits.""",
-            content,
-        )
+        content,
+    )
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -751,26 +733,51 @@ def update_storage_traits():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = \
-        sub_exactly_once(
-            pattern,
-            pattern + """
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
 Require CoqOfRust.ink.ink_metadata.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.parity_scale_codec.""",
-            content,
-        )
-    content = \
-        sub_exactly_n(
-            "Global Instance Method_key",
-            "(* Global Instance Method_key",
-            content,
-            2,
-        )
-    content = \
-        sub_exactly_n(
-            "End StorageKey.",
-            "*) End StorageKey.",
+        content,
+    )
+    content = sub_exactly_n(
+        "Global Instance Method_key",
+        "(* Global Instance Method_key",
+        content,
+        2,
+    )
+    content = sub_exactly_n(
+        "End StorageKey.",
+        "*) End StorageKey.",
+        content,
+        2,
+    )
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
+def update_erc20():
+    file_name = "erc20.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
+
+Require CoqOfRust.ink.ink_storage.
+Require CoqOfRust.ink.ink_env.
+""",
+        content,
+    )
+
+    for field in ("total_supply", "balances", "allowances"):
+        content = sub_exactly_n(
+            f"{field} : ink_storage_traits.storage.AutoStorableHint.Type_",
+            f"{field} `{{ink_storage_traits.storage.AutoStorableHint.Trait}} : ink_storage_traits.storage.AutoStorableHint.Type_",
             content,
             2,
         )
@@ -784,3 +791,4 @@ update_ink_macro()
 update_ink_primitives()
 update_storage_traits()
 update_storage()
+update_erc20()
