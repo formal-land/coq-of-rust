@@ -70,9 +70,7 @@ Definition Person : Set := @Person.t.
 
 Module
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Definition
-    Self
-    :=
+  Definition Self :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
   Parameter debug_struct_field2_finish :
