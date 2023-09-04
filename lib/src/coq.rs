@@ -22,6 +22,7 @@ pub(crate) enum TopLevelItem<'a> {
     Comment(Comment),
     Context(Context<'a>),
     Definition(Definition<'a>),
+    Hint(Hint),
     Instance(Instance<'a>),
     Line,
     Module(Module<'a>),
@@ -74,11 +75,18 @@ pub(crate) struct Class<'a> {
 #[derive(Clone)]
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
+    refine_attribute: bool,
     name: &'a str,
     parameters: Vec<ArgDecl<'a>>,
     class: Expression<'a>,
-    field: Doc<'a>,
-    value: Doc<'a>,
+    fields: Vec<Doc<'a>>,
+}
+
+#[derive(Clone)]
+/// a hint for auto
+pub(crate) struct Hint {
+    item_name: String,
+    db_name: String,
 }
 
 #[derive(Clone)]
@@ -302,6 +310,7 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Comment(comment) => comment.to_doc(),
             TopLevelItem::Context(context) => context.to_doc(),
             TopLevelItem::Definition(definition) => definition.to_doc(),
+            TopLevelItem::Hint(hint) => hint.to_doc(),
             TopLevelItem::Instance(instance) => instance.to_doc(),
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
@@ -476,23 +485,28 @@ impl<'a> Class<'a> {
 impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
+        refine_attribute: bool,
         name: &'a str,
         parameters: &[ArgDecl<'a>],
         class: Expression<'a>,
-        field: Doc<'a>,
-        value: Doc<'a>,
+        fields: &[Doc<'a>],
     ) -> Self {
         Instance {
+            refine_attribute,
             name,
             parameters: parameters.to_vec(),
             class,
-            field,
-            value,
+            fields: fields.to_vec(),
         }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
+            if self.refine_attribute {
+                concat([text("#[refine]"), hardline()])
+            } else {
+                nil()
+            },
             render::new_instance_header(
                 self.name,
                 &self
@@ -504,11 +518,37 @@ impl<'a> Instance<'a> {
             ),
             nest([
                 hardline(),
-                render::new_instance_body(self.field.to_owned(), self.value.to_owned()),
+                render::new_instance_body(self.fields.to_owned()),
             ]),
             hardline(),
             text("}."),
         ])
+    }
+}
+
+impl Hint {
+    pub(crate) fn new(item_name: &str, db_name: &str) -> Self {
+        Hint {
+            item_name: item_name.to_owned(),
+            db_name: db_name.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        group([
+            text("Global Hint Resolve"),
+            line(),
+            text(self.item_name.to_owned()),
+            line(),
+            text(":"),
+            line(),
+            text(self.db_name.to_owned()),
+            text("."),
+        ])
+    }
+
+    pub(crate) fn standard_resolve() -> Self {
+        Hint::new("I", "core")
     }
 }
 

@@ -376,9 +376,14 @@ where
     ])
 }
 
-/// produces the body of an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
-    nest([field, line(), text(":="), line(), value, text(";")])
+/// produces the body of an instance of a typeclass
+pub(crate) fn new_instance_body(fields: Vec<Doc>) -> Doc {
+    intersperse(
+        fields
+            .iter()
+            .map(|field| concat([field.to_owned(), text(";")])),
+        [hardline()],
+    )
 }
 
 pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>
