@@ -78,8 +78,8 @@ End Impl_core_clone_Clone_for_box_stack_heap_Point.
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
+  Global Instance I
+    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 

@@ -54,8 +54,8 @@ Module
     Notation.dot := get;
   }.
   
-  Global Instance I :
-      disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
+  Global Instance I
+    : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
     disambiguating_overlapping_traits.UsernameWidget.get
       `{H' : State.Trait}
       :=
@@ -76,8 +76,8 @@ Module
     Notation.dot := get;
   }.
   
-  Global Instance I :
-      disambiguating_overlapping_traits.AgeWidget.Trait Self := {
+  Global Instance I
+    : disambiguating_overlapping_traits.AgeWidget.Trait Self := {
     disambiguating_overlapping_traits.AgeWidget.get `{H' : State.Trait} := get;
   }.
   Global Hint Resolve I : core.

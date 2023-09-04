@@ -17,8 +17,8 @@ Definition Choice := @Choice.t.
 Module Impl_core_marker_Copy_for_subtle_Choice.
   Definition Self := subtle.Choice.
   
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
+  Global Instance I
+    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_subtle_Choice.
 
@@ -1499,8 +1499,8 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
     Context {T : Set}.
     Definition Self := subtle.CtOption T.
     
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
+    Global Instance I
+      : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   End Impl_core_marker_Copy_for_subtle_CtOption_T.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -1556,8 +1556,8 @@ Module Impl_core_convert_From_for_core_option_Option_T.
       Notation.double_colon := from;
     }.
     
-    Global Instance I :
-        core.convert.From.Trait Self (T := subtle.CtOption T) := {
+    Global Instance I
+      : core.convert.From.Trait Self (T := subtle.CtOption T) := {
       core.convert.From.from `{H' : State.Trait} := from;
     }.
   End Impl_core_convert_From_for_core_option_Option_T.
@@ -2098,31 +2098,35 @@ End ConstantTimeLess.
 Module Impl_subtle_ConstantTimeLess_for_u8.
   Definition Self := u8.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Trait _.
+  Global Instance I
+    : subtle.ConstantTimeLess.Trait Self := subtle.ConstantTimeLess.Build_Trait
+    _.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
   Definition Self := u16.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Trait _.
+  Global Instance I
+    : subtle.ConstantTimeLess.Trait Self := subtle.ConstantTimeLess.Build_Trait
+    _.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
   Definition Self := u32.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Trait _.
+  Global Instance I
+    : subtle.ConstantTimeLess.Trait Self := subtle.ConstantTimeLess.Build_Trait
+    _.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
   Definition Self := u64.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self :=
-    subtle.ConstantTimeLess.Build_Trait _.
+  Global Instance I
+    : subtle.ConstantTimeLess.Trait Self := subtle.ConstantTimeLess.Build_Trait
+    _.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u64.

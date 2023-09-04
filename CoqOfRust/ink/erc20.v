@@ -197,8 +197,8 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I :
-        ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
+    Global Instance I
+      : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
       ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
@@ -275,8 +275,8 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance I
+      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -352,8 +352,8 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance I
+      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -432,8 +432,8 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance I
+      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -512,8 +512,8 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance I
+      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -592,8 +592,8 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance I
+      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -674,8 +674,8 @@ Module erc20.
       Notation.double_colon := LABEL;
     }.
     
-    Global Instance I :
-        ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+    Global Instance I
+      : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -776,8 +776,9 @@ Module erc20.
   Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
+    Global Instance I
+      : core.marker.StructuralPartialEq.Trait Self
+        := core.marker.StructuralPartialEq.Build_Trait _.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
   
@@ -804,8 +805,9 @@ Module erc20.
   Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
+    Global Instance I
+      : core.marker.StructuralEq.Trait Self
+        := core.marker.StructuralEq.Build_Trait _.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
   
@@ -1185,10 +1187,10 @@ Module erc20.
       Notation.double_colon := from_account_id;
     }.
     
-    Global Instance I :
-        ink_env.call.create_builder.FromAccountId.Trait
-          Self
-          (T := erc20.erc20.Environment) := {
+    Global Instance I
+      : ink_env.call.create_builder.FromAccountId.Trait Self
+          (T := erc20.erc20.Environment)
+        := {
       ink_env.call.create_builder.FromAccountId.from_account_id
         `{H' : State.Trait}
         :=
@@ -1211,10 +1213,9 @@ Module erc20.
       Notation.dot := to_account_id;
     }.
     
-    Global Instance I :
-        ink.contract_ref.ToAccountId.Trait
-          Self
-          (T := erc20.erc20.Environment) := {
+    Global Instance I
+      : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
+        := {
       ink.contract_ref.ToAccountId.to_account_id
         `{H' : State.Trait}
         :=
@@ -1237,8 +1238,8 @@ Module erc20.
       Notation.dot := as_ref;
     }.
     
-    Global Instance I :
-        core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+    Global Instance I
+      : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
     }.
     Global Hint Resolve I : core.
@@ -1258,8 +1259,8 @@ Module erc20.
       Notation.dot := as_mut;
     }.
     
-    Global Instance I :
-        core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+    Global Instance I
+      : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
       core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
     }.
     Global Hint Resolve I : core.
@@ -1301,8 +1302,9 @@ Module erc20.
   Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-      core.marker.StructuralPartialEq.Build_Trait _.
+    Global Instance I
+      : core.marker.StructuralPartialEq.Trait Self
+        := core.marker.StructuralPartialEq.Build_Trait _.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
   
@@ -1331,8 +1333,9 @@ Module erc20.
   Module Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self :=
-      core.marker.StructuralEq.Build_Trait _.
+    Global Instance I
+      : core.marker.StructuralEq.Trait Self
+        := core.marker.StructuralEq.Build_Trait _.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
   
@@ -1449,10 +1452,10 @@ Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
     
     Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
     
-    Global Instance I :
-        ink_storage_traits.storage.StorableHint.Trait
-          Self
-          (Key := __ink_generic_salt) := {
+    Global Instance I
+      : ink_storage_traits.storage.StorableHint.Trait Self
+          (Key := __ink_generic_salt)
+        := {
       ink_storage_traits.storage.StorableHint.Type := Type;
       ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
     }.
@@ -1767,8 +1770,8 @@ Module
     Notation.dot := emit_event;
   }.
   
-  Global Instance I :
-      ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
+  Global Instance I
+    : ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
     ink.codegen.event.emit.EmitEvent.emit_event
       `{H' : State.Trait}
       :=
@@ -1827,9 +1830,9 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None)
+      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
@@ -1948,8 +1951,8 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
     Notation.double_colon := from;
   }.
   
-  Global Instance I :
-      core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
+  Global Instance I
+    : core.convert.From.Trait Self (T := erc20.erc20.Transfer) := {
     core.convert.From.from `{H' : State.Trait} := from;
   }.
   Global Hint Resolve I : core.
@@ -1969,8 +1972,8 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
     Notation.double_colon := from;
   }.
   
-  Global Instance I :
-      core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
+  Global Instance I
+    : core.convert.From.Trait Self (T := erc20.erc20.Approval) := {
     core.convert.From.from `{H' : State.Trait} := from;
   }.
   Global Hint Resolve I : core.
@@ -2115,9 +2118,9 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
   Definition Self := erc20.erc20.Transfer.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None)
+      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
 
@@ -2235,9 +2238,9 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
   Definition Self := erc20.erc20.Approval.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None)
+      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
 
@@ -2457,8 +2460,8 @@ Module
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I :
-      ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
     ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
@@ -2533,8 +2536,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I :
-      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -2609,8 +2612,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I :
-      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -2688,8 +2691,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I :
-      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -2767,8 +2770,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I :
-      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -2843,8 +2846,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I :
-      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -2924,8 +2927,8 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     Notation.double_colon := LABEL;
   }.
   
-  Global Instance I :
-      ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.DispatchableMessageInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
@@ -3130,8 +3133,8 @@ Module
   
   Definition Type : Set := erc20.erc20._.__ink_ConstructorDecoder.
   
-  Global Instance I :
-      ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.ContractConstructorDecoder.Trait Self := {
     ink.reflect.dispatch.ContractConstructorDecoder.Type := Type;
   }.
   Global Hint Resolve I : core.
@@ -3795,8 +3798,8 @@ Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
   
   Definition Type : Set := erc20.erc20._.__ink_MessageDecoder.
   
-  Global Instance I :
-      ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
+  Global Instance I
+    : ink.reflect.dispatch.ContractMessageDecoder.Trait Self := {
     ink.reflect.dispatch.ContractMessageDecoder.Type := Type;
   }.
   Global Hint Resolve I : core.
@@ -4130,9 +4133,9 @@ Module
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None)
+      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
@@ -4272,8 +4275,9 @@ End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
 Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralPartialEq.Trait Self
+      := core.marker.StructuralPartialEq.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
 
@@ -4300,8 +4304,9 @@ End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
 Module Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralEq.Trait Self
+      := core.marker.StructuralEq.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
 
@@ -4418,8 +4423,8 @@ Module Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
   
   Definition Type : Set := erc20.erc20._.CallBuilder.
   
-  Global Instance I :
-      ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
+  Global Instance I
+    : ink.codegen.dispatch.info.ContractCallBuilder.Trait Self := {
     ink.codegen.dispatch.info.ContractCallBuilder.Type := Type;
   }.
   Global Hint Resolve I : core.
@@ -4451,10 +4456,10 @@ Module
     Notation.double_colon := from_account_id;
   }.
   
-  Global Instance I :
-      ink_env.call.create_builder.FromAccountId.Trait
-        Self
-        (T := erc20.erc20.Environment) := {
+  Global Instance I
+    : ink_env.call.create_builder.FromAccountId.Trait Self
+        (T := erc20.erc20.Environment)
+      := {
     ink_env.call.create_builder.FromAccountId.from_account_id
       `{H' : State.Trait}
       :=
@@ -4478,10 +4483,9 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
     Notation.dot := to_account_id;
   }.
   
-  Global Instance I :
-      ink.contract_ref.ToAccountId.Trait
-        Self
-        (T := erc20.erc20.Environment) := {
+  Global Instance I
+    : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
+      := {
     ink.contract_ref.ToAccountId.to_account_id
       `{H' : State.Trait}
       :=
@@ -4503,8 +4507,8 @@ Module Impl_core_convert_AsRef_for_erc20_erc20___CallBuilder.
     Notation.dot := as_ref;
   }.
   
-  Global Instance I :
-      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+  Global Instance I
+    : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
   }.
   Global Hint Resolve I : core.
@@ -4523,8 +4527,8 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
     Notation.dot := as_mut;
   }.
   
-  Global Instance I :
-      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+  Global Instance I
+    : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
   }.
   Global Hint Resolve I : core.
@@ -4844,9 +4848,9 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None)
+      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
 
@@ -4906,8 +4910,9 @@ End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
 Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralPartialEq.Trait Self
+      := core.marker.StructuralPartialEq.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
 
@@ -4934,8 +4939,9 @@ End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
 Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralEq.Trait Self
+      := core.marker.StructuralEq.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
 
@@ -5074,10 +5080,10 @@ Module
     Notation.double_colon := ok;
   }.
   
-  Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait
-        Self
-        (C := erc20.erc20.Erc20Ref) := {
+  Global Instance I
+    : ink_env.call.create_builder.ConstructorReturnType.Trait Self
+        (C := erc20.erc20.Erc20Ref)
+      := {
     ink_env.call.create_builder.ConstructorReturnType.Output := Output;
     ink_env.call.create_builder.ConstructorReturnType.Error := Error;
     ink_env.call.create_builder.ConstructorReturnType.ok
@@ -5129,10 +5135,10 @@ Module
       Notation.double_colon := err;
     }.
     
-    Global Instance I :
-        ink_env.call.create_builder.ConstructorReturnType.Trait
-          Self
-          (C := erc20.erc20.Erc20Ref) := {
+    Global Instance I
+      : ink_env.call.create_builder.ConstructorReturnType.Trait Self
+          (C := erc20.erc20.Erc20Ref)
+        := {
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
       ink_env.call.create_builder.ConstructorReturnType.ok
@@ -5486,8 +5492,8 @@ Module
     Notation.dot := call_mut;
   }.
   
-  Global Instance I :
-      ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
+  Global Instance I
+    : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
     ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder := Builder;
     ink.codegen.trait_def.call_builder.TraitCallBuilder.call
       `{H' : State.Trait}
@@ -5518,10 +5524,10 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
     Notation.double_colon := from_account_id;
   }.
   
-  Global Instance I :
-      ink_env.call.create_builder.FromAccountId.Trait
-        Self
-        (T := erc20.erc20.Environment) := {
+  Global Instance I
+    : ink_env.call.create_builder.FromAccountId.Trait Self
+        (T := erc20.erc20.Environment)
+      := {
     ink_env.call.create_builder.FromAccountId.from_account_id
       `{H' : State.Trait}
       :=
@@ -5544,10 +5550,9 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
     Notation.dot := to_account_id;
   }.
   
-  Global Instance I :
-      ink.contract_ref.ToAccountId.Trait
-        Self
-        (T := erc20.erc20.Environment) := {
+  Global Instance I
+    : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
+      := {
     ink.contract_ref.ToAccountId.to_account_id
       `{H' : State.Trait}
       :=
@@ -5569,8 +5574,8 @@ Module Impl_core_convert_AsRef_for_erc20_erc20_Erc20Ref.
     Notation.dot := as_ref;
   }.
   
-  Global Instance I :
-      core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
+  Global Instance I
+    : core.convert.AsRef.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
   }.
   Global Hint Resolve I : core.
@@ -5589,8 +5594,8 @@ Module Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
     Notation.dot := as_mut;
   }.
   
-  Global Instance I :
-      core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
+  Global Instance I
+    : core.convert.AsMut.Trait Self (T := erc20.erc20.AccountId) := {
     core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
   }.
   Global Hint Resolve I : core.
@@ -6071,8 +6076,9 @@ End Impl_core_fmt_Debug_for_erc20_erc20_Error.
 Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralPartialEq.Trait Self
+      := core.marker.StructuralPartialEq.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
 
@@ -6101,8 +6107,9 @@ End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
 Module Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralEq.Trait Self
+      := core.marker.StructuralEq.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
 
@@ -6162,9 +6169,9 @@ End Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Global Instance I :
-      parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None) :=
-    parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self (T := None)
+      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
 

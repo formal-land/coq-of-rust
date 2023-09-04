@@ -98,8 +98,8 @@ Module
     Notation.dot := a;
   }.
   
-  Global Instance I :
-      generics_associated_types_solution.Contains.Trait Self := {
+  Global Instance I
+    : generics_associated_types_solution.Contains.Trait Self := {
     generics_associated_types_solution.Contains.A := A;
     generics_associated_types_solution.Contains.B := B;
     generics_associated_types_solution.Contains.contains

@@ -61,24 +61,24 @@ Definition SomeOtherType := @SomeOtherType.t.
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
   Definition Self := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Foo.Trait Self :=
-    traits_parms.Foo.Build_Trait _.
+  Global Instance I
+    : traits_parms.Foo.Trait Self := traits_parms.Foo.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
   Definition Self := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Bar.Trait Self :=
-    traits_parms.Bar.Build_Trait _.
+  Global Instance I
+    : traits_parms.Bar.Trait Self := traits_parms.Bar.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
   Definition Self := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Tar.Trait Self :=
-    traits_parms.Tar.Build_Trait _.
+  Global Instance I
+    : traits_parms.Tar.Trait Self := traits_parms.Tar.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
@@ -95,8 +95,7 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   }.
   
   #[refine]
-      Global Instance I :
-      traits_parms.SomeTrait.Trait Self := {
+  Global Instance I : traits_parms.SomeTrait.Trait Self := {
     traits_parms.SomeTrait.SomeType := SomeType;
     traits_parms.SomeTrait.some_fn `{H' : State.Trait} := some_fn;
   }.

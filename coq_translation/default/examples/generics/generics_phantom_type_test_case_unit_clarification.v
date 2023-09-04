@@ -54,8 +54,8 @@ Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Inch.
   
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
+  Global Instance I
+    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -113,8 +113,8 @@ Module
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self := generics_phantom_type_test_case_unit_clarification.Mm.
   
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
+  Global Instance I
+    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -213,8 +213,8 @@ Module
     Definition Self :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
-    Global Instance I : core.marker.Copy.Trait Self :=
-      core.marker.Copy.Build_Trait _.
+    Global Instance I
+      : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   End
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Global Hint Resolve I : core.
