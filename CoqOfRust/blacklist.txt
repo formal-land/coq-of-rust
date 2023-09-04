@@ -219,7 +219,6 @@ ink/ink_allocator.v
 ink/ink_e2e.v
 ink/ink_e2e_macro.v
 ink/ink_engine.v
-ink/ink_env.v
 # remove before merging with main
 ink/pallet_contracts_primitives.v
 # remove before merging with main

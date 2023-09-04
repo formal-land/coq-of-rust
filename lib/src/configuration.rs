@@ -14,14 +14,13 @@ pub(crate) struct DefinitionMove {
     pub(crate) before: Option<String>,
 }
 
+// if the destination is not specified it means an item should be removed
+// this change was introduced to temporarily remove blocking modules from a file
 impl DefinitionMove {
-    pub(crate) fn get_ident(&self) -> String {
+    pub(crate) fn get_ident(&self) -> Option<String> {
         match &self.before {
-            Some(x) => x.clone(),
-            None => match &self.after {
-                Some(x) => x.clone(),
-                None => panic!("Expecting before or after to be present in DefinitionMove"),
-            },
+            Some(x) => Some(x.clone()),
+            None => self.after.clone(),
         }
     }
 
