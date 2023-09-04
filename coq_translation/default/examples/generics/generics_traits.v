@@ -23,28 +23,28 @@ Module DoubleDrop.
 End DoubleDrop.
 
 Module Impl_generics_traits_DoubleDrop_for_U.
-Section Impl_generics_traits_DoubleDrop_for_U.
-  Context {T U : Set}.
-  
-  Definition Self := U.
-  
-  Definition double_drop
-      `{H' : State.Trait}
-      (self : Self)
-      (Pattern : T)
-      : M (H := H') unit :=
-    Pure tt.
-  
-  Global Instance Method_double_drop `{H' : State.Trait} :
-    Notation.Dot "double_drop" := {
-    Notation.dot := double_drop;
-  }.
-  
-  Global Instance I : generics_traits.DoubleDrop.Trait Self (T := T) := {
-    generics_traits.DoubleDrop.double_drop `{H' : State.Trait} := double_drop;
-  }.
-End Impl_generics_traits_DoubleDrop_for_U.
-Global Hint Resolve I : core.
+  Section Impl_generics_traits_DoubleDrop_for_U.
+    Context {T U : Set}.
+    Definition Self := U.
+    
+    Definition double_drop
+        `{H' : State.Trait}
+        (self : Self)
+        (Pattern : T)
+        : M (H := H') unit :=
+      Pure tt.
+    
+    Global Instance Method_double_drop `{H' : State.Trait} :
+      Notation.Dot "double_drop" := {
+      Notation.dot := double_drop;
+    }.
+    
+    Global Instance I : generics_traits.DoubleDrop.Trait Self (T := T) := {
+      generics_traits.DoubleDrop.double_drop `{H' : State.Trait} := double_drop;
+    }.
+    End Impl_generics_traits_DoubleDrop_for_U.
+    Global Hint Resolve I : core.
+  End Impl_generics_traits_DoubleDrop_for_U.
 End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

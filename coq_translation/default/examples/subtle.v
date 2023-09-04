@@ -354,60 +354,60 @@ Module ConstantTimeEq.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_Slice_T.
-Section Impl_subtle_ConstantTimeEq_for_Slice_T.
-  Context {T : Set}.
-  
-  Definition Self := Slice T.
-  
-  Definition ct_eq
-      `{H' : State.Trait}
-      (self : ref Self)
-      (_rhs : ref (Slice T))
-      : M (H := H') subtle.Choice :=
-    let* len := self.["len"] in
-    let* _ :=
-      let* α0 := _rhs.["len"] in
-      let* α1 := len.["ne"] α0 in
-      if (α1 : bool) then
-        let* _ :=
-          let* α0 := subtle.Choice::["from"] 0 in
-          Return α0 in
-        Pure tt
-      else
-        Pure tt in
-    let x := 1 in
-    let* _ :=
-      let* α0 := self.["iter"] in
-      let* α1 := _rhs.["iter"] in
-      let* α2 := α0.["zip"] α1 in
-      let* α3 := α2.["into_iter"] in
-      match α3 with
-      | iter =>
-        loop
-          (let* _ :=
-            let* α0 := (addr_of iter).["next"] in
-            match α0 with
-            | core.option.Option.None  => Break
-            | core.option.Option.Some (ai, bi) =>
-              let* _ :=
-                let* α0 := ai.["ct_eq"] bi in
-                let* α1 := α0.["unwrap_u8"] in
-                x.["bitand_assign"] α1 in
-              Pure tt
-            end in
-          Pure tt)
-      end in
-    x.["into"].
-  
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
-  }.
-End Impl_subtle_ConstantTimeEq_for_Slice_T.
-Global Hint Resolve I : core.
+  Section Impl_subtle_ConstantTimeEq_for_Slice_T.
+    Context {T : Set}.
+    Definition Self := Slice T.
+    
+    Definition ct_eq
+        `{H' : State.Trait}
+        (self : ref Self)
+        (_rhs : ref (Slice T))
+        : M (H := H') subtle.Choice :=
+      let* len := self.["len"] in
+      let* _ :=
+        let* α0 := _rhs.["len"] in
+        let* α1 := len.["ne"] α0 in
+        if (α1 : bool) then
+          let* _ :=
+            let* α0 := subtle.Choice::["from"] 0 in
+            Return α0 in
+          Pure tt
+        else
+          Pure tt in
+      let x := 1 in
+      let* _ :=
+        let* α0 := self.["iter"] in
+        let* α1 := _rhs.["iter"] in
+        let* α2 := α0.["zip"] α1 in
+        let* α3 := α2.["into_iter"] in
+        match α3 with
+        | iter =>
+          loop
+            (let* _ :=
+              let* α0 := (addr_of iter).["next"] in
+              match α0 with
+              | core.option.Option.None  => Break
+              | core.option.Option.Some (ai, bi) =>
+                let* _ :=
+                  let* α0 := ai.["ct_eq"] bi in
+                  let* α1 := α0.["unwrap_u8"] in
+                  x.["bitand_assign"] α1 in
+                Pure tt
+              end in
+            Pure tt)
+        end in
+      x.["into"].
+    
+    Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+      Notation.dot := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+    }.
+    End Impl_subtle_ConstantTimeEq_for_Slice_T.
+    Global Hint Resolve I : core.
+  End Impl_subtle_ConstantTimeEq_for_Slice_T.
 End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
@@ -1423,33 +1423,33 @@ Module ConditionallyNegatable.
 End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
-Section Impl_subtle_ConditionallyNegatable_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Definition conditional_negate
-      `{H' : State.Trait}
-      (self : mut_ref Self)
-      (choice : subtle.Choice)
-      : M (H := H') unit :=
-    let* self_neg := (cast self (ref T)).["neg"] in
-    let* _ := self.["conditional_assign"] (addr_of self_neg) choice in
-    Pure tt.
-  
-  Global Instance Method_conditional_negate `{H' : State.Trait} :
-    Notation.Dot "conditional_negate" := {
-    Notation.dot := conditional_negate;
-  }.
-  
-  Global Instance I : subtle.ConditionallyNegatable.Trait Self := {
-    subtle.ConditionallyNegatable.conditional_negate
-      `{H' : State.Trait}
-      :=
-      conditional_negate;
-  }.
-End Impl_subtle_ConditionallyNegatable_for_T.
-Global Hint Resolve I : core.
+  Section Impl_subtle_ConditionallyNegatable_for_T.
+    Context {T : Set}.
+    Definition Self := T.
+    
+    Definition conditional_negate
+        `{H' : State.Trait}
+        (self : mut_ref Self)
+        (choice : subtle.Choice)
+        : M (H := H') unit :=
+      let* self_neg := (cast self (ref T)).["neg"] in
+      let* _ := self.["conditional_assign"] (addr_of self_neg) choice in
+      Pure tt.
+    
+    Global Instance Method_conditional_negate `{H' : State.Trait} :
+      Notation.Dot "conditional_negate" := {
+      Notation.dot := conditional_negate;
+    }.
+    
+    Global Instance I : subtle.ConditionallyNegatable.Trait Self := {
+      subtle.ConditionallyNegatable.conditional_negate
+        `{H' : State.Trait}
+        :=
+        conditional_negate;
+    }.
+    End Impl_subtle_ConditionallyNegatable_for_T.
+    Global Hint Resolve I : core.
+  End Impl_subtle_ConditionallyNegatable_for_T.
 End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
@@ -1473,100 +1473,101 @@ End CtOption.
 Definition CtOption : Set := @CtOption.t.
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
-Section Impl_core_clone_Clone_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self := subtle.CtOption T.
-  
-  Definition clone
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') (subtle.CtOption T) :=
-    let* α0 := core.clone.Clone.clone (addr_of self.["value"]) in
-    let* α1 := core.clone.Clone.clone (addr_of self.["is_some"]) in
-    Pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
-  
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
-  }.
-End Impl_core_clone_Clone_for_subtle_CtOption_T.
-Global Hint Resolve I : core.
+  Section Impl_core_clone_Clone_for_subtle_CtOption_T.
+    Context {T : Set}.
+    Definition Self := subtle.CtOption T.
+    
+    Definition clone
+        `{H' : State.Trait}
+        (self : ref Self)
+        : M (H := H') (subtle.CtOption T) :=
+      let* α0 := core.clone.Clone.clone (addr_of self.["value"]) in
+      let* α1 := core.clone.Clone.clone (addr_of self.["is_some"]) in
+      Pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
+    
+    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+      Notation.dot := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    }.
+    End Impl_core_clone_Clone_for_subtle_CtOption_T.
+    Global Hint Resolve I : core.
+  End Impl_core_clone_Clone_for_subtle_CtOption_T.
 End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
-Section Impl_core_marker_Copy_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self := subtle.CtOption T.
-  
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
-End Impl_core_marker_Copy_for_subtle_CtOption_T.
-Global Hint Resolve I : core.
+  Section Impl_core_marker_Copy_for_subtle_CtOption_T.
+    Context {T : Set}.
+    Definition Self := subtle.CtOption T.
+    
+    Global Instance I : core.marker.Copy.Trait Self :=
+      core.marker.Copy.Build_Trait _.
+    End Impl_core_marker_Copy_for_subtle_CtOption_T.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_Copy_for_subtle_CtOption_T.
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
-Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self := subtle.CtOption T.
-  
-  Definition fmt
-      `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "CtOption"
-      "value"
-      (addr_of self.["value"])
-      "is_some"
-      (addr_of (addr_of self.["is_some"])).
-  
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
-  }.
-End Impl_core_fmt_Debug_for_subtle_CtOption_T.
-Global Hint Resolve I : core.
+  Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
+    Context {T : Set}.
+    Definition Self := subtle.CtOption T.
+    
+    Definition fmt
+        `{H' : State.Trait}
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M (H := H') core.fmt.Result :=
+      core.fmt.Formatter::["debug_struct_field2_finish"]
+        f
+        "CtOption"
+        "value"
+        (addr_of self.["value"])
+        "is_some"
+        (addr_of (addr_of self.["is_some"])).
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+    End Impl_core_fmt_Debug_for_subtle_CtOption_T.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_for_core_option_Option_T.
-Section Impl_core_convert_From_for_core_option_Option_T.
-  Context {T : Set}.
-  
-  Definition Self := core.option.Option T.
-  
-  Definition from
-      `{H' : State.Trait}
-      (source : subtle.CtOption T)
-      : M (H := H') (core.option.Option T) :=
-    let* α0 := source.["is_some"] in
-    let* α1 := α0.["unwrap_u8"] in
-    let* α2 := α1.["eq"] 1 in
-    if (α2 : bool) then
-      Pure (core.option.Option.Some source.["value"])
-    else
-      Pure core.option.Option.None.
-  
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I : core.convert.From.Trait Self (T := subtle.CtOption T) := {
-    core.convert.From.from `{H' : State.Trait} := from;
-  }.
-End Impl_core_convert_From_for_core_option_Option_T.
-Global Hint Resolve I : core.
+  Section Impl_core_convert_From_for_core_option_Option_T.
+    Context {T : Set}.
+    Definition Self := core.option.Option T.
+    
+    Definition from
+        `{H' : State.Trait}
+        (source : subtle.CtOption T)
+        : M (H := H') (core.option.Option T) :=
+      let* α0 := source.["is_some"] in
+      let* α1 := α0.["unwrap_u8"] in
+      let* α2 := α1.["eq"] 1 in
+      if (α2 : bool) then
+        Pure (core.option.Option.Some source.["value"])
+      else
+        Pure core.option.Option.None.
+    
+    Global Instance AssociatedFunction_from `{H' : State.Trait} :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I :
+        core.convert.From.Trait Self (T := subtle.CtOption T) := {
+      core.convert.From.from `{H' : State.Trait} := from;
+    }.
+    End Impl_core_convert_From_for_core_option_Option_T.
+    Global Hint Resolve I : core.
+  End Impl_core_convert_From_for_core_option_Option_T.
 End Impl_core_convert_From_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T_4.
@@ -1773,74 +1774,74 @@ Module Impl_subtle_CtOption_T_4.
 End Impl_subtle_CtOption_T_4.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self := subtle.CtOption T.
-  
-  Definition conditional_select
-      `{H' : State.Trait}
-      (a : ref Self)
-      (b : ref Self)
-      (choice : subtle.Choice)
-      : M (H := H') Self :=
-    let* α0 :=
-      T::["conditional_select"]
-        (addr_of a.["value"])
-        (addr_of b.["value"])
-        choice in
-    let* α1 :=
-      subtle.Choice::["conditional_select"]
-        (addr_of a.["is_some"])
-        (addr_of b.["is_some"])
-        choice in
-    subtle.CtOption::["new"] α0 α1.
-  
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
-      :=
-      conditional_select;
-  }.
-End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
-Global Hint Resolve I : core.
+  Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+    Context {T : Set}.
+    Definition Self := subtle.CtOption T.
+    
+    Definition conditional_select
+        `{H' : State.Trait}
+        (a : ref Self)
+        (b : ref Self)
+        (choice : subtle.Choice)
+        : M (H := H') Self :=
+      let* α0 :=
+        T::["conditional_select"]
+          (addr_of a.["value"])
+          (addr_of b.["value"])
+          choice in
+      let* α1 :=
+        subtle.Choice::["conditional_select"]
+          (addr_of a.["is_some"])
+          (addr_of b.["is_some"])
+          choice in
+      subtle.CtOption::["new"] α0 α1.
+    
+    Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select
+        `{H' : State.Trait}
+        :=
+        conditional_select;
+    }.
+    End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+    Global Hint Resolve I : core.
+  End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-  Context {T : Set}.
-  
-  Definition Self := subtle.CtOption T.
-  
-  Definition ct_eq
-      `{H' : State.Trait}
-      (self : ref Self)
-      (rhs : ref (subtle.CtOption T))
-      : M (H := H') subtle.Choice :=
-    let* a := self.["is_some"] in
-    let* b := rhs.["is_some"] in
-    let* α0 := a.["bitand"] b in
-    let* α1 := self.["value"].["ct_eq"] (addr_of rhs.["value"]) in
-    let* α2 := α0.["bitand"] α1 in
-    let* α3 := a.["not"] in
-    let* α4 := b.["not"] in
-    let* α5 := α3.["bitand"] α4 in
-    α2.["bitor"] α5.
-  
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
-  }.
-End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
-Global Hint Resolve I : core.
+  Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+    Context {T : Set}.
+    Definition Self := subtle.CtOption T.
+    
+    Definition ct_eq
+        `{H' : State.Trait}
+        (self : ref Self)
+        (rhs : ref (subtle.CtOption T))
+        : M (H := H') subtle.Choice :=
+      let* a := self.["is_some"] in
+      let* b := rhs.["is_some"] in
+      let* α0 := a.["bitand"] b in
+      let* α1 := self.["value"].["ct_eq"] (addr_of rhs.["value"]) in
+      let* α2 := α0.["bitand"] α1 in
+      let* α3 := a.["not"] in
+      let* α4 := b.["not"] in
+      let* α5 := α3.["bitand"] α4 in
+      α2.["bitor"] α5.
+    
+    Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+      Notation.dot := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+    }.
+    End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+    Global Hint Resolve I : core.
+  End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.

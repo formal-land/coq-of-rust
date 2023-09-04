@@ -1441,24 +1441,24 @@ End Erc20.
 Definition Erc20 : Set := @Erc20.t.
 
 Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-  Context {__ink_generic_salt : Set}.
-  
-  Definition Self := erc20.erc20.Erc20.
-  
-  Definition Type : Set := erc20.erc20.Erc20.
-  
-  Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
-  
-  Global Instance I :
-      ink_storage_traits.storage.StorableHint.Trait
-        Self
-        (Key := __ink_generic_salt) := {
-    ink_storage_traits.storage.StorableHint.Type := Type;
-    ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
-  }.
-End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
-Global Hint Resolve I : core.
+  Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+    Context {__ink_generic_salt : Set}.
+    Definition Self := erc20.erc20.Erc20.
+    
+    Definition Type : Set := erc20.erc20.Erc20.
+    
+    Definition PreferredKey : Set := ink_storage_traits.impls.AutoKey.
+    
+    Global Instance I :
+        ink_storage_traits.storage.StorableHint.Trait
+          Self
+          (Key := __ink_generic_salt) := {
+      ink_storage_traits.storage.StorableHint.Type := Type;
+      ink_storage_traits.storage.StorableHint.PreferredKey := PreferredKey;
+    }.
+    End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
+    Global Hint Resolve I : core.
+  End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 End Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
 
 Module Impl_ink_storage_traits_storage_StorageKey_for_erc20_erc20_Erc20.
@@ -5092,59 +5092,60 @@ End
 
 Module
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
-Section
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
-  Context {E : Set}.
-  
-  Definition Self := core.result.Result erc20.erc20.Erc20 E.
-  
-  Definition IS_RESULT := Pure true.
-  
-  Global Instance AssociatedFunction_IS_RESULT `{H' : State.Trait} :
-    Notation.DoubleColon Self "IS_RESULT" := {
-    Notation.double_colon := IS_RESULT;
-  }.
-  
-  Definition Output : Set := core.result.Result erc20.erc20.Erc20Ref E.
-  
-  Definition Error : Set := E.
-  
-  Definition ok
-      `{H' : State.Trait}
-      (value : erc20.erc20.Erc20Ref)
-      : M (H := H') Output :=
-    Pure (core.result.Result.Ok value).
-  
-  Global Instance AssociatedFunction_ok `{H' : State.Trait} :
-    Notation.DoubleColon Self "ok" := {
-    Notation.double_colon := ok;
-  }.
-  
-  Definition err
-      `{H' : State.Trait}
-      (err : Error)
-      : M (H := H') (core.option.Option Output) :=
-    Pure (core.option.Option.Some (core.result.Result.Err err)).
-  
-  Global Instance AssociatedFunction_err `{H' : State.Trait} :
-    Notation.DoubleColon Self "err" := {
-    Notation.double_colon := err;
-  }.
-  
-  Global Instance I :
-      ink_env.call.create_builder.ConstructorReturnType.Trait
-        Self
-        (C := erc20.erc20.Erc20Ref) := {
-    ink_env.call.create_builder.ConstructorReturnType.Output := Output;
-    ink_env.call.create_builder.ConstructorReturnType.Error := Error;
-    ink_env.call.create_builder.ConstructorReturnType.ok
-      `{H' : State.Trait}
-      :=
-      ok;
-  }.
-End
-  Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
-Global Hint Resolve I : core.
+  Section
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+    Context {E : Set}.
+    Definition Self := core.result.Result erc20.erc20.Erc20 E.
+    
+    Definition IS_RESULT := Pure true.
+    
+    Global Instance AssociatedFunction_IS_RESULT `{H' : State.Trait} :
+      Notation.DoubleColon Self "IS_RESULT" := {
+      Notation.double_colon := IS_RESULT;
+    }.
+    
+    Definition Output : Set := core.result.Result erc20.erc20.Erc20Ref E.
+    
+    Definition Error : Set := E.
+    
+    Definition ok
+        `{H' : State.Trait}
+        (value : erc20.erc20.Erc20Ref)
+        : M (H := H') Output :=
+      Pure (core.result.Result.Ok value).
+    
+    Global Instance AssociatedFunction_ok `{H' : State.Trait} :
+      Notation.DoubleColon Self "ok" := {
+      Notation.double_colon := ok;
+    }.
+    
+    Definition err
+        `{H' : State.Trait}
+        (err : Error)
+        : M (H := H') (core.option.Option Output) :=
+      Pure (core.option.Option.Some (core.result.Result.Err err)).
+    
+    Global Instance AssociatedFunction_err `{H' : State.Trait} :
+      Notation.DoubleColon Self "err" := {
+      Notation.double_colon := err;
+    }.
+    
+    Global Instance I :
+        ink_env.call.create_builder.ConstructorReturnType.Trait
+          Self
+          (C := erc20.erc20.Erc20Ref) := {
+      ink_env.call.create_builder.ConstructorReturnType.Output := Output;
+      ink_env.call.create_builder.ConstructorReturnType.Error := Error;
+      ink_env.call.create_builder.ConstructorReturnType.ok
+        `{H' : State.Trait}
+        :=
+        ok;
+    }.
+    End
+      Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
 End
   Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
 
