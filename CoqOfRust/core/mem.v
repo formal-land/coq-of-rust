@@ -76,7 +76,7 @@ End BikeshedIntrinsicFrom.
 [ ] needs_drop
 [ ] replace
 [ ] size_of
-[ ] size_of_val
+[x] size_of_val
 [ ] swap
 [ ] take
 [ ] transmute
@@ -84,6 +84,11 @@ End BikeshedIntrinsicFrom.
 [ ] uninitialized
 [ ] zeroed
 *)
+
+Parameter size_of_val :
+  forall `{H : State.Trait} {T : Set},
+  ref T ->
+  M (H := H) usize.
 
 (* NOTE: Can we translate unions? *)
 (* ********UNIONS******** *)

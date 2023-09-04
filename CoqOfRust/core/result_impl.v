@@ -25,3 +25,20 @@ Module Impl_PartialEq_for_Result.
     Notation.dot := eq (T := T) (E := E);
   |}.
 End Impl_PartialEq_for_Result.
+
+Module Impl_Result.
+Section Impl_Result.
+  Context {T E : Set}.
+
+  Definition Self : Set := Result T E.
+
+  Parameter expect :
+    forall `{H : State.Trait},
+    Self -> string -> M (H := H) T.
+
+  Global Instance Method_expect `{State.Trait} :
+    Notation.Dot "expect" := {|
+    Notation.dot := expect;
+  |}.
+End Impl_Result.
+End Impl_Result.
