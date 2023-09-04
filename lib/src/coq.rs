@@ -80,7 +80,7 @@ pub(crate) struct Instance<'a> {
     parameters: Vec<ArgDecl<'a>>,
     class: Expression<'a>,
     bulid_expr: Expression<'a>,
-    proof: Doc<'a>,
+    proof_lines: Vec<Doc<'a>>,
 }
 
 #[derive(Clone)]
@@ -498,7 +498,7 @@ impl<'a> Instance<'a> {
         parameters: &[ArgDecl<'a>],
         class: Expression<'a>,
         bulid_expr: &Expression<'a>,
-        proof_mode: Doc<'a>,
+        proof_lines: Vec<Doc<'a>>,
     ) -> Self {
         Instance {
             refine_attribute,
@@ -506,7 +506,7 @@ impl<'a> Instance<'a> {
             parameters: parameters.to_vec(),
             class,
             bulid_expr: bulid_expr.to_owned(),
-            proof: proof_mode,
+            proof_lines,
         }
     }
 
@@ -536,7 +536,16 @@ impl<'a> Instance<'a> {
             ]),
             self.bulid_expr.to_doc(false),
             text("."),
-            self.proof.to_owned(),
+            if self.proof_lines.is_empty() {
+                nil()
+            } else {
+                concat([
+                    hardline(),
+                    intersperse(self.proof_lines.to_owned(), [hardline()]),
+                    hardline(),
+                    text("Defined."),
+                ])
+            },
         ])
     }
 }

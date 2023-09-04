@@ -2245,7 +2245,7 @@ impl TopLevelItem {
                                     text(name),
                                 ])],
                             },
-                            nil(),
+                            vec![],
                         ),
                         TraitItem::Type { .. } => coq::Instance::new(
                             false,
@@ -2278,7 +2278,7 @@ impl TopLevelItem {
                                     text(name),
                                 ])],
                             },
-                            nil(),
+                            vec![],
                         ),
                         TraitItem::DefinitionWithDefault {
                             ty_params,
@@ -2346,7 +2346,7 @@ impl TopLevelItem {
                                     ]),
                                 ])],
                             },
-                            nil(),
+                            vec![],
                         ),
                     })
                     .collect(),
@@ -2462,14 +2462,9 @@ impl TopLevelItem {
                                         }
                                     },
                                     if *has_predicates_on_assoc_ty {
-                                        concat([
-                                            hardline(),
-                                            text("eauto."),
-                                            hardline(),
-                                            text("Defined."),
-                                        ])
+                                        vec![text("eauto.")]
                                     } else {
-                                        nil()
+                                        vec![]
                                     },
                                 ))],
                             ]
