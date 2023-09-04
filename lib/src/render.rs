@@ -183,10 +183,10 @@ where
     K: Into<std::borrow::Cow<'a, str>>,
 {
     group([
-        group([text(kind), line(), text(name.clone()), text(".")]),
+        nest([text(kind), line(), text(name.clone()), text(".")]),
         nest([hardline(), doc]),
         hardline(),
-        group([text("End"), line(), text(name), text(".")]),
+        nest([text("End"), line(), text(name), text(".")]),
     ])
 }
 

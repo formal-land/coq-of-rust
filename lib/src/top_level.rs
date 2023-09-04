@@ -2332,182 +2332,153 @@ impl TopLevelItem {
                 has_predicates_on_assoc_ty,
             } => {
                 let module_name = format!("Impl_{}_for_{}", of_trait.to_name(), self_ty.to_name());
-                group([
-                    nest([text("Module"), line(), text(module_name.clone()), text(".")]),
-                    if generic_tys.is_empty() {
-                        nil()
-                    } else {
-                        concat([
-                            hardline(),
+                coq::Module::new(
+                    &module_name,
+                    coq::TopLevel::add_context_in_section_if_necessary(
+                        &module_name,
+                        generic_tys,
+                        &[coq::TopLevelItem::Code(group([
                             nest([
-                                text("Section"),
+                                text("Definition"),
                                 line(),
-                                text(module_name.clone()),
+                                text("Self"),
+                                line(),
+                                text(":="),
+                                line(),
+                                self_ty.to_doc(false),
                                 text("."),
                             ]),
-                        ])
-                    },
-                    nest([
-                        hardline(),
-                        if generic_tys.is_empty() {
-                            nil()
-                        } else {
-                            concat([
-                                nest([
-                                    text("Context"),
-                                    line(),
-                                    nest([
-                                        text("{"),
-                                        concat(
-                                            generic_tys.iter().map(|ty| concat([text(ty), line()])),
-                                        ),
-                                        text(":"),
-                                        line(),
-                                        text("Set"),
-                                        text("}"),
-                                    ]),
-                                    text("."),
-                                ]),
-                                hardline(),
-                                hardline(),
-                            ])
-                        },
-                        nest([
-                            text("Definition"),
-                            line(),
-                            text("Self"),
-                            line(),
-                            text(":="),
-                            line(),
-                            self_ty.to_doc(false),
-                            text("."),
-                        ]),
-                        hardline(),
-                        hardline(),
-                        concat(
-                            items.iter().map(|item| {
+                            hardline(),
+                            hardline(),
+                            concat(items.iter().map(|item| {
                                 concat([item.to_doc(extra_data), hardline(), hardline()])
-                            }),
-                        ),
-                        nest([
+                            })),
                             nest([
-                                if *has_predicates_on_assoc_ty {
-                                    concat([text("#[refine]"), hardline()])
-                                } else {
-                                    nil()
-                                },
-                                text("Global Instance I :"),
-                                line(),
                                 nest([
-                                    of_trait.to_doc(),
-                                    text(".Trait"),
-                                    line(),
-                                    text("Self"),
-                                    concat(ty_params.iter().map(|ty_param| {
-                                        let ty_param = *ty_param.clone();
-                                        concat([
-                                            line(),
-                                            match ty_param {
-                                                TraitTyParamValue::ValWithDef { name, ty } => {
-                                                    nest([
-                                                        text("("),
-                                                        text(name),
-                                                        line(),
-                                                        text(":="),
-                                                        line(),
-                                                        nest([
-                                                            text("(Some"),
-                                                            line(),
-                                                            ty.to_doc(false),
-                                                            text(")"),
-                                                            text(")"),
-                                                        ]),
-                                                    ])
-                                                }
-                                                TraitTyParamValue::JustValue { name, ty } => {
-                                                    nest([
-                                                        text("("),
-                                                        text(name),
-                                                        line(),
-                                                        text(":="),
-                                                        line(),
-                                                        ty.to_doc(false),
-                                                        text(")"),
-                                                    ])
-                                                }
-                                                TraitTyParamValue::JustDefault { name } => nest([
-                                                    text("("),
-                                                    text(name),
-                                                    line(),
-                                                    text(":="),
-                                                    line(),
-                                                    text("None"),
-                                                    text(")"),
-                                                ]),
-                                            },
-                                        ])
-                                    })),
-                                ]),
-                            ]),
-                            text(" :="),
-                            if items.is_empty() {
-                                concat([
+                                    if *has_predicates_on_assoc_ty {
+                                        concat([text("#[refine]"), hardline()])
+                                    } else {
+                                        nil()
+                                    },
+                                    text("Global Instance I :"),
                                     line(),
                                     nest([
                                         of_trait.to_doc(),
-                                        text(".Build_Trait"),
+                                        text(".Trait"),
                                         line(),
-                                        text("_"),
+                                        text("Self"),
+                                        concat(ty_params.iter().map(|ty_param| {
+                                            let ty_param = *ty_param.clone();
+                                            concat([
+                                                line(),
+                                                match ty_param {
+                                                    TraitTyParamValue::ValWithDef { name, ty } => {
+                                                        nest([
+                                                            text("("),
+                                                            text(name),
+                                                            line(),
+                                                            text(":="),
+                                                            line(),
+                                                            nest([
+                                                                text("(Some"),
+                                                                line(),
+                                                                ty.to_doc(false),
+                                                                text(")"),
+                                                                text(")"),
+                                                            ]),
+                                                        ])
+                                                    }
+                                                    TraitTyParamValue::JustValue { name, ty } => {
+                                                        nest([
+                                                            text("("),
+                                                            text(name),
+                                                            line(),
+                                                            text(":="),
+                                                            line(),
+                                                            ty.to_doc(false),
+                                                            text(")"),
+                                                        ])
+                                                    }
+                                                    TraitTyParamValue::JustDefault { name } => {
+                                                        nest([
+                                                            text("("),
+                                                            text(name),
+                                                            line(),
+                                                            text(":="),
+                                                            line(),
+                                                            text("None"),
+                                                            text(")"),
+                                                        ])
+                                                    }
+                                                },
+                                            ])
+                                        })),
+                                    ]),
+                                ]),
+                                text(" :="),
+                                if items.is_empty() {
+                                    concat([
+                                        line(),
+                                        nest([
+                                            of_trait.to_doc(),
+                                            text(".Build_Trait"),
+                                            line(),
+                                            text("_"),
+                                        ]),
+                                    ])
+                                } else {
+                                    text(" {")
+                                },
+                            ]),
+                            nest(trait_non_default_items.iter().map(|(name, is_type)| {
+                                concat([
+                                    hardline(),
+                                    nest([
+                                        of_trait.to_doc(),
+                                        text("."),
+                                        text(name),
+                                        if *is_type {
+                                            nil()
+                                        } else {
+                                            concat([line(), monadic_typeclass_parameter()])
+                                        },
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text(name),
+                                        text(";"),
                                     ]),
                                 ])
+                            })),
+                            if items.is_empty() {
+                                text(".")
                             } else {
-                                text(" {")
+                                group([hardline(), text("}.")])
                             },
-                        ]),
-                        nest(trait_non_default_items.iter().map(|(name, is_type)| {
-                            concat([
-                                hardline(),
-                                nest([
-                                    of_trait.to_doc(),
-                                    text("."),
-                                    text(name),
-                                    if *is_type {
-                                        nil()
-                                    } else {
-                                        concat([line(), monadic_typeclass_parameter()])
-                                    },
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text(name),
-                                    text(";"),
-                                ]),
-                            ])
-                        })),
-                        if items.is_empty() {
-                            text(".")
-                        } else {
-                            group([hardline(), text("}.")])
-                        },
-                        if *has_predicates_on_assoc_ty {
-                            concat([hardline(), text("eauto."), hardline(), text("Defined.")])
-                        } else {
-                            nil()
-                        },
-                    ]),
-                    if generic_tys.is_empty() {
-                        nest([hardline(), text("Global Hint Resolve I : core.")])
-                    } else {
-                        concat([
+                            if *has_predicates_on_assoc_ty {
+                                concat([hardline(), text("eauto."), hardline(), text("Defined.")])
+                            } else {
+                                nil()
+                            },
                             hardline(),
-                            nest([text("End"), line(), text(module_name.clone()), text(".")]),
-                            hardline(),
-                            text("Global Hint Resolve I : core."),
-                        ])
-                    },
-                    hardline(),
-                    nest([text("End"), line(), text(module_name), text(".")]),
-                ])
+                            if generic_tys.is_empty() {
+                                text("Global Hint Resolve I : core.")
+                            } else {
+                                concat([
+                                    nest([
+                                        text("End"),
+                                        line(),
+                                        text(module_name.clone()),
+                                        text("."),
+                                    ]),
+                                    hardline(),
+                                    text("Global Hint Resolve I : core."),
+                                ])
+                            },
+                        ]))],
+                    ),
+                )
+                .to_doc()
             }
             TopLevelItem::Error(message) => nest([text("Error"), line(), text(message), text(".")]),
         }

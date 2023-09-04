@@ -44,7 +44,7 @@ pub(crate) struct Module<'a> {
 #[derive(Clone)]
 /// a coq section
 pub(crate) struct Section<'a> {
-    name: &'a str,
+    name: String,
     items: TopLevel<'a>,
 }
 
@@ -253,7 +253,7 @@ impl<'a> TopLevel<'a> {
 
     /// decides whether to enclose [items] within a section with a context
     pub(crate) fn add_context_in_section_if_necessary(
-        name: &'a str,
+        name: &str,
         ty_params: &[String],
         items: &[TopLevelItem<'a>],
     ) -> Self {
@@ -269,7 +269,7 @@ impl<'a> TopLevel<'a> {
     /// creates a section with a context with type variables
     /// with the given variable names
     pub(crate) fn add_context_in_section(
-        name: &'a str,
+        name: &str,
         ty_params: &[String],
         items: &[TopLevelItem<'a>],
     ) -> Self {
@@ -358,9 +358,9 @@ impl<'a> Module<'a> {
 
 impl<'a> Section<'a> {
     /// produces a new coq section
-    pub(crate) fn new(name: &'a str, content: &TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, content: &TopLevel<'a>) -> Self {
         Section {
-            name,
+            name: name.to_string(),
             items: content.to_owned(),
         }
     }
