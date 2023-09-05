@@ -1944,7 +1944,7 @@ impl TopLevelItem {
                                     &coq::Expression::Set,
                                     &fields
                                         .iter()
-                                        .map(|ty| nest([text("_ :"), line(), ty.to_doc(false)]))
+                                        .map(|ty| coq::FieldDef::new(&None, &ty.to_coq()))
                                         .collect::<Vec<_>>(),
                                 )),
                             ]),

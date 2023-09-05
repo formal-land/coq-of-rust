@@ -62,7 +62,7 @@ pub(crate) struct Definition<'a> {
 pub(crate) struct Record<'a> {
     name: String,
     ty: Expression<'a>,
-    fields: Vec<Doc<'a>>,
+    fields: Vec<FieldDef<'a>>,
 }
 
 #[derive(Clone)]
@@ -112,6 +112,13 @@ pub(crate) enum DefinitionKind<'a> {
     /// an opaque constant
     /// (using `Parameter`)
     Assumption { ty: Expression<'a> },
+}
+
+#[derive(Clone)]
+/// a definition of a field in a record definition
+pub(crate) struct FieldDef<'a> {
+    ident: Option<String>,
+    ty: Expression<'a>,
 }
 
 #[derive(Clone)]
@@ -456,7 +463,7 @@ impl<'a> Definition<'a> {
 }
 
 impl<'a> Record<'a> {
-    pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[Doc<'a>]) -> Self {
+    pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[FieldDef<'a>]) -> Self {
         Record {
             name: name.to_owned(),
             ty: ty.to_owned(),
@@ -485,9 +492,8 @@ impl<'a> Record<'a> {
                 concat([
                     nest([
                         hardline(),
-                        intersperse(self.fields.to_owned(), [text(";"), hardline()]),
+                        intersperse(self.fields.iter().map(|field| field.to_doc()), [hardline()]),
                     ]),
-                    text(";"),
                     hardline(),
                 ])
             },
@@ -632,6 +638,29 @@ impl Hint {
 
     pub(crate) fn standard_resolve() -> Self {
         Hint::new("I", "core")
+    }
+}
+
+impl<'a> FieldDef<'a> {
+    pub(crate) fn new(ident: &Option<String>, ty: &Expression<'a>) -> Self {
+        FieldDef {
+            ident: ident.to_owned(),
+            ty: ty.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        nest([
+            match self.ident.to_owned() {
+                Some(name) => text(name),
+                None => text("_"),
+            },
+            line(),
+            text(":"),
+            line(),
+            self.ty.to_doc(false),
+            text(";"),
+        ])
     }
 }
 
