@@ -147,7 +147,7 @@ pub(crate) enum Expression<'a> {
         rhs: Box<Expression<'a>>,
     },
     Record {
-        fields: Vec<Doc<'a>>,
+        fields: Vec<Field<'a>>,
     },
     /// Set constant (the type of our types)
     Set,
@@ -166,6 +166,14 @@ pub(crate) enum Expression<'a> {
     },
     /// a wildcard: '_'
     Wild,
+}
+
+/// a field of a record expression
+#[derive(Clone)]
+pub(crate) struct Field<'a> {
+    name: Path,
+    args: Vec<ArgDecl<'a>>,
+    body: Expression<'a>,
 }
 
 #[derive(Clone)]
@@ -641,12 +649,7 @@ impl<'a> Expression<'a> {
                 } else {
                     nest([
                         hardline(),
-                        intersperse(
-                            fields
-                                .iter()
-                                .map(|field| concat([field.to_owned(), text(";")])),
-                            [hardline()],
-                        ),
+                        intersperse(fields.iter().map(|field| field.to_doc()), [hardline()]),
                     ])
                 },
                 hardline(),
@@ -724,6 +727,27 @@ impl<'a> Expression<'a> {
             Some(product) => product,
             None => Expression::Unit,
         }
+    }
+}
+
+impl<'a> Field<'a> {
+    pub(crate) fn new(name: &Path, args: &[ArgDecl<'a>], body: &Expression<'a>) -> Self {
+        Field {
+            name: name.to_owned(),
+            args: args.to_owned(),
+            body: body.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        nest([
+            function_header(&self.name, &self.args, &Vec::<(&String, _)>::new()),
+            line(),
+            text(":="),
+            line(),
+            self.body.to_doc(false),
+            text(";"),
+        ])
     }
 }
 

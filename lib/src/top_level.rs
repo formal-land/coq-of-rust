@@ -2222,28 +2222,22 @@ impl TopLevelItem {
                             }
                             .apply(&coq::Expression::String(name.to_owned())),
                             &coq::Expression::Record {
-                                fields: vec![nest([
-                                    nest([coq::function_header(
-                                        &Path::new(&["Notation", "dot"]),
-                                        &[
-                                            if ty_params.is_empty() {
-                                                vec![]
-                                            } else {
-                                                vec![coq::ArgDecl::of_ty_params(ty_params)]
-                                            },
-                                            where_predicates
-                                                .iter()
-                                                .map(|predicate| predicate.to_coq())
-                                                .collect(),
-                                        ]
-                                        .concat(),
-                                        &Vec::<(&String, _)>::new(),
-                                    )]),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text(name),
-                                ])],
+                                fields: vec![coq::Field::new(
+                                    &Path::new(&["Notation", "dot"]),
+                                    &[
+                                        if ty_params.is_empty() {
+                                            vec![]
+                                        } else {
+                                            vec![coq::ArgDecl::of_ty_params(ty_params)]
+                                        },
+                                        where_predicates
+                                            .iter()
+                                            .map(|predicate| predicate.to_coq())
+                                            .collect(),
+                                    ]
+                                    .concat(),
+                                    &coq::Expression::just_name(name),
+                                )],
                             },
                             vec![],
                         ),
@@ -2270,13 +2264,11 @@ impl TopLevelItem {
                             })
                             .apply(&coq::Expression::String(name.to_owned())),
                             &coq::Expression::Record {
-                                fields: vec![nest([
-                                    text("Notation.double_colon_type"),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    text(name),
-                                ])],
+                                fields: vec![coq::Field::new(
+                                    &Path::new(&["Notation", "double_colon_type"]),
+                                    &[],
+                                    &coq::Expression::just_name(name),
+                                )],
                             },
                             vec![],
                         ),
@@ -2306,31 +2298,34 @@ impl TopLevelItem {
                             }
                             .apply(&coq::Expression::String(name.to_owned())),
                             &coq::Expression::Record {
-                                fields: vec![nest([
-                                    nest([nest([coq::function_header(
-                                        &Path::new(&["Notation", "dot"]),
-                                        &[
-                                            if ty_params.is_empty() {
-                                                vec![]
-                                            } else {
-                                                vec![coq::ArgDecl::of_ty_params(ty_params)]
-                                            },
-                                            where_predicates
-                                                .iter()
-                                                .map(|predicate| predicate.to_coq())
-                                                .collect(),
-                                        ]
-                                        .concat(),
-                                        &signature_and_body
+                                fields: vec![coq::Field::new(
+                                    &Path::new(&["Notation", "dot"]),
+                                    &[
+                                        if ty_params.is_empty() {
+                                            vec![]
+                                        } else {
+                                            vec![coq::ArgDecl::of_ty_params(ty_params)]
+                                        },
+                                        where_predicates
+                                            .iter()
+                                            .map(|predicate| predicate.to_coq())
+                                            .collect(),
+                                        signature_and_body
                                             .args
                                             .iter()
-                                            .map(|(name, ty)| (name, ty.to_doc(false)))
+                                            .map(|(name, ty)| {
+                                                coq::ArgDecl::new(
+                                                    &coq::ArgDeclVar::Normal {
+                                                        idents: vec![name.to_owned()],
+                                                        ty: Some(ty.to_coq()),
+                                                    },
+                                                    coq::ArgSpecKind::Explicit,
+                                                )
+                                            })
                                             .collect::<Vec<_>>(),
-                                    )])]),
-                                    line(),
-                                    text(":="),
-                                    line(),
-                                    group([
+                                    ]
+                                    .concat(),
+                                    &coq::Expression::Code(group([
                                         text("("),
                                         match &signature_and_body.body {
                                             None => text("axiom"),
@@ -2343,8 +2338,8 @@ impl TopLevelItem {
                                             signature_and_body.ret_ty.to_doc(false),
                                             text(")"),
                                         ]),
-                                    ]),
-                                ])],
+                                    ])),
+                                )],
                             },
                             vec![],
                         ),
@@ -2440,23 +2435,15 @@ impl TopLevelItem {
                                             fields: trait_non_default_items
                                                 .iter()
                                                 .map(|(name, is_type)| {
-                                                    nest([
-                                                        of_trait.to_doc(),
-                                                        text("."),
-                                                        text(name),
-                                                        if *is_type {
-                                                            nil()
+                                                    coq::Field::new(
+                                                        &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
+                                                        &if *is_type {
+                                                            vec![]
                                                         } else {
-                                                            concat([
-                                                                line(),
-                                                                monadic_typeclass_parameter(),
-                                                            ])
+                                                            vec![coq::ArgDecl::monadic_typeclass_parameter()]
                                                         },
-                                                        line(),
-                                                        text(":="),
-                                                        line(),
-                                                        text(name),
-                                                    ])
+                                                        &coq::Expression::just_name(name),
+                                                    )
                                                 })
                                                 .collect::<Vec<_>>(),
                                         }
