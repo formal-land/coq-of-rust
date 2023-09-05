@@ -26,6 +26,7 @@ pub(crate) enum TopLevelItem<'a> {
     Instance(Instance<'a>),
     Line,
     Module(Module<'a>),
+    Record(Record<'a>),
     Section(Section<'a>),
 }
 
@@ -54,6 +55,14 @@ pub(crate) struct Section<'a> {
 pub(crate) struct Definition<'a> {
     name: String,
     kind: DefinitionKind<'a>,
+}
+
+#[derive(Clone)]
+/// a definition of a coq record
+pub(crate) struct Record<'a> {
+    name: String,
+    ty: Expression<'a>,
+    fields: Vec<Doc<'a>>,
 }
 
 #[derive(Clone)]
@@ -328,6 +337,7 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Instance(instance) => instance.to_doc(),
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
+            TopLevelItem::Record(record) => record.to_doc(),
             TopLevelItem::Section(section) => section.to_doc(),
         }
     }
@@ -440,6 +450,47 @@ impl<'a> Definition<'a> {
                 text("."),
             ]),
         }
+    }
+}
+
+impl<'a> Record<'a> {
+    pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[Doc<'a>]) -> Self {
+        Record {
+            name: name.to_owned(),
+            ty: ty.to_owned(),
+            fields: fields.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        group([
+            nest([
+                text("Record"),
+                line(),
+                text(self.name.to_owned()),
+                line(),
+                text(":"),
+                line(),
+                self.ty.to_doc(false),
+                line(),
+                text(":="),
+                line(),
+                text("{"),
+            ]),
+            if self.fields.is_empty() {
+                text(" ")
+            } else {
+                concat([
+                    nest([
+                        hardline(),
+                        intersperse(self.fields.to_owned(), [text(";"), hardline()]),
+                    ]),
+                    text(";"),
+                    hardline(),
+                ])
+            },
+            text("}."),
+        ])
     }
 }
 

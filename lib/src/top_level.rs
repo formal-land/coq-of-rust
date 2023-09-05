@@ -1939,43 +1939,14 @@ impl TopLevelItem {
                         ty_params,
                         &coq::TopLevel::concat(&[
                             coq::TopLevel::locally_unset_primitive_projections(&[
-                                coq::TopLevelItem::Code(group([
-                                    nest([
-                                        text("Record"),
-                                        line(),
-                                        text("t"),
-                                        line(),
-                                        text(":"),
-                                        line(),
-                                        text("Set"),
-                                        line(),
-                                        text(":="),
-                                        line(),
-                                        text("{"),
-                                    ]),
-                                    if fields.is_empty() {
-                                        text(" ")
-                                    } else {
-                                        concat([
-                                            nest([
-                                                hardline(),
-                                                intersperse(
-                                                    fields.iter().map(|ty| {
-                                                        nest([
-                                                            text("_ :"),
-                                                            line(),
-                                                            ty.to_doc(false),
-                                                            text(";"),
-                                                        ])
-                                                    }),
-                                                    [hardline()],
-                                                ),
-                                            ]),
-                                            hardline(),
-                                        ])
-                                    },
-                                    text("}."),
-                                ])),
+                                coq::TopLevelItem::Record(coq::Record::new(
+                                    "t",
+                                    &coq::Expression::Set,
+                                    &fields
+                                        .iter()
+                                        .map(|ty| nest([text("_ :"), line(), ty.to_doc(false)]))
+                                        .collect::<Vec<_>>(),
+                                )),
                             ]),
                             coq::TopLevel::new(&[coq::TopLevelItem::Code(concat([intersperse(
                                 fields.iter().enumerate().map(|(i, _)| {
