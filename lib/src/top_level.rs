@@ -1124,7 +1124,7 @@ impl FunDefinition {
                 .. // @TODO do generic params should be used here?
             }) => {
                 [
-                    vec![coq::Expression::Variable { ident: Path::new(&["string"]), no_implicit: false }],
+                    vec![coq::Expression::just_name("string")],
                     fields
                         .iter()
                         .flat_map(|(_str, boxed_coq_type)| {
@@ -1136,9 +1136,9 @@ impl FunDefinition {
                             };
                             [
                                 // print field name
-                                coq::Expression::Variable { ident: Path::new(&["string"]), no_implicit: false },
+                                coq::Expression::just_name("string"),
                                 // print field type
-                                coq::Expression::Variable { ident: Path::new(&[nn]), no_implicit: false },
+                                coq::Expression::just_name(&nn),
                             ]
                         })
                         .collect(),
@@ -1526,18 +1526,12 @@ impl TraitBound {
                             TraitTyParamValue::JustValue { name, ty } => (Some(name), ty.to_coq()),
                             TraitTyParamValue::ValWithDef { name, ty } => (
                                 Some(name),
-                                coq::Expression::Variable {
-                                    ident: Path::new(&["Some"]),
-                                    no_implicit: false,
-                                }
+                                coq::Expression::just_name("Some")
                                 .apply(&ty.to_coq()),
                             ),
                             TraitTyParamValue::JustDefault { name } => (
                                 Some(name),
-                                coq::Expression::Variable {
-                                    ident: Path::new(&["None"]),
-                                    no_implicit: false,
-                                },
+                                coq::Expression::just_name("None"),
                             ),
                         })
                         .collect(),
@@ -2180,10 +2174,7 @@ impl TopLevelItem {
                                 .iter()
                                 .map(|bound| {
                                     bound.to_doc(
-                                        coq::Expression::Variable {
-                                            ident: Path::new(&[name]),
-                                            no_implicit: false,
-                                        },
+                                        coq::Expression::just_name(name),
                                         coq::ArgSpecKind::Explicit,
                                     )
                                 })
@@ -2241,10 +2232,7 @@ impl TopLevelItem {
                             &[coq::ArgDecl::new(
                                 &coq::ArgDeclVar::Generalized {
                                     idents: vec![],
-                                    ty: coq::Expression::Variable {
-                                        ident: Path::new(&["Trait"]),
-                                        no_implicit: false,
-                                    },
+                                    ty: coq::Expression::just_name("Trait"),
                                 },
                                 coq::ArgSpecKind::Explicit,
                             )],
