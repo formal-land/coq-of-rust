@@ -1196,11 +1196,15 @@ impl FunDefinition {
                                 )),
                                 coq::TopLevelItem::Line,
                                 coq::TopLevelItem::Code(nest([
-                                    text("Global Instance "),
-                                    text(format!("Deb_{body_parameter_name_for_fmt}")),
-                                    text(" : "),
-                                    Path::new(&["Notation", "DoubleColon"]).to_doc(),
+                                    nest([
+                                        text("Global Instance"),
+                                        line(),
+                                        text(format!("Deb_{body_parameter_name_for_fmt} ")),
+                                        monadic_typeclass_parameter(),
+                                        text(" : "),
+                                    ]),
                                     line(),
+                                    Path::new(&["Notation", "DoubleColon "]).to_doc(),
                                     concat(self.signature_and_body.args.iter().map(
                                         |(name, ty)| {
                                             if name == "f" {
@@ -1215,10 +1219,12 @@ impl FunDefinition {
                                     text("{"),
                                     line(),
                                     nest([
-                                        Path::new(&["Notation", "double_colon"]).to_doc(),
-                                        text(" := "),
-                                        text(body_parameter_name_for_fmt),
-                                        text(";"),
+                                        nest([
+                                            Path::new(&["Notation", "double_colon"]).to_doc(),
+                                            text(" := "),
+                                            text(body_parameter_name_for_fmt),
+                                            text(";"),
+                                        ]),
                                         line(),
                                     ]),
                                     text("}."),

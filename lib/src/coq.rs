@@ -406,14 +406,15 @@ impl<'a> Definition<'a> {
                 body.to_doc(false),
                 text("."),
             ]),
-            DefinitionKind::Assumption { ty } => nest([
-                nest([
-                    text("Parameter"),
-                    line(),
-                    text(self.name.to_owned()),
-                    line(),
-                ]),
-                nest([text(":"), line(), ty.to_doc(false)]),
+            DefinitionKind::Assumption { ty } => group([
+                text("Parameter "),
+                text(self.name.to_owned()),
+                text(" : "),
+                text("forall "),
+                render::monadic_typeclass_parameter(),
+                text(","),
+                line(),
+                ty.to_doc(false),
                 text("."),
             ]),
         }
@@ -534,19 +535,18 @@ impl<'a> Expression<'a> {
                     ),
                 ]),
             ),
-            Self::Function { domains, image } => paren(
+            Self::Function { domains, image } => nest([paren(
                 with_paren,
-                nest([
-                    intersperse(
+                group([
+                    group(
                         domains
                             .iter()
-                            .map(|domain| group([domain.to_doc(true), line(), text("->")])),
-                        [line()],
+                            .map(|domain| group([domain.to_doc(true), text(" -> ")])),
                     ),
                     if domains.is_empty() { nil() } else { line() },
                     image.to_doc(false),
                 ]),
-            ),
+            )]),
             Self::PiType { args, image } => paren(
                 with_paren,
                 concat([
