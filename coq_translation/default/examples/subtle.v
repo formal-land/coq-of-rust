@@ -157,8 +157,7 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   }.
   
   Global Instance I : core.ops.bit.BitAndAssign.Trait Self (Rhs := None) := {
-    core.ops.bit.BitAndAssign.bitand_assign
-      `{H' : State.Trait}
+    core.ops.bit.BitAndAssign.bitand_assign `{H' : State.Trait}
       :=
       bitand_assign;
   }.
@@ -260,8 +259,7 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   }.
   
   Global Instance I : core.ops.bit.BitXorAssign.Trait Self (Rhs := None) := {
-    core.ops.bit.BitXorAssign.bitxor_assign
-      `{H' : State.Trait}
+    core.ops.bit.BitXorAssign.bitxor_assign `{H' : State.Trait}
       :=
       bitxor_assign;
   }.
@@ -693,9 +691,10 @@ Module ConditionallySelectable.
   }.
   Global Instance Method_conditional_assign `{H' : State.Trait} `(Trait)
     : Notation.Dot "conditional_assign" := {
-    Notation.dot (self : mut_ref Self) (other : ref Self)
-            (choice
-            : subtle.Choice)
+    Notation.dot
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
       :=
       (let* _ :=
         let* α0 := self.["deref"] in
@@ -791,8 +790,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -874,8 +872,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -957,8 +954,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -1040,8 +1036,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -1123,8 +1118,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -1206,8 +1200,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -1289,8 +1282,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -1372,8 +1364,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -1399,8 +1390,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   }.
   
   Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select
-      `{H' : State.Trait}
+    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
       :=
       conditional_select;
   }.
@@ -1441,8 +1431,7 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     }.
     
     Global Instance I : subtle.ConditionallyNegatable.Trait Self := {
-      subtle.ConditionallyNegatable.conditional_negate
-        `{H' : State.Trait}
+      subtle.ConditionallyNegatable.conditional_negate `{H' : State.Trait}
         :=
         conditional_negate;
     }.
@@ -1796,8 +1785,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     }.
     
     Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-      subtle.ConditionallySelectable.conditional_select
-        `{H' : State.Trait}
+      subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
         :=
         conditional_select;
     }.

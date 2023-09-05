@@ -41,8 +41,7 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
     }.
     
     Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
-      generics_where_clauses.PrintInOption.print_in_option
-        `{H' : State.Trait}
+      generics_where_clauses.PrintInOption.print_in_option `{H' : State.Trait}
         :=
         print_in_option;
     }.

@@ -48,9 +48,10 @@ Module ConditionallySelectable.
   }.
   Global Instance Method_conditional_assign `{H' : State.Trait} `(Trait)
     : Notation.Dot "conditional_assign" := {
-    Notation.dot (self : mut_ref Self) (other : ref Self)
-            (choice
-            : subtle.Choice)
+    Notation.dot
+      (self : mut_ref Self)
+      (other : ref Self)
+      (choice : subtle.Choice)
       :=
       (axiom : M (H := H') unit);
   }.

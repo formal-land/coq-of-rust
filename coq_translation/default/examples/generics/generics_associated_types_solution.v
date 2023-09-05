@@ -102,16 +102,13 @@ Module
     : generics_associated_types_solution.Contains.Trait Self := {
     generics_associated_types_solution.Contains.A := A;
     generics_associated_types_solution.Contains.B := B;
-    generics_associated_types_solution.Contains.contains
-      `{H' : State.Trait}
+    generics_associated_types_solution.Contains.contains `{H' : State.Trait}
       :=
       contains;
-    generics_associated_types_solution.Contains.first
-      `{H' : State.Trait}
+    generics_associated_types_solution.Contains.first `{H' : State.Trait}
       :=
       first;
-    generics_associated_types_solution.Contains.last
-      `{H' : State.Trait}
+    generics_associated_types_solution.Contains.last `{H' : State.Trait}
       :=
       last;
     generics_associated_types_solution.Contains.a `{H' : State.Trait} := a;

@@ -219,8 +219,7 @@ Module erc20.
         `{H' : State.Trait}
         :=
         SELECTOR;
-      ink.reflect.dispatch.DispatchableConstructorInfo.LABEL
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableConstructorInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
     }.
@@ -280,24 +279,19 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
         :=
         MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
         :=
         PAYABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
-      ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
     }.
@@ -357,24 +351,19 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
         :=
         MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
         :=
         PAYABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
-      ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
     }.
@@ -437,24 +426,19 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
         :=
         MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
         :=
         PAYABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
-      ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
     }.
@@ -517,24 +501,19 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
         :=
         MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
         :=
         PAYABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
-      ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
     }.
@@ -597,24 +576,19 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
         :=
         MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
         :=
         PAYABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
-      ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
     }.
@@ -679,24 +653,19 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
       ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
       ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
         :=
         MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
         :=
         PAYABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
-      ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-        `{H' : State.Trait}
+      ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
     }.
@@ -1216,8 +1185,7 @@ Module erc20.
     Global Instance I
       : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
         := {
-      ink.contract_ref.ToAccountId.to_account_id
-        `{H' : State.Trait}
+      ink.contract_ref.ToAccountId.to_account_id `{H' : State.Trait}
         :=
         to_account_id;
     }.
@@ -1658,8 +1626,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout
-      `{H' : State.Trait}
+    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
       :=
       layout;
   }.
@@ -1772,8 +1739,7 @@ Module
   
   Global Instance I
     : ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
-    ink.codegen.event.emit.EmitEvent.emit_event
-      `{H' : State.Trait}
+    ink.codegen.event.emit.EmitEvent.emit_event `{H' : State.Trait}
       :=
       emit_event;
   }.
@@ -2474,16 +2440,14 @@ Module
       `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableConstructorInfo.PAYABLE `{H' : State.Trait}
       :=
       PAYABLE;
     ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
       `{H' : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableConstructorInfo.LABEL
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableConstructorInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
   }.
@@ -2541,24 +2505,19 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
       :=
       MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
       :=
       PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
   }.
@@ -2617,24 +2576,19 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
       :=
       MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
       :=
       PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
   }.
@@ -2696,24 +2650,19 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
       :=
       MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
       :=
       PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
   }.
@@ -2775,24 +2724,19 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
       :=
       MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
       :=
       PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
   }.
@@ -2851,24 +2795,19 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
       :=
       MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
       :=
       PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
   }.
@@ -2932,24 +2871,19 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.Input := Input;
     ink.reflect.dispatch.DispatchableMessageInfo.Output := Output;
     ink.reflect.dispatch.DispatchableMessageInfo.Storage := Storage;
-    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
       :=
       MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
       :=
       PAYABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
-    ink.reflect.dispatch.DispatchableMessageInfo.LABEL
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
   }.
@@ -3015,8 +2949,7 @@ Module
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DecodeDispatch.decode_dispatch `{H' : State.Trait}
       :=
       decode_dispatch;
   }.
@@ -3284,8 +3217,7 @@ Module
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
-      `{H' : State.Trait}
+    ink.reflect.dispatch.DecodeDispatch.decode_dispatch `{H' : State.Trait}
       :=
       decode_dispatch;
   }.
@@ -4410,8 +4342,7 @@ Module
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout
-      `{H' : State.Trait}
+    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
       :=
       layout;
   }.
@@ -4486,8 +4417,7 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20___CallBuilder.
   Global Instance I
     : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
       := {
-    ink.contract_ref.ToAccountId.to_account_id
-      `{H' : State.Trait}
+    ink.contract_ref.ToAccountId.to_account_id `{H' : State.Trait}
       :=
       to_account_id;
   }.
@@ -5042,8 +4972,7 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
   }.
   
   Global Instance I : ink_storage_traits.layout.StorageLayout.Trait Self := {
-    ink_storage_traits.layout.StorageLayout.layout
-      `{H' : State.Trait}
+    ink_storage_traits.layout.StorageLayout.layout `{H' : State.Trait}
       :=
       layout;
   }.
@@ -5086,8 +5015,7 @@ Module
       := {
     ink_env.call.create_builder.ConstructorReturnType.Output := Output;
     ink_env.call.create_builder.ConstructorReturnType.Error := Error;
-    ink_env.call.create_builder.ConstructorReturnType.ok
-      `{H' : State.Trait}
+    ink_env.call.create_builder.ConstructorReturnType.ok `{H' : State.Trait}
       :=
       ok;
   }.
@@ -5141,8 +5069,7 @@ Module
         := {
       ink_env.call.create_builder.ConstructorReturnType.Output := Output;
       ink_env.call.create_builder.ConstructorReturnType.Error := Error;
-      ink_env.call.create_builder.ConstructorReturnType.ok
-        `{H' : State.Trait}
+      ink_env.call.create_builder.ConstructorReturnType.ok `{H' : State.Trait}
         :=
         ok;
     }.
@@ -5495,8 +5422,7 @@ Module
   Global Instance I
     : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Self := {
     ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder := Builder;
-    ink.codegen.trait_def.call_builder.TraitCallBuilder.call
-      `{H' : State.Trait}
+    ink.codegen.trait_def.call_builder.TraitCallBuilder.call `{H' : State.Trait}
       :=
       call;
     ink.codegen.trait_def.call_builder.TraitCallBuilder.call_mut
@@ -5553,8 +5479,7 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
   Global Instance I
     : ink.contract_ref.ToAccountId.Trait Self (T := erc20.erc20.Environment)
       := {
-    ink.contract_ref.ToAccountId.to_account_id
-      `{H' : State.Trait}
+    ink.contract_ref.ToAccountId.to_account_id `{H' : State.Trait}
       :=
       to_account_id;
   }.

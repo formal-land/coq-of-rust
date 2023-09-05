@@ -223,9 +223,9 @@ Module codegen.
         Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
           Notation.dot
-              {E : Set}
-              `{core.convert.Into.Trait E
-                  (T := ink.reflect.event.ContractEventBase.Type_)}
+            {E : Set}
+            `{core.convert.Into.Trait E
+                (T := ink.reflect.event.ContractEventBase.Type_)}
             :=
             emit_event;
         }.
@@ -671,9 +671,9 @@ Module event.
       Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
         Notation.dot
-            {E : Set}
-            `{core.convert.Into.Trait E
-                (T := ink.reflect.event.ContractEventBase.Type_)}
+          {E : Set}
+          `{core.convert.Into.Trait E
+              (T := ink.reflect.event.ContractEventBase.Type_)}
           :=
           emit_event;
       }.
@@ -743,9 +743,9 @@ Module emit.
     Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
       Notation.dot
-          {E : Set}
-          `{core.convert.Into.Trait E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
+        {E : Set}
+        `{core.convert.Into.Trait E
+            (T := ink.reflect.event.ContractEventBase.Type_)}
         :=
         emit_event;
     }.
@@ -768,9 +768,9 @@ Module EmitEvent.
   Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
     Notation.dot
-        {E : Set}
-        `{core.convert.Into.Trait E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
+      {E : Set}
+      `{core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_)}
       :=
       emit_event;
   }.

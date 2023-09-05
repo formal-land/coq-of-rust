@@ -56,8 +56,7 @@ Module
   
   Global Instance I
     : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
-    disambiguating_overlapping_traits.UsernameWidget.get
-      `{H' : State.Trait}
+    disambiguating_overlapping_traits.UsernameWidget.get `{H' : State.Trait}
       :=
       get;
   }.
