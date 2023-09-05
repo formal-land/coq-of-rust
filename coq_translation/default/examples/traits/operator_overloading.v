@@ -86,7 +86,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   }.
   
   Global Instance I
-    : core.ops.arith.Add.Trait Self (Rhs := Self operator_overloading.Bar) := {
+    : core.ops.arith.Add.Trait Self (Rhs := Some operator_overloading.Bar) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add `{H' : State.Trait} := add;
   }.
@@ -118,7 +118,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   }.
   
   Global Instance I
-    : core.ops.arith.Add.Trait Self (Rhs := Self operator_overloading.Foo) := {
+    : core.ops.arith.Add.Trait Self (Rhs := Some operator_overloading.Foo) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add `{H' : State.Trait} := add;
   }.

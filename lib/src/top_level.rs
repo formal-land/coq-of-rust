@@ -2407,7 +2407,7 @@ impl TopLevelItem {
                                                 match ty_param {
                                                     TraitTyParamValue::ValWithDef { name, ty } => (
                                                         Some(name),
-                                                        coq::Expression::just_name("Self")
+                                                        coq::Expression::just_name("Some")
                                                             .apply(&ty.to_coq()),
                                                     ),
                                                     TraitTyParamValue::JustValue { name, ty } => {
