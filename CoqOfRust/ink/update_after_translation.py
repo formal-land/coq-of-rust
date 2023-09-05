@@ -773,7 +773,79 @@ def update_erc20():
         + """
 
 Require CoqOfRust.ink.ink_storage.
-Require CoqOfRust.ink.ink_env.
+(* @TODO Require CoqOfRust.ink.ink_env. *)
+(* @TODO Require CoqOfRust.ink.ink. *)
+
+(** @TODO [erc20] dependencies which are WIP *)
+Module ink_env.
+  Module types.
+
+    Parameter DefaultEnvironment : Set.
+    
+    Module Environment.
+      Parameter AccountId : Set.
+      Parameter Balance : Set.
+      Parameter Hash : Set.
+      Parameter Timestamp : Set.
+      Parameter BlockNumber : Set.
+      Parameter ChainExtension : Set.
+      Parameter MAX_EVENT_TOPICS : usize.
+    End Environment.
+  End types.
+  
+  Module contract.
+    Module ContractEnv.
+      Unset Primitive Projections.
+      Class Trait (Self : Set) : Type := {
+          Env : Set
+        }.
+      Global Set Primitive Projections.
+    End ContractEnv.
+
+  End contract.
+End ink_env.
+
+Module ink.
+  Module codegen.
+    Module event.
+      Module topics.
+        Module EventTopics.
+          Parameter t : Set.
+        End EventTopics.
+        Module EventLenTopics.
+          Class Trait (Self : Set) : Type := {
+              LenTopics : Set;
+            }.
+        End EventLenTopics.
+        Definition EventTopics := EventTopics.t.
+      End topics.
+    End event.
+  End codegen.
+  Module reflect.
+    Module dispatch.
+      Module ConstructorOutput.
+        Parameter Error : Set.
+        Definition IS_RESULT : bool. Admitted.
+      End ConstructorOutput.
+
+      Module DispatchableConstructorInfo.
+        Class Trait (Self : Set) := {
+
+            Input : Set;
+            Storage : Set;
+            Output : Set;
+            Error : Set;
+            IS_RESULT `{H' : State.Trait} : M bool;
+            CALLABLE `{H' : State.Trait} : M (unit -> M Self);
+            PAYABLE `{H' : State.Trait} : M bool;
+            SELECTOR `{H' : State.Trait} : M (list Z);
+            LABEL `{H' : State.Trait} : M string;
+          }.
+      End DispatchableConstructorInfo.
+    End dispatch.
+  End reflect.
+End ink.
+
 """,
         content,
     )
@@ -785,6 +857,64 @@ Require CoqOfRust.ink.ink_env.
             content,
             2,
         )
+
+    content = sub_exactly_once(
+        r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
+    Definition Self := erc20.erc20.Erc20.""",
+        """Module Impl_core_default_Default_for_erc20_erc20_Erc20.
+    Definition Self := erc20.erc20.Erc20.
+
+    Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
+     (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
+        (H0 : ink_storage_traits.storage.AutoStorableHint.Trait Self),
+      H0.(ink_storage_traits.storage.AutoStorableHint.Type_)). Admitted.
+""",
+        content,
+    )
+
+    content = sub_exactly_n(
+        r"IS_RESULT := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.",
+        r"IS_RESULT `{State.Trait} := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.",
+        content,
+        2,
+    )
+
+    content = sub_exactly_once(
+        r"""  End Erc20.
+  Definition Erc20 : Set := @Erc20.t.
+""",
+        r"""    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
+    Admitted.
+  End Erc20.
+  Definition Erc20 : Set := @Erc20.t.
+""",
+        content,
+    )
+
+    content = sub_exactly_n(
+        r"    Definition PAYABLE := Pure false.",
+        r"    Definition PAYABLE `{State.Trait} := Pure false.",
+        content,
+        7,
+    )
+
+    content = sub_exactly_n(
+        r"    Definition SELECTOR := Pure",
+        r"    Definition SELECTOR `{State.Trait} := Pure",
+        content,
+        7,
+    )
+
+    content = sub_exactly_once(
+        r'    Definition LABEL := Pure "new".',
+        r'    Definition LABEL `{State.Trait} := Pure "new".',
+        content,
+    )
+
+    content = sub_exactly_n(
+        r"CALLABLE := Pure", r"CALLABLE `{State.Trait} := Pure", content, 14
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 

@@ -2,7 +2,79 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Require CoqOfRust.ink.ink_storage.
-Require CoqOfRust.ink.ink_env.
+(* @TODO Require CoqOfRust.ink.ink_env. *)
+(* @TODO Require CoqOfRust.ink.ink. *)
+
+(** @TODO [erc20] dependencies which are WIP *)
+Module ink_env.
+  Module types.
+
+    Parameter DefaultEnvironment : Set.
+    
+    Module Environment.
+      Parameter AccountId : Set.
+      Parameter Balance : Set.
+      Parameter Hash : Set.
+      Parameter Timestamp : Set.
+      Parameter BlockNumber : Set.
+      Parameter ChainExtension : Set.
+      Parameter MAX_EVENT_TOPICS : usize.
+    End Environment.
+  End types.
+  
+  Module contract.
+    Module ContractEnv.
+      Unset Primitive Projections.
+      Class Trait (Self : Set) : Type := {
+          Env : Set
+        }.
+      Global Set Primitive Projections.
+    End ContractEnv.
+
+  End contract.
+End ink_env.
+
+Module ink.
+  Module codegen.
+    Module event.
+      Module topics.
+        Module EventTopics.
+          Parameter t : Set.
+        End EventTopics.
+        Module EventLenTopics.
+          Class Trait (Self : Set) : Type := {
+              LenTopics : Set;
+            }.
+        End EventLenTopics.
+        Definition EventTopics := EventTopics.t.
+      End topics.
+    End event.
+  End codegen.
+  Module reflect.
+    Module dispatch.
+      Module ConstructorOutput.
+        Parameter Error : Set.
+        Definition IS_RESULT : bool. Admitted.
+      End ConstructorOutput.
+
+      Module DispatchableConstructorInfo.
+        Class Trait (Self : Set) := {
+
+            Input : Set;
+            Storage : Set;
+            Output : Set;
+            Error : Set;
+            IS_RESULT `{H' : State.Trait} : M bool;
+            CALLABLE `{H' : State.Trait} : M (unit -> M Self);
+            PAYABLE `{H' : State.Trait} : M bool;
+            SELECTOR `{H' : State.Trait} : M (list Z);
+            LABEL `{H' : State.Trait} : M string;
+          }.
+      End DispatchableConstructorInfo.
+    End dispatch.
+  End reflect.
+End ink.
+
 
 
 Module erc20.
@@ -24,6 +96,8 @@ Module erc20.
     Global Instance Get_allowances : Notation.Dot "allowances" := {
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
+    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
+    Admitted.
   End Erc20.
   Definition Erc20 : Set := @Erc20.t.
   
@@ -57,6 +131,12 @@ Module erc20.
   
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
+
+    Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
+     (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
+        (H0 : ink_storage_traits.storage.AutoStorableHint.Trait Self),
+      H0.(ink_storage_traits.storage.AutoStorableHint.Type_)). Admitted.
+
     
     Definition default `{H' : State.Trait} : M (H := H') erc20.erc20.Erc20 :=
       let* α0 := core.default.Default.default in
@@ -79,35 +159,6 @@ Module erc20.
     }.
     Global Hint Resolve I : core.
   End Impl_core_default_Default_for_erc20_erc20_Erc20.
-  
-  Module __ink_EventBase.
-    Inductive t : Set :=
-    | Transfer (_ : erc20.erc20.Transfer)
-    | Approval (_ : erc20.erc20.Approval).
-  End __ink_EventBase.
-  Definition __ink_EventBase := __ink_EventBase.t.
-  
-  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
-    Definition Self := erc20.erc20.Transfer.
-    
-    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
-    
-    Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
-      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
-    }.
-    Global Hint Resolve I : core.
-  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
-  
-  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
-    Definition Self := erc20.erc20.Approval.
-    
-    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
-    
-    Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
-      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
-    }.
-    Global Hint Resolve I : core.
-  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
   
   Module Transfer.
     Unset Primitive Projections.
@@ -151,6 +202,35 @@ Module erc20.
   End Approval.
   Definition Approval : Set := @Approval.t.
   
+  Module __ink_EventBase.
+    Inductive t : Set :=
+    | Transfer (_ : erc20.erc20.Transfer)
+    | Approval (_ : erc20.erc20.Approval).
+  End __ink_EventBase.
+  Definition __ink_EventBase := __ink_EventBase.t.
+  
+  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+    Definition Self := erc20.erc20.Transfer.
+    
+    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
+  
+  Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+    Definition Self := erc20.erc20.Approval.
+    
+    Definition LenTopics : Set := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I : ink.codegen.event.topics.EventLenTopics.Trait Self := {
+      ink.codegen.event.topics.EventLenTopics.LenTopics := LenTopics;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Approval.
+  
   Module
     Impl_ink_reflect_dispatch_DispatchableConstructorInfo_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
@@ -164,7 +244,7 @@ Module erc20.
     Definition Error : Set := ink.reflect.dispatch.ConstructorOutput.Error.
     
     Definition
-      IS_RESULT := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.
+      IS_RESULT `{State.Trait} := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.
     
     Global Instance AssociatedFunction_IS_RESULT `{H' : State.Trait} :
       Notation.DoubleColon Self "IS_RESULT" := {
@@ -172,7 +252,7 @@ Module erc20.
     }.
     
     Definition
-      CALLABLE := Pure
+      CALLABLE `{State.Trait} := Pure
         (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
     
     Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
@@ -180,21 +260,21 @@ Module erc20.
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition PAYABLE := Pure false.
+    Definition PAYABLE `{State.Trait} := Pure false.
     
     Global Instance AssociatedFunction_PAYABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
       Notation.double_colon := PAYABLE;
     }.
     
-    Definition SELECTOR := Pure [ 155; 174; 157; 94 ].
+    Definition SELECTOR `{State.Trait} := Pure [ 155; 174; 157; 94 ].
     
     Global Instance AssociatedFunction_SELECTOR `{H' : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition LABEL := Pure "new".
+    Definition LABEL `{State.Trait} := Pure "new".
     
     Global Instance AssociatedFunction_LABEL `{H' : State.Trait} :
       Notation.DoubleColon Self "LABEL" := {
@@ -243,7 +323,7 @@ Module erc20.
     Definition Storage : Set := erc20.erc20.Erc20.
     
     Definition
-      CALLABLE := Pure
+      CALLABLE `{State.Trait} := Pure
         (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
     
     Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
@@ -251,14 +331,14 @@ Module erc20.
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR := Pure [ 219; 99; 117; 168 ].
+    Definition SELECTOR `{State.Trait} := Pure [ 219; 99; 117; 168 ].
     
     Global Instance AssociatedFunction_SELECTOR `{H' : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE := Pure false.
+    Definition PAYABLE `{State.Trait} := Pure false.
     
     Global Instance AssociatedFunction_PAYABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
@@ -319,7 +399,7 @@ Module erc20.
     Definition Storage : Set := erc20.erc20.Erc20.
     
     Definition
-      CALLABLE := Pure
+      CALLABLE `{State.Trait} := Pure
         (fun storage __ink_binding_0 =>
           erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
     
@@ -328,14 +408,14 @@ Module erc20.
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR := Pure [ 15; 117; 90; 86 ].
+    Definition SELECTOR `{State.Trait} := Pure [ 15; 117; 90; 86 ].
     
     Global Instance AssociatedFunction_SELECTOR `{H' : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE := Pure false.
+    Definition PAYABLE `{State.Trait} := Pure false.
     
     Global Instance AssociatedFunction_PAYABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
@@ -396,7 +476,7 @@ Module erc20.
     Definition Storage : Set := erc20.erc20.Erc20.
     
     Definition
-      CALLABLE := Pure
+      CALLABLE `{State.Trait} := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
           erc20.erc20.Erc20::["allowance"]
             storage
@@ -408,14 +488,14 @@ Module erc20.
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR := Pure [ 106; 0; 22; 94 ].
+    Definition SELECTOR `{State.Trait} := Pure [ 106; 0; 22; 94 ].
     
     Global Instance AssociatedFunction_SELECTOR `{H' : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE := Pure false.
+    Definition PAYABLE `{State.Trait} := Pure false.
     
     Global Instance AssociatedFunction_PAYABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
@@ -476,7 +556,7 @@ Module erc20.
     Definition Storage : Set := erc20.erc20.Erc20.
     
     Definition
-      CALLABLE := Pure
+      CALLABLE `{State.Trait} := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
           erc20.erc20.Erc20::["transfer"]
             storage
@@ -488,14 +568,14 @@ Module erc20.
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR := Pure [ 132; 161; 93; 161 ].
+    Definition SELECTOR `{State.Trait} := Pure [ 132; 161; 93; 161 ].
     
     Global Instance AssociatedFunction_SELECTOR `{H' : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE := Pure false.
+    Definition PAYABLE `{State.Trait} := Pure false.
     
     Global Instance AssociatedFunction_PAYABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
@@ -556,7 +636,7 @@ Module erc20.
     Definition Storage : Set := erc20.erc20.Erc20.
     
     Definition
-      CALLABLE := Pure
+      CALLABLE `{State.Trait} := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
           erc20.erc20.Erc20::["approve"]
             storage
@@ -568,14 +648,14 @@ Module erc20.
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR := Pure [ 104; 18; 102; 160 ].
+    Definition SELECTOR `{State.Trait} := Pure [ 104; 18; 102; 160 ].
     
     Global Instance AssociatedFunction_SELECTOR `{H' : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE := Pure false.
+    Definition PAYABLE `{State.Trait} := Pure false.
     
     Global Instance AssociatedFunction_PAYABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
@@ -637,7 +717,7 @@ Module erc20.
     Definition Storage : Set := erc20.erc20.Erc20.
     
     Definition
-      CALLABLE := Pure
+      CALLABLE `{State.Trait} := Pure
         (fun storage (__ink_binding_0, __ink_binding_1, __ink_binding_2) =>
           erc20.erc20.Erc20::["transfer_from"]
             storage
@@ -650,14 +730,14 @@ Module erc20.
       Notation.double_colon := CALLABLE;
     }.
     
-    Definition SELECTOR := Pure [ 11; 57; 111; 24 ].
+    Definition SELECTOR `{State.Trait} := Pure [ 11; 57; 111; 24 ].
     
     Global Instance AssociatedFunction_SELECTOR `{H' : State.Trait} :
       Notation.DoubleColon Self "SELECTOR" := {
       Notation.double_colon := SELECTOR;
     }.
     
-    Definition PAYABLE := Pure false.
+    Definition PAYABLE `{State.Trait} := Pure false.
     
     Global Instance AssociatedFunction_PAYABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "PAYABLE" := {
@@ -2425,7 +2505,7 @@ Module
   
   Definition Error : Set := ink.reflect.dispatch.ConstructorOutput.Error.
   
-  Definition IS_RESULT := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.
+  Definition IS_RESULT `{State.Trait} := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.
   
   Global Instance AssociatedFunction_IS_RESULT `{H' : State.Trait} :
     Notation.DoubleColon Self "IS_RESULT" := {
@@ -2433,7 +2513,7 @@ Module
   }.
   
   Definition
-    CALLABLE := Pure
+    CALLABLE `{State.Trait} := Pure
       (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
   
   Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
@@ -2502,7 +2582,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition Storage : Set := erc20.erc20.Erc20.
   
   Definition
-    CALLABLE := Pure
+    CALLABLE `{State.Trait} := Pure
       (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
   
   Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
@@ -2577,7 +2657,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition Storage : Set := erc20.erc20.Erc20.
   
   Definition
-    CALLABLE := Pure
+    CALLABLE `{State.Trait} := Pure
       (fun storage __ink_binding_0 =>
         erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
   
@@ -2653,7 +2733,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition Storage : Set := erc20.erc20.Erc20.
   
   Definition
-    CALLABLE := Pure
+    CALLABLE `{State.Trait} := Pure
       (fun storage (__ink_binding_0, __ink_binding_1) =>
         erc20.erc20.Erc20::["allowance"]
           storage
@@ -2732,7 +2812,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition Storage : Set := erc20.erc20.Erc20.
   
   Definition
-    CALLABLE := Pure
+    CALLABLE `{State.Trait} := Pure
       (fun storage (__ink_binding_0, __ink_binding_1) =>
         erc20.erc20.Erc20::["transfer"]
           storage
@@ -2811,7 +2891,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition Storage : Set := erc20.erc20.Erc20.
   
   Definition
-    CALLABLE := Pure
+    CALLABLE `{State.Trait} := Pure
       (fun storage (__ink_binding_0, __ink_binding_1) =>
         erc20.erc20.Erc20::["approve"] storage __ink_binding_0 __ink_binding_1).
   
@@ -2888,7 +2968,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition Storage : Set := erc20.erc20.Erc20.
   
   Definition
-    CALLABLE := Pure
+    CALLABLE `{State.Trait} := Pure
       (fun storage (__ink_binding_0, __ink_binding_1, __ink_binding_2) =>
         erc20.erc20.Erc20::["transfer_from"]
           storage
