@@ -1526,13 +1526,11 @@ impl TraitBound {
                             TraitTyParamValue::JustValue { name, ty } => (Some(name), ty.to_coq()),
                             TraitTyParamValue::ValWithDef { name, ty } => (
                                 Some(name),
-                                coq::Expression::just_name("Some")
-                                .apply(&ty.to_coq()),
+                                coq::Expression::just_name("Some").apply(&ty.to_coq()),
                             ),
-                            TraitTyParamValue::JustDefault { name } => (
-                                Some(name),
-                                coq::Expression::just_name("None"),
-                            ),
+                            TraitTyParamValue::JustDefault { name } => {
+                                (Some(name), coq::Expression::just_name("None"))
+                            }
                         })
                         .collect(),
                 },
