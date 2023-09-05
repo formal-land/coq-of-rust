@@ -292,43 +292,43 @@ Require CoqOfRust.ink.scale_encode.""",
   Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
     Notation.dot
-        {E Event : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.topics.Topics.Trait Event}
-        `{parity_scale_codec.codec.Encode.Trait Event}
+      {E Event : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.Topics.Trait Event}
+      `{parity_scale_codec.codec.Encode.Trait Event}
       :=
       emit_event;
   }.
   Global Instance Method_invoke_contract `{H' : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract" := {
     Notation.dot
-        {E Args R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{parity_scale_codec.codec.Decode.Trait R}
+      {E Args R : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       :=
       invoke_contract;
   }.
   Global Instance Method_invoke_contract_delegate `{H' : State.Trait} `(Trait)
     : Notation.Dot "invoke_contract_delegate" := {
     Notation.dot
-        {E Args R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{parity_scale_codec.codec.Decode.Trait R}
+      {E Args R : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{parity_scale_codec.codec.Decode.Trait R}
       :=
       invoke_contract_delegate;
   }.
   Global Instance Method_instantiate_contract `{H' : State.Trait} `(Trait)
     : Notation.Dot "instantiate_contract" := {
     Notation.dot
-        {E ContractRef Args Salt R : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
-        `{parity_scale_codec.codec.Encode.Trait Args}
-        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
-        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
-            (C := ContractRef)}
+      {E ContractRef Args Salt R : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+      `{parity_scale_codec.codec.Encode.Trait Args}
+      `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+      `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+          (C := ContractRef)}
       :=
       instantiate_contract;
   }.
@@ -365,9 +365,9 @@ Require CoqOfRust.ink.scale_encode.""",
   Global Instance Method_call_runtime `{H' : State.Trait} `(Trait)
     : Notation.Dot "call_runtime" := {
     Notation.dot
-        {E Call : Set}
-        `{ink_env.types.Environment.Trait E}
-        `{parity_scale_codec.codec.Encode.Trait Call}
+      {E Call : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait Call}
       :=
       call_runtime;
   }.
@@ -448,8 +448,8 @@ End state_.
   Global Instance Method_on_instance `{H' : State.Trait} `(Trait)
     : Notation.Dot "on_instance" := {
     Notation.dot
-        {F R : Set}
-        `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
+      {F R : Set}
+      `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
       :=
       on_instance;
   }.
