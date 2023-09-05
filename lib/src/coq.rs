@@ -739,7 +739,17 @@ impl<'a> Field<'a> {
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         nest([
-            function_header(&self.name, &self.args, &Vec::<(&String, _)>::new()),
+            group([
+                self.name.to_doc(),
+                if self.args.is_empty() {
+                    nil()
+                } else {
+                    group([
+                        line(),
+                        intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
+                    ])
+                },
+            ]),
             line(),
             text(":="),
             line(),
@@ -811,34 +821,4 @@ impl<'a> ArgDecl<'a> {
             kind: ArgSpecKind::Implicit,
         }
     }
-}
-
-/// produces a definition of the given function
-pub(crate) fn function_header<'a>(
-    name: &Path,
-    params: &[ArgDecl<'a>],
-    args: &[(&'a String, Doc<'a>)],
-) -> Doc<'a> {
-    group([
-        name.to_doc(),
-        if params.is_empty() {
-            nil()
-        } else {
-            group([
-                line(),
-                intersperse(params.iter().map(|param| param.to_doc()), [line()]),
-            ])
-        },
-        concat(args.iter().map(|(name, ty)| {
-            concat([nest([
-                line(),
-                text("("),
-                text(*name),
-                line(),
-                text(": "),
-                ty.clone(),
-                text(")"),
-            ])])
-        })),
-    ])
 }
