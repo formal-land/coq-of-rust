@@ -2153,10 +2153,7 @@ impl TopLevelItem {
                     .iter()
                     .map(|bound| {
                         bound.to_doc(
-                            coq::Expression::Variable {
-                                ident: Path::new(&["Self"]),
-                                no_implicit: false,
-                            },
+                            coq::Expression::just_name("Self"),
                             coq::ArgSpecKind::Implicit,
                         )
                     })
@@ -2208,10 +2205,7 @@ impl TopLevelItem {
                                 coq::ArgDecl::new(
                                     &coq::ArgDeclVar::Generalized {
                                         idents: vec![],
-                                        ty: coq::Expression::Variable {
-                                            ident: Path::new(&["Trait"]),
-                                            no_implicit: false,
-                                        },
+                                        ty: coq::Expression::just_name("Trait"),
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
@@ -2258,10 +2252,7 @@ impl TopLevelItem {
                                 ident: Path::new(&["Notation", "DoubleColonType"]),
                                 no_implicit: false,
                             }
-                            .apply(&coq::Expression::Variable {
-                                ident: Path::new(&["Self"]),
-                                no_implicit: false,
-                            })
+                            .apply(&coq::Expression::just_name("Self"))
                             .apply(&coq::Expression::String(name.to_owned())),
                             &coq::Expression::Record {
                                 fields: vec![coq::Field::new(
@@ -2284,10 +2275,7 @@ impl TopLevelItem {
                                 coq::ArgDecl::new(
                                     &coq::ArgDeclVar::Generalized {
                                         idents: vec![],
-                                        ty: coq::Expression::Variable {
-                                            ident: Path::new(&["Trait"]),
-                                            no_implicit: false,
-                                        },
+                                        ty: coq::Expression::just_name("Trait"),
                                     },
                                     coq::ArgSpecKind::Explicit,
                                 ),
@@ -2395,10 +2383,7 @@ impl TopLevelItem {
                                         ]),
                                         no_implicit: false,
                                     }
-                                    .apply(&coq::Expression::Variable {
-                                        ident: Path::new(&["Self"]),
-                                        no_implicit: false,
-                                    })
+                                    .apply(&coq::Expression::just_name("Self"))
                                     .apply_many_args(
                                         &ty_params
                                             .iter()
