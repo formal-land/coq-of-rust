@@ -1789,7 +1789,7 @@ impl TopLevelItem {
                     coq::TopLevel::add_context_in_section_if_necessary(
                         name,
                         ty_params,
-                        &[coq::TopLevelItem::Code(group([
+                        &coq::TopLevel::new(&[coq::TopLevelItem::Code(group([
                             if predicates.is_empty() {
                                 nil()
                             } else {
@@ -1904,7 +1904,7 @@ impl TopLevelItem {
                             } else {
                                 nil()
                             },
-                        ]))],
+                        ]))]),
                     ),
                 )
                 .to_doc(),
@@ -1937,48 +1937,47 @@ impl TopLevelItem {
                     coq::TopLevel::add_context_in_section_if_necessary(
                         name,
                         ty_params,
-                        &[coq::TopLevelItem::Code(group([
-                            text("Unset Primitive Projections."),
-                            hardline(),
-                            nest([
-                                text("Record"),
-                                line(),
-                                text("t"),
-                                line(),
-                                text(":"),
-                                line(),
-                                text("Set"),
-                                line(),
-                                text(":="),
-                                line(),
-                                text("{"),
-                            ]),
-                            if fields.is_empty() {
-                                text(" ")
-                            } else {
-                                concat([
+                        &coq::TopLevel::concat(&[
+                            coq::TopLevel::locally_unset_primitive_projections(&[
+                                coq::TopLevelItem::Code(group([
                                     nest([
-                                        hardline(),
-                                        intersperse(
-                                            fields.iter().map(|ty| {
-                                                nest([
-                                                    text("_ :"),
-                                                    line(),
-                                                    ty.to_doc(false),
-                                                    text(";"),
-                                                ])
-                                            }),
-                                            [hardline()],
-                                        ),
+                                        text("Record"),
+                                        line(),
+                                        text("t"),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        line(),
+                                        text(":="),
+                                        line(),
+                                        text("{"),
                                     ]),
-                                    hardline(),
-                                ])
-                            },
-                            text("}."),
-                            hardline(),
-                            text("Global Set Primitive Projections."),
-                            hardline(),
-                            intersperse(
+                                    if fields.is_empty() {
+                                        text(" ")
+                                    } else {
+                                        concat([
+                                            nest([
+                                                hardline(),
+                                                intersperse(
+                                                    fields.iter().map(|ty| {
+                                                        nest([
+                                                            text("_ :"),
+                                                            line(),
+                                                            ty.to_doc(false),
+                                                            text(";"),
+                                                        ])
+                                                    }),
+                                                    [hardline()],
+                                                ),
+                                            ]),
+                                            hardline(),
+                                        ])
+                                    },
+                                    text("}."),
+                                ])),
+                            ]),
+                            coq::TopLevel::new(&[coq::TopLevelItem::Code(concat([intersperse(
                                 fields.iter().enumerate().map(|(i, _)| {
                                     group([
                                         hardline(),
@@ -2033,8 +2032,8 @@ impl TopLevelItem {
                                     ])
                                 }),
                                 [nil()],
-                            ),
-                        ]))],
+                            )]))]),
+                        ]),
                     ),
                 )
                 .to_doc(),
@@ -2057,7 +2056,7 @@ impl TopLevelItem {
                     coq::TopLevel::add_context_in_section_if_necessary(
                         name,
                         ty_params,
-                        &[coq::TopLevelItem::Code(group([
+                        &coq::TopLevel::new(&[coq::TopLevelItem::Code(group([
                             nest([
                                 text("Inductive"),
                                 line(),
@@ -2067,7 +2066,7 @@ impl TopLevelItem {
                             ]),
                             line(),
                             nest([text("Build"), text(".")]),
-                        ]))],
+                        ]))]),
                     ),
                 )),
                 coq::TopLevelItem::Definition(coq::Definition::new(
@@ -2337,7 +2336,7 @@ impl TopLevelItem {
                         coq::TopLevel::add_context_in_section_if_necessary(
                             &module_name,
                             generic_tys,
-                            &[
+                            &coq::TopLevel::new(&[
                                 vec![
                                     coq::TopLevelItem::Definition(coq::Definition::new(
                                         "Self",
@@ -2426,7 +2425,7 @@ impl TopLevelItem {
                                     },
                                 ))],
                             ]
-                            .concat(),
+                            .concat()),
                         ),
                         coq::TopLevel::new(&[coq::TopLevelItem::Hint(
                             coq::Hint::standard_resolve(),

@@ -279,12 +279,10 @@ impl<'a> TopLevel<'a> {
     pub(crate) fn add_context_in_section_if_necessary(
         name: &str,
         ty_params: &[String],
-        items: &[TopLevelItem<'a>],
+        items: &TopLevel<'a>,
     ) -> Self {
         if ty_params.is_empty() {
-            TopLevel {
-                items: items.to_owned(),
-            }
+            items.to_owned()
         } else {
             TopLevel::add_context_in_section(name, ty_params, items)
         }
@@ -295,21 +293,21 @@ impl<'a> TopLevel<'a> {
     pub(crate) fn add_context_in_section(
         name: &str,
         ty_params: &[String],
-        items: &[TopLevelItem<'a>],
+        items: &TopLevel<'a>,
     ) -> Self {
         TopLevel {
             items: vec![TopLevelItem::Section(Section::new(
                 name,
                 &TopLevel {
                     items: [
-                        &[TopLevelItem::Context(Context::new(&[ArgDecl::new(
+                        vec![TopLevelItem::Context(Context::new(&[ArgDecl::new(
                             &ArgDeclVar::Normal {
                                 idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
                                 ty: Some(Expression::Set),
                             },
                             ArgSpecKind::Implicit,
                         )]))],
-                        items,
+                        items.items.to_owned(),
                     ]
                     .concat(),
                 },
