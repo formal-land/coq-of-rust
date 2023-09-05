@@ -1932,82 +1932,83 @@ impl TopLevelItem {
                 ty_params,
                 fields,
             } => group([
-                coq::Module::new(
-                    name,
-                    coq::TopLevel::add_context_in_section_if_necessary(
+                coq::TopLevel::new(&[
+                    coq::TopLevelItem::Module(coq::Module::new(
                         name,
-                        ty_params,
-                        &coq::TopLevel::concat(&[
-                            coq::TopLevel::locally_unset_primitive_projections(&[
-                                coq::TopLevelItem::Record(coq::Record::new(
-                                    "t",
-                                    &coq::Expression::Set,
+                        coq::TopLevel::add_context_in_section_if_necessary(
+                            name,
+                            ty_params,
+                            &coq::TopLevel::concat(&[
+                                coq::TopLevel::locally_unset_primitive_projections(&[
+                                    coq::TopLevelItem::Record(coq::Record::new(
+                                        "t",
+                                        &coq::Expression::Set,
+                                        &fields
+                                            .iter()
+                                            .map(|ty| coq::FieldDef::new(&None, &ty.to_coq()))
+                                            .collect::<Vec<_>>(),
+                                    )),
+                                ]),
+                                coq::TopLevel::new(&[coq::TopLevelItem::Line]),
+                                coq::TopLevel::new(
                                     &fields
                                         .iter()
-                                        .map(|ty| coq::FieldDef::new(&None, &ty.to_coq()))
-                                        .collect::<Vec<_>>(),
-                                )),
-                            ]),
-                            coq::TopLevel::new(&[coq::TopLevelItem::Line]),
-                            coq::TopLevel::new(
-                                &fields
-                                    .iter()
-                                    .enumerate()
-                                    .map(|(i, _)| {
-                                        coq::TopLevelItem::Instance(coq::Instance::new(
-                                            false,
-                                            &format!("Get_{i}"),
-                                            &[],
-                                            coq::Expression::Variable {
-                                                ident: Path::new(&["Notation", "Dot"]),
-                                                no_implicit: false,
-                                            }
-                                            .apply(&coq::Expression::just_name(&i.to_string())),
-                                            &coq::Expression::Record {
-                                                fields: vec![coq::Field::new(
-                                                    &Path::new(&["Notation", "dot"]),
-                                                    &[coq::ArgDecl::new(
-                                                        &coq::ArgDeclVar::Destructured {
-                                                            pattern: coq::Expression::just_name("Build_t")
-                                                                .apply_many(
-                                                                    &fields
-                                                                        .iter()
-                                                                        .enumerate()
-                                                                        .map(|(j, _)| if i == j {
-                                                                            coq::Expression::just_name(&format!("x{j}"))
-                                                                        } else {
-                                                                            coq::Expression::Wild
-                                                                        }
-                                                                    )
-                                                                    .collect::<Vec<_>>(),
-                                                                ),
-                                                        },
-                                                        coq::ArgSpecKind::Explicit,
+                                        .enumerate()
+                                        .map(|(i, _)| {
+                                            coq::TopLevelItem::Instance(coq::Instance::new(
+                                                false,
+                                                &format!("Get_{i}"),
+                                                &[],
+                                                coq::Expression::Variable {
+                                                    ident: Path::new(&["Notation", "Dot"]),
+                                                    no_implicit: false,
+                                                }
+                                                .apply(&coq::Expression::just_name(&i.to_string())),
+                                                &coq::Expression::Record {
+                                                    fields: vec![coq::Field::new(
+                                                        &Path::new(&["Notation", "dot"]),
+                                                        &[coq::ArgDecl::new(
+                                                            &coq::ArgDeclVar::Destructured {
+                                                                pattern: coq::Expression::just_name("Build_t")
+                                                                    .apply_many(
+                                                                        &fields
+                                                                            .iter()
+                                                                            .enumerate()
+                                                                            .map(|(j, _)| if i == j {
+                                                                                coq::Expression::just_name(&format!("x{j}"))
+                                                                            } else {
+                                                                                coq::Expression::Wild
+                                                                            }
+                                                                        )
+                                                                        .collect::<Vec<_>>(),
+                                                                    ),
+                                                            },
+                                                            coq::ArgSpecKind::Explicit,
+                                                        )],
+                                                        &coq::Expression::just_name(&format!("x{i}")),
                                                     )],
-                                                    &coq::Expression::just_name(&format!("x{i}")),
-                                                )],
-                                            },
-                                            vec![],
-                                        ))
-                                    })
-                                    .collect::<Vec<_>>(),
-                            ),
-                        ]),
-                    ),
-                )
+                                                },
+                                                vec![],
+                                            ))
+                                        })
+                                        .collect::<Vec<_>>(),
+                                ),
+                            ]),
+                        ),
+                    )),
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Alias {
+                            args: vec![],
+                            ty: None,
+                            body: coq::Expression::Variable {
+                                ident: Path::new(&[name, &"t".to_string()]),
+                                no_implicit: true,
+                            },
+                        },
+                    )),
+                ])
                 .to_doc(),
-                hardline(),
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":="),
-                    line(),
-                    text("@"),
-                    text(name),
-                    text(".t."),
-                ]),
             ]),
             TopLevelItem::TypeStructUnit { name, ty_params } => coq::TopLevel::new(&[
                 coq::TopLevelItem::Module(coq::Module::new(
