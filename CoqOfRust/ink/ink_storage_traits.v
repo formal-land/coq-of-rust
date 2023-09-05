@@ -31,7 +31,7 @@ Module impls.
       Context {L R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        _ : core.marker.PhantomData ((L * R));
+        _ : core.marker.PhantomData (L * R);
       }.
       Global Set Primitive Projections.
       
@@ -69,7 +69,7 @@ Module ResolverKey.
     Context {L R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      _ : core.marker.PhantomData ((L * R));
+      _ : core.marker.PhantomData (L * R);
     }.
     Global Set Primitive Projections.
     
