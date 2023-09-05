@@ -1948,62 +1948,50 @@ impl TopLevelItem {
                                         .collect::<Vec<_>>(),
                                 )),
                             ]),
-                            coq::TopLevel::new(&[coq::TopLevelItem::Code(concat([intersperse(
-                                fields.iter().enumerate().map(|(i, _)| {
-                                    group([
-                                        hardline(),
-                                        nest([
-                                            nest([
-                                                nest([
-                                                    text("Global Instance"),
-                                                    line(),
-                                                    text(format!("Get_{i}")),
-                                                    text(" :"),
-                                                ]),
-                                                line(),
-                                                nest([
-                                                    text("Notation.Dot"),
-                                                    line(),
-                                                    text(i.to_string()),
-                                                    text(" := {"),
-                                                ]),
-                                            ]),
-                                            if !fields.is_empty() {
-                                                hardline()
-                                            } else {
-                                                nil()
+                            coq::TopLevel::new(&[coq::TopLevelItem::Line]),
+                            coq::TopLevel::new(
+                                &fields
+                                    .iter()
+                                    .enumerate()
+                                    .map(|(i, _)| {
+                                        coq::TopLevelItem::Instance(coq::Instance::new(
+                                            false,
+                                            &format!("Get_{i}"),
+                                            &[],
+                                            coq::Expression::Variable {
+                                                ident: Path::new(&["Notation", "Dot"]),
+                                                no_implicit: false,
+                                            }
+                                            .apply(&coq::Expression::just_name(&i.to_string())),
+                                            &coq::Expression::Record {
+                                                fields: vec![coq::Field::new(
+                                                    &Path::new(&["Notation", "dot"]),
+                                                    &[coq::ArgDecl::new(
+                                                        &coq::ArgDeclVar::Destructured {
+                                                            pattern: coq::Expression::just_name("Build_t")
+                                                                .apply_many(
+                                                                    &fields
+                                                                        .iter()
+                                                                        .enumerate()
+                                                                        .map(|(j, _)| if i == j {
+                                                                            coq::Expression::just_name(&format!("x{j}"))
+                                                                        } else {
+                                                                            coq::Expression::Wild
+                                                                        }
+                                                                    )
+                                                                    .collect::<Vec<_>>(),
+                                                                ),
+                                                        },
+                                                        coq::ArgSpecKind::Explicit,
+                                                    )],
+                                                    &coq::Expression::just_name(&format!("x{i}")),
+                                                )],
                                             },
-                                            nest([
-                                                text("Notation.dot"),
-                                                line(),
-                                                nest([
-                                                    text("'(Build_t"),
-                                                    line(),
-                                                    intersperse(
-                                                        (0..fields.len()).map(|j| {
-                                                            if i == j {
-                                                                text(format!("x{j}"))
-                                                            } else {
-                                                                text("_")
-                                                            }
-                                                        }),
-                                                        [line()],
-                                                    ),
-                                                    text(")"),
-                                                ]),
-                                                line(),
-                                                text(":="),
-                                                line(),
-                                                text(format!("x{i}")),
-                                                text(";"),
-                                            ]),
-                                        ]),
-                                        hardline(),
-                                        text("}."),
-                                    ])
-                                }),
-                                [nil()],
-                            )]))]),
+                                            vec![],
+                                        ))
+                                    })
+                                    .collect::<Vec<_>>(),
+                            ),
                         ]),
                     ),
                 )

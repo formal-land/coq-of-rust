@@ -210,6 +210,8 @@ pub(crate) enum ArgDeclVar<'a> {
         /// a type of the identifiers
         ty: Expression<'a>,
     },
+    /// a destructured argument
+    Destructured { pattern: Expression<'a> },
 }
 
 #[derive(Clone)]
@@ -860,6 +862,9 @@ impl<'a> ArgDecl<'a> {
                     ty.to_doc(false),
                 ])),
             ]),
+            ArgDeclVar::Destructured { pattern } => {
+                group([text("'"), brackets(pattern.to_doc(false))])
+            }
         }
     }
 
