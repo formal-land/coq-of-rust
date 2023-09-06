@@ -6,33 +6,6 @@ Require CoqOfRust.ink.ink_env.
 (* @TODO Require CoqOfRust.ink.ink. *)
 
 (** @TODO [erc20] dependencies which are WIP *)
-Module ink_env.
-  Module types.
-
-    Parameter DefaultEnvironment : Set.
-    
-    Module Environment.
-      Parameter AccountId : Set.
-      Parameter Balance : Set.
-      Parameter Hash : Set.
-      Parameter Timestamp : Set.
-      Parameter BlockNumber : Set.
-      Parameter ChainExtension : Set.
-      Parameter MAX_EVENT_TOPICS : usize.
-    End Environment.
-  End types.
-  
-  Module contract.
-    Module ContractEnv.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Type := {
-          Env : Set
-        }.
-      Global Set Primitive Projections.
-    End ContractEnv.
-
-  End contract.
-End ink_env.
 
 Module ink.
   Module codegen.
@@ -105,10 +78,17 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Env : Set := ink_env.types.DefaultEnvironment.
+
+    Global Instance Impl_Environment_for_Env : ink_env.types.Environment.Trait Env. Admitted.
+    Global Hint Resolve Impl_Environment_for_Env : core.
     
+    #[refine]
     Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
       ink_env.contract.ContractEnv.Env := Env;
     }.
+    eauto.
+    Defined.
+    Global Hint Resolve I : core.
     Global Hint Resolve I : core.
   End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   
@@ -322,7 +302,6 @@ Module erc20.
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
-    (* @WIP *)
     Definition
       CALLABLE `{State.Trait} := Pure
         (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
