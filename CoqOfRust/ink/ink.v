@@ -252,6 +252,7 @@ Module codegen.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
       Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+      Arguments EventRespectsTopicLimit {_} {_}.
       
       Module RespectTopicLimit.
         Unset Primitive Projections.
@@ -700,6 +701,7 @@ Module event.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
     Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+    Arguments EventRespectsTopicLimit {_} {_}.
     
     Module RespectTopicLimit.
       Unset Primitive Projections.
@@ -796,6 +798,7 @@ Module topics.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
   Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+  Arguments EventRespectsTopicLimit {_} {_}.
   
   Module RespectTopicLimit.
     Unset Primitive Projections.
@@ -840,6 +843,7 @@ Module EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
 Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+Arguments EventRespectsTopicLimit {_} {_}.
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
@@ -2501,7 +2505,7 @@ Module env_access.
       Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        marker : core.marker.PhantomData ((ref E));
+        marker : core.marker.PhantomData (ref E);
       }.
       Global Set Primitive Projections.
       
@@ -2518,7 +2522,7 @@ Module EnvAccess.
     Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      marker : core.marker.PhantomData ((ref E));
+      marker : core.marker.PhantomData (ref E);
     }.
     Global Set Primitive Projections.
     

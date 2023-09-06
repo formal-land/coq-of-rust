@@ -609,6 +609,7 @@ Module engine.
         End DefaultAccounts.
       End DefaultAccounts.
       Definition DefaultAccounts := @DefaultAccounts.t.
+      Arguments DefaultAccounts {_}.
       
       Parameter assert_contract_termination :
           forall
@@ -686,7 +687,7 @@ Module topics.
       Unset Primitive Projections.
       Record t : Set := {
         backend : B;
-        state : core.marker.PhantomData ((S * E));
+        state : core.marker.PhantomData (S * E);
       }.
       Global Set Primitive Projections.
       
@@ -1366,6 +1367,7 @@ Module call.
       End CallParams.
     End CallParams.
     Definition CallParams := @CallParams.t.
+    Arguments CallParams {_}.
     
     Module Call.
       Section Call.
@@ -1392,6 +1394,7 @@ Module call.
       End Call.
     End Call.
     Definition Call := @Call.t.
+    Arguments Call {_}.
     
     Module DelegateCall.
       Section DelegateCall.
@@ -1409,6 +1412,7 @@ Module call.
       End DelegateCall.
     End DelegateCall.
     Definition DelegateCall := @DelegateCall.t.
+    Arguments DelegateCall {_}.
     
     Module CallBuilder.
       Section CallBuilder.
@@ -1442,6 +1446,7 @@ Module call.
       End CallBuilder.
     End CallBuilder.
     Definition CallBuilder := @CallBuilder.t.
+    Arguments CallBuilder {_}.
   End call_builder.
   
   Module create_builder.
@@ -1542,6 +1547,7 @@ Module call.
       End CreateParams.
     End CreateParams.
     Definition CreateParams := @CreateParams.t.
+    Arguments CreateParams {_}.
     
     Module CreateBuilder.
       Section CreateBuilder.
@@ -1556,7 +1562,7 @@ Module call.
           exec_input : Args;
           salt : Salt;
           return_type : RetType;
-          _phantom : core.marker.PhantomData ((E * ContractRef));
+          _phantom : core.marker.PhantomData (E * ContractRef);
         }.
         Global Set Primitive Projections.
         
@@ -1584,6 +1590,7 @@ Module call.
       End CreateBuilder.
     End CreateBuilder.
     Definition CreateBuilder := @CreateBuilder.t.
+    Arguments CreateBuilder {_}.
   End create_builder.
 End call.
 
@@ -2308,6 +2315,7 @@ Module call_builder.
     End CallParams.
   End CallParams.
   Definition CallParams := @CallParams.t.
+  Arguments CallParams {_}.
   
   Module Call.
     Section Call.
@@ -2334,6 +2342,7 @@ Module call_builder.
     End Call.
   End Call.
   Definition Call := @Call.t.
+  Arguments Call {_}.
   
   Module DelegateCall.
     Section DelegateCall.
@@ -2351,6 +2360,7 @@ Module call_builder.
     End DelegateCall.
   End DelegateCall.
   Definition DelegateCall := @DelegateCall.t.
+  Arguments DelegateCall {_}.
   
   Module CallBuilder.
     Section CallBuilder.
@@ -2384,6 +2394,7 @@ Module call_builder.
     End CallBuilder.
   End CallBuilder.
   Definition CallBuilder := @CallBuilder.t.
+  Arguments CallBuilder {_}.
 End call_builder.
 
 Module CallParams.
@@ -2418,6 +2429,7 @@ Module CallParams.
   End CallParams.
 End CallParams.
 Definition CallParams := @CallParams.t.
+Arguments CallParams {_}.
 
 
 
@@ -2446,6 +2458,7 @@ Module Call.
   End Call.
 End Call.
 Definition Call := @Call.t.
+Arguments Call {_}.
 
 Module DelegateCall.
   Section DelegateCall.
@@ -2463,6 +2476,7 @@ Module DelegateCall.
   End DelegateCall.
 End DelegateCall.
 Definition DelegateCall := @DelegateCall.t.
+Arguments DelegateCall {_}.
 
 Module CallBuilder.
   Section CallBuilder.
@@ -2496,6 +2510,7 @@ Module CallBuilder.
   End CallBuilder.
 End CallBuilder.
 Definition CallBuilder := @CallBuilder.t.
+Arguments CallBuilder {_}.
 
 Module common.
   Module ReturnType.
@@ -2739,6 +2754,7 @@ Module create_builder.
     End CreateParams.
   End CreateParams.
   Definition CreateParams := @CreateParams.t.
+  Arguments CreateParams {_}.
   
   Module CreateBuilder.
     Section CreateBuilder.
@@ -2753,7 +2769,7 @@ Module create_builder.
         exec_input : Args;
         salt : Salt;
         return_type : RetType;
-        _phantom : core.marker.PhantomData ((E * ContractRef));
+        _phantom : core.marker.PhantomData (E * ContractRef);
       }.
       Global Set Primitive Projections.
       
@@ -2781,6 +2797,7 @@ Module create_builder.
     End CreateBuilder.
   End CreateBuilder.
   Definition CreateBuilder := @CreateBuilder.t.
+  Arguments CreateBuilder {_}.
 End create_builder.
 
 Module state.
@@ -2886,6 +2903,7 @@ Module CreateParams.
   End CreateParams.
 End CreateParams.
 Definition CreateParams := @CreateParams.t.
+Arguments CreateParams {_}.
 
 Module CreateBuilder.
   Section CreateBuilder.
@@ -2899,7 +2917,7 @@ Module CreateBuilder.
       exec_input : Args;
       salt : Salt;
       return_type : RetType;
-      _phantom : core.marker.PhantomData ((E * ContractRef));
+      _phantom : core.marker.PhantomData (E * ContractRef);
     }.
     Global Set Primitive Projections.
     
@@ -2927,6 +2945,7 @@ Module CreateBuilder.
   End CreateBuilder.
 End CreateBuilder.
 Definition CreateBuilder := @CreateBuilder.t.
+Arguments CreateBuilder {_}.
 
 
 
@@ -3123,7 +3142,7 @@ Module chain_extension.
       Unset Primitive Projections.
       Record t : Set := {
         func_id : u32;
-        state : core.marker.PhantomData ((I * O * ErrorCode));
+        state : core.marker.PhantomData ((I * O) * ErrorCode);
       }.
       Global Set Primitive Projections.
       
@@ -3209,7 +3228,7 @@ Module ChainExtensionMethod.
     Unset Primitive Projections.
     Record t : Set := {
       func_id : u32;
-      state : core.marker.PhantomData ((I * O * ErrorCode));
+      state : core.marker.PhantomData ((I * O) * ErrorCode);
     }.
     Global Set Primitive Projections.
     
@@ -3507,6 +3526,7 @@ Module off_chain.
       End DefaultAccounts.
     End DefaultAccounts.
     Definition DefaultAccounts := @DefaultAccounts.t.
+    Arguments DefaultAccounts {_}.
     
     Parameter assert_contract_termination :
         forall
@@ -3720,6 +3740,7 @@ Module test_api.
     End DefaultAccounts.
   End DefaultAccounts.
   Definition DefaultAccounts := @DefaultAccounts.t.
+  Arguments DefaultAccounts {_}.
   
   Parameter assert_contract_termination :
       forall
@@ -3868,6 +3889,7 @@ Module DefaultAccounts.
   End DefaultAccounts.
 End DefaultAccounts.
 Definition DefaultAccounts := @DefaultAccounts.t.
+Arguments DefaultAccounts {_}.
 
 
 

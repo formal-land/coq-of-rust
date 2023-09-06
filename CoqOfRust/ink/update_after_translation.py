@@ -561,7 +561,7 @@ End private.""",
     Unset Primitive Projections.
     Record t : Set := {
       backend : B;
-      state : core.marker.PhantomData ((S * E));
+      state : core.marker.PhantomData (S * E);
     }.
     Global Set Primitive Projections.
     

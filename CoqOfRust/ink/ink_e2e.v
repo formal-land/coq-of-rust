@@ -84,6 +84,7 @@ Module client.
     End InstantiationResult.
   End InstantiationResult.
   Definition InstantiationResult : Set := @InstantiationResult.t.
+  Arguments InstantiationResult {_} {_}.
   
   Module UploadResult.
     Section UploadResult.
@@ -115,6 +116,7 @@ Module client.
     End UploadResult.
   End UploadResult.
   Definition UploadResult : Set := @UploadResult.t.
+  Arguments UploadResult {_} {_}.
   
   Module CallResult.
     Section CallResult.
@@ -138,6 +140,7 @@ Module client.
     End CallResult.
   End CallResult.
   Definition CallResult : Set := @CallResult.t.
+  Arguments CallResult {_} {_}.
   
   Module CallDryRunResult.
     Section CallDryRunResult.
@@ -161,6 +164,7 @@ Module client.
     End CallDryRunResult.
   End CallDryRunResult.
   Definition CallDryRunResult : Set := @CallDryRunResult.t.
+  Arguments CallDryRunResult {_}.
   
   Module Error.
     Inductive t : Set :=
@@ -216,6 +220,7 @@ Module client.
     End Client.
   End Client.
   Definition Client : Set := @Client.t.
+  Arguments Client {_} {_}.
 End client.
 
 Definition CallBuilderFinal (E Args RetType : Set) : Set :=
@@ -254,6 +259,7 @@ Module InstantiationResult.
   End InstantiationResult.
 End InstantiationResult.
 Definition InstantiationResult : Set := @InstantiationResult.t.
+Arguments InstantiationResult {_} {_}.
 
 Module UploadResult.
   Section UploadResult.
@@ -283,6 +289,7 @@ Module UploadResult.
   End UploadResult.
 End UploadResult.
 Definition UploadResult : Set := @UploadResult.t.
+Arguments UploadResult {_} {_}.
 
 Module CallResult.
   Section CallResult.
@@ -304,6 +311,7 @@ Module CallResult.
   End CallResult.
 End CallResult.
 Definition CallResult : Set := @CallResult.t.
+Arguments CallResult {_} {_}.
 
 Module CallDryRunResult.
   Section CallDryRunResult.
@@ -327,6 +335,7 @@ Module CallDryRunResult.
   End CallDryRunResult.
 End CallDryRunResult.
 Definition CallDryRunResult : Set := @CallDryRunResult.t.
+Arguments CallDryRunResult {_}.
 
 Module Error.
   Inductive t : Set :=
@@ -380,6 +389,7 @@ Module Client.
   End Client.
 End Client.
 Definition Client : Set := @Client.t.
+Arguments Client {_} {_}.
 
 Module default_accounts.
   Parameter alice :
@@ -592,6 +602,7 @@ Module node_proc.
     End TestNodeProcess.
   End TestNodeProcess.
   Definition TestNodeProcess : Set := @TestNodeProcess.t.
+  Arguments TestNodeProcess {_}.
   
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
@@ -642,6 +653,7 @@ Module TestNodeProcess.
   End TestNodeProcess.
 End TestNodeProcess.
 Definition TestNodeProcess : Set := @TestNodeProcess.t.
+Arguments TestNodeProcess {_}.
 
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
@@ -722,6 +734,7 @@ Module xts.
     End InstantiateWithCode.
   End InstantiateWithCode.
   Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
+  Arguments InstantiateWithCode {_}.
   
   Module Call.
     Section Call.
@@ -756,6 +769,7 @@ Module xts.
     End Call.
   End Call.
   Definition Call : Set := @Call.t.
+  Arguments Call {_}.
   
   Module Transfer.
     Section Transfer.
@@ -779,6 +793,7 @@ Module xts.
     End Transfer.
   End Transfer.
   Definition Transfer : Set := @Transfer.t.
+  Arguments Transfer {_} {_}.
   
   Module Determinism.
     Inductive t : Set :=
@@ -812,6 +827,7 @@ Module xts.
     End UploadCode.
   End UploadCode.
   Definition UploadCode : Set := @UploadCode.t.
+  Arguments UploadCode {_}.
   
   Module ContractsApi.
     Section ContractsApi.
@@ -822,7 +838,7 @@ Module xts.
       Unset Primitive Projections.
       Record t : Set := {
         client : subxt.client.online_client.OnlineClient C;
-        _phantom : core.marker.PhantomData ((C * E));
+        _phantom : core.marker.PhantomData (C * E);
       }.
       Global Set Primitive Projections.
       
@@ -835,6 +851,7 @@ Module xts.
     End ContractsApi.
   End ContractsApi.
   Definition ContractsApi : Set := @ContractsApi.t.
+  Arguments ContractsApi {_} {_}.
 End xts.
 
 Module Weight.
@@ -891,6 +908,7 @@ Module InstantiateWithCode.
   End InstantiateWithCode.
 End InstantiateWithCode.
 Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
+Arguments InstantiateWithCode {_}.
 
 Module Call.
   Section Call.
@@ -925,6 +943,7 @@ Module Call.
   End Call.
 End Call.
 Definition Call : Set := @Call.t.
+Arguments Call {_}.
 
 Module Transfer.
   Section Transfer.
@@ -946,6 +965,7 @@ Module Transfer.
   End Transfer.
 End Transfer.
 Definition Transfer : Set := @Transfer.t.
+Arguments Transfer {_} {_}.
 
 Module Determinism.
   Inductive t : Set :=
@@ -979,6 +999,7 @@ Module UploadCode.
   End UploadCode.
 End UploadCode.
 Definition UploadCode : Set := @UploadCode.t.
+Arguments UploadCode {_}.
 
 Module ContractsApi.
   Section ContractsApi.
@@ -987,7 +1008,7 @@ Module ContractsApi.
     Unset Primitive Projections.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
-      _phantom : core.marker.PhantomData ((C * E));
+      _phantom : core.marker.PhantomData (C * E);
     }.
     Global Set Primitive Projections.
     
@@ -1000,6 +1021,7 @@ Module ContractsApi.
   End ContractsApi.
 End ContractsApi.
 Definition ContractsApi : Set := @ContractsApi.t.
+Arguments ContractsApi {_} {_}.
 
 Module SubstrateConfig.
   Inductive t : Set :=
