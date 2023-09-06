@@ -199,17 +199,10 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
             let func = segment.ident.to_string();
             let infer_args = segment.infer_args;
             match tykind {
-                TyKind::Path(qpath1) => match qpath1 {
-                    QPath::LangItem(_, _, _) => Expr::AssociatedFunction {
-                        ty,
-                        func,
-                        infer_args: false,
-                    },
-                    _ => Expr::AssociatedFunction {
-                        ty,
-                        func,
-                        infer_args,
-                    },
+                TyKind::Path(QPath::LangItem(_, _, _)) => Expr::AssociatedFunction {
+                    ty,
+                    func,
+                    infer_args: false,
                 },
                 _ => Expr::AssociatedFunction {
                     ty,
