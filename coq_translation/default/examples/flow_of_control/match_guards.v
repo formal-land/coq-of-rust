@@ -14,9 +14,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match temperature with
   | match_guards.Temperature.Celsius t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of t) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ ""; "C is above 30 Celsius
 " ])
           (addr_of [ α0 ]) in
@@ -24,9 +24,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_guards.Temperature.Celsius t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of t) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ ""; "C is below 30 Celsius
 " ])
           (addr_of [ α0 ]) in
@@ -34,9 +34,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_guards.Temperature.Fahrenheit t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of t) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ ""; "F is above 86 Fahrenheit
 " ])
           (addr_of [ α0 ]) in
@@ -44,9 +44,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_guards.Temperature.Fahrenheit t =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of t) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of t) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ ""; "F is below 86 Fahrenheit
 " ])
           (addr_of [ α0 ]) in

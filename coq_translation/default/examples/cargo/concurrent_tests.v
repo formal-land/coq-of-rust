@@ -9,13 +9,13 @@ Definition foo
   match o with
   | core.option.Option.Some _a =>
     let* _ :=
-      let* α0 := format_arguments::["new_const"] (addr_of [ "some
+      let* α0 := (format_arguments _)::["new_const"] (addr_of [ "some
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | core.option.Option.None =>
     let* _ :=
-      let* α0 := format_arguments::["new_const"] (addr_of [ "nothing
+      let* α0 := (format_arguments _)::["new_const"] (addr_of [ "nothing
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
@@ -24,7 +24,7 @@ Definition foo
 Module tests.
   Definition test_file `{H' : State.Trait} : M (H := H') unit :=
     let* file :=
-      let* α0 := std.fs.OpenOptions::["new"] in
+      let* α0 := (std.fs.OpenOptions _)::["new"] in
       let* α1 := α0.["append"] true in
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
@@ -51,7 +51,7 @@ Module tests.
   
   Definition test_file_also `{H' : State.Trait} : M (H := H') unit :=
     let* file :=
-      let* α0 := std.fs.OpenOptions::["new"] in
+      let* α0 := (std.fs.OpenOptions _)::["new"] in
       let* α1 := α0.["append"] true in
       let* α2 := α1.["create"] true in
       let* α3 := α2.["open"] "ferris.txt" in
@@ -79,7 +79,7 @@ End tests.
 
 Definition test_file `{H' : State.Trait} : M (H := H') unit :=
   let* file :=
-    let* α0 := std.fs.OpenOptions::["new"] in
+    let* α0 := (std.fs.OpenOptions _)::["new"] in
     let* α1 := α0.["append"] true in
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in
@@ -106,7 +106,7 @@ Definition test_file `{H' : State.Trait} : M (H := H') unit :=
 
 Definition test_file_also `{H' : State.Trait} : M (H := H') unit :=
   let* file :=
-    let* α0 := std.fs.OpenOptions::["new"] in
+    let* α0 := (std.fs.OpenOptions _)::["new"] in
     let* α1 := α0.["append"] true in
     let* α2 := α1.["create"] true in
     let* α3 := α2.["open"] "ferris.txt" in

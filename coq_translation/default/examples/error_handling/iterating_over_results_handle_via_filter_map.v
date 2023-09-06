@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
+    ((Slice _) _)::["into_vec"] α0 in
   let* numbers :=
     let* α0 := strings.["into_iter"] in
     let* α1 :=
@@ -16,9 +16,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     α1.["collect"] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of numbers) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of numbers) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Results: "; "
 " ])
           (addr_of [ α0 ]) in

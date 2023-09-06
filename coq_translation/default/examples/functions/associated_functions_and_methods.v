@@ -174,10 +174,10 @@ Module Impl_associated_functions_and_methods_Pair.
     let 'associated_functions_and_methods.Pair.Build_t first second := self in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of first) in
-        let* α1 := format_argument::["new_display"] (addr_of second) in
+        let* α0 := (format_argument _)::["new_display"] (addr_of first) in
+        let* α1 := (format_argument _)::["new_display"] (addr_of second) in
         let* α2 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Destroying Pair("; ", "; ")
 " ])
             (addr_of [ α0; α1 ]) in
@@ -194,9 +194,11 @@ End Impl_associated_functions_and_methods_Pair.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* rectangle :=
-    let* α0 := associated_functions_and_methods.Point::["origin"] in
+    let* α0 := (associated_functions_and_methods.Point _)::["origin"] in
     let* α1 :=
-      associated_functions_and_methods.Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *) in
+      (associated_functions_and_methods.Point _)::["new"]
+        3 (* 3.0 *)
+        4 (* 4.0 *) in
     Pure
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -205,9 +207,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := rectangle.["perimeter"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Rectangle perimeter: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -216,18 +218,20 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := rectangle.["area"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Rectangle area: "; "
 " ])
           (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   let* square :=
-    let* α0 := associated_functions_and_methods.Point::["origin"] in
+    let* α0 := (associated_functions_and_methods.Point _)::["origin"] in
     let* α1 :=
-      associated_functions_and_methods.Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *) in
+      (associated_functions_and_methods.Point _)::["new"]
+        1 (* 1.0 *)
+        1 (* 1.0 *) in
     Pure
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -235,8 +239,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       |} in
   let* _ := square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) in
   let* pair :=
-    let* α0 := alloc.boxed.Box::["new"] 1 in
-    let* α1 := alloc.boxed.Box::["new"] 2 in
+    let* α0 := (alloc.boxed.Box _)::["new"] 1 in
+    let* α1 := (alloc.boxed.Box _)::["new"] 2 in
     Pure (associated_functions_and_methods.Pair.Build_t α0 α1) in
   let* _ := pair.["destroy"] in
   Pure tt.

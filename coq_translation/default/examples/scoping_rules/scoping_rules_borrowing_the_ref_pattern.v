@@ -56,9 +56,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α0 := ref_c1.["deref"] in
       let* α1 := ref_c2.["deref"] in
       let* α2 := α0.["eq"] α1 in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
+      let* α3 := (format_argument _)::["new_display"] (addr_of α2) in
       let* α4 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "ref_c1 equals ref_c2: "; "
 " ])
           (addr_of [ α3 ]) in
@@ -91,10 +91,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of point.["x"]) in
-      let* α1 := format_argument::["new_display"] (addr_of point.["y"]) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of point.["x"]) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of point.["y"]) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "point is ("; ", "; ")
 " ])
           (addr_of [ α0; α1 ]) in
@@ -103,18 +103,18 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of mutable_point.["x"]) in
+        (format_argument _)::["new_display"] (addr_of mutable_point.["x"]) in
       let* α1 :=
-        format_argument::["new_display"] (addr_of mutable_point.["y"]) in
+        (format_argument _)::["new_display"] (addr_of mutable_point.["y"]) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "mutable_point is ("; ", "; ")
 " ])
           (addr_of [ α0; α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   let* mutable_tuple :=
-    let* α0 := alloc.boxed.Box::["new"] 5 in
+    let* α0 := (alloc.boxed.Box _)::["new"] 5 in
     Pure (α0, 3) in
   let* _ :=
     let '(_, last) := mutable_tuple in
@@ -124,9 +124,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of mutable_tuple) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of mutable_tuple) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "tuple is "; "
 " ])
           (addr_of [ α0 ]) in

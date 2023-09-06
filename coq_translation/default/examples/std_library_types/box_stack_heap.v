@@ -36,7 +36,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
+    (core.fmt.Formatter _)::["debug_struct_field2_finish"]
       f
       "Point"
       "x"
@@ -111,7 +111,7 @@ Definition origin `{H' : State.Trait} : M (H := H') box_stack_heap.Point :=
 Definition boxed_origin
     `{H' : State.Trait}
     : M (H := H') (alloc.boxed.Box box_stack_heap.Point) :=
-  alloc.boxed.Box::["new"]
+  (alloc.boxed.Box _)::["new"]
     {|
       box_stack_heap.Point.x := 0 (* 0.0 *);
       box_stack_heap.Point.y := 0 (* 0.0 *);
@@ -135,7 +135,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* boxed_rectangle :=
     let* α0 := box_stack_heap.origin in
     let* α1 := 4 (* 4.0 *).["neg"] in
-    alloc.boxed.Box::["new"]
+    (alloc.boxed.Box _)::["new"]
       {|
         box_stack_heap.Rectangle.top_left := α0;
         box_stack_heap.Rectangle.bottom_right :=
@@ -146,16 +146,16 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       |} in
   let* boxed_point :=
     let* α0 := box_stack_heap.origin in
-    alloc.boxed.Box::["new"] α0 in
+    (alloc.boxed.Box _)::["new"] α0 in
   let* box_in_a_box :=
     let* α0 := box_stack_heap.boxed_origin in
-    alloc.boxed.Box::["new"] α0 in
+    (alloc.boxed.Box _)::["new"] α0 in
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of point) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Point occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -164,9 +164,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of rectangle) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Rectangle occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -175,9 +175,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of boxed_point) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Boxed point occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -186,9 +186,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of boxed_rectangle) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Boxed rectangle occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -197,9 +197,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of box_in_a_box) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Boxed box occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -209,9 +209,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of unboxed_point) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Unboxed point occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in

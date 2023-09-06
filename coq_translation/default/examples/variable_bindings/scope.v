@@ -9,9 +9,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_argument::["new_display"] (addr_of short_lived_binding) in
+          (format_argument _)::["new_display"] (addr_of short_lived_binding) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "inner short: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -21,9 +21,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of long_lived_binding) in
+        (format_argument _)::["new_display"] (addr_of long_lived_binding) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "outer long: "; "
 " ])
           (addr_of [ α0 ]) in

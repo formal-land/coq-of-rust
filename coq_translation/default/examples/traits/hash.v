@@ -52,7 +52,7 @@ Definition calculate_hash
     `{core.hash.Hash.Trait T}
     (t : ref T)
     : M (H := H') u64 :=
-  let* s := std.collections.hash.map.DefaultHasher::["new"] in
+  let* s := (std.collections.hash.map.DefaultHasher _)::["new"] in
   let* _ := t.["hash"] (addr_of s) in
   s.["finish"].
 

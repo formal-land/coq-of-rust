@@ -26,7 +26,7 @@ Module Impl_enums_testcase_linked_list_List.
       (self : Self)
       (elem : u32)
       : M (H := H') enums_testcase_linked_list.List :=
-    let* α0 := alloc.boxed.Box::["new"] self in
+    let* α0 := (alloc.boxed.Box _)::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
   
   Global Instance Method_prepend `{H' : State.Trait} :
@@ -55,18 +55,18 @@ Module Impl_enums_testcase_linked_list_List.
     match α0 with
     | enums_testcase_linked_list.List.Cons head tail =>
       let* res :=
-        let* α0 := format_argument::["new_display"] (addr_of head) in
+        let* α0 := (format_argument _)::["new_display"] (addr_of head) in
         let* α1 := tail.["stringify"] in
-        let* α2 := format_argument::["new_display"] (addr_of α1) in
+        let* α2 := (format_argument _)::["new_display"] (addr_of α1) in
         let* α3 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ ""; ", " ])
             (addr_of [ α0; α2 ]) in
         alloc.fmt.format α3 in
       Pure res
     | enums_testcase_linked_list.List.Nil =>
       let* res :=
-        let* α0 := format_arguments::["new_const"] (addr_of [ "Nil" ]) in
+        let* α0 := (format_arguments _)::["new_const"] (addr_of [ "Nil" ]) in
         alloc.fmt.format α0 in
       Pure res
     end.
@@ -79,7 +79,7 @@ End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* list := enums_testcase_linked_list.List::["new"] in
+  let* list := (enums_testcase_linked_list.List _)::["new"] in
   let* _ :=
     let* α0 := list.["prepend"] 1 in
     assign list α0 in
@@ -92,9 +92,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := list.["len"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "linked list has length: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -103,10 +103,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := list.["stringify"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
+        (format_arguments _)::["new_v1"]
+          (addr_of [ ""; "
+" ])
+          (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.

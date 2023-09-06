@@ -22,20 +22,20 @@ Definition double_first
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-    (Slice _)::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ "42"; "93"; "18" ] in
+    ((Slice _) _)::["into_vec"] α0 in
+  let* empty := (alloc.vec.Vec _)::["new"] in
   let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
+    ((Slice _) _)::["into_vec"] α0 in
   let* _ :=
     let* _ :=
       let* α0 :=
         pulling_results_out_of_options_with_stop_error_processing.double_first
           numbers in
-      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "The first doubled is "; "
 " ])
           (addr_of [ α1 ]) in
@@ -46,9 +46,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α0 :=
         pulling_results_out_of_options_with_stop_error_processing.double_first
           empty in
-      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "The first doubled is "; "
 " ])
           (addr_of [ α1 ]) in
@@ -59,9 +59,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α0 :=
         pulling_results_out_of_options_with_stop_error_processing.double_first
           strings in
-      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "The first doubled is "; "
 " ])
           (addr_of [ α1 ]) in

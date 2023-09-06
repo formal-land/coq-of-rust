@@ -75,9 +75,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         generics_bounds_test_case_empty_bounds.red (addr_of cardinal) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "A cardinal is "; "
 " ])
           (addr_of [ α1 ]) in
@@ -87,9 +87,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         generics_bounds_test_case_empty_bounds.blue (addr_of blue_jay) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "A blue jay is "; "
 " ])
           (addr_of [ α1 ]) in

@@ -15,9 +15,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let static_string := "I'm in read-only memory" in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of static_string) in
+        let* α0 :=
+          (format_argument _)::["new_display"] (addr_of static_string) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "static_string: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -31,9 +32,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         (addr_of lifetime_num) in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of coerced_static) in
+        let* α0 :=
+          (format_argument _)::["new_display"] (addr_of coerced_static) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "coerced_static: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -43,10 +45,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"]
+        (format_argument _)::["new_display"]
           (addr_of scoping_rules_lifetimes_reference_lifetime_static.NUM) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "NUM: "; " stays accessible!
 " ])
           (addr_of [ α0 ]) in

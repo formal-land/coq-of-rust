@@ -33,10 +33,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       |}
       =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of b) in
-      let* α1 := format_argument::["new_display"] (addr_of y) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of b) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of y) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "First of x is 1, b = "; ",  y = "; " 
 " ])
           (addr_of [ α0; α1 ]) in
@@ -49,9 +49,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       |}
       =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of i) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of i) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "y is 2, i = "; "
 " ])
           (addr_of [ α0 ]) in
@@ -59,9 +59,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | {| match_destructuring_structs.Foo.y := y; |} =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of y) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of y) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "y = "; ", we don't care about x
 " ])
           (addr_of [ α0 ]) in

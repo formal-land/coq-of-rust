@@ -7,9 +7,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of bytestring) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of bytestring) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "A byte string: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -18,9 +18,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let escaped := [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of escaped) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of escaped) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Some escaped bytes: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -30,10 +30,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of raw_bytestring) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of raw_bytestring) in
       let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
+        (format_arguments _)::["new_v1"]
+          (addr_of [ ""; "
+" ])
+          (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   let* _ :=
@@ -42,9 +44,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.result.Result.Ok my_str =>
       let* _ :=
         let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of my_str) in
+          let* α0 := (format_argument _)::["new_display"] (addr_of my_str) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ "And the same as text: '"; "'
 " ])
               (addr_of [ α0 ]) in
@@ -61,9 +63,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     match α0 with
     | core.result.Result.Ok my_str =>
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of my_str) in
+        let* α0 := (format_argument _)::["new_display"] (addr_of my_str) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Conversion successful: '"; "'
 " ])
             (addr_of [ α0 ]) in
@@ -71,9 +73,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt
     | core.result.Result.Err e =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of e) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of e) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Conversion failed: "; "
 " ])
             (addr_of [ α0 ]) in

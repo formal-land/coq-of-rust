@@ -5,7 +5,8 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "called `function()`
+        (format_arguments _)::["new_const"]
+          (addr_of [ "called `function()`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -16,7 +17,7 @@ Module cool.
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "called `cool::function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -28,7 +29,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "called `cool::function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -40,7 +41,7 @@ Module my.
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "called `my::function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -52,7 +53,7 @@ Module my.
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
+            (format_arguments _)::["new_const"]
               (addr_of [ "called `my::cool::function()`
 " ]) in
           std.io.stdio._print α0 in
@@ -64,7 +65,7 @@ Module my.
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "called `my::indirect_call()`, that
 > " ]) in
         std.io.stdio._print α0 in
@@ -81,7 +82,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "called `my::function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -93,7 +94,7 @@ Module cool.
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "called `my::cool::function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -105,7 +106,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "called `my::cool::function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -116,7 +117,7 @@ Definition indirect_call `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "called `my::indirect_call()`, that
 > " ]) in
       std.io.stdio._print α0 in

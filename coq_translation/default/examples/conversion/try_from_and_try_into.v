@@ -22,7 +22,7 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
       (addr_of (addr_of (self.[0]))).
@@ -98,7 +98,7 @@ End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
-    let* α0 := try_from_and_try_into.EvenNumber::["try_from"] 8 in
+    let* α0 := (try_from_and_try_into.EvenNumber _)::["try_from"] 8 in
     match
       (addr_of α0,
         addr_of
@@ -124,7 +124,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         Pure tt
     end in
   let* _ :=
-    let* α0 := try_from_and_try_into.EvenNumber::["try_from"] 5 in
+    let* α0 := (try_from_and_try_into.EvenNumber _)::["try_from"] 5 in
     match (addr_of α0, addr_of (core.result.Result.Err tt)) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in

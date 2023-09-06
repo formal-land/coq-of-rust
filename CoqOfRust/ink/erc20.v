@@ -169,7 +169,7 @@ Module erc20.
     
     Definition
       CALLABLE := Pure
-        (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
+        (fun __ink_binding_0 => (erc20.erc20.Erc20 _)::["new"] __ink_binding_0).
     
     Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
@@ -240,7 +240,7 @@ Module erc20.
     
     Definition
       CALLABLE := Pure
-        (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
+        (fun storage _ => (erc20.erc20.Erc20 _)::["total_supply"] storage).
     
     Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
@@ -317,7 +317,7 @@ Module erc20.
     Definition
       CALLABLE := Pure
         (fun storage __ink_binding_0 =>
-          erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
+          (erc20.erc20.Erc20 _)::["balance_of"] storage __ink_binding_0).
     
     Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
       Notation.DoubleColon Self "CALLABLE" := {
@@ -394,7 +394,7 @@ Module erc20.
     Definition
       CALLABLE := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
-          erc20.erc20.Erc20::["allowance"]
+          (erc20.erc20.Erc20 _)::["allowance"]
             storage
             __ink_binding_0
             __ink_binding_1).
@@ -474,7 +474,7 @@ Module erc20.
     Definition
       CALLABLE := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
-          erc20.erc20.Erc20::["transfer"]
+          (erc20.erc20.Erc20 _)::["transfer"]
             storage
             __ink_binding_0
             __ink_binding_1).
@@ -554,7 +554,7 @@ Module erc20.
     Definition
       CALLABLE := Pure
         (fun storage (__ink_binding_0, __ink_binding_1) =>
-          erc20.erc20.Erc20::["approve"]
+          (erc20.erc20.Erc20 _)::["approve"]
             storage
             __ink_binding_0
             __ink_binding_1).
@@ -635,7 +635,7 @@ Module erc20.
     Definition
       CALLABLE := Pure
         (fun storage (__ink_binding_0, __ink_binding_1, __ink_binding_2) =>
-          erc20.erc20.Erc20::["transfer_from"]
+          (erc20.erc20.Erc20 _)::["transfer_from"]
             storage
             __ink_binding_0
             __ink_binding_1
@@ -735,7 +735,7 @@ Module erc20.
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M (H := H') core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field1_finish"]
+      (core.fmt.Formatter _)::["debug_struct_field1_finish"]
         f
         "Erc20Ref"
         "inner"
@@ -878,8 +878,8 @@ Module erc20.
                 (ink_env.call.common.ReturnType Self))) :=
       let* α0 := ink_env.call.create_builder.build_create in
       let* α1 :=
-        ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
-      let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
+        (ink_env.call.selector.Selector _)::["new"] [ 155; 174; 157; 94 ] in
+      let* α2 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α1 in
       let* α3 := α2.["push_arg"] __ink_binding_0 in
       let* α4 := α0.["exec_input"] α3 in
       α4.["returns"] : M Self.
@@ -896,9 +896,9 @@ Module erc20.
       let* α0 := self.["try_total_supply"] in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::total_supply: " ])
               (addr_of [ α0 ]) in
@@ -919,9 +919,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::total_supply: " ])
               (addr_of [ α0 ]) in
@@ -940,9 +940,9 @@ Module erc20.
       let* α0 := self.["try_balance_of"] owner in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::balance_of: " ])
               (addr_of [ α0 ]) in
@@ -964,9 +964,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::balance_of: " ])
               (addr_of [ α0 ]) in
@@ -986,9 +986,9 @@ Module erc20.
       let* α0 := self.["try_allowance"] owner spender in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::allowance: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1010,9 +1010,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::allowance: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1031,9 +1031,9 @@ Module erc20.
       let* α0 := self.["try_transfer"] to value in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::transfer: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1057,9 +1057,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::transfer: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1078,9 +1078,9 @@ Module erc20.
       let* α0 := self.["try_approve"] spender value in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::approve: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1104,9 +1104,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::approve: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1126,9 +1126,9 @@ Module erc20.
       let* α0 := self.["try_transfer_from"] from to value in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::transfer_from: " ])
               (addr_of [ α0 ]) in
@@ -1154,9 +1154,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := format_argument::["new_debug"] (addr_of error) in
+          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::transfer_from: " ])
               (addr_of [ α0 ]) in
@@ -1286,7 +1286,7 @@ Module erc20.
         | erc20.erc20.Error.InsufficientAllowance =>
           Pure "InsufficientAllowance"
         end in
-      core.fmt.Formatter::["write_str"] f α0.
+      (core.fmt.Formatter _)::["write_str"] f α0.
     
     Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -1571,13 +1571,13 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   Definition Identity : Set := Self.
   
   Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
+    let* α0 := (scale_info.ty.Type_ _)::["builder"] in
+    let* α1 := (scale_info.ty.path.Path _)::["new"] "Erc20" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := (scale_info.build.Fields _)::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -1641,13 +1641,13 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
       (__key : ref ink_primitives.key.Key)
       : M (H := H') ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
-    let* α1 := ink_metadata.layout.FieldLayout::["new"] "total_supply" α0 in
+    let* α1 := (ink_metadata.layout.FieldLayout _)::["new"] "total_supply" α0 in
     let* α2 := ink_storage_traits.layout.StorageLayout.layout __key in
-    let* α3 := ink_metadata.layout.FieldLayout::["new"] "balances" α2 in
+    let* α3 := (ink_metadata.layout.FieldLayout _)::["new"] "balances" α2 in
     let* α4 := ink_storage_traits.layout.StorageLayout.layout __key in
-    let* α5 := ink_metadata.layout.FieldLayout::["new"] "allowances" α4 in
+    let* α5 := (ink_metadata.layout.FieldLayout _)::["new"] "allowances" α4 in
     let* α6 :=
-      ink_metadata.layout.StructLayout::["new"] "Erc20" [ α1; α3; α5 ] in
+      (ink_metadata.layout.StructLayout _)::["new"] "Erc20" [ α1; α3; α5 ] in
     Pure (ink_metadata.layout.Layout.Struct α6).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
@@ -1942,7 +1942,7 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
       `{H' : State.Trait}
       (event : erc20.erc20.Transfer)
       : M (H := H') Self :=
-    Self::["Transfer"] event.
+    (Self _)::["Transfer"] event.
   
   Global Instance AssociatedFunction_from `{H' : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -1963,7 +1963,7 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
       `{H' : State.Trait}
       (event : erc20.erc20.Approval)
       : M (H := H') Self :=
-    Self::["Approval"] event.
+    (Self _)::["Approval"] event.
   
   Global Instance AssociatedFunction_from `{H' : State.Trait} :
     Notation.DoubleColon Self "from" := {
@@ -2020,7 +2020,8 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
     | Approval.Build_t event => ink_env.topics.Topics.topics event builder
     | _ =>
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Event does not exist!" ]) in
+        (format_arguments _)::["new_const"]
+          (addr_of [ "Event does not exist!" ]) in
       core.panicking.panic_fmt α0
     end.
   
@@ -2430,7 +2431,7 @@ Module
   
   Definition
     CALLABLE := Pure
-      (fun __ink_binding_0 => erc20.erc20.Erc20::["new"] __ink_binding_0).
+      (fun __ink_binding_0 => (erc20.erc20.Erc20 _)::["new"] __ink_binding_0).
   
   Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
@@ -2499,7 +2500,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   
   Definition
     CALLABLE := Pure
-      (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
+      (fun storage _ => (erc20.erc20.Erc20 _)::["total_supply"] storage).
   
   Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
@@ -2575,7 +2576,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition
     CALLABLE := Pure
       (fun storage __ink_binding_0 =>
-        erc20.erc20.Erc20::["balance_of"] storage __ink_binding_0).
+        (erc20.erc20.Erc20 _)::["balance_of"] storage __ink_binding_0).
   
   Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
@@ -2651,7 +2652,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition
     CALLABLE := Pure
       (fun storage (__ink_binding_0, __ink_binding_1) =>
-        erc20.erc20.Erc20::["allowance"]
+        (erc20.erc20.Erc20 _)::["allowance"]
           storage
           __ink_binding_0
           __ink_binding_1).
@@ -2730,7 +2731,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition
     CALLABLE := Pure
       (fun storage (__ink_binding_0, __ink_binding_1) =>
-        erc20.erc20.Erc20::["transfer"]
+        (erc20.erc20.Erc20 _)::["transfer"]
           storage
           __ink_binding_0
           __ink_binding_1).
@@ -2809,7 +2810,10 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition
     CALLABLE := Pure
       (fun storage (__ink_binding_0, __ink_binding_1) =>
-        erc20.erc20.Erc20::["approve"] storage __ink_binding_0 __ink_binding_1).
+        (erc20.erc20.Erc20 _)::["approve"]
+          storage
+          __ink_binding_0
+          __ink_binding_1).
   
   Global Instance AssociatedFunction_CALLABLE `{H' : State.Trait} :
     Notation.DoubleColon Self "CALLABLE" := {
@@ -2886,7 +2890,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
   Definition
     CALLABLE := Pure
       (fun storage (__ink_binding_0, __ink_binding_1, __ink_binding_2) =>
-        erc20.erc20.Erc20::["transfer_from"]
+        (erc20.erc20.Erc20 _)::["transfer_from"]
           storage
           __ink_binding_0
           __ink_binding_1
@@ -2999,7 +3003,7 @@ Module
           Return α0
         | LanguageItem.Continue val => Pure val
         end in
-      let* α4 := Self::["Constructor0"] α3 in
+      let* α4 := (Self _)::["Constructor0"] α3 in
       Pure (core.result.Result.Ok α4)
     | _invalid =>
       Pure
@@ -3086,7 +3090,7 @@ Module
       let* result :=
         ink.reflect.dispatch.DispatchableConstructorInfo.CALLABLE input in
       let* output_value :=
-        ink.reflect.dispatch.ConstructorOutputValue::["new"] result in
+        (ink.reflect.dispatch.ConstructorOutputValue _)::["new"] result in
       let* output_result :=
         ink.reflect.dispatch.ConstructorOutput.as_result
           (addr_of output_value) in
@@ -3103,9 +3107,9 @@ Module
         end in
       let* _ :=
         let* α0 := output_result.["is_err"] in
-        let* α1 := ink_env.backend.ReturnFlags::["new_with_reverted"] α0 in
+        let* α1 := (ink_env.backend.ReturnFlags _)::["new_with_reverted"] α0 in
         let* α2 := output_result.["map"] (fun _ => Pure tt) in
-        let* α3 := ink_primitives.ConstructorResult::["Ok"] α2 in
+        let* α3 := (ink_primitives.ConstructorResult _)::["Ok"] α2 in
         ink_env.api.return_value α1 (addr_of α3) in
       Pure tt
     end.
@@ -3188,7 +3192,7 @@ Module
           Return α0
         | LanguageItem.Continue val => Pure val
         end in
-      let* α4 := Self::["Message0"] α3 in
+      let* α4 := (Self _)::["Message0"] α3 in
       Pure (core.result.Result.Ok α4)
     | erc20.erc20._.decode_dispatch.MESSAGE_1 =>
       let* α0 := parity_scale_codec.codec.Decode.decode input in
@@ -3204,7 +3208,7 @@ Module
           Return α0
         | LanguageItem.Continue val => Pure val
         end in
-      let* α4 := Self::["Message1"] α3 in
+      let* α4 := (Self _)::["Message1"] α3 in
       Pure (core.result.Result.Ok α4)
     | erc20.erc20._.decode_dispatch.MESSAGE_2 =>
       let* α0 := parity_scale_codec.codec.Decode.decode input in
@@ -3220,7 +3224,7 @@ Module
           Return α0
         | LanguageItem.Continue val => Pure val
         end in
-      let* α4 := Self::["Message2"] α3 in
+      let* α4 := (Self _)::["Message2"] α3 in
       Pure (core.result.Result.Ok α4)
     | erc20.erc20._.decode_dispatch.MESSAGE_3 =>
       let* α0 := parity_scale_codec.codec.Decode.decode input in
@@ -3236,7 +3240,7 @@ Module
           Return α0
         | LanguageItem.Continue val => Pure val
         end in
-      let* α4 := Self::["Message3"] α3 in
+      let* α4 := (Self _)::["Message3"] α3 in
       Pure (core.result.Result.Ok α4)
     | erc20.erc20._.decode_dispatch.MESSAGE_4 =>
       let* α0 := parity_scale_codec.codec.Decode.decode input in
@@ -3252,7 +3256,7 @@ Module
           Return α0
         | LanguageItem.Continue val => Pure val
         end in
-      let* α4 := Self::["Message4"] α3 in
+      let* α4 := (Self _)::["Message4"] α3 in
       Pure (core.result.Result.Ok α4)
     | erc20.erc20._.decode_dispatch.MESSAGE_5 =>
       let* α0 := parity_scale_codec.codec.Decode.decode input in
@@ -3268,7 +3272,7 @@ Module
           Return α0
         | LanguageItem.Continue val => Pure val
         end in
-      let* α4 := Self::["Message5"] α3 in
+      let* α4 := (Self _)::["Message5"] α3 in
       Pure (core.result.Result.Ok α4)
     | _invalid =>
       Pure
@@ -3365,16 +3369,16 @@ Module
         | core.result.Result.Ok core.option.Option.Some value => Pure value
         | core.result.Result.Ok core.option.Option.None =>
           let* α0 :=
-            format_arguments::["new_const"]
+            (format_arguments _)::["new_const"]
               (addr_of [ "storage entry was empty" ]) in
           core.panicking.panic_fmt α0
         | core.result.Result.Err _ =>
           let* α0 :=
-            format_arguments::["new_const"]
+            (format_arguments _)::["new_const"]
               (addr_of [ "could not properly decode storage entry" ]) in
           core.panicking.panic_fmt α0
         end in
-      core.mem.manually_drop.ManuallyDrop::["new"] α1 in
+      (core.mem.manually_drop.ManuallyDrop _)::["new"] α1 in
     let* _ :=
       match self with
       | Message0.Build_t input =>
@@ -3426,8 +3430,9 @@ Module
         let* is_reverted :=
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
-          (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+          ((ink.result_info.IsResultType
+                ink.reflect.dispatch.DispatchableMessageInfo.Output)
+              _)::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3440,8 +3445,8 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+          (ink_env.backend.ReturnFlags _)::["new_with_reverted"] is_reverted in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message1.Build_t input =>
         let* _ :=
@@ -3492,8 +3497,9 @@ Module
         let* is_reverted :=
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
-          (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+          ((ink.result_info.IsResultType
+                ink.reflect.dispatch.DispatchableMessageInfo.Output)
+              _)::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3506,8 +3512,8 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+          (ink_env.backend.ReturnFlags _)::["new_with_reverted"] is_reverted in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message2.Build_t input =>
         let* _ :=
@@ -3558,8 +3564,9 @@ Module
         let* is_reverted :=
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
-          (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+          ((ink.result_info.IsResultType
+                ink.reflect.dispatch.DispatchableMessageInfo.Output)
+              _)::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3572,8 +3579,8 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+          (ink_env.backend.ReturnFlags _)::["new_with_reverted"] is_reverted in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message3.Build_t input =>
         let* _ :=
@@ -3624,8 +3631,9 @@ Module
         let* is_reverted :=
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
-          (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+          ((ink.result_info.IsResultType
+                ink.reflect.dispatch.DispatchableMessageInfo.Output)
+              _)::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3638,8 +3646,8 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+          (ink_env.backend.ReturnFlags _)::["new_with_reverted"] is_reverted in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message4.Build_t input =>
         let* _ :=
@@ -3690,8 +3698,9 @@ Module
         let* is_reverted :=
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
-          (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+          ((ink.result_info.IsResultType
+                ink.reflect.dispatch.DispatchableMessageInfo.Output)
+              _)::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3704,8 +3713,8 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+          (ink_env.backend.ReturnFlags _)::["new_with_reverted"] is_reverted in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message5.Build_t input =>
         let* _ :=
@@ -3756,8 +3765,9 @@ Module
         let* is_reverted :=
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
-          (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+          ((ink.result_info.IsResultType
+                ink.reflect.dispatch.DispatchableMessageInfo.Output)
+              _)::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3770,8 +3780,8 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend.ReturnFlags::["new_with_reverted"] is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+          (ink_env.backend.ReturnFlags _)::["new_with_reverted"] is_reverted in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       end in
     Pure tt.
@@ -3807,7 +3817,7 @@ Definition
     _
     `{H' : State.Trait} :
     ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
-  run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
+  run (((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20) _)::["new"]).
 
 Module Impl_erc20_erc20_Erc20_29.
   Definition Self := erc20.erc20.Erc20.
@@ -3816,13 +3826,13 @@ Module Impl_erc20_erc20_Erc20_29.
       `{H' : State.Trait}
       (total_supply : erc20.erc20.Balance)
       : M (H := H') Self :=
-    let* balances := ink_storage.lazy.mapping.Mapping::["default"] in
+    let* balances := (ink_storage.lazy.mapping.Mapping _)::["default"] in
     let* caller :=
-      let* α0 := Self::["env"] in
+      let* α0 := (Self _)::["env"] in
       α0.["caller"] in
     let* _ := balances.["insert"] caller (addr_of total_supply) in
     let* _ :=
-      let* α0 := Self::["env"] in
+      let* α0 := (Self _)::["env"] in
       α0.["emit_event"]
         {|
           erc20.erc20.Transfer.from := core.option.Option.None;
@@ -4058,7 +4068,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20___CallBuilder.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field1_finish"]
+    (core.fmt.Formatter _)::["debug_struct_field1_finish"]
       f
       "CallBuilder"
       "account_id"
@@ -4234,7 +4244,8 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
         end in
       Pure tt in
     let* α0 :=
-      parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
+      (parity_scale_codec.decode_finished.DecodeFinished
+          _)::["assert_decoding_finished"] in
     Pure (core.result.Result.Ok α0).
   
   Global Instance AssociatedFunction_decode_into `{H' : State.Trait} :
@@ -4352,10 +4363,11 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   Definition Identity : Set := Self.
   
   Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
+    let* α0 := (scale_info.ty.Type_ _)::["builder"] in
+    let* α1 :=
+      (scale_info.ty.path.Path _)::["new"] "CallBuilder" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 :=
       α4.["docs"]
@@ -4366,7 +4378,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
             "Implements the underlying on-chain calling of the ink! smart contract";
             "messages and trait implementations in a type safe way."
           ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := (scale_info.build.Fields _)::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -4396,8 +4408,9 @@ Module
       (__key : ref ink_primitives.key.Key)
       : M (H := H') ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
-    let* α1 := ink_metadata.layout.FieldLayout::["new"] "account_id" α0 in
-    let* α2 := ink_metadata.layout.StructLayout::["new"] "CallBuilder" [ α1 ] in
+    let* α1 := (ink_metadata.layout.FieldLayout _)::["new"] "account_id" α0 in
+    let* α2 :=
+      (ink_metadata.layout.StructLayout _)::["new"] "CallBuilder" [ α1 ] in
     Pure (ink_metadata.layout.Layout.Struct α2).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
@@ -4551,8 +4564,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
-    let* α3 := ink_env.call.selector.Selector::["new"] [ 219; 99; 117; 168 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α3 :=
+      (ink_env.call.selector.Selector _)::["new"] [ 219; 99; 117; 168 ] in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α2.["exec_input"] α4 in
     α5.["returns"] : M erc20.erc20.Balance.
   
@@ -4581,8 +4595,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
-    let* α3 := ink_env.call.selector.Selector::["new"] [ 15; 117; 90; 86 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α3 :=
+      (ink_env.call.selector.Selector _)::["new"] [ 15; 117; 90; 86 ] in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α2.["exec_input"] α5 in
     α6.["returns"] : M erc20.erc20.Balance.
@@ -4616,8 +4631,8 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
-    let* α3 := ink_env.call.selector.Selector::["new"] [ 106; 0; 22; 94 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α3 := (ink_env.call.selector.Selector _)::["new"] [ 106; 0; 22; 94 ] in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
@@ -4652,8 +4667,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
-    let* α3 := ink_env.call.selector.Selector::["new"] [ 132; 161; 93; 161 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α3 :=
+      (ink_env.call.selector.Selector _)::["new"] [ 132; 161; 93; 161 ] in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
@@ -4688,8 +4704,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
-    let* α3 := ink_env.call.selector.Selector::["new"] [ 104; 18; 102; 160 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α3 :=
+      (ink_env.call.selector.Selector _)::["new"] [ 104; 18; 102; 160 ] in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
@@ -4728,8 +4745,9 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α0 := ink_env.call.call_builder.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
-    let* α3 := ink_env.call.selector.Selector::["new"] [ 11; 57; 111; 24 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α3 :=
+      (ink_env.call.selector.Selector _)::["new"] [ 11; 57; 111; 24 ] in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α6.["push_arg"] __ink_binding_2 in
@@ -4774,7 +4792,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field1_finish"]
+    (core.fmt.Formatter _)::["debug_struct_field1_finish"]
       f
       "Erc20Ref"
       "inner"
@@ -4990,13 +5008,13 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   Definition Identity : Set := Self.
   
   Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
+    let* α0 := (scale_info.ty.Type_ _)::["builder"] in
+    let* α1 := (scale_info.ty.path.Path _)::["new"] "Erc20Ref" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := (scale_info.build.Fields _)::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -5027,8 +5045,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
       (__key : ref ink_primitives.key.Key)
       : M (H := H') ink_metadata.layout.Layout :=
     let* α0 := ink_storage_traits.layout.StorageLayout.layout __key in
-    let* α1 := ink_metadata.layout.FieldLayout::["new"] "inner" α0 in
-    let* α2 := ink_metadata.layout.StructLayout::["new"] "Erc20Ref" [ α1 ] in
+    let* α1 := (ink_metadata.layout.FieldLayout _)::["new"] "inner" α0 in
+    let* α2 :=
+      (ink_metadata.layout.StructLayout _)::["new"] "Erc20Ref" [ α1 ] in
     Pure (ink_metadata.layout.Layout.Struct α2).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
@@ -5181,8 +5200,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
             (ink_env.call.common.Set_ (ink_env.call.common.ReturnType Self))) :=
     let* α0 := ink_env.call.create_builder.build_create in
-    let* α1 := ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
-    let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
+    let* α1 :=
+      (ink_env.call.selector.Selector _)::["new"] [ 155; 174; 157; 94 ] in
+    let* α2 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α1 in
     let* α3 := α2.["push_arg"] __ink_binding_0 in
     let* α4 := α0.["exec_input"] α3 in
     α4.["returns"] : M Self.
@@ -5199,9 +5219,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_total_supply"] in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::total_supply: " ])
             (addr_of [ α0 ]) in
@@ -5221,9 +5241,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::total_supply: " ])
             (addr_of [ α0 ]) in
@@ -5242,9 +5262,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_balance_of"] owner in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::balance_of: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5264,9 +5284,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::balance_of: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5285,9 +5305,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_allowance"] owner spender in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::allowance: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5308,9 +5328,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::allowance: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5329,9 +5349,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_transfer"] to value in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::transfer: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5353,9 +5373,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::transfer: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5374,9 +5394,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_approve"] spender value in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::approve: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5398,9 +5418,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::approve: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5420,9 +5440,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_transfer_from"] from to value in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::transfer_from: " ])
             (addr_of [ α0 ]) in
@@ -5446,9 +5466,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_debug"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::transfer_from: " ])
             (addr_of [ α0 ]) in
@@ -5611,20 +5631,20 @@ Definition __ink_generate_metadata
     Pure (ink_metadata.layout.Layout.Root α2) in
   let* _ :=
     let* α0 :=
-      ink_metadata.layout.validate.ValidateLayout::["validate"]
+      (ink_metadata.layout.validate.ValidateLayout _)::["validate"]
         (addr_of layout) in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := format_argument::["new_display"] (addr_of error) in
+        let* α0 := (format_argument _)::["new_display"] (addr_of error) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "metadata ink! generation failed: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1) in
-  let* α0 := ink_metadata.specs.ContractSpec::["new"] in
-  let* α1 := ink_metadata.specs.ConstructorSpec::["from_label"] "new" in
+  let* α0 := (ink_metadata.specs.ContractSpec _)::["new"] in
+  let* α1 := (ink_metadata.specs.ConstructorSpec _)::["from_label"] "new" in
   let* α2 := α1.["selector"] [ 155; 174; 157; 94 ] in
-  let* α3 := ink_metadata.specs.MessageParamSpec::["new"] "total_supply" in
+  let* α3 := (ink_metadata.specs.MessageParamSpec _)::["new"] "total_supply" in
   let* α4 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α5 :=
     core.iter.traits.iterator.Iterator.map α4 core.convert.AsRef.as_ref in
@@ -5645,14 +5665,15 @@ Definition __ink_generate_metadata
         ink_metadata.specs.TypeSpec::["with_name_str"]
           "ink_primitives::ConstructorResult" in
       Pure (core.option.Option.Some α0) in
-  let* α13 := ink_metadata.specs.ReturnTypeSpec::["new"] α12 in
+  let* α13 := (ink_metadata.specs.ReturnTypeSpec _)::["new"] α12 in
   let* α14 := α11.["returns"] α13 in
   let* α15 :=
     α14.["docs"]
       [ " Creates a new ERC-20 contract with the specified initial supply." ] in
   let* α16 := α15.["done"] in
   let* α17 := α0.["constructors"] [ α16 ] in
-  let* α18 := ink_metadata.specs.MessageSpec::["from_label"] "total_supply" in
+  let* α18 :=
+    (ink_metadata.specs.MessageSpec _)::["from_label"] "total_supply" in
   let* α19 := α18.["selector"] [ 219; 99; 117; 168 ] in
   let* α20 := α19.["args"] [ ] in
   let* α21 :=
@@ -5661,16 +5682,16 @@ Definition __ink_generate_metadata
   let* α22 :=
     core.iter.traits.iterator.Iterator.map α21 core.convert.AsRef.as_ref in
   let* α23 := ink_metadata.specs.TypeSpec::["with_name_segs"] α22 in
-  let* α24 := ink_metadata.specs.ReturnTypeSpec::["new"] α23 in
+  let* α24 := (ink_metadata.specs.ReturnTypeSpec _)::["new"] α23 in
   let* α25 := α20.["returns"] α24 in
   let* α26 := α25.["mutates"] false in
   let* α27 := α26.["payable"] false in
   let* α28 := α27.["default"] false in
   let* α29 := α28.["docs"] [ " Returns the total token supply." ] in
   let* α30 := α29.["done"] in
-  let* α31 := ink_metadata.specs.MessageSpec::["from_label"] "balance_of" in
+  let* α31 := (ink_metadata.specs.MessageSpec _)::["from_label"] "balance_of" in
   let* α32 := α31.["selector"] [ 15; 117; 90; 86 ] in
-  let* α33 := ink_metadata.specs.MessageParamSpec::["new"] "owner" in
+  let* α33 := (ink_metadata.specs.MessageParamSpec _)::["new"] "owner" in
   let* α34 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α35 :=
     core.iter.traits.iterator.Iterator.map α34 core.convert.AsRef.as_ref in
@@ -5684,7 +5705,7 @@ Definition __ink_generate_metadata
   let* α41 :=
     core.iter.traits.iterator.Iterator.map α40 core.convert.AsRef.as_ref in
   let* α42 := ink_metadata.specs.TypeSpec::["with_name_segs"] α41 in
-  let* α43 := ink_metadata.specs.ReturnTypeSpec::["new"] α42 in
+  let* α43 := (ink_metadata.specs.ReturnTypeSpec _)::["new"] α42 in
   let* α44 := α39.["returns"] α43 in
   let* α45 := α44.["mutates"] false in
   let* α46 := α45.["payable"] false in
@@ -5697,16 +5718,16 @@ Definition __ink_generate_metadata
         " Returns `0` if the account is non-existent."
       ] in
   let* α49 := α48.["done"] in
-  let* α50 := ink_metadata.specs.MessageSpec::["from_label"] "allowance" in
+  let* α50 := (ink_metadata.specs.MessageSpec _)::["from_label"] "allowance" in
   let* α51 := α50.["selector"] [ 106; 0; 22; 94 ] in
-  let* α52 := ink_metadata.specs.MessageParamSpec::["new"] "owner" in
+  let* α52 := (ink_metadata.specs.MessageParamSpec _)::["new"] "owner" in
   let* α53 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α54 :=
     core.iter.traits.iterator.Iterator.map α53 core.convert.AsRef.as_ref in
   let* α55 := ink_metadata.specs.TypeSpec::["with_name_segs"] α54 in
   let* α56 := α52.["of_type"] α55 in
   let* α57 := α56.["done"] in
-  let* α58 := ink_metadata.specs.MessageParamSpec::["new"] "spender" in
+  let* α58 := (ink_metadata.specs.MessageParamSpec _)::["new"] "spender" in
   let* α59 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α60 :=
     core.iter.traits.iterator.Iterator.map α59 core.convert.AsRef.as_ref in
@@ -5720,7 +5741,7 @@ Definition __ink_generate_metadata
   let* α66 :=
     core.iter.traits.iterator.Iterator.map α65 core.convert.AsRef.as_ref in
   let* α67 := ink_metadata.specs.TypeSpec::["with_name_segs"] α66 in
-  let* α68 := ink_metadata.specs.ReturnTypeSpec::["new"] α67 in
+  let* α68 := (ink_metadata.specs.ReturnTypeSpec _)::["new"] α67 in
   let* α69 := α64.["returns"] α68 in
   let* α70 := α69.["mutates"] false in
   let* α71 := α70.["payable"] false in
@@ -5733,16 +5754,16 @@ Definition __ink_generate_metadata
         " Returns `0` if no allowance has been set."
       ] in
   let* α74 := α73.["done"] in
-  let* α75 := ink_metadata.specs.MessageSpec::["from_label"] "transfer" in
+  let* α75 := (ink_metadata.specs.MessageSpec _)::["from_label"] "transfer" in
   let* α76 := α75.["selector"] [ 132; 161; 93; 161 ] in
-  let* α77 := ink_metadata.specs.MessageParamSpec::["new"] "to" in
+  let* α77 := (ink_metadata.specs.MessageParamSpec _)::["new"] "to" in
   let* α78 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α79 :=
     core.iter.traits.iterator.Iterator.map α78 core.convert.AsRef.as_ref in
   let* α80 := ink_metadata.specs.TypeSpec::["with_name_segs"] α79 in
   let* α81 := α77.["of_type"] α80 in
   let* α82 := α81.["done"] in
-  let* α83 := ink_metadata.specs.MessageParamSpec::["new"] "value" in
+  let* α83 := (ink_metadata.specs.MessageParamSpec _)::["new"] "value" in
   let* α84 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α85 :=
     core.iter.traits.iterator.Iterator.map α84 core.convert.AsRef.as_ref in
@@ -5756,7 +5777,7 @@ Definition __ink_generate_metadata
   let* α91 :=
     core.iter.traits.iterator.Iterator.map α90 core.convert.AsRef.as_ref in
   let* α92 := ink_metadata.specs.TypeSpec::["with_name_segs"] α91 in
-  let* α93 := ink_metadata.specs.ReturnTypeSpec::["new"] α92 in
+  let* α93 := (ink_metadata.specs.ReturnTypeSpec _)::["new"] α92 in
   let* α94 := α89.["returns"] α93 in
   let* α95 := α94.["mutates"] true in
   let* α96 := α95.["payable"] false in
@@ -5774,9 +5795,9 @@ Definition __ink_generate_metadata
         " the caller's account balance."
       ] in
   let* α99 := α98.["done"] in
-  let* α100 := ink_metadata.specs.MessageSpec::["from_label"] "approve" in
+  let* α100 := (ink_metadata.specs.MessageSpec _)::["from_label"] "approve" in
   let* α101 := α100.["selector"] [ 104; 18; 102; 160 ] in
-  let* α102 := ink_metadata.specs.MessageParamSpec::["new"] "spender" in
+  let* α102 := (ink_metadata.specs.MessageParamSpec _)::["new"] "spender" in
   let* α103 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α104 :=
@@ -5784,7 +5805,7 @@ Definition __ink_generate_metadata
   let* α105 := ink_metadata.specs.TypeSpec::["with_name_segs"] α104 in
   let* α106 := α102.["of_type"] α105 in
   let* α107 := α106.["done"] in
-  let* α108 := ink_metadata.specs.MessageParamSpec::["new"] "value" in
+  let* α108 := (ink_metadata.specs.MessageParamSpec _)::["new"] "value" in
   let* α109 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α110 :=
     core.iter.traits.iterator.Iterator.map α109 core.convert.AsRef.as_ref in
@@ -5798,7 +5819,7 @@ Definition __ink_generate_metadata
   let* α116 :=
     core.iter.traits.iterator.Iterator.map α115 core.convert.AsRef.as_ref in
   let* α117 := ink_metadata.specs.TypeSpec::["with_name_segs"] α116 in
-  let* α118 := ink_metadata.specs.ReturnTypeSpec::["new"] α117 in
+  let* α118 := (ink_metadata.specs.ReturnTypeSpec _)::["new"] α117 in
   let* α119 := α114.["returns"] α118 in
   let* α120 := α119.["mutates"] true in
   let* α121 := α120.["payable"] false in
@@ -5815,9 +5836,10 @@ Definition __ink_generate_metadata
         " An `Approval` event is emitted."
       ] in
   let* α124 := α123.["done"] in
-  let* α125 := ink_metadata.specs.MessageSpec::["from_label"] "transfer_from" in
+  let* α125 :=
+    (ink_metadata.specs.MessageSpec _)::["from_label"] "transfer_from" in
   let* α126 := α125.["selector"] [ 11; 57; 111; 24 ] in
-  let* α127 := ink_metadata.specs.MessageParamSpec::["new"] "from" in
+  let* α127 := (ink_metadata.specs.MessageParamSpec _)::["new"] "from" in
   let* α128 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α129 :=
@@ -5825,7 +5847,7 @@ Definition __ink_generate_metadata
   let* α130 := ink_metadata.specs.TypeSpec::["with_name_segs"] α129 in
   let* α131 := α127.["of_type"] α130 in
   let* α132 := α131.["done"] in
-  let* α133 := ink_metadata.specs.MessageParamSpec::["new"] "to" in
+  let* α133 := (ink_metadata.specs.MessageParamSpec _)::["new"] "to" in
   let* α134 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α135 :=
@@ -5833,7 +5855,7 @@ Definition __ink_generate_metadata
   let* α136 := ink_metadata.specs.TypeSpec::["with_name_segs"] α135 in
   let* α137 := α133.["of_type"] α136 in
   let* α138 := α137.["done"] in
-  let* α139 := ink_metadata.specs.MessageParamSpec::["new"] "value" in
+  let* α139 := (ink_metadata.specs.MessageParamSpec _)::["new"] "value" in
   let* α140 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α141 :=
     core.iter.traits.iterator.Iterator.map α140 core.convert.AsRef.as_ref in
@@ -5847,7 +5869,7 @@ Definition __ink_generate_metadata
   let* α147 :=
     core.iter.traits.iterator.Iterator.map α146 core.convert.AsRef.as_ref in
   let* α148 := ink_metadata.specs.TypeSpec::["with_name_segs"] α147 in
-  let* α149 := ink_metadata.specs.ReturnTypeSpec::["new"] α148 in
+  let* α149 := (ink_metadata.specs.ReturnTypeSpec _)::["new"] α148 in
   let* α150 := α145.["returns"] α149 in
   let* α151 := α150.["mutates"] true in
   let* α152 := α151.["payable"] false in
@@ -5872,8 +5894,8 @@ Definition __ink_generate_metadata
       ] in
   let* α155 := α154.["done"] in
   let* α156 := α17.["messages"] [ α30; α49; α74; α99; α124; α155 ] in
-  let* α157 := ink_metadata.specs.EventSpec::["new"] "Transfer" in
-  let* α158 := ink_metadata.specs.EventParamSpec::["new"] "from" in
+  let* α157 := (ink_metadata.specs.EventSpec _)::["new"] "Transfer" in
+  let* α158 := (ink_metadata.specs.EventParamSpec _)::["new"] "from" in
   let* α159 := core.iter.traits.collect.IntoIterator.into_iter [ "Option" ] in
   let* α160 :=
     core.iter.traits.iterator.Iterator.map α159 core.convert.AsRef.as_ref in
@@ -5882,7 +5904,7 @@ Definition __ink_generate_metadata
   let* α163 := α162.["indexed"] true in
   let* α164 := α163.["docs"] [ ] in
   let* α165 := α164.["done"] in
-  let* α166 := ink_metadata.specs.EventParamSpec::["new"] "to" in
+  let* α166 := (ink_metadata.specs.EventParamSpec _)::["new"] "to" in
   let* α167 := core.iter.traits.collect.IntoIterator.into_iter [ "Option" ] in
   let* α168 :=
     core.iter.traits.iterator.Iterator.map α167 core.convert.AsRef.as_ref in
@@ -5891,7 +5913,7 @@ Definition __ink_generate_metadata
   let* α171 := α170.["indexed"] true in
   let* α172 := α171.["docs"] [ ] in
   let* α173 := α172.["done"] in
-  let* α174 := ink_metadata.specs.EventParamSpec::["new"] "value" in
+  let* α174 := (ink_metadata.specs.EventParamSpec _)::["new"] "value" in
   let* α175 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α176 :=
     core.iter.traits.iterator.Iterator.map α175 core.convert.AsRef.as_ref in
@@ -5904,8 +5926,8 @@ Definition __ink_generate_metadata
   let* α183 :=
     α182.["docs"] [ " Event emitted when a token transfer occurs." ] in
   let* α184 := α183.["done"] in
-  let* α185 := ink_metadata.specs.EventSpec::["new"] "Approval" in
-  let* α186 := ink_metadata.specs.EventParamSpec::["new"] "owner" in
+  let* α185 := (ink_metadata.specs.EventSpec _)::["new"] "Approval" in
+  let* α186 := (ink_metadata.specs.EventParamSpec _)::["new"] "owner" in
   let* α187 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α188 :=
@@ -5915,7 +5937,7 @@ Definition __ink_generate_metadata
   let* α191 := α190.["indexed"] true in
   let* α192 := α191.["docs"] [ ] in
   let* α193 := α192.["done"] in
-  let* α194 := ink_metadata.specs.EventParamSpec::["new"] "spender" in
+  let* α194 := (ink_metadata.specs.EventParamSpec _)::["new"] "spender" in
   let* α195 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α196 :=
@@ -5925,7 +5947,7 @@ Definition __ink_generate_metadata
   let* α199 := α198.["indexed"] true in
   let* α200 := α199.["docs"] [ ] in
   let* α201 := α200.["done"] in
-  let* α202 := ink_metadata.specs.EventParamSpec::["new"] "value" in
+  let* α202 := (ink_metadata.specs.EventParamSpec _)::["new"] "value" in
   let* α203 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α204 :=
     core.iter.traits.iterator.Iterator.map α203 core.convert.AsRef.as_ref in
@@ -5950,7 +5972,7 @@ Definition __ink_generate_metadata
     core.iter.traits.iterator.Iterator.map α215 core.convert.AsRef.as_ref in
   let* α217 := ink_metadata.specs.TypeSpec::["with_name_segs"] α216 in
   let* α218 := α214.["lang_error"] α217 in
-  let* α219 := ink_metadata.specs.EnvironmentSpec::["new"] in
+  let* α219 := (ink_metadata.specs.EnvironmentSpec _)::["new"] in
   let* α220 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α221 :=
@@ -5989,7 +6011,7 @@ Definition __ink_generate_metadata
   let* α245 := α244.["done"] in
   let* α246 := α218.["environment"] α245 in
   let* α247 := α246.["done"] in
-  ink_metadata.InkProject::["new"] layout α247.
+  (ink_metadata.InkProject _)::["new"] layout α247.
 
 Module Error.
   Inductive t : Set :=
@@ -6004,13 +6026,13 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   Definition Identity : Set := Self.
   
   Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
+    let* α0 := (scale_info.ty.Type_ _)::["builder"] in
+    let* α1 := (scale_info.ty.path.Path _)::["new"] "Error" "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "The ERC-20 error types." ]) in
-    let* α6 := scale_info.build.Variants::["new"] in
+    let* α6 := (scale_info.build.Variants _)::["new"] in
     let* α7 :=
       α6.["variant"]
         "InsufficientBalance"
@@ -6058,7 +6080,7 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
       | erc20.erc20.Error.InsufficientBalance => Pure "InsufficientBalance"
       | erc20.erc20.Error.InsufficientAllowance => Pure "InsufficientAllowance"
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    (core.fmt.Formatter _)::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

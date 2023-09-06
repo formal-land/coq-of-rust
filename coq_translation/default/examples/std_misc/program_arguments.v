@@ -8,9 +8,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     α0.["collect"] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of args[0]) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of args[0]) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "My path is "; ".
 " ])
           (addr_of [ α0 ]) in
@@ -20,15 +20,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 := args.["len"] in
       let* α1 := α0.["sub"] 1 in
-      let* α2 := format_argument::["new_debug"] (addr_of α1) in
+      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
       let* α3 :=
-        format_argument::["new_debug"]
+        (format_argument _)::["new_debug"]
           (addr_of
             (addr_of
               args[LanguageItem.RangeFrom {| LanguageItem.RangeFrom.start := 1;
                 |}])) in
       let* α4 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "I got "; " arguments: "; ".
 " ])
           (addr_of [ α2; α3 ]) in

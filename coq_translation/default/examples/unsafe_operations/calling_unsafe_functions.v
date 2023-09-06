@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* some_vector :=
-    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3; 4 ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ 1; 2; 3; 4 ] in
+    ((Slice _) _)::["into_vec"] α0 in
   let* pointer := some_vector.["as_ptr"] in
   let* length := some_vector.["len"] in
   let* my_slice := core.slice.raw.from_raw_parts pointer length in

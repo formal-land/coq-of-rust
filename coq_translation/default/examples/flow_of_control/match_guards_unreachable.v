@@ -7,14 +7,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match number with
   | i =>
     let* _ :=
-      let* α0 := format_arguments::["new_const"] (addr_of [ "Zero
+      let* α0 := (format_arguments _)::["new_const"] (addr_of [ "Zero
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | i =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Greater than zero
+        (format_arguments _)::["new_const"]
+          (addr_of [ "Greater than zero
 " ]) in
       std.io.stdio._print α0 in
     Pure tt

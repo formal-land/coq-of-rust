@@ -19,7 +19,7 @@ Definition call
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* contacts := std.collections.hash.map.HashMap::["new"] in
+  let* contacts := (std.collections.hash.map.HashMap _)::["new"] in
   let* _ := contacts.["insert"] "Daniel" "798-1364" in
   let* _ := contacts.["insert"] "Ashley" "645-7689" in
   let* _ := contacts.["insert"] "Katie" "435-8291" in
@@ -30,9 +30,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.option.Option.Some number =>
       let* _ :=
         let* α0 := hash_map.call number in
-        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
         let* α2 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Calling Daniel: "; "
 " ])
             (addr_of [ α1 ]) in
@@ -41,7 +41,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | _ =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "Don't have Daniel's number.
 " ]) in
         std.io.stdio._print α0 in
@@ -54,9 +54,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.option.Option.Some number =>
       let* _ :=
         let* α0 := hash_map.call number in
-        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
         let* α2 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Calling Ashley: "; "
 " ])
             (addr_of [ α1 ]) in
@@ -65,7 +65,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | _ =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "Don't have Ashley's number.
 " ]) in
         std.io.stdio._print α0 in
@@ -84,11 +84,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         | core.option.Option.Some (contact, number) =>
           let* _ :=
             let* _ :=
-              let* α0 := format_argument::["new_display"] (addr_of contact) in
+              let* α0 :=
+                (format_argument _)::["new_display"] (addr_of contact) in
               let* α1 := hash_map.call number in
-              let* α2 := format_argument::["new_display"] (addr_of α1) in
+              let* α2 := (format_argument _)::["new_display"] (addr_of α1) in
               let* α3 :=
-                format_arguments::["new_v1"]
+                (format_arguments _)::["new_v1"]
                   (addr_of [ "Calling "; ": "; "
 " ])
                   (addr_of [ α0; α2 ]) in

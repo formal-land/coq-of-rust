@@ -23,7 +23,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       | combinators_map.Food.Carrot => Pure "Carrot"
       | combinators_map.Food.Potato => Pure "Potato"
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    (core.fmt.Formatter _)::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -56,7 +56,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
       f
       "Peeled"
       (addr_of (addr_of (self.[0]))).
@@ -92,7 +92,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
       f
       "Chopped"
       (addr_of (addr_of (self.[0]))).
@@ -128,7 +128,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
       f
       "Cooked"
       (addr_of (addr_of (self.[0]))).
@@ -191,9 +191,9 @@ Definition eat
   match food with
   | core.option.Option.Some food =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of food) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of food) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Mmm. I love "; "
 " ])
           (addr_of [ α0 ]) in
@@ -202,7 +202,7 @@ Definition eat
   | core.option.Option.None =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "Oh no! It wasn't edible.
 " ]) in
       std.io.stdio._print α0 in

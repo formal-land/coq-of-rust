@@ -12,9 +12,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of a_binding) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of a_binding) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "a binding: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -24,9 +24,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := assign another_binding 1 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of another_binding) in
+      let* α0 :=
+        (format_argument _)::["new_display"] (addr_of another_binding) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "another binding: "; "
 " ])
           (addr_of [ α0 ]) in

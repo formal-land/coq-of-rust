@@ -72,9 +72,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := generics_new_type_idiom.old_enough (addr_of age) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Old enough "; "
 " ])
           (addr_of [ α1 ]) in
@@ -84,9 +84,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 := age_days.["to_years"] in
       let* α1 := generics_new_type_idiom.old_enough (addr_of α0) in
-      let* α2 := format_argument::["new_display"] (addr_of α1) in
+      let* α2 := (format_argument _)::["new_display"] (addr_of α1) in
       let* α3 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Old enough "; "
 " ])
           (addr_of [ α2 ]) in

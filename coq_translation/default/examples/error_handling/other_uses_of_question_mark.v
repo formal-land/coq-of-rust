@@ -17,7 +17,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "EmptyVec".
+    (core.fmt.Formatter _)::["write_str"] f "EmptyVec".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -38,7 +38,7 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
     let* α0 :=
-      format_arguments::["new_const"]
+      (format_arguments _)::["new_const"]
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
   
@@ -93,9 +93,9 @@ Definition print
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of n) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "The first doubled is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -103,9 +103,9 @@ Definition print
     Pure tt
   | core.result.Result.Err e =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of e) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of e) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Error: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -116,12 +116,12 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
-    (Slice _)::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ "42"; "93"; "18" ] in
+    ((Slice _) _)::["into_vec"] α0 in
+  let* empty := (alloc.vec.Vec _)::["new"] in
   let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
+    ((Slice _) _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := other_uses_of_question_mark.double_first numbers in
     other_uses_of_question_mark.print α0 in

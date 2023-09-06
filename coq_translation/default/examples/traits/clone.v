@@ -14,7 +14,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "Unit".
+    (core.fmt.Formatter _)::["write_str"] f "Unit".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -99,7 +99,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field2_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field2_finish"]
       f
       "Pair"
       (addr_of (self.[0]))
@@ -121,9 +121,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let copied_unit := unit in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of unit) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of unit) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "original: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -131,23 +131,23 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of copied_unit) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of copied_unit) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "copy: "; "
 " ])
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   let* pair :=
-    let* α0 := alloc.boxed.Box::["new"] 1 in
-    let* α1 := alloc.boxed.Box::["new"] 2 in
+    let* α0 := (alloc.boxed.Box _)::["new"] 1 in
+    let* α1 := (alloc.boxed.Box _)::["new"] 2 in
     Pure (clone.Pair.Build_t α0 α1) in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of pair) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of pair) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "original: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -156,9 +156,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let moved_pair := pair in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of moved_pair) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of moved_pair) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "moved: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -168,9 +168,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := core.mem.drop moved_pair in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of cloned_pair) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of cloned_pair) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "clone: "; "
 " ])
           (addr_of [ α0 ]) in

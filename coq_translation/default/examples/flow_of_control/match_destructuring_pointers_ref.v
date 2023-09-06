@@ -8,9 +8,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     match reference with
     | val =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of val) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of val) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Got a value via destructuring: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -22,9 +22,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     match α0 with
     | val =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of val) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of val) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Got a value via dereferencing: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -39,9 +39,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     match value with
     | r =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of r) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of r) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Got a reference to a value: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -55,9 +55,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       α0.["add_assign"] 10 in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of m) in
+        let* α0 := (format_argument _)::["new_debug"] (addr_of m) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "We added 10. `mut_value`: "; "
 " ])
             (addr_of [ α0 ]) in

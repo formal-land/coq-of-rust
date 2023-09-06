@@ -14,9 +14,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of x) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of x) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "x is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -24,9 +24,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of y) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of y) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "y is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -34,9 +34,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of z) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "z is "; "
 " ])
           (addr_of [ α0 ]) in

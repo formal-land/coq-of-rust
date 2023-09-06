@@ -28,7 +28,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
       f
       "Ref"
       (addr_of (addr_of (self.[0]))).
@@ -52,9 +52,9 @@ Definition print
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of t) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "`print`: t is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -70,9 +70,9 @@ Definition print_ref
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of t) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "`print_ref`: t is "; "
 " ])
           (addr_of [ α0 ]) in

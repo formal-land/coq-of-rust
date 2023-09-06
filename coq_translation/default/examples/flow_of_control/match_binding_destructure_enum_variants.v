@@ -12,9 +12,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match α0 with
   | core.option.Option.Some (42 as n) =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of n) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "The Answer: "; "!
 " ])
           (addr_of [ α0 ]) in
@@ -22,9 +22,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | core.option.Option.Some n =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of n) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Not interesting... "; "
 " ])
           (addr_of [ α0 ]) in

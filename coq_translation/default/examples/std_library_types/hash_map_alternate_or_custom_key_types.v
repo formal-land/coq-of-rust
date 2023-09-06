@@ -135,9 +135,9 @@ Definition try_logon
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of username) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of username) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Username: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -145,9 +145,9 @@ Definition try_logon
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of password) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of password) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Password: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -156,7 +156,8 @@ Definition try_logon
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Attempting logon...
+        (format_arguments _)::["new_const"]
+          (addr_of [ "Attempting logon...
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -171,16 +172,18 @@ Definition try_logon
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"] (addr_of [ "Successful logon!
+          (format_arguments _)::["new_const"]
+            (addr_of [ "Successful logon!
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_argument::["new_display"] (addr_of account_info.["name"]) in
+          (format_argument _)::["new_display"]
+            (addr_of account_info.["name"]) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Name: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -189,9 +192,10 @@ Definition try_logon
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_argument::["new_display"] (addr_of account_info.["email"]) in
+          (format_argument _)::["new_display"]
+            (addr_of account_info.["email"]) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "Email: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -201,7 +205,7 @@ Definition try_logon
   | _ =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Login failed!
+        (format_arguments _)::["new_const"] (addr_of [ "Login failed!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
@@ -209,7 +213,7 @@ Definition try_logon
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* accounts := std.collections.hash.map.HashMap::["new"] in
+  let* accounts := (std.collections.hash.map.HashMap _)::["new"] in
   let account :=
     {|
       hash_map_alternate_or_custom_key_types.Account.username := "j.everyman";

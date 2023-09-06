@@ -28,9 +28,9 @@ Definition print
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of n) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "n is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -38,9 +38,9 @@ Definition print
     Pure tt
   | core.result.Result.Err e =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of e) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of e) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Error: "; "
 " ])
           (addr_of [ α0 ]) in

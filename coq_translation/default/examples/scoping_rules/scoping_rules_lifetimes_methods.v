@@ -32,9 +32,9 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   Definition print `{H' : State.Trait} (self : ref Self) : M (H := H') unit :=
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of (self.[0])) in
+        let* α0 := (format_argument _)::["new_display"] (addr_of (self.[0])) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "`print`: "; "
 " ])
             (addr_of [ α0 ]) in

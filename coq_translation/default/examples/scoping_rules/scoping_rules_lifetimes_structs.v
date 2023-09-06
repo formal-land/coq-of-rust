@@ -22,7 +22,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
       f
       "Borrowed"
       (addr_of (addr_of (self.[0]))).
@@ -75,7 +75,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
+    (core.fmt.Formatter _)::["debug_struct_field2_finish"]
       f
       "NamedBorrowed"
       "x"
@@ -110,12 +110,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       : M (H := H') core.fmt.Result :=
     match self with
     | scoping_rules_lifetimes_structs.Either.Num __self_0 =>
-      core.fmt.Formatter::["debug_tuple_field1_finish"]
+      (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
         f
         "Num"
         (addr_of __self_0)
     | scoping_rules_lifetimes_structs.Either.Ref __self_0 =>
-      core.fmt.Formatter::["debug_tuple_field1_finish"]
+      (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
         f
         "Ref"
         (addr_of __self_0)
@@ -145,9 +145,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let number := scoping_rules_lifetimes_structs.Either.Num y in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of single) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of single) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "x is borrowed in "; "
 " ])
           (addr_of [ α0 ]) in
@@ -155,9 +155,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of double) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of double) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "x and y are borrowed in "; "
 " ])
           (addr_of [ α0 ]) in
@@ -165,9 +165,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of reference) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of reference) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "x is borrowed in "; "
 " ])
           (addr_of [ α0 ]) in
@@ -175,9 +175,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of number) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of number) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "y is *not* borrowed in "; "
 " ])
           (addr_of [ α0 ]) in

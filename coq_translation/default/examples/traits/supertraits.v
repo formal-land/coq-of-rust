@@ -64,15 +64,15 @@ Definition comp_sci_student_greeting
     : M (H := H') alloc.string.String :=
   let* res :=
     let* α0 := student.["name"] in
-    let* α1 := format_argument::["new_display"] (addr_of α0) in
+    let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
     let* α2 := student.["university"] in
-    let* α3 := format_argument::["new_display"] (addr_of α2) in
+    let* α3 := (format_argument _)::["new_display"] (addr_of α2) in
     let* α4 := student.["fav_language"] in
-    let* α5 := format_argument::["new_display"] (addr_of α4) in
+    let* α5 := (format_argument _)::["new_display"] (addr_of α4) in
     let* α6 := student.["git_username"] in
-    let* α7 := format_argument::["new_display"] (addr_of α6) in
+    let* α7 := (format_argument _)::["new_display"] (addr_of α6) in
     let* α8 :=
-      format_arguments::["new_v1"]
+      (format_arguments _)::["new_v1"]
         (addr_of
           [
             "My name is ";

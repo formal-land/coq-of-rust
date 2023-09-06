@@ -7,9 +7,9 @@ Definition destroy_box
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of c) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of c) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Destroying a box that contains "; "
 " ])
           (addr_of [ α0 ]) in
@@ -23,21 +23,21 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let y := x in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of x) in
-      let* α1 := format_argument::["new_display"] (addr_of y) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of x) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of y) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "x is "; ", and y is "; "
 " ])
           (addr_of [ α0; α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
-  let* a := alloc.boxed.Box::["new"] 5 in
+  let* a := (alloc.boxed.Box _)::["new"] 5 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of a) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of a) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "a contains: "; "
 " ])
           (addr_of [ α0 ]) in

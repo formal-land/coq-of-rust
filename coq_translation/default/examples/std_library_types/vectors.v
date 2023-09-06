@@ -7,22 +7,23 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     {| std.ops.Range.start := 0; std.ops.Range._end := 10; |}.["collect"] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of collected_iterator) in
+      let* α0 :=
+        (format_argument _)::["new_debug"] (addr_of collected_iterator) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Collected (0..10) into: "; "
 " ])
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   let* xs :=
-    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ 1; 2; 3 ] in
+    ((Slice _) _)::["into_vec"] α0 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of xs) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of xs) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Initial vector: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -31,7 +32,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "Push 4 into the vector
 " ]) in
       std.io.stdio._print α0 in
@@ -39,9 +40,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := xs.["push"] 4 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of xs) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of xs) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Vector: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -50,9 +51,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := xs.["len"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Vector length: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -60,9 +61,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of xs[1]) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of xs[1]) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Second element: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -71,9 +72,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := xs.["pop"] in
-      let* α1 := format_argument::["new_debug"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Pop last element: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -82,7 +83,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Contents of xs:
+        (format_arguments _)::["new_const"] (addr_of [ "Contents of xs:
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -99,9 +100,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option.Some x =>
             let* _ :=
               let* _ :=
-                let* α0 := format_argument::["new_display"] (addr_of x) in
+                let* α0 := (format_argument _)::["new_display"] (addr_of x) in
                 let* α1 :=
-                  format_arguments::["new_v1"]
+                  (format_arguments _)::["new_v1"]
                     (addr_of [ "> "; "
 " ])
                     (addr_of [ α0 ]) in
@@ -125,10 +126,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option.Some (i, x) =>
             let* _ :=
               let* _ :=
-                let* α0 := format_argument::["new_display"] (addr_of i) in
-                let* α1 := format_argument::["new_display"] (addr_of x) in
+                let* α0 := (format_argument _)::["new_display"] (addr_of i) in
+                let* α1 := (format_argument _)::["new_display"] (addr_of x) in
                 let* α2 :=
-                  format_arguments::["new_v1"]
+                  (format_arguments _)::["new_v1"]
                     (addr_of [ "In position "; " we have value "; "
 " ])
                     (addr_of [ α0; α1 ]) in
@@ -158,9 +159,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of xs) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of xs) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Updated vector: "; "
 " ])
           (addr_of [ α0 ]) in

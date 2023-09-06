@@ -36,7 +36,7 @@ Module
       | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon =>
         Pure "Lemon"
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    (core.fmt.Formatter _)::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -61,7 +61,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
+            (format_arguments _)::["new_const"]
               (addr_of [ "Providing lemon as fallback
 " ]) in
           std.io.stdio._print α0 in
@@ -72,9 +72,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_debug"] (addr_of first_available_fruit) in
+        (format_argument _)::["new_debug"] (addr_of first_available_fruit) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "my_fruit is: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -83,9 +83,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_debug"] (addr_of first_available_fruit) in
+        (format_argument _)::["new_debug"] (addr_of first_available_fruit) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "first_available_fruit is: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -98,9 +98,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     my_apple.["get_or_insert_with"] get_lemon_as_fallback in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of should_be_apple) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of should_be_apple) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "should_be_apple is: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -108,9 +108,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of my_apple) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of my_apple) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "my_apple is unchanged: "; "
 " ])
           (addr_of [ α0 ]) in

@@ -5,10 +5,12 @@ Definition increase `{H' : State.Trait} (number : i32) : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := number.["add"] 1 in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
+        (format_arguments _)::["new_v1"]
+          (addr_of [ ""; "
+" ])
+          (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
@@ -17,10 +19,12 @@ Definition decrease `{H' : State.Trait} (number : i32) : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := number.["sub"] 1 in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
       let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
+        (format_arguments _)::["new_v1"]
+          (addr_of [ ""; "
+" ])
+          (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.
@@ -29,7 +33,7 @@ Definition help `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of
             [
               "usage:
@@ -54,7 +58,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of
               [ "My name is 'match_args'. Try passing some arguments!
 " ]) in
@@ -67,7 +71,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.result.Result.Ok 42 =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "This is the answer!
 " ]) in
         std.io.stdio._print α0 in
@@ -75,7 +79,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | _ =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "This is not the answer.
 " ]) in
         std.io.stdio._print α0 in
@@ -92,7 +96,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 :=
-              format_arguments::["new_const"]
+              (format_arguments _)::["new_const"]
                 (addr_of [ "error: second argument not an integer
 " ]) in
             std.io.stdio._eprint α0 in
@@ -108,7 +112,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
+            (format_arguments _)::["new_const"]
               (addr_of [ "error: invalid command
 " ]) in
           std.io.stdio._eprint α0 in

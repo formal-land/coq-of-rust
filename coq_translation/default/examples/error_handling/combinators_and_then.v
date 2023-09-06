@@ -23,7 +23,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       | combinators_and_then.Food.Steak => Pure "Steak"
       | combinators_and_then.Food.Sushi => Pure "Sushi"
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    (core.fmt.Formatter _)::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -57,7 +57,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       | combinators_and_then.Day.Tuesday => Pure "Tuesday"
       | combinators_and_then.Day.Wednesday => Pure "Wednesday"
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    (core.fmt.Formatter _)::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -118,10 +118,10 @@ Definition eat
   match α0 with
   | core.option.Option.Some food =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of day) in
-      let* α1 := format_argument::["new_debug"] (addr_of food) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of day) in
+      let* α1 := (format_argument _)::["new_debug"] (addr_of food) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Yay! On "; " we get to eat "; ".
 " ])
           (addr_of [ α0; α1 ]) in
@@ -129,9 +129,9 @@ Definition eat
     Pure tt
   | core.option.Option.None =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of day) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Oh no. We don't get to eat on "; "?
 " ])
           (addr_of [ α0 ]) in

@@ -6,7 +6,7 @@ Definition NTHREADS `{H' : State.Trait} : i32 := run (Pure 3).
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* '(tx, rx) := std.sync.mpsc.channel in
-  let* children := alloc.vec.Vec::["new"] in
+  let* children := (alloc.vec.Vec _)::["new"] in
   let* _ :=
     let* α0 :=
       {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;
@@ -29,9 +29,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                   let* _ :=
                     let* _ :=
                       let* α0 :=
-                        format_argument::["new_display"] (addr_of id) in
+                        (format_argument _)::["new_display"] (addr_of id) in
                       let* α1 :=
-                        format_arguments::["new_v1"]
+                        (format_arguments _)::["new_v1"]
                           (addr_of [ "thread "; " finished
 " ])
                           (addr_of [ α0 ]) in
@@ -43,7 +43,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           end in
         Pure tt)
     end in
-  let* ids := alloc.vec.Vec::["with_capacity"] (cast channels.NTHREADS usize) in
+  let* ids :=
+    (alloc.vec.Vec _)::["with_capacity"] (cast channels.NTHREADS usize) in
   let* _ :=
     let* α0 :=
       {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;
@@ -82,10 +83,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of ids) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of ids) in
       let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
+        (format_arguments _)::["new_v1"]
+          (addr_of [ ""; "
+" ])
+          (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.

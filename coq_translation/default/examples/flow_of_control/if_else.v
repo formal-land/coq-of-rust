@@ -9,9 +9,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of n) in
+          let* α0 := (format_argument _)::["new_display"] (addr_of n) in
           let* α1 :=
-            format_arguments::["new_v1"]
+            (format_arguments _)::["new_v1"]
               (addr_of [ ""; " is negative" ])
               (addr_of [ α0 ]) in
           std.io.stdio._print α1 in
@@ -22,9 +22,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       if (α0 : bool) then
         let* _ :=
           let* _ :=
-            let* α0 := format_argument::["new_display"] (addr_of n) in
+            let* α0 := (format_argument _)::["new_display"] (addr_of n) in
             let* α1 :=
-              format_arguments::["new_v1"]
+              (format_arguments _)::["new_v1"]
                 (addr_of [ ""; " is positive" ])
                 (addr_of [ α0 ]) in
             std.io.stdio._print α1 in
@@ -33,9 +33,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       else
         let* _ :=
           let* _ :=
-            let* α0 := format_argument::["new_display"] (addr_of n) in
+            let* α0 := (format_argument _)::["new_display"] (addr_of n) in
             let* α1 :=
-              format_arguments::["new_v1"]
+              (format_arguments _)::["new_v1"]
                 (addr_of [ ""; " is zero" ])
                 (addr_of [ α0 ]) in
             std.io.stdio._print α1 in
@@ -50,7 +50,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
+            (format_arguments _)::["new_const"]
               (addr_of [ ", and is a small number, increase ten-fold
 " ]) in
           std.io.stdio._print α0 in
@@ -60,7 +60,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
+            (format_arguments _)::["new_const"]
               (addr_of [ ", and is a big number, halve the number
 " ]) in
           std.io.stdio._print α0 in
@@ -68,10 +68,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       n.["div"] 2 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
-      let* α1 := format_argument::["new_display"] (addr_of big_n) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of n) in
+      let* α1 := (format_argument _)::["new_display"] (addr_of big_n) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ ""; " -> "; "
 " ])
           (addr_of [ α0; α1 ]) in

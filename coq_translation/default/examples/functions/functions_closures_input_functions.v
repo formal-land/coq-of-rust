@@ -14,7 +14,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "I'm a function!
+        (format_arguments _)::["new_const"] (addr_of [ "I'm a function!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -26,7 +26,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     fun  =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"] (addr_of [ "I'm a closure!
+          (format_arguments _)::["new_const"] (addr_of [ "I'm a closure!
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in

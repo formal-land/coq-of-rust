@@ -6,7 +6,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Guess the number!
+        (format_arguments _)::["new_const"]
+          (addr_of [ "Guess the number!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -18,12 +19,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     (let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "Please input your guess.
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in
-    let* guess := alloc.string.String::["new"] in
+    let* guess := (alloc.string.String _)::["new"] in
     let* _ :=
       let* α0 := std.io.stdio.stdin in
       let* α1 := α0.["read_line"] (addr_of guess) in
@@ -37,9 +38,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       end in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of guess) in
+        let* α0 := (format_argument _)::["new_display"] (addr_of guess) in
         let* α1 :=
-          format_arguments::["new_v1"]
+          (format_arguments _)::["new_v1"]
             (addr_of [ "You guessed: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -50,13 +51,14 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.cmp.Ordering.Less =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"] (addr_of [ "Too small!
+          (format_arguments _)::["new_const"] (addr_of [ "Too small!
 " ]) in
         std.io.stdio._print α0 in
       Pure tt
     | core.cmp.Ordering.Greater =>
       let* _ :=
-        let* α0 := format_arguments::["new_const"] (addr_of [ "Too big!
+        let* α0 :=
+          (format_arguments _)::["new_const"] (addr_of [ "Too big!
 " ]) in
         std.io.stdio._print α0 in
       Pure tt
@@ -64,7 +66,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"] (addr_of [ "You win!
+            (format_arguments _)::["new_const"] (addr_of [ "You win!
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in

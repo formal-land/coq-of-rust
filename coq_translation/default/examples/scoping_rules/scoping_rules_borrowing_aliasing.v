@@ -35,12 +35,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of borrowed_point.["x"]) in
+        (format_argument _)::["new_display"] (addr_of borrowed_point.["x"]) in
       let* α1 :=
-        format_argument::["new_display"] (addr_of another_borrow.["y"]) in
-      let* α2 := format_argument::["new_display"] (addr_of point.["z"]) in
+        (format_argument _)::["new_display"] (addr_of another_borrow.["y"]) in
+      let* α2 := (format_argument _)::["new_display"] (addr_of point.["z"]) in
       let* α3 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Point has coordinates: ("; ", "; ", "; ")
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -49,12 +49,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of borrowed_point.["x"]) in
+        (format_argument _)::["new_display"] (addr_of borrowed_point.["x"]) in
       let* α1 :=
-        format_argument::["new_display"] (addr_of another_borrow.["y"]) in
-      let* α2 := format_argument::["new_display"] (addr_of point.["z"]) in
+        (format_argument _)::["new_display"] (addr_of another_borrow.["y"]) in
+      let* α2 := (format_argument _)::["new_display"] (addr_of point.["z"]) in
       let* α3 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Point has coordinates: ("; ", "; ", "; ")
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -67,13 +67,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of mutable_borrow.["x"]) in
+        (format_argument _)::["new_display"] (addr_of mutable_borrow.["x"]) in
       let* α1 :=
-        format_argument::["new_display"] (addr_of mutable_borrow.["y"]) in
+        (format_argument _)::["new_display"] (addr_of mutable_borrow.["y"]) in
       let* α2 :=
-        format_argument::["new_display"] (addr_of mutable_borrow.["z"]) in
+        (format_argument _)::["new_display"] (addr_of mutable_borrow.["z"]) in
       let* α3 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Point has coordinates: ("; ", "; ", "; ")
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -83,13 +83,16 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of new_borrowed_point.["x"]) in
+        (format_argument _)::["new_display"]
+          (addr_of new_borrowed_point.["x"]) in
       let* α1 :=
-        format_argument::["new_display"] (addr_of new_borrowed_point.["y"]) in
+        (format_argument _)::["new_display"]
+          (addr_of new_borrowed_point.["y"]) in
       let* α2 :=
-        format_argument::["new_display"] (addr_of new_borrowed_point.["z"]) in
+        (format_argument _)::["new_display"]
+          (addr_of new_borrowed_point.["z"]) in
       let* α3 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Point now has coordinates: ("; ", "; ", "; ")
 " ])
           (addr_of [ α0; α1; α2 ]) in

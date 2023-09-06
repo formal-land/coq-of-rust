@@ -25,11 +25,13 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_argument::["new_debug"]
+          (format_argument _)::["new_debug"]
             (addr_of (core.option.Option.Some self)) in
         let* α1 :=
-          format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
+          (format_arguments _)::["new_v1"]
+            (addr_of [ ""; "
+" ])
+            (addr_of [ α0 ]) in
         std.io.stdio._print α1 in
       Pure tt in
     Pure tt.
@@ -52,7 +54,7 @@ End Impl_generics_where_clauses_PrintInOption_for_T.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* vec :=
-    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α0 := (alloc.boxed.Box _)::["new"] [ 1; 2; 3 ] in
+    ((Slice _) _)::["into_vec"] α0 in
   let* _ := vec.["print_in_option"] in
   Pure tt.

@@ -84,7 +84,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
+    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
       f
       "Inches"
       (addr_of (addr_of (self.[0]))).
@@ -135,9 +135,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let foot := derive.Inches.Build_t 12 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of foot) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of foot) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "One foot equals "; "
 " ])
           (addr_of [ α0 ]) in
@@ -153,9 +153,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure "bigger" in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of cmp) in
+      let* α0 := (format_argument _)::["new_display"] (addr_of cmp) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "One foot is "; " than one meter.
 " ])
           (addr_of [ α0 ]) in

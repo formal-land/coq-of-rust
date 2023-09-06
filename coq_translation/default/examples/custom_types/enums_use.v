@@ -24,7 +24,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | enums_use.Status.Rich =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "The rich have lots of money!
 " ]) in
         std.io.stdio._print α0 in
@@ -32,7 +32,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | enums_use.Status.Poor =>
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
+          (format_arguments _)::["new_const"]
             (addr_of [ "The poor have no money...
 " ]) in
         std.io.stdio._print α0 in
@@ -42,14 +42,14 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | enums_use.Work.Civilian =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Civilians work!
+        (format_arguments _)::["new_const"] (addr_of [ "Civilians work!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | enums_use.Work.Soldier =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Soldiers fight!
+        (format_arguments _)::["new_const"] (addr_of [ "Soldiers fight!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt

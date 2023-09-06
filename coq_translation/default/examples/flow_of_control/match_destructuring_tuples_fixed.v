@@ -8,9 +8,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure (0, α0, 3) in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of triple) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of triple) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Tell me about "; "
 " ])
           (addr_of [ α0 ]) in
@@ -19,10 +19,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match triple with
   | (0, y, z) =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of y) in
-      let* α1 := format_argument::["new_debug"] (addr_of z) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of y) in
+      let* α1 := (format_argument _)::["new_debug"] (addr_of z) in
       let* α2 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "First is `0`, `y` is "; ", and `z` is "; "
 " ])
           (addr_of [ α0; α1 ]) in
@@ -31,7 +31,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | (1, _, _) =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "First is `1` and the rest doesn't matter
 " ]) in
       std.io.stdio._print α0 in
@@ -39,7 +39,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | (_, 2) =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "last is `2` and the rest doesn't matter
 " ]) in
       std.io.stdio._print α0 in
@@ -47,7 +47,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | (3, _, 4) =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of
             [ "First is `3`, last is `4`, and the rest doesn't matter
 " ]) in
@@ -56,7 +56,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | _ =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
+        (format_arguments _)::["new_const"]
           (addr_of [ "It doesn't matter what they are
 " ]) in
       std.io.stdio._print α0 in

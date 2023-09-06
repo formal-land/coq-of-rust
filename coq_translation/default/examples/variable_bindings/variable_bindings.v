@@ -9,9 +9,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let copied_integer := an_integer in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of copied_integer) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of copied_integer) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "An integer: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -19,9 +19,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of a_boolean) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of a_boolean) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "A boolean: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -29,9 +29,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of unit) in
+      let* α0 := (format_argument _)::["new_debug"] (addr_of unit) in
       let* α1 :=
-        format_arguments::["new_v1"]
+        (format_arguments _)::["new_v1"]
           (addr_of [ "Meet the unit value: "; "
 " ])
           (addr_of [ α0 ]) in
