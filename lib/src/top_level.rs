@@ -1288,7 +1288,10 @@ impl FunDefinition {
                                             if self.ty_params.is_empty() {
                                                 vec![]
                                             } else {
-                                                vec![coq::ArgDecl::of_ty_params(&self.ty_params)]
+                                                vec![coq::ArgDecl::of_ty_params(
+                                                    &self.ty_params,
+                                                    coq::ArgSpecKind::Implicit,
+                                                )]
                                             },
                                             // where predicates types
                                             self.where_predicates
@@ -1325,7 +1328,10 @@ impl FunDefinition {
                                 if self.ty_params.is_empty() {
                                     vec![]
                                 } else {
-                                    vec![coq::ArgDecl::of_ty_params(&self.ty_params)]
+                                    vec![coq::ArgDecl::of_ty_params(
+                                        &self.ty_params,
+                                        coq::ArgSpecKind::Implicit,
+                                    )]
                                 },
                                 // where predicates types
                                 self.where_predicates
@@ -1869,29 +1875,34 @@ impl TopLevelItem {
                         coq::TopLevelItem::Definition(coq::Definition::new(
                             name,
                             &coq::DefinitionKind::Alias {
-                                args: vec![],
-                                // @TODO: maybe include the type?
-                                ty: None,
+                                args: [
+                                    if ty_params.is_empty() {
+                                        vec![]
+                                    } else {
+                                        vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Explicit)]
+                                    },
+                                    predicates
+                                        .iter()
+                                        .map(|predicate| predicate.to_coq())
+                                        .collect()
+                                ]
+                                .concat(),
+                                ty: Some(coq::Expression::Set),
                                 body: coq::Expression::Variable {
                                     ident: Path::new(&[name, &"t".to_string()]),
-                                    no_implicit: true,
-                                },
+                                    no_implicit: false,
+                                }
+                                .apply_many_args(
+                                    &ty_params
+                                        .iter()
+                                        .map(|ty_param| {
+                                            (Some(ty_param.to_owned()), coq::Expression::just_name(ty_param))
+                                        })
+                                        .collect::<Vec<_>>(),
+                                ),
                             },
                         )),
                     ],
-                    if predicates.is_empty() {
-                        vec![]
-                    } else {
-                        vec![
-                            coq::TopLevelItem::Arguments(coq::Arguments::new(
-                                name,
-                                &predicates
-                                    .iter()
-                                    .map(|predicate| predicate.to_coq().to_arg_spec())
-                                    .collect::<Vec<_>>(),
-                            )),
-                        ]
-                    }
                 ]
                 .concat(),
             )
@@ -2139,7 +2150,7 @@ impl TopLevelItem {
                                         if ty_params.is_empty() {
                                             vec![]
                                         } else {
-                                            vec![coq::ArgDecl::of_ty_params(ty_params)]
+                                            vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
                                         },
                                         where_predicates
                                             .iter()
@@ -2206,7 +2217,7 @@ impl TopLevelItem {
                                         if ty_params.is_empty() {
                                             vec![]
                                         } else {
-                                            vec![coq::ArgDecl::of_ty_params(ty_params)]
+                                            vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
                                         },
                                         where_predicates
                                             .iter()
