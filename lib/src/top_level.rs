@@ -1805,45 +1805,16 @@ impl TopLevelItem {
                                 ])
                             },
                             coq::TopLevel::locally_unset_primitive_projections(&[
-                                coq::TopLevelItem::Code(group([
-                                    nest([
-                                        text("Record"),
-                                        line(),
-                                        text("t"),
-                                        line(),
-                                        text(":"),
-                                        line(),
-                                        text("Set"),
-                                        line(),
-                                        text(":="),
-                                        line(),
-                                        text("{"),
-                                    ]),
-                                    if fields.is_empty() {
-                                        text(" ")
-                                    } else {
-                                        concat([
-                                            nest([
-                                                hardline(),
-                                                intersperse(
-                                                    fields.iter().map(|(name, ty)| {
-                                                        nest([
-                                                            text(name),
-                                                            line(),
-                                                            text(":"),
-                                                            line(),
-                                                            ty.to_doc(false),
-                                                            text(";"),
-                                                        ])
-                                                    }),
-                                                    [hardline()],
-                                                ),
-                                            ]),
-                                            hardline(),
-                                        ])
-                                    },
-                                    text("}."),
-                                ])),
+                                coq::TopLevelItem::Record(coq::Record::new(
+                                    "t",
+                                    &coq::Expression::Set,
+                                    &fields
+                                        .iter()
+                                        .map(|(name, ty)| {
+                                            coq::FieldDef::new(&Some(name.to_owned()), &ty.to_coq())
+                                        })
+                                        .collect::<Vec<_>>(),
+                                )),
                             ])
                             .to_doc(),
                             // gy@TODO: I think the below code blocks, since { and } are not at the same level, can be
@@ -1926,6 +1897,23 @@ impl TopLevelItem {
                     text("t"),
                     text("."),
                 ]),
+                if predicates.is_empty() {
+                    nil()
+                } else {
+                    concat([
+                        hardline(),
+                        nest([
+                            coq::TopLevelItem::Arguments(coq::Arguments::new(
+                                name,
+                                &predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_coq().to_arg_spec())
+                                    .collect::<Vec<_>>(),
+                            ))
+                            .to_doc(),
+                        ]),
+                    ])
+                }
             ]),
             TopLevelItem::TypeStructTuple {
                 name,

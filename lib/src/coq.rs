@@ -18,6 +18,7 @@ pub(crate) enum TopLevelItem<'a> {
     /// the Code variant is for those constructions
     /// that are not yet represented by the types in this file
     Code(Doc<'a>),
+    Arguments(Arguments),
     Class(Class<'a>),
     Comment(Comment),
     Context(Context<'a>),
@@ -34,6 +35,13 @@ pub(crate) enum TopLevelItem<'a> {
 /// a coq comment (always occupies whole lines)
 pub(crate) struct Comment {
     text: String,
+}
+
+#[derive(Clone)]
+/// the coq Arguments command
+pub(crate) struct Arguments {
+    name: String,
+    specs: Vec<ArgSpec>,
 }
 
 #[derive(Clone)]
@@ -97,6 +105,13 @@ pub(crate) struct Instance<'a> {
 pub(crate) struct Hint {
     item_name: String,
     db_name: String,
+}
+
+#[derive(Clone)]
+/// an argument specification for Arguments
+pub(crate) struct ArgSpec {
+    idents: Vec<Option<String>>,
+    kind: ArgSpecKind,
 }
 
 #[derive(Clone)]
@@ -338,6 +353,7 @@ impl<'a> TopLevelItem<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         match self {
             TopLevelItem::Code(code) => code.to_owned(),
+            TopLevelItem::Arguments(arguments) => arguments.to_doc(),
             TopLevelItem::Class(class) => class.to_doc(),
             TopLevelItem::Comment(comment) => comment.to_doc(),
             TopLevelItem::Context(context) => context.to_doc(),
@@ -384,12 +400,38 @@ impl<'a> TopLevelItem<'a> {
     }
 }
 
+impl Arguments {
+    pub(crate) fn new(name: &str, specs: &[ArgSpec]) -> Self {
+        Arguments {
+            name: name.to_owned(),
+            specs: specs.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        nest([
+            text("Arguments"),
+            line(),
+            text(self.name.to_owned()),
+            line(),
+            intersperse(
+                self.specs
+                    .iter()
+                    .map(|spec| spec.to_doc())
+                    .collect::<Vec<_>>(),
+                [line()],
+            ),
+            text("."),
+        ])
+    }
+}
+
 impl<'a> Module<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &str, content: TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, items: TopLevel<'a>) -> Self {
         Module {
             name: name.to_string(),
-            items: content,
+            items,
         }
     }
 
@@ -400,10 +442,10 @@ impl<'a> Module<'a> {
 
 impl<'a> Section<'a> {
     /// produces a new coq section
-    pub(crate) fn new(name: &str, content: &TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, items: &TopLevel<'a>) -> Self {
         Section {
             name: name.to_string(),
-            items: content.to_owned(),
+            items: items.to_owned(),
         }
     }
 
@@ -458,6 +500,29 @@ impl<'a> Definition<'a> {
                 nest([text(":"), line(), ty.to_doc(false)]),
                 text("."),
             ]),
+        }
+    }
+
+    pub(crate) fn get_args(&self) -> Vec<ArgDecl<'a>> {
+        match self.kind.to_owned() {
+            DefinitionKind::Alias {
+                args,
+                ty: _,
+                body: _,
+            } => args,
+            DefinitionKind::Assumption { ty: _ } => vec![],
+        }
+    }
+
+    #[allow(dead_code)]
+    pub(crate) fn to_arguments(&self) -> Arguments {
+        Arguments {
+            name: self.name.to_owned(),
+            specs: self
+                .get_args()
+                .iter()
+                .map(|arg| arg.to_arg_spec())
+                .collect(),
         }
     }
 }
@@ -638,6 +703,30 @@ impl Hint {
 
     pub(crate) fn standard_resolve() -> Self {
         Hint::new("I", "core")
+    }
+}
+
+impl ArgSpec {
+    #[allow(dead_code)]
+    pub(crate) fn new(idents: &[Option<String>], kind: ArgSpecKind) -> Self {
+        ArgSpec {
+            idents: idents.to_owned(),
+            kind,
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        let brackets = match self.kind {
+            ArgSpecKind::Explicit => render::round_brackets,
+            ArgSpecKind::Implicit => render::curly_brackets,
+        };
+        nest([brackets(intersperse(
+            self.idents.iter().map(|ident| match ident.to_owned() {
+                Some(name) => text(name),
+                None => text("_"),
+            }),
+            [line()],
+        ))])
     }
 }
 
@@ -904,6 +993,25 @@ impl<'a> ArgDecl<'a> {
                 ty: Some(Expression::Set),
             },
             kind: ArgSpecKind::Implicit,
+        }
+    }
+
+    pub(crate) fn to_arg_spec(&self) -> ArgSpec {
+        ArgSpec {
+            idents: match self.decl.to_owned() {
+                ArgDeclVar::Normal { idents, ty: _ } => {
+                    idents.iter().map(|ident| Some(ident.to_owned())).collect()
+                }
+                ArgDeclVar::Generalized { idents, ty: _ } => {
+                    if idents.is_empty() {
+                        vec![None]
+                    } else {
+                        idents.iter().map(|ident| Some(ident.to_owned())).collect()
+                    }
+                }
+                ArgDeclVar::Destructured { pattern: _ } => vec![None],
+            },
+            kind: self.kind.to_owned(),
         }
     }
 }
