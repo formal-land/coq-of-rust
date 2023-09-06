@@ -422,10 +422,10 @@ Module state_.
         )
     content = \
         content.replace(
-            """HandleErrorCode.t.
+            """HandleErrorCode.t (T := T).
 End state.
 """,
-            """HandleErrorCode.t.
+            """HandleErrorCode.t (T := T).
 End state_.
 """,
         )
@@ -616,6 +616,13 @@ End state.""",
   End NoRemainingTopics.
   Definition NoRemainingTopics := NoRemainingTopics.t.
 End state__.""",
+        )
+    content = \
+        content.replace(
+            """Definition TopicsBuilder_ (S E B : Set) : Set :=
+  TopicsBuilder.t (S := S) (E := E) (B := B).
+""",
+            "",
         )
     with open(file_name, "w") as f:
         f.write(content)

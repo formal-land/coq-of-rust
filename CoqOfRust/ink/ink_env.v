@@ -3394,7 +3394,7 @@ Module state_.
     End HandleErrorCode.
   End HandleErrorCode.
   Definition HandleErrorCode (T : Set) : Set := HandleErrorCode.t (T := T).
-End state.
+End state_.
 
 Module IgnoreErrorCode.
   Inductive t : Set :=
@@ -4189,8 +4189,6 @@ Module TopicsBuilderBackend.
   }.
 End TopicsBuilderBackend.
 
-Definition TopicsBuilder_ (S E B : Set) : Set :=
-  TopicsBuilder.t (S := S) (E := E) (B := B).
 
 Module state__.
   Module Uninit.
