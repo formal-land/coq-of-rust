@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* NOTE: For now I use the version in `core`, since _std version "makes inconsistent assumptions with CoqOfRust.lib.lib." *)
 Require Import CoqOfRust.core.result.
 Require Import CoqOfRust.core.option.
-Require Import CoqOfRust._std.vec.
+Require Import CoqOfRust.alloc.vec.
 Require Import CoqOfRust.ink.sp_runtime.
 Require Import CoqOfRust.ink.sp_weights.
 
@@ -62,7 +62,7 @@ Unset Primitive Projections.
 Module ExecReturnValue.
   Record t : Set := { 
     flags: ReturnFlags;
-    data: Vec u8 None;
+    data: alloc.vec.Vec u8;
   }.
 End ExecReturnValue.
 Global Set Primitive Projections.
@@ -100,7 +100,7 @@ Module ContractResult.
     gas_consumed: Weight;
     gas_required: Weight;
     storage_deposit: StorageDeposit Balance;
-    debug_message: Vec u8 None;
+    debug_message: alloc.vec.Vec u8;
     result: R;
   }.
 End ContractResult.
