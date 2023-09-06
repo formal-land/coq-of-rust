@@ -12,7 +12,7 @@ Module Circle.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Circle.
-Definition Circle : Set := @Circle.t.
+Definition Circle := @Circle.t.
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Definition Self := converting_to_string.Circle.

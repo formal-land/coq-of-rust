@@ -23,7 +23,7 @@ Module database.
       Notation.dot '(Build_t x0) := x0;
     }.
   End Database.
-  Definition Database : Set := @Database.t.
+  Definition Database := @Database.t.
 End database.
 
 Module ext.
@@ -86,7 +86,7 @@ Module ext.
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End Engine.
-  Definition Engine : Set := @Engine.t.
+  Definition Engine := @Engine.t.
   
   Module ChainSpec.
     Unset Primitive Projections.
@@ -107,7 +107,7 @@ Module ext.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End ChainSpec.
-  Definition ChainSpec : Set := @ChainSpec.t.
+  Definition ChainSpec := @ChainSpec.t.
 End ext.
 
 Module Error.
@@ -167,7 +167,7 @@ Module Engine.
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
   }.
 End Engine.
-Definition Engine : Set := @Engine.t.
+Definition Engine := @Engine.t.
 
 Module ChainSpec.
   Unset Primitive Projections.
@@ -188,7 +188,7 @@ Module ChainSpec.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End ChainSpec.
-Definition ChainSpec : Set := @ChainSpec.t.
+Definition ChainSpec := @ChainSpec.t.
 
 Module test_api.
   Module EmittedEvent.
@@ -206,7 +206,7 @@ Module test_api.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
-  Definition EmittedEvent : Set := @EmittedEvent.t.
+  Definition EmittedEvent := @EmittedEvent.t.
   
   Module RecordedDebugMessages.
     Unset Primitive Projections.
@@ -219,7 +219,7 @@ Module test_api.
       Notation.dot '(Build_t x0) := x0;
     }.
   End RecordedDebugMessages.
-  Definition RecordedDebugMessages : Set := @RecordedDebugMessages.t.
+  Definition RecordedDebugMessages := @RecordedDebugMessages.t.
   
   Module DebugInfo.
     Unset Primitive Projections.
@@ -258,7 +258,7 @@ Module test_api.
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End DebugInfo.
-  Definition DebugInfo : Set := @DebugInfo.t.
+  Definition DebugInfo := @DebugInfo.t.
 End test_api.
 
 Module EmittedEvent.
@@ -276,7 +276,7 @@ Module EmittedEvent.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
-Definition EmittedEvent : Set := @EmittedEvent.t.
+Definition EmittedEvent := @EmittedEvent.t.
 
 Module RecordedDebugMessages.
   Unset Primitive Projections.
@@ -289,7 +289,7 @@ Module RecordedDebugMessages.
     Notation.dot '(Build_t x0) := x0;
   }.
 End RecordedDebugMessages.
-Definition RecordedDebugMessages : Set := @RecordedDebugMessages.t.
+Definition RecordedDebugMessages := @RecordedDebugMessages.t.
 
 Module DebugInfo.
   Unset Primitive Projections.
@@ -327,7 +327,7 @@ Module DebugInfo.
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
   }.
 End DebugInfo.
-Definition DebugInfo : Set := @DebugInfo.t.
+Definition DebugInfo := @DebugInfo.t.
 
 Module chain_extension.
   Module ChainExtensionHandler.
@@ -349,7 +349,7 @@ Module chain_extension.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End ChainExtensionHandler.
-  Definition ChainExtensionHandler : Set := @ChainExtensionHandler.t.
+  Definition ChainExtensionHandler := @ChainExtensionHandler.t.
   
   Module ExtensionId.
     Unset Primitive Projections.
@@ -406,7 +406,7 @@ Module ChainExtensionHandler.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End ChainExtensionHandler.
-Definition ChainExtensionHandler : Set := @ChainExtensionHandler.t.
+Definition ChainExtensionHandler := @ChainExtensionHandler.t.
 
 Module ExtensionId.
   Unset Primitive Projections.
@@ -464,7 +464,7 @@ Module Database.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Database.
-Definition Database : Set := @Database.t.
+Definition Database := @Database.t.
 
 Module exec_context.
   Module ExecContext.
@@ -499,7 +499,7 @@ Module exec_context.
       Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
     }.
   End ExecContext.
-  Definition ExecContext : Set := @ExecContext.t.
+  Definition ExecContext := @ExecContext.t.
 End exec_context.
 
 Module ExecContext.
@@ -533,7 +533,7 @@ Module ExecContext.
     Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
   }.
 End ExecContext.
-Definition ExecContext : Set := @ExecContext.t.
+Definition ExecContext := @ExecContext.t.
 
 Module hashing.
   Parameter blake2b_256 :

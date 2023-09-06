@@ -80,7 +80,7 @@ Module PhantomStruct.
     }.
   End PhantomStruct.
 End PhantomStruct.
-Definition PhantomStruct : Set := @PhantomStruct.t.
+Definition PhantomStruct := @PhantomStruct.t.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.

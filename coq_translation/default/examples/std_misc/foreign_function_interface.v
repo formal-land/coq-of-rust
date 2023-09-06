@@ -59,7 +59,7 @@ Module Complex.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Complex.
-Definition Complex : Set := @Complex.t.
+Definition Complex := @Complex.t.
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.

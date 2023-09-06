@@ -83,7 +83,7 @@ Module client.
       }.
     End InstantiationResult.
   End InstantiationResult.
-  Definition InstantiationResult : Set := @InstantiationResult.t.
+  Definition InstantiationResult := @InstantiationResult.t.
   Arguments InstantiationResult {_} {_}.
   
   Module UploadResult.
@@ -115,7 +115,7 @@ Module client.
       }.
     End UploadResult.
   End UploadResult.
-  Definition UploadResult : Set := @UploadResult.t.
+  Definition UploadResult := @UploadResult.t.
   Arguments UploadResult {_} {_}.
   
   Module CallResult.
@@ -139,7 +139,7 @@ Module client.
       }.
     End CallResult.
   End CallResult.
-  Definition CallResult : Set := @CallResult.t.
+  Definition CallResult := @CallResult.t.
   Arguments CallResult {_} {_}.
   
   Module CallDryRunResult.
@@ -163,7 +163,7 @@ Module client.
       }.
     End CallDryRunResult.
   End CallDryRunResult.
-  Definition CallDryRunResult : Set := @CallDryRunResult.t.
+  Definition CallDryRunResult := @CallDryRunResult.t.
   Arguments CallDryRunResult {_}.
   
   Module Error.
@@ -219,7 +219,7 @@ Module client.
       }.
     End Client.
   End Client.
-  Definition Client : Set := @Client.t.
+  Definition Client := @Client.t.
   Arguments Client {_} {_}.
 End client.
 
@@ -258,7 +258,7 @@ Module InstantiationResult.
     }.
   End InstantiationResult.
 End InstantiationResult.
-Definition InstantiationResult : Set := @InstantiationResult.t.
+Definition InstantiationResult := @InstantiationResult.t.
 Arguments InstantiationResult {_} {_}.
 
 Module UploadResult.
@@ -288,7 +288,7 @@ Module UploadResult.
     }.
   End UploadResult.
 End UploadResult.
-Definition UploadResult : Set := @UploadResult.t.
+Definition UploadResult := @UploadResult.t.
 Arguments UploadResult {_} {_}.
 
 Module CallResult.
@@ -310,7 +310,7 @@ Module CallResult.
     }.
   End CallResult.
 End CallResult.
-Definition CallResult : Set := @CallResult.t.
+Definition CallResult := @CallResult.t.
 Arguments CallResult {_} {_}.
 
 Module CallDryRunResult.
@@ -334,7 +334,7 @@ Module CallDryRunResult.
     }.
   End CallDryRunResult.
 End CallDryRunResult.
-Definition CallDryRunResult : Set := @CallDryRunResult.t.
+Definition CallDryRunResult := @CallDryRunResult.t.
 Arguments CallDryRunResult {_}.
 
 Module Error.
@@ -388,7 +388,7 @@ Module Client.
     }.
   End Client.
 End Client.
-Definition Client : Set := @Client.t.
+Definition Client := @Client.t.
 Arguments Client {_} {_}.
 
 Module default_accounts.
@@ -601,7 +601,7 @@ Module node_proc.
       }.
     End TestNodeProcess.
   End TestNodeProcess.
-  Definition TestNodeProcess : Set := @TestNodeProcess.t.
+  Definition TestNodeProcess := @TestNodeProcess.t.
   Arguments TestNodeProcess {_}.
   
   Module TestNodeProcessBuilder.
@@ -626,7 +626,7 @@ Module node_proc.
       }.
     End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
-  Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
+  Definition TestNodeProcessBuilder := @TestNodeProcessBuilder.t.
 End node_proc.
 
 Module TestNodeProcess.
@@ -652,7 +652,7 @@ Module TestNodeProcess.
     }.
   End TestNodeProcess.
 End TestNodeProcess.
-Definition TestNodeProcess : Set := @TestNodeProcess.t.
+Definition TestNodeProcess := @TestNodeProcess.t.
 Arguments TestNodeProcess {_}.
 
 Module TestNodeProcessBuilder.
@@ -677,7 +677,7 @@ Module TestNodeProcessBuilder.
     }.
   End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
-Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
+Definition TestNodeProcessBuilder := @TestNodeProcessBuilder.t.
 
 Module xts.
   Module Weight.
@@ -695,7 +695,7 @@ Module xts.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End Weight.
-  Definition Weight : Set := @Weight.t.
+  Definition Weight := @Weight.t.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
@@ -733,7 +733,7 @@ Module xts.
       }.
     End InstantiateWithCode.
   End InstantiateWithCode.
-  Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
+  Definition InstantiateWithCode := @InstantiateWithCode.t.
   Arguments InstantiateWithCode {_}.
   
   Module Call.
@@ -768,7 +768,7 @@ Module xts.
       }.
     End Call.
   End Call.
-  Definition Call : Set := @Call.t.
+  Definition Call := @Call.t.
   Arguments Call {_}.
   
   Module Transfer.
@@ -792,7 +792,7 @@ Module xts.
       }.
     End Transfer.
   End Transfer.
-  Definition Transfer : Set := @Transfer.t.
+  Definition Transfer := @Transfer.t.
   Arguments Transfer {_} {_}.
   
   Module Determinism.
@@ -826,7 +826,7 @@ Module xts.
       }.
     End UploadCode.
   End UploadCode.
-  Definition UploadCode : Set := @UploadCode.t.
+  Definition UploadCode := @UploadCode.t.
   Arguments UploadCode {_}.
   
   Module ContractsApi.
@@ -850,7 +850,7 @@ Module xts.
       }.
     End ContractsApi.
   End ContractsApi.
-  Definition ContractsApi : Set := @ContractsApi.t.
+  Definition ContractsApi := @ContractsApi.t.
   Arguments ContractsApi {_} {_}.
 End xts.
 
@@ -869,7 +869,7 @@ Module Weight.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Weight.
-Definition Weight : Set := @Weight.t.
+Definition Weight := @Weight.t.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.
@@ -907,7 +907,7 @@ Module InstantiateWithCode.
     }.
   End InstantiateWithCode.
 End InstantiateWithCode.
-Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
+Definition InstantiateWithCode := @InstantiateWithCode.t.
 Arguments InstantiateWithCode {_}.
 
 Module Call.
@@ -942,7 +942,7 @@ Module Call.
     }.
   End Call.
 End Call.
-Definition Call : Set := @Call.t.
+Definition Call := @Call.t.
 Arguments Call {_}.
 
 Module Transfer.
@@ -964,7 +964,7 @@ Module Transfer.
     }.
   End Transfer.
 End Transfer.
-Definition Transfer : Set := @Transfer.t.
+Definition Transfer := @Transfer.t.
 Arguments Transfer {_} {_}.
 
 Module Determinism.
@@ -998,7 +998,7 @@ Module UploadCode.
     }.
   End UploadCode.
 End UploadCode.
-Definition UploadCode : Set := @UploadCode.t.
+Definition UploadCode := @UploadCode.t.
 Arguments UploadCode {_}.
 
 Module ContractsApi.
@@ -1020,7 +1020,7 @@ Module ContractsApi.
     }.
   End ContractsApi.
 End ContractsApi.
-Definition ContractsApi : Set := @ContractsApi.t.
+Definition ContractsApi := @ContractsApi.t.
 Arguments ContractsApi {_} {_}.
 
 Module SubstrateConfig.

@@ -1457,7 +1457,7 @@ Module CtOption.
     }.
   End CtOption.
 End CtOption.
-Definition CtOption : Set := @CtOption.t.
+Definition CtOption := @CtOption.t.
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   Section Impl_core_clone_Clone_for_subtle_CtOption_T.

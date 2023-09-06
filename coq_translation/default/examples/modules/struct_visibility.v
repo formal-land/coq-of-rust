@@ -16,7 +16,7 @@ Module my.
       }.
     End OpenBox.
   End OpenBox.
-  Definition OpenBox : Set := @OpenBox.t.
+  Definition OpenBox := @OpenBox.t.
   
   Module ClosedBox.
     Section ClosedBox.
@@ -32,7 +32,7 @@ Module my.
       }.
     End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox : Set := @ClosedBox.t.
+  Definition ClosedBox := @ClosedBox.t.
   
   Module Impl_struct_visibility_my_ClosedBox_T.
     Definition Self := struct_visibility.my.ClosedBox T.
@@ -64,7 +64,7 @@ Module OpenBox.
     }.
   End OpenBox.
 End OpenBox.
-Definition OpenBox : Set := @OpenBox.t.
+Definition OpenBox := @OpenBox.t.
 
 Module ClosedBox.
   Section ClosedBox.
@@ -80,7 +80,7 @@ Module ClosedBox.
     }.
   End ClosedBox.
 End ClosedBox.
-Definition ClosedBox : Set := @ClosedBox.t.
+Definition ClosedBox := @ClosedBox.t.
 
 Module Impl_struct_visibility_my_ClosedBox_T_2.
   Definition Self := struct_visibility.my.ClosedBox T.

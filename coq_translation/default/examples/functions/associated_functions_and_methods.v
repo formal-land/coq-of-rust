@@ -16,7 +16,7 @@ Module Point.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point : Set := @Point.t.
+Definition Point := @Point.t.
 
 Module Impl_associated_functions_and_methods_Point.
   Definition Self := associated_functions_and_methods.Point.
@@ -67,7 +67,7 @@ Module Rectangle.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := @Rectangle.t.
+Definition Rectangle := @Rectangle.t.
 
 Module Impl_associated_functions_and_methods_Rectangle.
   Definition Self := associated_functions_and_methods.Rectangle.

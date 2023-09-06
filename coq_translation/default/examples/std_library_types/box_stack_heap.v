@@ -17,7 +17,7 @@ Module Point.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point : Set := @Point.t.
+Definition Point := @Point.t.
 
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
@@ -99,7 +99,7 @@ Module Rectangle.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := @Rectangle.t.
+Definition Rectangle := @Rectangle.t.
 
 Definition origin `{H' : State.Trait} : M (H := H') box_stack_heap.Point :=
   Pure

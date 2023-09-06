@@ -12,7 +12,7 @@ Module Borrowed.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Borrowed.
-Definition Borrowed : Set := @Borrowed.t.
+Definition Borrowed := @Borrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.

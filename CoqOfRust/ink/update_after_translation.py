@@ -617,13 +617,6 @@ End state.""",
   Definition NoRemainingTopics := NoRemainingTopics.t.
 End state__.""",
         )
-    content = \
-        sub_exactly_n(
-            ": Set := @",
-            ":= @",
-            content,
-            60,
-        )
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -741,13 +734,6 @@ def update_storage():
             pattern + """
 Require CoqOfRust.ink.ink_storage_traits.""",
             content,
-        )
-    content = \
-        sub_exactly_n(
-            ": Set := @",
-            ":= @",
-            content,
-            5,
         )
     with open(file_name, "w") as f:
         f.write(content)

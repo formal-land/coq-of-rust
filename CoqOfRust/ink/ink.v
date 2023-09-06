@@ -16,7 +16,7 @@ Module result_info.
       }.
     End IsResultType.
   End IsResultType.
-  Definition IsResultType : Set := @IsResultType.t.
+  Definition IsResultType := @IsResultType.t.
   
   Module IsResultTypeFallback.
     Class Trait (Self : Set) : Type := {
@@ -70,7 +70,7 @@ Module IsResultType.
     }.
   End IsResultType.
 End IsResultType.
-Definition IsResultType : Set := @IsResultType.t.
+Definition IsResultType := @IsResultType.t.
 
 Module IsResultTypeFallback.
   Class Trait (Self : Set) : Type := {
@@ -251,7 +251,7 @@ Module codegen.
           }.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
-      Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+      Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
       Arguments EventRespectsTopicLimit {_} {_}.
       
       Module RespectTopicLimit.
@@ -422,7 +422,7 @@ Module codegen.
           }.
         End IsSameType.
       End IsSameType.
-      Definition IsSameType : Set := @IsSameType.t.
+      Definition IsSameType := @IsSameType.t.
     End same_type.
   End utils.
 End codegen.
@@ -700,7 +700,7 @@ Module event.
         }.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
-    Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+    Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
     Arguments EventRespectsTopicLimit {_} {_}.
     
     Module RespectTopicLimit.
@@ -797,7 +797,7 @@ Module topics.
       }.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
-  Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+  Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
   Arguments EventRespectsTopicLimit {_} {_}.
   
   Module RespectTopicLimit.
@@ -842,7 +842,7 @@ Module EventRespectsTopicLimit.
     }.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
-Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
 Arguments EventRespectsTopicLimit {_} {_}.
 
 Module RespectTopicLimit.
@@ -1220,7 +1220,7 @@ Module utils.
         }.
       End IsSameType.
     End IsSameType.
-    Definition IsSameType : Set := @IsSameType.t.
+    Definition IsSameType := @IsSameType.t.
   End same_type.
 End utils.
 
@@ -1247,7 +1247,7 @@ Module same_type.
       }.
     End IsSameType.
   End IsSameType.
-  Definition IsSameType : Set := @IsSameType.t.
+  Definition IsSameType := @IsSameType.t.
 End same_type.
 
 Module IsSameType.
@@ -1264,7 +1264,7 @@ Module IsSameType.
     }.
   End IsSameType.
 End IsSameType.
-Definition IsSameType : Set := @IsSameType.t.
+Definition IsSameType := @IsSameType.t.
 
 Module reflect.
   Module contract.
@@ -1585,7 +1585,7 @@ Module reflect.
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+      Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
     End registry.
   End trait_def.
 End reflect.
@@ -2170,7 +2170,7 @@ Module trait_def.
         }.
       End TraitDefinitionRegistry.
     End TraitDefinitionRegistry.
-    Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+    Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
   End registry.
 End trait_def.
 
@@ -2265,7 +2265,7 @@ Module registry.
       }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
-  Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+  Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
 End registry.
 
 Module TraitDefinitionRegistry.
@@ -2282,7 +2282,7 @@ Module TraitDefinitionRegistry.
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
-Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
 
 Module chain_extension.
   Module ChainExtensionInstance.
@@ -2514,7 +2514,7 @@ Module env_access.
       }.
     End EnvAccess.
   End EnvAccess.
-  Definition EnvAccess : Set := @EnvAccess.t.
+  Definition EnvAccess := @EnvAccess.t.
 End env_access.
 
 Module EnvAccess.
@@ -2531,4 +2531,4 @@ Module EnvAccess.
     }.
   End EnvAccess.
 End EnvAccess.
-Definition EnvAccess : Set := @EnvAccess.t.
+Definition EnvAccess := @EnvAccess.t.

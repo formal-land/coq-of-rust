@@ -95,7 +95,7 @@ Module CtOption.
     }.
   End CtOption.
 End CtOption.
-Definition CtOption : Set := @CtOption.t.
+Definition CtOption := @CtOption.t.
 
 Module ConstantTimeGreater.
   Class Trait (Self : Set) : Type := {
