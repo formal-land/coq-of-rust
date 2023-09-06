@@ -1775,146 +1775,140 @@ impl TopLevelItem {
                 predicates,
                 fields,
                 is_dead_code,
-            } => group([
-                if *is_dead_code {
-                    concat([
-                        text("(* #[allow(dead_code)] - struct was ignored by the compiler *)"),
-                        hardline(),
-                    ])
-                } else {
-                    nil()
-                },
-                coq::Module::new(
-                    name,
-                    coq::TopLevel::add_context_in_section_if_necessary(
-                        name,
-                        ty_params,
-                        &coq::TopLevel::new(&[coq::TopLevelItem::Code(group([
-                            if predicates.is_empty() {
-                                nil()
-                            } else {
-                                concat([
-                                    coq::TopLevelItem::Context(coq::Context::new(
-                                        &predicates
-                                            .iter()
-                                            .map(|predicate| predicate.to_coq())
-                                            .collect::<Vec<_>>(),
-                                    ))
-                                    .to_doc(),
-                                    hardline(),
-                                ])
-                            },
-                            coq::TopLevel::locally_unset_primitive_projections(&[
-                                coq::TopLevelItem::Record(coq::Record::new(
-                                    "t",
-                                    &coq::Expression::Set,
-                                    &fields
-                                        .iter()
-                                        .map(|(name, ty)| {
-                                            coq::FieldDef::new(&Some(name.to_owned()), &ty.to_coq())
-                                        })
-                                        .collect::<Vec<_>>(),
-                                )),
-                            ])
-                            .to_doc(),
-                            // gy@TODO: I think the below code blocks, since { and } are not at the same level, can be
-                            // optimized. I will work on eliminating redundant wrappers...
-                            if !fields.is_empty() {
-                                concat([
-                                    hardline(),
-                                    concat(fields.iter().enumerate().map(|(i, (name, _))| {
-                                        group([
+            } => coq::TopLevel::new(
+                &[
+                    if *is_dead_code {
+                        vec![coq::TopLevelItem::Comment(coq::Comment::new(
+                            "#[allow(dead_code)] - struct was ignored by the compiler",
+                        ))]
+                    } else {
+                        vec![]
+                    },
+                    vec![
+                        coq::TopLevelItem::Module(coq::Module::new(
+                            name,
+                            coq::TopLevel::add_context_in_section_if_necessary(
+                                name,
+                                ty_params,
+                                &coq::TopLevel::new(&[coq::TopLevelItem::Code(group([
+                                    if predicates.is_empty() {
+                                        nil()
+                                    } else {
+                                        concat([
+                                            coq::TopLevelItem::Context(coq::Context::new(
+                                                &predicates
+                                                    .iter()
+                                                    .map(|predicate| predicate.to_coq())
+                                                    .collect::<Vec<_>>(),
+                                            ))
+                                            .to_doc(),
                                             hardline(),
-                                            nest([
-                                                nest([
-                                                    nest([
-                                                        text("Global Instance"),
-                                                        line(),
-                                                        text(format!("Get_{name}")),
-                                                        text(" :"),
-                                                    ]),
-                                                    line(),
-                                                    nest([
-                                                        text("Notation.Dot"),
-                                                        line(),
-                                                        text(format!("\"{name}\"")),
-                                                        text(" := {"),
-                                                    ]),
-                                                ]),
-                                                hardline(),
-                                                nest([
-                                                    text("Notation.dot"),
-                                                    line(),
-                                                    nest([
-                                                        text("'(Build_t"),
-                                                        line(),
-                                                        intersperse(
-                                                            (0..fields.len()).map(|j| {
-                                                                if i == j {
-                                                                    text(format!("x{j}"))
-                                                                } else {
-                                                                    text("_")
-                                                                }
-                                                            }),
-                                                            [line()],
-                                                        ),
-                                                        text(")"),
-                                                    ]),
-                                                    line(),
-                                                    text(":="),
-                                                    line(),
-                                                    text(format!("x{i}")),
-                                                    text(";"),
-                                                ]),
-                                            ]),
-                                            hardline(),
-                                            text("}."),
                                         ])
-                                    })),
-                                ])
-                            } else {
-                                nil()
+                                    },
+                                    coq::TopLevel::locally_unset_primitive_projections(&[
+                                        coq::TopLevelItem::Record(coq::Record::new(
+                                            "t",
+                                            &coq::Expression::Set,
+                                            &fields
+                                                .iter()
+                                                .map(|(name, ty)| {
+                                                    coq::FieldDef::new(&Some(name.to_owned()), &ty.to_coq())
+                                                })
+                                                .collect::<Vec<_>>(),
+                                        )),
+                                    ])
+                                    .to_doc(),
+                                    // gy@TODO: I think the below code blocks, since { and } are not at the same level, can be
+                                    // optimized. I will work on eliminating redundant wrappers...
+                                    if !fields.is_empty() {
+                                        concat([
+                                            hardline(),
+                                            concat(fields.iter().enumerate().map(|(i, (name, _))| {
+                                                group([
+                                                    hardline(),
+                                                    nest([
+                                                        nest([
+                                                            nest([
+                                                                text("Global Instance"),
+                                                                line(),
+                                                                text(format!("Get_{name}")),
+                                                                text(" :"),
+                                                            ]),
+                                                            line(),
+                                                            nest([
+                                                                text("Notation.Dot"),
+                                                                line(),
+                                                                text(format!("\"{name}\"")),
+                                                                text(" := {"),
+                                                            ]),
+                                                        ]),
+                                                        hardline(),
+                                                        nest([
+                                                            text("Notation.dot"),
+                                                            line(),
+                                                            nest([
+                                                                text("'(Build_t"),
+                                                                line(),
+                                                                intersperse(
+                                                                    (0..fields.len()).map(|j| {
+                                                                        if i == j {
+                                                                            text(format!("x{j}"))
+                                                                        } else {
+                                                                            text("_")
+                                                                        }
+                                                                    }),
+                                                                    [line()],
+                                                                ),
+                                                                text(")"),
+                                                            ]),
+                                                            line(),
+                                                            text(":="),
+                                                            line(),
+                                                            text(format!("x{i}")),
+                                                            text(";"),
+                                                        ]),
+                                                    ]),
+                                                    hardline(),
+                                                    text("}."),
+                                                ])
+                                            })),
+                                        ])
+                                    } else {
+                                        nil()
+                                    },
+                                ]))]),
+                            ),
+                        )),
+                        coq::TopLevelItem::Definition(coq::Definition::new(
+                            name,
+                            &coq::DefinitionKind::Alias {
+                                args: vec![],
+                                // @TODO: maybe include the type?
+                                ty: None,
+                                body: coq::Expression::Variable {
+                                    ident: Path::new(&[name, &"t".to_string()]),
+                                    no_implicit: true,
+                                },
                             },
-                        ]))]),
-                    ),
-                )
-                .to_doc(),
-                hardline(),
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":"),
-                    line(),
-                    text("Set"),
-                    line(),
-                    text(":="),
-                    line(),
-                    text("@"),
-                    text(name),
-                    text("."),
-                    text("t"),
-                    text("."),
-                ]),
-                if predicates.is_empty() {
-                    nil()
-                } else {
-                    concat([
-                        hardline(),
-                        nest([
+                        )),
+                    ],
+                    if predicates.is_empty() {
+                        vec![]
+                    } else {
+                        vec![
                             coq::TopLevelItem::Arguments(coq::Arguments::new(
                                 name,
                                 &predicates
                                     .iter()
                                     .map(|predicate| predicate.to_coq().to_arg_spec())
                                     .collect::<Vec<_>>(),
-                            ))
-                            .to_doc(),
-                        ]),
-                    ])
-                }
-            ]),
+                            )),
+                        ]
+                    }
+                ]
+                .concat(),
+            )
+            .to_doc(),
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
