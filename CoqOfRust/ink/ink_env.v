@@ -441,7 +441,7 @@ Module engine.
           Notation.dot '(Build_t x0) := x0;
         }.
       End CallData.
-      Definition CallData := @CallData.t.
+      Definition CallData : Set := CallData.t.
     End call_data.
     
     Module impls.
@@ -456,7 +456,7 @@ Module engine.
           Notation.dot '(Build_t x0) := x0;
         }.
       End TopicsBuilder.
-      Definition TopicsBuilder := @TopicsBuilder.t.
+      Definition TopicsBuilder : Set := TopicsBuilder.t.
     End impls.
     
     Module test_api.
@@ -475,7 +475,7 @@ Module engine.
           Notation.dot '(Build_t _ x1) := x1;
         }.
       End EmittedEvent.
-      Definition EmittedEvent := @EmittedEvent.t.
+      Definition EmittedEvent : Set := EmittedEvent.t.
       
       Parameter set_account_balance :
           forall
@@ -608,8 +608,11 @@ Module engine.
           }.
         End DefaultAccounts.
       End DefaultAccounts.
-      Definition DefaultAccounts := @DefaultAccounts.t.
-      Arguments DefaultAccounts {_}.
+      Definition DefaultAccounts
+          (T : Set)
+          `{ink_env.types.Environment.Trait T}
+          : Set :=
+        DefaultAccounts.t (T := T).
       
       Parameter assert_contract_termination :
           forall
@@ -699,7 +702,8 @@ Module topics.
       }.
     End TopicsBuilder.
   End TopicsBuilder.
-  Definition TopicsBuilder := @TopicsBuilder.t.
+  Definition TopicsBuilder (S E B : Set) : Set :=
+    TopicsBuilder.t (S := S) (E := E) (B := B).
   
   Module state.
     Module Uninit.
@@ -795,7 +799,7 @@ Module topics.
       }.
     End PrefixedValue.
   End PrefixedValue.
-  Definition PrefixedValue := @PrefixedValue.t.
+  Definition PrefixedValue (T : Set) : Set := PrefixedValue.t (T := T).
 End topics.
 
 Module error.
@@ -902,7 +906,7 @@ Module backend.
       Notation.dot '(Build_t x0) := x0;
     }.
   End ReturnFlags.
-  Definition ReturnFlags := @ReturnFlags.t.
+  Definition ReturnFlags : Set := ReturnFlags.t.
   
   Module CallFlags.
     Unset Primitive Projections.
@@ -927,7 +931,7 @@ Module backend.
       Notation.dot '(Build_t _ _ _ x3) := x3;
     }.
   End CallFlags.
-  Definition CallFlags := @CallFlags.t.
+  Definition CallFlags : Set := CallFlags.t.
   
   Module EnvBackend.
     Class Trait (Self : Set) : Type := {
@@ -1258,7 +1262,7 @@ Module call.
         Notation.dot '(Build_t x0) := x0;
       }.
     End Selector.
-    Definition Selector := @Selector.t.
+    Definition Selector : Set := Selector.t.
   End selector.
   
   Module execution_input.
@@ -1280,7 +1284,8 @@ Module call.
         }.
       End ExecutionInput.
     End ExecutionInput.
-    Definition ExecutionInput := @ExecutionInput.t.
+    Definition ExecutionInput (Args : Set) : Set :=
+      ExecutionInput.t (Args := Args).
     
     Module ArgumentList.
       Section ArgumentList.
@@ -1300,7 +1305,8 @@ Module call.
         }.
       End ArgumentList.
     End ArgumentList.
-    Definition ArgumentList := @ArgumentList.t.
+    Definition ArgumentList (Head Rest : Set) : Set :=
+      ArgumentList.t (Head := Head) (Rest := Rest).
     
     Module Argument.
       Section Argument.
@@ -1316,7 +1322,7 @@ Module call.
         }.
       End Argument.
     End Argument.
-    Definition Argument := @Argument.t.
+    Definition Argument (T : Set) : Set := Argument.t (T := T).
     
     Definition ArgsList (Head Rest : Set) : Set :=
       ink_env.call.execution_input.ArgumentList
@@ -1366,8 +1372,11 @@ Module call.
         }.
       End CallParams.
     End CallParams.
-    Definition CallParams := @CallParams.t.
-    Arguments CallParams {_}.
+    Definition CallParams
+        (E CallType Args R : Set)
+        `{ink_env.types.Environment.Trait E}
+        : Set :=
+      CallParams.t (E := E) (CallType := CallType) (Args := Args) (R := R).
     
     Module Call.
       Section Call.
@@ -1393,26 +1402,8 @@ Module call.
         }.
       End Call.
     End Call.
-    Definition Call := @Call.t.
-    Arguments Call {_}.
-    
-    Module DelegateCall.
-      Section DelegateCall.
-        Context {E : Set}.
-        Context `{ink_env.types.Environment.Trait E}.
-        Unset Primitive Projections.
-        Record t : Set := {
-          code_hash : E::type["Hash"];
-        }.
-        Global Set Primitive Projections.
-        
-        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-          Notation.dot '(Build_t x0) := x0;
-        }.
-      End DelegateCall.
-    End DelegateCall.
-    Definition DelegateCall := @DelegateCall.t.
-    Arguments DelegateCall {_}.
+    Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+      Call.t (E := E).
     
     Module CallBuilder.
       Section CallBuilder.
@@ -1445,8 +1436,51 @@ Module call.
         }.
       End CallBuilder.
     End CallBuilder.
-    Definition CallBuilder := @CallBuilder.t.
-    Arguments CallBuilder {_}.
+    Definition CallBuilder
+        (E CallType Args RetType : Set)
+        `{ink_env.types.Environment.Trait E}
+        : Set :=
+      CallBuilder.t
+        (E := E)
+        (CallType := CallType)
+        (Args := Args)
+        (RetType := RetType).
+    
+    Parameter build_call :
+        forall
+          `{H' : State.Trait}
+          {E : Set}
+          `{ink_env.types.Environment.Trait E},
+        M (H := H')
+            (ink_env.call.call_builder.CallBuilder
+              E
+              (ink_env.call.common.Unset_ (ink_env.call.call_builder.Call E))
+              (ink_env.call.common.Unset_
+                (ink_env.call.execution_input.ExecutionInput
+                  ink_env.call.execution_input.EmptyArgumentList))
+              (ink_env.call.common.Unset_
+                (ink_env.call.common.ReturnType unit))).
+    
+    Module DelegateCall.
+      Section DelegateCall.
+        Context {E : Set}.
+        Context `{ink_env.types.Environment.Trait E}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          code_hash : E::type["Hash"];
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End DelegateCall.
+    End DelegateCall.
+    Definition DelegateCall
+        (E : Set)
+        `{ink_env.types.Environment.Trait E}
+        : Set :=
+      DelegateCall.t (E := E).
   End call_builder.
   
   Module create_builder.
@@ -1546,8 +1580,16 @@ Module call.
         }.
       End CreateParams.
     End CreateParams.
-    Definition CreateParams := @CreateParams.t.
-    Arguments CreateParams {_}.
+    Definition CreateParams
+        (E ContractRef Args Salt R : Set)
+        `{ink_env.types.Environment.Trait E}
+        : Set :=
+      CreateParams.t
+        (E := E)
+        (ContractRef := ContractRef)
+        (Args := Args)
+        (Salt := Salt)
+        (R := R).
     
     Module CreateBuilder.
       Section CreateBuilder.
@@ -1589,8 +1631,19 @@ Module call.
         }.
       End CreateBuilder.
     End CreateBuilder.
-    Definition CreateBuilder := @CreateBuilder.t.
-    Arguments CreateBuilder {_}.
+    Definition CreateBuilder
+        (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
+        `{ink_env.types.Environment.Trait E}
+        : Set :=
+      CreateBuilder.t
+        (E := E)
+        (ContractRef := ContractRef)
+        (CodeHash := CodeHash)
+        (GasLimit := GasLimit)
+        (Endowment := Endowment)
+        (Args := Args)
+        (Salt := Salt)
+        (RetType := RetType).
   End create_builder.
 End call.
 
@@ -2041,7 +2094,7 @@ Module ReturnFlags.
     Notation.dot '(Build_t x0) := x0;
   }.
 End ReturnFlags.
-Definition ReturnFlags := @ReturnFlags.t.
+Definition ReturnFlags : Set := ReturnFlags.t.
 
 Module CallFlags.
   Unset Primitive Projections.
@@ -2066,7 +2119,7 @@ Module CallFlags.
     Notation.dot '(Build_t _ _ _ x3) := x3;
   }.
 End CallFlags.
-Definition CallFlags := @CallFlags.t.
+Definition CallFlags : Set := CallFlags.t.
 
 Module EnvBackend.
   Class Trait (Self : Set) : Type := {
@@ -2314,8 +2367,11 @@ Module call_builder.
       }.
     End CallParams.
   End CallParams.
-  Definition CallParams := @CallParams.t.
-  Arguments CallParams {_}.
+  Definition CallParams
+      (E CallType Args R : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CallParams.t (E := E) (CallType := CallType) (Args := Args) (R := R).
   
   Module Call.
     Section Call.
@@ -2341,26 +2397,8 @@ Module call_builder.
       }.
     End Call.
   End Call.
-  Definition Call := @Call.t.
-  Arguments Call {_}.
-  
-  Module DelegateCall.
-    Section DelegateCall.
-      Context {E : Set}.
-      Context `{ink_env.types.Environment.Trait E}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        code_hash : E::type["Hash"];
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
-    End DelegateCall.
-  End DelegateCall.
-  Definition DelegateCall := @DelegateCall.t.
-  Arguments DelegateCall {_}.
+  Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+    Call.t (E := E).
   
   Module CallBuilder.
     Section CallBuilder.
@@ -2393,8 +2431,47 @@ Module call_builder.
       }.
     End CallBuilder.
   End CallBuilder.
-  Definition CallBuilder := @CallBuilder.t.
-  Arguments CallBuilder {_}.
+  Definition CallBuilder
+      (E CallType Args RetType : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CallBuilder.t
+      (E := E)
+      (CallType := CallType)
+      (Args := Args)
+      (RetType := RetType).
+  
+  Parameter build_call :
+      forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H')
+          (ink_env.call.call_builder.CallBuilder
+            E
+            (ink_env.call.common.Unset_ (ink_env.call.call_builder.Call E))
+            (ink_env.call.common.Unset_
+              (ink_env.call.execution_input.ExecutionInput
+                ink_env.call.execution_input.EmptyArgumentList))
+            (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
+  
+  Module DelegateCall.
+    Section DelegateCall.
+      Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
+      Unset Primitive Projections.
+      Record t : Set := {
+        code_hash : E::type["Hash"];
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_code_hash : Notation.Dot "code_hash" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+    End DelegateCall.
+  End DelegateCall.
+  Definition DelegateCall
+      (E : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    DelegateCall.t (E := E).
 End call_builder.
 
 Module CallParams.
@@ -2428,8 +2505,11 @@ Module CallParams.
     }.
   End CallParams.
 End CallParams.
-Definition CallParams := @CallParams.t.
-Arguments CallParams {_}.
+Definition CallParams
+    (E CallType Args R : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CallParams.t (E := E) (CallType := CallType) (Args := Args) (R := R).
 
 
 
@@ -2457,8 +2537,8 @@ Module Call.
     }.
   End Call.
 End Call.
-Definition Call := @Call.t.
-Arguments Call {_}.
+Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  Call.t (E := E).
 
 Module DelegateCall.
   Section DelegateCall.
@@ -2475,8 +2555,8 @@ Module DelegateCall.
     }.
   End DelegateCall.
 End DelegateCall.
-Definition DelegateCall := @DelegateCall.t.
-Arguments DelegateCall {_}.
+Definition DelegateCall (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  DelegateCall.t (E := E).
 
 Module CallBuilder.
   Section CallBuilder.
@@ -2509,8 +2589,15 @@ Module CallBuilder.
     }.
   End CallBuilder.
 End CallBuilder.
-Definition CallBuilder := @CallBuilder.t.
-Arguments CallBuilder {_}.
+Definition CallBuilder
+    (E CallType Args RetType : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CallBuilder.t
+    (E := E)
+    (CallType := CallType)
+    (Args := Args)
+    (RetType := RetType).
 
 Module common.
   Module ReturnType.
@@ -2753,8 +2840,16 @@ Module create_builder.
       }.
     End CreateParams.
   End CreateParams.
-  Definition CreateParams := @CreateParams.t.
-  Arguments CreateParams {_}.
+  Definition CreateParams
+      (E ContractRef Args Salt R : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CreateParams.t
+      (E := E)
+      (ContractRef := ContractRef)
+      (Args := Args)
+      (Salt := Salt)
+      (R := R).
   
   Module CreateBuilder.
     Section CreateBuilder.
@@ -2796,8 +2891,19 @@ Module create_builder.
       }.
     End CreateBuilder.
   End CreateBuilder.
-  Definition CreateBuilder := @CreateBuilder.t.
-  Arguments CreateBuilder {_}.
+  Definition CreateBuilder
+      (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CreateBuilder.t
+      (E := E)
+      (ContractRef := ContractRef)
+      (CodeHash := CodeHash)
+      (GasLimit := GasLimit)
+      (Endowment := Endowment)
+      (Args := Args)
+      (Salt := Salt)
+      (RetType := RetType).
 End create_builder.
 
 Module state.
@@ -2902,8 +3008,16 @@ Module CreateParams.
     }.
   End CreateParams.
 End CreateParams.
-Definition CreateParams := @CreateParams.t.
-Arguments CreateParams {_}.
+Definition CreateParams
+    (E ContractRef Args Salt R : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CreateParams.t
+    (E := E)
+    (ContractRef := ContractRef)
+    (Args := Args)
+    (Salt := Salt)
+    (R := R).
 
 Module CreateBuilder.
   Section CreateBuilder.
@@ -2944,8 +3058,19 @@ Module CreateBuilder.
     }.
   End CreateBuilder.
 End CreateBuilder.
-Definition CreateBuilder := @CreateBuilder.t.
-Arguments CreateBuilder {_}.
+Definition CreateBuilder
+    (E ContractRef CodeHash GasLimit Endowment Args Salt RetType : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CreateBuilder.t
+    (E := E)
+    (ContractRef := ContractRef)
+    (CodeHash := CodeHash)
+    (GasLimit := GasLimit)
+    (Endowment := Endowment)
+    (Args := Args)
+    (Salt := Salt)
+    (RetType := RetType).
 
 
 
@@ -2968,7 +3093,8 @@ Module execution_input.
       }.
     End ExecutionInput.
   End ExecutionInput.
-  Definition ExecutionInput := @ExecutionInput.t.
+  Definition ExecutionInput (Args : Set) : Set :=
+    ExecutionInput.t (Args := Args).
   
   Module ArgumentList.
     Section ArgumentList.
@@ -2988,7 +3114,8 @@ Module execution_input.
       }.
     End ArgumentList.
   End ArgumentList.
-  Definition ArgumentList := @ArgumentList.t.
+  Definition ArgumentList (Head Rest : Set) : Set :=
+    ArgumentList.t (Head := Head) (Rest := Rest).
   
   Module Argument.
     Section Argument.
@@ -3004,7 +3131,7 @@ Module execution_input.
       }.
     End Argument.
   End Argument.
-  Definition Argument := @Argument.t.
+  Definition Argument (T : Set) : Set := Argument.t (T := T).
   
   Definition ArgsList (Head Rest : Set) : Set :=
     ink_env.call.execution_input.ArgumentList
@@ -3040,7 +3167,7 @@ Module ExecutionInput.
     }.
   End ExecutionInput.
 End ExecutionInput.
-Definition ExecutionInput := @ExecutionInput.t.
+Definition ExecutionInput (Args : Set) : Set := ExecutionInput.t (Args := Args).
 
 Module ArgumentList.
   Section ArgumentList.
@@ -3060,7 +3187,8 @@ Module ArgumentList.
     }.
   End ArgumentList.
 End ArgumentList.
-Definition ArgumentList := @ArgumentList.t.
+Definition ArgumentList (Head Rest : Set) : Set :=
+  ArgumentList.t (Head := Head) (Rest := Rest).
 
 Definition ArgsList (Head Rest : Set) : Set :=
   ink_env.call.execution_input.ArgumentList
@@ -3081,7 +3209,7 @@ Module Argument.
     }.
   End Argument.
 End Argument.
-Definition Argument := @Argument.t.
+Definition Argument (T : Set) : Set := Argument.t (T := T).
 
 Module ArgumentListEnd.
   Inductive t : Set := Build.
@@ -3105,7 +3233,7 @@ Module selector.
       Notation.dot '(Build_t x0) := x0;
     }.
   End Selector.
-  Definition Selector := @Selector.t.
+  Definition Selector : Set := Selector.t.
 End selector.
 
 Module Selector.
@@ -3119,7 +3247,7 @@ Module Selector.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Selector.
-Definition Selector := @Selector.t.
+Definition Selector : Set := Selector.t.
 
 Module chain_extension.
   Module FromStatusCode.
@@ -3154,7 +3282,8 @@ Module chain_extension.
       }.
     End ChainExtensionMethod.
   End ChainExtensionMethod.
-  Definition ChainExtensionMethod := @ChainExtensionMethod.t.
+  Definition ChainExtensionMethod (I O ErrorCode : Set) : Set :=
+    ChainExtensionMethod.t (I := I) (O := O) (ErrorCode := ErrorCode).
   
   Module state.
     Module IgnoreErrorCode.
@@ -3177,7 +3306,7 @@ Module chain_extension.
         }.
       End HandleErrorCode.
     End HandleErrorCode.
-    Definition HandleErrorCode := @HandleErrorCode.t.
+    Definition HandleErrorCode (T : Set) : Set := HandleErrorCode.t (T := T).
   End state.
   
   Module private.
@@ -3240,7 +3369,8 @@ Module ChainExtensionMethod.
     }.
   End ChainExtensionMethod.
 End ChainExtensionMethod.
-Definition ChainExtensionMethod := @ChainExtensionMethod.t.
+Definition ChainExtensionMethod (I O ErrorCode : Set) : Set :=
+  ChainExtensionMethod.t (I := I) (O := O) (ErrorCode := ErrorCode).
 
 Module state_.
   Module IgnoreErrorCode.
@@ -3263,8 +3393,8 @@ Module state_.
       }.
     End HandleErrorCode.
   End HandleErrorCode.
-  Definition HandleErrorCode := @HandleErrorCode.t.
-End state_.
+  Definition HandleErrorCode (T : Set) : Set := HandleErrorCode.t (T := T).
+End state.
 
 Module IgnoreErrorCode.
   Inductive t : Set :=
@@ -3286,7 +3416,7 @@ Module HandleErrorCode.
     }.
   End HandleErrorCode.
 End HandleErrorCode.
-Definition HandleErrorCode := @HandleErrorCode.t.
+Definition HandleErrorCode (T : Set) : Set := HandleErrorCode.t (T := T).
 
 Module IsResultType.
   Class Trait
@@ -3358,7 +3488,7 @@ Module off_chain.
         Notation.dot '(Build_t x0) := x0;
       }.
     End CallData.
-    Definition CallData := @CallData.t.
+    Definition CallData : Set := CallData.t.
   End call_data.
   
   Module impls.
@@ -3373,7 +3503,7 @@ Module off_chain.
         Notation.dot '(Build_t x0) := x0;
       }.
     End TopicsBuilder.
-    Definition TopicsBuilder := @TopicsBuilder.t.
+    Definition TopicsBuilder : Set := TopicsBuilder.t.
   End impls.
   
   Module test_api.
@@ -3392,7 +3522,7 @@ Module off_chain.
         Notation.dot '(Build_t _ x1) := x1;
       }.
     End EmittedEvent.
-    Definition EmittedEvent := @EmittedEvent.t.
+    Definition EmittedEvent : Set := EmittedEvent.t.
     
     Parameter set_account_balance :
         forall
@@ -3525,8 +3655,11 @@ Module off_chain.
         }.
       End DefaultAccounts.
     End DefaultAccounts.
-    Definition DefaultAccounts := @DefaultAccounts.t.
-    Arguments DefaultAccounts {_}.
+    Definition DefaultAccounts
+        (T : Set)
+        `{ink_env.types.Environment.Trait T}
+        : Set :=
+      DefaultAccounts.t (T := T).
     
     Parameter assert_contract_termination :
         forall
@@ -3570,7 +3703,7 @@ Module call_data.
       Notation.dot '(Build_t x0) := x0;
     }.
   End CallData.
-  Definition CallData := @CallData.t.
+  Definition CallData : Set := CallData.t.
 End call_data.
 
 Module CallData.
@@ -3584,7 +3717,7 @@ Module CallData.
     Notation.dot '(Build_t x0) := x0;
   }.
 End CallData.
-Definition CallData := @CallData.t.
+Definition CallData : Set := CallData.t.
 
 Module impls.
   Module TopicsBuilder.
@@ -3598,7 +3731,7 @@ Module impls.
       Notation.dot '(Build_t x0) := x0;
     }.
   End TopicsBuilder.
-  Definition TopicsBuilder := @TopicsBuilder.t.
+  Definition TopicsBuilder : Set := TopicsBuilder.t.
 End impls.
 
 Module TopicsBuilder.
@@ -3612,7 +3745,7 @@ Module TopicsBuilder.
     Notation.dot '(Build_t x0) := x0;
   }.
 End TopicsBuilder.
-Definition TopicsBuilder := @TopicsBuilder.t.
+Definition TopicsBuilder : Set := TopicsBuilder.t.
 
 Module test_api.
   Module EmittedEvent.
@@ -3630,7 +3763,7 @@ Module test_api.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
-  Definition EmittedEvent := @EmittedEvent.t.
+  Definition EmittedEvent : Set := EmittedEvent.t.
   
   Parameter set_account_balance :
       forall `{H' : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
@@ -3739,8 +3872,11 @@ Module test_api.
       }.
     End DefaultAccounts.
   End DefaultAccounts.
-  Definition DefaultAccounts := @DefaultAccounts.t.
-  Arguments DefaultAccounts {_}.
+  Definition DefaultAccounts
+      (T : Set)
+      `{ink_env.types.Environment.Trait T}
+      : Set :=
+    DefaultAccounts.t (T := T).
   
   Parameter assert_contract_termination :
       forall
@@ -3769,7 +3905,7 @@ Module EmittedEvent.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
-Definition EmittedEvent := @EmittedEvent.t.
+Definition EmittedEvent : Set := EmittedEvent.t.
 
 Parameter set_account_balance :
     forall `{H' : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
@@ -3888,8 +4024,11 @@ Module DefaultAccounts.
     }.
   End DefaultAccounts.
 End DefaultAccounts.
-Definition DefaultAccounts := @DefaultAccounts.t.
-Arguments DefaultAccounts {_}.
+Definition DefaultAccounts
+    (T : Set)
+    `{ink_env.types.Environment.Trait T}
+    : Set :=
+  DefaultAccounts.t (T := T).
 
 
 
@@ -3910,7 +4049,7 @@ Module EnvInstance.
   }.
   Global Set Primitive Projections.
 End EnvInstance.
-Definition EnvInstance := @EnvInstance.t.
+Definition EnvInstance : Set := EnvInstance.t.
 
 Module OffChainError.
   Inductive t : Set :=
@@ -4050,7 +4189,8 @@ Module TopicsBuilderBackend.
   }.
 End TopicsBuilderBackend.
 
-Definition TopicsBuilder_ := @TopicsBuilder.t.
+Definition TopicsBuilder_ (S E B : Set) : Set :=
+  TopicsBuilder.t (S := S) (E := E) (B := B).
 
 Module state__.
   Module Uninit.
@@ -4160,4 +4300,4 @@ Module PrefixedValue.
     }.
   End PrefixedValue.
 End PrefixedValue.
-Definition PrefixedValue := @PrefixedValue.t.
+Definition PrefixedValue (T : Set) : Set := PrefixedValue.t (T := T).

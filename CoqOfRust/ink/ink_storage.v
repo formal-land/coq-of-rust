@@ -22,8 +22,12 @@ Module lazy.
         }.
       End Mapping.
     End Mapping.
-    Definition Mapping := @Mapping.t.
-    Arguments Mapping {_} {_}.
+    Definition Mapping
+        (K V KeyType : Set)
+        `{ink_storage_traits.storage.Packed.Trait V}
+        `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+        : Set :=
+      Mapping.t (K := K) (V := V) (KeyType := KeyType).
   End mapping.
   
   Module Lazy.
@@ -41,8 +45,11 @@ Module lazy.
       }.
     End Lazy.
   End Lazy.
-  Definition Lazy := @Lazy.t.
-  Arguments Lazy {_}.
+  Definition Lazy
+      (V KeyType : Set)
+      `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+      : Set :=
+    Lazy.t (V := V) (KeyType := KeyType).
 End lazy.
 
 Module mapping.
@@ -63,8 +70,12 @@ Module mapping.
       }.
     End Mapping.
   End Mapping.
-  Definition Mapping := @Mapping.t.
-  Arguments Mapping {_} {_}.
+  Definition Mapping
+      (K V KeyType : Set)
+      `{ink_storage_traits.storage.Packed.Trait V}
+      `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+      : Set :=
+    Mapping.t (K := K) (V := V) (KeyType := KeyType).
 End mapping.
 
 Module Mapping.
@@ -84,8 +95,12 @@ Module Mapping.
     }.
   End Mapping.
 End Mapping.
-Definition Mapping := @Mapping.t.
-Arguments Mapping {_} {_}.
+Definition Mapping
+    (K V KeyType : Set)
+    `{ink_storage_traits.storage.Packed.Trait V}
+    `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+    : Set :=
+  Mapping.t (K := K) (V := V) (KeyType := KeyType).
 
 Module Lazy.
   Section Lazy.
@@ -102,5 +117,8 @@ Module Lazy.
     }.
   End Lazy.
 End Lazy.
-Definition Lazy := @Lazy.t.
-Arguments Lazy {_}.
+Definition Lazy
+    (V KeyType : Set)
+    `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+    : Set :=
+  Lazy.t (V := V) (KeyType := KeyType).

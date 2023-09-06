@@ -83,8 +83,12 @@ Module client.
       }.
     End InstantiationResult.
   End InstantiationResult.
-  Definition InstantiationResult := @InstantiationResult.t.
-  Arguments InstantiationResult {_} {_}.
+  Definition InstantiationResult
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    InstantiationResult.t (C := C) (E := E).
   
   Module UploadResult.
     Section UploadResult.
@@ -115,8 +119,12 @@ Module client.
       }.
     End UploadResult.
   End UploadResult.
-  Definition UploadResult := @UploadResult.t.
-  Arguments UploadResult {_} {_}.
+  Definition UploadResult
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    UploadResult.t (C := C) (E := E).
   
   Module CallResult.
     Section CallResult.
@@ -139,8 +147,12 @@ Module client.
       }.
     End CallResult.
   End CallResult.
-  Definition CallResult := @CallResult.t.
-  Arguments CallResult {_} {_}.
+  Definition CallResult
+      (C E V : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CallResult.t (C := C) (E := E) (V := V).
   
   Module CallDryRunResult.
     Section CallDryRunResult.
@@ -163,8 +175,11 @@ Module client.
       }.
     End CallDryRunResult.
   End CallDryRunResult.
-  Definition CallDryRunResult := @CallDryRunResult.t.
-  Arguments CallDryRunResult {_}.
+  Definition CallDryRunResult
+      (E V : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CallDryRunResult.t (E := E) (V := V).
   
   Module Error.
     Inductive t : Set :=
@@ -219,8 +234,12 @@ Module client.
       }.
     End Client.
   End Client.
-  Definition Client := @Client.t.
-  Arguments Client {_} {_}.
+  Definition Client
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    Client.t (C := C) (E := E).
 End client.
 
 Definition CallBuilderFinal (E Args RetType : Set) : Set :=
@@ -258,8 +277,12 @@ Module InstantiationResult.
     }.
   End InstantiationResult.
 End InstantiationResult.
-Definition InstantiationResult := @InstantiationResult.t.
-Arguments InstantiationResult {_} {_}.
+Definition InstantiationResult
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  InstantiationResult.t (C := C) (E := E).
 
 Module UploadResult.
   Section UploadResult.
@@ -288,8 +311,12 @@ Module UploadResult.
     }.
   End UploadResult.
 End UploadResult.
-Definition UploadResult := @UploadResult.t.
-Arguments UploadResult {_} {_}.
+Definition UploadResult
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  UploadResult.t (C := C) (E := E).
 
 Module CallResult.
   Section CallResult.
@@ -310,8 +337,12 @@ Module CallResult.
     }.
   End CallResult.
 End CallResult.
-Definition CallResult := @CallResult.t.
-Arguments CallResult {_} {_}.
+Definition CallResult
+    (C E V : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CallResult.t (C := C) (E := E) (V := V).
 
 Module CallDryRunResult.
   Section CallDryRunResult.
@@ -334,8 +365,11 @@ Module CallDryRunResult.
     }.
   End CallDryRunResult.
 End CallDryRunResult.
-Definition CallDryRunResult := @CallDryRunResult.t.
-Arguments CallDryRunResult {_}.
+Definition CallDryRunResult
+    (E V : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CallDryRunResult.t (E := E) (V := V).
 
 Module Error.
   Inductive t : Set :=
@@ -388,8 +422,12 @@ Module Client.
     }.
   End Client.
 End Client.
-Definition Client := @Client.t.
-Arguments Client {_} {_}.
+Definition Client
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  Client.t (C := C) (E := E).
 
 Module default_accounts.
   Parameter alice :
@@ -601,8 +639,8 @@ Module node_proc.
       }.
     End TestNodeProcess.
   End TestNodeProcess.
-  Definition TestNodeProcess := @TestNodeProcess.t.
-  Arguments TestNodeProcess {_}.
+  Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
+    TestNodeProcess.t (R := R).
   
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
@@ -626,7 +664,8 @@ Module node_proc.
       }.
     End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
-  Definition TestNodeProcessBuilder := @TestNodeProcessBuilder.t.
+  Definition TestNodeProcessBuilder (R : Set) : Set :=
+    TestNodeProcessBuilder.t (R := R).
 End node_proc.
 
 Module TestNodeProcess.
@@ -652,8 +691,8 @@ Module TestNodeProcess.
     }.
   End TestNodeProcess.
 End TestNodeProcess.
-Definition TestNodeProcess := @TestNodeProcess.t.
-Arguments TestNodeProcess {_}.
+Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
+  TestNodeProcess.t (R := R).
 
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
@@ -677,7 +716,8 @@ Module TestNodeProcessBuilder.
     }.
   End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
-Definition TestNodeProcessBuilder := @TestNodeProcessBuilder.t.
+Definition TestNodeProcessBuilder (R : Set) : Set :=
+  TestNodeProcessBuilder.t (R := R).
 
 Module xts.
   Module Weight.
@@ -695,7 +735,7 @@ Module xts.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End Weight.
-  Definition Weight := @Weight.t.
+  Definition Weight : Set := Weight.t.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
@@ -733,8 +773,11 @@ Module xts.
       }.
     End InstantiateWithCode.
   End InstantiateWithCode.
-  Definition InstantiateWithCode := @InstantiateWithCode.t.
-  Arguments InstantiateWithCode {_}.
+  Definition InstantiateWithCode
+      (E : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    InstantiateWithCode.t (E := E).
   
   Module Call.
     Section Call.
@@ -768,8 +811,8 @@ Module xts.
       }.
     End Call.
   End Call.
-  Definition Call := @Call.t.
-  Arguments Call {_}.
+  Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+    Call.t (E := E).
   
   Module Transfer.
     Section Transfer.
@@ -792,8 +835,12 @@ Module xts.
       }.
     End Transfer.
   End Transfer.
-  Definition Transfer := @Transfer.t.
-  Arguments Transfer {_} {_}.
+  Definition Transfer
+      (E C : Set)
+      `{ink_env.types.Environment.Trait E}
+      `{subxt.config.Config.Trait C}
+      : Set :=
+    Transfer.t (E := E) (C := C).
   
   Module Determinism.
     Inductive t : Set :=
@@ -826,8 +873,8 @@ Module xts.
       }.
     End UploadCode.
   End UploadCode.
-  Definition UploadCode := @UploadCode.t.
-  Arguments UploadCode {_}.
+  Definition UploadCode (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+    UploadCode.t (E := E).
   
   Module ContractsApi.
     Section ContractsApi.
@@ -850,8 +897,12 @@ Module xts.
       }.
     End ContractsApi.
   End ContractsApi.
-  Definition ContractsApi := @ContractsApi.t.
-  Arguments ContractsApi {_} {_}.
+  Definition ContractsApi
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    ContractsApi.t (C := C) (E := E).
 End xts.
 
 Module Weight.
@@ -869,7 +920,7 @@ Module Weight.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Weight.
-Definition Weight := @Weight.t.
+Definition Weight : Set := Weight.t.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.
@@ -907,8 +958,11 @@ Module InstantiateWithCode.
     }.
   End InstantiateWithCode.
 End InstantiateWithCode.
-Definition InstantiateWithCode := @InstantiateWithCode.t.
-Arguments InstantiateWithCode {_}.
+Definition InstantiateWithCode
+    (E : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  InstantiateWithCode.t (E := E).
 
 Module Call.
   Section Call.
@@ -942,8 +996,8 @@ Module Call.
     }.
   End Call.
 End Call.
-Definition Call := @Call.t.
-Arguments Call {_}.
+Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  Call.t (E := E).
 
 Module Transfer.
   Section Transfer.
@@ -964,8 +1018,12 @@ Module Transfer.
     }.
   End Transfer.
 End Transfer.
-Definition Transfer := @Transfer.t.
-Arguments Transfer {_} {_}.
+Definition Transfer
+    (E C : Set)
+    `{ink_env.types.Environment.Trait E}
+    `{subxt.config.Config.Trait C}
+    : Set :=
+  Transfer.t (E := E) (C := C).
 
 Module Determinism.
   Inductive t : Set :=
@@ -998,8 +1056,8 @@ Module UploadCode.
     }.
   End UploadCode.
 End UploadCode.
-Definition UploadCode := @UploadCode.t.
-Arguments UploadCode {_}.
+Definition UploadCode (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  UploadCode.t (E := E).
 
 Module ContractsApi.
   Section ContractsApi.
@@ -1020,8 +1078,12 @@ Module ContractsApi.
     }.
   End ContractsApi.
 End ContractsApi.
-Definition ContractsApi := @ContractsApi.t.
-Arguments ContractsApi {_} {_}.
+Definition ContractsApi
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  ContractsApi.t (C := C) (E := E).
 
 Module SubstrateConfig.
   Inductive t : Set :=

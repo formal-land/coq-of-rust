@@ -16,7 +16,7 @@ Module result_info.
       }.
     End IsResultType.
   End IsResultType.
-  Definition IsResultType := @IsResultType.t.
+  Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
   
   Module IsResultTypeFallback.
     Class Trait (Self : Set) : Type := {
@@ -70,7 +70,7 @@ Module IsResultType.
     }.
   End IsResultType.
 End IsResultType.
-Definition IsResultType := @IsResultType.t.
+Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
 
 Module IsResultTypeFallback.
   Class Trait (Self : Set) : Type := {
@@ -251,8 +251,13 @@ Module codegen.
           }.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
-      Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
-      Arguments EventRespectsTopicLimit {_} {_}.
+      Definition EventRespectsTopicLimit
+          (Event : Set)
+          `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+          `{ink.codegen.event.topics.RespectTopicLimit.Trait
+                ink.codegen.event.topics.EventLenTopics.LenTopics}
+          : Set :=
+        EventRespectsTopicLimit.t (Event := Event).
       
       Module RespectTopicLimit.
         Unset Primitive Projections.
@@ -422,7 +427,7 @@ Module codegen.
           }.
         End IsSameType.
       End IsSameType.
-      Definition IsSameType := @IsSameType.t.
+      Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
     End same_type.
   End utils.
 End codegen.
@@ -700,8 +705,13 @@ Module event.
         }.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
-    Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
-    Arguments EventRespectsTopicLimit {_} {_}.
+    Definition EventRespectsTopicLimit
+        (Event : Set)
+        `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+        `{ink.codegen.event.topics.RespectTopicLimit.Trait
+              ink.codegen.event.topics.EventLenTopics.LenTopics}
+        : Set :=
+      EventRespectsTopicLimit.t (Event := Event).
     
     Module RespectTopicLimit.
       Unset Primitive Projections.
@@ -797,8 +807,13 @@ Module topics.
       }.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
-  Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
-  Arguments EventRespectsTopicLimit {_} {_}.
+  Definition EventRespectsTopicLimit
+      (Event : Set)
+      `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+      `{ink.codegen.event.topics.RespectTopicLimit.Trait
+            ink.codegen.event.topics.EventLenTopics.LenTopics}
+      : Set :=
+    EventRespectsTopicLimit.t (Event := Event).
   
   Module RespectTopicLimit.
     Unset Primitive Projections.
@@ -842,8 +857,13 @@ Module EventRespectsTopicLimit.
     }.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
-Definition EventRespectsTopicLimit := @EventRespectsTopicLimit.t.
-Arguments EventRespectsTopicLimit {_} {_}.
+Definition EventRespectsTopicLimit
+    (Event : Set)
+    `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+    `{ink.codegen.event.topics.RespectTopicLimit.Trait
+          ink.codegen.event.topics.EventLenTopics.LenTopics}
+    : Set :=
+  EventRespectsTopicLimit.t (Event := Event).
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
@@ -1220,7 +1240,7 @@ Module utils.
         }.
       End IsSameType.
     End IsSameType.
-    Definition IsSameType := @IsSameType.t.
+    Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
   End same_type.
 End utils.
 
@@ -1247,7 +1267,7 @@ Module same_type.
       }.
     End IsSameType.
   End IsSameType.
-  Definition IsSameType := @IsSameType.t.
+  Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
 End same_type.
 
 Module IsSameType.
@@ -1264,7 +1284,7 @@ Module IsSameType.
     }.
   End IsSameType.
 End IsSameType.
-Definition IsSameType := @IsSameType.t.
+Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
 
 Module reflect.
   Module contract.
@@ -1585,7 +1605,8 @@ Module reflect.
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
+      Definition TraitDefinitionRegistry (E : Set) : Set :=
+        TraitDefinitionRegistry.t (E := E).
     End registry.
   End trait_def.
 End reflect.
@@ -2170,7 +2191,8 @@ Module trait_def.
         }.
       End TraitDefinitionRegistry.
     End TraitDefinitionRegistry.
-    Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
+    Definition TraitDefinitionRegistry (E : Set) : Set :=
+      TraitDefinitionRegistry.t (E := E).
   End registry.
 End trait_def.
 
@@ -2265,7 +2287,8 @@ Module registry.
       }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
-  Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
+  Definition TraitDefinitionRegistry (E : Set) : Set :=
+    TraitDefinitionRegistry.t (E := E).
 End registry.
 
 Module TraitDefinitionRegistry.
@@ -2282,7 +2305,8 @@ Module TraitDefinitionRegistry.
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
-Definition TraitDefinitionRegistry := @TraitDefinitionRegistry.t.
+Definition TraitDefinitionRegistry (E : Set) : Set :=
+  TraitDefinitionRegistry.t (E := E).
 
 Module chain_extension.
   Module ChainExtensionInstance.
@@ -2514,7 +2538,7 @@ Module env_access.
       }.
     End EnvAccess.
   End EnvAccess.
-  Definition EnvAccess := @EnvAccess.t.
+  Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
 End env_access.
 
 Module EnvAccess.
@@ -2531,4 +2555,4 @@ Module EnvAccess.
     }.
   End EnvAccess.
 End EnvAccess.
-Definition EnvAccess := @EnvAccess.t.
+Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
