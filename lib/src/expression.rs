@@ -8,7 +8,7 @@ use crate::ty::*;
 
 use rustc_abi::VariantIdx;
 use rustc_ast::LitKind;
-use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath};
+use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath, TyKind};
 
 /// Struct [FreshVars] represents a set of fresh variables
 #[derive(Debug)]
@@ -49,7 +49,7 @@ pub(crate) enum Expr {
     AssociatedFunction {
         ty: Box<CoqType>,
         func: String,
-        infer_args: bool,
+        infer_args: bool
     },
     Literal(LitKind),
     AddrOf(Box<Expr>),
@@ -194,13 +194,18 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
     match qpath {
         QPath::Resolved(_, path) => Expr::Var(compile_path(env, path)),
         QPath::TypeRelative(ty, segment) => {
+            let tykind  = ty.kind;
             let ty = compile_type(env, ty);
             let func = segment.ident.to_string();
             let infer_args = segment.infer_args;
-            Expr::AssociatedFunction {
-                ty,
-                func,
-                infer_args,
+            match tykind {
+              TyKind::Path(qpath1) => {
+                match qpath1 {
+                  QPath::LangItem(_, _, _) => Expr::AssociatedFunction { ty, func, infer_args : false },
+                  _ => Expr::AssociatedFunction { ty, func, infer_args }
+                }
+              },
+              _ => Expr::AssociatedFunction { ty, func, infer_args }
             }
         }
         QPath::LangItem(_, _, _) => Expr::LocalVar("LangItem".to_string()),
@@ -1057,19 +1062,20 @@ impl Expr {
             Expr::Pure(expr) => paren(with_paren, nest([text("Pure"), line(), expr.to_doc(true)])),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
-            Expr::AssociatedFunction {
-                ty,
-                func,
-                infer_args,
-            } => nest([
-                if *infer_args {
-                    // gy@NOTE: It seems that the compiler would only leave a boolean to
-                    //   determine if the function has arguments to be inferred. For now
-                    //   I assume that we only have one arguments to be inferred at a time.
-                    concat([text("("), ty.to_doc(true), line(), text("_)")])
-                } else {
-                    ty.to_doc(true)
-                },
+            Expr::AssociatedFunction { ty, func , infer_args} => nest([
+              if *infer_args {
+                // gy@NOTE: It seems that the compiler would only leave a boolean to 
+                //   determine if the function has arguments to be inferred. For now
+                //   I assume that we only have one arguments to be inferred at a time.
+                concat([
+                  text("("),
+                  ty.to_doc(true),
+                  line(),
+                  text("_)") 
+                ])
+              } else {
+                ty.to_doc(true)
+              },
                 text("::["),
                 text(format!("\"{func}\"")),
                 text("]"),
