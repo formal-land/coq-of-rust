@@ -49,6 +49,7 @@ pub(crate) enum Expr {
     AssociatedFunction {
         ty: Box<CoqType>,
         func: String,
+        infer_args: bool,
     },
     Literal(LitKind),
     AddrOf(Box<Expr>),
@@ -195,7 +196,12 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
         QPath::TypeRelative(ty, segment) => {
             let ty = compile_type(env, ty);
             let func = segment.ident.to_string();
-            Expr::AssociatedFunction { ty, func }
+            let infer_args = segment.infer_args;
+            Expr::AssociatedFunction {
+                ty,
+                func,
+                infer_args,
+            }
         }
         QPath::LangItem(_, _, _) => Expr::LocalVar("LangItem".to_string()),
     }
@@ -1051,8 +1057,19 @@ impl Expr {
             Expr::Pure(expr) => paren(with_paren, nest([text("Pure"), line(), expr.to_doc(true)])),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
-            Expr::AssociatedFunction { ty, func } => nest([
-                ty.to_doc(true),
+            Expr::AssociatedFunction {
+                ty,
+                func,
+                infer_args,
+            } => nest([
+                if *infer_args {
+                    // gy@NOTE: It seems that the compiler would only leave a boolean to
+                    //   determine if the function has arguments to be inferred. For now
+                    //   I assume that we only have one arguments to be inferred at a time.
+                    concat([text("("), ty.to_doc(true), line(), text("_)")])
+                } else {
+                    ty.to_doc(true)
+                },
                 text("::["),
                 text(format!("\"{func}\"")),
                 text("]"),
@@ -1306,7 +1323,7 @@ impl Expr {
 
     fn parameter_for_fmt_print_name(&self) -> String {
         match self {
-            Expr::AssociatedFunction { ty: _, func } => func.to_owned(),
+            Expr::AssociatedFunction { ty: _, func, .. } => func.to_owned(),
             _ => "struct_parameter_for_fmt".to_string(),
         }
     }
