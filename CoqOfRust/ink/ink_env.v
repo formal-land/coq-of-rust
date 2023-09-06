@@ -1731,6 +1731,55 @@ Module api.
         `{parity_scale_codec.codec.Encode.Trait K},
       (ref K) -> M (H := H') (core.option.Option u32).
   
+  Parameter invoke_contract :
+      forall
+        `{H' : State.Trait}
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R},
+      (ref
+          (ink_env.call.call_builder.CallParams
+            E
+            (ink_env.call.call_builder.Call E)
+            Args
+            R))
+        ->
+        M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Parameter invoke_contract_delegate :
+      forall
+        `{H' : State.Trait}
+        {E Args R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{parity_scale_codec.codec.Decode.Trait R},
+      (ref
+          (ink_env.call.call_builder.CallParams
+            E
+            (ink_env.call.call_builder.DelegateCall E)
+            Args
+            R))
+        ->
+        M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)).
+  
+  Parameter instantiate_contract :
+      forall
+        `{H' : State.Trait}
+        {E ContractRef Args Salt R : Set}
+        `{ink_env.types.Environment.Trait E}
+        `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+        `{parity_scale_codec.codec.Encode.Trait Args}
+        `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+        `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+            (C := ContractRef)},
+      (ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R))
+        ->
+        M (H := H')
+          (ink_env.error.Result
+            (ink_primitives.ConstructorResult
+              ink_env.call.create_builder.ConstructorReturnType.Output)).
+  
   Parameter terminate_contract :
       forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
       E::type["AccountId"] -> M (H := H') Empty_set.
