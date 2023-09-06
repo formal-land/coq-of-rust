@@ -83,12 +83,12 @@ Module config.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_whitelisted_attributes :
-        Notation.Dot "whitelisted_attributes" := {
+    Global Instance Get_whitelisted_attributes
+      : Notation.Dot "whitelisted_attributes" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
-    Global Instance Get_additional_contracts :
-        Notation.Dot "additional_contracts" := {
+    Global Instance Get_additional_contracts
+      : Notation.Dot "additional_contracts" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
     Global Instance Get_environment : Notation.Dot "environment" := {
@@ -107,12 +107,12 @@ Module E2EConfig.
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_whitelisted_attributes :
-      Notation.Dot "whitelisted_attributes" := {
+  Global Instance Get_whitelisted_attributes
+    : Notation.Dot "whitelisted_attributes" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
-  Global Instance Get_additional_contracts :
-      Notation.Dot "additional_contracts" := {
+  Global Instance Get_additional_contracts
+    : Notation.Dot "additional_contracts" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
   Global Instance Get_environment : Notation.Dot "environment" := {

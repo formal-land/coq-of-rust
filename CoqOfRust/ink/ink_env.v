@@ -1387,8 +1387,8 @@ Module call.
         Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
           Notation.dot '(Build_t _ x1 _) := x1;
         }.
-        Global Instance Get_transferred_value :
-            Notation.Dot "transferred_value" := {
+        Global Instance Get_transferred_value
+          : Notation.Dot "transferred_value" := {
           Notation.dot '(Build_t _ _ x2) := x2;
         }.
       End Call.
@@ -2335,8 +2335,8 @@ Module call_builder.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
-      Global Instance Get_transferred_value :
-          Notation.Dot "transferred_value" := {
+      Global Instance Get_transferred_value
+        : Notation.Dot "transferred_value" := {
         Notation.dot '(Build_t _ _ x2) := x2;
       }.
     End Call.
@@ -2451,8 +2451,8 @@ Module Call.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
-    Global Instance Get_transferred_value :
-        Notation.Dot "transferred_value" := {
+    Global Instance Get_transferred_value
+      : Notation.Dot "transferred_value" := {
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End Call.

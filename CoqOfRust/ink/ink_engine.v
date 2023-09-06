@@ -81,8 +81,8 @@ Module ext.
     Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
-    Global Instance Get_chain_extension_handler :
-        Notation.Dot "chain_extension_handler" := {
+    Global Instance Get_chain_extension_handler
+      : Notation.Dot "chain_extension_handler" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End Engine.
@@ -162,8 +162,8 @@ Module Engine.
   Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
     Notation.dot '(Build_t _ _ _ x3 _) := x3;
   }.
-  Global Instance Get_chain_extension_handler :
-      Notation.Dot "chain_extension_handler" := {
+  Global Instance Get_chain_extension_handler
+    : Notation.Dot "chain_extension_handler" := {
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
   }.
 End Engine.
@@ -243,8 +243,8 @@ Module test_api.
     Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
     }.
-    Global Instance Get_emitted_debug_messages :
-        Notation.Dot "emitted_debug_messages" := {
+    Global Instance Get_emitted_debug_messages
+      : Notation.Dot "emitted_debug_messages" := {
       Notation.dot '(Build_t _ x1 _ _ _) := x1;
     }.
     Global Instance Get_count_reads : Notation.Dot "count_reads" := {
@@ -253,8 +253,8 @@ Module test_api.
     Global Instance Get_count_writes : Notation.Dot "count_writes" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
-    Global Instance Get_cells_per_account :
-        Notation.Dot "cells_per_account" := {
+    Global Instance Get_cells_per_account
+      : Notation.Dot "cells_per_account" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End DebugInfo.
@@ -313,8 +313,8 @@ Module DebugInfo.
   Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
     Notation.dot '(Build_t x0 _ _ _ _) := x0;
   }.
-  Global Instance Get_emitted_debug_messages :
-      Notation.Dot "emitted_debug_messages" := {
+  Global Instance Get_emitted_debug_messages
+    : Notation.Dot "emitted_debug_messages" := {
     Notation.dot '(Build_t _ x1 _ _ _) := x1;
   }.
   Global Instance Get_count_reads : Notation.Dot "count_reads" := {
@@ -485,8 +485,8 @@ Module exec_context.
     Global Instance Get_callee : Notation.Dot "callee" := {
       Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
     }.
-    Global Instance Get_value_transferred :
-        Notation.Dot "value_transferred" := {
+    Global Instance Get_value_transferred
+      : Notation.Dot "value_transferred" := {
       Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
     }.
     Global Instance Get_block_number : Notation.Dot "block_number" := {

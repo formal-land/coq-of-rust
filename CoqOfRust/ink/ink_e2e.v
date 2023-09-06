@@ -718,8 +718,8 @@ Module xts.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
       }.
-      Global Instance Get_storage_deposit_limit :
-          Notation.Dot "storage_deposit_limit" := {
+      Global Instance Get_storage_deposit_limit
+        : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
       }.
       Global Instance Get_code : Notation.Dot "code" := {
@@ -759,8 +759,8 @@ Module xts.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ _ x2 _ _) := x2;
       }.
-      Global Instance Get_storage_deposit_limit :
-          Notation.Dot "storage_deposit_limit" := {
+      Global Instance Get_storage_deposit_limit
+        : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ _ _ x3 _) := x3;
       }.
       Global Instance Get_data : Notation.Dot "data" := {
@@ -817,8 +817,8 @@ Module xts.
       Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
-      Global Instance Get_storage_deposit_limit :
-          Notation.Dot "storage_deposit_limit" := {
+      Global Instance Get_storage_deposit_limit
+        : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
       Global Instance Get_determinism : Notation.Dot "determinism" := {
@@ -892,8 +892,8 @@ Module InstantiateWithCode.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
     }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
+    Global Instance Get_storage_deposit_limit
+      : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
     }.
     Global Instance Get_code : Notation.Dot "code" := {
@@ -933,8 +933,8 @@ Module Call.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ _ x2 _ _) := x2;
     }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
+    Global Instance Get_storage_deposit_limit
+      : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
     Global Instance Get_data : Notation.Dot "data" := {
@@ -989,8 +989,8 @@ Module UploadCode.
     Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
+    Global Instance Get_storage_deposit_limit
+      : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
     Global Instance Get_determinism : Notation.Dot "determinism" := {
