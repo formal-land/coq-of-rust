@@ -5,18 +5,16 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_debug"] (addr_of "1i32 + 1 == 2i32") in
-      let* α1 :=
-        (format_argument _)::["new_debug"] (addr_of "2i32 * 2 == 4i32") in
+      let* α0 := format_argument::["new_debug"] (addr_of "1i32 + 1 == 2i32") in
+      let* α1 := format_argument::["new_debug"] (addr_of "2i32 * 2 == 4i32") in
       let* α2 := 1.["add"] 1 in
       let* α3 := α2.["eq"] 2 in
       let* α4 := 2.["mul"] 2 in
       let* α5 := α4.["eq"] 4 in
       let* α6 := α3.["andb"] α5 in
-      let* α7 := (format_argument _)::["new_debug"] (addr_of α6) in
+      let* α7 := format_argument::["new_debug"] (addr_of α6) in
       let* α8 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " and "; " is "; "
 " ])
           (addr_of [ α0; α1; α7 ]) in
@@ -24,12 +22,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of "true") in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of "false") in
+      let* α0 := format_argument::["new_debug"] (addr_of "true") in
+      let* α1 := format_argument::["new_debug"] (addr_of "false") in
       let* α2 := true.["or"] false in
-      let* α3 := (format_argument _)::["new_debug"] (addr_of α2) in
+      let* α3 := format_argument::["new_debug"] (addr_of α2) in
       let* α4 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " or "; " is "; "
 " ])
           (addr_of [ α0; α1; α3 ]) in

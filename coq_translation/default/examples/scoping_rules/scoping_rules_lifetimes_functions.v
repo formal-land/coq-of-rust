@@ -4,9 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Definition print_one `{H' : State.Trait} (x : ref i32) : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of x) in
+      let* α0 := format_argument::["new_display"] (addr_of x) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`print_one`: x is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -27,10 +27,10 @@ Definition print_multi
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of x) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of y) in
+      let* α0 := format_argument::["new_display"] (addr_of x) in
+      let* α1 := format_argument::["new_display"] (addr_of y) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`print_multi`: x is "; ", y is "; "
 " ])
           (addr_of [ α0; α1 ]) in

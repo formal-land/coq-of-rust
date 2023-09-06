@@ -28,7 +28,7 @@ Definition inspect
   | enums.WebEvent.PageLoad =>
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [
               "page loaded, r" ++
@@ -40,15 +40,15 @@ Definition inspect
   | enums.WebEvent.PageUnload =>
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "page unloaded
+        format_arguments::["new_const"] (addr_of [ "page unloaded
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | enums.WebEvent.KeyPress c =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of c) in
+      let* α0 := format_argument::["new_display"] (addr_of c) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "pressed '"; "'.
 " ])
           (addr_of [ α0 ]) in
@@ -56,9 +56,9 @@ Definition inspect
     Pure tt
   | enums.WebEvent.Paste s =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of s) in
+      let* α0 := format_argument::["new_display"] (addr_of s) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "pasted ""; "".
 " ])
           (addr_of [ α0 ]) in
@@ -71,10 +71,10 @@ Definition inspect
       =>
     let* _ :=
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of x) in
-        let* α1 := (format_argument _)::["new_display"] (addr_of y) in
+        let* α0 := format_argument::["new_display"] (addr_of x) in
+        let* α1 := format_argument::["new_display"] (addr_of y) in
         let* α2 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "clicked at x="; ", y="; ".
 " ])
             (addr_of [ α0; α1 ]) in

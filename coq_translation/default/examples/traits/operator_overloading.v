@@ -74,7 +74,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "> Foo.add(Bar) was called
 " ]) in
         std.io.stdio._print α0 in
@@ -108,7 +108,7 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "> Bar.add(Foo) was called
 " ]) in
         std.io.stdio._print α0 in
@@ -135,9 +135,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         operator_overloading.Foo.Build.["add"] operator_overloading.Bar.Build in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Foo + Bar = "; "
 " ])
           (addr_of [ α1 ]) in
@@ -147,9 +147,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         operator_overloading.Bar.Build.["add"] operator_overloading.Foo.Build in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Bar + Foo = "; "
 " ])
           (addr_of [ α1 ]) in

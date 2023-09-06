@@ -14,9 +14,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_argument _)::["new_display"] (addr_of constants.LANGUAGE) in
+        format_argument::["new_display"] (addr_of constants.LANGUAGE) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "This is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -25,9 +25,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_argument _)::["new_display"] (addr_of constants.THRESHOLD) in
+        format_argument::["new_display"] (addr_of constants.THRESHOLD) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "The threshold is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -35,16 +35,16 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of n) in
+      let* α0 := format_argument::["new_display"] (addr_of n) in
       let* α1 := constants.is_big n in
       let* α2 :=
         if (α1 : bool) then
           Pure "big"
         else
           Pure "small" in
-      let* α3 := (format_argument _)::["new_display"] (addr_of α2) in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
       let* α4 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " is "; "
 " ])
           (addr_of [ α0; α3 ]) in

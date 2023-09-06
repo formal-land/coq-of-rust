@@ -5,8 +5,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "called `function()`
+        format_arguments::["new_const"] (addr_of [ "called `function()`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -18,7 +17,7 @@ Module deeply.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "called `deeply::nested::function()`
 " ]) in
           std.io.stdio._print α0 in
@@ -32,7 +31,7 @@ Module nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `deeply::nested::function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -44,7 +43,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `deeply::nested::function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -57,7 +56,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "Entering block
+        format_arguments::["new_const"] (addr_of [ "Entering block
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -66,7 +65,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"] (addr_of [ "Leaving block
+          format_arguments::["new_const"] (addr_of [ "Leaving block
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in

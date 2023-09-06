@@ -20,8 +20,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "What color is it?
+        format_arguments::["new_const"] (addr_of [ "What color is it?
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -29,34 +28,31 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | match_destructuring_enums.Color.Red =>
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "The color is Red!
+        format_arguments::["new_const"] (addr_of [ "The color is Red!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | match_destructuring_enums.Color.Blue =>
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "The color is Blue!
+        format_arguments::["new_const"] (addr_of [ "The color is Blue!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | match_destructuring_enums.Color.Green =>
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "The color is Green!
+        format_arguments::["new_const"] (addr_of [ "The color is Green!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | match_destructuring_enums.Color.RGB r g b =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of r) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of g) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of b) in
+      let* α0 := format_argument::["new_display"] (addr_of r) in
+      let* α1 := format_argument::["new_display"] (addr_of g) in
+      let* α2 := format_argument::["new_display"] (addr_of b) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Red: "; ", green: "; ", and blue: "; "!
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -64,11 +60,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_destructuring_enums.Color.HSV h s v =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of h) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of s) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of v) in
+      let* α0 := format_argument::["new_display"] (addr_of h) in
+      let* α1 := format_argument::["new_display"] (addr_of s) in
+      let* α2 := format_argument::["new_display"] (addr_of v) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Hue: "; ", saturation: "; ", value: "; "!
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -76,11 +72,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_destructuring_enums.Color.HSL h s l =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of h) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of s) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of l) in
+      let* α0 := format_argument::["new_display"] (addr_of h) in
+      let* α1 := format_argument::["new_display"] (addr_of s) in
+      let* α2 := format_argument::["new_display"] (addr_of l) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Hue: "; ", saturation: "; ", lightness: "; "!
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -88,11 +84,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_destructuring_enums.Color.CMY c m y =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of c) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of m) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of y) in
+      let* α0 := format_argument::["new_display"] (addr_of c) in
+      let* α1 := format_argument::["new_display"] (addr_of m) in
+      let* α2 := format_argument::["new_display"] (addr_of y) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Cyan: "; ", magenta: "; ", yellow: "; "!
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -100,12 +96,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_destructuring_enums.Color.CMYK c m y k =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of c) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of m) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of y) in
-      let* α3 := (format_argument _)::["new_display"] (addr_of k) in
+      let* α0 := format_argument::["new_display"] (addr_of c) in
+      let* α1 := format_argument::["new_display"] (addr_of m) in
+      let* α2 := format_argument::["new_display"] (addr_of y) in
+      let* α3 := format_argument::["new_display"] (addr_of k) in
       let* α4 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of
             [ "Cyan: "; ", magenta: "; ", yellow: "; ", key (black): "; "!
 " ])

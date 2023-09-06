@@ -20,7 +20,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "This point won't be reached!
 " ]) in
       std.io.stdio._print α0 in

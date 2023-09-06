@@ -118,10 +118,10 @@ Definition eat
   match α0 with
   | core.option.Option.Some food =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of day) in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of food) in
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
+      let* α1 := format_argument::["new_debug"] (addr_of food) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Yay! On "; " we get to eat "; ".
 " ])
           (addr_of [ α0; α1 ]) in
@@ -129,9 +129,9 @@ Definition eat
     Pure tt
   | core.option.Option.None =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of day) in
+      let* α0 := format_argument::["new_debug"] (addr_of day) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Oh no. We don't get to eat on "; "?
 " ])
           (addr_of [ α0 ]) in

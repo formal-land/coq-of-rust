@@ -22,9 +22,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                   let* _ :=
                     let* _ :=
                       let* α0 :=
-                        (format_argument _)::["new_debug"] (addr_of apple) in
+                        format_argument::["new_debug"] (addr_of apple) in
                       let* α1 :=
-                        (format_arguments _)::["new_v1"]
+                        format_arguments::["new_v1"]
                           (addr_of [ ""; "
 " ])
                           (addr_of [ α0 ]) in

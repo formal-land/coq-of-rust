@@ -191,9 +191,9 @@ Definition eat
   match food with
   | core.option.Option.Some food =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of food) in
+      let* α0 := format_argument::["new_debug"] (addr_of food) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Mmm. I love "; "
 " ])
           (addr_of [ α0 ]) in
@@ -202,7 +202,7 @@ Definition eat
   | core.option.Option.None =>
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "Oh no! It wasn't edible.
 " ]) in
       std.io.stdio._print α0 in

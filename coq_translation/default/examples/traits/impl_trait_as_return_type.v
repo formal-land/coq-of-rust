@@ -149,8 +149,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "all done
+      let* α0 := format_arguments::["new_const"] (addr_of [ "all done
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in

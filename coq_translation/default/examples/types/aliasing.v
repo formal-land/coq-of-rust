@@ -13,12 +13,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let inches : aliasing.Inch := cast 2 aliasing.U64 in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of nanoseconds) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of inches) in
+      let* α0 := format_argument::["new_display"] (addr_of nanoseconds) in
+      let* α1 := format_argument::["new_display"] (addr_of inches) in
       let* α2 := nanoseconds.["add"] inches in
-      let* α3 := (format_argument _)::["new_display"] (addr_of α2) in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
       let* α4 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " nanoseconds + "; " inches = "; " unit?
 " ])
           (addr_of [ α0; α1; α3 ]) in

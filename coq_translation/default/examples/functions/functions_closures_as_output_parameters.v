@@ -6,9 +6,9 @@ Definition create_fn `{H' : State.Trait} : M (H := H') _ (* OpaqueTy *) :=
   Pure
     (fun  =>
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of text) in
+        let* α0 := format_argument::["new_display"] (addr_of text) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "This is a: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -22,9 +22,9 @@ Definition create_fnmut `{H' : State.Trait} : M (H := H') _ (* OpaqueTy *) :=
   Pure
     (fun  =>
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of text) in
+        let* α0 := format_argument::["new_display"] (addr_of text) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "This is a: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -36,9 +36,9 @@ Definition create_fnonce `{H' : State.Trait} : M (H := H') _ (* OpaqueTy *) :=
   Pure
     (fun  =>
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of text) in
+        let* α0 := format_argument::["new_display"] (addr_of text) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "This is a: "; "
 " ])
             (addr_of [ α0 ]) in

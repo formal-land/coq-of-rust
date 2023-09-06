@@ -121,12 +121,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     {| structures.Person.name := name; structures.Person.age := age; |} in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of peter) in
+      let* α0 := format_argument::["new_debug"] (addr_of peter) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0 ]) in
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   let point : structures.Point :=
@@ -134,10 +132,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     |} in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of point.["x"]) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of point.["y"]) in
+      let* α0 := format_argument::["new_display"] (addr_of point.["x"]) in
+      let* α1 := format_argument::["new_display"] (addr_of point.["y"]) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "point coordinates: ("; ", "; ")
 " ])
           (addr_of [ α0; α1 ]) in
@@ -147,11 +145,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_argument _)::["new_display"] (addr_of bottom_right.["x"]) in
+        format_argument::["new_display"] (addr_of bottom_right.["x"]) in
       let* α1 :=
-        (format_argument _)::["new_display"] (addr_of bottom_right.["y"]) in
+        format_argument::["new_display"] (addr_of bottom_right.["y"]) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "second point: ("; ", "; ")
 " ])
           (addr_of [ α0; α1 ]) in
@@ -169,10 +167,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let pair := structures.Pair.Build_t 1 0 (* 0.1 *) in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of (pair.[0])) in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of (pair.[1])) in
+      let* α0 := format_argument::["new_debug"] (addr_of (pair.[0])) in
+      let* α1 := format_argument::["new_debug"] (addr_of (pair.[1])) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "pair contains "; " and "; "
 " ])
           (addr_of [ α0; α1 ]) in
@@ -181,10 +179,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let 'structures.Pair.Build_t integer decimal := pair in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of integer) in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of decimal) in
+      let* α0 := format_argument::["new_debug"] (addr_of integer) in
+      let* α1 := format_argument::["new_debug"] (addr_of decimal) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "pair contains "; " and "; "
 " ])
           (addr_of [ α0; α1 ]) in

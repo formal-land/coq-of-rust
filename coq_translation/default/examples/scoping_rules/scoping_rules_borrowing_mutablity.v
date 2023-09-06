@@ -60,11 +60,10 @@ Definition borrow_book
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of book.["title"]) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of book.["year"]) in
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "I immutably borrowed "; " - "; " edition
 " ])
           (addr_of [ α0; α1 ]) in
@@ -79,11 +78,10 @@ Definition new_edition
   let* _ := assign book.["year"] 2014 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of book.["title"]) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of book.["year"]) in
+      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
+      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "I mutably borrowed "; " - "; " edition
 " ])
           (addr_of [ α0; α1 ]) in

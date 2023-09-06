@@ -16,7 +16,7 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "ToDrop is being dropped
 " ]) in
         std.io.stdio._print α0 in
@@ -39,7 +39,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "Made a ToDrop!
+        format_arguments::["new_const"] (addr_of [ "Made a ToDrop!
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in

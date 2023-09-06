@@ -113,13 +113,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_argument _)::["new_display"] (addr_of (addr_of number_1)) in
+        format_argument::["new_display"] (addr_of (addr_of number_1)) in
       let* α1 :=
-        (format_argument _)::["new_display"] (addr_of (addr_of number_2)) in
+        format_argument::["new_display"] (addr_of (addr_of number_2)) in
       let* α2 := container.["contains"] (addr_of number_1) (addr_of number_2) in
-      let* α3 := (format_argument _)::["new_display"] (addr_of α2) in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
       let* α4 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Does container contain "; " and "; ": "; "
 " ])
           (addr_of [ α0; α1; α3 ]) in
@@ -128,9 +128,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := container.["first"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "First number: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -139,9 +139,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := container.["last"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Last number: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -151,9 +151,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         generics_associated_types_problem.difference (addr_of container) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "The difference is: "; "
 " ])
           (addr_of [ α1 ]) in

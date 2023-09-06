@@ -30,9 +30,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := b.["insert"] 5 in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of a) in
+      let* α0 := format_argument::["new_debug"] (addr_of a) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "A: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -40,9 +40,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of b) in
+      let* α0 := format_argument::["new_debug"] (addr_of b) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "B: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -52,9 +52,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 := a.["union"] (addr_of b) in
       let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Union: "; "
 " ])
           (addr_of [ α2 ]) in
@@ -64,9 +64,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 := a.["difference"] (addr_of b) in
       let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Difference: "; "
 " ])
           (addr_of [ α2 ]) in
@@ -76,9 +76,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 := a.["intersection"] (addr_of b) in
       let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Intersection: "; "
 " ])
           (addr_of [ α2 ]) in
@@ -88,9 +88,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 := a.["symmetric_difference"] (addr_of b) in
       let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Symmetric Difference: "; "
 " ])
           (addr_of [ α2 ]) in

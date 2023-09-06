@@ -1606,11 +1606,9 @@ Module Impl_subtle_CtOption_T_4.
           let* _ :=
             let* α0 := left_val.["deref"] in
             let* α1 := right_val.["deref"] in
-            let* α2 := (format_argument _)::["new_display"] (addr_of msg) in
+            let* α2 := format_argument::["new_display"] (addr_of msg) in
             let* α3 :=
-              (format_arguments _)::["new_v1"]
-                (addr_of [ "" ])
-                (addr_of [ α2 ]) in
+              format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α2 ]) in
             core.panicking.assert_failed
               kind
               (addr_of α0)

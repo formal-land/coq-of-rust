@@ -12,7 +12,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 :=
-              (format_arguments _)::["new_const"]
+              format_arguments::["new_const"]
                 (addr_of [ "Greater than 9, quit!
 " ]) in
             std.io.stdio._print α0 in
@@ -22,9 +22,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       else
         let* _ :=
           let* _ :=
-            let* α0 := (format_argument _)::["new_debug"] (addr_of i) in
+            let* α0 := format_argument::["new_debug"] (addr_of i) in
             let* α1 :=
-              (format_arguments _)::["new_v1"]
+              format_arguments::["new_v1"]
                 (addr_of [ "`i` is `"; "`. Try again.
 " ])
                 (addr_of [ α0 ]) in

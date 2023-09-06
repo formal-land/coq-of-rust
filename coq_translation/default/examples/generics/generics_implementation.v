@@ -65,11 +65,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := x.["value"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 := y.["value"] in
-      let* α3 := (format_argument _)::["new_display"] (addr_of α2) in
+      let* α3 := format_argument::["new_display"] (addr_of α2) in
       let* α4 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; ", "; "
 " ])
           (addr_of [ α1; α3 ]) in

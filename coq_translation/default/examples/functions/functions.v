@@ -26,8 +26,7 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
   if (α0 : bool) then
     let* _ :=
       let* _ :=
-        let* α0 :=
-          (format_arguments _)::["new_const"] (addr_of [ "fizzbuzz
+        let* α0 := format_arguments::["new_const"] (addr_of [ "fizzbuzz
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in
@@ -37,8 +36,7 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
     if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 :=
-            (format_arguments _)::["new_const"] (addr_of [ "fizz
+          let* α0 := format_arguments::["new_const"] (addr_of [ "fizz
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in
@@ -48,8 +46,7 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
       if (α0 : bool) then
         let* _ :=
           let* _ :=
-            let* α0 :=
-              (format_arguments _)::["new_const"] (addr_of [ "buzz
+            let* α0 := format_arguments::["new_const"] (addr_of [ "buzz
 " ]) in
             std.io.stdio._print α0 in
           Pure tt in
@@ -57,9 +54,9 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
       else
         let* _ :=
           let* _ :=
-            let* α0 := (format_argument _)::["new_display"] (addr_of n) in
+            let* α0 := format_argument::["new_display"] (addr_of n) in
             let* α1 :=
-              (format_arguments _)::["new_v1"]
+              format_arguments::["new_v1"]
                 (addr_of [ ""; "
 " ])
                 (addr_of [ α0 ]) in

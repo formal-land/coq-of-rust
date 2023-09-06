@@ -6,7 +6,7 @@ Module my_mod.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `my_mod::private_function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -17,7 +17,7 @@ Module my_mod.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `my_mod::function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -28,7 +28,7 @@ Module my_mod.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `my_mod::indirect_access()`, that
 > " ]) in
         std.io.stdio._print α0 in
@@ -41,7 +41,7 @@ Module my_mod.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "called `my_mod::nested::function()`
 " ]) in
           std.io.stdio._print α0 in
@@ -53,7 +53,7 @@ Module my_mod.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "called `my_mod::nested::private_function()`
 " ]) in
           std.io.stdio._print α0 in
@@ -66,7 +66,7 @@ Module my_mod.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of
                 [
                   "called `my_mod::nested::public_function_in_my_mod()`, that
@@ -83,7 +83,7 @@ Module my_mod.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of
                 [ "called `my_mod::nested::public_function_in_nested()`
 " ]) in
@@ -97,7 +97,7 @@ Module my_mod.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of
                 [ "called `my_mod::nested::public_function_in_super_mod()`
 "
@@ -113,7 +113,7 @@ Module my_mod.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of
               [ "called `my_mod::call_public_function_in_my_mod()`, that
 > "
@@ -123,7 +123,7 @@ Module my_mod.
     let* _ := visibility.my_mod.nested.public_function_in_my_mod in
     let* _ :=
       let* _ :=
-        let* α0 := (format_arguments _)::["new_const"] (addr_of [ "> " ]) in
+        let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
         std.io.stdio._print α0 in
       Pure tt in
     let* _ := visibility.my_mod.nested.public_function_in_super_mod in
@@ -133,7 +133,7 @@ Module my_mod.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `my_mod::public_function_in_crate()`
 " ]) in
         std.io.stdio._print α0 in
@@ -146,7 +146,7 @@ Module my_mod.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "called `my_mod::private_nested::function()`
 " ]) in
           std.io.stdio._print α0 in
@@ -158,7 +158,7 @@ Module my_mod.
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of
                 [ "called `my_mod::private_nested::restricted_function()`
 "
@@ -173,7 +173,7 @@ Definition private_function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `my_mod::private_function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -184,7 +184,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `my_mod::function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -195,7 +195,7 @@ Definition indirect_access `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `my_mod::indirect_access()`, that
 > " ]) in
       std.io.stdio._print α0 in
@@ -208,7 +208,7 @@ Module nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `my_mod::nested::function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -220,7 +220,7 @@ Module nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `my_mod::nested::private_function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -231,7 +231,7 @@ Module nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of
               [ "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
@@ -245,7 +245,7 @@ Module nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of
               [ "called `my_mod::nested::public_function_in_nested()`
 " ]) in
@@ -259,7 +259,7 @@ Module nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of
               [ "called `my_mod::nested::public_function_in_super_mod()`
 " ]) in
@@ -272,7 +272,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `my_mod::nested::function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -284,7 +284,7 @@ Definition private_function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `my_mod::nested::private_function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -295,7 +295,7 @@ Definition public_function_in_my_mod `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [ "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
@@ -309,7 +309,7 @@ Definition public_function_in_nested `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [ "called `my_mod::nested::public_function_in_nested()`
 " ]) in
@@ -323,7 +323,7 @@ Definition public_function_in_super_mod
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [ "called `my_mod::nested::public_function_in_super_mod()`
 " ]) in
@@ -337,7 +337,7 @@ Definition call_public_function_in_my_mod
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [ "called `my_mod::call_public_function_in_my_mod()`, that
 > " ]) in
@@ -346,7 +346,7 @@ Definition call_public_function_in_my_mod
   let* _ := visibility.my_mod.nested.public_function_in_my_mod in
   let* _ :=
     let* _ :=
-      let* α0 := (format_arguments _)::["new_const"] (addr_of [ "> " ]) in
+      let* α0 := format_arguments::["new_const"] (addr_of [ "> " ]) in
       std.io.stdio._print α0 in
     Pure tt in
   let* _ := visibility.my_mod.nested.public_function_in_super_mod in
@@ -356,7 +356,7 @@ Definition public_function_in_crate `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `my_mod::public_function_in_crate()`
 " ]) in
       std.io.stdio._print α0 in
@@ -369,7 +369,7 @@ Module private_nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "called `my_mod::private_nested::function()`
 " ]) in
         std.io.stdio._print α0 in
@@ -381,7 +381,7 @@ Module private_nested.
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of
               [ "called `my_mod::private_nested::restricted_function()`
 " ]) in
@@ -395,7 +395,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "called `my_mod::private_nested::function()`
 " ]) in
       std.io.stdio._print α0 in
@@ -407,7 +407,7 @@ Definition restricted_function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [ "called `my_mod::private_nested::restricted_function()`
 " ]) in
@@ -419,8 +419,7 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "called `function()`
+        format_arguments::["new_const"] (addr_of [ "called `function()`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in

@@ -22,10 +22,10 @@ Definition try_division
   match α0 with
   | core.option.Option.None =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of dividend) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of divisor) in
+      let* α0 := format_argument::["new_display"] (addr_of dividend) in
+      let* α1 := format_argument::["new_display"] (addr_of divisor) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " / "; " failed!
 " ])
           (addr_of [ α0; α1 ]) in
@@ -33,11 +33,11 @@ Definition try_division
     Pure tt
   | core.option.Option.Some quotient =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of dividend) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of divisor) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of quotient) in
+      let* α0 := format_argument::["new_display"] (addr_of dividend) in
+      let* α1 := format_argument::["new_display"] (addr_of divisor) in
+      let* α2 := format_argument::["new_display"] (addr_of quotient) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " / "; " = "; "
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -54,11 +54,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let optional_float := core.option.Option.Some 0 (* 0 *) in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of optional_float) in
+      let* α0 := format_argument::["new_debug"] (addr_of optional_float) in
       let* α1 := optional_float.["unwrap"] in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " unwraps to "; "
 " ])
           (addr_of [ α0; α2 ]) in
@@ -66,11 +66,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of none) in
+      let* α0 := format_argument::["new_debug"] (addr_of none) in
       let* α1 := none.["unwrap"] in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " unwraps to "; "
 " ])
           (addr_of [ α0; α2 ]) in

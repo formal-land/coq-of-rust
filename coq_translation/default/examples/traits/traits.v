@@ -44,11 +44,11 @@ Module Animal.
       (let* _ :=
         let* _ :=
           let* α0 := self.["name"] in
-          let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+          let* α1 := format_argument::["new_display"] (addr_of α0) in
           let* α2 := self.["noise"] in
-          let* α3 := (format_argument _)::["new_display"] (addr_of α2) in
+          let* α3 := format_argument::["new_display"] (addr_of α2) in
           let* α4 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ ""; " says "; "
 " ])
               (addr_of [ α1; α3 ]) in
@@ -115,12 +115,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Definition talk `{H' : State.Trait} (self : ref Self) : M (H := H') unit :=
     let* _ :=
       let* _ :=
-        let* α0 :=
-          (format_argument _)::["new_display"] (addr_of self.["name"]) in
+        let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
         let* α1 := self.["noise"] in
-        let* α2 := (format_argument _)::["new_display"] (addr_of α1) in
+        let* α2 := format_argument::["new_display"] (addr_of α1) in
         let* α3 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ ""; " pauses briefly... "; "
 " ])
             (addr_of [ α0; α2 ]) in
@@ -152,9 +151,9 @@ Module Impl_traits_Sheep_3.
       let* _ :=
         let* _ :=
           let* α0 := self.["name"] in
-          let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+          let* α1 := format_argument::["new_display"] (addr_of α0) in
           let* α2 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ ""; " is already naked...
 " ])
               (addr_of [ α1 ]) in
@@ -164,10 +163,9 @@ Module Impl_traits_Sheep_3.
     else
       let* _ :=
         let* _ :=
-          let* α0 :=
-            (format_argument _)::["new_display"] (addr_of self.["name"]) in
+          let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ ""; " gets a haircut!
 " ])
               (addr_of [ α0 ]) in

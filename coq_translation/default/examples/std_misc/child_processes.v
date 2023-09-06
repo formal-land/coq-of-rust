@@ -9,9 +9,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* α2 := α1.["output"] in
     α2.["unwrap_or_else"]
       (fun e =>
-        let* α0 := (format_argument _)::["new_display"] (addr_of e) in
+        let* α0 := format_argument::["new_display"] (addr_of e) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "failed to execute process: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1) in
@@ -22,9 +22,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         (addr_of output.["stdout"]) in
     let* _ :=
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of s) in
+        let* α0 := format_argument::["new_display"] (addr_of s) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "rustc succeeded and stdout was:
 " ])
             (addr_of [ α0 ]) in
@@ -37,9 +37,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         (addr_of output.["stderr"]) in
     let* _ :=
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of s) in
+        let* α0 := format_argument::["new_display"] (addr_of s) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "rustc failed and stderr was:
 " ])
             (addr_of [ α0 ]) in

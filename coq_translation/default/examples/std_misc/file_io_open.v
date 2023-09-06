@@ -9,10 +9,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* α0 := (std.fs.File _)::["open"] (addr_of path) in
     match α0 with
     | core.result.Result.Err why =>
-      let* α0 := (format_argument _)::["new_display"] (addr_of display) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of why) in
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of why) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "couldn't open "; ": " ])
           (addr_of [ α0; α1 ]) in
       core.panicking.panic_fmt α2
@@ -22,19 +22,19 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* α0 := file.["read_to_string"] (addr_of s) in
   match α0 with
   | core.result.Result.Err why =>
-    let* α0 := (format_argument _)::["new_display"] (addr_of display) in
-    let* α1 := (format_argument _)::["new_display"] (addr_of why) in
+    let* α0 := format_argument::["new_display"] (addr_of display) in
+    let* α1 := format_argument::["new_display"] (addr_of why) in
     let* α2 :=
-      (format_arguments _)::["new_v1"]
+      format_arguments::["new_v1"]
         (addr_of [ "couldn't read "; ": " ])
         (addr_of [ α0; α1 ]) in
     core.panicking.panic_fmt α2
   | core.result.Result.Ok _ =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of display) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of s) in
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of s) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; " contains:
 " ])
           (addr_of [ α0; α1 ]) in

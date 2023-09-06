@@ -9,13 +9,13 @@ Definition foo
   match o with
   | core.option.Option.Some _a =>
     let* _ :=
-      let* α0 := (format_arguments _)::["new_const"] (addr_of [ "some
+      let* α0 := format_arguments::["new_const"] (addr_of [ "some
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | core.option.Option.None =>
     let* _ :=
-      let* α0 := (format_arguments _)::["new_const"] (addr_of [ "nothing
+      let* α0 := format_arguments::["new_const"] (addr_of [ "nothing
 " ]) in
       std.io.stdio._print α0 in
     Pure tt

@@ -174,10 +174,10 @@ Module Impl_associated_functions_and_methods_Pair.
     let 'associated_functions_and_methods.Pair.Build_t first second := self in
     let* _ :=
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of first) in
-        let* α1 := (format_argument _)::["new_display"] (addr_of second) in
+        let* α0 := format_argument::["new_display"] (addr_of first) in
+        let* α1 := format_argument::["new_display"] (addr_of second) in
         let* α2 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "Destroying Pair("; ", "; ")
 " ])
             (addr_of [ α0; α1 ]) in
@@ -207,9 +207,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := rectangle.["perimeter"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Rectangle perimeter: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -218,9 +218,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := rectangle.["area"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Rectangle area: "; "
 " ])
           (addr_of [ α1 ]) in

@@ -17,9 +17,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     std.panicking.begin_panic "new path is not a valid UTF-8 sequence"
   | core.option.Option.Some s =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of s) in
+      let* α0 := format_argument::["new_display"] (addr_of s) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "new path is "; "
 " ])
           (addr_of [ α0 ]) in

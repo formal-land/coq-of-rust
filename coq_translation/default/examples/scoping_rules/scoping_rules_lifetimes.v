@@ -8,9 +8,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let borrow1 := addr_of i in
     let* _ :=
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of borrow1) in
+        let* α0 := format_argument::["new_display"] (addr_of borrow1) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "borrow1: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -20,9 +20,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let borrow2 := addr_of i in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of borrow2) in
+      let* α0 := format_argument::["new_display"] (addr_of borrow2) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "borrow2: "; "
 " ])
           (addr_of [ α0 ]) in

@@ -27,11 +27,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option.Some (i, data_segment) =>
             let* _ :=
               let* _ :=
-                let* α0 := (format_argument _)::["new_display"] (addr_of i) in
+                let* α0 := format_argument::["new_display"] (addr_of i) in
                 let* α1 :=
-                  (format_argument _)::["new_display"] (addr_of data_segment) in
+                  format_argument::["new_display"] (addr_of data_segment) in
                 let* α2 :=
-                  (format_arguments _)::["new_v1"]
+                  format_arguments::["new_v1"]
                     (addr_of [ "data segment "; " is ""; ""
 " ])
                     (addr_of [ α0; α1 ]) in
@@ -52,12 +52,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                     let* _ :=
                       let* _ :=
                         let* α0 :=
-                          (format_argument _)::["new_display"] (addr_of i) in
+                          format_argument::["new_display"] (addr_of i) in
                         let* α1 :=
-                          (format_argument _)::["new_display"]
-                            (addr_of result) in
+                          format_argument::["new_display"] (addr_of result) in
                         let* α2 :=
-                          (format_arguments _)::["new_v1"]
+                          format_arguments::["new_v1"]
                             (addr_of [ "processed segment "; ", result="; "
 " ])
                             (addr_of [ α0; α1 ]) in
@@ -79,9 +78,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     α1.["sum"] : M u32 in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of final_result) in
+      let* α0 := format_argument::["new_display"] (addr_of final_result) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Final sum result: "; "
 " ])
           (addr_of [ α0 ]) in

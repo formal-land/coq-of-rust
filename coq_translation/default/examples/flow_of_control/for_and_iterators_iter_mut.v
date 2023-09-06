@@ -29,9 +29,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of names) in
+      let* α0 := format_argument::["new_debug"] (addr_of names) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "names: "; "
 " ])
           (addr_of [ α0 ]) in

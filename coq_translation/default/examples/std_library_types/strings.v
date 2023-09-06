@@ -6,9 +6,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let pangram : ref str := "the quick brown fox jumps over the lazy dog" in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of pangram) in
+      let* α0 := format_argument::["new_display"] (addr_of pangram) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Pangram: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -17,7 +17,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "Words in reverse
+        format_arguments::["new_const"] (addr_of [ "Words in reverse
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -35,10 +35,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option.Some word =>
             let* _ :=
               let* _ :=
-                let* α0 :=
-                  (format_argument _)::["new_display"] (addr_of word) in
+                let* α0 := format_argument::["new_display"] (addr_of word) in
                 let* α1 :=
-                  (format_arguments _)::["new_v1"]
+                  format_arguments::["new_v1"]
                     (addr_of [ "> "; "
 " ])
                     (addr_of [ α0 ]) in
@@ -74,9 +73,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* trimmed_str := string.["trim_matches"] chars_to_trim in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of trimmed_str) in
+      let* α0 := format_argument::["new_display"] (addr_of trimmed_str) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Used characters: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -86,9 +85,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* bob := alice.["replace"] "dog" "cat" in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of alice) in
+      let* α0 := format_argument::["new_display"] (addr_of alice) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Alice says: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -96,9 +95,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of bob) in
+      let* α0 := format_argument::["new_display"] (addr_of bob) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Bob says: "; "
 " ])
           (addr_of [ α0 ]) in

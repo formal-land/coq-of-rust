@@ -54,7 +54,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "Four consecutive `next` calls on 0..3
 " ]) in
       std.io.stdio._print α0 in
@@ -62,51 +62,43 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := sequence.["next"] in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ "> "; "
-" ])
-          (addr_of [ α1 ]) in
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 := sequence.["next"] in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ "> "; "
-" ])
-          (addr_of [ α1 ]) in
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 := sequence.["next"] in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ "> "; "
-" ])
-          (addr_of [ α1 ]) in
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 := sequence.["next"] in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ "> "; "
-" ])
-          (addr_of [ α1 ]) in
+        format_arguments::["new_v1"] (addr_of [ "> "; "
+" ]) (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "Iterate through 0..3 using `for`
 " ]) in
       std.io.stdio._print α0 in
@@ -124,9 +116,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option.Some i =>
             let* _ :=
               let* _ :=
-                let* α0 := (format_argument _)::["new_display"] (addr_of i) in
+                let* α0 := format_argument::["new_display"] (addr_of i) in
                 let* α1 :=
-                  (format_arguments _)::["new_v1"]
+                  format_arguments::["new_v1"]
                     (addr_of [ "> "; "
 " ])
                     (addr_of [ α0 ]) in
@@ -139,7 +131,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [ "The first four terms of the Fibonacci sequence are: 
 " ]) in
@@ -159,9 +151,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option.Some i =>
             let* _ :=
               let* _ :=
-                let* α0 := (format_argument _)::["new_display"] (addr_of i) in
+                let* α0 := format_argument::["new_display"] (addr_of i) in
                 let* α1 :=
-                  (format_arguments _)::["new_v1"]
+                  format_arguments::["new_v1"]
                     (addr_of [ "> "; "
 " ])
                     (addr_of [ α0 ]) in
@@ -174,7 +166,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of
             [ "The next four terms of the Fibonacci sequence are: 
 " ]) in
@@ -195,9 +187,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option.Some i =>
             let* _ :=
               let* _ :=
-                let* α0 := (format_argument _)::["new_display"] (addr_of i) in
+                let* α0 := format_argument::["new_display"] (addr_of i) in
                 let* α1 :=
-                  (format_arguments _)::["new_v1"]
+                  format_arguments::["new_v1"]
                     (addr_of [ "> "; "
 " ])
                     (addr_of [ α0 ]) in
@@ -210,9 +202,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let array := [ 1; 3; 3; 7 ] in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of (addr_of array)) in
+      let* α0 := format_argument::["new_debug"] (addr_of (addr_of array)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Iterate the following array "; "
 " ])
           (addr_of [ α0 ]) in
@@ -230,9 +222,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         | core.option.Option.Some i =>
           let* _ :=
             let* _ :=
-              let* α0 := (format_argument _)::["new_display"] (addr_of i) in
+              let* α0 := format_argument::["new_display"] (addr_of i) in
               let* α1 :=
-                (format_arguments _)::["new_v1"]
+                format_arguments::["new_v1"]
                   (addr_of [ "> "; "
 " ])
                   (addr_of [ α0 ]) in

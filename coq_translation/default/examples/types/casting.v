@@ -10,11 +10,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let character := cast decimal char in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of decimal) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of integer) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of character) in
+      let* α0 := format_argument::["new_display"] (addr_of decimal) in
+      let* α1 := format_argument::["new_display"] (addr_of integer) in
+      let* α2 := format_argument::["new_display"] (addr_of character) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Casting: "; " -> "; " -> "; "
 " ])
           (addr_of [ α0; α1; α2 ]) in
@@ -22,10 +22,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of (cast 1000 u16)) in
+      let* α0 := format_argument::["new_display"] (addr_of (cast 1000 u16)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "1000 as a u16 is: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -33,10 +32,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of (cast 1000 u8)) in
+      let* α0 := format_argument::["new_display"] (addr_of (cast 1000 u8)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "1000 as a u8 is : "; "
 " ])
           (addr_of [ α0 ]) in
@@ -45,9 +43,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := 1.["neg"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of (cast α0 u8)) in
+      let* α1 := format_argument::["new_display"] (addr_of (cast α0 u8)) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "  -1 as a u8 is : "; "
 " ])
           (addr_of [ α1 ]) in
@@ -56,9 +54,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := 1000.["rem"] 256 in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "1000 mod 256 is : "; "
 " ])
           (addr_of [ α1 ]) in
@@ -66,10 +64,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of (cast 128 i16)) in
+      let* α0 := format_argument::["new_display"] (addr_of (cast 128 i16)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ " 128 as a i16 is: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -77,9 +74,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of (cast 128 i8)) in
+      let* α0 := format_argument::["new_display"] (addr_of (cast 128 i8)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ " 128 as a i8 is : "; "
 " ])
           (addr_of [ α0 ]) in
@@ -87,10 +84,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of (cast 1000 u8)) in
+      let* α0 := format_argument::["new_display"] (addr_of (cast 1000 u8)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "1000 as a u8 is : "; "
 " ])
           (addr_of [ α0 ]) in
@@ -98,9 +94,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of (cast 232 i8)) in
+      let* α0 := format_argument::["new_display"] (addr_of (cast 232 i8)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ " 232 as a i8 is : "; "
 " ])
           (addr_of [ α0 ]) in
@@ -109,10 +105,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_argument _)::["new_display"]
-          (addr_of (cast 300 (* 300.0 *) u8)) in
+        format_argument::["new_display"] (addr_of (cast 300 (* 300.0 *) u8)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ " 300.0 as u8 is : "; "
 " ])
           (addr_of [ α0 ]) in
@@ -121,9 +116,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := 100 (* 100.0 *).["neg"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of (cast α0 u8)) in
+      let* α1 := format_argument::["new_display"] (addr_of (cast α0 u8)) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "-100.0 as u8 is : "; "
 " ])
           (addr_of [ α1 ]) in
@@ -132,10 +127,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_argument _)::["new_display"]
-          (addr_of (cast (f32 _)::["NAN"] u8)) in
+        format_argument::["new_display"] (addr_of (cast (f32 _)::["NAN"] u8)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "   nan as u8 is : "; "
 " ])
           (addr_of [ α0 ]) in
@@ -144,9 +138,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := 300 (* 300.0 *).["to_int_unchecked"] : M u8 in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ " 300.0 as u8 is : "; "
 " ])
           (addr_of [ α1 ]) in
@@ -156,9 +150,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 := 100 (* 100.0 *).["neg"] in
       let* α1 := α0.["to_int_unchecked"] : M u8 in
-      let* α2 := (format_argument _)::["new_display"] (addr_of α1) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "-100.0 as u8 is : "; "
 " ])
           (addr_of [ α2 ]) in
@@ -167,9 +161,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := (f32 _)::["NAN"].["to_int_unchecked"] : M u8 in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "   nan as u8 is : "; "
 " ])
           (addr_of [ α1 ]) in

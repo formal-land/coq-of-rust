@@ -7,9 +7,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
 Definition foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of arg) in
+      let* α0 := format_argument::["new_display"] (addr_of arg) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "arg = "; "
 " ])
           (addr_of [ α0 ]) in

@@ -896,9 +896,9 @@ Module erc20.
       let* α0 := self.["try_total_supply"] in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::total_supply: " ])
               (addr_of [ α0 ]) in
@@ -919,9 +919,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::total_supply: " ])
               (addr_of [ α0 ]) in
@@ -940,9 +940,9 @@ Module erc20.
       let* α0 := self.["try_balance_of"] owner in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::balance_of: " ])
               (addr_of [ α0 ]) in
@@ -964,9 +964,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::balance_of: " ])
               (addr_of [ α0 ]) in
@@ -986,9 +986,9 @@ Module erc20.
       let* α0 := self.["try_allowance"] owner spender in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::allowance: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1010,9 +1010,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::allowance: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1031,9 +1031,9 @@ Module erc20.
       let* α0 := self.["try_transfer"] to value in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::transfer: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1057,9 +1057,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::transfer: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1078,9 +1078,9 @@ Module erc20.
       let* α0 := self.["try_approve"] spender value in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::approve: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1104,9 +1104,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "encountered error while calling Erc20::approve: " ])
               (addr_of [ α0 ]) in
           core.panicking.panic_fmt α1).
@@ -1126,9 +1126,9 @@ Module erc20.
       let* α0 := self.["try_transfer_from"] from to value in
       α0.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::transfer_from: " ])
               (addr_of [ α0 ]) in
@@ -1154,9 +1154,9 @@ Module erc20.
       let* α2 := α1.["try_invoke"] in
       α2.["unwrap_or_else"]
         (fun error =>
-          let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+          let* α0 := format_argument::["new_debug"] (addr_of error) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of
                 [ "encountered error while calling Erc20::transfer_from: " ])
               (addr_of [ α0 ]) in
@@ -2020,8 +2020,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
     | Approval.Build_t event => ink_env.topics.Topics.topics event builder
     | _ =>
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "Event does not exist!" ]) in
+        format_arguments::["new_const"] (addr_of [ "Event does not exist!" ]) in
       core.panicking.panic_fmt α0
     end.
   
@@ -3369,12 +3368,12 @@ Module
         | core.result.Result.Ok core.option.Option.Some value => Pure value
         | core.result.Result.Ok core.option.Option.None =>
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "storage entry was empty" ]) in
           core.panicking.panic_fmt α0
         | core.result.Result.Err _ =>
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "could not properly decode storage entry" ]) in
           core.panicking.panic_fmt α0
         end in
@@ -5219,9 +5218,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_total_supply"] in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::total_supply: " ])
             (addr_of [ α0 ]) in
@@ -5241,9 +5240,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::total_supply: " ])
             (addr_of [ α0 ]) in
@@ -5262,9 +5261,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_balance_of"] owner in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::balance_of: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5284,9 +5283,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::balance_of: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5305,9 +5304,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_allowance"] owner spender in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::allowance: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5328,9 +5327,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::allowance: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5349,9 +5348,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_transfer"] to value in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::transfer: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5373,9 +5372,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::transfer: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5394,9 +5393,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_approve"] spender value in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::approve: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5418,9 +5417,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "encountered error while calling Erc20::approve: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1).
@@ -5440,9 +5439,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := self.["try_transfer_from"] from to value in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::transfer_from: " ])
             (addr_of [ α0 ]) in
@@ -5466,9 +5465,9 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α2 := α1.["try_invoke"] in
     α2.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of error) in
+        let* α0 := format_argument::["new_debug"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of
               [ "encountered error while calling Erc20::transfer_from: " ])
             (addr_of [ α0 ]) in
@@ -5635,9 +5634,9 @@ Definition __ink_generate_metadata
         (addr_of layout) in
     α0.["unwrap_or_else"]
       (fun error =>
-        let* α0 := (format_argument _)::["new_display"] (addr_of error) in
+        let* α0 := format_argument::["new_display"] (addr_of error) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "metadata ink! generation failed: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1) in

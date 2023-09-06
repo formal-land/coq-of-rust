@@ -21,10 +21,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* z_sqrt := foreign_function_interface.csqrtf z in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of z) in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of z_sqrt) in
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
+      let* α1 := format_argument::["new_debug"] (addr_of z_sqrt) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "the square root of "; " is "; "
 " ])
           (addr_of [ α0; α1 ]) in
@@ -32,11 +32,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of z) in
+      let* α0 := format_argument::["new_debug"] (addr_of z) in
       let* α1 := foreign_function_interface.cos z in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+      let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "cos("; ") = "; "
 " ])
           (addr_of [ α0; α2 ]) in
@@ -107,19 +107,19 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       : M (H := H') core.fmt.Result :=
     let* α0 := self.["im"].["lt"] 0 (* 0. *) in
     if (α0 : bool) then
-      let* α0 := (format_argument _)::["new_display"] (addr_of self.["re"]) in
+      let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in
       let* α1 := self.["im"].["neg"] in
-      let* α2 := (format_argument _)::["new_display"] (addr_of α1) in
+      let* α2 := format_argument::["new_display"] (addr_of α1) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; "-"; "i" ])
           (addr_of [ α0; α2 ]) in
       f.["write_fmt"] α3
     else
-      let* α0 := (format_argument _)::["new_display"] (addr_of self.["re"]) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of self.["im"]) in
+      let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in
+      let* α1 := format_argument::["new_display"] (addr_of self.["im"]) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; "+"; "i" ])
           (addr_of [ α0; α1 ]) in
       f.["write_fmt"] α2.

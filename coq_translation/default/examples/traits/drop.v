@@ -23,10 +23,9 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
       : M (H := H') unit :=
     let* _ :=
       let* _ :=
-        let* α0 :=
-          (format_argument _)::["new_display"] (addr_of self.["name"]) in
+        let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "> Dropping "; "
 " ])
             (addr_of [ α0 ]) in
@@ -55,8 +54,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
-              (addr_of [ "Exiting block B
+            format_arguments::["new_const"] (addr_of [ "Exiting block B
 " ]) in
           std.io.stdio._print α0 in
         Pure tt in
@@ -64,7 +62,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
+          format_arguments::["new_const"]
             (addr_of [ "Just exited block B
 " ]) in
         std.io.stdio._print α0 in
@@ -72,8 +70,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_arguments _)::["new_const"]
-            (addr_of [ "Exiting block A
+          format_arguments::["new_const"] (addr_of [ "Exiting block A
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in
@@ -81,8 +78,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "Just exited block A
+        format_arguments::["new_const"] (addr_of [ "Just exited block A
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -90,7 +86,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "end of the main function
 " ]) in
       std.io.stdio._print α0 in

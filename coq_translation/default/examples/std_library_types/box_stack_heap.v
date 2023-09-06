@@ -153,9 +153,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of point) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Point occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -164,9 +164,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of rectangle) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Rectangle occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -175,9 +175,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of boxed_point) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Boxed point occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -186,9 +186,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of boxed_rectangle) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Boxed rectangle occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -197,9 +197,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of box_in_a_box) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Boxed box occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in
@@ -209,9 +209,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of unboxed_point) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Unboxed point occupies "; " bytes on the stack
 " ])
           (addr_of [ α1 ]) in

@@ -7,9 +7,9 @@ Definition analyze_slice
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of slice[0]) in
+      let* α0 := format_argument::["new_display"] (addr_of slice[0]) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "first element of the slice: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -18,9 +18,9 @@ Definition analyze_slice
   let* _ :=
     let* _ :=
       let* α0 := slice.["len"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "the slice has "; " elements
 " ])
           (addr_of [ α1 ]) in
@@ -34,9 +34,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* ys := repeat 0 in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of xs[0]) in
+      let* α0 := format_argument::["new_display"] (addr_of xs[0]) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "first element of the array: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -44,9 +44,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of xs[1]) in
+      let* α0 := format_argument::["new_display"] (addr_of xs[1]) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "second element of the array: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -55,9 +55,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := xs.["len"] in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "number of elements in array: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -66,9 +66,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := core.mem.size_of_val (addr_of xs) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "array occupies "; " bytes
 " ])
           (addr_of [ α1 ]) in
@@ -77,7 +77,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "borrow the whole array as a slice
 " ]) in
       std.io.stdio._print α0 in
@@ -86,7 +86,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "borrow a section of the array as a slice
 " ]) in
       std.io.stdio._print α0 in
@@ -156,10 +156,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           match α0 with
           | core.option.Option.Some xval =>
             let* _ :=
-              let* α0 := (format_argument _)::["new_display"] (addr_of i) in
-              let* α1 := (format_argument _)::["new_display"] (addr_of xval) in
+              let* α0 := format_argument::["new_display"] (addr_of i) in
+              let* α1 := format_argument::["new_display"] (addr_of xval) in
               let* α2 :=
-                (format_arguments _)::["new_v1"]
+                format_arguments::["new_v1"]
                   (addr_of [ ""; ": "; "
 " ])
                   (addr_of [ α0; α1 ]) in
@@ -167,9 +167,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             Pure tt
           | core.option.Option.None =>
             let* _ :=
-              let* α0 := (format_argument _)::["new_display"] (addr_of i) in
+              let* α0 := format_argument::["new_display"] (addr_of i) in
               let* α1 :=
-                (format_arguments _)::["new_v1"]
+                format_arguments::["new_v1"]
                   (addr_of [ "Slow down! "; " is too far!
 " ])
                   (addr_of [ α0 ]) in

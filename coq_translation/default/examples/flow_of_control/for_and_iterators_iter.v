@@ -21,17 +21,16 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             | "Ferris" =>
               let* _ :=
                 let* α0 :=
-                  (format_arguments _)::["new_const"]
+                  format_arguments::["new_const"]
                     (addr_of [ "There is a rustacean among us!
 " ]) in
                 std.io.stdio._print α0 in
               Pure tt
             | _ =>
               let* _ :=
-                let* α0 :=
-                  (format_argument _)::["new_display"] (addr_of name) in
+                let* α0 := format_argument::["new_display"] (addr_of name) in
                 let* α1 :=
-                  (format_arguments _)::["new_v1"]
+                  format_arguments::["new_v1"]
                     (addr_of [ "Hello "; "
 " ])
                     (addr_of [ α0 ]) in
@@ -43,9 +42,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of names) in
+      let* α0 := format_argument::["new_debug"] (addr_of names) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "names: "; "
 " ])
           (addr_of [ α0 ]) in

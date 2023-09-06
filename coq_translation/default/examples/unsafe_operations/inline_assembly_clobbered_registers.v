@@ -12,9 +12,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     α0.["unwrap"] in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of name) in
+      let* α0 := format_argument::["new_display"] (addr_of name) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "CPU Manufacturer ID: "; "
 " ])
           (addr_of [ α0 ]) in

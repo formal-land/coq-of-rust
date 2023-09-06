@@ -133,12 +133,10 @@ Module checked.
       core.panicking.panic_display (addr_of α0)
     | core.result.Result.Ok value =>
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of value) in
+        let* α0 := format_argument::["new_display"] (addr_of value) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
-            (addr_of [ ""; "
-" ])
-            (addr_of [ α0 ]) in
+          format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
         std.io.stdio._print α1 in
       Pure tt
     end.
@@ -275,12 +273,10 @@ Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') unit :=
     core.panicking.panic_display (addr_of α0)
   | core.result.Result.Ok value =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of value) in
+      let* α0 := format_argument::["new_display"] (addr_of value) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0 ]) in
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt
   end.

@@ -57,7 +57,7 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
     let* α0 :=
-      (format_arguments _)::["new_const"]
+      format_arguments::["new_const"]
         (addr_of [ "invalid first item to double" ]) in
     f.["write_fmt"] α0.
   
@@ -92,9 +92,9 @@ Definition print
   match result with
   | core.result.Result.Ok n =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of n) in
+      let* α0 := format_argument::["new_display"] (addr_of n) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "The first doubled is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -102,9 +102,9 @@ Definition print
     Pure tt
   | core.result.Result.Err e =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of e) in
+      let* α0 := format_argument::["new_display"] (addr_of e) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Error: "; "
 " ])
           (addr_of [ α0 ]) in

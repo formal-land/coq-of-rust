@@ -55,8 +55,7 @@ Definition touch
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "`mkdir a`
+      let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -66,9 +65,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.result.Result.Err why =>
       let* _ :=
         let* α0 := why.["kind"] in
-        let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
         let* α2 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "! "; "
 " ])
             (addr_of [ α1 ]) in
@@ -79,7 +78,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "`echo hello > a/b.txt`
 " ]) in
       std.io.stdio._print α0 in
@@ -92,9 +91,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 := why.["kind"] in
-            let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
             let* α2 :=
-              (format_arguments _)::["new_v1"]
+              format_arguments::["new_v1"]
                 (addr_of [ "! "; "
 " ])
                 (addr_of [ α1 ]) in
@@ -104,7 +103,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "`mkdir -p a/c/d`
+        format_arguments::["new_const"] (addr_of [ "`mkdir -p a/c/d`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -115,9 +114,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 := why.["kind"] in
-            let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
             let* α2 :=
-              (format_arguments _)::["new_v1"]
+              format_arguments::["new_v1"]
                 (addr_of [ "! "; "
 " ])
                 (addr_of [ α1 ]) in
@@ -127,8 +126,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
-          (addr_of [ "`touch a/c/e.txt`
+        format_arguments::["new_const"] (addr_of [ "`touch a/c/e.txt`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -140,9 +138,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 := why.["kind"] in
-            let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
             let* α2 :=
-              (format_arguments _)::["new_v1"]
+              format_arguments::["new_v1"]
                 (addr_of [ "! "; "
 " ])
                 (addr_of [ α1 ]) in
@@ -152,7 +150,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "`ln -s ../b.txt a/c/b.txt`
 " ]) in
       std.io.stdio._print α0 in
@@ -166,9 +164,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             let* _ :=
               let* _ :=
                 let* α0 := why.["kind"] in
-                let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+                let* α1 := format_argument::["new_debug"] (addr_of α0) in
                 let* α2 :=
-                  (format_arguments _)::["new_v1"]
+                  format_arguments::["new_v1"]
                     (addr_of [ "! "; "
 " ])
                     (addr_of [ α1 ]) in
@@ -181,7 +179,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "`cat a/c/b.txt`
+        format_arguments::["new_const"] (addr_of [ "`cat a/c/b.txt`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -192,9 +190,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.result.Result.Err why =>
       let* _ :=
         let* α0 := why.["kind"] in
-        let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
         let* α2 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "! "; "
 " ])
             (addr_of [ α1 ]) in
@@ -202,9 +200,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt
     | core.result.Result.Ok s =>
       let* _ :=
-        let* α0 := (format_argument _)::["new_display"] (addr_of s) in
+        let* α0 := format_argument::["new_display"] (addr_of s) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "> "; "
 " ])
             (addr_of [ α0 ]) in
@@ -213,7 +211,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := (format_arguments _)::["new_const"] (addr_of [ "`ls a`
+      let* α0 := format_arguments::["new_const"] (addr_of [ "`ls a`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -223,9 +221,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.result.Result.Err why =>
       let* _ :=
         let* α0 := why.["kind"] in
-        let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+        let* α1 := format_argument::["new_debug"] (addr_of α0) in
         let* α2 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "! "; "
 " ])
             (addr_of [ α1 ]) in
@@ -245,9 +243,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                 let* _ :=
                   let* α0 := path.["unwrap"] in
                   let* α1 := α0.["path"] in
-                  let* α2 := (format_argument _)::["new_debug"] (addr_of α1) in
+                  let* α2 := format_argument::["new_debug"] (addr_of α1) in
                   let* α3 :=
-                    (format_arguments _)::["new_v1"]
+                    format_arguments::["new_v1"]
                       (addr_of [ "> "; "
 " ])
                       (addr_of [ α2 ]) in
@@ -261,7 +259,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "`rm a/c/e.txt`
+        format_arguments::["new_const"] (addr_of [ "`rm a/c/e.txt`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -272,9 +270,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 := why.["kind"] in
-            let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
             let* α2 :=
-              (format_arguments _)::["new_v1"]
+              format_arguments::["new_v1"]
                 (addr_of [ "! "; "
 " ])
                 (addr_of [ α1 ]) in
@@ -284,7 +282,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"] (addr_of [ "`rmdir a/c/d`
+        format_arguments::["new_const"] (addr_of [ "`rmdir a/c/d`
 " ]) in
       std.io.stdio._print α0 in
     Pure tt in
@@ -295,9 +293,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 := why.["kind"] in
-            let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+            let* α1 := format_argument::["new_debug"] (addr_of α0) in
             let* α2 :=
-              (format_arguments _)::["new_v1"]
+              format_arguments::["new_v1"]
                 (addr_of [ "! "; "
 " ])
                 (addr_of [ α1 ]) in

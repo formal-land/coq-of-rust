@@ -11,9 +11,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.option.Option.Some i =>
       let* _ :=
         let* _ :=
-          let* α0 := (format_argument _)::["new_debug"] (addr_of i) in
+          let* α0 := format_argument::["new_debug"] (addr_of i) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "Matched "; "!
 " ])
               (addr_of [ α0 ]) in
@@ -27,9 +27,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     | core.option.Option.Some i =>
       let* _ :=
         let* _ :=
-          let* α0 := (format_argument _)::["new_debug"] (addr_of i) in
+          let* α0 := format_argument::["new_debug"] (addr_of i) in
           let* α1 :=
-            (format_arguments _)::["new_v1"]
+            format_arguments::["new_v1"]
               (addr_of [ "Matched "; "!
 " ])
               (addr_of [ α0 ]) in
@@ -40,7 +40,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "Didn't match a number. Let's go with a letter!
 " ]) in
           std.io.stdio._print α0 in
@@ -52,9 +52,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | core.option.Option.Some i =>
     let* _ :=
       let* _ :=
-        let* α0 := (format_argument _)::["new_debug"] (addr_of i) in
+        let* α0 := format_argument::["new_debug"] (addr_of i) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "Matched "; "!
 " ])
             (addr_of [ α0 ]) in
@@ -66,7 +66,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "Didn't match a number. Let's go with a letter!
 " ]) in
           std.io.stdio._print α0 in
@@ -76,7 +76,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of
                 [ "I don't like letters. Let's go with an emoticon :)!
 " ]) in

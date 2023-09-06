@@ -52,9 +52,9 @@ Definition print
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of t) in
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`print`: t is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -70,9 +70,9 @@ Definition print_ref
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of t) in
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`print_ref`: t is "; "
 " ])
           (addr_of [ α0 ]) in

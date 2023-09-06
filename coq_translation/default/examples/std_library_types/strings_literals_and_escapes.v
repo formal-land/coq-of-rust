@@ -6,9 +6,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let byte_escape := "I'm writing Rust!" in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of byte_escape) in
+      let* α0 := format_argument::["new_display"] (addr_of byte_escape) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "What are you doing? (\x3F means ?) "; "
 " ])
           (addr_of [ α0 ]) in
@@ -18,12 +18,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of unicode_codepoint) in
-      let* α1 :=
-        (format_argument _)::["new_display"] (addr_of character_name) in
+      let* α0 := format_argument::["new_display"] (addr_of unicode_codepoint) in
+      let* α1 := format_argument::["new_display"] (addr_of character_name) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Unicode character "; " (U+211D) is called "; "
 " ])
           (addr_of [ α0; α1 ]) in
@@ -35,12 +33,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                         The linebreak and indentation here -><- can be escaped too!" in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of long_string) in
+      let* α0 := format_argument::["new_display"] (addr_of long_string) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0 ]) in
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.

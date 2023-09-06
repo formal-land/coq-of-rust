@@ -8,7 +8,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "Tell me what type of person you are
 " ]) in
       std.io.stdio._print α0 in
@@ -18,16 +18,16 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | 0 =>
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "I haven't celebrated my first birthday yet
 " ]) in
       std.io.stdio._print α0 in
     Pure tt
   | ((1|2|3|4|5|6|7|8|9|10|11|12) as n) =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of n) in
+      let* α0 := format_argument::["new_debug"] (addr_of n) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "I'm a child of age "; "
 " ])
           (addr_of [ α0 ]) in
@@ -35,9 +35,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | ((13|14|15|16|17|18|19) as n) =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of n) in
+      let* α0 := format_argument::["new_debug"] (addr_of n) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "I'm a teen of age "; "
 " ])
           (addr_of [ α0 ]) in
@@ -45,9 +45,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | n =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of n) in
+      let* α0 := format_argument::["new_debug"] (addr_of n) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "I'm an old person of age "; "
 " ])
           (addr_of [ α0 ]) in

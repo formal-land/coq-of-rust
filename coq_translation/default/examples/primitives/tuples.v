@@ -70,10 +70,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       (1, 2, 3, 4, α0, α1, α2, α3, 0 (* 0.1 *), 0 (* 0.2 *), "a"%char, true) in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of (long_tuple.[0])) in
+      let* α0 := format_argument::["new_display"] (addr_of (long_tuple.[0])) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "long tuple first value: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -81,10 +80,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of (long_tuple.[1])) in
+      let* α0 := format_argument::["new_display"] (addr_of (long_tuple.[1])) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "long tuple second value: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -96,9 +94,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure ((1, 2, 2), (4, α0), α1) in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of tuple_of_tuples) in
+      let* α0 := format_argument::["new_debug"] (addr_of tuple_of_tuples) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "tuple of tuples: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -107,9 +105,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let pair := (1, true) in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of pair) in
+      let* α0 := format_argument::["new_debug"] (addr_of pair) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "pair is "; "
 " ])
           (addr_of [ α0 ]) in
@@ -118,9 +116,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := tuples.reverse pair in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of α0) in
+      let* α1 := format_argument::["new_debug"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "the reversed pair is "; "
 " ])
           (addr_of [ α1 ]) in
@@ -128,9 +126,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of (5)) in
+      let* α0 := format_argument::["new_debug"] (addr_of (5)) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "one element tuple: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -138,9 +136,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of 5) in
+      let* α0 := format_argument::["new_debug"] (addr_of 5) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "just an integer: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -150,12 +148,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let '(a, b, c, d) := tuple in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of a) in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of b) in
-      let* α2 := (format_argument _)::["new_debug"] (addr_of c) in
-      let* α3 := (format_argument _)::["new_debug"] (addr_of d) in
+      let* α0 := format_argument::["new_debug"] (addr_of a) in
+      let* α1 := format_argument::["new_debug"] (addr_of b) in
+      let* α2 := format_argument::["new_debug"] (addr_of c) in
+      let* α3 := format_argument::["new_debug"] (addr_of d) in
       let* α4 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ ""; ", "; ", "; ", "; "
 " ])
           (addr_of [ α0; α1; α2; α3 ]) in
@@ -165,12 +163,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     tuples.Matrix.Build_t 1 (* 1.1 *) 1 (* 1.2 *) 2 (* 2.1 *) 2 (* 2.2 *) in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of matrix) in
+      let* α0 := format_argument::["new_debug"] (addr_of matrix) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0 ]) in
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.

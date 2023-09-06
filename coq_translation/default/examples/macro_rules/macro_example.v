@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
-    let* α0 := (format_arguments _)::["new_const"] (addr_of [ "Hello!
+    let* α0 := format_arguments::["new_const"] (addr_of [ "Hello!
 " ]) in
     std.io.stdio._print α0 in
   Pure tt.

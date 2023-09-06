@@ -8,9 +8,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_argument _)::["new_display"] (addr_of shadowed_binding) in
+          format_argument::["new_display"] (addr_of shadowed_binding) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "before being shadowed: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -20,9 +20,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          (format_argument _)::["new_display"] (addr_of shadowed_binding) in
+          format_argument::["new_display"] (addr_of shadowed_binding) in
         let* α1 :=
-          (format_arguments _)::["new_v1"]
+          format_arguments::["new_v1"]
             (addr_of [ "shadowed in inner block: "; "
 " ])
             (addr_of [ α0 ]) in
@@ -31,10 +31,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of shadowed_binding) in
+      let* α0 := format_argument::["new_display"] (addr_of shadowed_binding) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "outside inner block: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -43,10 +42,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let shadowed_binding := 2 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of shadowed_binding) in
+      let* α0 := format_argument::["new_display"] (addr_of shadowed_binding) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "shadowed in outer block: "; "
 " ])
           (addr_of [ α0 ]) in

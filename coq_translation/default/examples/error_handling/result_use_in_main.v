@@ -14,12 +14,10 @@ Definition main
     end in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of number) in
+      let* α0 := format_argument::["new_display"] (addr_of number) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0 ]) in
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
   Pure (core.result.Result.Ok tt).

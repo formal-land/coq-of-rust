@@ -4,9 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 Definition elided_input `{H' : State.Trait} (x : ref i32) : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of x) in
+      let* α0 := format_argument::["new_display"] (addr_of x) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`elided_input`: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -20,9 +20,9 @@ Definition annotated_input
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of x) in
+      let* α0 := format_argument::["new_display"] (addr_of x) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`annotated_input`: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -50,9 +50,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := scoping_rules_lifetimes_elision.elided_pass (addr_of x) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`elided_pass`: "; "
 " ])
           (addr_of [ α1 ]) in
@@ -61,9 +61,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := scoping_rules_lifetimes_elision.annotated_pass (addr_of x) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "`annotated_pass`: "; "
 " ])
           (addr_of [ α1 ]) in

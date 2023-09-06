@@ -8,7 +8,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       (let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "Entered the outer loop
 " ]) in
           std.io.stdio._print α0 in
@@ -18,7 +18,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           (let* _ :=
             let* _ :=
               let* α0 :=
-                (format_arguments _)::["new_const"]
+                format_arguments::["new_const"]
                   (addr_of [ "Entered the inner loop
 " ]) in
               std.io.stdio._print α0 in
@@ -28,7 +28,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            (format_arguments _)::["new_const"]
+            format_arguments::["new_const"]
               (addr_of [ "This point will never be reached
 " ]) in
           std.io.stdio._print α0 in
@@ -37,7 +37,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        (format_arguments _)::["new_const"]
+        format_arguments::["new_const"]
           (addr_of [ "Exited the outer loop
 " ]) in
       std.io.stdio._print α0 in

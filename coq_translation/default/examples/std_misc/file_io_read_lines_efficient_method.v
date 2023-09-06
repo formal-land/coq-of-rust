@@ -19,10 +19,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             | core.result.Result.Ok ip =>
               let* _ :=
                 let* _ :=
-                  let* α0 :=
-                    (format_argument _)::["new_display"] (addr_of ip) in
+                  let* α0 := format_argument::["new_display"] (addr_of ip) in
                   let* α1 :=
-                    (format_arguments _)::["new_v1"]
+                    format_arguments::["new_v1"]
                       (addr_of [ ""; "
 " ])
                       (addr_of [ α0 ]) in

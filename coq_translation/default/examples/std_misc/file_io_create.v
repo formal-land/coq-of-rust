@@ -20,10 +20,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* α0 := (std.fs.File _)::["create"] (addr_of path) in
     match α0 with
     | core.result.Result.Err why =>
-      let* α0 := (format_argument _)::["new_display"] (addr_of display) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of why) in
+      let* α0 := format_argument::["new_display"] (addr_of display) in
+      let* α1 := format_argument::["new_display"] (addr_of why) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "couldn't create "; ": " ])
           (addr_of [ α0; α1 ]) in
       core.panicking.panic_fmt α2
@@ -33,18 +33,18 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* α1 := file.["write_all"] α0 in
   match α1 with
   | core.result.Result.Err why =>
-    let* α0 := (format_argument _)::["new_display"] (addr_of display) in
-    let* α1 := (format_argument _)::["new_display"] (addr_of why) in
+    let* α0 := format_argument::["new_display"] (addr_of display) in
+    let* α1 := format_argument::["new_display"] (addr_of why) in
     let* α2 :=
-      (format_arguments _)::["new_v1"]
+      format_arguments::["new_v1"]
         (addr_of [ "couldn't write to "; ": " ])
         (addr_of [ α0; α1 ]) in
     core.panicking.panic_fmt α2
   | core.result.Result.Ok _ =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of display) in
+      let* α0 := format_argument::["new_display"] (addr_of display) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "successfully wrote to "; "
 " ])
           (addr_of [ α0 ]) in

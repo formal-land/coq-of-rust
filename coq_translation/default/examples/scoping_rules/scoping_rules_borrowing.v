@@ -7,9 +7,9 @@ Definition eat_box_i32
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of boxed_i32) in
+      let* α0 := format_argument::["new_display"] (addr_of boxed_i32) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Destroying box that contains "; "
 " ])
           (addr_of [ α0 ]) in
@@ -23,9 +23,9 @@ Definition borrow_i32
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of borrowed_i32) in
+      let* α0 := format_argument::["new_display"] (addr_of borrowed_i32) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "This int is: "; "
 " ])
           (addr_of [ α0 ]) in

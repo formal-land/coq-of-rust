@@ -145,9 +145,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let number := scoping_rules_lifetimes_structs.Either.Num y in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of single) in
+      let* α0 := format_argument::["new_debug"] (addr_of single) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "x is borrowed in "; "
 " ])
           (addr_of [ α0 ]) in
@@ -155,9 +155,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of double) in
+      let* α0 := format_argument::["new_debug"] (addr_of double) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "x and y are borrowed in "; "
 " ])
           (addr_of [ α0 ]) in
@@ -165,9 +165,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of reference) in
+      let* α0 := format_argument::["new_debug"] (addr_of reference) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "x is borrowed in "; "
 " ])
           (addr_of [ α0 ]) in
@@ -175,9 +175,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of number) in
+      let* α0 := format_argument::["new_debug"] (addr_of number) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "y is *not* borrowed in "; "
 " ])
           (addr_of [ α0 ]) in

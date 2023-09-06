@@ -152,25 +152,24 @@ Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') f64 :=
   let* α0 := result.checked.div x y in
   match α0 with
   | core.result.Result.Err why =>
-    let* α0 := (format_argument _)::["new_debug"] (addr_of why) in
-    let* α1 :=
-      (format_arguments _)::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
+    let* α0 := format_argument::["new_debug"] (addr_of why) in
+    let* α1 := format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
     core.panicking.panic_fmt α1
   | core.result.Result.Ok ratio =>
     let* α0 := result.checked.ln ratio in
     match α0 with
     | core.result.Result.Err why =>
-      let* α0 := (format_argument _)::["new_debug"] (addr_of why) in
+      let* α0 := format_argument::["new_debug"] (addr_of why) in
       let* α1 :=
-        (format_arguments _)::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
+        format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
       core.panicking.panic_fmt α1
     | core.result.Result.Ok ln =>
       let* α0 := result.checked.sqrt ln in
       match α0 with
       | core.result.Result.Err why =>
-        let* α0 := (format_argument _)::["new_debug"] (addr_of why) in
+        let* α0 := format_argument::["new_debug"] (addr_of why) in
         let* α1 :=
-          (format_arguments _)::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
+          format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1
       | core.result.Result.Ok sqrt => Pure sqrt
       end
@@ -182,12 +181,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := result.op 1 (* 1.0 *) 10 (* 10.0 *) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of α0) in
+      let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α1 ]) in
+        format_arguments::["new_v1"] (addr_of [ ""; "
+" ]) (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
   Pure tt.

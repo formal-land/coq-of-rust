@@ -7,10 +7,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let mutable_binding := 1 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of mutable_binding) in
+      let* α0 := format_argument::["new_display"] (addr_of mutable_binding) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Before mutation: "; "
 " ])
           (addr_of [ α0 ]) in
@@ -19,10 +18,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := mutable_binding.["add_assign"] 1 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_display"] (addr_of mutable_binding) in
+      let* α0 := format_argument::["new_display"] (addr_of mutable_binding) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "After mutation: "; "
 " ])
           (addr_of [ α0 ]) in

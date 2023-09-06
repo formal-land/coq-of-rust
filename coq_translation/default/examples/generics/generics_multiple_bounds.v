@@ -10,9 +10,9 @@ Definition compare_prints
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of t) in
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Debug: `"; "`
 " ])
           (addr_of [ α0 ]) in
@@ -20,9 +20,9 @@ Definition compare_prints
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of t) in
+      let* α0 := format_argument::["new_display"] (addr_of t) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "Display: `"; "`
 " ])
           (addr_of [ α0 ]) in
@@ -40,9 +40,9 @@ Definition compare_types
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of t) in
+      let* α0 := format_argument::["new_debug"] (addr_of t) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "t: `"; "`
 " ])
           (addr_of [ α0 ]) in
@@ -50,9 +50,9 @@ Definition compare_types
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of u) in
+      let* α0 := format_argument::["new_debug"] (addr_of u) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "u: `"; "`
 " ])
           (addr_of [ α0 ]) in

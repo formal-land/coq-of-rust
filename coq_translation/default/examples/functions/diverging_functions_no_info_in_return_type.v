@@ -8,7 +8,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* a := diverging_functions_no_info_in_return_type.some_fn in
   let* _ :=
     let* α0 :=
-      (format_arguments _)::["new_const"]
+      format_arguments::["new_const"]
         (addr_of [ "This function returns and you can see this line.
 " ]) in
     std.io.stdio._print α0 in

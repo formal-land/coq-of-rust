@@ -9,10 +9,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match array with
   | [0; second; third] =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of second) in
-      let* α1 := (format_argument _)::["new_display"] (addr_of third) in
+      let* α0 := format_argument::["new_display"] (addr_of second) in
+      let* α1 := format_argument::["new_display"] (addr_of third) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "array[0] = 0, array[1] = "; ", array[2] = "; "
 " ])
           (addr_of [ α0; α1 ]) in
@@ -20,9 +20,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | [1; _; third] =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of third) in
+      let* α0 := format_argument::["new_display"] (addr_of third) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of
             [ "array[0] = 1, array[2] = "; " and array[1] was ignored
 " ])
@@ -31,9 +31,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | (_:: second:: _) =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of second) in
+      let* α0 := format_argument::["new_display"] (addr_of second) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of
             [
               "array[0] = -1, array[1] = ";
@@ -45,10 +45,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | (3:: second:: (_ as tail)) =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of second) in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of tail) in
+      let* α0 := format_argument::["new_display"] (addr_of second) in
+      let* α1 := format_argument::["new_debug"] (addr_of tail) in
       let* α2 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of
             [ "array[0] = 3, array[1] = "; " and the other elements were "; "
 "
@@ -58,11 +58,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | _ =>
     let* _ :=
-      let* α0 := (format_argument _)::["new_display"] (addr_of first) in
-      let* α1 := (format_argument _)::["new_debug"] (addr_of middle) in
-      let* α2 := (format_argument _)::["new_display"] (addr_of last) in
+      let* α0 := format_argument::["new_display"] (addr_of first) in
+      let* α1 := format_argument::["new_debug"] (addr_of middle) in
+      let* α2 := format_argument::["new_display"] (addr_of last) in
       let* α3 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "array[0] = "; ", middle = "; ", array[2] = "; "
 " ])
           (addr_of [ α0; α1; α2 ]) in

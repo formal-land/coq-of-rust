@@ -289,9 +289,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* two_meters := one_meter.["add"] one_meter in
   let* _ :=
     let* _ :=
-      let* α0 := (format_argument _)::["new_debug"] (addr_of (two_feet.[0])) in
+      let* α0 := format_argument::["new_debug"] (addr_of (two_feet.[0])) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "one foot + one_foot = "; " in
 " ])
           (addr_of [ α0 ]) in
@@ -299,10 +299,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        (format_argument _)::["new_debug"] (addr_of (two_meters.[0])) in
+      let* α0 := format_argument::["new_debug"] (addr_of (two_meters.[0])) in
       let* α1 :=
-        (format_arguments _)::["new_v1"]
+        format_arguments::["new_v1"]
           (addr_of [ "one meter + one_meter = "; " mm
 " ])
           (addr_of [ α0 ]) in
