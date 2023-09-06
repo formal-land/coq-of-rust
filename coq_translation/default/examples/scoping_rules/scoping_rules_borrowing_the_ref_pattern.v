@@ -16,7 +16,7 @@ Module Point.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point := @Point.t.
+Definition Point : Set := Point.t.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Definition Self := scoping_rules_borrowing_the_ref_pattern.Point.

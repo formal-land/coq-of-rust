@@ -38,7 +38,7 @@ Module Form.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Form.
-Definition Form := @Form.t.
+Definition Form : Set := Form.t.
 
 Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.

@@ -6,14 +6,14 @@ Module Sheep.
   Record t : Set := { }.
   Global Set Primitive Projections.
 End Sheep.
-Definition Sheep := @Sheep.t.
+Definition Sheep : Set := Sheep.t.
 
 Module Cow.
   Unset Primitive Projections.
   Record t : Set := { }.
   Global Set Primitive Projections.
 End Cow.
-Definition Cow := @Cow.t.
+Definition Cow : Set := Cow.t.
 
 Module Animal.
   Class Trait (Self : Set) : Type := {

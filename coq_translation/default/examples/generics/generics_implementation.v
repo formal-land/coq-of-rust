@@ -12,7 +12,7 @@ Module Val.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Val.
-Definition Val := @Val.t.
+Definition Val : Set := Val.t.
 
 Module GenVal.
   Section GenVal.
@@ -28,7 +28,7 @@ Module GenVal.
     }.
   End GenVal.
 End GenVal.
-Definition GenVal := @GenVal.t.
+Definition GenVal (T : Set) : Set := GenVal.t (T := T).
 
 Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.

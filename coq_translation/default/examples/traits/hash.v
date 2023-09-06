@@ -20,7 +20,7 @@ Module Person.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Person.
-Definition Person := @Person.t.
+Definition Person : Set := Person.t.
 
 Module Impl_core_hash_Hash_for_hash_Person.
   Definition Self := hash.Person.

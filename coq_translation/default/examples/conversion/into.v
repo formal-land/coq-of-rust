@@ -12,7 +12,7 @@ Module Number.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Number.
-Definition Number := @Number.t.
+Definition Number : Set := Number.t.
 
 Module Impl_core_convert_From_for_into_Number.
   Definition Self := into.Number.

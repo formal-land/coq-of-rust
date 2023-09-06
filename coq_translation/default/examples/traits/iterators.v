@@ -16,7 +16,7 @@ Module Fibonacci.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Fibonacci.
-Definition Fibonacci := @Fibonacci.t.
+Definition Fibonacci : Set := Fibonacci.t.
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Definition Self := iterators.Fibonacci.
