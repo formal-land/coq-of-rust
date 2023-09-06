@@ -773,7 +773,7 @@ def update_erc20():
         + """
 
 Require CoqOfRust.ink.ink_storage.
-(* @TODO Require CoqOfRust.ink.ink_env. *)
+Require CoqOfRust.ink.ink_env.
 (* @TODO Require CoqOfRust.ink.ink. *)
 
 (** @TODO [erc20] dependencies which are WIP *)

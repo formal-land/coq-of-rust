@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Require CoqOfRust.ink.ink_storage.
-(* @TODO Require CoqOfRust.ink.ink_env. *)
+Require CoqOfRust.ink.ink_env.
 (* @TODO Require CoqOfRust.ink.ink. *)
 
 (** @TODO [erc20] dependencies which are WIP *)
@@ -322,6 +322,7 @@ Module erc20.
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
+    (* @WIP *)
     Definition
       CALLABLE `{State.Trait} := Pure
         (fun storage _ => erc20.erc20.Erc20::["total_supply"] storage).
