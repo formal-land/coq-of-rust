@@ -1581,30 +1581,25 @@ impl TopLevelItem {
                     )),
                 ])
                 .to_doc(),
-                Some(value) => nest([
-                    nest([
-                        text("Definition"),
-                        line(),
-                        text(name),
-                        line(),
-                        monadic_typeclass_parameter(),
-                        text(" :"),
-                        line(),
-                        ty.to_doc(false),
-                        text(" :="),
-                    ]),
-                    line(),
-                    nest([
-                        text("run"),
-                        line(),
-                        // We have to force the parenthesis because otherwise they
-                        // are lost when printing a statement in the expression
-                        text("("),
-                        value.to_doc(true),
-                        text(")"),
-                    ]),
-                    text("."),
-                ]),
+                Some(value) => coq::TopLevel::new(&[
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Alias {
+                            args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                            ty: Some(ty.to_coq()),
+                            body: coq::Expression::Code(nest([
+                                text("run"),
+                                line(),
+                                // We have to force the parenthesis because otherwise they
+                                // are lost when printing a statement in the expression
+                                text("("),
+                                value.to_doc(true),
+                                text(")"),
+                            ])),
+                        },
+                    )),
+                ])
+                .to_doc(),
             },
             TopLevelItem::Definition(definition) => definition.to_doc(*extra_data),
             TopLevelItem::Module {
