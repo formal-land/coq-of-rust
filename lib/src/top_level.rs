@@ -1609,20 +1609,23 @@ impl TopLevelItem {
                 name,
                 body,
                 is_dead_code,
-            } => group([
-                if *is_dead_code {
-                    concat([
-                        text("(* #[allow(dead_code)] - module was ignored by the compiler *)"),
-                        hardline(),
-                    ])
-                } else {
-                    nil()
-                },
-                nest([text("Module"), line(), text(name), text(".")]),
-                nest([hardline(), body.to_doc()]),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
-            ]),
+            } => coq::TopLevel::new(
+                &[
+                    if *is_dead_code {
+                        vec![coq::TopLevelItem::Comment(coq::Comment::new(
+                            "#[allow(dead_code)] - module was ignored by the compiler",
+                        ))]
+                    } else {
+                        vec![]
+                    },
+                    vec![coq::TopLevelItem::Module(coq::Module::new(
+                        name,
+                        coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
+                    ))],
+                ]
+                .concat(),
+            )
+            .to_doc(),
             TopLevelItem::TypeAlias {
                 name,
                 ty,
