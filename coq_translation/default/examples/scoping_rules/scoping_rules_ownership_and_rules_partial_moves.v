@@ -75,17 +75,13 @@ Module
     :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
-  Parameter debug_struct_field2_finish :
-      core.fmt.Formatter ->
-        string ->
-          string ->
-          alloc_string_String ->
-          string ->
-          alloc_boxed_Box_u8 ->
-          M (H := H') core.fmt.Result.
+  Parameter debug_struct_field2_finish : forall `{H' : State.Trait},
+  core.fmt.Formatter -> 
+    string -> string -> alloc_string_String -> string -> alloc_boxed_Box_u8 -> 
+      M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field2_finish" := {
+  Global Instance Deb_debug_struct_field2_finish `{H' : State.Trait} : 
+    Notation.DoubleColon core.fmt.Formatter "debug_struct_field2_finish" := {
     Notation.double_colon := debug_struct_field2_finish; }.
   
   Definition fmt

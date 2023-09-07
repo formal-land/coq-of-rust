@@ -17,12 +17,12 @@ Definition Borrowed : Set := @Borrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Parameter debug_struct_field1_finish :
-      core.fmt.Formatter ->
-        string -> string -> StaticRef_i32 -> M (H := H') core.fmt.Result.
+  Parameter debug_struct_field1_finish : forall `{H' : State.Trait},
+  core.fmt.Formatter -> 
+    string -> string -> StaticRef_i32 ->  M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field1_finish" := {
+  Global Instance Deb_debug_struct_field1_finish `{H' : State.Trait} : 
+    Notation.DoubleColon core.fmt.Formatter "debug_struct_field1_finish" := {
     Notation.double_colon := debug_struct_field1_finish; }.
   
   Definition fmt
