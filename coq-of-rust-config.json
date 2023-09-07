@@ -34,11 +34,7 @@
         "hash": { "move": "up", "before": "backend" },
         "backend": { "move": "up", "before": "api" },
         "contract": { "move": "up", "before": "call" },
-        "call": { "move": "up", "before": "api" },
-        "invoke_contract": { "move": "up" },
-        "invoke_contract_delegate": { "move": "up" },
-        "instantiate_contract": { "move": "up" },
-        "build_create": { "move": "up" }
+        "call": { "move": "up", "before": "api" }
       },
       "top_level::arithmetic": { 
         "Saturating": { "move": "up", "before": "BaseArithmetic" }
