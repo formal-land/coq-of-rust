@@ -1569,16 +1569,18 @@ impl TopLevelItem {
     fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => match value {
-                None => nest([
-                    nest([text("Parameter"), line(), text(name), text(" :")]),
-                    line(),
-                    text("forall "),
-                    monadic_typeclass_parameter(),
-                    text(","),
-                    line(),
-                    ty.to_doc(false),
-                    text("."),
-                ]),
+                None => coq::TopLevel::new(&[
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Assumption {
+                            ty: coq::Expression::PiType {
+                                args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                                image: Box::new(ty.to_coq()),
+                            },
+                        },
+                    )),
+                ])
+                .to_doc(),
                 Some(value) => nest([
                     nest([
                         text("Definition"),
