@@ -3737,10 +3737,9 @@ Module Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
   Global Hint Resolve I : core.
 End Impl_ink_reflect_dispatch_ContractMessageDecoder_for_erc20_erc20_Erc20.
 
-Definition
-    _
-    `{H' : State.Trait} :
-    ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
+Definition _
+    `{H' : State.Trait}
+    : ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20 :=
   run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
 
 Module Impl_erc20_erc20_Erc20_29.
