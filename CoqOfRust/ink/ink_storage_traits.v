@@ -86,14 +86,14 @@ Module storage.
       encode
         `{H' : State.Trait}
         {T: Set}
-        `{parity_scale_codec.codec.Output.Trait T}
-        `{core.marker.Sized.Trait T}
+        `{H'0 : parity_scale_codec.codec.Output.Trait T}
+        `{H'1 : core.marker.Sized.Trait T}
         :
         (ref Self) -> (mut_ref T) -> (M (H := H') unit);
       decode
         `{H' : State.Trait}
         {I: Set}
-        `{parity_scale_codec.codec.Input.Trait I}
+        `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
         (M (H := H') (core.result.Result Self parity_scale_codec.error.Error));
@@ -103,16 +103,16 @@ Module storage.
       : Notation.Dot "encode" := {
       Notation.dot
         {T : Set}
-        `{parity_scale_codec.codec.Output.Trait T}
-        `{core.marker.Sized.Trait T}
+        `{H'0 : parity_scale_codec.codec.Output.Trait T}
+        `{H'1 : core.marker.Sized.Trait T}
         :=
-        encode;
+        encode (T := T) (H'0 := H'0) (H'1 := H'1);
     }.
     Global Instance Method_decode `{H' : State.Trait} `(Trait)
       : Notation.Dot "decode" := {
-      Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+      Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :=
-        decode;
+        decode (I := I) (H'0 := H'0);
     }.
   End Storable.
   
@@ -202,14 +202,14 @@ Module Storable.
     encode
       `{H' : State.Trait}
       {T: Set}
-      `{parity_scale_codec.codec.Output.Trait T}
-      `{core.marker.Sized.Trait T}
+      `{H'0 : parity_scale_codec.codec.Output.Trait T}
+      `{H'1 : core.marker.Sized.Trait T}
       :
       (ref Self) -> (mut_ref T) -> (M (H := H') unit);
     decode
       `{H' : State.Trait}
       {I: Set}
-      `{parity_scale_codec.codec.Input.Trait I}
+      `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
       (M (H := H') (core.result.Result Self parity_scale_codec.error.Error));
@@ -219,14 +219,16 @@ Module Storable.
     : Notation.Dot "encode" := {
     Notation.dot
       {T : Set}
-      `{parity_scale_codec.codec.Output.Trait T}
-      `{core.marker.Sized.Trait T}
+      `{H'0 : parity_scale_codec.codec.Output.Trait T}
+      `{H'1 : core.marker.Sized.Trait T}
       :=
-      encode;
+      encode (T := T) (H'0 := H'0) (H'1 := H'1);
   }.
   Global Instance Method_decode `{H' : State.Trait} `(Trait)
     : Notation.Dot "decode" := {
-    Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I} := decode;
+    Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
+      :=
+      decode (I := I) (H'0 := H'0);
   }.
 End Storable.
 

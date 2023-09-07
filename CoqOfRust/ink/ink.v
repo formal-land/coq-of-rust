@@ -214,7 +214,9 @@ Module codegen.
           emit_event
             `{H' : State.Trait}
             {E: Set}
-            `{core.convert.Into.Trait E
+            `{H'0
+              :
+              core.convert.Into.Trait E
                 (T := ink.reflect.event.ContractEventBase.Type_)}
             :
             Self -> E -> (M (H := H') unit);
@@ -224,10 +226,12 @@ Module codegen.
           : Notation.Dot "emit_event" := {
           Notation.dot
             {E : Set}
-            `{core.convert.Into.Trait E
+            `{H'0
+              :
+              core.convert.Into.Trait E
                 (T := ink.reflect.event.ContractEventBase.Type_)}
             :=
-            emit_event;
+            emit_event (E := E) (H'0 := H'0);
         }.
       End EmitEvent.
     End emit.
@@ -668,7 +672,9 @@ Module event.
         emit_event
           `{H' : State.Trait}
           {E: Set}
-          `{core.convert.Into.Trait E
+          `{H'0
+            :
+            core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_)}
           :
           Self -> E -> (M (H := H') unit);
@@ -678,10 +684,12 @@ Module event.
         : Notation.Dot "emit_event" := {
         Notation.dot
           {E : Set}
-          `{core.convert.Into.Trait E
+          `{H'0
+            :
+            core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_)}
           :=
-          emit_event;
+          emit_event (E := E) (H'0 := H'0);
       }.
     End EmitEvent.
   End emit.
@@ -746,7 +754,9 @@ Module emit.
       emit_event
         `{H' : State.Trait}
         {E: Set}
-        `{core.convert.Into.Trait E
+        `{H'0
+          :
+          core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_)}
         :
         Self -> E -> (M (H := H') unit);
@@ -756,10 +766,12 @@ Module emit.
       : Notation.Dot "emit_event" := {
       Notation.dot
         {E : Set}
-        `{core.convert.Into.Trait E
+        `{H'0
+          :
+          core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_)}
         :=
-        emit_event;
+        emit_event (E := E) (H'0 := H'0);
     }.
   End EmitEvent.
 End emit.
@@ -771,7 +783,9 @@ Module EmitEvent.
     emit_event
       `{H' : State.Trait}
       {E: Set}
-      `{core.convert.Into.Trait E
+      `{H'0
+        :
+        core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_)}
       :
       Self -> E -> (M (H := H') unit);
@@ -781,10 +795,12 @@ Module EmitEvent.
     : Notation.Dot "emit_event" := {
     Notation.dot
       {E : Set}
-      `{core.convert.Into.Trait E
+      `{H'0
+        :
+        core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_)}
       :=
-      emit_event;
+      emit_event (E := E) (H'0 := H'0);
   }.
 End EmitEvent.
 
@@ -1521,7 +1537,7 @@ Module reflect.
         decode_dispatch
           `{H' : State.Trait}
           {I: Set}
-          `{parity_scale_codec.codec.Input.Trait I}
+          `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :
           (mut_ref I) ->
           (M (H := H')
@@ -1530,9 +1546,9 @@ Module reflect.
       
       Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
-        Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+        Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :=
-          decode_dispatch;
+          decode_dispatch (I := I) (H'0 := H'0);
       }.
     End DecodeDispatch.
   End dispatch.
@@ -1856,7 +1872,7 @@ Module dispatch.
       decode_dispatch
         `{H' : State.Trait}
         {I: Set}
-        `{parity_scale_codec.codec.Input.Trait I}
+        `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
         (M (H := H')
@@ -1865,9 +1881,9 @@ Module dispatch.
     
     Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
       : Notation.Dot "decode_dispatch" := {
-      Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+      Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :=
-        decode_dispatch;
+        decode_dispatch (I := I) (H'0 := H'0);
     }.
   End DecodeDispatch.
 End dispatch.
@@ -2097,7 +2113,7 @@ Module DecodeDispatch.
     decode_dispatch
       `{H' : State.Trait}
       {I: Set}
-      `{parity_scale_codec.codec.Input.Trait I}
+      `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
       (M (H := H')
@@ -2106,9 +2122,9 @@ Module DecodeDispatch.
   
   Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
     : Notation.Dot "decode_dispatch" := {
-    Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+    Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :=
-      decode_dispatch;
+      decode_dispatch (I := I) (H'0 := H'0);
   }.
 End DecodeDispatch.
 

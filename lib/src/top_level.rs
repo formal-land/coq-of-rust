@@ -2100,8 +2100,11 @@ impl TopLevelItem {
                             ty_params,
                             where_predicates
                                 .iter()
-                                .map(|predicate| predicate.to_doc())
-                                .collect::<Vec<Doc>>(),
+                                .enumerate()
+                                .map(|(i, predicate)| {
+                                    predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
+                                })
+                                .collect::<Vec<_>>(),
                             ty.to_doc(false),
                         ),
                         TraitItem::DefinitionWithDefault { .. } => nil(),
@@ -2154,11 +2157,32 @@ impl TopLevelItem {
                                         },
                                         where_predicates
                                             .iter()
-                                            .map(|predicate| predicate.to_coq())
+                                            .enumerate()
+                                            .map(|(i, predicate)| {
+                                                predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
+                                            })
                                             .collect(),
                                     ]
                                     .concat(),
-                                    &coq::Expression::just_name(name),
+                                    &coq::Expression::just_name(name)
+                                        .apply_many_args(
+                                            &ty_params
+                                                .iter()
+                                                .map(|ty_param| {
+                                                    (Some(ty_param.to_owned()), coq::Expression::just_name(ty_param))
+                                                })
+                                                .collect::<Vec<_>>(),
+                                        )
+                                        .apply_many_args(
+                                            &where_predicates
+                                                .iter()
+                                                .enumerate()
+                                                .map(|(i, _)| {
+                                                    let var_name = ["H'".to_string(), i.to_string()].concat();
+                                                    (Some(var_name.clone()), coq::Expression::just_name(&var_name))
+                                                })
+                                                .collect::<Vec<_>>()
+                                        ),
                                 )],
                             },
                             vec![],

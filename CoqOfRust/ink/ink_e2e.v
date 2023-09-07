@@ -47,9 +47,10 @@ Parameter constructor_exec_input :
 
 Module client.
   Definition CallBuilderFinal (E Args RetType : Set) : Set :=
-    ink_env.call.call_builder.CallBuilder
+    ink_env.backend_and_call_builder_and_error.CallBuilder
       E
-      (ink_env.call.common.Set_ (ink_env.call.call_builder.Call E))
+      (ink_env.call.common.Set_
+        (ink_env.backend_and_call_builder_and_error.Call E))
       (ink_env.call.common.Set_
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Set_ (ink_env.call.common.ReturnType RetType)).
@@ -243,9 +244,10 @@ Module client.
 End client.
 
 Definition CallBuilderFinal (E Args RetType : Set) : Set :=
-  ink_env.call.call_builder.CallBuilder
+  ink_env.backend_and_call_builder_and_error.CallBuilder
     E
-    (ink_env.call.common.Set_ (ink_env.call.call_builder.Call E))
+    (ink_env.call.common.Set_
+      (ink_env.backend_and_call_builder_and_error.Call E))
     (ink_env.call.common.Set_
       (ink_env.call.execution_input.ExecutionInput Args))
     (ink_env.call.common.Set_ (ink_env.call.common.ReturnType RetType)).
