@@ -555,6 +555,146 @@ End private.""",
         )
     content = \
         content.replace(
+            """Parameter invoke_contract : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {E Args R : Set}
+  `{ink_env.types.Environment.Trait E}
+  `{parity_scale_codec.codec.Encode.Trait Args}
+  `{parity_scale_codec.codec.Decode.Trait R},
+(ref
+    (ink_env.call.call_builder.CallParams
+      E
+      (ink_env.call.call_builder.Call E)
+      Args
+      R)) ->
+  M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)).
+
+Parameter invoke_contract_delegate : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {E Args R : Set}
+  `{ink_env.types.Environment.Trait E}
+  `{parity_scale_codec.codec.Encode.Trait Args}
+  `{parity_scale_codec.codec.Decode.Trait R},
+(ref
+    (ink_env.call.call_builder.CallParams
+      E
+      (ink_env.call.call_builder.DelegateCall E)
+      Args
+      R)) ->
+  M (H := H') (ink_env.error.Result (ink_primitives.MessageResult R)).
+
+Parameter instantiate_contract : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {E ContractRef Args Salt R : Set}
+  `{ink_env.types.Environment.Trait E}
+  `{ink_env.call.create_builder.FromAccountId.Trait ContractRef (T := E)}
+  `{parity_scale_codec.codec.Encode.Trait Args}
+  `{core.convert.AsRef.Trait Salt (T := Slice u8)}
+  `{ink_env.call.create_builder.ConstructorReturnType.Trait R
+      (C := ContractRef)},
+(ref (ink_env.call.create_builder.CreateParams E ContractRef Args Salt R)) ->
+  M (H := H')
+    (ink_env.error.Result
+      (ink_primitives.ConstructorResult
+        ink_env.call.create_builder.ConstructorReturnType.Output)).""",
+            "",
+        )
+    content = \
+        content.replace(
+            """Parameter build_call : forall `{H' : State.Trait},
+forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+M (H := H')
+    (ink_env.call.call_builder.CallBuilder
+      E
+      (ink_env.call.common.Unset_ (ink_env.call.call_builder.Call E))
+      (ink_env.call.common.Unset_
+        (ink_env.call.execution_input.ExecutionInput
+          ink_env.call.execution_input.EmptyArgumentList))
+      (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).""",
+                        "",
+                        )
+    content = \
+        content.replace(
+            """Parameter build_create : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {ContractRef : Set}
+  `{ink_env.contract.ContractEnv.Trait ContractRef},
+M (H := H')
+    (ink_env.call.create_builder.CreateBuilder
+      ink_env.contract.ContractEnv.Env
+      ContractRef
+      (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+      (ink_env.call.common.Unset_ u64)
+      (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+      (ink_env.call.common.Unset_
+        (ink_env.call.execution_input.ExecutionInput
+          ink_env.call.execution_input.EmptyArgumentList))
+      (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
+      (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).""",
+            "",
+        )
+    content = \
+        content.replace(
+            """Parameter register_chain_extension : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {E : Set}
+  `{ink_engine.chain_extension.ChainExtension.Trait E},
+E ->  M (H := H') unit.
+
+Parameter recorded_debug_messages : forall `{H' : State.Trait},
+forall `{H' : State.Trait},
+M (H := H') ink_engine.test_api.RecordedDebugMessages.""",
+            ""
+        )
+    content = \
+        content.replace(
+            """Parameter is_contract : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {T : Set}
+  `{ink_env.types.Environment.Trait T}
+  `{core.convert.From.Trait ink_env.types.Environment.AccountId (T := list u8)},
+T::type["AccountId"] ->  M (H := H') bool.""",
+            ""
+        )
+    content = \
+        content.replace(
+            """Parameter run_test : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {T F : Set}
+  `{ink_env.types.Environment.Trait T}
+  `{core.ops.function.FnOnce.Trait F
+      (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)}
+  `{core.convert.From.Trait ink_env.types.Environment.AccountId (T := list u8)},
+F ->  M (H := H') (ink_env.error.Result unit).
+
+Parameter default_accounts : forall `{H' : State.Trait},
+forall
+  `{H' : State.Trait}
+  {T : Set}
+  `{ink_env.types.Environment.Trait T}
+  `{core.convert.From.Trait ink_env.types.Environment.AccountId (T := list u8)},
+M (H := H') (ink_env.engine.off_chain.test_api.DefaultAccounts T).""",
+            ""
+        )
+    content = \
+        content.replace(
+            """Parameter recorded_events_ret_ty : forall `{H' : State.Trait},
+forall `{core.iter.traits.iterator.Iterator},
+Set.
+Parameter recorded_events : forall `{H' : State.Trait},
+forall `{H' : State.Trait},
+M (H := H') recorded_events_ret_ty.""",
+            ""
+        )
+    content = \
+        content.replace(
             """Module TopicsBuilder.
   Section TopicsBuilder.
     Context {S E B : Set}.
