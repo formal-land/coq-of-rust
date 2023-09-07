@@ -1102,8 +1102,8 @@ Definition Signer (C : Set) : Set :=
 Parameter INIT : forall `{H' : State.Trait}, std.sync.once.Once.
 
 Parameter LOG_PREFIX :
-  forall `{H' : State.Trait},
-  std.thread.local.LocalKey (core.cell.RefCell alloc.string.String).
+    forall `{H' : State.Trait},
+    std.thread.local.LocalKey (core.cell.RefCell alloc.string.String).
 
 Parameter log_prefix :
     forall `{H' : State.Trait},
