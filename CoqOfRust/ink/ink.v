@@ -112,13 +112,9 @@ End IsResultErrFallback.
 Module codegen.
   Module dispatch.
     Module execution.
-      Parameter deny_payment :
-          forall
-            `{H' : State.Trait}
-            {E : Set}
-            `{ink_env.types.Environment.Trait E},
-          M (H := H')
-              (core.result.Result unit ink.reflect.dispatch.DispatchError).
+      Parameter deny_payment : forall `{H' : State.Trait},
+      forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
     End execution.
     
     Module info.
@@ -401,9 +397,9 @@ Module codegen.
   
   Module utils.
     Module identity_type.
-      Parameter consume_type :
-          forall `{H' : State.Trait} {T : Set},
-          M (H := H') unit.
+      Parameter consume_type : forall `{H' : State.Trait},
+      forall `{H' : State.Trait} {T : Set},
+      M (H := H') unit.
     End identity_type.
     
     Module same_type.
@@ -428,13 +424,9 @@ End codegen.
 
 Module dispatch.
   Module execution.
-    Parameter deny_payment :
-        forall
-          `{H' : State.Trait}
-          {E : Set}
-          `{ink_env.types.Environment.Trait E},
-        M (H := H')
-            (core.result.Result unit ink.reflect.dispatch.DispatchError).
+    Parameter deny_payment : forall `{H' : State.Trait},
+    forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
   End execution.
   
   Module info.
@@ -486,14 +478,14 @@ Module dispatch.
 End dispatch.
 
 Module execution.
-  Parameter deny_payment :
-      forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
-      M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
+  Parameter deny_payment : forall `{H' : State.Trait},
+  forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+  M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
 End execution.
 
-Parameter deny_payment :
-    forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
-    M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
+Parameter deny_payment : forall `{H' : State.Trait},
+forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
 
 Module info.
   Module ContractCallBuilder.
@@ -1196,9 +1188,9 @@ Definition TraitMessageSelector := @TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
-    Parameter consume_type :
-        forall `{H' : State.Trait} {T : Set},
-        M (H := H') unit.
+    Parameter consume_type : forall `{H' : State.Trait},
+    forall `{H' : State.Trait} {T : Set},
+    M (H := H') unit.
   End identity_type.
   
   Module same_type.
@@ -1221,12 +1213,14 @@ Module utils.
 End utils.
 
 Module identity_type.
-  Parameter consume_type :
-      forall `{H' : State.Trait} {T : Set},
-      M (H := H') unit.
+  Parameter consume_type : forall `{H' : State.Trait},
+  forall `{H' : State.Trait} {T : Set},
+  M (H := H') unit.
 End identity_type.
 
-Parameter consume_type : forall `{H' : State.Trait} {T : Set}, M (H := H') unit.
+Parameter consume_type : forall `{H' : State.Trait},
+forall `{H' : State.Trait} {T : Set},
+M (H := H') unit.
 
 Module same_type.
   Module IsSameType.

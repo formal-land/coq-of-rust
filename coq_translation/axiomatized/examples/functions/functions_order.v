@@ -28,17 +28,27 @@ End OtherType.
 Definition OtherType := @OtherType.t.
 
 Module inner_mod.
-  Parameter bar : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter bar : forall `{H' : State.Trait},
+  forall `{H' : State.Trait},
+  M (H := H') unit.
   
   Module nested_mod.
-    Parameter tick : forall `{H' : State.Trait}, M (H := H') unit.
+    Parameter tick : forall `{H' : State.Trait},
+    forall `{H' : State.Trait},
+    M (H := H') unit.
   End nested_mod.
 End inner_mod.
 
-Parameter bar : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter bar : forall `{H' : State.Trait},
+forall `{H' : State.Trait},
+M (H := H') unit.
 
 Module nested_mod.
-  Parameter tick : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter tick : forall `{H' : State.Trait},
+  forall `{H' : State.Trait},
+  M (H := H') unit.
 End nested_mod.
 
-Parameter tick : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter tick : forall `{H' : State.Trait},
+forall `{H' : State.Trait},
+M (H := H') unit.
