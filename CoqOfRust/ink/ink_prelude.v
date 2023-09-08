@@ -2,5 +2,5 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter IIP2_WILDCARD_COMPLEMENT_SELECTOR :
-  forall `{H' : State.Trait},
-  list u8.
+    forall `{H' : State.Trait},
+    list u8.

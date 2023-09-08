@@ -1569,60 +1569,60 @@ impl TopLevelItem {
     fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => match value {
-                None => nest([
-                    nest([text("Parameter"), line(), text(name), text(" :")]),
-                    line(),
-                    text("forall "),
-                    monadic_typeclass_parameter(),
-                    text(","),
-                    line(),
-                    ty.to_doc(false),
-                    text("."),
-                ]),
-                Some(value) => nest([
-                    nest([
-                        text("Definition"),
-                        line(),
-                        text(name),
-                        line(),
-                        monadic_typeclass_parameter(),
-                        text(" :"),
-                        line(),
-                        ty.to_doc(false),
-                        text(" :="),
-                    ]),
-                    line(),
-                    nest([
-                        text("run"),
-                        line(),
-                        // We have to force the parenthesis because otherwise they
-                        // are lost when printing a statement in the expression
-                        text("("),
-                        value.to_doc(true),
-                        text(")"),
-                    ]),
-                    text("."),
-                ]),
+                None => coq::TopLevel::new(&[
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Assumption {
+                            ty: coq::Expression::PiType {
+                                args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                                image: Box::new(ty.to_coq()),
+                            },
+                        },
+                    )),
+                ])
+                .to_doc(),
+                Some(value) => coq::TopLevel::new(&[
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Alias {
+                            args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                            ty: Some(ty.to_coq()),
+                            body: coq::Expression::Code(nest([
+                                text("run"),
+                                line(),
+                                // We have to force the parenthesis because otherwise they
+                                // are lost when printing a statement in the expression
+                                text("("),
+                                value.to_doc(true),
+                                text(")"),
+                            ])),
+                        },
+                    )),
+                ])
+                .to_doc(),
             },
             TopLevelItem::Definition(definition) => definition.to_doc(*extra_data),
             TopLevelItem::Module {
                 name,
                 body,
                 is_dead_code,
-            } => group([
-                if *is_dead_code {
-                    concat([
-                        text("(* #[allow(dead_code)] - module was ignored by the compiler *)"),
-                        hardline(),
-                    ])
-                } else {
-                    nil()
-                },
-                nest([text("Module"), line(), text(name), text(".")]),
-                nest([hardline(), body.to_doc()]),
-                hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
-            ]),
+            } => coq::TopLevel::new(
+                &[
+                    if *is_dead_code {
+                        vec![coq::TopLevelItem::Comment(coq::Comment::new(
+                            "#[allow(dead_code)] - module was ignored by the compiler",
+                        ))]
+                    } else {
+                        vec![]
+                    },
+                    vec![coq::TopLevelItem::Module(coq::Module::new(
+                        name,
+                        coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
+                    ))],
+                ]
+                .concat(),
+            )
+            .to_doc(),
             TopLevelItem::TypeAlias {
                 name,
                 ty,
@@ -2100,8 +2100,11 @@ impl TopLevelItem {
                             ty_params,
                             where_predicates
                                 .iter()
-                                .map(|predicate| predicate.to_doc())
-                                .collect::<Vec<Doc>>(),
+                                .enumerate()
+                                .map(|(i, predicate)| {
+                                    predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
+                                })
+                                .collect::<Vec<_>>(),
                             ty.to_doc(false),
                         ),
                         TraitItem::DefinitionWithDefault { .. } => nil(),
@@ -2154,11 +2157,32 @@ impl TopLevelItem {
                                         },
                                         where_predicates
                                             .iter()
-                                            .map(|predicate| predicate.to_coq())
+                                            .enumerate()
+                                            .map(|(i, predicate)| {
+                                                predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
+                                            })
                                             .collect(),
                                     ]
                                     .concat(),
-                                    &coq::Expression::just_name(name),
+                                    &coq::Expression::just_name(name)
+                                        .apply_many_args(
+                                            &ty_params
+                                                .iter()
+                                                .map(|ty_param| {
+                                                    (Some(ty_param.to_owned()), coq::Expression::just_name(ty_param))
+                                                })
+                                                .collect::<Vec<_>>(),
+                                        )
+                                        .apply_many_args(
+                                            &where_predicates
+                                                .iter()
+                                                .enumerate()
+                                                .map(|(i, _)| {
+                                                    let var_name = ["H'".to_string(), i.to_string()].concat();
+                                                    (Some(var_name.clone()), coq::Expression::just_name(&var_name))
+                                                })
+                                                .collect::<Vec<_>>()
+                                        ),
                                 )],
                             },
                             vec![],

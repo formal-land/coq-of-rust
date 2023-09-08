@@ -906,4 +906,21 @@ impl<'a> ArgDecl<'a> {
             kind,
         }
     }
+
+    pub(crate) fn add_var(&self, ident: &str) -> Self {
+        ArgDecl {
+            decl: match &self.decl {
+                ArgDeclVar::Normal { idents, ty } => ArgDeclVar::Normal {
+                    idents: [idents.to_owned(), vec![ident.to_owned()]].concat(),
+                    ty: ty.to_owned(),
+                },
+                ArgDeclVar::Generalized { idents, ty } => ArgDeclVar::Generalized {
+                    idents: [idents.to_owned(), vec![ident.to_owned()]].concat(),
+                    ty: ty.to_owned(),
+                },
+                ArgDeclVar::Destructured { pattern: _ } => self.decl.to_owned(),
+            },
+            kind: self.kind.to_owned(),
+        }
+    }
 }

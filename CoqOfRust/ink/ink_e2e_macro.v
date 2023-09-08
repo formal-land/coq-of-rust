@@ -5,12 +5,12 @@ Require CoqOfRust.ink.syn.
 
 Module codegen.
   Parameter ALREADY_BUILT_CONTRACTS :
-    forall `{H' : State.Trait},
-    std.thread.local.LocalKey
-      (core.cell.RefCell
-        (std.collections.hash.map.HashMap
-          alloc.string.String
-          alloc.string.String)).
+      forall `{H' : State.Trait},
+      std.thread.local.LocalKey
+        (core.cell.RefCell
+          (std.collections.hash.map.HashMap
+            alloc.string.String
+            alloc.string.String)).
   
   Parameter already_built_contracts :
       forall `{H' : State.Trait},
@@ -40,12 +40,12 @@ Module codegen.
 End codegen.
 
 Parameter ALREADY_BUILT_CONTRACTS :
-  forall `{H' : State.Trait},
-  std.thread.local.LocalKey
-    (core.cell.RefCell
-      (std.collections.hash.map.HashMap
-        alloc.string.String
-        alloc.string.String)).
+    forall `{H' : State.Trait},
+    std.thread.local.LocalKey
+      (core.cell.RefCell
+        (std.collections.hash.map.HashMap
+          alloc.string.String
+          alloc.string.String)).
 
 Parameter already_built_contracts :
     forall `{H' : State.Trait},

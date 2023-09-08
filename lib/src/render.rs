@@ -312,7 +312,7 @@ where
 pub(crate) fn typeclass_definition_item<'a>(
     name: &'a str,
     ty_params: &'a Vec<String>,
-    bounds: Vec<Doc<'a>>,
+    bounds: Vec<coq::ArgDecl<'a>>,
     ty: Doc<'a>,
 ) -> Doc<'a> {
     group([
@@ -337,7 +337,16 @@ pub(crate) fn typeclass_definition_item<'a>(
             if bounds.is_empty() {
                 nil()
             } else {
-                concat([intersperse(bounds, [line()]), line()])
+                concat([
+                    intersperse(
+                        bounds
+                            .iter()
+                            .map(|bound| bound.to_doc())
+                            .collect::<Vec<_>>(),
+                        [line()],
+                    ),
+                    line(),
+                ])
             },
             text(":"),
             line(),
