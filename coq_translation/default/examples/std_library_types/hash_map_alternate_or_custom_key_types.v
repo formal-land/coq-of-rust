@@ -16,14 +16,15 @@ Module Account.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Account.
-Definition Account : Set := @Account.t.
+Definition Account : Set := Account.t.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self :=
-    core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralPartialEq.Trait Self
+      := core.marker.StructuralPartialEq.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -55,8 +56,9 @@ Module
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self := hash_map_alternate_or_custom_key_types.Account.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self :=
-    core.marker.StructuralEq.Build_Trait _.
+  Global Instance I
+    : core.marker.StructuralEq.Trait Self
+      := core.marker.StructuralEq.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
@@ -120,7 +122,7 @@ Module AccountInfo.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End AccountInfo.
-Definition AccountInfo : Set := @AccountInfo.t.
+Definition AccountInfo : Set := AccountInfo.t.
 
 Definition Accounts : Set :=
   std.collections.hash.map.HashMap

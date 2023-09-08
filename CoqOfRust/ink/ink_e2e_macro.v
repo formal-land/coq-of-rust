@@ -36,7 +36,7 @@ Module codegen.
       Notation.dot '(Build_t x0) := x0;
     }.
   End InkE2ETest.
-  Definition InkE2ETest : Set := @InkE2ETest.t.
+  Definition InkE2ETest : Set := InkE2ETest.t.
 End codegen.
 
 Parameter ALREADY_BUILT_CONTRACTS :
@@ -71,7 +71,7 @@ Module InkE2ETest.
     Notation.dot '(Build_t x0) := x0;
   }.
 End InkE2ETest.
-Definition InkE2ETest : Set := @InkE2ETest.t.
+Definition InkE2ETest : Set := InkE2ETest.t.
 
 Module config.
   Module E2EConfig.
@@ -83,19 +83,19 @@ Module config.
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_whitelisted_attributes :
-        Notation.Dot "whitelisted_attributes" := {
+    Global Instance Get_whitelisted_attributes
+      : Notation.Dot "whitelisted_attributes" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
-    Global Instance Get_additional_contracts :
-        Notation.Dot "additional_contracts" := {
+    Global Instance Get_additional_contracts
+      : Notation.Dot "additional_contracts" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
     Global Instance Get_environment : Notation.Dot "environment" := {
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End E2EConfig.
-  Definition E2EConfig : Set := @E2EConfig.t.
+  Definition E2EConfig : Set := E2EConfig.t.
 End config.
 
 Module E2EConfig.
@@ -107,19 +107,19 @@ Module E2EConfig.
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_whitelisted_attributes :
-      Notation.Dot "whitelisted_attributes" := {
+  Global Instance Get_whitelisted_attributes
+    : Notation.Dot "whitelisted_attributes" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
-  Global Instance Get_additional_contracts :
-      Notation.Dot "additional_contracts" := {
+  Global Instance Get_additional_contracts
+    : Notation.Dot "additional_contracts" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
   Global Instance Get_environment : Notation.Dot "environment" := {
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End E2EConfig.
-Definition E2EConfig : Set := @E2EConfig.t.
+Definition E2EConfig : Set := E2EConfig.t.
 
 Module ir.
   Module InkE2ETest.
@@ -137,7 +137,7 @@ Module ir.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End InkE2ETest.
-  Definition InkE2ETest : Set := @InkE2ETest.t.
+  Definition InkE2ETest : Set := InkE2ETest.t.
   
   Module E2EFn.
     Unset Primitive Projections.
@@ -150,7 +150,7 @@ Module ir.
       Notation.dot '(Build_t x0) := x0;
     }.
   End E2EFn.
-  Definition E2EFn : Set := @E2EFn.t.
+  Definition E2EFn : Set := E2EFn.t.
 End ir.
 
 Module InkE2ETest.
@@ -168,7 +168,7 @@ Module InkE2ETest.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End InkE2ETest.
-Definition InkE2ETest : Set := @InkE2ETest.t.
+Definition InkE2ETest : Set := InkE2ETest.t.
 
 Module E2EFn.
   Unset Primitive Projections.
@@ -181,7 +181,7 @@ Module E2EFn.
     Notation.dot '(Build_t x0) := x0;
   }.
 End E2EFn.
-Definition E2EFn : Set := @E2EFn.t.
+Definition E2EFn : Set := E2EFn.t.
 
 Parameter test :
     forall `{H' : State.Trait},

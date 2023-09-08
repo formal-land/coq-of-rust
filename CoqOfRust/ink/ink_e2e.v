@@ -83,7 +83,12 @@ Module client.
       }.
     End InstantiationResult.
   End InstantiationResult.
-  Definition InstantiationResult : Set := @InstantiationResult.t.
+  Definition InstantiationResult
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    InstantiationResult.t (C := C) (E := E).
   
   Module UploadResult.
     Section UploadResult.
@@ -114,7 +119,12 @@ Module client.
       }.
     End UploadResult.
   End UploadResult.
-  Definition UploadResult : Set := @UploadResult.t.
+  Definition UploadResult
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    UploadResult.t (C := C) (E := E).
   
   Module CallResult.
     Section CallResult.
@@ -137,7 +147,12 @@ Module client.
       }.
     End CallResult.
   End CallResult.
-  Definition CallResult : Set := @CallResult.t.
+  Definition CallResult
+      (C E V : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CallResult.t (C := C) (E := E) (V := V).
   
   Module CallDryRunResult.
     Section CallDryRunResult.
@@ -160,7 +175,11 @@ Module client.
       }.
     End CallDryRunResult.
   End CallDryRunResult.
-  Definition CallDryRunResult : Set := @CallDryRunResult.t.
+  Definition CallDryRunResult
+      (E V : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    CallDryRunResult.t (E := E) (V := V).
   
   Module Error.
     Inductive t : Set :=
@@ -215,7 +234,12 @@ Module client.
       }.
     End Client.
   End Client.
-  Definition Client : Set := @Client.t.
+  Definition Client
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    Client.t (C := C) (E := E).
 End client.
 
 Definition CallBuilderFinal (E Args RetType : Set) : Set :=
@@ -253,7 +277,12 @@ Module InstantiationResult.
     }.
   End InstantiationResult.
 End InstantiationResult.
-Definition InstantiationResult : Set := @InstantiationResult.t.
+Definition InstantiationResult
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  InstantiationResult.t (C := C) (E := E).
 
 Module UploadResult.
   Section UploadResult.
@@ -282,7 +311,12 @@ Module UploadResult.
     }.
   End UploadResult.
 End UploadResult.
-Definition UploadResult : Set := @UploadResult.t.
+Definition UploadResult
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  UploadResult.t (C := C) (E := E).
 
 Module CallResult.
   Section CallResult.
@@ -303,7 +337,12 @@ Module CallResult.
     }.
   End CallResult.
 End CallResult.
-Definition CallResult : Set := @CallResult.t.
+Definition CallResult
+    (C E V : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CallResult.t (C := C) (E := E) (V := V).
 
 Module CallDryRunResult.
   Section CallDryRunResult.
@@ -326,7 +365,11 @@ Module CallDryRunResult.
     }.
   End CallDryRunResult.
 End CallDryRunResult.
-Definition CallDryRunResult : Set := @CallDryRunResult.t.
+Definition CallDryRunResult
+    (E V : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  CallDryRunResult.t (E := E) (V := V).
 
 Module Error.
   Inductive t : Set :=
@@ -379,7 +422,12 @@ Module Client.
     }.
   End Client.
 End Client.
-Definition Client : Set := @Client.t.
+Definition Client
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  Client.t (C := C) (E := E).
 
 Module default_accounts.
   Parameter alice :
@@ -591,7 +639,8 @@ Module node_proc.
       }.
     End TestNodeProcess.
   End TestNodeProcess.
-  Definition TestNodeProcess : Set := @TestNodeProcess.t.
+  Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
+    TestNodeProcess.t (R := R).
   
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
@@ -615,7 +664,8 @@ Module node_proc.
       }.
     End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
-  Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
+  Definition TestNodeProcessBuilder (R : Set) : Set :=
+    TestNodeProcessBuilder.t (R := R).
 End node_proc.
 
 Module TestNodeProcess.
@@ -641,7 +691,8 @@ Module TestNodeProcess.
     }.
   End TestNodeProcess.
 End TestNodeProcess.
-Definition TestNodeProcess : Set := @TestNodeProcess.t.
+Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
+  TestNodeProcess.t (R := R).
 
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
@@ -665,7 +716,8 @@ Module TestNodeProcessBuilder.
     }.
   End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
-Definition TestNodeProcessBuilder : Set := @TestNodeProcessBuilder.t.
+Definition TestNodeProcessBuilder (R : Set) : Set :=
+  TestNodeProcessBuilder.t (R := R).
 
 Module xts.
   Module Weight.
@@ -683,7 +735,7 @@ Module xts.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End Weight.
-  Definition Weight : Set := @Weight.t.
+  Definition Weight : Set := Weight.t.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
@@ -706,8 +758,8 @@ Module xts.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
       }.
-      Global Instance Get_storage_deposit_limit :
-          Notation.Dot "storage_deposit_limit" := {
+      Global Instance Get_storage_deposit_limit
+        : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
       }.
       Global Instance Get_code : Notation.Dot "code" := {
@@ -721,7 +773,11 @@ Module xts.
       }.
     End InstantiateWithCode.
   End InstantiateWithCode.
-  Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
+  Definition InstantiateWithCode
+      (E : Set)
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    InstantiateWithCode.t (E := E).
   
   Module Call.
     Section Call.
@@ -746,8 +802,8 @@ Module xts.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ _ x2 _ _) := x2;
       }.
-      Global Instance Get_storage_deposit_limit :
-          Notation.Dot "storage_deposit_limit" := {
+      Global Instance Get_storage_deposit_limit
+        : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ _ _ x3 _) := x3;
       }.
       Global Instance Get_data : Notation.Dot "data" := {
@@ -755,7 +811,8 @@ Module xts.
       }.
     End Call.
   End Call.
-  Definition Call : Set := @Call.t.
+  Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+    Call.t (E := E).
   
   Module Transfer.
     Section Transfer.
@@ -778,7 +835,12 @@ Module xts.
       }.
     End Transfer.
   End Transfer.
-  Definition Transfer : Set := @Transfer.t.
+  Definition Transfer
+      (E C : Set)
+      `{ink_env.types.Environment.Trait E}
+      `{subxt.config.Config.Trait C}
+      : Set :=
+    Transfer.t (E := E) (C := C).
   
   Module Determinism.
     Inductive t : Set :=
@@ -802,8 +864,8 @@ Module xts.
       Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
-      Global Instance Get_storage_deposit_limit :
-          Notation.Dot "storage_deposit_limit" := {
+      Global Instance Get_storage_deposit_limit
+        : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
       Global Instance Get_determinism : Notation.Dot "determinism" := {
@@ -811,7 +873,8 @@ Module xts.
       }.
     End UploadCode.
   End UploadCode.
-  Definition UploadCode : Set := @UploadCode.t.
+  Definition UploadCode (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+    UploadCode.t (E := E).
   
   Module ContractsApi.
     Section ContractsApi.
@@ -822,7 +885,7 @@ Module xts.
       Unset Primitive Projections.
       Record t : Set := {
         client : subxt.client.online_client.OnlineClient C;
-        _phantom : core.marker.PhantomData ((C * E));
+        _phantom : core.marker.PhantomData (C * E);
       }.
       Global Set Primitive Projections.
       
@@ -834,7 +897,12 @@ Module xts.
       }.
     End ContractsApi.
   End ContractsApi.
-  Definition ContractsApi : Set := @ContractsApi.t.
+  Definition ContractsApi
+      (C E : Set)
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      : Set :=
+    ContractsApi.t (C := C) (E := E).
 End xts.
 
 Module Weight.
@@ -852,7 +920,7 @@ Module Weight.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Weight.
-Definition Weight : Set := @Weight.t.
+Definition Weight : Set := Weight.t.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.
@@ -875,8 +943,8 @@ Module InstantiateWithCode.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
     }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
+    Global Instance Get_storage_deposit_limit
+      : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
     }.
     Global Instance Get_code : Notation.Dot "code" := {
@@ -890,7 +958,11 @@ Module InstantiateWithCode.
     }.
   End InstantiateWithCode.
 End InstantiateWithCode.
-Definition InstantiateWithCode : Set := @InstantiateWithCode.t.
+Definition InstantiateWithCode
+    (E : Set)
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  InstantiateWithCode.t (E := E).
 
 Module Call.
   Section Call.
@@ -915,8 +987,8 @@ Module Call.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ _ x2 _ _) := x2;
     }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
+    Global Instance Get_storage_deposit_limit
+      : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
     Global Instance Get_data : Notation.Dot "data" := {
@@ -924,7 +996,8 @@ Module Call.
     }.
   End Call.
 End Call.
-Definition Call : Set := @Call.t.
+Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  Call.t (E := E).
 
 Module Transfer.
   Section Transfer.
@@ -945,7 +1018,12 @@ Module Transfer.
     }.
   End Transfer.
 End Transfer.
-Definition Transfer : Set := @Transfer.t.
+Definition Transfer
+    (E C : Set)
+    `{ink_env.types.Environment.Trait E}
+    `{subxt.config.Config.Trait C}
+    : Set :=
+  Transfer.t (E := E) (C := C).
 
 Module Determinism.
   Inductive t : Set :=
@@ -969,8 +1047,8 @@ Module UploadCode.
     Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
-    Global Instance Get_storage_deposit_limit :
-        Notation.Dot "storage_deposit_limit" := {
+    Global Instance Get_storage_deposit_limit
+      : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
     Global Instance Get_determinism : Notation.Dot "determinism" := {
@@ -978,7 +1056,8 @@ Module UploadCode.
     }.
   End UploadCode.
 End UploadCode.
-Definition UploadCode : Set := @UploadCode.t.
+Definition UploadCode (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  UploadCode.t (E := E).
 
 Module ContractsApi.
   Section ContractsApi.
@@ -987,7 +1066,7 @@ Module ContractsApi.
     Unset Primitive Projections.
     Record t : Set := {
       client : subxt.client.online_client.OnlineClient C;
-      _phantom : core.marker.PhantomData ((C * E));
+      _phantom : core.marker.PhantomData (C * E);
     }.
     Global Set Primitive Projections.
     
@@ -999,7 +1078,12 @@ Module ContractsApi.
     }.
   End ContractsApi.
 End ContractsApi.
-Definition ContractsApi : Set := @ContractsApi.t.
+Definition ContractsApi
+    (C E : Set)
+    `{subxt.config.Config.Trait C}
+    `{ink_env.types.Environment.Trait E}
+    : Set :=
+  ContractsApi.t (C := C) (E := E).
 
 Module SubstrateConfig.
   Inductive t : Set :=

@@ -183,10 +183,10 @@ where
     K: Into<std::borrow::Cow<'a, str>>,
 {
     group([
-        group([text(kind), line(), text(name.clone()), text(".")]),
+        nest([text(kind), line(), text(name.clone()), text(".")]),
         nest([hardline(), doc]),
         hardline(),
-        group([text("End"), line(), text(name), text(".")]),
+        nest([text("End"), line(), text(name), text(".")]),
     ])
 }
 
@@ -345,40 +345,6 @@ pub(crate) fn typeclass_definition_item<'a>(
             text(";"),
         ]),
     ])
-}
-
-/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_header<'a, U>(
-    name: U,
-    trait_parameters: &[Doc<'a>],
-    kind: Doc<'a>,
-) -> Doc<'a>
-where
-    U: std::fmt::Display,
-{
-    nest([
-        nest([
-            text("Global Instance"),
-            line(),
-            text(format!("Method_{name}")),
-            line(),
-            intersperse(trait_parameters.to_owned(), [line()]),
-        ]),
-        line(),
-        nest([
-            text(": "),
-            kind,
-            line(),
-            text(format!("\"{name}\"")),
-            line(),
-            text(":= {"),
-        ]),
-    ])
-}
-
-/// produces the body of an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
-    nest([field, line(), text(":="), line(), value, text(";")])
 }
 
 pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>

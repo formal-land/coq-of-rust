@@ -59,7 +59,7 @@ Module Complex.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Complex.
-Definition Complex : Set := @Complex.t.
+Definition Complex : Set := Complex.t.
 
 Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
@@ -84,8 +84,8 @@ End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
+  Global Instance I
+    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 

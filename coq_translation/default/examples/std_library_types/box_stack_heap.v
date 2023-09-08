@@ -17,7 +17,7 @@ Module Point.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point : Set := @Point.t.
+Definition Point : Set := Point.t.
 
 Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
@@ -78,8 +78,8 @@ End Impl_core_clone_Clone_for_box_stack_heap_Point.
 Module Impl_core_marker_Copy_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
+  Global Instance I
+    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_box_stack_heap_Point.
 
@@ -99,7 +99,7 @@ Module Rectangle.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := @Rectangle.t.
+Definition Rectangle : Set := Rectangle.t.
 
 Definition origin `{H' : State.Trait} : M (H := H') box_stack_heap.Point :=
   Pure

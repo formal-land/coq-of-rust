@@ -74,15 +74,11 @@
         "Argument": { "move": "up", "before": "ArgsList" }
       },
       "top_level::call::call_builder": {
-        "build_call": { "move": "up" }
+        "CallBuilder": { "move": "up", "before": "build_call" },
+        "Call": { "move": "up", "before": "build_call" }
       },
       "top_level::call::create_builder": {
         "build_create": { "move": "up" }
-      },
-      "top_level::api": {
-        "invoke_contract": { "move": "up" },
-        "invoke_contract_delegate": { "move": "up" },
-        "instantiate_contract": { "move": "up" }
       },
       "top_level::chain_extension": {
         "private": { "move": "up", "before": "IsResultType" }

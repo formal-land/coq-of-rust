@@ -13,7 +13,7 @@ Module lazy.
           `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
         Unset Primitive Projections.
         Record t : Set := {
-          _marker : core.marker.PhantomData ((K * V * KeyType));
+          _marker : core.marker.PhantomData ((K * V) * KeyType);
         }.
         Global Set Primitive Projections.
         
@@ -22,7 +22,12 @@ Module lazy.
         }.
       End Mapping.
     End Mapping.
-    Definition Mapping := @Mapping.t.
+    Definition Mapping
+        (K V KeyType : Set)
+        `{ink_storage_traits.storage.Packed.Trait V}
+        `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+        : Set :=
+      Mapping.t (K := K) (V := V) (KeyType := KeyType).
   End mapping.
   
   Module Lazy.
@@ -31,7 +36,7 @@ Module lazy.
       Context `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Unset Primitive Projections.
       Record t : Set := {
-        _marker : core.marker.PhantomData ((V * KeyType));
+        _marker : core.marker.PhantomData (V * KeyType);
       }.
       Global Set Primitive Projections.
       
@@ -40,7 +45,11 @@ Module lazy.
       }.
     End Lazy.
   End Lazy.
-  Definition Lazy := @Lazy.t.
+  Definition Lazy
+      (V KeyType : Set)
+      `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+      : Set :=
+    Lazy.t (V := V) (KeyType := KeyType).
 End lazy.
 
 Module mapping.
@@ -52,7 +61,7 @@ Module mapping.
         `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Unset Primitive Projections.
       Record t : Set := {
-        _marker : core.marker.PhantomData ((K * V * KeyType));
+        _marker : core.marker.PhantomData ((K * V) * KeyType);
       }.
       Global Set Primitive Projections.
       
@@ -61,7 +70,12 @@ Module mapping.
       }.
     End Mapping.
   End Mapping.
-  Definition Mapping := @Mapping.t.
+  Definition Mapping
+      (K V KeyType : Set)
+      `{ink_storage_traits.storage.Packed.Trait V}
+      `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+      : Set :=
+    Mapping.t (K := K) (V := V) (KeyType := KeyType).
 End mapping.
 
 Module Mapping.
@@ -72,7 +86,7 @@ Module Mapping.
       `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
     Record t : Set := {
-      _marker : core.marker.PhantomData ((K * V * KeyType));
+      _marker : core.marker.PhantomData ((K * V) * KeyType);
     }.
     Global Set Primitive Projections.
     
@@ -81,7 +95,12 @@ Module Mapping.
     }.
   End Mapping.
 End Mapping.
-Definition Mapping := @Mapping.t.
+Definition Mapping
+    (K V KeyType : Set)
+    `{ink_storage_traits.storage.Packed.Trait V}
+    `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+    : Set :=
+  Mapping.t (K := K) (V := V) (KeyType := KeyType).
 
 Module Lazy.
   Section Lazy.
@@ -89,7 +108,7 @@ Module Lazy.
     Context `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
     Record t : Set := {
-      _marker : core.marker.PhantomData ((V * KeyType));
+      _marker : core.marker.PhantomData (V * KeyType);
     }.
     Global Set Primitive Projections.
     
@@ -98,4 +117,8 @@ Module Lazy.
     }.
   End Lazy.
 End Lazy.
-Definition Lazy := @Lazy.t.
+Definition Lazy
+    (V KeyType : Set)
+    `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+    : Set :=
+  Lazy.t (V := V) (KeyType := KeyType).

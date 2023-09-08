@@ -52,7 +52,7 @@ Module NamedBorrowed.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End NamedBorrowed.
-Definition NamedBorrowed : Set := @NamedBorrowed.t.
+Definition NamedBorrowed : Set := NamedBorrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Definition Self := scoping_rules_lifetimes_structs.NamedBorrowed.

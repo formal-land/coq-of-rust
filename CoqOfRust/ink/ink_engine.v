@@ -23,7 +23,7 @@ Module database.
       Notation.dot '(Build_t x0) := x0;
     }.
   End Database.
-  Definition Database : Set := @Database.t.
+  Definition Database : Set := Database.t.
 End database.
 
 Module ext.
@@ -81,12 +81,12 @@ Module ext.
     Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
-    Global Instance Get_chain_extension_handler :
-        Notation.Dot "chain_extension_handler" := {
+    Global Instance Get_chain_extension_handler
+      : Notation.Dot "chain_extension_handler" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End Engine.
-  Definition Engine : Set := @Engine.t.
+  Definition Engine : Set := Engine.t.
   
   Module ChainSpec.
     Unset Primitive Projections.
@@ -107,7 +107,7 @@ Module ext.
       Notation.dot '(Build_t _ _ x2) := x2;
     }.
   End ChainSpec.
-  Definition ChainSpec : Set := @ChainSpec.t.
+  Definition ChainSpec : Set := ChainSpec.t.
 End ext.
 
 Module Error.
@@ -162,12 +162,12 @@ Module Engine.
   Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
     Notation.dot '(Build_t _ _ _ x3 _) := x3;
   }.
-  Global Instance Get_chain_extension_handler :
-      Notation.Dot "chain_extension_handler" := {
+  Global Instance Get_chain_extension_handler
+    : Notation.Dot "chain_extension_handler" := {
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
   }.
 End Engine.
-Definition Engine : Set := @Engine.t.
+Definition Engine : Set := Engine.t.
 
 Module ChainSpec.
   Unset Primitive Projections.
@@ -188,7 +188,7 @@ Module ChainSpec.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End ChainSpec.
-Definition ChainSpec : Set := @ChainSpec.t.
+Definition ChainSpec : Set := ChainSpec.t.
 
 Module test_api.
   Module EmittedEvent.
@@ -206,7 +206,7 @@ Module test_api.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
-  Definition EmittedEvent : Set := @EmittedEvent.t.
+  Definition EmittedEvent : Set := EmittedEvent.t.
   
   Module RecordedDebugMessages.
     Unset Primitive Projections.
@@ -219,7 +219,7 @@ Module test_api.
       Notation.dot '(Build_t x0) := x0;
     }.
   End RecordedDebugMessages.
-  Definition RecordedDebugMessages : Set := @RecordedDebugMessages.t.
+  Definition RecordedDebugMessages : Set := RecordedDebugMessages.t.
   
   Module DebugInfo.
     Unset Primitive Projections.
@@ -243,8 +243,8 @@ Module test_api.
     Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
     }.
-    Global Instance Get_emitted_debug_messages :
-        Notation.Dot "emitted_debug_messages" := {
+    Global Instance Get_emitted_debug_messages
+      : Notation.Dot "emitted_debug_messages" := {
       Notation.dot '(Build_t _ x1 _ _ _) := x1;
     }.
     Global Instance Get_count_reads : Notation.Dot "count_reads" := {
@@ -253,12 +253,12 @@ Module test_api.
     Global Instance Get_count_writes : Notation.Dot "count_writes" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
-    Global Instance Get_cells_per_account :
-        Notation.Dot "cells_per_account" := {
+    Global Instance Get_cells_per_account
+      : Notation.Dot "cells_per_account" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
     }.
   End DebugInfo.
-  Definition DebugInfo : Set := @DebugInfo.t.
+  Definition DebugInfo : Set := DebugInfo.t.
 End test_api.
 
 Module EmittedEvent.
@@ -276,7 +276,7 @@ Module EmittedEvent.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
-Definition EmittedEvent : Set := @EmittedEvent.t.
+Definition EmittedEvent : Set := EmittedEvent.t.
 
 Module RecordedDebugMessages.
   Unset Primitive Projections.
@@ -289,7 +289,7 @@ Module RecordedDebugMessages.
     Notation.dot '(Build_t x0) := x0;
   }.
 End RecordedDebugMessages.
-Definition RecordedDebugMessages : Set := @RecordedDebugMessages.t.
+Definition RecordedDebugMessages : Set := RecordedDebugMessages.t.
 
 Module DebugInfo.
   Unset Primitive Projections.
@@ -313,8 +313,8 @@ Module DebugInfo.
   Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
     Notation.dot '(Build_t x0 _ _ _ _) := x0;
   }.
-  Global Instance Get_emitted_debug_messages :
-      Notation.Dot "emitted_debug_messages" := {
+  Global Instance Get_emitted_debug_messages
+    : Notation.Dot "emitted_debug_messages" := {
     Notation.dot '(Build_t _ x1 _ _ _) := x1;
   }.
   Global Instance Get_count_reads : Notation.Dot "count_reads" := {
@@ -327,7 +327,7 @@ Module DebugInfo.
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
   }.
 End DebugInfo.
-Definition DebugInfo : Set := @DebugInfo.t.
+Definition DebugInfo : Set := DebugInfo.t.
 
 Module chain_extension.
   Module ChainExtensionHandler.
@@ -349,7 +349,7 @@ Module chain_extension.
       Notation.dot '(Build_t _ x1) := x1;
     }.
   End ChainExtensionHandler.
-  Definition ChainExtensionHandler : Set := @ChainExtensionHandler.t.
+  Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
   
   Module ExtensionId.
     Unset Primitive Projections.
@@ -406,7 +406,7 @@ Module ChainExtensionHandler.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End ChainExtensionHandler.
-Definition ChainExtensionHandler : Set := @ChainExtensionHandler.t.
+Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
 
 Module ExtensionId.
   Unset Primitive Projections.
@@ -464,7 +464,7 @@ Module Database.
     Notation.dot '(Build_t x0) := x0;
   }.
 End Database.
-Definition Database : Set := @Database.t.
+Definition Database : Set := Database.t.
 
 Module exec_context.
   Module ExecContext.
@@ -485,8 +485,8 @@ Module exec_context.
     Global Instance Get_callee : Notation.Dot "callee" := {
       Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
     }.
-    Global Instance Get_value_transferred :
-        Notation.Dot "value_transferred" := {
+    Global Instance Get_value_transferred
+      : Notation.Dot "value_transferred" := {
       Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
     }.
     Global Instance Get_block_number : Notation.Dot "block_number" := {
@@ -499,7 +499,7 @@ Module exec_context.
       Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
     }.
   End ExecContext.
-  Definition ExecContext : Set := @ExecContext.t.
+  Definition ExecContext : Set := ExecContext.t.
 End exec_context.
 
 Module ExecContext.
@@ -533,7 +533,7 @@ Module ExecContext.
     Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
   }.
 End ExecContext.
-Definition ExecContext : Set := @ExecContext.t.
+Definition ExecContext : Set := ExecContext.t.
 
 Module hashing.
   Parameter blake2b_256 :

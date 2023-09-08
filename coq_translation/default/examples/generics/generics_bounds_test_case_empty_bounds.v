@@ -34,8 +34,9 @@ Module
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
   Definition Self := generics_bounds_test_case_empty_bounds.Cardinal.
   
-  Global Instance I : generics_bounds_test_case_empty_bounds.Red.Trait Self :=
-    generics_bounds_test_case_empty_bounds.Red.Build_Trait _.
+  Global Instance I
+    : generics_bounds_test_case_empty_bounds.Red.Trait Self
+      := generics_bounds_test_case_empty_bounds.Red.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
@@ -44,8 +45,9 @@ Module
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
   Definition Self := generics_bounds_test_case_empty_bounds.BlueJay.
   
-  Global Instance I : generics_bounds_test_case_empty_bounds.Blue.Trait Self :=
-    generics_bounds_test_case_empty_bounds.Blue.Build_Trait _.
+  Global Instance I
+    : generics_bounds_test_case_empty_bounds.Blue.Trait Self
+      := generics_bounds_test_case_empty_bounds.Blue.Build_Trait _.
   Global Hint Resolve I : core.
 End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.

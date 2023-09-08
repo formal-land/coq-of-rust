@@ -13,40 +13,40 @@ Module PrintInOption.
 End PrintInOption.
 
 Module Impl_generics_where_clauses_PrintInOption_for_T.
-Section Impl_generics_where_clauses_PrintInOption_for_T.
-  Context {T : Set}.
-  
-  Definition Self := T.
-  
-  Definition print_in_option
-      `{H' : State.Trait}
-      (self : Self)
-      : M (H := H') unit :=
-    let* _ :=
+  Section Impl_generics_where_clauses_PrintInOption_for_T.
+    Context {T : Set}.
+    Definition Self := T.
+    
+    Definition print_in_option
+        `{H' : State.Trait}
+        (self : Self)
+        : M (H := H') unit :=
       let* _ :=
-        let* α0 :=
-          format_argument::["new_debug"]
-            (addr_of (core.option.Option.Some self)) in
-        let* α1 :=
-          format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt in
-    Pure tt.
-  
-  Global Instance Method_print_in_option `{H' : State.Trait} :
-    Notation.Dot "print_in_option" := {
-    Notation.dot := print_in_option;
-  }.
-  
-  Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
-    generics_where_clauses.PrintInOption.print_in_option
-      `{H' : State.Trait}
-      :=
-      print_in_option;
-  }.
-End Impl_generics_where_clauses_PrintInOption_for_T.
-Global Hint Resolve I : core.
+        let* _ :=
+          let* α0 :=
+            format_argument::["new_debug"]
+              (addr_of (core.option.Option.Some self)) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ ""; "
+" ])
+              (addr_of [ α0 ]) in
+          std.io.stdio._print α1 in
+        Pure tt in
+      Pure tt.
+    
+    Global Instance Method_print_in_option `{H' : State.Trait} :
+      Notation.Dot "print_in_option" := {
+      Notation.dot := print_in_option;
+    }.
+    
+    Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
+      generics_where_clauses.PrintInOption.print_in_option `{H' : State.Trait}
+        :=
+        print_in_option;
+    }.
+  End Impl_generics_where_clauses_PrintInOption_for_T.
+  Global Hint Resolve I : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

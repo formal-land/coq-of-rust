@@ -31,7 +31,7 @@ Module impls.
       Context {L R : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        _ : core.marker.PhantomData ((L * R));
+        _ : core.marker.PhantomData (L * R);
       }.
       Global Set Primitive Projections.
       
@@ -69,7 +69,7 @@ Module ResolverKey.
     Context {L R : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      _ : core.marker.PhantomData ((L * R));
+      _ : core.marker.PhantomData (L * R);
     }.
     Global Set Primitive Projections.
     
@@ -102,9 +102,9 @@ Module storage.
     Global Instance Method_encode `{H' : State.Trait} `(Trait)
       : Notation.Dot "encode" := {
       Notation.dot
-          {T : Set}
-          `{parity_scale_codec.codec.Output.Trait T}
-          `{core.marker.Sized.Trait T}
+        {T : Set}
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
         :=
         encode;
     }.
@@ -218,9 +218,9 @@ Module Storable.
   Global Instance Method_encode `{H' : State.Trait} `(Trait)
     : Notation.Dot "encode" := {
     Notation.dot
-        {T : Set}
-        `{parity_scale_codec.codec.Output.Trait T}
-        `{core.marker.Sized.Trait T}
+      {T : Set}
+      `{parity_scale_codec.codec.Output.Trait T}
+      `{core.marker.Sized.Trait T}
       :=
       encode;
   }.

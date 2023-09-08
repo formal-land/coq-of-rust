@@ -107,8 +107,8 @@ Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
     Notation.double_colon := from;
   }.
   
-  Global Instance I :
-      core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
+  Global Instance I
+    : core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
     core.convert.From.from `{H' : State.Trait} := from;
   }.
   Global Hint Resolve I : core.
