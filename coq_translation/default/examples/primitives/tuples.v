@@ -41,7 +41,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field4_finish"]
+    core.fmt.Formatter::["debug_tuple_field4_finish"]
       f
       "Matrix"
       (addr_of (self.[0]))

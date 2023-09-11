@@ -27,7 +27,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
       | unpacking_options_and_defaults_via_or_else.Fruit.Kiwi => Pure "Kiwi"
       | unpacking_options_and_defaults_via_or_else.Fruit.Lemon => Pure "Lemon"
       end in
-    (core.fmt.Formatter _)::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

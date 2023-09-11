@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* person :=
-    let* α0 := (alloc.string.String _)::["from"] "Alice" in
-    let* α1 := (alloc.boxed.Box _)::["new"] 20 in
+    let* α0 := alloc.string.String::["from"] "Alice" in
+    let* α1 := alloc.boxed.Box::["new"] 20 in
     Pure
       {|
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α0;
@@ -93,7 +93,7 @@ Module
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_struct_field2_finish"]
+    core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
       "name"

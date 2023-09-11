@@ -17,7 +17,7 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["write_str"] f "EmptyVec".
+    core.fmt.Formatter::["write_str"] f "EmptyVec".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -116,12 +116,12 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "42"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
-  let* empty := (alloc.vec.Vec _)::["new"] in
+    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
+  let* empty := alloc.vec.Vec::["new"] in
   let* strings :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := other_uses_of_question_mark.double_first numbers in
     other_uses_of_question_mark.print α0 in

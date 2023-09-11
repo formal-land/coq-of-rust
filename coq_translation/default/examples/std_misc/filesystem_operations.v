@@ -6,7 +6,7 @@ Definition cat
     (path : ref std.path.Path)
     : M (H := H') (std.io.error.Result alloc.string.String) :=
   let* f :=
-    let* α0 := (std.fs.File _)::["open"] path in
+    let* α0 := std.fs.File::["open"] path in
     let* α1 := α0.["branch"] in
     match α1 with
     | LanguageItem.Break residual =>
@@ -14,7 +14,7 @@ Definition cat
       Return α0
     | LanguageItem.Continue val => Pure val
     end in
-  let* s := (alloc.string.String _)::["new"] in
+  let* s := alloc.string.String::["new"] in
   let* α0 := f.["read_to_string"] (addr_of s) in
   match α0 with
   | core.result.Result.Ok _ => Pure (core.result.Result.Ok s)
@@ -27,7 +27,7 @@ Definition echo
     (path : ref std.path.Path)
     : M (H := H') (std.io.error.Result unit) :=
   let* f :=
-    let* α0 := (std.fs.File _)::["create"] path in
+    let* α0 := std.fs.File::["create"] path in
     let* α1 := α0.["branch"] in
     match α1 with
     | LanguageItem.Break residual =>
@@ -42,7 +42,7 @@ Definition touch
     `{H' : State.Trait}
     (path : ref std.path.Path)
     : M (H := H') (std.io.error.Result unit) :=
-  let* α0 := (std.fs.OpenOptions _)::["new"] in
+  let* α0 := std.fs.OpenOptions::["new"] in
   let* α1 := α0.["create"] true in
   let* α2 := α1.["write"] true in
   let* α3 := α2.["open"] path in
@@ -84,7 +84,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := (std.path.Path _)::["new"] "a/b.txt" in
+    let* α0 := std.path.Path::["new"] "a/b.txt" in
     let* α1 := filesystem_operations.echo "hello" (addr_of α0) in
     α1.["unwrap_or_else"]
       (fun why =>
@@ -131,7 +131,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := (std.path.Path _)::["new"] "a/c/e.txt" in
+    let* α0 := std.path.Path::["new"] "a/c/e.txt" in
     let* α1 := filesystem_operations.touch (addr_of α0) in
     α1.["unwrap_or_else"]
       (fun why =>
@@ -184,7 +184,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α0 in
     Pure tt in
   let* _ :=
-    let* α0 := (std.path.Path _)::["new"] "a/c/b.txt" in
+    let* α0 := std.path.Path::["new"] "a/c/b.txt" in
     let* α1 := filesystem_operations.cat (addr_of α0) in
     match α1 with
     | core.result.Result.Err why =>

@@ -8,10 +8,10 @@ Definition read_lines
       M (H := H')
         (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
   let* file :=
-    let* α0 := (std.fs.File _)::["open"] filename in
+    let* α0 := std.fs.File::["open"] filename in
     α0.["unwrap"] in
   let* _ :=
-    let* α0 := (std.io.buffered.bufreader.BufReader _)::["new"] file in
+    let* α0 := std.io.buffered.bufreader.BufReader::["new"] file in
     let* α1 := α0.["lines"] in
     Return α1 in
   Pure tt.

@@ -36,7 +36,7 @@ Module
       | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon =>
         Pure "Lemon"
       end in
-    (core.fmt.Formatter _)::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

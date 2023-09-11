@@ -22,7 +22,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Borrowed"
       (addr_of (addr_of (self.[0]))).
@@ -75,7 +75,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_struct_field2_finish"]
+    core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "NamedBorrowed"
       "x"
@@ -110,12 +110,12 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       : M (H := H') core.fmt.Result :=
     match self with
     | scoping_rules_lifetimes_structs.Either.Num __self_0 =>
-      (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+      core.fmt.Formatter::["debug_tuple_field1_finish"]
         f
         "Num"
         (addr_of __self_0)
     | scoping_rules_lifetimes_structs.Either.Ref __self_0 =>
-      (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+      core.fmt.Formatter::["debug_tuple_field1_finish"]
         f
         "Ref"
         (addr_of __self_0)

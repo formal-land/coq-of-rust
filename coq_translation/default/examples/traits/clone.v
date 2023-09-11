@@ -14,7 +14,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["write_str"] f "Unit".
+    core.fmt.Formatter::["write_str"] f "Unit".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -99,7 +99,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field2_finish"]
+    core.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Pair"
       (addr_of (self.[0]))
@@ -140,8 +140,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α1 in
     Pure tt in
   let* pair :=
-    let* α0 := (alloc.boxed.Box _)::["new"] 1 in
-    let* α1 := (alloc.boxed.Box _)::["new"] 2 in
+    let* α0 := alloc.boxed.Box::["new"] 1 in
+    let* α1 := alloc.boxed.Box::["new"] 2 in
     Pure (clone.Pair.Build_t α0 α1) in
   let* _ :=
     let* _ :=

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* path := (std.path.Path _)::["new"] "." in
+  let* path := std.path.Path::["new"] "." in
   let* _display := path.["display"] in
   let* new_path :=
     let* α0 := path.["join"] "a" in

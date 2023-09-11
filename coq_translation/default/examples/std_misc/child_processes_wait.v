@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* child :=
-    let* α0 := (std.process.Command _)::["new"] "sleep" in
+    let* α0 := std.process.Command::["new"] "sleep" in
     let* α1 := α0.["arg"] "5" in
     let* α2 := α1.["spawn"] in
     α2.["unwrap"] in

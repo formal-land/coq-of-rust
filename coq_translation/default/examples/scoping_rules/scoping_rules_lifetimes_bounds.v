@@ -28,7 +28,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Ref"
       (addr_of (addr_of (self.[0]))).

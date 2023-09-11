@@ -4,19 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* strings :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
   let* '(numbers, errors) :=
     let* α0 := strings.["into_iter"] in
     let* α1 := α0.["map"] (fun s => s.["parse"] : M i32) in
-    α1.["partition"] (core.result.Result _)::["is_ok"] in
+    α1.["partition"] core.result.Result::["is_ok"] in
   let* numbers :=
     let* α0 := numbers.["into_iter"] in
-    let* α1 := α0.["map"] (core.result.Result _)::["unwrap"] in
+    let* α1 := α0.["map"] core.result.Result::["unwrap"] in
     α1.["collect"] in
   let* errors :=
     let* α0 := errors.["into_iter"] in
-    let* α1 := α0.["map"] (core.result.Result _)::["unwrap_err"] in
+    let* α1 := α0.["map"] core.result.Result::["unwrap_err"] in
     α1.["collect"] in
   let* _ :=
     let* _ :=

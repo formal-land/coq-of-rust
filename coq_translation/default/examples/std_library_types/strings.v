@@ -52,7 +52,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     α0.["collect"] in
   let* _ := chars.["sort"] in
   let* _ := chars.["dedup"] in
-  let* string := (alloc.string.String _)::["new"] in
+  let* string := alloc.string.String::["new"] in
   let* _ :=
     let* α0 := chars.["into_iter"] in
     match α0 with
@@ -81,7 +81,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
-  let* alice := (alloc.string.String _)::["from"] "I like dogs" in
+  let* alice := alloc.string.String::["from"] "I like dogs" in
   let* bob := alice.["replace"] "dog" "cat" in
   let* _ :=
     let* _ :=

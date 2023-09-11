@@ -17,7 +17,7 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["write_str"] f "DoubleError".
+    core.fmt.Formatter::["write_str"] f "DoubleError".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -115,12 +115,12 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "42"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
-  let* empty := (alloc.vec.Vec _)::["new"] in
+    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
+  let* empty := alloc.vec.Vec::["new"] in
   let* strings :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := defining_an_error_type.double_first numbers in
     defining_an_error_type.print α0 in

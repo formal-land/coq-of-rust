@@ -8,7 +8,7 @@ use crate::ty::*;
 
 use rustc_abi::VariantIdx;
 use rustc_ast::LitKind;
-use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath, TyKind};
+use rustc_hir::{BinOp, BinOpKind, ExprKind, QPath};
 
 /// Struct [FreshVars] represents a set of fresh variables
 #[derive(Debug)]
@@ -49,7 +49,7 @@ pub(crate) enum Expr {
     AssociatedFunction {
         ty: Box<CoqType>,
         func: String,
-        infer_args: bool,
+        generic_tys: Vec<CoqType>,
     },
     Literal(LitKind),
     AddrOf(Box<Expr>),
@@ -194,21 +194,24 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
     match qpath {
         QPath::Resolved(_, path) => Expr::Var(compile_path(env, path)),
         QPath::TypeRelative(ty, segment) => {
-            let tykind = ty.kind;
             let ty = compile_type(env, ty);
             let func = segment.ident.to_string();
-            let infer_args = segment.infer_args;
-            match tykind {
-                TyKind::Path(QPath::LangItem(_, _, _)) => Expr::AssociatedFunction {
-                    ty,
-                    func,
-                    infer_args: false,
-                },
-                _ => Expr::AssociatedFunction {
-                    ty,
-                    func,
-                    infer_args,
-                },
+            let generic_tys: Vec<CoqType> = segment
+                .args
+                .map(|generics| {
+                    let rustc_hir::GenericArgs { args, .. } = generics;
+                    args.iter()
+                        .filter_map(|ty| match ty {
+                            rustc_hir::GenericArg::Type(ty) => Some(*compile_type(env, ty)),
+                            _ => None,
+                        })
+                        .collect::<Vec<CoqType>>()
+                })
+                .unwrap_or(vec![]);
+            Expr::AssociatedFunction {
+                ty,
+                func,
+                generic_tys,
             }
         }
         QPath::LangItem(_, _, _) => Expr::LocalVar("LangItem".to_string()),
@@ -1068,13 +1071,19 @@ impl Expr {
             Expr::AssociatedFunction {
                 ty,
                 func,
-                infer_args,
+                generic_tys,
             } => nest([
-                if *infer_args {
-                    // gy@NOTE: It seems that the compiler would only leave a boolean to
-                    //   determine if the function has arguments to be inferred. For now
-                    //   I assume that we only have one arguments to be inferred at a time.
-                    concat([text("("), ty.to_doc(true), line(), text("_)")])
+                if !generic_tys.is_empty() {
+                    concat([
+                        text("("),
+                        ty.to_doc(true),
+                        concat(
+                            generic_tys
+                                .iter()
+                                .map(|generic| concat([line(), generic.to_doc(true)])),
+                        ),
+                        text(")"),
+                    ])
                 } else {
                     ty.to_doc(true)
                 },

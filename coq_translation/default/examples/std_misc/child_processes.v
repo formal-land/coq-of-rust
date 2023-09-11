@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* output :=
-    let* α0 := (std.process.Command _)::["new"] "rustc" in
+    let* α0 := std.process.Command::["new"] "rustc" in
     let* α1 := α0.["arg"] "--version" in
     let* α2 := α1.["output"] in
     α2.["unwrap_or_else"]
@@ -18,8 +18,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* α0 := output.["status"].["success"] in
   if (α0 : bool) then
     let* s :=
-      (alloc.string.String _)::["from_utf8_lossy"]
-        (addr_of output.["stdout"]) in
+      alloc.string.String::["from_utf8_lossy"] (addr_of output.["stdout"]) in
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of s) in
@@ -33,8 +32,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   else
     let* s :=
-      (alloc.string.String _)::["from_utf8_lossy"]
-        (addr_of output.["stderr"]) in
+      alloc.string.String::["from_utf8_lossy"] (addr_of output.["stderr"]) in
     let* _ :=
       let* _ :=
         let* α0 := format_argument::["new_display"] (addr_of s) in

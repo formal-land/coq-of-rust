@@ -155,7 +155,7 @@ Section
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field2_finish"]
+    core.fmt.Formatter::["debug_tuple_field2_finish"]
       f
       "Length"
       (addr_of (self.[0]))

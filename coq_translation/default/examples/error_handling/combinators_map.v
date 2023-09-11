@@ -23,7 +23,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
       | combinators_map.Food.Carrot => Pure "Carrot"
       | combinators_map.Food.Potato => Pure "Potato"
       end in
-    (core.fmt.Formatter _)::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -56,7 +56,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Peeled"
       (addr_of (addr_of (self.[0]))).
@@ -92,7 +92,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Chopped"
       (addr_of (addr_of (self.[0]))).
@@ -128,7 +128,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Cooked"
       (addr_of (addr_of (self.[0]))).

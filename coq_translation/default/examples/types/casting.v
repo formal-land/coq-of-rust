@@ -127,7 +127,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of (cast (f32 _)::["NAN"] u8)) in
+        format_argument::["new_display"] (addr_of (cast f32::["NAN"] u8)) in
       let* α1 :=
         format_arguments::["new_v1"]
           (addr_of [ "   nan as u8 is : "; "
@@ -160,7 +160,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := (f32 _)::["NAN"].["to_int_unchecked"] : M u8 in
+      let* α0 := f32::["NAN"].["to_int_unchecked"] : M u8 in
       let* α1 := format_argument::["new_display"] (addr_of α0) in
       let* α2 :=
         format_arguments::["new_v1"]

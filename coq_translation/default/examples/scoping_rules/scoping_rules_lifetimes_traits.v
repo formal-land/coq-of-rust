@@ -30,7 +30,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_struct_field1_finish"]
+    core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Borrowed"
       "x"

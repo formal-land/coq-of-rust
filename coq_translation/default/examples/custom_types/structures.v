@@ -39,7 +39,7 @@ Module Impl_core_fmt_Debug_for_structures_Person.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_struct_field2_finish"]
+    core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"
       "name"
@@ -115,7 +115,7 @@ Definition Rectangle : Set := @Rectangle.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* name := (alloc.string.String _)::["from"] "Peter" in
+  let* name := alloc.string.String::["from"] "Peter" in
   let age := 27 in
   let peter :=
     {| structures.Person.name := name; structures.Person.age := age; |} in

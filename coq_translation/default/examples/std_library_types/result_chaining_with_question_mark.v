@@ -32,7 +32,7 @@ Module checked.
             =>
           Pure "NegativeSquareRoot"
         end in
-      (core.fmt.Formatter _)::["write_str"] f α0.
+      core.fmt.Formatter::["write_str"] f α0.
     
     Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -172,7 +172,7 @@ Module
           =>
         Pure "NegativeSquareRoot"
       end in
-    (core.fmt.Formatter _)::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

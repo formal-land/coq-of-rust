@@ -194,11 +194,9 @@ End Impl_associated_functions_and_methods_Pair.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* rectangle :=
-    let* α0 := (associated_functions_and_methods.Point _)::["origin"] in
+    let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 :=
-      (associated_functions_and_methods.Point _)::["new"]
-        3 (* 3.0 *)
-        4 (* 4.0 *) in
+      associated_functions_and_methods.Point::["new"] 3 (* 3.0 *) 4 (* 4.0 *) in
     Pure
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -227,11 +225,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α2 in
     Pure tt in
   let* square :=
-    let* α0 := (associated_functions_and_methods.Point _)::["origin"] in
+    let* α0 := associated_functions_and_methods.Point::["origin"] in
     let* α1 :=
-      (associated_functions_and_methods.Point _)::["new"]
-        1 (* 1.0 *)
-        1 (* 1.0 *) in
+      associated_functions_and_methods.Point::["new"] 1 (* 1.0 *) 1 (* 1.0 *) in
     Pure
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -239,8 +235,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       |} in
   let* _ := square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) in
   let* pair :=
-    let* α0 := (alloc.boxed.Box _)::["new"] 1 in
-    let* α1 := (alloc.boxed.Box _)::["new"] 2 in
+    let* α0 := alloc.boxed.Box::["new"] 1 in
+    let* α1 := alloc.boxed.Box::["new"] 2 in
     Pure (associated_functions_and_methods.Pair.Build_t α0 α1) in
   let* _ := pair.["destroy"] in
   Pure tt.

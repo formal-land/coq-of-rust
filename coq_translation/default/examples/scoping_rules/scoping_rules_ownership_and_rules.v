@@ -32,7 +32,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           (addr_of [ α0; α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
-  let* a := (alloc.boxed.Box _)::["new"] 5 in
+  let* a := alloc.boxed.Box::["new"] 5 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of a) in

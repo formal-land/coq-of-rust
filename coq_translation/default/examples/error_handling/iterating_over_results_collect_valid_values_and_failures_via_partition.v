@@ -4,12 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* strings :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
   let* '(numbers, errors) :=
     let* α0 := strings.["into_iter"] in
     let* α1 := α0.["map"] (fun s => s.["parse"] : M i32) in
-    α1.["partition"] (core.result.Result _)::["is_ok"] in
+    α1.["partition"] core.result.Result::["is_ok"] in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of numbers) in

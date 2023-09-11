@@ -26,7 +26,7 @@ Module Impl_enums_testcase_linked_list_List.
       (self : Self)
       (elem : u32)
       : M (H := H') enums_testcase_linked_list.List :=
-    let* α0 := (alloc.boxed.Box _)::["new"] self in
+    let* α0 := alloc.boxed.Box::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
   
   Global Instance Method_prepend `{H' : State.Trait} :
@@ -79,7 +79,7 @@ End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* list := (enums_testcase_linked_list.List _)::["new"] in
+  let* list := enums_testcase_linked_list.List::["new"] in
   let* _ :=
     let* α0 := list.["prepend"] 1 in
     assign list α0 in

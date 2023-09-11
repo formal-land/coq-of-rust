@@ -4,13 +4,13 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* a :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ 1; 2; 3 ] in
-    let* α1 := ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
+    let* α1 := (Slice _)::["into_vec"] α0 in
     let* α2 := α1.["into_iter"] in
     α2.["collect"] in
   let* b :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ 2; 3; 4 ] in
-    let* α1 := ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ 2; 3; 4 ] in
+    let* α1 := (Slice _)::["into_vec"] α0 in
     let* α2 := α1.["into_iter"] in
     α2.["collect"] in
   let* _ :=

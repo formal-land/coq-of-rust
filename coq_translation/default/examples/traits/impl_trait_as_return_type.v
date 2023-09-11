@@ -31,11 +31,11 @@ Error OpaqueTy.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* v1 :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ 1; 2; 3 ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
+    (Slice _)::["into_vec"] α0 in
   let* v2 :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ 4; 5 ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ 4; 5 ] in
+    (Slice _)::["into_vec"] α0 in
   let* v3 := impl_trait_as_return_type.combine_vecs v1 v2 in
   let* _ :=
     let* α0 := v3.["next"] in

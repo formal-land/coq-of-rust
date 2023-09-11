@@ -23,7 +23,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
 " ]) in
         std.io.stdio._print α0 in
       Pure tt in
-    let* guess := (alloc.string.String _)::["new"] in
+    let* guess := alloc.string.String::["new"] in
     let* _ :=
       let* α0 := std.io.stdio.stdin in
       let* α1 := α0.["read_line"] (addr_of guess) in

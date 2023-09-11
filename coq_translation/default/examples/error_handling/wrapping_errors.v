@@ -21,9 +21,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
       : M (H := H') core.fmt.Result :=
     match self with
     | wrapping_errors.DoubleError.EmptyVec =>
-      (core.fmt.Formatter _)::["write_str"] f "EmptyVec"
+      core.fmt.Formatter::["write_str"] f "EmptyVec"
     | wrapping_errors.DoubleError.Parse __self_0 =>
-      (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+      core.fmt.Formatter::["debug_tuple_field1_finish"]
         f
         "Parse"
         (addr_of __self_0)
@@ -187,12 +187,12 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "42"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
-  let* empty := (alloc.vec.Vec _)::["new"] in
+    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
+  let* empty := alloc.vec.Vec::["new"] in
   let* strings :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ "tofu"; "93"; "18" ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := wrapping_errors.double_first numbers in
     wrapping_errors.print α0 in

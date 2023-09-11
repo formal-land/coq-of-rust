@@ -16,8 +16,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α1 in
     Pure tt in
   let* xs :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ 1; 2; 3 ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
+    (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of xs) in

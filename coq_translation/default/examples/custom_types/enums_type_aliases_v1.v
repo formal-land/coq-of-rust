@@ -16,5 +16,5 @@ Definition Operations : Set :=
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := (enums_type_aliases_v1.Operations _)::["Add"] in
+  let x := enums_type_aliases_v1.Operations::["Add"] in
   Pure tt.

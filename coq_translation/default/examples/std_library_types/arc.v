@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* apple := (alloc.sync.Arc _)::["new"] "the same apple" in
+  let* apple := alloc.sync.Arc::["new"] "the same apple" in
   let* _ :=
     let* α0 :=
       {| std.ops.Range.start := 0; std.ops.Range._end := 10; |}.["into_iter"] in
@@ -15,7 +15,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           match α0 with
           | core.option.Option.None  => Break
           | core.option.Option.Some _ =>
-            let* apple := (alloc.sync.Arc _)::["clone"] (addr_of apple) in
+            let* apple := alloc.sync.Arc::["clone"] (addr_of apple) in
             let* _ :=
               std.thread.spawn
                 (fun  =>
@@ -36,6 +36,6 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         Pure tt)
     end in
   let* _ :=
-    let* α0 := (core.time.Duration _)::["from_secs"] 1 in
+    let* α0 := core.time.Duration::["from_secs"] 1 in
     std.thread.sleep α0 in
   Pure tt.

@@ -71,9 +71,9 @@ Definition random_animal
     : M (H := H') (alloc.boxed.Box TraitObject) :=
   let* α0 := random_number.["lt"] 1 (* 0.5 *) in
   if (α0 : bool) then
-    (alloc.boxed.Box _)::["new"] {|  |}
+    alloc.boxed.Box::["new"] {|  |}
   else
-    (alloc.boxed.Box _)::["new"] {|  |}.
+    alloc.boxed.Box::["new"] {|  |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=

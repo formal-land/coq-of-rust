@@ -24,7 +24,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["write_str"] f "FooBar".
+    core.fmt.Formatter::["write_str"] f "FooBar".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -49,7 +49,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["write_str"] f "BarFoo".
+    core.fmt.Formatter::["write_str"] f "BarFoo".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

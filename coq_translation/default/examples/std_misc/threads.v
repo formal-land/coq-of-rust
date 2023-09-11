@@ -5,7 +5,7 @@ Definition NTHREADS `{H' : State.Trait} : u32 := run (Pure 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* children := (alloc.vec.Vec _)::["new"] in
+  let* children := alloc.vec.Vec::["new"] in
   let* _ :=
     let* α0 :=
       {| std.ops.Range.start := 0; std.ops.Range._end := threads.NTHREADS;

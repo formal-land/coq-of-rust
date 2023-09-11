@@ -26,7 +26,7 @@ Module checked.
         | result.checked.MathError.NegativeSquareRoot =>
           Pure "NegativeSquareRoot"
         end in
-      (core.fmt.Formatter _)::["write_str"] f α0.
+      core.fmt.Formatter::["write_str"] f α0.
     
     Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -100,7 +100,7 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
         Pure "NonPositiveLogarithm"
       | result.checked.MathError.NegativeSquareRoot => Pure "NegativeSquareRoot"
       end in
-    (core.fmt.Formatter _)::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] f α0.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;

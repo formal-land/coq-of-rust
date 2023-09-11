@@ -46,7 +46,7 @@ Definition read_lines
         (std.io.error.Result
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=
-    let* α0 := (std.fs.File _)::["open"] filename in
+    let* α0 := std.fs.File::["open"] filename in
     let* α1 := α0.["branch"] in
     match α1 with
     | LanguageItem.Break residual =>
@@ -54,6 +54,6 @@ Definition read_lines
       Return α0
     | LanguageItem.Continue val => Pure val
     end in
-  let* α0 := (std.io.buffered.bufreader.BufReader _)::["new"] file in
+  let* α0 := std.io.buffered.bufreader.BufReader::["new"] file in
   let* α1 := α0.["lines"] in
   Pure (core.result.Result.Ok α1).

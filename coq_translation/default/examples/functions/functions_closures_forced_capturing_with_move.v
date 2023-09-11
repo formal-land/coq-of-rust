@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* haystack :=
-    let* α0 := (alloc.boxed.Box _)::["new"] [ 1; 2; 3 ] in
-    ((Slice _) _)::["into_vec"] α0 in
+    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
+    (Slice _)::["into_vec"] α0 in
   let contains := fun needle => haystack.["contains"] needle in
   let* _ :=
     let* _ :=

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* color := (alloc.string.String _)::["from"] "green" in
+  let* color := alloc.string.String::["from"] "green" in
   let print :=
     fun  =>
       let* _ :=
@@ -37,7 +37,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := inc in
   let* _ := inc in
   let _count_reborrowed := addr_of count in
-  let* movable := (alloc.boxed.Box _)::["new"] 3 in
+  let* movable := alloc.boxed.Box::["new"] 3 in
   let consume :=
     fun  =>
       let* _ :=

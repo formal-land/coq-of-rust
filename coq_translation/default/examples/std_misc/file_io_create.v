@@ -14,10 +14,10 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* path := (std.path.Path _)::["new"] "lorem_ipsum.txt" in
+  let* path := std.path.Path::["new"] "lorem_ipsum.txt" in
   let* display := path.["display"] in
   let* file :=
-    let* α0 := (std.fs.File _)::["create"] (addr_of path) in
+    let* α0 := std.fs.File::["create"] (addr_of path) in
     match α0 with
     | core.result.Result.Err why =>
       let* α0 := format_argument::["new_display"] (addr_of display) in

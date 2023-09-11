@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* path := (std.path.Path _)::["new"] "hello.txt" in
+  let* path := std.path.Path::["new"] "hello.txt" in
   let* display := path.["display"] in
   let* file :=
-    let* α0 := (std.fs.File _)::["open"] (addr_of path) in
+    let* α0 := std.fs.File::["open"] (addr_of path) in
     match α0 with
     | core.result.Result.Err why =>
       let* α0 := format_argument::["new_display"] (addr_of display) in
@@ -18,7 +18,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       core.panicking.panic_fmt α2
     | core.result.Result.Ok file => Pure file
     end in
-  let* s := (alloc.string.String _)::["new"] in
+  let* s := alloc.string.String::["new"] in
   let* α0 := file.["read_to_string"] (addr_of s) in
   match α0 with
   | core.result.Result.Err why =>

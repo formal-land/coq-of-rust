@@ -50,7 +50,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_tuple_field1_finish"]
+    core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Choice"
       (addr_of (addr_of (self.[0]))).
@@ -370,7 +370,7 @@ Section Impl_subtle_ConstantTimeEq_for_Slice_T.
       let* α1 := len.["ne"] α0 in
       if (α1 : bool) then
         let* _ :=
-          let* α0 := (subtle.Choice _)::["from"] 0 in
+          let* α0 := subtle.Choice::["from"] 0 in
           Return α0 in
         Pure tt
       else
@@ -700,7 +700,7 @@ Module ConditionallySelectable.
       :=
       (let* _ :=
         let* α0 := self.["deref"] in
-        let* α1 := (Self _)::["conditional_select"] self other choice in
+        let* α1 := Self::["conditional_select"] self other choice in
         assign α0 α1 in
       Pure tt
       : M (H := H') unit);
@@ -1391,10 +1391,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
       (choice : subtle.Choice)
       : M (H := H') Self :=
     let* α0 :=
-      (u8 _)::["conditional_select"]
-        (addr_of (a.[0]))
-        (addr_of (b.[0]))
-        choice in
+      u8::["conditional_select"] (addr_of (a.[0])) (addr_of (b.[0])) choice in
     Pure (subtle.Choice.Build_t α0).
   
   Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
@@ -1523,7 +1520,7 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    (core.fmt.Formatter _)::["debug_struct_field2_finish"]
+    core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "CtOption"
       "value"
@@ -1659,7 +1656,7 @@ Module Impl_subtle_CtOption_T_4.
       (self : Self)
       (def : T)
       : M (H := H') T :=
-    (T _)::["conditional_select"]
+    T::["conditional_select"]
       (addr_of def)
       (addr_of self.["value"])
       self.["is_some"].
@@ -1678,7 +1675,7 @@ Module Impl_subtle_CtOption_T_4.
       (f : F)
       : M (H := H') T :=
     let* α0 := f in
-    (T _)::["conditional_select"]
+    T::["conditional_select"]
       (addr_of α0)
       (addr_of self.["value"])
       self.["is_some"].
@@ -1719,14 +1716,14 @@ Module Impl_subtle_CtOption_T_4.
       (self : Self)
       (f : F)
       : M (H := H') (subtle.CtOption U) :=
-    let* α0 := (T _)::["default"] in
+    let* α0 := T::["default"] in
     let* α1 :=
-      (T _)::["conditional_select"]
+      T::["conditional_select"]
         (addr_of α0)
         (addr_of self.["value"])
         self.["is_some"] in
     let* α2 := f α1 in
-    (subtle.CtOption _)::["new"] α2 self.["is_some"].
+    subtle.CtOption::["new"] α2 self.["is_some"].
   
   Global Instance Method_map `{H' : State.Trait} : Notation.Dot "map" := {
     Notation.dot := map;
@@ -1742,9 +1739,9 @@ Module Impl_subtle_CtOption_T_4.
       (f : F)
       : M (H := H') (subtle.CtOption U) :=
     let* tmp :=
-      let* α0 := (T _)::["default"] in
+      let* α0 := T::["default"] in
       let* α1 :=
-        (T _)::["conditional_select"]
+        T::["conditional_select"]
           (addr_of α0)
           (addr_of self.["value"])
           self.["is_some"] in
@@ -1767,7 +1764,7 @@ Module Impl_subtle_CtOption_T_4.
       : M (H := H') (subtle.CtOption T) :=
     let* is_none := self.["is_none"] in
     let* f := f in
-    (Self _)::["conditional_select"] (addr_of self) (addr_of f) is_none.
+    Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
   
   Global Instance Method_or_else `{H' : State.Trait} :
     Notation.Dot "or_else" := {
@@ -1788,16 +1785,16 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       (choice : subtle.Choice)
       : M (H := H') Self :=
     let* α0 :=
-      (T _)::["conditional_select"]
+      T::["conditional_select"]
         (addr_of a.["value"])
         (addr_of b.["value"])
         choice in
     let* α1 :=
-      (subtle.Choice _)::["conditional_select"]
+      subtle.Choice::["conditional_select"]
         (addr_of a.["is_some"])
         (addr_of b.["is_some"])
         choice in
-    (subtle.CtOption _)::["new"] α0 α1.
+    subtle.CtOption::["new"] α0 α1.
   
   Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
@@ -1904,7 +1901,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           let* _ := Break in
           Pure tt) in
     let* α0 := bit.["bitand"] 1 in
-    (subtle.Choice _)::["from"] (cast α0 u8).
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -1960,7 +1957,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let* _ := Break in
           Pure tt) in
     let* α0 := bit.["bitand"] 1 in
-    (subtle.Choice _)::["from"] (cast α0 u8).
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -2016,7 +2013,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let* _ := Break in
           Pure tt) in
     let* α0 := bit.["bitand"] 1 in
-    (subtle.Choice _)::["from"] (cast α0 u8).
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
@@ -2072,7 +2069,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let* _ := Break in
           Pure tt) in
     let* α0 := bit.["bitand"] 1 in
-    (subtle.Choice _)::["from"] (cast α0 u8).
+    subtle.Choice::["from"] (cast α0 u8).
   
   Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
