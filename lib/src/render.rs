@@ -183,10 +183,10 @@ where
     K: Into<std::borrow::Cow<'a, str>>,
 {
     group([
-        group([text(kind), line(), text(name.clone()), text(".")]),
+        nest([text(kind), line(), text(name.clone()), text(".")]),
         nest([hardline(), doc]),
         hardline(),
-        group([text("End"), line(), text(name), text(".")]),
+        nest([text("End"), line(), text(name), text(".")]),
     ])
 }
 
@@ -312,7 +312,7 @@ where
 pub(crate) fn typeclass_definition_item<'a>(
     name: &'a str,
     ty_params: &'a Vec<String>,
-    bounds: Vec<Doc<'a>>,
+    bounds: Vec<coq::ArgDecl<'a>>,
     ty: Doc<'a>,
 ) -> Doc<'a> {
     group([
@@ -337,7 +337,16 @@ pub(crate) fn typeclass_definition_item<'a>(
             if bounds.is_empty() {
                 nil()
             } else {
-                concat([intersperse(bounds, [line()]), line()])
+                concat([
+                    intersperse(
+                        bounds
+                            .iter()
+                            .map(|bound| bound.to_doc())
+                            .collect::<Vec<_>>(),
+                        [line()],
+                    ),
+                    line(),
+                ])
             },
             text(":"),
             line(),
@@ -345,40 +354,6 @@ pub(crate) fn typeclass_definition_item<'a>(
             text(";"),
         ]),
     ])
-}
-
-/// produces an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_header<'a, U>(
-    name: U,
-    trait_parameters: &[Doc<'a>],
-    kind: Doc<'a>,
-) -> Doc<'a>
-where
-    U: std::fmt::Display,
-{
-    nest([
-        nest([
-            text("Global Instance"),
-            line(),
-            text(format!("Method_{name}")),
-            line(),
-            intersperse(trait_parameters.to_owned(), [line()]),
-        ]),
-        line(),
-        nest([
-            text(": "),
-            kind,
-            line(),
-            text(format!("\"{name}\"")),
-            line(),
-            text(":= {"),
-        ]),
-    ])
-}
-
-/// produces the body of an instance of [Notation.Dot] or [Notation.DoubleColonType]
-pub(crate) fn new_instance_body<'a>(field: Doc<'a>, value: Doc<'a>) -> Doc<'a> {
-    nest([field, line(), text(":="), line(), value, text(";")])
 }
 
 pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>

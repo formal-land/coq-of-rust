@@ -20,7 +20,7 @@ Module Point.
     Notation.dot '(Build_t _ _ x2) := x2;
   }.
 End Point.
-Definition Point : Set := @Point.t.
+Definition Point : Set := Point.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=

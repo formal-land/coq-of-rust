@@ -16,7 +16,7 @@ Module my.
       }.
     End OpenBox.
   End OpenBox.
-  Definition OpenBox : Set := @OpenBox.t.
+  Definition OpenBox (T : Set) : Set := OpenBox.t (T := T).
   
   Module ClosedBox.
     Section ClosedBox.
@@ -32,7 +32,7 @@ Module my.
       }.
     End ClosedBox.
   End ClosedBox.
-  Definition ClosedBox : Set := @ClosedBox.t.
+  Definition ClosedBox (T : Set) : Set := ClosedBox.t (T := T).
 End my.
 
 Module OpenBox.
@@ -49,7 +49,7 @@ Module OpenBox.
     }.
   End OpenBox.
 End OpenBox.
-Definition OpenBox : Set := @OpenBox.t.
+Definition OpenBox (T : Set) : Set := OpenBox.t (T := T).
 
 Module ClosedBox.
   Section ClosedBox.
@@ -65,4 +65,4 @@ Module ClosedBox.
     }.
   End ClosedBox.
 End ClosedBox.
-Definition ClosedBox : Set := @ClosedBox.t.
+Definition ClosedBox (T : Set) : Set := ClosedBox.t (T := T).

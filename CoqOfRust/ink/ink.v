@@ -16,7 +16,7 @@ Module result_info.
       }.
     End IsResultType.
   End IsResultType.
-  Definition IsResultType : Set := @IsResultType.t.
+  Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
   
   Module IsResultTypeFallback.
     Class Trait (Self : Set) : Type := {
@@ -70,7 +70,7 @@ Module IsResultType.
     }.
   End IsResultType.
 End IsResultType.
-Definition IsResultType : Set := @IsResultType.t.
+Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
 
 Module IsResultTypeFallback.
   Class Trait (Self : Set) : Type := {
@@ -214,7 +214,9 @@ Module codegen.
           emit_event
             `{H' : State.Trait}
             {E: Set}
-            `{core.convert.Into.Trait E
+            `{H'0
+              :
+              core.convert.Into.Trait E
                 (T := ink.reflect.event.ContractEventBase.Type_)}
             :
             Self -> E -> (M (H := H') unit);
@@ -223,11 +225,13 @@ Module codegen.
         Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
           Notation.dot
-              {E : Set}
-              `{core.convert.Into.Trait E
-                  (T := ink.reflect.event.ContractEventBase.Type_)}
+            {E : Set}
+            `{H'0
+              :
+              core.convert.Into.Trait E
+                (T := ink.reflect.event.ContractEventBase.Type_)}
             :=
-            emit_event;
+            emit_event (E := E) (H'0 := H'0);
         }.
       End EmitEvent.
     End emit.
@@ -251,7 +255,13 @@ Module codegen.
           }.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
-      Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+      Definition EventRespectsTopicLimit
+          (Event : Set)
+          `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+          `{ink.codegen.event.topics.RespectTopicLimit.Trait
+                ink.codegen.event.topics.EventLenTopics.LenTopics}
+          : Set :=
+        EventRespectsTopicLimit.t (Event := Event).
       
       Module RespectTopicLimit.
         Unset Primitive Projections.
@@ -421,7 +431,7 @@ Module codegen.
           }.
         End IsSameType.
       End IsSameType.
-      Definition IsSameType : Set := @IsSameType.t.
+      Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
     End same_type.
   End utils.
 End codegen.
@@ -662,7 +672,9 @@ Module event.
         emit_event
           `{H' : State.Trait}
           {E: Set}
-          `{core.convert.Into.Trait E
+          `{H'0
+            :
+            core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_)}
           :
           Self -> E -> (M (H := H') unit);
@@ -671,11 +683,13 @@ Module event.
       Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
         Notation.dot
-            {E : Set}
-            `{core.convert.Into.Trait E
-                (T := ink.reflect.event.ContractEventBase.Type_)}
+          {E : Set}
+          `{H'0
+            :
+            core.convert.Into.Trait E
+              (T := ink.reflect.event.ContractEventBase.Type_)}
           :=
-          emit_event;
+          emit_event (E := E) (H'0 := H'0);
       }.
     End EmitEvent.
   End emit.
@@ -699,7 +713,13 @@ Module event.
         }.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
-    Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+    Definition EventRespectsTopicLimit
+        (Event : Set)
+        `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+        `{ink.codegen.event.topics.RespectTopicLimit.Trait
+              ink.codegen.event.topics.EventLenTopics.LenTopics}
+        : Set :=
+      EventRespectsTopicLimit.t (Event := Event).
     
     Module RespectTopicLimit.
       Unset Primitive Projections.
@@ -734,7 +754,9 @@ Module emit.
       emit_event
         `{H' : State.Trait}
         {E: Set}
-        `{core.convert.Into.Trait E
+        `{H'0
+          :
+          core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_)}
         :
         Self -> E -> (M (H := H') unit);
@@ -743,11 +765,13 @@ Module emit.
     Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
       Notation.dot
-          {E : Set}
-          `{core.convert.Into.Trait E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
+        {E : Set}
+        `{H'0
+          :
+          core.convert.Into.Trait E
+            (T := ink.reflect.event.ContractEventBase.Type_)}
         :=
-        emit_event;
+        emit_event (E := E) (H'0 := H'0);
     }.
   End EmitEvent.
 End emit.
@@ -759,7 +783,9 @@ Module EmitEvent.
     emit_event
       `{H' : State.Trait}
       {E: Set}
-      `{core.convert.Into.Trait E
+      `{H'0
+        :
+        core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_)}
       :
       Self -> E -> (M (H := H') unit);
@@ -768,11 +794,13 @@ Module EmitEvent.
   Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
     Notation.dot
-        {E : Set}
-        `{core.convert.Into.Trait E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
+      {E : Set}
+      `{H'0
+        :
+        core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_)}
       :=
-      emit_event;
+      emit_event (E := E) (H'0 := H'0);
   }.
 End EmitEvent.
 
@@ -795,7 +823,13 @@ Module topics.
       }.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
-  Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+  Definition EventRespectsTopicLimit
+      (Event : Set)
+      `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+      `{ink.codegen.event.topics.RespectTopicLimit.Trait
+            ink.codegen.event.topics.EventLenTopics.LenTopics}
+      : Set :=
+    EventRespectsTopicLimit.t (Event := Event).
   
   Module RespectTopicLimit.
     Unset Primitive Projections.
@@ -839,7 +873,13 @@ Module EventRespectsTopicLimit.
     }.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
-Definition EventRespectsTopicLimit : Set := @EventRespectsTopicLimit.t.
+Definition EventRespectsTopicLimit
+    (Event : Set)
+    `{ink.codegen.event.topics.EventLenTopics.Trait Event}
+    `{ink.codegen.event.topics.RespectTopicLimit.Trait
+          ink.codegen.event.topics.EventLenTopics.LenTopics}
+    : Set :=
+  EventRespectsTopicLimit.t (Event := Event).
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
@@ -1216,7 +1256,7 @@ Module utils.
         }.
       End IsSameType.
     End IsSameType.
-    Definition IsSameType : Set := @IsSameType.t.
+    Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
   End same_type.
 End utils.
 
@@ -1243,7 +1283,7 @@ Module same_type.
       }.
     End IsSameType.
   End IsSameType.
-  Definition IsSameType : Set := @IsSameType.t.
+  Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
 End same_type.
 
 Module IsSameType.
@@ -1260,7 +1300,7 @@ Module IsSameType.
     }.
   End IsSameType.
 End IsSameType.
-Definition IsSameType : Set := @IsSameType.t.
+Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
 
 Module reflect.
   Module contract.
@@ -1497,7 +1537,7 @@ Module reflect.
         decode_dispatch
           `{H' : State.Trait}
           {I: Set}
-          `{parity_scale_codec.codec.Input.Trait I}
+          `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :
           (mut_ref I) ->
           (M (H := H')
@@ -1506,9 +1546,9 @@ Module reflect.
       
       Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
-        Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+        Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :=
-          decode_dispatch;
+          decode_dispatch (I := I) (H'0 := H'0);
       }.
     End DecodeDispatch.
   End dispatch.
@@ -1581,7 +1621,8 @@ Module reflect.
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+      Definition TraitDefinitionRegistry (E : Set) : Set :=
+        TraitDefinitionRegistry.t (E := E).
     End registry.
   End trait_def.
 End reflect.
@@ -1831,7 +1872,7 @@ Module dispatch.
       decode_dispatch
         `{H' : State.Trait}
         {I: Set}
-        `{parity_scale_codec.codec.Input.Trait I}
+        `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
         (M (H := H')
@@ -1840,9 +1881,9 @@ Module dispatch.
     
     Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
       : Notation.Dot "decode_dispatch" := {
-      Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+      Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :=
-        decode_dispatch;
+        decode_dispatch (I := I) (H'0 := H'0);
     }.
   End DecodeDispatch.
 End dispatch.
@@ -2072,7 +2113,7 @@ Module DecodeDispatch.
     decode_dispatch
       `{H' : State.Trait}
       {I: Set}
-      `{parity_scale_codec.codec.Input.Trait I}
+      `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
       (M (H := H')
@@ -2081,9 +2122,9 @@ Module DecodeDispatch.
   
   Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
     : Notation.Dot "decode_dispatch" := {
-    Notation.dot {I : Set} `{parity_scale_codec.codec.Input.Trait I}
+    Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :=
-      decode_dispatch;
+      decode_dispatch (I := I) (H'0 := H'0);
   }.
 End DecodeDispatch.
 
@@ -2166,7 +2207,8 @@ Module trait_def.
         }.
       End TraitDefinitionRegistry.
     End TraitDefinitionRegistry.
-    Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+    Definition TraitDefinitionRegistry (E : Set) : Set :=
+      TraitDefinitionRegistry.t (E := E).
   End registry.
 End trait_def.
 
@@ -2261,7 +2303,8 @@ Module registry.
       }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
-  Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+  Definition TraitDefinitionRegistry (E : Set) : Set :=
+    TraitDefinitionRegistry.t (E := E).
 End registry.
 
 Module TraitDefinitionRegistry.
@@ -2278,7 +2321,8 @@ Module TraitDefinitionRegistry.
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
-Definition TraitDefinitionRegistry : Set := @TraitDefinitionRegistry.t.
+Definition TraitDefinitionRegistry (E : Set) : Set :=
+  TraitDefinitionRegistry.t (E := E).
 
 Module chain_extension.
   Module ChainExtensionInstance.
@@ -2501,7 +2545,7 @@ Module env_access.
       Context {E : Set}.
       Unset Primitive Projections.
       Record t : Set := {
-        marker : core.marker.PhantomData ((ref E));
+        marker : core.marker.PhantomData (ref E);
       }.
       Global Set Primitive Projections.
       
@@ -2510,7 +2554,7 @@ Module env_access.
       }.
     End EnvAccess.
   End EnvAccess.
-  Definition EnvAccess : Set := @EnvAccess.t.
+  Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
 End env_access.
 
 Module EnvAccess.
@@ -2518,7 +2562,7 @@ Module EnvAccess.
     Context {E : Set}.
     Unset Primitive Projections.
     Record t : Set := {
-      marker : core.marker.PhantomData ((ref E));
+      marker : core.marker.PhantomData (ref E);
     }.
     Global Set Primitive Projections.
     
@@ -2527,4 +2571,4 @@ Module EnvAccess.
     }.
   End EnvAccess.
 End EnvAccess.
-Definition EnvAccess : Set := @EnvAccess.t.
+Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).

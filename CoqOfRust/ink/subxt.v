@@ -1,7 +1,5 @@
 (* Written by hand *)
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.core.fmt.
-Require Import CoqOfRust.alloc.
 
 (* TODO: Implement the following items to satisfy the dependency for e2e/env file
 - [?] blocks.block_types.ExtrinsicEvents
@@ -30,26 +28,33 @@ pub trait Config: 'static {
 *)
 Module config.
   Module Config.
-    Class Trait (Self : Set)
-                {Index
-                Hash
-                AccountId
-                Address
-                Signature
-                Hasher
-                Header
-                ExtrinsicParams
-                : Set} 
-    : Set := {
+    Class Trait (Self : Set) : Type := {
     (* NOTE: we make a very rough translation here... *)
-        Index := Index;
-        Hash := Hash;
-        AccountId := AccountId;
-        Address := Address;
-        Signature := Signature;
-        Hasher := Hasher;
-        Header := Header;
-        ExtrinsicParams := ExtrinsicParams;
+        Index : Set;
+        Hash : Set;
+        AccountId : Set;
+        Address : Set;
+        Signature : Set;
+        Hasher : Set;
+        Header : Set;
+        ExtrinsicParams : Set;
+    }.
+
+    Global Instance Type_Hash (Self : Set) `(Trait Self)
+      : Notation.DoubleColonType Self "Hash" := {
+      Notation.double_colon_type := Hash;
+    }.
+    Global Instance Type_AccountId (Self : Set) `(Trait Self)
+      : Notation.DoubleColonType Self "AccountId" := {
+      Notation.double_colon_type := Hash;
+    }.
+    Global Instance Type_Address (Self : Set) `(Trait Self)
+      : Notation.DoubleColonType Self "Address" := {
+      Notation.double_colon_type := Hash;
+    }.
+    Global Instance Type_Signature (Self : Set) `(Trait Self)
+      : Notation.DoubleColonType Self "Signature" := {
+      Notation.double_colon_type := Hash;
     }.
   End Config.
 
@@ -59,11 +64,42 @@ Module config.
     Module BaseExtrinsicParams.
       Record t (T Tip : Set) 
         `{Config.Trait T}
-        `{core.Debug.Trait Tip}
+        `{core.fmt.Debug.Trait Tip}
       : Set := { }.
     End BaseExtrinsicParams.
     Global Set Primitive Projections.
-    Definition BaseExtrinsicParams := BaseExtrinsicParams.t.
+    Definition BaseExtrinsicParams
+      (T Tip : Set)
+      `{Config.Trait T}
+      `{core.fmt.Debug.Trait Tip}
+      := BaseExtrinsicParams.t T Tip.
+
+    (*
+    pub trait ExtrinsicParams<Hash>: Debug + 'static {
+    type OtherParams;
+
+    // Required methods
+    fn new(
+        spec_version: u32,
+        tx_version: u32,
+        nonce: u64,
+        genesis_hash: Hash,
+        other_params: Self::OtherParams
+    ) -> Self;
+    fn encode_extra_to(&self, v: &mut Vec<u8>);
+    fn encode_additional_to(&self, v: &mut Vec<u8>);
+    }
+    *)
+    Module ExtrinsicParams.
+      Class Trait (Self : Set) `{core.fmt.Debug.Trait Self} (Hash : Set)
+        : Type := {
+        OtherParams : Set;
+
+        new : u32 -> u32 -> u64 -> Hash -> OtherParams -> Self;
+        encode_extra_to : ref Self -> mut_ref (alloc.vec.Vec u8);
+        encode_additional_to : ref Self -> mut_ref (alloc.vec.Vec u8);
+        }.
+    End ExtrinsicParams.
   End extrinsic_params.
 
   (* pub struct WithExtrinsicParams<T: Config, E: ExtrinsicParams<T::Hash>> { /* private fields */ } *)
@@ -72,7 +108,7 @@ Module config.
     Record t (T E : Set) 
       `{Config.Trait T}
       (* TODO: Is this the correct way to translate the type param..? *)
-      `{ExtrinsicParams.Trait T T.Hash}
+      `{extrinsic_params.ExtrinsicParams.Trait T T::type["Hash"]}
     : Set := { }.
   End WithExtrinsicParams.
   Global Set Primitive Projections.
@@ -87,9 +123,15 @@ Module config.
     Global Set Primitive Projections.
     Definition PlainTip := PlainTip.t.
 
+    Module Impl_Debug_for_PlainTip.
+      Global Instance I : core.fmt.Debug.Trait PlainTip.t.
+      Admitted.
+    End Impl_Debug_for_PlainTip.
+
     (* *******TYPE DEFS******** *)
     (* pub type PolkadotExtrinsicParams<T> = BaseExtrinsicParams<T, PlainTip>; *)
-    Definition PolkadotExtrinsicParams (T : Set) : Set := extrinsic_params.BaseExtrinsicParams T PlainTip.
+    Definition PolkadotExtrinsicParams (T : Set) `{Config.Trait T} : Set
+      := extrinsic_params.BaseExtrinsicParams T PlainTip.
   End polkadot.
   
 End config.
@@ -105,11 +147,11 @@ Module tx.
   *)
   Module Signer.
     Class Trait (Self T : Set) 
-      `{Config.Trait T}
+      `{config.Config.Trait T}
     : Set := {
-      account_id : ref Self -> T.AccountId;
-      address : ref Self -> T.Address;
-      sign : ref Self -> ref (slice u8) -> T.Signature; 
+      account_id : ref Self -> T::type["AccountId"];
+      address : ref Self -> T::type["Address"];
+      sign : ref Self -> ref (Slice u8) -> T::type["Signature"];
     }.
   End Signer.
   
@@ -217,11 +259,11 @@ Module utils.
     *)
     Module MultiAddress.
       Inductive t (AccountId AccountIndex : Set) : Set := 
-      | Id : AccountId -> t AccountI AccountIndex
-      | Index : AccountIndex -> t AccountI AccountIndex
-      | Raw : alloc.vec.Vec u8 None -> t AccountI AccountIndex
-      | Address32 : slice u8 -> t AccountI AccountIndex
-      | Address20 : slice u8 -> t AccountI AccountIndex
+      | Id : AccountId -> t AccountId AccountIndex
+      | Index : AccountIndex -> t AccountId AccountIndex
+      | Raw : alloc.vec.Vec u8 -> t AccountId AccountIndex
+      | Address32 : Slice u8 -> t AccountId AccountIndex
+      | Address20 : Slice u8 -> t AccountId AccountIndex
       .
     End MultiAddress.
     Definition MultiAddress := MultiAddress.t.

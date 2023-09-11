@@ -22,9 +22,11 @@ pub(crate) enum TopLevelItem<'a> {
     Comment(Comment),
     Context(Context<'a>),
     Definition(Definition<'a>),
+    Hint(Hint),
     Instance(Instance<'a>),
     Line,
     Module(Module<'a>),
+    Record(Record<'a>),
     Section(Section<'a>),
 }
 
@@ -44,7 +46,7 @@ pub(crate) struct Module<'a> {
 #[derive(Clone)]
 /// a coq section
 pub(crate) struct Section<'a> {
-    name: &'a str,
+    name: String,
     items: TopLevel<'a>,
 }
 
@@ -53,6 +55,14 @@ pub(crate) struct Section<'a> {
 pub(crate) struct Definition<'a> {
     name: String,
     kind: DefinitionKind<'a>,
+}
+
+#[derive(Clone)]
+/// a definition of a coq record
+pub(crate) struct Record<'a> {
+    name: String,
+    ty: Expression<'a>,
+    fields: Vec<FieldDef<'a>>,
 }
 
 #[derive(Clone)]
@@ -74,11 +84,19 @@ pub(crate) struct Class<'a> {
 #[derive(Clone)]
 /// a global instance of a coq typeclass
 pub(crate) struct Instance<'a> {
-    name: &'a str,
+    refine_attribute: bool,
+    name: String,
     parameters: Vec<ArgDecl<'a>>,
     class: Expression<'a>,
-    field: Doc<'a>,
-    value: Doc<'a>,
+    bulid_expr: Expression<'a>,
+    proof_lines: Vec<Doc<'a>>,
+}
+
+#[derive(Clone)]
+/// a hint for auto
+pub(crate) struct Hint {
+    item_name: String,
+    db_name: String,
 }
 
 #[derive(Clone)]
@@ -94,6 +112,13 @@ pub(crate) enum DefinitionKind<'a> {
     /// an opaque constant
     /// (using `Parameter`)
     Assumption { ty: Expression<'a> },
+}
+
+#[derive(Clone)]
+/// a definition of a field in a record definition
+pub(crate) struct FieldDef<'a> {
+    ident: Option<String>,
+    ty: Expression<'a>,
 }
 
 #[derive(Clone)]
@@ -137,8 +162,13 @@ pub(crate) enum Expression<'a> {
         /// right hand side
         rhs: Box<Expression<'a>>,
     },
+    Record {
+        fields: Vec<Field<'a>>,
+    },
     /// Set constant (the type of our types)
     Set,
+    /// a string
+    String(String),
     /// Type constant
     Type,
     /// the unit type
@@ -150,6 +180,16 @@ pub(crate) enum Expression<'a> {
         /// a flag, set if implicit arguments are deactivated with '@'
         no_implicit: bool,
     },
+    /// a wildcard: '_'
+    Wild,
+}
+
+/// a field of a record expression
+#[derive(Clone)]
+pub(crate) struct Field<'a> {
+    name: Path,
+    args: Vec<ArgDecl<'a>>,
+    body: Expression<'a>,
 }
 
 #[derive(Clone)]
@@ -177,6 +217,8 @@ pub(crate) enum ArgDeclVar<'a> {
         /// a type of the identifiers
         ty: Expression<'a>,
     },
+    /// a destructured argument
+    Destructured { pattern: Expression<'a> },
 }
 
 #[derive(Clone)]
@@ -253,14 +295,12 @@ impl<'a> TopLevel<'a> {
 
     /// decides whether to enclose [items] within a section with a context
     pub(crate) fn add_context_in_section_if_necessary(
-        name: &'a str,
+        name: &str,
         ty_params: &[String],
-        items: &[TopLevelItem<'a>],
+        items: &TopLevel<'a>,
     ) -> Self {
         if ty_params.is_empty() {
-            TopLevel {
-                items: items.to_owned(),
-            }
+            items.to_owned()
         } else {
             TopLevel::add_context_in_section(name, ty_params, items)
         }
@@ -269,23 +309,23 @@ impl<'a> TopLevel<'a> {
     /// creates a section with a context with type variables
     /// with the given variable names
     pub(crate) fn add_context_in_section(
-        name: &'a str,
+        name: &str,
         ty_params: &[String],
-        items: &[TopLevelItem<'a>],
+        items: &TopLevel<'a>,
     ) -> Self {
         TopLevel {
             items: vec![TopLevelItem::Section(Section::new(
                 name,
                 &TopLevel {
                     items: [
-                        &[TopLevelItem::Context(Context::new(&[ArgDecl::new(
+                        vec![TopLevelItem::Context(Context::new(&[ArgDecl::new(
                             &ArgDeclVar::Normal {
                                 idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
                                 ty: Some(Expression::Set),
                             },
                             ArgSpecKind::Implicit,
                         )]))],
-                        items,
+                        items.items.to_owned(),
                     ]
                     .concat(),
                 },
@@ -302,9 +342,11 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Comment(comment) => comment.to_doc(),
             TopLevelItem::Context(context) => context.to_doc(),
             TopLevelItem::Definition(definition) => definition.to_doc(),
+            TopLevelItem::Hint(hint) => hint.to_doc(),
             TopLevelItem::Instance(instance) => instance.to_doc(),
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
+            TopLevelItem::Record(record) => record.to_doc(),
             TopLevelItem::Section(section) => section.to_doc(),
         }
     }
@@ -344,10 +386,10 @@ impl<'a> TopLevelItem<'a> {
 
 impl<'a> Module<'a> {
     /// produces a new coq module
-    pub(crate) fn new(name: &str, content: TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, items: TopLevel<'a>) -> Self {
         Module {
             name: name.to_string(),
-            items: content,
+            items,
         }
     }
 
@@ -358,10 +400,10 @@ impl<'a> Module<'a> {
 
 impl<'a> Section<'a> {
     /// produces a new coq section
-    pub(crate) fn new(name: &'a str, content: &TopLevel<'a>) -> Self {
+    pub(crate) fn new(name: &str, items: &TopLevel<'a>) -> Self {
         Section {
-            name,
-            items: content.to_owned(),
+            name: name.to_string(),
+            items: items.to_owned(),
         }
     }
 
@@ -417,6 +459,46 @@ impl<'a> Definition<'a> {
                 text("."),
             ]),
         }
+    }
+}
+
+impl<'a> Record<'a> {
+    pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[FieldDef<'a>]) -> Self {
+        Record {
+            name: name.to_owned(),
+            ty: ty.to_owned(),
+            fields: fields.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        group([
+            nest([
+                text("Record"),
+                line(),
+                text(self.name.to_owned()),
+                line(),
+                text(":"),
+                line(),
+                self.ty.to_doc(false),
+                line(),
+                text(":="),
+                line(),
+                text("{"),
+            ]),
+            if self.fields.is_empty() {
+                text(" ")
+            } else {
+                concat([
+                    nest([
+                        hardline(),
+                        intersperse(self.fields.iter().map(|field| field.to_doc()), [hardline()]),
+                    ]),
+                    hardline(),
+                ])
+            },
+            text("}."),
+        ])
     }
 }
 
@@ -476,38 +558,108 @@ impl<'a> Class<'a> {
 impl<'a> Instance<'a> {
     /// produces a new coq instance
     pub(crate) fn new(
-        name: &'a str,
+        refine_attribute: bool,
+        name: &str,
         parameters: &[ArgDecl<'a>],
         class: Expression<'a>,
-        field: Doc<'a>,
-        value: Doc<'a>,
+        bulid_expr: &Expression<'a>,
+        proof_lines: Vec<Doc<'a>>,
     ) -> Self {
         Instance {
-            name,
+            refine_attribute,
+            name: name.to_owned(),
             parameters: parameters.to_vec(),
             class,
-            field,
-            value,
+            bulid_expr: bulid_expr.to_owned(),
+            proof_lines,
         }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         concat([
-            render::new_instance_header(
-                self.name,
-                &self
-                    .parameters
-                    .iter()
-                    .map(|p| p.to_doc())
-                    .collect::<Vec<Doc<'a>>>(),
-                self.class.to_doc(false),
-            ),
+            if self.refine_attribute {
+                concat([text("#[refine]"), hardline()])
+            } else {
+                nil()
+            },
             nest([
-                hardline(),
-                render::new_instance_body(self.field.to_owned(), self.value.to_owned()),
+                nest([
+                    text("Global Instance"),
+                    line(),
+                    text(self.name.to_owned()),
+                    if self.parameters.is_empty() {
+                        nil()
+                    } else {
+                        concat([
+                            line(),
+                            intersperse(self.parameters.iter().map(|p| p.to_doc()), [line()]),
+                        ])
+                    },
+                ]),
+                line(),
+                nest([text(": "), self.class.to_doc(false), line(), text(":= ")]),
             ]),
-            hardline(),
-            text("}."),
+            self.bulid_expr.to_doc(false),
+            text("."),
+            if self.proof_lines.is_empty() {
+                nil()
+            } else {
+                concat([
+                    hardline(),
+                    intersperse(self.proof_lines.to_owned(), [hardline()]),
+                    hardline(),
+                    text("Defined."),
+                ])
+            },
+        ])
+    }
+}
+
+impl Hint {
+    pub(crate) fn new(item_name: &str, db_name: &str) -> Self {
+        Hint {
+            item_name: item_name.to_owned(),
+            db_name: db_name.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        group([
+            text("Global Hint Resolve"),
+            line(),
+            text(self.item_name.to_owned()),
+            line(),
+            text(":"),
+            line(),
+            text(self.db_name.to_owned()),
+            text("."),
+        ])
+    }
+
+    pub(crate) fn standard_resolve() -> Self {
+        Hint::new("I", "core")
+    }
+}
+
+impl<'a> FieldDef<'a> {
+    pub(crate) fn new(ident: &Option<String>, ty: &Expression<'a>) -> Self {
+        FieldDef {
+            ident: ident.to_owned(),
+            ty: ty.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        nest([
+            match self.ident.to_owned() {
+                Some(name) => text(name),
+                None => text("_"),
+            },
+            line(),
+            text(":"),
+            line(),
+            self.ty.to_doc(false),
+            text(";"),
         ])
     }
 }
@@ -570,29 +722,66 @@ impl<'a> Expression<'a> {
                     rhs.to_doc(true),
                 ]),
             ),
+            Self::Record { fields } => concat([
+                text("{"),
+                if fields.is_empty() {
+                    nil()
+                } else {
+                    nest([
+                        hardline(),
+                        intersperse(fields.iter().map(|field| field.to_doc()), [hardline()]),
+                    ])
+                },
+                hardline(),
+                text("}"),
+            ]),
             Self::Set => text("Set"),
+            Self::String(string) => text(format!("\"{string}\"")),
             Self::Type => text("Type"),
             Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
                 concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])
             }
+            Self::Wild => text("_"),
+        }
+    }
+
+    pub(crate) fn just_name(name: &str) -> Self {
+        Expression::Variable {
+            ident: Path::new(&[name]),
+            no_implicit: false,
+        }
+    }
+
+    /// apply the expression as a function to one argument
+    pub(crate) fn apply_arg(&self, name: &Option<String>, arg: &Self) -> Self {
+        Expression::Application {
+            func: Box::new(self.clone()),
+            args: vec![(name.clone(), arg.clone())],
         }
     }
 
     /// apply the expression as a function to one argument
     pub(crate) fn apply(&self, arg: &Self) -> Self {
+        self.apply_arg(&None, arg)
+    }
+
+    /// apply the expression as a function to many arguments
+    pub(crate) fn apply_many_args(&self, args: &[(Option<String>, Self)]) -> Self {
         Expression::Application {
-            func: Box::new(self.clone()),
-            args: vec![(None, arg.clone())],
+            func: Box::new(self.to_owned()),
+            args: args.to_vec(),
         }
     }
 
     /// apply the expression as a function to many arguments
     pub(crate) fn apply_many(&self, args: &[Self]) -> Self {
-        Expression::Application {
-            func: Box::new(self.to_owned()),
-            args: args.iter().map(|arg| (None, arg.to_owned())).collect(),
-        }
+        self.apply_many_args(
+            &args
+                .iter()
+                .map(|arg| (None, arg.to_owned()))
+                .collect::<Vec<_>>(),
+        )
     }
 
     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
@@ -618,6 +807,37 @@ impl<'a> Expression<'a> {
             Some(product) => product,
             None => Expression::Unit,
         }
+    }
+}
+
+impl<'a> Field<'a> {
+    pub(crate) fn new(name: &Path, args: &[ArgDecl<'a>], body: &Expression<'a>) -> Self {
+        Field {
+            name: name.to_owned(),
+            args: args.to_owned(),
+            body: body.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        nest([
+            group([
+                self.name.to_doc(),
+                if self.args.is_empty() {
+                    nil()
+                } else {
+                    group([
+                        line(),
+                        intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
+                    ])
+                },
+            ]),
+            line(),
+            text(":="),
+            line(),
+            self.body.to_doc(false),
+            text(";"),
+        ])
     }
 }
 
@@ -671,46 +891,36 @@ impl<'a> ArgDecl<'a> {
                     ty.to_doc(false),
                 ])),
             ]),
+            ArgDeclVar::Destructured { pattern } => {
+                group([text("'"), brackets(pattern.to_doc(false))])
+            }
         }
     }
 
-    pub(crate) fn of_ty_params(ty_params: &[String]) -> Self {
+    pub(crate) fn of_ty_params(ty_params: &[String], kind: ArgSpecKind) -> Self {
         ArgDecl {
             decl: ArgDeclVar::Normal {
                 idents: ty_params.to_owned(),
                 ty: Some(Expression::Set),
             },
-            kind: ArgSpecKind::Implicit,
+            kind,
         }
     }
-}
 
-/// produces a definition of the given function
-pub(crate) fn function_header<'a>(
-    name: &Path,
-    params: &[ArgDecl<'a>],
-    args: &[(&'a String, Doc<'a>)],
-) -> Doc<'a> {
-    group([
-        name.to_doc(),
-        if params.is_empty() {
-            nil()
-        } else {
-            group([
-                line(),
-                intersperse(params.iter().map(|param| param.to_doc()), [line()]),
-            ])
-        },
-        concat(args.iter().map(|(name, ty)| {
-            concat([nest([
-                line(),
-                text("("),
-                text(*name),
-                line(),
-                text(": "),
-                ty.clone(),
-                text(")"),
-            ])])
-        })),
-    ])
+    pub(crate) fn add_var(&self, ident: &str) -> Self {
+        ArgDecl {
+            decl: match &self.decl {
+                ArgDeclVar::Normal { idents, ty } => ArgDeclVar::Normal {
+                    idents: [idents.to_owned(), vec![ident.to_owned()]].concat(),
+                    ty: ty.to_owned(),
+                },
+                ArgDeclVar::Generalized { idents, ty } => ArgDeclVar::Generalized {
+                    idents: [idents.to_owned(), vec![ident.to_owned()]].concat(),
+                    ty: ty.to_owned(),
+                },
+                ArgDeclVar::Destructured { pattern: _ } => self.decl.to_owned(),
+            },
+            kind: self.kind.to_owned(),
+        }
+    }
 }

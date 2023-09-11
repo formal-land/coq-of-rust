@@ -48,8 +48,8 @@ End Impl_core_clone_Clone_for_clone_Unit.
 Module Impl_core_marker_Copy_for_clone_Unit.
   Definition Self := clone.Unit.
   
-  Global Instance I : core.marker.Copy.Trait Self :=
-    core.marker.Copy.Build_Trait _.
+  Global Instance I
+    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 

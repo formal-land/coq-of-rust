@@ -38,7 +38,7 @@ Module Form.
     Notation.dot '(Build_t _ x1) := x1;
   }.
 End Form.
-Definition Form : Set := @Form.t.
+Definition Form : Set := Form.t.
 
 Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
@@ -54,10 +54,9 @@ Module
     Notation.dot := get;
   }.
   
-  Global Instance I :
-      disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
-    disambiguating_overlapping_traits.UsernameWidget.get
-      `{H' : State.Trait}
+  Global Instance I
+    : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
+    disambiguating_overlapping_traits.UsernameWidget.get `{H' : State.Trait}
       :=
       get;
   }.
@@ -76,8 +75,8 @@ Module
     Notation.dot := get;
   }.
   
-  Global Instance I :
-      disambiguating_overlapping_traits.AgeWidget.Trait Self := {
+  Global Instance I
+    : disambiguating_overlapping_traits.AgeWidget.Trait Self := {
     disambiguating_overlapping_traits.AgeWidget.get `{H' : State.Trait} := get;
   }.
   Global Hint Resolve I : core.

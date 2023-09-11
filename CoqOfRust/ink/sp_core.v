@@ -21,7 +21,7 @@ Module sr25519.
   Unset Primitive Projections.
   Module Signature.
     Record t : Set := { 
-      _ : slice u8;
+      _ : Slice u8;
     }.
   End Signature.
   Global Set Primitive Projections.

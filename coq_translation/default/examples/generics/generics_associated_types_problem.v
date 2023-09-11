@@ -75,17 +75,15 @@ Module
     Notation.dot := last;
   }.
   
-  Global Instance I :
-      generics_associated_types_problem.Contains.Trait
-        Self
+  Global Instance I
+    : generics_associated_types_problem.Contains.Trait Self
         (A := i32)
-        (B := i32) := {
-    generics_associated_types_problem.Contains.contains
-      `{H' : State.Trait}
+        (B := i32)
+      := {
+    generics_associated_types_problem.Contains.contains `{H' : State.Trait}
       :=
       contains;
-    generics_associated_types_problem.Contains.first
-      `{H' : State.Trait}
+    generics_associated_types_problem.Contains.first `{H' : State.Trait}
       :=
       first;
     generics_associated_types_problem.Contains.last `{H' : State.Trait} := last;
