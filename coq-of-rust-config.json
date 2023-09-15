@@ -20,6 +20,20 @@
         "tick": { "move": "down", "after": "tack" }
       }
     },
+    "ink": {
+      "top_level": {
+        "reflect": { "move": "up", "before": "codegen" }
+      },
+      "top_level::reflect::dispatch": {
+        "ExecuteDispatchable": { "move": "up", "before": "ContractMessageDecoder" },
+        "DispatchError": { "move": "up", "before": "ExecuteDispatchable" },
+        "DecodeDispatch": { "move": "up", "before": "ContractConstructorDecoder" }
+      },
+      "top_level::codegen::event::topics": {
+        "EventLenTopics": { "move": "up", "before": "EventRespectsTopicLimit" },
+        "RespectTopicLimit": { "move": "up", "before": "EventRespectsTopicLimit" }
+      }
+    },
     "ink_engine": {
       "top_level": {
         "database": { "move": "up", "before": "ext" }
@@ -80,6 +94,13 @@
       },
       "top_level::chain_extension": {
         "private": { "move": "up", "before": "IsResultType" }
+      }
+    },
+    "erc20": {
+      "top_level::erc20": {
+        "Erc20": { "move": "up", "before": "Impl_{{root}}::ink::env::ContractEnv_for_Erc20" },
+         "Transfer": { "move": "up", "before": "__ink_EventBase" },
+         "Approval": { "move": "up", "before": "__ink_EventBase" }
       }
     }
   }
