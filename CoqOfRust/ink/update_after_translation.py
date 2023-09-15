@@ -4,6 +4,22 @@ In this file we apply a list of manual updates to the translated Rust files.
 import re
 
 
+def update_ink():
+    file_name = "ink.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
+Require CoqOfRust.ink.ink_env.""",
+        content,
+    )
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 def update_ink_env():
     file_name = "ink_env.v"
     with open(file_name, "r") as f:
@@ -911,6 +927,7 @@ End ink.
         f.write(content)
 
 
+update_ink()
 update_ink_e2e_macro()
 update_ink_env()
 update_ink_macro()
