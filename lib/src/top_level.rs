@@ -1565,8 +1565,13 @@ impl TraitTyParamValue {
     }
 }
 
+struct ToDocContext<'a> {
+    extra_data: Option<&'a TopLevelItem>,
+    previous_module_names: Vec<String>,
+}
+
 impl TopLevelItem {
-    fn to_doc<'a>(&'a self, extra_data: &Option<&'a TopLevelItem>) -> Doc {
+    fn to_doc<'a>(&'a self, to_doc_context: ToDocContext<'a>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => match value {
                 None => coq::TopLevel::new(&[
@@ -1601,12 +1606,15 @@ impl TopLevelItem {
                 ])
                 .to_doc(),
             },
-            TopLevelItem::Definition(definition) => definition.to_doc(*extra_data),
+            TopLevelItem::Definition(definition) => definition.to_doc(to_doc_context.extra_data),
             TopLevelItem::Module {
                 name,
                 body,
                 is_dead_code,
-            } => coq::TopLevel::new(
+            } => {
+                let nb_previous_occurrences_of_module_name =
+                    to_doc_context.previous_module_names.iter().filter(|&current_name| current_name == name).count();
+                coq::TopLevel::new(
                 &[
                     if *is_dead_code {
                         vec![coq::TopLevelItem::Comment(coq::Comment::new(
@@ -1615,14 +1623,16 @@ impl TopLevelItem {
                     } else {
                         vec![]
                     },
-                    vec![coq::TopLevelItem::Module(coq::Module::new(
+                    vec![coq::TopLevelItem::Module(coq::Module::new_with_repeat(
                         name,
+                        nb_previous_occurrences_of_module_name,
                         coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
                     ))],
                 ]
                 .concat(),
             )
-            .to_doc(),
+            .to_doc()
+        },
             TopLevelItem::TypeAlias {
                 name,
                 ty,
@@ -2050,7 +2060,7 @@ impl TopLevelItem {
                                 .flat_map(|item| {
                                     [
                                         coq::TopLevelItem::Line,
-                                        coq::TopLevelItem::Code(concat([item.to_doc(extra_data)])),
+                                        coq::TopLevelItem::Code(concat([item.to_doc(&to_doc_context.extra_data)])),
                                     ]
                                 })
                                 .collect::<Vec<_>>(),
@@ -2316,7 +2326,7 @@ impl TopLevelItem {
                                     .iter()
                                     .map(|item| {
                                         vec![
-                                            coq::TopLevelItem::Code(item.to_doc(extra_data)),
+                                            coq::TopLevelItem::Code(item.to_doc(&to_doc_context.extra_data)),
                                             coq::TopLevelItem::Line,
                                         ]
                                     })
@@ -2429,38 +2439,51 @@ impl TopLevel {
 
         // We go through whole tree and if we face TraitImpl, we need to save previous item too
         // (the one for which Impl is being printed), in order to have all the extra_data
+
+        let mut previous_module_names: Vec<String> = vec![];
+
         intersperse(
             self.0.iter().map(|item| {
-                // if item is DeriveDebug, get struct's fields
-                match item {
-                    TopLevelItem::TraitImpl {
-                        generic_tys: _,
-                        ty_params: _,
-                        self_ty,
-                        of_trait,
-                        items: _,
-                        trait_non_default_items: _,
-                        has_predicates_on_assoc_ty: _,
-                    } =>
-                    // if item is DeriveDebug we are getting missing datatypes for Struct, and
-                    // printing DoubleColon instance for fmt function
-                    {
-                        // @TODO. below is support for deriveDebug (add code to support more traits)
-                        if of_trait.to_name() == "core_fmt_Debug" {
-                            let strct = self.find_tli_by_name(self_ty); // self.get_struct_types(self_ty);
-                                                                        // add structs types here (for printing)
-                            item.to_doc(&strct)
-                        } else {
-                            // @TODO add more cases (only Derive debug for Struct supported)");
-                            // if no DeriveDebug - we just convert item to doc, no extra data required.
-                            item.to_doc(&None)
+                let extra_data =
+                    // if item is DeriveDebug, get struct's fields
+                    match item {
+                        TopLevelItem::TraitImpl {
+                            generic_tys: _,
+                            ty_params: _,
+                            self_ty,
+                            of_trait,
+                            items: _,
+                            trait_non_default_items: _,
+                            has_predicates_on_assoc_ty: _,
+                        } =>
+                        // if item is DeriveDebug we are getting missing datatypes for Struct, and
+                        // printing DoubleColon instance for fmt function
+                        {
+                            // @TODO. below is support for deriveDebug (add code to support more traits)
+                            if of_trait.to_name() == "core_fmt_Debug" {
+                                let strct = self.find_tli_by_name(self_ty); // self.get_struct_types(self_ty);
+                                                                            // add structs types here (for printing)
+                                strct
+                            } else {
+                                // @TODO add more cases (only Derive debug for Struct supported)");
+                                // if no DeriveDebug - we just convert item to doc, no extra data required.
+                                None
+                            }
                         }
-                    }
-                    _ => {
-                        // if item is not TopLevelItem::TraitImpl - we just convert item to doc, no extra data required.
-                        item.to_doc(&None)
-                    }
-                }
+                        _ => {
+                            // if item is not TopLevelItem::TraitImpl - we just convert item to doc, no extra data required.
+                            None
+                        }
+                    };
+                let to_doc_context = ToDocContext {
+                    extra_data,
+                    previous_module_names: previous_module_names.clone(),
+                };
+                let doc = item.to_doc(to_doc_context);
+                if let TopLevelItem::Module { name, .. } = item {
+                    previous_module_names.push(name.to_owned());
+                };
+                doc
             }),
             [hardline(), hardline()],
         )

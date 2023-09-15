@@ -16,6 +16,36 @@ def update_ink():
 Require CoqOfRust.ink.ink_env.""",
         content,
     )
+    content = sub_exactly_n(
+        "Module TraitCallForwarderFor.",
+        "(* Module TraitCallForwarderFor.",
+        content,
+        4,
+    )
+    content = sub_exactly_n(
+        "End TraitCallForwarderFor.",
+        "End TraitCallForwarderFor. *)",
+        content,
+        4,
+    )
+    content = sub_exactly_once(
+        """End ChainExtension.
+
+Module IsResultType.""",
+        """End ChainExtension.
+
+(* Module IsResultType.""",
+        content,
+    )
+    content = sub_exactly_once(
+        """End IsResultType.
+
+Module Output.""",
+        """End IsResultType. *)
+
+Module Output.""",
+        content,
+    )
     with open(file_name, "w") as f:
         f.write(content)
 

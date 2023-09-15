@@ -32,6 +32,9 @@
       "top_level::codegen::event::topics": {
         "EventLenTopics": { "move": "up", "before": "EventRespectsTopicLimit" },
         "RespectTopicLimit": { "move": "up", "before": "EventRespectsTopicLimit" }
+      },
+      "top_level::chain_extension": {
+        "private": { "move": "up", "before": "IsResultType" }
       }
     },
     "ink_engine": {
