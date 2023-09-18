@@ -11,6 +11,9 @@ Module Person.
   Global Instance Get_job : Notation.Dot "job" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_job : Notation.DoubleColon t "job" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Person.
 Definition Person : Set := Person.t.
 
@@ -25,6 +28,10 @@ Module Job.
   
   Global Instance Get_phone_number : Notation.Dot "phone_number" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_phone_number
+    : Notation.DoubleColon t "phone_number" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End Job.
 Definition Job : Set := Job.t.
@@ -73,8 +80,14 @@ Module PhoneNumber.
   Global Instance Get_area_code : Notation.Dot "area_code" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_area_code : Notation.DoubleColon t "area_code" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_number : Notation.Dot "number" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_number : Notation.DoubleColon t "number" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End PhoneNumber.
 Definition PhoneNumber : Set := PhoneNumber.t.

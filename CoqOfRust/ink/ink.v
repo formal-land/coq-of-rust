@@ -15,6 +15,9 @@ Module result_info.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End IsResultType.
   End IsResultType.
   Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
@@ -69,6 +72,9 @@ Module IsResultType.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End IsResultType.
 End IsResultType.
@@ -425,6 +431,9 @@ Module reflect.
           Global Instance Get_marker : Notation.Dot "marker" := {
             Notation.dot '(Build_t x0) := x0;
           }.
+          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
+          }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
       Definition TraitDefinitionRegistry (E : Set) : Set :=
@@ -595,6 +604,9 @@ Module codegen.
           Global Instance Get_marker : Notation.Dot "marker" := {
             Notation.dot '(Build_t x0) := x0;
           }.
+          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
+          }.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
       Definition EventRespectsTopicLimit
@@ -747,6 +759,9 @@ Module codegen.
           
           Global Instance Get__marker : Notation.Dot "_marker" := {
             Notation.dot '(Build_t x0) := x0;
+          }.
+          Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
           }.
         End IsSameType.
       End IsSameType.
@@ -1048,6 +1063,9 @@ Module event.
         Global Instance Get_marker : Notation.Dot "marker" := {
           Notation.dot '(Build_t x0) := x0;
         }.
+        Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+          Notation.double_colon '(Build_t x0) := x0;
+        }.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
     Definition EventRespectsTopicLimit
@@ -1162,6 +1180,9 @@ Module topics.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
   Definition EventRespectsTopicLimit
@@ -1193,6 +1214,9 @@ Module EventRespectsTopicLimit.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
@@ -1564,6 +1588,9 @@ Module utils.
         Global Instance Get__marker : Notation.Dot "_marker" := {
           Notation.dot '(Build_t x0) := x0;
         }.
+        Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+          Notation.double_colon '(Build_t x0) := x0;
+        }.
       End IsSameType.
     End IsSameType.
     Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
@@ -1591,6 +1618,9 @@ Module same_type.
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End IsSameType.
   End IsSameType.
   Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
@@ -1607,6 +1637,9 @@ Module IsSameType.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End IsSameType.
 End IsSameType.
@@ -2191,6 +2224,9 @@ Module Wrap_trait_def_1.
           Global Instance Get_marker : Notation.Dot "marker" := {
             Notation.dot '(Build_t x0) := x0;
           }.
+          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
+          }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
       Definition TraitDefinitionRegistry (E : Set) : Set :=
@@ -2292,6 +2328,9 @@ Module registry.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
   Definition TraitDefinitionRegistry (E : Set) : Set :=
@@ -2309,6 +2348,9 @@ Module TraitDefinitionRegistry.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
@@ -2540,6 +2582,9 @@ Module env_access.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End EnvAccess.
   End EnvAccess.
   Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
@@ -2556,6 +2601,9 @@ Module EnvAccess.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End EnvAccess.
 End EnvAccess.

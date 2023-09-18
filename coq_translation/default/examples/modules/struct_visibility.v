@@ -14,6 +14,9 @@ Module my.
       Global Instance Get_contents : Notation.Dot "contents" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End OpenBox.
   End OpenBox.
   Definition OpenBox (T : Set) : Set := OpenBox.t (T := T).
@@ -29,6 +32,9 @@ Module my.
       
       Global Instance Get_contents : Notation.Dot "contents" := {
         Notation.dot '(Build_t x0) := x0;
+      }.
+      Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
+        Notation.double_colon '(Build_t x0) := x0;
       }.
     End ClosedBox.
   End ClosedBox.
@@ -62,6 +68,9 @@ Module OpenBox.
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End OpenBox.
 End OpenBox.
 Definition OpenBox (T : Set) : Set := OpenBox.t (T := T).
@@ -77,6 +86,9 @@ Module ClosedBox.
     
     Global Instance Get_contents : Notation.Dot "contents" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_contents : Notation.DoubleColon t "contents" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End ClosedBox.
 End ClosedBox.

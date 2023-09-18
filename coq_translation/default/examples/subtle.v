@@ -1449,8 +1449,14 @@ Module CtOption.
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_is_some : Notation.Dot "is_some" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_is_some : Notation.DoubleColon t "is_some" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End CtOption.
 End CtOption.

@@ -566,6 +566,9 @@ Parameter recorded_events :
   Global Instance Get_engine : Notation.Dot "engine" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End EnvInstance.""",
         """Module EnvInstance.
   Unset Primitive Projections.
@@ -599,8 +602,14 @@ End private.""",
     Global Instance Get_backend : Notation.Dot "backend" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_backend : Notation.DoubleColon t "backend" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_state : Notation.Dot "state" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End TopicsBuilder.
 End TopicsBuilder.
@@ -816,51 +825,7 @@ def update_erc20():
 
 Require CoqOfRust.ink.ink_storage.
 Require CoqOfRust.ink.ink_env.
-(* @TODO Require CoqOfRust.ink.ink. *)
-
-(** @TODO [erc20] dependencies which are WIP *)
-
-Module ink.
-  Module codegen.
-    Module event.
-      Module topics.
-        Module EventTopics.
-          Parameter t : Set.
-        End EventTopics.
-        Module EventLenTopics.
-          Class Trait (Self : Set) : Type := {
-              LenTopics : Set;
-            }.
-        End EventLenTopics.
-        Definition EventTopics := EventTopics.t.
-      End topics.
-    End event.
-  End codegen.
-  Module reflect.
-    Module dispatch.
-      Module ConstructorOutput.
-        Parameter Error : Set.
-        Definition IS_RESULT : bool. Admitted.
-      End ConstructorOutput.
-
-      Module DispatchableConstructorInfo.
-        Class Trait (Self : Set) := {
-
-            Input : Set;
-            Storage : Set;
-            Output : Set;
-            Error : Set;
-            IS_RESULT `{H' : State.Trait} : M bool;
-            CALLABLE `{H' : State.Trait} : M (unit -> M Self);
-            PAYABLE `{H' : State.Trait} : M bool;
-            SELECTOR `{H' : State.Trait} : M (list Z);
-            LABEL `{H' : State.Trait} : M string;
-          }.
-      End DispatchableConstructorInfo.
-    End dispatch.
-  End reflect.
-End ink.
-
+Require CoqOfRust.ink.ink.
 """,
         content,
     )

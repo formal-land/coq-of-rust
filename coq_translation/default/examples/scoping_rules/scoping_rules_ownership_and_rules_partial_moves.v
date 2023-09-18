@@ -62,8 +62,14 @@ Module Person.
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_age : Notation.Dot "age" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Person.
 Definition Person : Set := Person.t.

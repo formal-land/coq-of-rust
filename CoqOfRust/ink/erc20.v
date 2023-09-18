@@ -3,51 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Require CoqOfRust.ink.ink_storage.
 Require CoqOfRust.ink.ink_env.
-(* @TODO Require CoqOfRust.ink.ink. *)
-
-(** @TODO [erc20] dependencies which are WIP *)
-
-Module ink.
-  Module codegen.
-    Module event.
-      Module topics.
-        Module EventTopics.
-          Parameter t : Set.
-        End EventTopics.
-        Module EventLenTopics.
-          Class Trait (Self : Set) : Type := {
-              LenTopics : Set;
-            }.
-        End EventLenTopics.
-        Definition EventTopics := EventTopics.t.
-      End topics.
-    End event.
-  End codegen.
-  Module reflect.
-    Module dispatch.
-      Module ConstructorOutput.
-        Parameter Error : Set.
-        Definition IS_RESULT : bool. Admitted.
-      End ConstructorOutput.
-
-      Module DispatchableConstructorInfo.
-        Class Trait (Self : Set) := {
-
-            Input : Set;
-            Storage : Set;
-            Output : Set;
-            Error : Set;
-            IS_RESULT `{H' : State.Trait} : M bool;
-            CALLABLE `{H' : State.Trait} : M (unit -> M Self);
-            PAYABLE `{H' : State.Trait} : M bool;
-            SELECTOR `{H' : State.Trait} : M (list Z);
-            LABEL `{H' : State.Trait} : M string;
-          }.
-      End DispatchableConstructorInfo.
-    End dispatch.
-  End reflect.
-End ink.
-
+Require CoqOfRust.ink.ink.
 
 
 Module erc20.
@@ -63,11 +19,21 @@ Module erc20.
     Global Instance Get_total_supply : Notation.Dot "total_supply" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_total_supply
+      : Notation.DoubleColon t "total_supply" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_balances : Notation.Dot "balances" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_allowances : Notation.Dot "allowances" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
     Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
     Admitted.
@@ -152,11 +118,20 @@ Module erc20.
     Global Instance Get_from : Notation.Dot "from" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_to : Notation.Dot "to" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End Transfer.
   Definition Transfer : Set := Transfer.t.
@@ -173,11 +148,20 @@ Module erc20.
     Global Instance Get_owner : Notation.Dot "owner" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_spender : Notation.Dot "spender" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End Approval.
   Definition Approval : Set := Approval.t.
@@ -745,6 +729,9 @@ Module erc20.
     
     Global Instance Get_inner : Notation.Dot "inner" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_inner : Notation.DoubleColon t "inner" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End Erc20Ref.
   Definition Erc20Ref : Set := Erc20Ref.t.
@@ -1442,14 +1429,26 @@ Module Check.
   Global Instance Get_salt : Notation.Dot "salt" := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
   }.
+  Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+    Notation.double_colon '(Build_t x0 _ _ _) := x0;
+  }.
   Global Instance Get_field_0 : Notation.Dot "field_0" := {
     Notation.dot '(Build_t _ x1 _ _) := x1;
+  }.
+  Global Instance Get_AF_field_0 : Notation.DoubleColon t "field_0" := {
+    Notation.double_colon '(Build_t _ x1 _ _) := x1;
   }.
   Global Instance Get_field_1 : Notation.Dot "field_1" := {
     Notation.dot '(Build_t _ _ x2 _) := x2;
   }.
+  Global Instance Get_AF_field_1 : Notation.DoubleColon t "field_1" := {
+    Notation.double_colon '(Build_t _ _ x2 _) := x2;
+  }.
   Global Instance Get_field_2 : Notation.Dot "field_2" := {
     Notation.dot '(Build_t _ _ _ x3) := x3;
+  }.
+  Global Instance Get_AF_field_2 : Notation.DoubleColon t "field_2" := {
+    Notation.double_colon '(Build_t _ _ _ x3) := x3;
   }.
 End Check.
 Definition Check : Set := Check.t.
@@ -1466,11 +1465,21 @@ Module Erc20.
   Global Instance Get_total_supply : Notation.Dot "total_supply" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
+  Global Instance Get_AF_total_supply
+    : Notation.DoubleColon t "total_supply" := {
+    Notation.double_colon '(Build_t x0 _ _) := x0;
+  }.
   Global Instance Get_balances : Notation.Dot "balances" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
+  Global Instance Get_AF_balances : Notation.DoubleColon t "balances" := {
+    Notation.double_colon '(Build_t _ x1 _) := x1;
+  }.
   Global Instance Get_allowances : Notation.Dot "allowances" := {
     Notation.dot '(Build_t _ _ x2) := x2;
+  }.
+  Global Instance Get_AF_allowances : Notation.DoubleColon t "allowances" := {
+    Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End Erc20.
 Definition Erc20 : Set := Erc20.t.
@@ -2101,11 +2110,20 @@ Module Transfer.
   Global Instance Get_from : Notation.Dot "from" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
+  Global Instance Get_AF_from : Notation.DoubleColon t "from" := {
+    Notation.double_colon '(Build_t x0 _ _) := x0;
+  }.
   Global Instance Get_to : Notation.Dot "to" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
+  Global Instance Get_AF_to : Notation.DoubleColon t "to" := {
+    Notation.double_colon '(Build_t _ x1 _) := x1;
+  }.
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t _ _ x2) := x2;
+  }.
+  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End Transfer.
 Definition Transfer : Set := Transfer.t.
@@ -2221,11 +2239,20 @@ Module Approval.
   Global Instance Get_owner : Notation.Dot "owner" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
+  Global Instance Get_AF_owner : Notation.DoubleColon t "owner" := {
+    Notation.double_colon '(Build_t x0 _ _) := x0;
+  }.
   Global Instance Get_spender : Notation.Dot "spender" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
+  Global Instance Get_AF_spender : Notation.DoubleColon t "spender" := {
+    Notation.double_colon '(Build_t _ x1 _) := x1;
+  }.
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t _ _ x2) := x2;
+  }.
+  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End Approval.
 Definition Approval : Set := Approval.t.
@@ -4041,6 +4068,9 @@ Module CallBuilder.
   Global Instance Get_account_id : Notation.Dot "account_id" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End CallBuilder.
 Definition CallBuilder : Set := CallBuilder.t.
 
@@ -4767,6 +4797,9 @@ Module Erc20Ref.
   
   Global Instance Get_inner : Notation.Dot "inner" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_inner : Notation.DoubleColon t "inner" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End Erc20Ref.
 Definition Erc20Ref : Set := Erc20Ref.t.

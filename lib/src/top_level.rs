@@ -1851,41 +1851,65 @@ impl TopLevelItem {
                                     coq::TopLevel::new(&fields
                                         .iter()
                                         .enumerate()
-                                        .map(|(i, (name, _))| {
-                                            coq::TopLevelItem::Instance(coq::Instance::new(
-                                                false,
-                                                &format!("Get_{name}"),
-                                                &[],
-                                                coq::Expression::Variable {
-                                                    ident: Path::new(&["Notation", "Dot"]),
-                                                    no_implicit: false,
-                                                }
-                                                .apply(&coq::Expression::String(name.to_owned())),
-                                                &coq::Expression::Record {
-                                                    fields: vec![coq::Field::new(
-                                                        &Path::new(&["Notation", "dot"]),
-                                                        &[coq::ArgDecl::new(
-                                                            &coq::ArgDeclVar::Destructured {
-                                                                pattern: coq::Expression::just_name("Build_t")
-                                                                    .apply_many(
-                                                                        &fields
-                                                                            .iter()
-                                                                            .enumerate()
-                                                                            .map(|(j, _)| if i == j {
-                                                                                coq::Expression::just_name(&format!("x{j}"))
-                                                                            } else {
-                                                                                coq::Expression::Wild
-                                                                            })
-                                                                            .collect::<Vec<_>>()
-                                                                    ),
-                                                            },
-                                                            coq::ArgSpecKind::Explicit,
-                                                        )],
-                                                        &coq::Expression::just_name(&format!("x{i}")),
-                                                    )],
+                                        .flat_map(|(i, (name, _))| {
+                                            let projection_pattern = [coq::ArgDecl::new(
+                                                &coq::ArgDeclVar::Destructured {
+                                                    pattern: coq::Expression::just_name("Build_t")
+                                                        .apply_many(
+                                                            &fields
+                                                                .iter()
+                                                                .enumerate()
+                                                                .map(|(j, _)| if i == j {
+                                                                    coq::Expression::just_name(&format!("x{j}"))
+                                                                } else {
+                                                                    coq::Expression::Wild
+                                                                })
+                                                                .collect::<Vec<_>>()
+                                                        ),
                                                 },
-                                                vec![],
-                                            ))
+                                                coq::ArgSpecKind::Explicit,
+                                            )];
+                                            [
+                                                coq::TopLevelItem::Instance(coq::Instance::new(
+                                                    false,
+                                                    &format!("Get_{name}"),
+                                                    &[],
+                                                    coq::Expression::Variable {
+                                                        ident: Path::new(&["Notation", "Dot"]),
+                                                        no_implicit: false,
+                                                    }
+                                                    .apply(&coq::Expression::String(name.to_owned())),
+                                                    &coq::Expression::Record {
+                                                        fields: vec![coq::Field::new(
+                                                            &Path::new(&["Notation", "dot"]),
+                                                            &projection_pattern,
+                                                            &coq::Expression::just_name(&format!("x{i}")),
+                                                        )],
+                                                    },
+                                                    vec![],
+                                                )),
+                                                coq::TopLevelItem::Instance(coq::Instance::new(
+                                                    false,
+                                                    &format!("Get_AF_{name}"),
+                                                    &[],
+                                                    coq::Expression::Variable {
+                                                        ident: Path::new(&["Notation", "DoubleColon"]),
+                                                        no_implicit: false,
+                                                    }
+                                                    .apply_many(&[
+                                                        coq::Expression::just_name("t"),
+                                                        coq::Expression::String(name.to_owned())
+                                                    ]),
+                                                    &coq::Expression::Record {
+                                                        fields: vec![coq::Field::new(
+                                                            &Path::new(&["Notation", "double_colon"]),
+                                                            &projection_pattern,
+                                                            &coq::Expression::just_name(&format!("x{i}")),
+                                                        )],
+                                                    },
+                                                    vec![],
+                                                ))
+                                            ]
                                         })
                                         .collect::<Vec<_>>(),
                                     ),

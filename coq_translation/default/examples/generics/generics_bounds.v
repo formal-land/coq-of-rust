@@ -39,8 +39,14 @@ Module Rectangle.
   Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_height : Notation.Dot "height" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.
@@ -91,8 +97,14 @@ Module Triangle.
   Global Instance Get_length : Notation.Dot "length" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_length : Notation.DoubleColon t "length" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_height : Notation.Dot "height" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_height : Notation.DoubleColon t "height" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Triangle.
 Definition Triangle : Set := Triangle.t.

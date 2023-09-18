@@ -77,11 +77,21 @@ Module client.
       Global Instance Get_account_id : Notation.Dot "account_id" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
+      Global Instance Get_AF_account_id
+        : Notation.DoubleColon t "account_id" := {
+        Notation.double_colon '(Build_t x0 _ _) := x0;
+      }.
       Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
+      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+        Notation.double_colon '(Build_t _ x1 _) := x1;
+      }.
       Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+        Notation.double_colon '(Build_t _ _ x2) := x2;
       }.
     End InstantiationResult.
   End InstantiationResult.
@@ -113,11 +123,20 @@ Module client.
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+        Notation.double_colon '(Build_t x0 _ _) := x0;
+      }.
       Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
+      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+        Notation.double_colon '(Build_t _ x1 _) := x1;
+      }.
       Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+        Notation.double_colon '(Build_t _ _ x2) := x2;
       }.
     End UploadResult.
   End UploadResult.
@@ -144,8 +163,14 @@ Module client.
       Global Instance Get_dry_run : Notation.Dot "dry_run" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_events : Notation.Dot "events" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End CallResult.
   End CallResult.
@@ -172,8 +197,15 @@ Module client.
       Global Instance Get_exec_result : Notation.Dot "exec_result" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_exec_result
+        : Notation.DoubleColon t "exec_result" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End CallDryRunResult.
   End CallDryRunResult.
@@ -231,8 +263,14 @@ Module client.
       Global Instance Get_api : Notation.Dot "api" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_contracts : Notation.Dot "contracts" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End Client.
   End Client.
@@ -273,11 +311,20 @@ Module InstantiationResult.
     Global Instance Get_account_id : Notation.Dot "account_id" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_account_id : Notation.DoubleColon t "account_id" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_events : Notation.Dot "events" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End InstantiationResult.
 End InstantiationResult.
@@ -307,11 +354,20 @@ Module UploadResult.
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_events : Notation.Dot "events" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End UploadResult.
 End UploadResult.
@@ -336,8 +392,14 @@ Module CallResult.
     Global Instance Get_dry_run : Notation.Dot "dry_run" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_dry_run : Notation.DoubleColon t "dry_run" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_events : Notation.Dot "events" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_events : Notation.DoubleColon t "events" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End CallResult.
 End CallResult.
@@ -364,8 +426,15 @@ Module CallDryRunResult.
     Global Instance Get_exec_result : Notation.Dot "exec_result" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_exec_result
+      : Notation.DoubleColon t "exec_result" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End CallDryRunResult.
 End CallDryRunResult.
@@ -421,8 +490,14 @@ Module Client.
     Global Instance Get_api : Notation.Dot "api" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_api : Notation.DoubleColon t "api" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_contracts : Notation.Dot "contracts" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End Client.
 End Client.
@@ -635,11 +710,20 @@ Module node_proc.
       Global Instance Get_proc : Notation.Dot "proc" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
+      Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
+        Notation.double_colon '(Build_t x0 _ _) := x0;
+      }.
       Global Instance Get_client : Notation.Dot "client" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
+      Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+        Notation.double_colon '(Build_t _ x1 _) := x1;
+      }.
       Global Instance Get_url : Notation.Dot "url" := {
         Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+      Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
+        Notation.double_colon '(Build_t _ _ x2) := x2;
       }.
     End TestNodeProcess.
   End TestNodeProcess.
@@ -660,11 +744,20 @@ Module node_proc.
       Global Instance Get_node_path : Notation.Dot "node_path" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
+      Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
+        Notation.double_colon '(Build_t x0 _ _) := x0;
+      }.
       Global Instance Get_authority : Notation.Dot "authority" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
+      Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
+        Notation.double_colon '(Build_t _ x1 _) := x1;
+      }.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t _ _ x2) := x2;
       }.
     End TestNodeProcessBuilder.
   End TestNodeProcessBuilder.
@@ -687,11 +780,20 @@ Module TestNodeProcess.
     Global Instance Get_proc : Notation.Dot "proc" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_proc : Notation.DoubleColon t "proc" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_client : Notation.Dot "client" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_url : Notation.Dot "url" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_url : Notation.DoubleColon t "url" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End TestNodeProcess.
 End TestNodeProcess.
@@ -712,11 +814,20 @@ Module TestNodeProcessBuilder.
     Global Instance Get_node_path : Notation.Dot "node_path" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_node_path : Notation.DoubleColon t "node_path" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_authority : Notation.Dot "authority" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_authority : Notation.DoubleColon t "authority" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End TestNodeProcessBuilder.
 End TestNodeProcessBuilder.
@@ -735,8 +846,14 @@ Module xts.
     Global Instance Get_ref_time : Notation.Dot "ref_time" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_proof_size : Notation.Dot "proof_size" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_proof_size : Notation.DoubleColon t "proof_size" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End Weight.
   Definition Weight : Set := Weight.t.
@@ -759,21 +876,40 @@ Module xts.
       Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
       }.
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+        Notation.double_colon '(Build_t x0 _ _ _ _ _) := x0;
+      }.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+      }.
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+        Notation.double_colon '(Build_t _ x1 _ _ _ _) := x1;
       }.
       Global Instance Get_storage_deposit_limit
         : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
       }.
+      Global Instance Get_AF_storage_deposit_limit
+        : Notation.DoubleColon t "storage_deposit_limit" := {
+        Notation.double_colon '(Build_t _ _ x2 _ _ _) := x2;
+      }.
       Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+      }.
+      Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+        Notation.double_colon '(Build_t _ _ _ x3 _ _) := x3;
       }.
       Global Instance Get_data : Notation.Dot "data" := {
         Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
       }.
+      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+        Notation.double_colon '(Build_t _ _ _ _ x4 _) := x4;
+      }.
       Global Instance Get_salt : Notation.Dot "salt" := {
         Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+      }.
+      Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+        Notation.double_colon '(Build_t _ _ _ _ _ x5) := x5;
       }.
     End InstantiateWithCode.
   End InstantiateWithCode.
@@ -800,18 +936,34 @@ Module xts.
       Global Instance Get_dest : Notation.Dot "dest" := {
         Notation.dot '(Build_t x0 _ _ _ _) := x0;
       }.
+      Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+        Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+      }.
       Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot '(Build_t _ x1 _ _ _) := x1;
       }.
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+        Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
+      }.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ _ x2 _ _) := x2;
+      }.
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+        Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
       }.
       Global Instance Get_storage_deposit_limit
         : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ _ _ x3 _) := x3;
       }.
+      Global Instance Get_AF_storage_deposit_limit
+        : Notation.DoubleColon t "storage_deposit_limit" := {
+        Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+      }.
       Global Instance Get_data : Notation.Dot "data" := {
         Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+      Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+        Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
       }.
     End Call.
   End Call.
@@ -834,8 +986,14 @@ Module xts.
       Global Instance Get_dest : Notation.Dot "dest" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End Transfer.
   End Transfer.
@@ -868,12 +1026,23 @@ Module xts.
       Global Instance Get_code : Notation.Dot "code" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
+      Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+        Notation.double_colon '(Build_t x0 _ _) := x0;
+      }.
       Global Instance Get_storage_deposit_limit
         : Notation.Dot "storage_deposit_limit" := {
         Notation.dot '(Build_t _ x1 _) := x1;
       }.
+      Global Instance Get_AF_storage_deposit_limit
+        : Notation.DoubleColon t "storage_deposit_limit" := {
+        Notation.double_colon '(Build_t _ x1 _) := x1;
+      }.
       Global Instance Get_determinism : Notation.Dot "determinism" := {
         Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+      Global Instance Get_AF_determinism
+        : Notation.DoubleColon t "determinism" := {
+        Notation.double_colon '(Build_t _ _ x2) := x2;
       }.
     End UploadCode.
   End UploadCode.
@@ -896,8 +1065,14 @@ Module xts.
       Global Instance Get_client : Notation.Dot "client" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End ContractsApi.
   End ContractsApi.
@@ -920,8 +1095,14 @@ Module Weight.
   Global Instance Get_ref_time : Notation.Dot "ref_time" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_ref_time : Notation.DoubleColon t "ref_time" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_proof_size : Notation.Dot "proof_size" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_proof_size : Notation.DoubleColon t "proof_size" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Weight.
 Definition Weight : Set := Weight.t.
@@ -944,21 +1125,40 @@ Module InstantiateWithCode.
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _ _) := x0;
+    }.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+    }.
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _ _) := x1;
     }.
     Global Instance Get_storage_deposit_limit
       : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
     }.
+    Global Instance Get_AF_storage_deposit_limit
+      : Notation.DoubleColon t "storage_deposit_limit" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _ _) := x2;
+    }.
     Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+    }.
+    Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _ _) := x3;
     }.
     Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
     }.
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4 _) := x4;
+    }.
     Global Instance Get_salt : Notation.Dot "salt" := {
       Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+    }.
+    Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+      Notation.double_colon '(Build_t _ _ _ _ _ x5) := x5;
     }.
   End InstantiateWithCode.
 End InstantiateWithCode.
@@ -985,18 +1185,34 @@ Module Call.
     Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+    }.
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t _ x1 _ _ _) := x1;
     }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
+    }.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ _ x2 _ _) := x2;
+    }.
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
     }.
     Global Instance Get_storage_deposit_limit
       : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
+    Global Instance Get_AF_storage_deposit_limit
+      : Notation.DoubleColon t "storage_deposit_limit" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+    }.
     Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
     }.
   End Call.
 End Call.
@@ -1017,8 +1233,14 @@ Module Transfer.
     Global Instance Get_dest : Notation.Dot "dest" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_dest : Notation.DoubleColon t "dest" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End Transfer.
 End Transfer.
@@ -1051,12 +1273,23 @@ Module UploadCode.
     Global Instance Get_code : Notation.Dot "code" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_code : Notation.DoubleColon t "code" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_storage_deposit_limit
       : Notation.Dot "storage_deposit_limit" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_storage_deposit_limit
+      : Notation.DoubleColon t "storage_deposit_limit" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_determinism : Notation.Dot "determinism" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_determinism
+      : Notation.DoubleColon t "determinism" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End UploadCode.
 End UploadCode.
@@ -1077,8 +1310,14 @@ Module ContractsApi.
     Global Instance Get_client : Notation.Dot "client" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_client : Notation.DoubleColon t "client" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End ContractsApi.
 End ContractsApi.

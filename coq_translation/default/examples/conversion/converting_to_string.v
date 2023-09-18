@@ -11,6 +11,9 @@ Module Circle.
   Global Instance Get_radius : Notation.Dot "radius" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Circle.
 Definition Circle : Set := Circle.t.
 

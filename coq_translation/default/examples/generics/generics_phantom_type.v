@@ -75,8 +75,14 @@ Module PhantomStruct.
     Global Instance Get_first : Notation.Dot "first" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_first : Notation.DoubleColon t "first" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_phantom : Notation.Dot "phantom" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_phantom : Notation.DoubleColon t "phantom" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End PhantomStruct.
 End PhantomStruct.

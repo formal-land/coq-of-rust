@@ -11,6 +11,9 @@ Module Val.
   Global Instance Get_val : Notation.Dot "val" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Val.
 Definition Val : Set := Val.t.
 
@@ -25,6 +28,9 @@ Module GenVal.
     
     Global Instance Get_gen_val : Notation.Dot "gen_val" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_gen_val : Notation.DoubleColon t "gen_val" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End GenVal.
 End GenVal.
