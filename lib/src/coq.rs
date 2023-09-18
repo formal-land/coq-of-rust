@@ -40,6 +40,7 @@ pub(crate) struct Comment {
 /// a coq module
 pub(crate) struct Module<'a> {
     name: String,
+    nb_repeat: usize,
     items: TopLevel<'a>,
 }
 
@@ -389,12 +390,31 @@ impl<'a> Module<'a> {
     pub(crate) fn new(name: &str, items: TopLevel<'a>) -> Self {
         Module {
             name: name.to_string(),
+            nb_repeat: 0,
+            items,
+        }
+    }
+
+    pub(crate) fn new_with_repeat(name: &str, nb_repeat: usize, items: TopLevel<'a>) -> Self {
+        Module {
+            name: name.to_string(),
+            nb_repeat,
             items,
         }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
-        render::enclose("Module", self.name.to_owned(), self.items.to_doc())
+        let inner_module = render::enclose("Module", self.name.to_owned(), self.items.to_doc());
+        if self.nb_repeat == 0 {
+            inner_module
+        } else {
+            let wrap_name = format!("Wrap_{}_{}", self.name, self.nb_repeat);
+            concat([
+                render::enclose("Module", wrap_name.clone(), inner_module),
+                hardline(),
+                nest([text("Import"), line(), text(wrap_name), text(".")]),
+            ])
+        }
     }
 }
 

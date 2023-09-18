@@ -4116,29 +4116,32 @@ End ChainExtensionMethod.
 Definition ChainExtensionMethod (I O ErrorCode : Set) : Set :=
   ChainExtensionMethod.t (I := I) (O := O) (ErrorCode := ErrorCode).
 
-Module state_.
-  Module IgnoreErrorCode.
-    Inductive t : Set :=
-    .
-  End IgnoreErrorCode.
-  Definition IgnoreErrorCode := IgnoreErrorCode.t.
-  
-  Module HandleErrorCode.
-    Section HandleErrorCode.
-      Context {T : Set}.
-      Unset Primitive Projections.
-      Record t : Set := {
-        error_code : core.marker.PhantomData (T);
-      }.
-      Global Set Primitive Projections.
-      
-      Global Instance Get_error_code : Notation.Dot "error_code" := {
-        Notation.dot '(Build_t x0) := x0;
-      }.
+Module Wrap_state_1.
+  Module state.
+    Module IgnoreErrorCode.
+      Inductive t : Set :=
+      .
+    End IgnoreErrorCode.
+    Definition IgnoreErrorCode := IgnoreErrorCode.t.
+    
+    Module HandleErrorCode.
+      Section HandleErrorCode.
+        Context {T : Set}.
+        Unset Primitive Projections.
+        Record t : Set := {
+          error_code : core.marker.PhantomData (T);
+        }.
+        Global Set Primitive Projections.
+        
+        Global Instance Get_error_code : Notation.Dot "error_code" := {
+          Notation.dot '(Build_t x0) := x0;
+        }.
+      End HandleErrorCode.
     End HandleErrorCode.
-  End HandleErrorCode.
-  Definition HandleErrorCode (T : Set) : Set := HandleErrorCode.t (T := T).
-End state_.
+    Definition HandleErrorCode (T : Set) : Set := HandleErrorCode.t (T := T).
+  End state.
+End Wrap_state_1.
+Import Wrap_state_1.
 
 Module IgnoreErrorCode.
   Inductive t : Set :=
@@ -4902,7 +4905,17 @@ Module Blake2x128.
 End Blake2x128.
 Definition Blake2x128 := Blake2x128.t.
 
-
+Module Wrap_private_1.
+  Module private.
+    Module Sealed.
+      Unset Primitive Projections.
+      Class Trait (Self : Set) : Type := {
+      }.
+      Global Set Primitive Projections.
+    End Sealed.
+  End private.
+End Wrap_private_1.
+Import Wrap_private_1.
 
 Module Sealed.
   Unset Primitive Projections.
@@ -4947,25 +4960,28 @@ Module TopicsBuilderBackend.
 End TopicsBuilderBackend.
 
 
-Module state__.
-  Module Uninit.
-    Inductive t : Set :=
-    .
-  End Uninit.
-  Definition Uninit := Uninit.t.
-  
-  Module HasRemainingTopics.
-    Inductive t : Set :=
-    .
-  End HasRemainingTopics.
-  Definition HasRemainingTopics := HasRemainingTopics.t.
-  
-  Module NoRemainingTopics.
-    Inductive t : Set :=
-    .
-  End NoRemainingTopics.
-  Definition NoRemainingTopics := NoRemainingTopics.t.
-End state__.
+Module Wrap_state_2.
+  Module state.
+    Module Uninit.
+      Inductive t : Set :=
+      .
+    End Uninit.
+    Definition Uninit := Uninit.t.
+    
+    Module HasRemainingTopics.
+      Inductive t : Set :=
+      .
+    End HasRemainingTopics.
+    Definition HasRemainingTopics := HasRemainingTopics.t.
+    
+    Module NoRemainingTopics.
+      Inductive t : Set :=
+      .
+    End NoRemainingTopics.
+    Definition NoRemainingTopics := NoRemainingTopics.t.
+  End state.
+End Wrap_state_2.
+Import Wrap_state_2.
 
 Module Uninit.
   Inductive t : Set :=

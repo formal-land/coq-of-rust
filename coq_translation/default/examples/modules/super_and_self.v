@@ -88,18 +88,21 @@ Definition function `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   Pure tt.
 
-Module cool.
-  Definition function `{H' : State.Trait} : M (H := H') unit :=
-    let* _ :=
+Module Wrap_cool_1.
+  Module cool.
+    Definition function `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "called `my::cool::function()`
+        let* _ :=
+          let* α0 :=
+            format_arguments::["new_const"]
+              (addr_of [ "called `my::cool::function()`
 " ]) in
-        std.io.stdio._print α0 in
-      Pure tt in
-    Pure tt.
-End cool.
+          std.io.stdio._print α0 in
+        Pure tt in
+      Pure tt.
+  End cool.
+End Wrap_cool_1.
+Import Wrap_cool_1.
 
 Definition function `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
