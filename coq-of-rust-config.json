@@ -63,8 +63,7 @@
         "EnvBackend": { "move": "up", "before": "OnInstance" },
         "DefaultAccounts": { "move": "up", "before": "run_test" },
         "register_chain_extension": { "move": "up" },
-        "recorded_debug_messages": { "move": "up" },
-        "recorded_events": { "move": "up" }
+        "recorded_debug_messages": { "move": "up" }
       },
       "top_level::arithmetic": { 
         "Saturating": { "move": "up", "before": "BaseArithmetic" }

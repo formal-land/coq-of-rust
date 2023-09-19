@@ -1254,6 +1254,13 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
             T).
   
+  Parameter recorded_events_ret_ty :
+      forall `{core.iter.traits.iterator.Iterator},
+      Set.
+  Parameter recorded_events :
+      forall `{H' : State.Trait},
+      M (H := H') recorded_events_ret_ty.
+  
   Parameter assert_contract_termination :
       forall
         `{H' : State.Trait}
