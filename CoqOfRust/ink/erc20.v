@@ -3039,7 +3039,7 @@ Module
       let* _ :=
         let* α0 := output_result.["is_err"] in
         let* α1 :=
-          ink_env.backend_and_call_builder_and_error.ReturnFlags::["new_with_reverted"]
+          ink_env.backend_and_call_builder_and_engine_and_error.ReturnFlags::["new_with_reverted"]
             α0 in
         let* α2 := output_result.["map"] (fun _ => Pure tt) in
         let* α3 := ink_primitives.ConstructorResult::["Ok"] α2 in
@@ -3376,7 +3376,7 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend_and_call_builder_and_error.ReturnFlags::["new_with_reverted"]
+          ink_env.backend_and_call_builder_and_engine_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
@@ -3443,7 +3443,7 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend_and_call_builder_and_error.ReturnFlags::["new_with_reverted"]
+          ink_env.backend_and_call_builder_and_engine_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
@@ -3510,7 +3510,7 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend_and_call_builder_and_error.ReturnFlags::["new_with_reverted"]
+          ink_env.backend_and_call_builder_and_engine_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
@@ -3577,7 +3577,7 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend_and_call_builder_and_error.ReturnFlags::["new_with_reverted"]
+          ink_env.backend_and_call_builder_and_engine_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
@@ -3644,7 +3644,7 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend_and_call_builder_and_error.ReturnFlags::["new_with_reverted"]
+          ink_env.backend_and_call_builder_and_engine_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
@@ -3711,7 +3711,7 @@ Module
           else
             Pure tt in
         let* α0 :=
-          ink_env.backend_and_call_builder_and_error.ReturnFlags::["new_with_reverted"]
+          ink_env.backend_and_call_builder_and_engine_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
         let* α1 := ink_primitives.MessageResult::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
@@ -4479,17 +4479,18 @@ Module Impl_erc20_erc20___CallBuilder_18.
       (self : ref Self)
       :
         M (H := H')
-          (ink_env.backend_and_call_builder_and_error.CallBuilder
+          (ink_env.backend_and_call_builder_and_engine_and_error.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_error.Call
+              (ink_env.backend_and_call_builder_and_engine_and_error.Call
                 erc20.erc20.Environment))
             (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
                 ink_env.call.execution_input.EmptyArgumentList))
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.backend_and_call_builder_and_error.build_call in
+    let* α0 :=
+      ink_env.backend_and_call_builder_and_engine_and_error.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 219; 99; 117; 168 ] in
@@ -4508,10 +4509,10 @@ Module Impl_erc20_erc20___CallBuilder_18.
       (__ink_binding_0 : erc20.erc20.AccountId)
       :
         M (H := H')
-          (ink_env.backend_and_call_builder_and_error.CallBuilder
+          (ink_env.backend_and_call_builder_and_engine_and_error.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_error.Call
+              (ink_env.backend_and_call_builder_and_engine_and_error.Call
                 erc20.erc20.Environment))
             (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
@@ -4520,7 +4521,8 @@ Module Impl_erc20_erc20___CallBuilder_18.
                   ink_env.call.execution_input.EmptyArgumentList)))
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.backend_and_call_builder_and_error.build_call in
+    let* α0 :=
+      ink_env.backend_and_call_builder_and_engine_and_error.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 15; 117; 90; 86 ] in
@@ -4541,10 +4543,10 @@ Module Impl_erc20_erc20___CallBuilder_18.
       (__ink_binding_1 : erc20.erc20.AccountId)
       :
         M (H := H')
-          (ink_env.backend_and_call_builder_and_error.CallBuilder
+          (ink_env.backend_and_call_builder_and_engine_and_error.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_error.Call
+              (ink_env.backend_and_call_builder_and_engine_and_error.Call
                 erc20.erc20.Environment))
             (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
@@ -4556,7 +4558,8 @@ Module Impl_erc20_erc20___CallBuilder_18.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType erc20.erc20.Balance))) :=
-    let* α0 := ink_env.backend_and_call_builder_and_error.build_call in
+    let* α0 :=
+      ink_env.backend_and_call_builder_and_engine_and_error.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 106; 0; 22; 94 ] in
@@ -4578,10 +4581,10 @@ Module Impl_erc20_erc20___CallBuilder_18.
       (__ink_binding_1 : erc20.erc20.Balance)
       :
         M (H := H')
-          (ink_env.backend_and_call_builder_and_error.CallBuilder
+          (ink_env.backend_and_call_builder_and_engine_and_error.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_error.Call
+              (ink_env.backend_and_call_builder_and_engine_and_error.Call
                 erc20.erc20.Environment))
             (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
@@ -4593,7 +4596,8 @@ Module Impl_erc20_erc20___CallBuilder_18.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.backend_and_call_builder_and_error.build_call in
+    let* α0 :=
+      ink_env.backend_and_call_builder_and_engine_and_error.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 132; 161; 93; 161 ] in
@@ -4615,10 +4619,10 @@ Module Impl_erc20_erc20___CallBuilder_18.
       (__ink_binding_1 : erc20.erc20.Balance)
       :
         M (H := H')
-          (ink_env.backend_and_call_builder_and_error.CallBuilder
+          (ink_env.backend_and_call_builder_and_engine_and_error.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_error.Call
+              (ink_env.backend_and_call_builder_and_engine_and_error.Call
                 erc20.erc20.Environment))
             (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
@@ -4630,7 +4634,8 @@ Module Impl_erc20_erc20___CallBuilder_18.
                     ink_env.call.execution_input.EmptyArgumentList))))
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.backend_and_call_builder_and_error.build_call in
+    let* α0 :=
+      ink_env.backend_and_call_builder_and_engine_and_error.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 104; 18; 102; 160 ] in
@@ -4653,10 +4658,10 @@ Module Impl_erc20_erc20___CallBuilder_18.
       (__ink_binding_2 : erc20.erc20.Balance)
       :
         M (H := H')
-          (ink_env.backend_and_call_builder_and_error.CallBuilder
+          (ink_env.backend_and_call_builder_and_engine_and_error.CallBuilder
             erc20.erc20.Environment
             (ink_env.call.common.Set_
-              (ink_env.backend_and_call_builder_and_error.Call
+              (ink_env.backend_and_call_builder_and_engine_and_error.Call
                 erc20.erc20.Environment))
             (ink_env.call.common.Set_
               (ink_env.call.execution_input.ExecutionInput
@@ -4671,7 +4676,8 @@ Module Impl_erc20_erc20___CallBuilder_18.
                       ink_env.call.execution_input.EmptyArgumentList)))))
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType (erc20.erc20.Result unit)))) :=
-    let* α0 := ink_env.backend_and_call_builder_and_error.build_call in
+    let* α0 :=
+      ink_env.backend_and_call_builder_and_engine_and_error.build_call in
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 11; 57; 111; 24 ] in
