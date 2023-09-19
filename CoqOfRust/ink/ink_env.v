@@ -1172,6 +1172,13 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       forall `{H' : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
       T::type["Balance"] -> M (H := H') unit.
   
+  Parameter count_used_storage_cells :
+      forall `{H' : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
+      (ref T::type["AccountId"]) ->
+        M (H := H')
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            usize).
+  
   Parameter set_block_timestamp :
       forall `{H' : State.Trait} {T : Set} `{ink_env.types.Environment.Trait T},
       T::type["Timestamp"] -> M (H := H') unit.
@@ -1220,6 +1227,32 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       `{ink_env.types.Environment.Trait T}
       : Set :=
     DefaultAccounts.t (T := T).
+  
+  Parameter run_test :
+      forall
+        `{H' : State.Trait}
+        {T F : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.ops.function.FnOnce.Trait F
+            (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
+              T)}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      F ->
+        M (H := H')
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
+            unit).
+  
+  Parameter default_accounts :
+      forall
+        `{H' : State.Trait}
+        {T : Set}
+        `{ink_env.types.Environment.Trait T}
+        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+            (T := list u8)},
+      M (H := H')
+          (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
+            T).
   
   Parameter assert_contract_termination :
       forall

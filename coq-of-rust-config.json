@@ -61,11 +61,9 @@
         "CallParams": { "move": "up", "before": "OnInstance" },
         "TypedEnvBackend": { "move": "up", "before": "OnInstance" },
         "EnvBackend": { "move": "up", "before": "OnInstance" },
+        "DefaultAccounts": { "move": "up", "before": "run_test" },
         "register_chain_extension": { "move": "up" },
         "recorded_debug_messages": { "move": "up" },
-        "count_used_storage_cells": { "move": "up" },
-        "run_test": { "move": "up" },
-        "default_accounts": { "move": "up" },
         "recorded_events": { "move": "up" }
       },
       "top_level::arithmetic": { 
