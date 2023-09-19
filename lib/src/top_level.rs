@@ -1450,6 +1450,8 @@ impl ImplItem {
                     text("Definition"),
                     line(),
                     text(name),
+                    line(),
+                    monadic_typeclass_parameter(),
                     text(" := "),
                     body.to_doc(false),
                     text("."),
@@ -1544,14 +1546,19 @@ impl TraitBound {
                         .ty_params
                         .iter()
                         .map(|ty_param| match *ty_param.to_owned() {
-                            TraitTyParamValue::JustValue { name, ty } => (Some(name), ty.to_coq()),
-                            TraitTyParamValue::ValWithDef { name, ty } => (
-                                Some(name),
-                                coq::Expression::just_name("Some").apply(&ty.to_coq()),
-                            ),
-                            TraitTyParamValue::JustDefault { name } => {
-                                (Some(name), coq::Expression::just_name("None"))
+                            TraitTyParamValue::JustValue { name, ty }
+                            | TraitTyParamValue::ValWithDef { name, ty } => {
+                                (Some(name), ty.to_coq())
                             }
+                            TraitTyParamValue::JustDefault { name } => (
+                                Some(name.clone()),
+                                coq::Expression::Code(concat([
+                                    self.name.to_doc(),
+                                    text(".Default."),
+                                    text(name),
+                                ]))
+                                .apply(&coq::Expression::just_name("Self")),
+                            ),
                         })
                         .collect(),
                 },
@@ -2413,17 +2420,15 @@ impl TopLevelItem {
                                             .map(|ty_param| {
                                                 let ty_param = *ty_param.clone();
                                                 match ty_param {
-                                                    TraitTyParamValue::ValWithDef { name, ty } => (
-                                                        Some(name),
-                                                        coq::Expression::just_name("Some")
-                                                            .apply(&ty.to_coq()),
-                                                    ),
-                                                    TraitTyParamValue::JustValue { name, ty } => {
+                                                    TraitTyParamValue::JustValue { name, ty } | TraitTyParamValue::ValWithDef { name, ty } => {
                                                         (Some(name), ty.to_coq())
                                                     }
                                                     TraitTyParamValue::JustDefault { name } => (
-                                                        Some(name),
-                                                        coq::Expression::just_name("None"),
+                                                        Some(name.clone()),
+                                                        coq::Expression::Code(
+                                                            concat([of_trait.to_doc(), text(".Default."), text(name)])
+                                                        ).apply(&coq::Expression::just_name("Self")
+                                                        ),
                                                     ),
                                                 }
                                             })

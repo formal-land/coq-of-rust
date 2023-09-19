@@ -129,7 +129,10 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
     Notation.dot := bitand;
   }.
   
-  Global Instance I : core.ops.bit.BitAnd.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.ops.bit.BitAnd.Trait Self
+        (Rhs := core.ops.bit.BitAnd.Default.Rhs Self)
+      := {
     core.ops.bit.BitAnd.Output := Output;
     core.ops.bit.BitAnd.bitand `{H' : State.Trait} := bitand;
   }.
@@ -156,7 +159,10 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
     Notation.dot := bitand_assign;
   }.
   
-  Global Instance I : core.ops.bit.BitAndAssign.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.ops.bit.BitAndAssign.Trait Self
+        (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self)
+      := {
     core.ops.bit.BitAndAssign.bitand_assign `{H' : State.Trait}
       :=
       bitand_assign;
@@ -181,7 +187,9 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
     Notation.dot := bitor;
   }.
   
-  Global Instance I : core.ops.bit.BitOr.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.ops.bit.BitOr.Trait Self (Rhs := core.ops.bit.BitOr.Default.Rhs Self)
+      := {
     core.ops.bit.BitOr.Output := Output;
     core.ops.bit.BitOr.bitor `{H' : State.Trait} := bitor;
   }.
@@ -208,7 +216,10 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
     Notation.dot := bitor_assign;
   }.
   
-  Global Instance I : core.ops.bit.BitOrAssign.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.ops.bit.BitOrAssign.Trait Self
+        (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self)
+      := {
     core.ops.bit.BitOrAssign.bitor_assign `{H' : State.Trait} := bitor_assign;
   }.
   Global Hint Resolve I : core.
@@ -231,7 +242,10 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
     Notation.dot := bitxor;
   }.
   
-  Global Instance I : core.ops.bit.BitXor.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.ops.bit.BitXor.Trait Self
+        (Rhs := core.ops.bit.BitXor.Default.Rhs Self)
+      := {
     core.ops.bit.BitXor.Output := Output;
     core.ops.bit.BitXor.bitxor `{H' : State.Trait} := bitxor;
   }.
@@ -258,7 +272,10 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
     Notation.dot := bitxor_assign;
   }.
   
-  Global Instance I : core.ops.bit.BitXorAssign.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.ops.bit.BitXorAssign.Trait Self
+        (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self)
+      := {
     core.ops.bit.BitXorAssign.bitxor_assign `{H' : State.Trait}
       :=
       bitxor_assign;

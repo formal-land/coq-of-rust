@@ -249,7 +249,10 @@ Module
       Notation.dot := add;
     }.
     
-    Global Instance I : core.ops.arith.Add.Trait Self (Rhs := None) := {
+    Global Instance I
+      : core.ops.arith.Add.Trait Self
+          (Rhs := core.ops.arith.Add.Default.Rhs Self)
+        := {
       core.ops.arith.Add.Output := Output;
       core.ops.arith.Add.add `{H' : State.Trait} := add;
     }.

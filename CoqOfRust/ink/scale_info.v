@@ -560,7 +560,7 @@ Module interner.
       (* Context {T : Set}. *)
       Global Instance I :
         core.cmp.PartialEq.Trait (UntrackedSymbol core.any.TypeId)
-        (Rhs := None).
+        (Rhs := UntrackedSymbol core.any.TypeId).
       Admitted.
     End Impl_PartialEq_for_UntrackedSymbol.
   End Impl_PartialEq_for_UntrackedSymbol.
@@ -579,7 +579,8 @@ Module interner.
     Section Impl_PartialOrd_for_UntrackedSymbol.
       (* Context {T : Set}. *)
       Global Instance I : core.cmp.PartialOrd.Trait
-        (UntrackedSymbol core.any.TypeId) None.
+        (UntrackedSymbol core.any.TypeId)
+        (Rhs := UntrackedSymbol core.any.TypeId).
       Admitted.
     End Impl_PartialOrd_for_UntrackedSymbol.
   End Impl_PartialOrd_for_UntrackedSymbol.
@@ -590,7 +591,7 @@ Module interner.
       (* Context {T : Set}. *)
       Global Instance I : core.cmp.PartialOrd.Trait
         (UntrackedSymbol core.any.TypeId)
-        (Some (UntrackedSymbol core.any.TypeId)).
+        (Rhs := UntrackedSymbol core.any.TypeId).
       Admitted.
     End Impl_PartialOrd_for_UntrackedSymbol'.
   End Impl_PartialOrd_for_UntrackedSymbol'.
@@ -651,18 +652,18 @@ Module form.
     Class Trait
         (Self : Set)
         {Type_ : Set}
-        `{core.cmp.PartialEq.Trait Type_ (Rhs := None)}
+        `{core.cmp.PartialEq.Trait Type_ (Rhs := Type_)}
         `{core.cmp.Eq.Trait Type_}
-        `{core.cmp.PartialOrd.Trait Type_ (Rhs := None)}
+        `{core.cmp.PartialOrd.Trait Type_ (Rhs := Type_)}
         `{core.cmp.Ord.Trait Type_}
         `{core.clone.Clone.Trait Type_}
         `{core.fmt.Debug.Trait Type_}
         `{scale_info.form.JsonSchemaMaybe.Trait Type_}
         {String : Set}
         `{core.convert.AsRef.Trait String (T := str)}
-        `{core.cmp.PartialEq.Trait String (Rhs := None)}
+        `{core.cmp.PartialEq.Trait String (Rhs := String)}
         `{core.cmp.Eq.Trait String}
-        `{core.cmp.PartialOrd.Trait String (Rhs := None)}
+        `{core.cmp.PartialOrd.Trait String (Rhs := String)}
         `{core.cmp.Ord.Trait String}
         `{core.clone.Clone.Trait String}
         `{core.fmt.Debug.Trait String}
@@ -707,7 +708,7 @@ Module form.
   (* manual implementation *)
   Module Impl_PartialEq_for_PortableForm.
     Global Instance I :
-      core.cmp.PartialEq.Trait PortableForm (Rhs := None) := {|
+      core.cmp.PartialEq.Trait PortableForm (Rhs := PortableForm) := {|
       core.cmp.PartialEq.eq `{H : State.Trait} _ _ := Pure (H := H) true;
     |}.
   End Impl_PartialEq_for_PortableForm.
@@ -720,7 +721,7 @@ Module form.
   (* manual implementation *)
   Module Impl_PartialOrd_for_PortableForm.
     Global Instance I :
-      core.cmp.PartialOrd.Trait PortableForm (Some PortableForm) := {|
+      core.cmp.PartialOrd.Trait PortableForm (Rhs := PortableForm) := {|
       core.cmp.PartialOrd.partial_cmp `{H : State.Trait} _ _
         := Pure (H := H) (option.Option.Some std.cmp.Ordering.Equal);
     |}.

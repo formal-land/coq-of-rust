@@ -15,7 +15,7 @@ Module Impl_PartialEq_for_Result.
 
     Global Instance I
       {T E : Set} `{core.cmp.PartialEq.Trait T} `{core.cmp.PartialEq.Trait E} :
-      core.cmp.PartialEq.Trait (Result T E) (Rhs := None) := {
+      core.cmp.PartialEq.Trait (Result T E) (Rhs := _) := {
       eq `{State.Trait} := eq (T := T) (E := E);
     }.
 

@@ -44,18 +44,18 @@ Module arithmetic.
         `{core.convert.From.Trait Self (T := u8)}
         `{num_traits.bounds.Bounded.Trait Self}
         `{core.cmp.Ord.Trait Self}
-        `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
+        `{core.cmp.PartialOrd.Trait Self (Rhs := Self)}
         `{num_traits.identities.Zero.Trait Self}
         `{num_traits.identities.One.Trait Self}
         `{num_traits.bounds.Bounded.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)}
+        `{core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
+        `{core.ops.arith.Sub.Trait Self (Rhs := Self)}
+        `{core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
+        `{core.ops.arith.Mul.Trait Self (Rhs := Self)}
+        `{core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
+        `{core.ops.arith.Div.Trait Self (Rhs := Self)}
+        `{core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
         `{num_traits.ops.checked.CheckedMul.Trait Self}
         `{ink_env.arithmetic.Saturating.Trait Self}
         `{core.convert.TryFrom.Trait Self (T := u16)}
@@ -149,7 +149,8 @@ Module types.
           `(parity_scale_codec.codec.Codec.Trait AccountId)
           `(ink_env.types.CodecAsType.Trait AccountId)
           `(core.clone.Clone.Trait AccountId)
-          `(core.cmp.PartialEq.Trait AccountId (Rhs := None))
+          `(core.cmp.PartialEq.Trait AccountId
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait AccountId)
           `(core.cmp.Ord.Trait AccountId)
           `(core.convert.AsRef.Trait AccountId (T := Slice u8))
@@ -163,7 +164,8 @@ Module types.
           `(ink_env.types.CodecAsType.Trait Balance)
           `(core.marker.Copy.Trait Balance)
           `(core.clone.Clone.Trait Balance)
-          `(core.cmp.PartialEq.Trait Balance (Rhs := None))
+          `(core.cmp.PartialEq.Trait Balance
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait Balance)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
           `(ink_env.types.FromLittleEndian.Trait Balance),
@@ -177,7 +179,8 @@ Module types.
           `(core.marker.Copy.Trait Hash)
           `(core.clone.Clone.Trait Hash)
           `(ink_primitives.types.Clear.Trait Hash)
-          `(core.cmp.PartialEq.Trait Hash (Rhs := None))
+          `(core.cmp.PartialEq.Trait Hash
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait Hash)
           `(core.cmp.Ord.Trait Hash)
           `(core.convert.AsRef.Trait Hash (T := Slice u8))
@@ -191,7 +194,8 @@ Module types.
           `(ink_env.types.CodecAsType.Trait Timestamp)
           `(core.marker.Copy.Trait Timestamp)
           `(core.clone.Clone.Trait Timestamp)
-          `(core.cmp.PartialEq.Trait Timestamp (Rhs := None))
+          `(core.cmp.PartialEq.Trait Timestamp
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait Timestamp)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
           `(ink_env.types.FromLittleEndian.Trait Timestamp),
@@ -204,7 +208,8 @@ Module types.
           `(ink_env.types.CodecAsType.Trait BlockNumber)
           `(core.marker.Copy.Trait BlockNumber)
           `(core.clone.Clone.Trait BlockNumber)
-          `(core.cmp.PartialEq.Trait BlockNumber (Rhs := None))
+          `(core.cmp.PartialEq.Trait BlockNumber
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait BlockNumber)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
           `(ink_env.types.FromLittleEndian.Trait BlockNumber),
@@ -314,7 +319,8 @@ Module Environment.
         `(parity_scale_codec.codec.Codec.Trait AccountId)
         `(ink_env.types.CodecAsType.Trait AccountId)
         `(core.clone.Clone.Trait AccountId)
-        `(core.cmp.PartialEq.Trait AccountId (Rhs := None))
+        `(core.cmp.PartialEq.Trait AccountId
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait AccountId)
         `(core.cmp.Ord.Trait AccountId)
         `(core.convert.AsRef.Trait AccountId (T := Slice u8))
@@ -328,7 +334,8 @@ Module Environment.
         `(ink_env.types.CodecAsType.Trait Balance)
         `(core.marker.Copy.Trait Balance)
         `(core.clone.Clone.Trait Balance)
-        `(core.cmp.PartialEq.Trait Balance (Rhs := None))
+        `(core.cmp.PartialEq.Trait Balance
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait Balance)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
         `(ink_env.types.FromLittleEndian.Trait Balance),
@@ -342,7 +349,8 @@ Module Environment.
         `(core.marker.Copy.Trait Hash)
         `(core.clone.Clone.Trait Hash)
         `(ink_primitives.types.Clear.Trait Hash)
-        `(core.cmp.PartialEq.Trait Hash (Rhs := None))
+        `(core.cmp.PartialEq.Trait Hash
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait Hash)
         `(core.cmp.Ord.Trait Hash)
         `(core.convert.AsRef.Trait Hash (T := Slice u8))
@@ -356,7 +364,8 @@ Module Environment.
         `(ink_env.types.CodecAsType.Trait Timestamp)
         `(core.marker.Copy.Trait Timestamp)
         `(core.clone.Clone.Trait Timestamp)
-        `(core.cmp.PartialEq.Trait Timestamp (Rhs := None))
+        `(core.cmp.PartialEq.Trait Timestamp
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait Timestamp)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
         `(ink_env.types.FromLittleEndian.Trait Timestamp),
@@ -369,7 +378,8 @@ Module Environment.
         `(ink_env.types.CodecAsType.Trait BlockNumber)
         `(core.marker.Copy.Trait BlockNumber)
         `(core.clone.Clone.Trait BlockNumber)
-        `(core.cmp.PartialEq.Trait BlockNumber (Rhs := None))
+        `(core.cmp.PartialEq.Trait BlockNumber
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait BlockNumber)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
         `(ink_env.types.FromLittleEndian.Trait BlockNumber),
@@ -2765,18 +2775,18 @@ Module BaseArithmetic.
       `{core.convert.From.Trait Self (T := u8)}
       `{num_traits.bounds.Bounded.Trait Self}
       `{core.cmp.Ord.Trait Self}
-      `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
+      `{core.cmp.PartialOrd.Trait Self (Rhs := Self)}
       `{num_traits.identities.Zero.Trait Self}
       `{num_traits.identities.One.Trait Self}
       `{num_traits.bounds.Bounded.Trait Self}
-      `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
+      `{core.ops.arith.Add.Trait Self (Rhs := Self)}
+      `{core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
+      `{core.ops.arith.Sub.Trait Self (Rhs := Self)}
+      `{core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
+      `{core.ops.arith.Mul.Trait Self (Rhs := Self)}
+      `{core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
+      `{core.ops.arith.Div.Trait Self (Rhs := Self)}
+      `{core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
       `{num_traits.ops.checked.CheckedMul.Trait Self}
       `{ink_env.arithmetic.Saturating.Trait Self}
       `{core.convert.TryFrom.Trait Self (T := u16)}

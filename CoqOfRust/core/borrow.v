@@ -54,7 +54,7 @@ pub trait ToOwned {
 Module ToOwned.
   Class Trait (Self Owned : Set) 
     `{Borrow.Trait Owned Self}
-  : Set := { 
+  : Set := {
     Owned := Owned;
 
     to_owned : ref Self -> Owned;

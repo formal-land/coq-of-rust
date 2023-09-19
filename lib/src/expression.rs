@@ -46,6 +46,10 @@ pub(crate) enum Expr {
     Pure(Box<Expr>),
     LocalVar(String),
     Var(Path),
+    VarWithSelfTy {
+        path: Path,
+        self_ty: Box<CoqType>,
+    },
     AssociatedFunction {
         ty: Box<CoqType>,
         func: String,
@@ -191,7 +195,13 @@ fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
 
 fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
     match qpath {
-        QPath::Resolved(_, path) => Expr::Var(compile_path(env, path)),
+        QPath::Resolved(self_ty, path) => match self_ty {
+            None => Expr::Var(compile_path(env, path)),
+            Some(self_ty) => Expr::VarWithSelfTy {
+                path: compile_path(env, path),
+                self_ty: compile_type(env, self_ty),
+            },
+        },
         QPath::TypeRelative(ty, segment) => {
             let ty = compile_type(env, ty);
             let func = segment.ident.to_string();
@@ -310,6 +320,13 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
         Expr::Pure(_) => panic!("Expressions should not be monadic yet."),
         Expr::LocalVar(_) => (pure(expr), fresh_vars),
         Expr::Var(_) => (pure(expr), fresh_vars),
+        Expr::VarWithSelfTy { path, self_ty } => (
+            pure(Expr::VarWithSelfTy {
+                path,
+                self_ty: mt_ty(self_ty),
+            }),
+            fresh_vars,
+        ),
         Expr::AssociatedFunction { .. } => (pure(expr), fresh_vars),
         Expr::Literal(_) => (pure(expr), fresh_vars),
         Expr::AddrOf(e) => monadic_let(fresh_vars, *e, |fresh_vars, e| {
@@ -1051,6 +1068,14 @@ impl Expr {
             Expr::Pure(expr) => paren(with_paren, nest([text("Pure"), line(), expr.to_doc(true)])),
             Expr::LocalVar(ref name) => text(name),
             Expr::Var(path) => path.to_doc(),
+            Expr::VarWithSelfTy { path, self_ty } => paren(
+                with_paren,
+                nest([
+                    path.to_doc(),
+                    line(),
+                    nest([text("(Self :="), line(), self_ty.to_doc(true), text(")")]),
+                ]),
+            ),
             Expr::AssociatedFunction { ty, func } => nest([
                 ty.to_doc(true),
                 text("::["),

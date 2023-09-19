@@ -825,8 +825,7 @@ def update_erc20():
 
 Require CoqOfRust.ink.ink_storage.
 Require CoqOfRust.ink.ink_env.
-Require CoqOfRust.ink.ink.
-""",
+Require CoqOfRust.ink.ink.""",
         content,
     )
 
@@ -850,13 +849,6 @@ Require CoqOfRust.ink.ink.
       H0.(ink_storage_traits.storage.AutoStorableHint.Type_)). Admitted.
 """,
         content,
-    )
-
-    content = sub_exactly_n(
-        r"IS_RESULT := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.",
-        r"IS_RESULT `{State.Trait} := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.",
-        content,
-        2,
     )
 
     content = sub_exactly_once(
@@ -892,30 +884,6 @@ Require CoqOfRust.ink.ink.
     Defined.
     Global Hint Resolve I : core.""",
         content,
-    )
-
-    content = sub_exactly_n(
-        r"    Definition PAYABLE := Pure false.",
-        r"    Definition PAYABLE `{State.Trait} := Pure false.",
-        content,
-        7,
-    )
-
-    content = sub_exactly_n(
-        r"    Definition SELECTOR := Pure",
-        r"    Definition SELECTOR `{State.Trait} := Pure",
-        content,
-        7,
-    )
-
-    content = sub_exactly_once(
-        r'    Definition LABEL := Pure "new".',
-        r'    Definition LABEL `{State.Trait} := Pure "new".',
-        content,
-    )
-
-    content = sub_exactly_n(
-        r"CALLABLE := Pure", r"CALLABLE `{State.Trait} := Pure", content, 14
     )
 
     with open(file_name, "w") as f:

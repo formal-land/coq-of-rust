@@ -38,7 +38,7 @@ fn main() {
     // println!("{}", form.get());
 
     let username = <Form as UsernameWidget>::get(&form);
-    assert_eq!("rustacean".to_owned(), username);
+    assert_eq!(("rustacean".to_string()), username);
     let age = <Form as AgeWidget>::get(&form);
     assert_eq!(28, age);
 }

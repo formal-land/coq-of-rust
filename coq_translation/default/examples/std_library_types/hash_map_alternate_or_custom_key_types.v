@@ -52,7 +52,9 @@ Module
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+      := {
     core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
   Global Hint Resolve I : core.
