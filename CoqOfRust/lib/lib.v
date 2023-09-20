@@ -14,6 +14,7 @@ Export List.ListNotations.
 
 Require Export CoqOfRust.Monad.
 Export Monad.Notations.
+Require Export CoqOfRust.lib.Notations.
 
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call

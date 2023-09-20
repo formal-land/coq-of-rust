@@ -1255,11 +1255,11 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             T).
   
   Parameter recorded_events_ret_ty :
-      forall `{core.iter.traits.iterator.Iterator},
-      Set.
+      Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
+      unit.
   Parameter recorded_events :
       forall `{H' : State.Trait},
-      M (H := H') recorded_events_ret_ty.
+      M (H := H') (projT1 recorded_events_ret_ty).
   
   Parameter assert_contract_termination :
       forall
@@ -2870,7 +2870,12 @@ Definition DefaultAccounts
     : Set :=
   DefaultAccounts.t (T := T).
 
-
+Parameter recorded_events_ret_ty :
+    Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
+    unit.
+Parameter recorded_events :
+    forall `{H' : State.Trait},
+    M (H := H') (projT1 recorded_events_ret_ty).
 
 Parameter assert_contract_termination :
     forall

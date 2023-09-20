@@ -54,6 +54,7 @@ Notation "e (||)" :=
     only parsing).
 
 Require CoqOfRust.lib.lib.
+Export lib.Notations.
 Module Notation := CoqOfRust.lib.lib.Notation.
 
 (** Note that we revert the arguments in this notation. *)

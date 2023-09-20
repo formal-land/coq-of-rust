@@ -405,27 +405,27 @@ impl CoqType {
         }
     }
 
-    /// substitutes all occurences of OpaqueType with var(name)
-    pub(crate) fn subst_opaque_types(&mut self, name: &String) {
+    /// substitutes all occurences of OpaqueType with ty
+    pub(crate) fn subst_opaque_types(&mut self, ty: &CoqType) {
         match self {
             CoqType::Var(_) => {}
             CoqType::Application { args, .. } => args
                 .iter_mut()
-                .map(|ty| ty.subst_opaque_types(name))
+                .map(|arg_ty| arg_ty.subst_opaque_types(ty))
                 .collect(),
             CoqType::Function { args, ret } => {
-                ret.subst_opaque_types(name);
+                ret.subst_opaque_types(ty);
                 args.iter_mut()
-                    .map(|ty| ty.subst_opaque_types(name))
+                    .map(|arg_ty| arg_ty.subst_opaque_types(ty))
                     .collect()
             }
             CoqType::Tuple(types) => types
                 .iter_mut()
-                .map(|ty| ty.subst_opaque_types(name))
+                .map(|one_ty| one_ty.subst_opaque_types(ty))
                 .collect(),
-            CoqType::Array(ty) => ty.subst_opaque_types(name),
-            CoqType::Ref(ty, _) => ty.subst_opaque_types(name),
-            CoqType::OpaqueType(_) => *self = *CoqType::var(name.clone()),
+            CoqType::Array(item_ty) => item_ty.subst_opaque_types(ty),
+            CoqType::Ref(ref_ty, _) => ref_ty.subst_opaque_types(ty),
+            CoqType::OpaqueType(_) => *self = ty.clone(),
         }
     }
 }
