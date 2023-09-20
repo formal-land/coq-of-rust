@@ -383,6 +383,13 @@ impl<'a> TopLevelItem<'a> {
                     &[TopLevelItem::Class(Class::new(
                         "Trait",
                         &[
+                            vec![ArgDecl::new(
+                                &ArgDeclVar::Normal {
+                                    idents: vec!["Self".to_string()],
+                                    ty: Some(Expression::Set),
+                                },
+                                ArgSpecKind::Explicit,
+                            )],
                             bounds.to_vec(),
                             if ty_params.is_empty() {
                                 vec![]
@@ -592,29 +599,14 @@ impl<'a> Class<'a> {
                 nest([
                     text("Class "),
                     text(self.name.to_owned()),
-                    line(),
-                    nest([
-                        nest([
-                            text("("),
-                            text("Self"),
+                    if self.params.is_empty() {
+                        nil()
+                    } else {
+                        group([
                             line(),
-                            text(":"),
-                            line(),
-                            Expression::Set.to_doc(false),
-                            text(")"),
-                        ]),
-                        if self.params.is_empty() {
-                            nil()
-                        } else {
-                            concat([
-                                line(),
-                                intersperse(
-                                    self.params.iter().map(|param| param.to_doc()),
-                                    [line()],
-                                ),
-                            ])
-                        },
-                    ]),
+                            intersperse(self.params.iter().map(|param| param.to_doc()), [line()]),
+                        ])
+                    },
                     text(" :"),
                     line(),
                     Expression::Type.to_doc(false),

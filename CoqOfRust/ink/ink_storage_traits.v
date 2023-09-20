@@ -129,9 +129,9 @@ Module storage.
     Unset Primitive Projections.
     Class Trait
         (Self : Set)
-          `{ink_storage_traits.storage.Storable.Trait Self}
-          `{parity_scale_codec.codec.Codec.Trait Self}
-          `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+        `{ink_storage_traits.storage.Storable.Trait Self}
+        `{parity_scale_codec.codec.Codec.Trait Self}
+        `{ink_storage_traits.storage.private.Sealed.Trait Self} :
         Type := {
     }.
     Global Set Primitive Projections.
@@ -157,8 +157,8 @@ Module storage.
   Module StorableHint.
     Class Trait
         (Self : Set)
-          {Key : Set}
-          `{ink_storage_traits.storage.StorageKey.Trait Key} :
+        {Key : Set}
+        `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
       _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
@@ -182,8 +182,8 @@ Module storage.
   Module AutoStorableHint.
     Class Trait
         (Self : Set)
-          {Key : Set}
-          `{ink_storage_traits.storage.StorageKey.Trait Key} :
+        {Key : Set}
+        `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
       _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
@@ -251,9 +251,9 @@ Module Packed.
   Unset Primitive Projections.
   Class Trait
       (Self : Set)
-        `{ink_storage_traits.storage.Storable.Trait Self}
-        `{parity_scale_codec.codec.Codec.Trait Self}
-        `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+      `{ink_storage_traits.storage.Storable.Trait Self}
+      `{parity_scale_codec.codec.Codec.Trait Self}
+      `{ink_storage_traits.storage.private.Sealed.Trait Self} :
       Type := {
   }.
   Global Set Primitive Projections.
@@ -279,8 +279,8 @@ Module StorageKey.
 Module StorableHint.
   Class Trait
       (Self : Set)
-        {Key : Set}
-        `{ink_storage_traits.storage.StorageKey.Trait Key} :
+      {Key : Set}
+      `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
     _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
@@ -301,8 +301,8 @@ End StorableHint.
 Module AutoStorableHint.
   Class Trait
       (Self : Set)
-        {Key : Set}
-        `{ink_storage_traits.storage.StorageKey.Trait Key} :
+      {Key : Set}
+      `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
     _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;

@@ -41,8 +41,8 @@ End Programmer.
 Module CompSciStudent.
   Class Trait
       (Self : Set)
-        `{supertraits.Programmer.Trait Self}
-        `{supertraits.Student.Trait Self} :
+      `{supertraits.Programmer.Trait Self}
+      `{supertraits.Student.Trait Self} :
       Type := {
     git_username `{H' : State.Trait}
       :

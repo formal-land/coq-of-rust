@@ -238,8 +238,8 @@ Module reflect.
     Module ConstructorOutput.
       Class Trait
           (Self : Set)
-            `{ink.reflect.dispatch.private.Sealed.Trait Self}
-            {C : Set} :
+          `{ink.reflect.dispatch.private.Sealed.Trait Self}
+          {C : Set} :
           Type := {
         IS_RESULT `{H' : State.Trait} : bool;
         Error : Set;
@@ -321,8 +321,7 @@ Module reflect.
     End ContractMessageDecoder.
     
     Module DecodeDispatch.
-      Class Trait
-          (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
+      Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
           Type := {
         decode_dispatch
           `{H' : State.Trait}
@@ -533,8 +532,8 @@ Module codegen.
       Module EmitEvent.
         Class Trait
             (Self : Set)
-              {C : Set}
-              `{ink.reflect.event.ContractEventBase.Trait C} :
+            {C : Set}
+            `{ink.reflect.event.ContractEventBase.Trait C} :
             Type := {
           emit_event
             `{H' : State.Trait}
@@ -986,8 +985,8 @@ Module event.
     Module EmitEvent.
       Class Trait
           (Self : Set)
-            {C : Set}
-            `{ink.reflect.event.ContractEventBase.Trait C} :
+          {C : Set}
+          `{ink.reflect.event.ContractEventBase.Trait C} :
           Type := {
         emit_event
           `{H' : State.Trait}
@@ -1069,7 +1068,9 @@ End event.
 Module emit.
   Module EmitEvent.
     Class Trait
-        (Self : Set) {C : Set} `{ink.reflect.event.ContractEventBase.Trait C} :
+        (Self : Set)
+        {C : Set}
+        `{ink.reflect.event.ContractEventBase.Trait C} :
         Type := {
       emit_event
         `{H' : State.Trait}
@@ -1098,7 +1099,9 @@ End emit.
 
 Module EmitEvent.
   Class Trait
-      (Self : Set) {C : Set} `{ink.reflect.event.ContractEventBase.Trait C} :
+      (Self : Set)
+      {C : Set}
+      `{ink.reflect.event.ContractEventBase.Trait C} :
       Type := {
     emit_event
       `{H' : State.Trait}
@@ -1746,8 +1749,8 @@ Module Wrap_dispatch_1.
     Module ConstructorOutput.
       Class Trait
           (Self : Set)
-            `{ink.reflect.dispatch.private.Sealed.Trait Self}
-            {C : Set} :
+          `{ink.reflect.dispatch.private.Sealed.Trait Self}
+          {C : Set} :
           Type := {
         IS_RESULT `{H' : State.Trait} : bool;
         Error : Set;
@@ -1829,8 +1832,7 @@ Module Wrap_dispatch_1.
     End ContractMessageDecoder.
     
     Module DecodeDispatch.
-      Class Trait
-          (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
+      Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
           Type := {
         decode_dispatch
           `{H' : State.Trait}
@@ -1987,7 +1989,9 @@ End Sealed.
 
 Module ConstructorOutput.
   Class Trait
-      (Self : Set) `{ink.reflect.dispatch.private.Sealed.Trait Self} {C : Set} :
+      (Self : Set)
+      `{ink.reflect.dispatch.private.Sealed.Trait Self}
+      {C : Set} :
       Type := {
     IS_RESULT `{H' : State.Trait} : bool;
     Error : Set;
@@ -2086,8 +2090,7 @@ End DispatchError.
 Definition DispatchError := DispatchError.t.
 
 Module DecodeDispatch.
-  Class Trait
-      (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
+  Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
       Type := {
     decode_dispatch
       `{H' : State.Trait}
@@ -2359,7 +2362,8 @@ Module chain_extension.
   
   Module IsResultType.
     Class Trait
-        (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self} :
+        (Self : Set)
+        `{ink.chain_extension.private.IsResultSealed.Trait Self} :
         Type := {
       Ok : Set;
       Err : Set;
@@ -2377,8 +2381,8 @@ Module chain_extension.
   Module Output.
     Class Trait
         (Self : Set)
-          `{ink.chain_extension.private.OutputSealed.Trait Self}
-          {T E : Set} :
+        `{ink.chain_extension.private.OutputSealed.Trait Self}
+        {T E : Set} :
         Type := {
       ReturnType : Set;
     }.
@@ -2425,7 +2429,8 @@ End ChainExtension.
 
 (* Module IsResultType.
   Class Trait
-      (Self : Set) `{ink.chain_extension.private.IsResultSealed.Trait Self} :
+      (Self : Set)
+      `{ink.chain_extension.private.IsResultSealed.Trait Self} :
       Type := {
     Ok : Set;
     Err : Set;
@@ -2442,8 +2447,8 @@ End IsResultType. *)
 Module Output.
   Class Trait
       (Self : Set)
-        `{ink.chain_extension.private.OutputSealed.Trait Self}
-        {T E : Set} :
+      `{ink.chain_extension.private.OutputSealed.Trait Self}
+      {T E : Set} :
       Type := {
     ReturnType : Set;
   }.
@@ -2494,8 +2499,7 @@ End OutputSealed.
 
 Module contract_ref.
   Module ToAccountId.
-    Class Trait
-        (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+    Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
         Type := {
       to_account_id `{H' : State.Trait}
         :
@@ -2510,8 +2514,7 @@ Module contract_ref.
 End contract_ref.
 
 Module ToAccountId.
-  Class Trait
-      (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+  Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
       Type := {
     to_account_id `{H' : State.Trait}
       :

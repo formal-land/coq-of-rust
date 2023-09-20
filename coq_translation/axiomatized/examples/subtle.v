@@ -111,8 +111,8 @@ Module ConstantTimeLess.
   Unset Primitive Projections.
   Class Trait
       (Self : Set)
-        `{subtle.ConstantTimeEq.Trait Self}
-        `{subtle.ConstantTimeGreater.Trait Self} :
+      `{subtle.ConstantTimeEq.Trait Self}
+      `{subtle.ConstantTimeGreater.Trait Self} :
       Type := {
   }.
   Global Set Primitive Projections.
