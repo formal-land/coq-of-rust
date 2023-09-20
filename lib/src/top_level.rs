@@ -2125,7 +2125,7 @@ impl TopLevelItem {
                             ty_params,
                             where_predicates,
                             ty,
-                        } => typeclass_definition_item(
+                        } => vec![typeclass_definition_item(
                             name,
                             ty_params,
                             where_predicates
@@ -2135,15 +2135,15 @@ impl TopLevelItem {
                                     predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
                                 })
                                 .collect::<Vec<_>>(),
-                            ty.to_doc(false),
-                        ),
-                        TraitItem::DefinitionWithDefault { .. } => nil(),
+                            &ty.to_coq(),
+                        )],
+                        TraitItem::DefinitionWithDefault { .. } => vec![],
                         TraitItem::Type(bounds) => typeclass_type_item(
                             name,
                             &bounds
                                 .iter()
                                 .map(|bound| {
-                                    bound.to_doc(
+                                    bound.to_coq(
                                         coq::Expression::just_name(name),
                                         coq::ArgSpecKind::Explicit,
                                     )
@@ -2151,7 +2151,7 @@ impl TopLevelItem {
                                 .collect(),
                         ),
                     })
-                    .collect(),
+                    .concat(),
                 body.iter()
                     .map(|(name, item)| match item {
                         TraitItem::Definition {

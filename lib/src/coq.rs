@@ -79,7 +79,7 @@ pub(crate) struct Class<'a> {
     ty_params: Vec<(String, Option<Doc<'a>>)>,
     predicates: Vec<Doc<'a>>,
     bounds: Vec<Doc<'a>>,
-    items: Vec<Doc<'a>>,
+    items: Vec<ClassFieldDef<'a>>,
 }
 
 #[derive(Clone)]
@@ -119,6 +119,14 @@ pub(crate) enum DefinitionKind<'a> {
 /// a definition of a field in a record definition
 pub(crate) struct FieldDef<'a> {
     ident: Option<String>,
+    ty: Expression<'a>,
+}
+
+#[derive(Clone)]
+/// a definition of a field in a typeclass definition
+pub(crate) struct ClassFieldDef<'a> {
+    ident: Option<String>,
+    args: Vec<ArgDecl<'a>>,
     ty: Expression<'a>,
 }
 
@@ -366,7 +374,7 @@ impl<'a> TopLevelItem<'a> {
         ty_params: &[(String, Option<Doc<'a>>)],
         predicates: &[Doc<'a>],
         bounds: &[Doc<'a>],
-        items: Vec<Doc<'a>>,
+        items: Vec<ClassFieldDef<'a>>,
         instances: Vec<Instance<'a>>,
     ) -> Self {
         TopLevelItem::Module(Module::new(
@@ -555,7 +563,7 @@ impl<'a> Class<'a> {
         ty_params: Vec<(String, Option<Doc<'a>>)>,
         predicates: Vec<Doc<'a>>,
         bounds: Vec<Doc<'a>>,
-        items: Vec<Doc<'a>>,
+        items: Vec<ClassFieldDef<'a>>,
     ) -> Self {
         Class {
             name: name.to_owned(),
@@ -625,7 +633,18 @@ impl<'a> Class<'a> {
                     Expression::Type.to_doc(false),
                     text(" := {"),
                 ]),
-                concat(self.items.clone()),
+                if self.items.is_empty() {
+                    nil()
+                } else {
+                    hardline()
+                },
+                intersperse(
+                    self.items
+                        .iter()
+                        .map(|item| item.to_doc())
+                        .collect::<Vec<_>>(),
+                    [hardline()],
+                ),
             ]),
             hardline(),
             text("}."),
@@ -732,6 +751,38 @@ impl<'a> FieldDef<'a> {
             match self.ident.to_owned() {
                 Some(name) => text(name),
                 None => text("_"),
+            },
+            line(),
+            text(":"),
+            line(),
+            self.ty.to_doc(false),
+            text(";"),
+        ])
+    }
+}
+
+impl<'a> ClassFieldDef<'a> {
+    pub(crate) fn new(ident: &Option<String>, args: &[ArgDecl<'a>], ty: &Expression<'a>) -> Self {
+        ClassFieldDef {
+            ident: ident.to_owned(),
+            args: args.to_owned(),
+            ty: ty.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        nest([
+            match self.ident.to_owned() {
+                Some(name) => text(name),
+                None => text("_"),
+            },
+            if self.args.is_empty() {
+                nil()
+            } else {
+                group([
+                    line(),
+                    intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
+                ])
             },
             line(),
             text(":"),
