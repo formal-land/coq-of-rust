@@ -366,14 +366,13 @@ Module chain_extension.
   
   Module ChainExtension.
     Class Trait (Self : Set) : Type := {
-      func_id `{H' : State.Trait} : (ref Self) -> (M (H := H') u32);
-      call
-        `{H' : State.Trait}
+      func_id `{H' : State.Trait} : (ref Self) -> M (H := H') u32;
+      call `{H' : State.Trait}
         :
         (mut_ref Self) ->
-        (ref (Slice u8)) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
-        (M (H := H') u32);
+          (ref (Slice u8)) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') u32;
     }.
     
     Global Instance Method_func_id `{H' : State.Trait} `(Trait)
@@ -423,14 +422,13 @@ Definition ExtensionId := @ExtensionId.t.
 
 Module ChainExtension.
   Class Trait (Self : Set) : Type := {
-    func_id `{H' : State.Trait} : (ref Self) -> (M (H := H') u32);
-    call
-      `{H' : State.Trait}
+    func_id `{H' : State.Trait} : (ref Self) -> M (H := H') u32;
+    call `{H' : State.Trait}
       :
       (mut_ref Self) ->
-      (ref (Slice u8)) ->
-      (mut_ref (alloc.vec.Vec u8)) ->
-      (M (H := H') u32);
+        (ref (Slice u8)) ->
+        (mut_ref (alloc.vec.Vec u8)) ->
+        M (H := H') u32;
   }.
   
   Global Instance Method_func_id `{H' : State.Trait} `(Trait)

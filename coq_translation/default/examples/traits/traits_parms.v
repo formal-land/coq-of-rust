@@ -27,12 +27,12 @@ Module SomeTrait.
     SomeType : Set;
     _
       :
-      exists
-      `(traits_parms.Foo.Trait SomeType)
-      `(traits_parms.Bar.Trait SomeType)
-      `(traits_parms.Tar.Trait SomeType),
-      True;
-    some_fn `{H' : State.Trait} : (M (H := H') unit);
+      Sigma
+        `(traits_parms.Foo.Trait SomeType)
+        `(traits_parms.Bar.Trait SomeType)
+        `(traits_parms.Tar.Trait SomeType),
+      unit;
+    some_fn `{H' : State.Trait} : M (H := H') unit;
   }.
   
   Global Instance Method_SomeType `(Trait)

@@ -13,7 +13,7 @@ Definition Null := @Null.t.
 
 Module DoubleDrop.
   Class Trait (Self : Set) {T : Set} : Type := {
-    double_drop `{H' : State.Trait} : Self -> T -> (M (H := H') unit);
+    double_drop `{H' : State.Trait} : Self -> T -> M (H := H') unit;
   }.
   
   Global Instance Method_double_drop `{H' : State.Trait} `(Trait)

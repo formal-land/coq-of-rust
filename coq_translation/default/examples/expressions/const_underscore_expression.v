@@ -29,7 +29,7 @@ Definition Bar : Set := Bar.t.
 
 Module BarTrait.
   Class Trait (Self : Set) : Type := {
-    show `{H' : State.Trait} : Self -> (M (H := H') alloc.string.String);
+    show `{H' : State.Trait} : Self -> M (H := H') alloc.string.String;
   }.
   
   Global Instance Method_show `{H' : State.Trait} `(Trait)

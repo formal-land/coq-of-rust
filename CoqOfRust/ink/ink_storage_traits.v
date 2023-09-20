@@ -85,18 +85,18 @@ Module storage.
     Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
       encode
         `{H' : State.Trait}
-        {T: Set}
+        {T : Set}
         `{H'0 : parity_scale_codec.codec.Output.Trait T}
         `{H'1 : core.marker.Sized.Trait T}
         :
-        (ref Self) -> (mut_ref T) -> (M (H := H') unit);
+        (ref Self) -> (mut_ref T) -> M (H := H') unit;
       decode
         `{H' : State.Trait}
-        {I: Set}
+        {I : Set}
         `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
-        (M (H := H') (core.result.Result Self parity_scale_codec.error.Error));
+          M (H := H') (core.result.Result Self parity_scale_codec.error.Error);
     }.
     
     Global Instance Method_encode `{H' : State.Trait} `(Trait)
@@ -161,13 +161,12 @@ Module storage.
           `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
-      _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
+      _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
       PreferredKey : Set;
       _
         :
-        exists
-        `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
-        True;
+        Sigma `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
+        unit;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -187,7 +186,7 @@ Module storage.
           `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
-      _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
+      _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
     }.
     
     Global Instance Method_Type_ `(Trait)
@@ -201,18 +200,18 @@ Module Storable.
   Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
     encode
       `{H' : State.Trait}
-      {T: Set}
+      {T : Set}
       `{H'0 : parity_scale_codec.codec.Output.Trait T}
       `{H'1 : core.marker.Sized.Trait T}
       :
-      (ref Self) -> (mut_ref T) -> (M (H := H') unit);
+      (ref Self) -> (mut_ref T) -> M (H := H') unit;
     decode
       `{H' : State.Trait}
-      {I: Set}
+      {I : Set}
       `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
-      (M (H := H') (core.result.Result Self parity_scale_codec.error.Error));
+        M (H := H') (core.result.Result Self parity_scale_codec.error.Error);
   }.
   
   Global Instance Method_encode `{H' : State.Trait} `(Trait)
@@ -284,13 +283,9 @@ Module StorableHint.
         `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
-    _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
+    _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
     PreferredKey : Set;
-    _
-      :
-      exists
-      `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
-      True;
+    _ : Sigma `(ink_storage_traits.storage.StorageKey.Trait PreferredKey), unit;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -310,7 +305,7 @@ Module AutoStorableHint.
         `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
-    _ : exists `(ink_storage_traits.storage.Storable.Trait Type_), True;
+    _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -322,11 +317,9 @@ End AutoStorableHint.
 Module layout.
   Module StorageLayout.
     Class Trait (Self : Set) : Type := {
-      layout
-        `{H' : State.Trait}
+      layout `{H' : State.Trait}
         :
-        (ref ink_primitives.key.Key) ->
-        (M (H := H') ink_metadata.layout.Layout);
+        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout;
     }.
     
     Global Instance Method_layout `{H' : State.Trait} `(Trait)
@@ -338,10 +331,9 @@ End layout.
 
 Module StorageLayout.
   Class Trait (Self : Set) : Type := {
-    layout
-      `{H' : State.Trait}
+    layout `{H' : State.Trait}
       :
-      (ref ink_primitives.key.Key) -> (M (H := H') ink_metadata.layout.Layout);
+      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout;
   }.
   
   Global Instance Method_layout `{H' : State.Trait} `(Trait)

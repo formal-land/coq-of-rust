@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
   Class Trait (Self : Set) : Type := {
-    print_in_option `{H' : State.Trait} : Self -> (M (H := H') unit);
+    print_in_option `{H' : State.Trait} : Self -> M (H := H') unit;
   }.
   
   Global Instance Method_print_in_option `{H' : State.Trait} `(Trait)
