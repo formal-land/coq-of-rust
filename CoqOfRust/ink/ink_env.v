@@ -660,7 +660,7 @@ Module call.
           Type := {
         from_account_id `{H' : State.Trait}
           :
-          ink_env.types.Environment.AccountId -> M (H := H') Self;
+          (ink_env.types.Environment.AccountId (Self := T)) -> M (H := H') Self;
       }.
       
       Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
@@ -946,7 +946,7 @@ Module hash.
       hash `{H' : State.Trait}
         :
         (ref (Slice u8)) ->
-          (mut_ref ink_env.hash.HashOutput.Type_) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
           M (H := H') unit;
     }.
     
@@ -1097,7 +1097,7 @@ Module topics.
         :
         (ref Self) ->
           (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-          M (H := H') ink_env.topics.TopicsBuilderBackend.Output;
+          M (H := H') (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
     }.
     
     Global Instance Method_RemainingTopics `(Trait)
@@ -1214,7 +1214,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') unit.
   
@@ -1223,7 +1224,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') unit.
   
@@ -1232,7 +1234,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') unit.
   
@@ -1241,7 +1244,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') bool.
   
@@ -1343,7 +1347,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{core.ops.function.FnOnce.Trait F
             (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
               T)}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       F ->
         M (H := H')
@@ -1355,7 +1360,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       M (H := H')
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
@@ -1375,8 +1381,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{ink_env.types.Environment.Trait T}
         `{core.ops.function.FnMut.Trait F (Args := unit)}
         `{core.panic.unwind_safe.UnwindSafe.Trait F}
-        `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
-        `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
+        `{core.fmt.Debug.Trait
+              (ink_env.types.Environment.AccountId (Self := T))}
+        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
       F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H') unit.
   
   Module CallFlags.
@@ -1628,7 +1635,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
-          (mut_ref ink_env.hash.HashOutput.Type_) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
           M (H := H') unit;
       hash_encoded
         `{H' : State.Trait}
@@ -1638,7 +1645,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         :
         (mut_ref Self) ->
           (ref T) ->
-          (mut_ref ink_env.hash.HashOutput.Type_) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
           M (H := H') unit;
       ecdsa_recover `{H' : State.Trait}
         :
@@ -1923,7 +1930,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           M (H := H')
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               (ink_primitives.ConstructorResult
-                ink_env.call.create_builder.ConstructorReturnType.Output));
+                (ink_env.call.create_builder.ConstructorReturnType.Output
+                  (Self := R))));
       terminate_contract
         `{H' : State.Trait}
         {E : Set}
@@ -2396,7 +2404,8 @@ Module api.
         M (H := H')
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)).
+              (ink_env.call.create_builder.ConstructorReturnType.Output
+                (Self := R)))).
   
   Parameter terminate_contract :
       forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
@@ -2436,7 +2445,7 @@ Module api.
   Parameter hash_bytes :
       forall `{H' : State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
       (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M (H := H') unit.
   
   Parameter hash_encoded :
@@ -2445,7 +2454,9 @@ Module api.
         {H T : Set}
         `{ink_env.hash.CryptoHash.Trait H}
         `{parity_scale_codec.codec.Encode.Trait T},
-      (ref T) -> (mut_ref ink_env.hash.HashOutput.Type_) -> M (H := H') unit.
+      (ref T) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+        M (H := H') unit.
   
   Parameter ecdsa_recover :
       forall `{H' : State.Trait},
@@ -2653,7 +2664,8 @@ Parameter instantiate_contract :
       M (H := H')
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           (ink_primitives.ConstructorResult
-            ink_env.call.create_builder.ConstructorReturnType.Output)).
+            (ink_env.call.create_builder.ConstructorReturnType.Output
+              (Self := R)))).
 
 Parameter terminate_contract :
     forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
@@ -2693,7 +2705,7 @@ Parameter debug_message :
 Parameter hash_bytes :
     forall `{H' : State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
     (ref (Slice u8)) ->
-      (mut_ref ink_env.hash.HashOutput.Type_) ->
+      (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
       M (H := H') unit.
 
 Parameter hash_encoded :
@@ -2702,7 +2714,9 @@ Parameter hash_encoded :
       {H T : Set}
       `{ink_env.hash.CryptoHash.Trait H}
       `{parity_scale_codec.codec.Encode.Trait T},
-    (ref T) -> (mut_ref ink_env.hash.HashOutput.Type_) -> M (H := H') unit.
+    (ref T) ->
+      (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+      M (H := H') unit.
 
 Parameter ecdsa_recover :
     forall `{H' : State.Trait},
@@ -2928,7 +2942,8 @@ Parameter set_caller :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') unit.
 
@@ -2937,7 +2952,8 @@ Parameter set_callee :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') unit.
 
@@ -2946,7 +2962,8 @@ Parameter set_contract :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') unit.
 
@@ -2991,7 +3008,8 @@ Parameter run_test :
       `{core.ops.function.FnOnce.Trait F
           (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
             T)}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     F ->
       M (H := H')
@@ -3003,7 +3021,8 @@ Parameter default_accounts :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     M (H := H')
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
@@ -3082,8 +3101,8 @@ Parameter assert_contract_termination :
       `{ink_env.types.Environment.Trait T}
       `{core.ops.function.FnMut.Trait F (Args := unit)}
       `{core.panic.unwind_safe.UnwindSafe.Trait F}
-      `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
-      `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := T))}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
     F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H') unit.
 
 Module OnInstance.
@@ -3427,7 +3446,7 @@ Module EnvBackend.
       :
       (mut_ref Self) ->
         (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M (H := H') unit;
     hash_encoded
       `{H' : State.Trait}
@@ -3437,7 +3456,7 @@ Module EnvBackend.
       :
       (mut_ref Self) ->
         (ref T) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M (H := H') unit;
     ecdsa_recover `{H' : State.Trait}
       :
@@ -3714,7 +3733,8 @@ Module TypedEnvBackend.
         M (H := H')
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output));
+              (ink_env.call.create_builder.ConstructorReturnType.Output
+                (Self := R))));
     terminate_contract
       `{H' : State.Trait}
       {E : Set}
@@ -4105,7 +4125,7 @@ Module create_builder.
         Type := {
       from_account_id `{H' : State.Trait}
         :
-        ink_env.types.Environment.AccountId -> M (H := H') Self;
+        (ink_env.types.Environment.AccountId (Self := T)) -> M (H := H') Self;
     }.
     
     Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
@@ -4318,7 +4338,7 @@ Module FromAccountId.
       Type := {
     from_account_id `{H' : State.Trait}
       :
-      ink_env.types.Environment.AccountId -> M (H := H') Self;
+      (ink_env.types.Environment.AccountId (Self := T)) -> M (H := H') Self;
   }.
   
   Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
@@ -4506,8 +4526,6 @@ Definition CreateBuilder
     (Args := Args)
     (Salt := Salt)
     (RetType := RetType).
-
-
 
 Module execution_input.
   Module ExecutionInput.
@@ -5133,7 +5151,7 @@ Module CryptoHash.
     hash `{H' : State.Trait}
       :
       (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
         M (H := H') unit;
   }.
   
@@ -5296,7 +5314,7 @@ Module Topics.
       :
       (ref Self) ->
         (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-        M (H := H') ink_env.topics.TopicsBuilderBackend.Output;
+        M (H := H') (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
   }.
   
   Global Instance Method_RemainingTopics `(Trait)

@@ -1235,7 +1235,7 @@ impl FunDefinition {
                     None => {
                         let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
                         let ret_opaque_ty = CoqType::Application {
-                            func: Box::new(Path::new(&["projT1"])),
+                            func: CoqType::var("projT1".to_string()),
                             args: vec![CoqType::var(ret_ty_name.clone())],
                         };
                         let opaque_return_tys_bounds =

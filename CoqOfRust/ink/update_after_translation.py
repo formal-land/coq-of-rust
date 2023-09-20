@@ -430,23 +430,29 @@ End TypedEnvBackend.""",
         "",
     )
     content = content.replace(
-        """Parameter build_create :
+        """
+Parameter build_create :
     forall
       `{H' : State.Trait}
       {ContractRef : Set}
       `{ink_env.contract.ContractEnv.Trait ContractRef},
     M (H := H')
         (ink_env.call.create_builder.CreateBuilder
-          ink_env.contract.ContractEnv.Env
+          (ink_env.contract.ContractEnv.Env (Self := ContractRef))
           ContractRef
-          (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+          (ink_env.call.common.Unset_
+            (ink_env.types.Environment.Hash
+              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
           (ink_env.call.common.Unset_ u64)
-          (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+          (ink_env.call.common.Unset_
+            (ink_env.types.Environment.Balance
+              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
           (ink_env.call.common.Unset_
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).""",
+          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
+""",
         "",
     )
     content = content.replace(
@@ -515,7 +521,8 @@ End OnInstance.""",
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') bool.""",
         "",
@@ -829,13 +836,13 @@ Require CoqOfRust.ink.ink.""",
         content,
     )
 
-    for field in ("total_supply", "balances", "allowances"):
-        content = sub_exactly_n(
-            f"{field} : ink_storage_traits.storage.AutoStorableHint.Type_",
-            f"{field} `{{ink_storage_traits.storage.AutoStorableHint.Trait}} : ink_storage_traits.storage.AutoStorableHint.Type_",
-            content,
-            2,
-        )
+    # for field in ("total_supply", "balances", "allowances"):
+    #     content = sub_exactly_n(
+    #         f"{field} : ink_storage_traits.storage.AutoStorableHint.Type_",
+    #         f"{field} `{{ink_storage_traits.storage.AutoStorableHint.Trait}} : ink_storage_traits.storage.AutoStorableHint.Type_",
+    #         content,
+    #         2,
+    #     )
 
     content = sub_exactly_once(
         r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.

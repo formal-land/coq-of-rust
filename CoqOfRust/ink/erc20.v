@@ -9,9 +9,22 @@ Module erc20.
   Module Erc20.
     Unset Primitive Projections.
     Record t : Set := {
-      total_supply `{ink_storage_traits.storage.AutoStorableHint.Trait} : ink_storage_traits.storage.AutoStorableHint.Type_;
-      balances `{ink_storage_traits.storage.AutoStorableHint.Trait} : ink_storage_traits.storage.AutoStorableHint.Type_;
-      allowances `{ink_storage_traits.storage.AutoStorableHint.Trait} : ink_storage_traits.storage.AutoStorableHint.Type_;
+      total_supply
+        :
+        ink_storage_traits.storage.AutoStorableHint.Type_
+          (Self := erc20.erc20.Balance);
+      balances
+        :
+        ink_storage_traits.storage.AutoStorableHint.Type_
+          (Self := ink_storage.lazy.mapping.Mapping
+            erc20.erc20.AccountId
+            erc20.erc20.Balance);
+      allowances
+        :
+        ink_storage_traits.storage.AutoStorableHint.Type_
+          (Self := ink_storage.lazy.mapping.Mapping
+            (erc20.erc20.AccountId * erc20.erc20.AccountId)
+            erc20.erc20.Balance);
     }.
     Global Set Primitive Projections.
     
@@ -57,25 +70,39 @@ Module erc20.
     Global Hint Resolve I : core.
   End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   
-  Definition Environment : Set := ink_env.contract.ContractEnv.Env.
+  Definition Environment : Set :=
+    ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
   
-  Definition AccountId : Set := ink_env.types.Environment.AccountId.
+  Definition AccountId : Set :=
+    ink_env.types.Environment.AccountId
+      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
-  Definition Balance : Set := ink_env.types.Environment.Balance.
+  Definition Balance : Set :=
+    ink_env.types.Environment.Balance
+      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
-  Definition Hash : Set := ink_env.types.Environment.Hash.
+  Definition Hash : Set :=
+    ink_env.types.Environment.Hash
+      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
-  Definition Timestamp : Set := ink_env.types.Environment.Timestamp.
+  Definition Timestamp : Set :=
+    ink_env.types.Environment.Timestamp
+      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
-  Definition BlockNumber : Set := ink_env.types.Environment.BlockNumber.
+  Definition BlockNumber : Set :=
+    ink_env.types.Environment.BlockNumber
+      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
-  Definition ChainExtension : Set := ink_env.types.Environment.ChainExtension.
+  Definition ChainExtension : Set :=
+    ink_env.types.Environment.ChainExtension
+      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
   Definition MAX_EVENT_TOPICS `{H' : State.Trait} : usize :=
     run
       (Pure
         (ink_env.types.Environment.MAX_EVENT_TOPICS
-          (Self := ink_env.contract.ContractEnv.Env))).
+          (Self :=
+            (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20))))).
   
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
@@ -207,7 +234,9 @@ Module erc20.
     
     Definition Storage : Set := erc20.erc20.Erc20.
     
-    Definition Error : Set := ink.reflect.dispatch.ConstructorOutput.Error.
+    Definition Error : Set :=
+      ink.reflect.dispatch.ConstructorOutput.Error
+        (Self := ink.reflect.dispatch.ConstructorOutputValue Self).
     
     Definition
       IS_RESULT
@@ -735,7 +764,10 @@ Module erc20.
   Module Erc20Ref.
     Unset Primitive Projections.
     Record t : Set := {
-      inner : ink.codegen.dispatch.info.ContractCallBuilder.Type_;
+      inner
+        :
+        ink.codegen.dispatch.info.ContractCallBuilder.Type_
+          (Self := erc20.erc20.Erc20);
     }.
     Global Set Primitive Projections.
     
@@ -755,7 +787,8 @@ Module erc20.
         core.fmt.Formatter ->
           string ->
             string ->
-            ink_codegen_dispatch_info_ContractCallBuilder_Type_ ->
+            erc20_erc20_Erc20_ink_codegen_dispatch_info_ContractCallBuilder_Type_
+            ->
             M (H := H') core.fmt.Result.
     
     Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
@@ -856,7 +889,8 @@ Module erc20.
       let
           _ :
           core.cmp.AssertParamIsEq
-            ink.codegen.dispatch.info.ContractCallBuilder.Type_ :=
+            (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+              (Self := erc20.erc20.Erc20)) :=
         tt in
       Pure tt.
     
@@ -1227,7 +1261,9 @@ Module erc20.
         : M (H := H') Self :=
       let* α0 :=
         (ink_env.call.create_builder.FromAccountId.from_account_id
-            (Self := ink.codegen.dispatch.info.ContractCallBuilder.Type_))
+            (Self :=
+              (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+                (Self := erc20.erc20.Erc20))))
           account_id in
       Pure {| Self.inner := α0; |}.
     
@@ -1256,7 +1292,9 @@ Module erc20.
         (self : ref Self)
         : M (H := H') erc20.erc20.AccountId :=
       (ink.contract_ref.ToAccountId.to_account_id
-          (Self := ink.codegen.dispatch.info.ContractCallBuilder.Type_))
+          (Self :=
+            (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+              (Self := erc20.erc20.Erc20))))
         (addr_of self.["inner"]).
     
     Global Instance Method_to_account_id `{H' : State.Trait} :
@@ -1425,25 +1463,39 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   Global Hint Resolve I : core.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
 
-Definition Environment : Set := ink_env.contract.ContractEnv.Env.
+Definition Environment : Set :=
+  ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
 
-Definition AccountId : Set := ink_env.types.Environment.AccountId.
+Definition AccountId : Set :=
+  ink_env.types.Environment.AccountId
+    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
 
-Definition Balance : Set := ink_env.types.Environment.Balance.
+Definition Balance : Set :=
+  ink_env.types.Environment.Balance
+    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
 
-Definition Hash : Set := ink_env.types.Environment.Hash.
+Definition Hash : Set :=
+  ink_env.types.Environment.Hash
+    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
 
-Definition Timestamp : Set := ink_env.types.Environment.Timestamp.
+Definition Timestamp : Set :=
+  ink_env.types.Environment.Timestamp
+    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
 
-Definition BlockNumber : Set := ink_env.types.Environment.BlockNumber.
+Definition BlockNumber : Set :=
+  ink_env.types.Environment.BlockNumber
+    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
 
-Definition ChainExtension : Set := ink_env.types.Environment.ChainExtension.
+Definition ChainExtension : Set :=
+  ink_env.types.Environment.ChainExtension
+    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
 
 Definition MAX_EVENT_TOPICS `{H' : State.Trait} : usize :=
   run
     (Pure
       (ink_env.types.Environment.MAX_EVENT_TOPICS
-        (Self := ink_env.contract.ContractEnv.Env))).
+        (Self :=
+          (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20))))).
 
 Module Check.
   Unset Primitive Projections.
@@ -1493,9 +1545,22 @@ Definition Check : Set := Check.t.
 Module Erc20.
   Unset Primitive Projections.
   Record t : Set := {
-    total_supply `{ink_storage_traits.storage.AutoStorableHint.Trait} : ink_storage_traits.storage.AutoStorableHint.Type_;
-    balances `{ink_storage_traits.storage.AutoStorableHint.Trait} : ink_storage_traits.storage.AutoStorableHint.Type_;
-    allowances `{ink_storage_traits.storage.AutoStorableHint.Trait} : ink_storage_traits.storage.AutoStorableHint.Type_;
+    total_supply
+      :
+      ink_storage_traits.storage.AutoStorableHint.Type_
+        (Self := erc20.erc20.Balance);
+    balances
+      :
+      ink_storage_traits.storage.AutoStorableHint.Type_
+        (Self := ink_storage.lazy.mapping.Mapping
+          erc20.erc20.AccountId
+          erc20.erc20.Balance);
+    allowances
+      :
+      ink_storage_traits.storage.AutoStorableHint.Type_
+        (Self := ink_storage.lazy.mapping.Mapping
+          (erc20.erc20.AccountId * erc20.erc20.AccountId)
+          erc20.erc20.Balance);
   }.
   Global Set Primitive Projections.
   
@@ -1571,7 +1636,9 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       : M (H := H') (core.result.Result Self parity_scale_codec.error.Error) :=
     let* α0 :=
       (ink_storage_traits.storage.Storable.decode
-          (Self := ink_storage_traits.storage.AutoStorableHint.Type_))
+          (Self :=
+            (ink_storage_traits.storage.AutoStorableHint.Type_
+              (Self := erc20.erc20.Balance))))
         __input in
     let* α1 := α0.["branch"] in
     let* α2 :=
@@ -1583,7 +1650,12 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       end in
     let* α3 :=
       (ink_storage_traits.storage.Storable.decode
-          (Self := ink_storage_traits.storage.AutoStorableHint.Type_))
+          (Self :=
+            (ink_storage_traits.storage.AutoStorableHint.Type_
+              (Self :=
+                ink_storage.lazy.mapping.Mapping
+                  erc20.erc20.AccountId
+                  erc20.erc20.Balance))))
         __input in
     let* α4 := α3.["branch"] in
     let* α5 :=
@@ -1595,7 +1667,12 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       end in
     let* α6 :=
       (ink_storage_traits.storage.Storable.decode
-          (Self := ink_storage_traits.storage.AutoStorableHint.Type_))
+          (Self :=
+            (ink_storage_traits.storage.AutoStorableHint.Type_
+              (Self :=
+                ink_storage.lazy.mapping.Mapping
+                  (erc20.erc20.AccountId * erc20.erc20.AccountId)
+                  erc20.erc20.Balance))))
         __input in
     let* α7 := α6.["branch"] in
     let* α8 :=
@@ -1674,7 +1751,9 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
       α6.["field"]
         (fun f =>
           let* α0 :=
-            f.["ty"] : M ink_storage_traits.storage.AutoStorableHint.Type_ in
+            f.["ty"] : M
+              (ink_storage_traits.storage.AutoStorableHint.Type_
+                (Self := erc20.erc20.Balance)) in
           let* α1 := α0.["name"] "total_supply" in
           let* α2 :=
             α1.["type_name"]
@@ -1685,7 +1764,12 @@ storage::traits::ManualKey<375105693u32, ()>,>>::Type" in
       α7.["field"]
         (fun f =>
           let* α0 :=
-            f.["ty"] : M ink_storage_traits.storage.AutoStorableHint.Type_ in
+            f.["ty"] : M
+              (ink_storage_traits.storage.AutoStorableHint.Type_
+                (Self :=
+                  ink_storage.lazy.mapping.Mapping
+                    erc20.erc20.AccountId
+                    erc20.erc20.Balance)) in
           let* α1 := α0.["name"] "balances" in
           let* α2 :=
             α1.["type_name"]
@@ -1698,7 +1782,12 @@ AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
       α8.["field"]
         (fun f =>
           let* α0 :=
-            f.["ty"] : M ink_storage_traits.storage.AutoStorableHint.Type_ in
+            f.["ty"] : M
+              (ink_storage_traits.storage.AutoStorableHint.Type_
+                (Self :=
+                  ink_storage.lazy.mapping.Mapping
+                    (erc20.erc20.AccountId * erc20.erc20.AccountId)
+                    erc20.erc20.Balance)) in
           let* α1 := α0.["name"] "allowances" in
           let* α2 :=
             α1.["type_name"]
@@ -1734,17 +1823,29 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
       : M (H := H') ink_metadata.layout.Layout :=
     let* α0 :=
       (ink_storage_traits.layout.StorageLayout.layout
-          (Self := ink_storage_traits.storage.AutoStorableHint.Type_))
+          (Self :=
+            (ink_storage_traits.storage.AutoStorableHint.Type_
+              (Self := erc20.erc20.Balance))))
         __key in
     let* α1 := ink_metadata.layout.FieldLayout::["new"] "total_supply" α0 in
     let* α2 :=
       (ink_storage_traits.layout.StorageLayout.layout
-          (Self := ink_storage_traits.storage.AutoStorableHint.Type_))
+          (Self :=
+            (ink_storage_traits.storage.AutoStorableHint.Type_
+              (Self :=
+                ink_storage.lazy.mapping.Mapping
+                  erc20.erc20.AccountId
+                  erc20.erc20.Balance))))
         __key in
     let* α3 := ink_metadata.layout.FieldLayout::["new"] "balances" α2 in
     let* α4 :=
       (ink_storage_traits.layout.StorageLayout.layout
-          (Self := ink_storage_traits.storage.AutoStorableHint.Type_))
+          (Self :=
+            (ink_storage_traits.storage.AutoStorableHint.Type_
+              (Self :=
+                ink_storage.lazy.mapping.Mapping
+                  (erc20.erc20.AccountId * erc20.erc20.AccountId)
+                  erc20.erc20.Balance))))
         __key in
     let* α5 := ink_metadata.layout.FieldLayout::["new"] "allowances" α4 in
     let* α6 :=
@@ -1809,10 +1910,12 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
   Definition Self := ref erc20.erc20.Erc20.
   
   Definition EnvAccess : Set :=
-    ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
+    ink.env_access.EnvAccess
+      (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
   Definition env `{H' : State.Trait} (self : Self) : M (H := H') EnvAccess :=
-    (core.default.Default.default (Self := ink.codegen.env.Env.EnvAccess)).
+    (core.default.Default.default
+        (Self := (ink.codegen.env.Env.EnvAccess (Self := Self)))).
   
   Global Instance Method_env `{H' : State.Trait} : Notation.Dot "env" := {
     Notation.dot := env;
@@ -1829,11 +1932,12 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   Definition Self := erc20.erc20.Erc20.
   
   Definition EnvAccess : Set :=
-    ink.env_access.EnvAccess ink_env.contract.ContractEnv.Env.
+    ink.env_access.EnvAccess
+      (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
   
   Definition env `{H' : State.Trait} : M (H := H') EnvAccess :=
     (core.default.Default.default
-        (Self := ink.codegen.env.StaticEnv.EnvAccess)).
+        (Self := (ink.codegen.env.StaticEnv.EnvAccess (Self := Self)))).
   
   Global Instance AssociatedFunction_env `{H' : State.Trait} :
     Notation.DoubleColon Self "env" := {
@@ -1855,7 +1959,8 @@ Module
       `{H' : State.Trait}
       {E : Set}
       `{core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_)}
+          (T := ink.reflect.event.ContractEventBase.Type_
+            (Self := erc20.erc20.Erc20))}
       (self : Self)
       (event : E)
       : M (H := H') unit :=
@@ -2119,7 +2224,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M (H := H') ink_env.topics.TopicsBuilderBackend.Output :=
+      : M (H := H') (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
     match self with
     | Transfer.Build_t event =>
       (ink_env.topics.Topics.topics (Self := erc20.erc20.Transfer))
@@ -2449,7 +2554,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
       `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M (H := H') ink_env.topics.TopicsBuilderBackend.Output :=
+      : M (H := H') (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
     let* α0 := builder.["build"] : M Self in
     let* α1 :=
       α0.["push_topic"]
@@ -2506,7 +2611,7 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
       `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
       (self : ref Self)
       (builder : ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B)
-      : M (H := H') ink_env.topics.TopicsBuilderBackend.Output :=
+      : M (H := H') (ink_env.topics.TopicsBuilderBackend.Output (Self := B)) :=
     let* α0 := builder.["build"] : M Self in
     let* α1 :=
       α0.["push_topic"]
@@ -2558,7 +2663,9 @@ Module
   
   Definition Storage : Set := erc20.erc20.Erc20.
   
-  Definition Error : Set := ink.reflect.dispatch.ConstructorOutput.Error.
+  Definition Error : Set :=
+    ink.reflect.dispatch.ConstructorOutput.Error
+      (Self := ink.reflect.dispatch.ConstructorOutputValue Self).
   
   Definition
     IS_RESULT
@@ -3074,7 +3181,12 @@ End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
 Module __ink_ConstructorDecoder.
   Inductive t : Set :=
-  | Constructor0 (_ : ink.reflect.dispatch.DispatchableConstructorInfo.Input).
+  |
+    Constructor0
+    (_
+      :
+      ink.reflect.dispatch.DispatchableConstructorInfo.Input
+        (Self := erc20.erc20.Erc20)).
 End __ink_ConstructorDecoder.
 Definition __ink_ConstructorDecoder := __ink_ConstructorDecoder.t.
 
@@ -3109,7 +3221,9 @@ Module
     | erc20.erc20._.decode_dispatch.CONSTRUCTOR_0 =>
       let* α0 :=
         (parity_scale_codec.codec.Decode.decode
-            (Self := ink.reflect.dispatch.DispatchableConstructorInfo.Input))
+            (Self :=
+              (ink.reflect.dispatch.DispatchableConstructorInfo.Input
+                (Self := erc20.erc20.Erc20))))
           input in
       let* α1 :=
         α0.["map_err"]
@@ -3223,7 +3337,8 @@ Module
         (ink.reflect.dispatch.ConstructorOutput.as_result
             (Self :=
               (ink.reflect.dispatch.ConstructorOutputValue
-                ink.reflect.dispatch.DispatchableConstructorInfo.Output)))
+                (ink.reflect.dispatch.DispatchableConstructorInfo.Output
+                  (Self := erc20.erc20.Erc20)))))
           (addr_of output_value) in
       let* _ :=
         let* α0 := output_result.["as_ref"] in
@@ -3279,12 +3394,42 @@ End Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
 
 Module __ink_MessageDecoder.
   Inductive t : Set :=
-  | Message0 (_ : ink.reflect.dispatch.DispatchableMessageInfo.Input)
-  | Message1 (_ : ink.reflect.dispatch.DispatchableMessageInfo.Input)
-  | Message2 (_ : ink.reflect.dispatch.DispatchableMessageInfo.Input)
-  | Message3 (_ : ink.reflect.dispatch.DispatchableMessageInfo.Input)
-  | Message4 (_ : ink.reflect.dispatch.DispatchableMessageInfo.Input)
-  | Message5 (_ : ink.reflect.dispatch.DispatchableMessageInfo.Input).
+  |
+    Message0
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message1
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message2
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message3
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message4
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20))
+  |
+    Message5
+    (_
+      :
+      ink.reflect.dispatch.DispatchableMessageInfo.Input
+        (Self := erc20.erc20.Erc20)).
 End __ink_MessageDecoder.
 Definition __ink_MessageDecoder := __ink_MessageDecoder.t.
 
@@ -3319,7 +3464,9 @@ Module
     | erc20.erc20._.decode_dispatch.MESSAGE_0 =>
       let* α0 :=
         (parity_scale_codec.codec.Decode.decode
-            (Self := ink.reflect.dispatch.DispatchableMessageInfo.Input))
+            (Self :=
+              (ink.reflect.dispatch.DispatchableMessageInfo.Input
+                (Self := erc20.erc20.Erc20))))
           input in
       let* α1 :=
         α0.["map_err"]
@@ -3338,7 +3485,9 @@ Module
     | erc20.erc20._.decode_dispatch.MESSAGE_1 =>
       let* α0 :=
         (parity_scale_codec.codec.Decode.decode
-            (Self := ink.reflect.dispatch.DispatchableMessageInfo.Input))
+            (Self :=
+              (ink.reflect.dispatch.DispatchableMessageInfo.Input
+                (Self := erc20.erc20.Erc20))))
           input in
       let* α1 :=
         α0.["map_err"]
@@ -3357,7 +3506,9 @@ Module
     | erc20.erc20._.decode_dispatch.MESSAGE_2 =>
       let* α0 :=
         (parity_scale_codec.codec.Decode.decode
-            (Self := ink.reflect.dispatch.DispatchableMessageInfo.Input))
+            (Self :=
+              (ink.reflect.dispatch.DispatchableMessageInfo.Input
+                (Self := erc20.erc20.Erc20))))
           input in
       let* α1 :=
         α0.["map_err"]
@@ -3376,7 +3527,9 @@ Module
     | erc20.erc20._.decode_dispatch.MESSAGE_3 =>
       let* α0 :=
         (parity_scale_codec.codec.Decode.decode
-            (Self := ink.reflect.dispatch.DispatchableMessageInfo.Input))
+            (Self :=
+              (ink.reflect.dispatch.DispatchableMessageInfo.Input
+                (Self := erc20.erc20.Erc20))))
           input in
       let* α1 :=
         α0.["map_err"]
@@ -3395,7 +3548,9 @@ Module
     | erc20.erc20._.decode_dispatch.MESSAGE_4 =>
       let* α0 :=
         (parity_scale_codec.codec.Decode.decode
-            (Self := ink.reflect.dispatch.DispatchableMessageInfo.Input))
+            (Self :=
+              (ink.reflect.dispatch.DispatchableMessageInfo.Input
+                (Self := erc20.erc20.Erc20))))
           input in
       let* α1 :=
         α0.["map_err"]
@@ -3414,7 +3569,9 @@ Module
     | erc20.erc20._.decode_dispatch.MESSAGE_5 =>
       let* α0 :=
         (parity_scale_codec.codec.Decode.decode
-            (Self := ink.reflect.dispatch.DispatchableMessageInfo.Input))
+            (Self :=
+              (ink.reflect.dispatch.DispatchableMessageInfo.Input
+                (Self := erc20.erc20.Erc20))))
           input in
       let* α1 :=
         α0.["map_err"]
@@ -3617,7 +3774,8 @@ Module
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
           (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+                (ink.reflect.dispatch.DispatchableMessageInfo.Output
+                  (Self := erc20.erc20.Erc20)))::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3693,7 +3851,8 @@ Module
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
           (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+                (ink.reflect.dispatch.DispatchableMessageInfo.Output
+                  (Self := erc20.erc20.Erc20)))::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3769,7 +3928,8 @@ Module
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
           (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+                (ink.reflect.dispatch.DispatchableMessageInfo.Output
+                  (Self := erc20.erc20.Erc20)))::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3845,7 +4005,8 @@ Module
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
           (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+                (ink.reflect.dispatch.DispatchableMessageInfo.Output
+                  (Self := erc20.erc20.Erc20)))::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3921,7 +4082,8 @@ Module
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
           (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+                (ink.reflect.dispatch.DispatchableMessageInfo.Output
+                  (Self := erc20.erc20.Erc20)))::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -3997,7 +4159,8 @@ Module
           let* α0 :=
             (ink.result_info.IsResultErr.Build_t (addr_of result)).["value"] in
           (ink.result_info.IsResultType
-                ink.reflect.dispatch.DispatchableMessageInfo.Output)::["VALUE"].["andb"]
+                (ink.reflect.dispatch.DispatchableMessageInfo.Output
+                  (Self := erc20.erc20.Erc20)))::["VALUE"].["andb"]
             α0 in
         let* _ :=
           let* α0 := is_reverted.["not"] in
@@ -4684,7 +4847,8 @@ End Impl_ink_codegen_dispatch_info_ContractCallBuilder_for_erc20_erc20_Erc20.
 Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Definition Env : Set := ink_env.contract.ContractEnv.Env.
+  Definition Env : Set :=
+    ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
   
   Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
     ink_env.contract.ContractEnv.Env := Env;
@@ -5011,7 +5175,10 @@ End Impl_erc20_erc20___CallBuilder_18.
 Module Erc20Ref.
   Unset Primitive Projections.
   Record t : Set := {
-    inner : ink.codegen.dispatch.info.ContractCallBuilder.Type_;
+    inner
+      :
+      ink.codegen.dispatch.info.ContractCallBuilder.Type_
+        (Self := erc20.erc20.Erc20);
   }.
   Global Set Primitive Projections.
   
@@ -5031,7 +5198,8 @@ Module Impl_core_fmt_Debug_for_erc20_erc20_Erc20Ref.
       core.fmt.Formatter ->
         string ->
           string ->
-          ink_codegen_dispatch_info_ContractCallBuilder_Type_ ->
+          erc20_erc20_Erc20_ink_codegen_dispatch_info_ContractCallBuilder_Type_
+          ->
           M (H := H') core.fmt.Result.
   
   Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
@@ -5132,7 +5300,9 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
       : M (H := H') (core.result.Result Self parity_scale_codec.error.Error) :=
     let* __codec_res_edqy :=
       (parity_scale_codec.codec.Decode.decode
-          (Self := ink.codegen.dispatch.info.ContractCallBuilder.Type_))
+          (Self :=
+            (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+              (Self := erc20.erc20.Erc20))))
         __codec_input_edqy in
     let* α0 :=
       match __codec_res_edqy with
@@ -5226,7 +5396,8 @@ Module Impl_core_cmp_Eq_for_erc20_erc20_Erc20Ref.
     let
         _ :
         core.cmp.AssertParamIsEq
-          ink.codegen.dispatch.info.ContractCallBuilder.Type_ :=
+          (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+            (Self := erc20.erc20.Erc20)) :=
       tt in
     Pure tt.
   
@@ -5277,7 +5448,9 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
       α6.["field"]
         (fun f =>
           let* α0 :=
-            f.["ty"] : M ink.codegen.dispatch.info.ContractCallBuilder.Type_ in
+            f.["ty"] : M
+              (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+                (Self := erc20.erc20.Erc20)) in
           let* α1 := α0.["name"] "inner" in
           α1.["type_name"]
             "<Erc20 as::ink::codegen::ContractCallBuilder>::Type") in
@@ -5304,7 +5477,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
       : M (H := H') ink_metadata.layout.Layout :=
     let* α0 :=
       (ink_storage_traits.layout.StorageLayout.layout
-          (Self := ink.codegen.dispatch.info.ContractCallBuilder.Type_))
+          (Self :=
+            (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+              (Self := erc20.erc20.Erc20))))
         __key in
     let* α1 := ink_metadata.layout.FieldLayout::["new"] "inner" α0 in
     let* α2 := ink_metadata.layout.StructLayout::["new"] "Erc20Ref" [ α1 ] in
@@ -5426,7 +5601,8 @@ End
 Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Definition Env : Set := ink_env.contract.ContractEnv.Env.
+  Definition Env : Set :=
+    ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
   
   Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
     ink_env.contract.ContractEnv.Env := Env;
@@ -5752,7 +5928,8 @@ Module
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition Builder : Set :=
-    ink.codegen.dispatch.info.ContractCallBuilder.Type_.
+    ink.codegen.dispatch.info.ContractCallBuilder.Type_
+      (Self := erc20.erc20.Erc20).
   
   Definition call
       `{H' : State.Trait}
@@ -5799,7 +5976,9 @@ Module Impl_ink_env_call_create_builder_FromAccountId_for_erc20_erc20_Erc20Ref.
       : M (H := H') Self :=
     let* α0 :=
       (ink_env.call.create_builder.FromAccountId.from_account_id
-          (Self := ink.codegen.dispatch.info.ContractCallBuilder.Type_))
+          (Self :=
+            (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+              (Self := erc20.erc20.Erc20))))
         account_id in
     Pure {| Self.inner := α0; |}.
   
@@ -5828,7 +6007,9 @@ Module Impl_ink_contract_ref_ToAccountId_for_erc20_erc20_Erc20Ref.
       (self : ref Self)
       : M (H := H') erc20.erc20.AccountId :=
     (ink.contract_ref.ToAccountId.to_account_id
-        (Self := ink.codegen.dispatch.info.ContractCallBuilder.Type_))
+        (Self :=
+          (ink.codegen.dispatch.info.ContractCallBuilder.Type_
+            (Self := erc20.erc20.Erc20))))
       (addr_of self.["inner"]).
   
   Global Instance Method_to_account_id `{H' : State.Trait} :

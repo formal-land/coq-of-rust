@@ -6,9 +6,10 @@ Module builders.
     ink_env.call.create_builder.CreateBuilder
       E
       ContractRef
-      (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+      (ink_env.call.common.Unset_ (ink_env.types.Environment.Hash (Self := E)))
       (ink_env.call.common.Unset_ u64)
-      (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+      (ink_env.call.common.Unset_
+        (ink_env.types.Environment.Balance (Self := E)))
       (ink_env.call.common.Set_
         (ink_env.call.execution_input.ExecutionInput Args))
       (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
@@ -28,9 +29,9 @@ Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :=
   ink_env.call.create_builder.CreateBuilder
     E
     ContractRef
-    (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+    (ink_env.call.common.Unset_ (ink_env.types.Environment.Hash (Self := E)))
     (ink_env.call.common.Unset_ u64)
-    (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+    (ink_env.call.common.Unset_ (ink_env.types.Environment.Balance (Self := E)))
     (ink_env.call.common.Set_
       (ink_env.call.execution_input.ExecutionInput Args))
     (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
