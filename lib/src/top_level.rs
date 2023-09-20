@@ -2125,31 +2125,61 @@ impl TopLevelItem {
                             ty_params,
                             where_predicates,
                             ty,
-                        } => vec![typeclass_definition_item(
-                            name,
-                            ty_params,
-                            where_predicates
-                                .iter()
-                                .enumerate()
-                                .map(|(i, predicate)| {
-                                    predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
-                                })
-                                .collect::<Vec<_>>(),
+                        } => vec![coq::ClassFieldDef::new(
+                            &Some(name.to_owned()),
+                            &[
+                                vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                                if ty_params.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![coq::ArgDecl::new(
+                                        &coq::ArgDeclVar::Normal {
+                                            idents: ty_params.to_owned(),
+                                            ty: Some(coq::Expression::Set),
+                                        },
+                                        coq::ArgSpecKind::Implicit,
+                                    )]
+                                },
+                                where_predicates
+                                    .iter()
+                                    .enumerate()
+                                    .map(|(i, predicate)| {
+                                        predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
+                                    })
+                                    .collect(),
+                            ]
+                            .concat(),
                             &ty.to_coq(),
                         )],
                         TraitItem::DefinitionWithDefault { .. } => vec![],
-                        TraitItem::Type(bounds) => typeclass_type_item(
-                            name,
-                            &bounds
-                                .iter()
-                                .map(|bound| {
-                                    bound.to_coq(
-                                        coq::Expression::just_name(name),
-                                        coq::ArgSpecKind::Explicit,
-                                    )
-                                })
-                                .collect(),
-                        ),
+                        TraitItem::Type(bounds) => [
+                            vec![coq::ClassFieldDef::new(
+                                &Some(name.to_owned()),
+                                &[],
+                                &coq::Expression::Set,
+                            )],
+                            if bounds.is_empty() {
+                                vec![]
+                            } else {
+                                vec![coq::ClassFieldDef::new(
+                                    &None,
+                                    &[],
+                                    &coq::Expression::SigmaType {
+                                        args: bounds
+                                            .iter()
+                                            .map(|bound| {
+                                                bound.to_coq(
+                                                    coq::Expression::just_name(name),
+                                                    coq::ArgSpecKind::Explicit,
+                                                )
+                                            })
+                                            .collect::<Vec<_>>(),
+                                        image: Box::new(coq::Expression::Unit),
+                                    },
+                                )]
+                            },
+                        ]
+                        .concat(),
                     })
                     .concat(),
                 body.iter()

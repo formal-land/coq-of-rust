@@ -190,63 +190,6 @@ where
     ])
 }
 
-/// creates a type parameter as a field of a typeclass
-pub(crate) fn typeclass_type_item<'a>(
-    name: &str,
-    bounds: &Vec<coq::ArgDecl<'a>>,
-) -> Vec<coq::ClassFieldDef<'a>> {
-    [
-        vec![coq::ClassFieldDef::new(
-            &Some(name.to_owned()),
-            &[],
-            &coq::Expression::Set,
-        )],
-        if bounds.is_empty() {
-            vec![]
-        } else {
-            vec![coq::ClassFieldDef::new(
-                &None,
-                &[],
-                &coq::Expression::SigmaType {
-                    args: bounds.to_owned(),
-                    image: Box::new(coq::Expression::Unit),
-                },
-            )]
-        },
-    ]
-    .concat()
-}
-
-/// creates a typeclass field with the given name of the given type,
-/// with the given type parameters and satisfying the given typeclass bounds
-pub(crate) fn typeclass_definition_item<'a>(
-    name: &'a str,
-    ty_params: &Vec<String>,
-    bounds: Vec<coq::ArgDecl<'a>>,
-    ty: &coq::Expression<'a>,
-) -> coq::ClassFieldDef<'a> {
-    coq::ClassFieldDef::new(
-        &Some(name.to_owned()),
-        &[
-            vec![coq::ArgDecl::monadic_typeclass_parameter()],
-            if ty_params.is_empty() {
-                vec![]
-            } else {
-                vec![coq::ArgDecl::new(
-                    &coq::ArgDeclVar::Normal {
-                        idents: ty_params.to_owned(),
-                        ty: Some(coq::Expression::Set),
-                    },
-                    coq::ArgSpecKind::Implicit,
-                )]
-            },
-            bounds,
-        ]
-        .concat(),
-        ty,
-    )
-}
-
 pub(crate) fn apply_argument<'a, U>(name: U, arg: Doc<'a>) -> Doc<'a>
 where
     U: Into<std::borrow::Cow<'a, str>>,
