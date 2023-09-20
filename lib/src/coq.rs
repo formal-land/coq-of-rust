@@ -76,9 +76,7 @@ pub(crate) struct Context<'a> {
 /// a coq typeclass definition
 pub(crate) struct Class<'a> {
     name: String,
-    ty_params: Option<ArgDecl<'a>>,
-    predicates: Vec<ArgDecl<'a>>,
-    bounds: Vec<ArgDecl<'a>>,
+    params: Vec<ArgDecl<'a>>,
     items: Vec<ClassFieldDef<'a>>,
 }
 
@@ -384,28 +382,31 @@ impl<'a> TopLevelItem<'a> {
                     items.is_empty(),
                     &[TopLevelItem::Class(Class::new(
                         "Trait",
-                        bounds.to_vec(),
-                        if ty_params.is_empty() {
-                            None
-                        } else {
-                            Some(ArgDecl::new(
-                                &ArgDeclVar::Normal {
-                                    idents: ty_params
-                                        .iter()
-                                        .map(|(ty, default)| {
-                                            match default {
-                                                // @TODO: implement the translation of type parameters with default
-                                                Some(_default) => ["(* TODO *) ", ty].concat(),
-                                                None => ty.to_string(),
-                                            }
-                                        })
-                                        .collect(),
-                                    ty: Some(Expression::Set),
-                                },
-                                ArgSpecKind::Implicit,
-                            ))
-                        },
-                        predicates.to_vec(),
+                        &[
+                            bounds.to_vec(),
+                            if ty_params.is_empty() {
+                                vec![]
+                            } else {
+                                vec![ArgDecl::new(
+                                    &ArgDeclVar::Normal {
+                                        idents: ty_params
+                                            .iter()
+                                            .map(|(ty, default)| {
+                                                match default {
+                                                    // @TODO: implement the translation of type parameters with default
+                                                    Some(_default) => ["(* TODO *) ", ty].concat(),
+                                                    None => ty.to_string(),
+                                                }
+                                            })
+                                            .collect(),
+                                        ty: Some(Expression::Set),
+                                    },
+                                    ArgSpecKind::Implicit,
+                                )]
+                            },
+                            predicates.to_vec(),
+                        ]
+                        .concat(),
                         items.to_vec(),
                     ))],
                 ),
@@ -577,18 +578,10 @@ impl<'a> Context<'a> {
 
 impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
-    pub(crate) fn new(
-        name: &str,
-        bounds: Vec<ArgDecl<'a>>,
-        ty_params: Option<ArgDecl<'a>>,
-        predicates: Vec<ArgDecl<'a>>,
-        items: Vec<ClassFieldDef<'a>>,
-    ) -> Self {
+    pub(crate) fn new(name: &str, params: &[ArgDecl<'a>], items: Vec<ClassFieldDef<'a>>) -> Self {
         Class {
             name: name.to_owned(),
-            ty_params,
-            predicates,
-            bounds,
+            params: params.to_owned(),
             items,
         }
     }
@@ -610,29 +603,13 @@ impl<'a> Class<'a> {
                             Expression::Set.to_doc(false),
                             text(")"),
                         ]),
-                        if self.bounds.is_empty() {
+                        if self.params.is_empty() {
                             nil()
                         } else {
                             concat([
                                 line(),
                                 intersperse(
-                                    self.bounds.iter().map(|bound| bound.to_doc()),
-                                    [line()],
-                                ),
-                            ])
-                        },
-                        if let Some(ty_params) = &self.ty_params {
-                            concat([line(), ty_params.to_doc()])
-                        } else {
-                            nil()
-                        },
-                        if self.predicates.is_empty() {
-                            nil()
-                        } else {
-                            concat([
-                                line(),
-                                intersperse(
-                                    self.predicates.iter().map(|predicate| predicate.to_doc()),
+                                    self.params.iter().map(|param| param.to_doc()),
                                     [line()],
                                 ),
                             ])
