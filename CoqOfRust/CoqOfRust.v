@@ -1816,5 +1816,8 @@ Module Impl_Iterator_for_RangeInclusive_Z.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_RangeInclusive_Z.
 
-(* a hint for eauto to automatically solve existential goals *)
-Global Hint Resolve ex_intro : core.
+(* a hint for eauto to automatically solve Sigma goals *)
+Global Hint Resolve existT : core.
+
+(* a hint for eauto to automatically solve unit goals *)
+Global Hint Resolve tt : core.

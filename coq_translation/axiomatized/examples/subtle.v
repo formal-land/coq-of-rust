@@ -16,10 +16,9 @@ Definition Choice := @Choice.t.
 
 Module ConstantTimeEq.
   Class Trait (Self : Set) : Type := {
-    ct_eq
-      `{H' : State.Trait}
+    ct_eq `{H' : State.Trait}
       :
-      (ref Self) -> (ref Self) -> (M (H := H') subtle.Choice);
+      (ref Self) -> (ref Self) -> M (H := H') subtle.Choice;
   }.
   
   Global Instance Method_ct_eq `{H' : State.Trait} `(Trait)
@@ -36,10 +35,9 @@ End ConstantTimeEq.
 
 Module ConditionallySelectable.
   Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Type := {
-    conditional_select
-      `{H' : State.Trait}
+    conditional_select `{H' : State.Trait}
       :
-      (ref Self) -> (ref Self) -> subtle.Choice -> (M (H := H') Self);
+      (ref Self) -> (ref Self) -> subtle.Choice -> M (H := H') Self;
   }.
   
   Global Instance Method_conditional_select `{H' : State.Trait} `(Trait)
@@ -65,10 +63,9 @@ End ConditionallySelectable.
 
 Module ConditionallyNegatable.
   Class Trait (Self : Set) : Type := {
-    conditional_negate
-      `{H' : State.Trait}
+    conditional_negate `{H' : State.Trait}
       :
-      (mut_ref Self) -> subtle.Choice -> (M (H := H') unit);
+      (mut_ref Self) -> subtle.Choice -> M (H := H') unit;
   }.
   
   Global Instance Method_conditional_negate `{H' : State.Trait} `(Trait)
@@ -99,10 +96,9 @@ Definition CtOption (T : Set) : Set := CtOption.t (T := T).
 
 Module ConstantTimeGreater.
   Class Trait (Self : Set) : Type := {
-    ct_gt
-      `{H' : State.Trait}
+    ct_gt `{H' : State.Trait}
       :
-      (ref Self) -> (ref Self) -> (M (H := H') subtle.Choice);
+      (ref Self) -> (ref Self) -> M (H := H') subtle.Choice;
   }.
   
   Global Instance Method_ct_gt `{H' : State.Trait} `(Trait)
@@ -112,13 +108,14 @@ Module ConstantTimeGreater.
 End ConstantTimeGreater.
 
 Module ConstantTimeLess.
+  Unset Primitive Projections.
   Class Trait
       (Self : Set)
-        `{subtle.ConstantTimeEq.Trait Self}
-        `{subtle.ConstantTimeGreater.Trait Self} :
+      `{subtle.ConstantTimeEq.Trait Self}
+      `{subtle.ConstantTimeGreater.Trait Self} :
       Type := {
   }.
-  
+  Global Set Primitive Projections.
   Global Instance Method_ct_lt `{H' : State.Trait} `(Trait)
     : Notation.Dot "ct_lt" := {
     Notation.dot (self : ref Self) (other : ref Self)

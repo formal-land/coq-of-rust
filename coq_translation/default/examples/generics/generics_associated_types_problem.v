@@ -20,12 +20,11 @@ Definition Container := @Container.t.
 
 Module Contains.
   Class Trait (Self : Set) {A B : Set} : Type := {
-    contains
-      `{H' : State.Trait}
+    contains `{H' : State.Trait}
       :
-      (ref Self) -> (ref A) -> (ref B) -> (M (H := H') bool);
-    first `{H' : State.Trait} : (ref Self) -> (M (H := H') i32);
-    last `{H' : State.Trait} : (ref Self) -> (M (H := H') i32);
+      (ref Self) -> (ref A) -> (ref B) -> M (H := H') bool;
+    first `{H' : State.Trait} : (ref Self) -> M (H := H') i32;
+    last `{H' : State.Trait} : (ref Self) -> M (H := H') i32;
   }.
   
   Global Instance Method_contains `{H' : State.Trait} `(Trait)

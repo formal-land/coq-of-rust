@@ -76,10 +76,8 @@ pub(crate) struct Context<'a> {
 /// a coq typeclass definition
 pub(crate) struct Class<'a> {
     name: String,
-    ty_params: Vec<(String, Option<Doc<'a>>)>,
-    predicates: Vec<Doc<'a>>,
-    bounds: Vec<Doc<'a>>,
-    items: Vec<Doc<'a>>,
+    params: Vec<ArgDecl<'a>>,
+    items: Vec<ClassFieldDef<'a>>,
 }
 
 #[derive(Clone)]
@@ -119,6 +117,14 @@ pub(crate) enum DefinitionKind<'a> {
 /// a definition of a field in a record definition
 pub(crate) struct FieldDef<'a> {
     ident: Option<String>,
+    ty: Expression<'a>,
+}
+
+#[derive(Clone)]
+/// a definition of a field in a typeclass definition
+pub(crate) struct ClassFieldDef<'a> {
+    ident: Option<String>,
+    args: Vec<ArgDecl<'a>>,
     ty: Expression<'a>,
 }
 
@@ -363,11 +369,11 @@ impl<'a> TopLevelItem<'a> {
     /// creates a module with the translation of the given trait
     pub(crate) fn trait_module(
         name: &'a str,
-        ty_params: &[(String, Option<Doc<'a>>)],
-        predicates: &[Doc<'a>],
-        bounds: &[Doc<'a>],
-        items: Vec<Doc<'a>>,
-        instances: Vec<Instance<'a>>,
+        ty_params: &[(String, Option<Expression<'a>>)],
+        predicates: &[ArgDecl<'a>],
+        bounds: &[ArgDecl<'a>],
+        items: &[ClassFieldDef<'a>],
+        instances: &[Instance<'a>],
     ) -> Self {
         TopLevelItem::Module(Module::new(
             name,
@@ -376,10 +382,39 @@ impl<'a> TopLevelItem<'a> {
                     items.is_empty(),
                     &[TopLevelItem::Class(Class::new(
                         "Trait",
-                        ty_params.to_vec(),
-                        predicates.to_vec(),
-                        bounds.to_vec(),
-                        items,
+                        &[
+                            vec![ArgDecl::new(
+                                &ArgDeclVar::Normal {
+                                    idents: vec!["Self".to_string()],
+                                    ty: Some(Expression::Set),
+                                },
+                                ArgSpecKind::Explicit,
+                            )],
+                            bounds.to_vec(),
+                            if ty_params.is_empty() {
+                                vec![]
+                            } else {
+                                vec![ArgDecl::new(
+                                    &ArgDeclVar::Normal {
+                                        idents: ty_params
+                                            .iter()
+                                            .map(|(ty, default)| {
+                                                match default {
+                                                    // @TODO: implement the translation of type parameters with default
+                                                    Some(_default) => ["(* TODO *) ", ty].concat(),
+                                                    None => ty.to_string(),
+                                                }
+                                            })
+                                            .collect(),
+                                        ty: Some(Expression::Set),
+                                    },
+                                    ArgSpecKind::Implicit,
+                                )]
+                            },
+                            predicates.to_vec(),
+                        ]
+                        .concat(),
+                        items.to_vec(),
                     ))],
                 ),
                 TopLevel {
@@ -550,18 +585,10 @@ impl<'a> Context<'a> {
 
 impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
-    pub(crate) fn new(
-        name: &str,
-        ty_params: Vec<(String, Option<Doc<'a>>)>,
-        predicates: Vec<Doc<'a>>,
-        bounds: Vec<Doc<'a>>,
-        items: Vec<Doc<'a>>,
-    ) -> Self {
+    pub(crate) fn new(name: &str, params: &[ArgDecl<'a>], items: Vec<ClassFieldDef<'a>>) -> Self {
         Class {
             name: name.to_owned(),
-            ty_params: ty_params.to_owned(),
-            predicates,
-            bounds,
+            params: params.to_owned(),
             items,
         }
     }
@@ -569,13 +596,34 @@ impl<'a> Class<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         group([
             nest([
-                render::new_trait_typeclass_header(
-                    &self.name,
-                    &self.ty_params,
-                    &self.predicates,
-                    &self.bounds,
+                nest([
+                    text("Class "),
+                    text(self.name.to_owned()),
+                    if self.params.is_empty() {
+                        nil()
+                    } else {
+                        group([
+                            line(),
+                            intersperse(self.params.iter().map(|param| param.to_doc()), [line()]),
+                        ])
+                    },
+                    text(" :"),
+                    line(),
+                    Expression::Type.to_doc(false),
+                    text(" := {"),
+                ]),
+                if self.items.is_empty() {
+                    nil()
+                } else {
+                    hardline()
+                },
+                intersperse(
+                    self.items
+                        .iter()
+                        .map(|item| item.to_doc())
+                        .collect::<Vec<_>>(),
+                    [hardline()],
                 ),
-                render::new_typeclass_body(self.items.clone()),
             ]),
             hardline(),
             text("}."),
@@ -682,6 +730,38 @@ impl<'a> FieldDef<'a> {
             match self.ident.to_owned() {
                 Some(name) => text(name),
                 None => text("_"),
+            },
+            line(),
+            text(":"),
+            line(),
+            self.ty.to_doc(false),
+            text(";"),
+        ])
+    }
+}
+
+impl<'a> ClassFieldDef<'a> {
+    pub(crate) fn new(ident: &Option<String>, args: &[ArgDecl<'a>], ty: &Expression<'a>) -> Self {
+        ClassFieldDef {
+            ident: ident.to_owned(),
+            args: args.to_owned(),
+            ty: ty.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        nest([
+            match self.ident.to_owned() {
+                Some(name) => text(name),
+                None => text("_"),
+            },
+            if self.args.is_empty() {
+                nil()
+            } else {
+                group([
+                    line(),
+                    intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
+                ])
             },
             line(),
             text(":"),

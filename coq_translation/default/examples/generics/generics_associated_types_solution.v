@@ -22,13 +22,12 @@ Module Contains.
   Class Trait (Self : Set) : Type := {
     A : Set;
     B : Set;
-    contains
-      `{H' : State.Trait}
+    contains `{H' : State.Trait}
       :
-      (ref Self) -> (ref A) -> (ref B) -> (M (H := H') bool);
-    first `{H' : State.Trait} : (ref Self) -> (M (H := H') i32);
-    last `{H' : State.Trait} : (ref Self) -> (M (H := H') i32);
-    a `{H' : State.Trait} : (ref Self) -> (M (H := H') A);
+      (ref Self) -> (ref A) -> (ref B) -> M (H := H') bool;
+    first `{H' : State.Trait} : (ref Self) -> M (H := H') i32;
+    last `{H' : State.Trait} : (ref Self) -> M (H := H') i32;
+    a `{H' : State.Trait} : (ref Self) -> M (H := H') A;
   }.
   
   Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
