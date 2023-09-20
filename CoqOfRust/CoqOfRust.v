@@ -54,6 +54,7 @@ Notation "e (||)" :=
     only parsing).
 
 Require CoqOfRust.lib.lib.
+Export lib.Notations.
 Module Notation := CoqOfRust.lib.lib.Notation.
 
 (** Note that we revert the arguments in this notation. *)
@@ -187,6 +188,7 @@ Require CoqOfRust.core.cmp.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
 Require CoqOfRust.core.hash.
+Require CoqOfRust.core.iter.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.mem.
 Require CoqOfRust.core.option.
@@ -203,6 +205,7 @@ Module core.
   Export CoqOfRust.core.convert.
   Export CoqOfRust.core.default.
   Export CoqOfRust.core.hash.
+  Export CoqOfRust.core.iter.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.mem.
   Export CoqOfRust.core.option.

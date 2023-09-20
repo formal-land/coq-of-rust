@@ -168,6 +168,14 @@ pub(crate) enum Expression<'a> {
     },
     /// Set constant (the type of our types)
     Set,
+    /// a dependent sum of types
+    /// (like `Sigma (x : A), B(x)`, defined in CoqOfRust.lib.Notations)
+    SigmaType {
+        /// a list of arguments of `Sigma`
+        args: Vec<ArgDecl<'a>>,
+        /// the expression for the resulting type
+        image: Box<Expression<'a>>,
+    },
     /// a string
     String(String),
     /// Type constant
@@ -756,6 +764,19 @@ impl<'a> Expression<'a> {
                 text("}"),
             ]),
             Self::Set => text("Set"),
+            Self::SigmaType { args, image } => paren(
+                with_paren,
+                concat([
+                    nest([
+                        text("Sigma"),
+                        line(),
+                        intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                        text(","),
+                    ]),
+                    line(),
+                    image.to_doc(false),
+                ]),
+            ),
             Self::String(string) => text(format!("\"{string}\"")),
             Self::Type => text("Type"),
             Self::Unit => text("unit"),

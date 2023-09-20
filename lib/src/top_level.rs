@@ -1234,50 +1234,70 @@ impl FunDefinition {
                 match &self.signature_and_body.body {
                     None => {
                         let ret_ty_name = [&self.name, "_", "ret_ty"].concat();
+                        let ret_opaque_ty = CoqType::Application {
+                            func: Box::new(Path::new(&["projT1"])),
+                            args: vec![CoqType::var(ret_ty_name.clone())],
+                        };
                         let opaque_return_tys_bounds =
                             self.signature_and_body.ret_ty.opaque_types_bounds();
-                        // if the return type is opaque define a corresponding opaque type
-                        // @TODO: use also the parameter
-                        let (ret_ty_param_vec, ret_ty) =
-                            if self.signature_and_body.ret_ty.has_opaque_types() {
-                                let ret_ty_param_vec = opaque_return_tys_bounds
-                                    .iter()
-                                    .map(|bounds| {
-                                        coq::TopLevelItem::Definition(coq::Definition::new(
-                                            &ret_ty_name,
-                                            &coq::DefinitionKind::Assumption {
-                                                ty: coq::Expression::PiType {
-                                                    args: bounds
-                                                        .iter()
-                                                        .map(|bound| {
-                                                            coq::ArgDecl::new(
-                                                                &coq::ArgDeclVar::Generalized {
-                                                                    idents: vec![],
-                                                                    ty: coq::Expression::Variable {
-                                                                        ident: bound.to_owned(),
-                                                                        no_implicit: false,
-                                                                    },
-                                                                },
-                                                                coq::ArgSpecKind::Implicit,
-                                                            )
-                                                        })
-                                                        .collect(),
-                                                    image: Box::new(coq::Expression::Set),
+                        let bounds_to_definition = |bounds: &Vec<Path>| {
+                            coq::TopLevelItem::Definition(coq::Definition::new(
+                                &ret_ty_name,
+                                &coq::DefinitionKind::Assumption {
+                                    ty: coq::Expression::SigmaType {
+                                        args: [
+                                            vec![coq::ArgDecl::new(
+                                                &coq::ArgDeclVar::Normal {
+                                                    idents: vec!["Ty".to_string()],
+                                                    ty: Some(coq::Expression::Set),
                                                 },
-                                            },
-                                        ))
-                                    })
+                                                coq::ArgSpecKind::Explicit,
+                                            )],
+                                            bounds
+                                                .iter()
+                                                .map(|bound| {
+                                                    coq::ArgDecl::new(
+                                                        &coq::ArgDeclVar::Generalized {
+                                                            idents: vec![],
+                                                            ty: coq::Expression::Variable {
+                                                                ident: Path::concat(&[
+                                                                    bound.to_owned(),
+                                                                    Path::new(&["Trait"]),
+                                                                ]),
+                                                                no_implicit: false,
+                                                            }
+                                                            .apply(&coq::Expression::just_name(
+                                                                "Ty",
+                                                            )),
+                                                        },
+                                                        coq::ArgSpecKind::Explicit,
+                                                    )
+                                                })
+                                                .collect::<Vec<_>>(),
+                                        ]
+                                        .concat(),
+                                        image: Box::new(coq::Expression::Unit),
+                                    },
+                                },
+                            ))
+                        };
+                        // if the return type is opaque define a corresponding opaque type
+                        let (ret_ty_defs_vec, ret_ty) =
+                            if self.signature_and_body.ret_ty.has_opaque_types() {
+                                let ret_ty_defs_vec = opaque_return_tys_bounds
+                                    .iter()
+                                    .map(bounds_to_definition)
                                     .collect();
 
                                 let ret_ty = &mut self.signature_and_body.ret_ty.clone();
-                                ret_ty.subst_opaque_types(&ret_ty_name);
+                                ret_ty.subst_opaque_types(&ret_opaque_ty);
 
-                                (ret_ty_param_vec, ret_ty.to_coq())
+                                (ret_ty_defs_vec, ret_ty.to_coq())
                             } else {
                                 (vec![], self.signature_and_body.ret_ty.to_coq())
                             };
                         [
-                            ret_ty_param_vec,
+                            ret_ty_defs_vec,
                             vec![coq::TopLevelItem::Definition(coq::Definition::new(
                                 &self.name,
                                 &coq::DefinitionKind::Assumption {
