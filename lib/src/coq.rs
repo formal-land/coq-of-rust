@@ -569,13 +569,63 @@ impl<'a> Class<'a> {
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         group([
             nest([
-                render::new_trait_typeclass_header(
-                    &self.name,
-                    &self.ty_params,
-                    &self.predicates,
-                    &self.bounds,
-                ),
-                render::new_typeclass_body(self.items.clone()),
+                nest([
+                    text("Class "),
+                    text(self.name.to_owned()),
+                    line(),
+                    nest([
+                        nest([
+                            text("("),
+                            text("Self"),
+                            line(),
+                            text(":"),
+                            line(),
+                            Expression::Set.to_doc(false),
+                            text(")"),
+                        ]),
+                        if self.bounds.is_empty() {
+                            nil()
+                        } else {
+                            concat([line(), intersperse(self.bounds.to_vec(), [line()])])
+                        },
+                        if self.ty_params.is_empty() {
+                            nil()
+                        } else {
+                            concat([
+                                line(),
+                                nest([
+                                    text("{"),
+                                    concat(self.ty_params.iter().map(|(ty, default)| {
+                                        match default {
+                                            // @TODO: implement the translation of type parameters with default
+                                            Some(_default) => concat([
+                                                text("(* TODO *)"),
+                                                line(),
+                                                text(ty.to_owned()),
+                                                line(),
+                                            ]),
+                                            None => concat([text(ty.to_owned()), line()]),
+                                        }
+                                    })),
+                                    text(":"),
+                                    line(),
+                                    Expression::Set.to_doc(false),
+                                    text("}"),
+                                ]),
+                            ])
+                        },
+                        if self.predicates.is_empty() {
+                            nil()
+                        } else {
+                            concat([line(), concat(self.predicates.clone())])
+                        },
+                    ]),
+                    text(" :"),
+                    line(),
+                    Expression::Type.to_doc(false),
+                    text(" := {"),
+                ]),
+                concat(self.items.clone()),
             ]),
             hardline(),
             text("}."),
