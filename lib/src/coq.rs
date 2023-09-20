@@ -76,7 +76,7 @@ pub(crate) struct Context<'a> {
 /// a coq typeclass definition
 pub(crate) struct Class<'a> {
     name: String,
-    ty_params: Vec<(String, Option<Expression<'a>>)>,
+    ty_params: Option<ArgDecl<'a>>,
     predicates: Vec<ArgDecl<'a>>,
     bounds: Vec<ArgDecl<'a>>,
     items: Vec<ClassFieldDef<'a>>,
@@ -384,9 +384,28 @@ impl<'a> TopLevelItem<'a> {
                     items.is_empty(),
                     &[TopLevelItem::Class(Class::new(
                         "Trait",
-                        ty_params.to_vec(),
-                        predicates.to_vec(),
                         bounds.to_vec(),
+                        if ty_params.is_empty() {
+                            None
+                        } else {
+                            Some(ArgDecl::new(
+                                &ArgDeclVar::Normal {
+                                    idents: ty_params
+                                        .iter()
+                                        .map(|(ty, default)| {
+                                            match default {
+                                                // @TODO: implement the translation of type parameters with default
+                                                Some(_default) => ["(* TODO *) ", ty].concat(),
+                                                None => ty.to_string(),
+                                            }
+                                        })
+                                        .collect(),
+                                    ty: Some(Expression::Set),
+                                },
+                                ArgSpecKind::Implicit,
+                            ))
+                        },
+                        predicates.to_vec(),
                         items.to_vec(),
                     ))],
                 ),
@@ -560,9 +579,9 @@ impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
     pub(crate) fn new(
         name: &str,
-        ty_params: Vec<(String, Option<Expression<'a>>)>,
-        predicates: Vec<ArgDecl<'a>>,
         bounds: Vec<ArgDecl<'a>>,
+        ty_params: Option<ArgDecl<'a>>,
+        predicates: Vec<ArgDecl<'a>>,
         items: Vec<ClassFieldDef<'a>>,
     ) -> Self {
         Class {
@@ -602,31 +621,10 @@ impl<'a> Class<'a> {
                                 ),
                             ])
                         },
-                        if self.ty_params.is_empty() {
-                            nil()
+                        if let Some(ty_params) = &self.ty_params {
+                            concat([line(), ty_params.to_doc()])
                         } else {
-                            concat([
-                                line(),
-                                nest([
-                                    text("{"),
-                                    concat(self.ty_params.iter().map(|(ty, default)| {
-                                        match default {
-                                            // @TODO: implement the translation of type parameters with default
-                                            Some(_default) => concat([
-                                                text("(* TODO *)"),
-                                                line(),
-                                                text(ty.to_owned()),
-                                                line(),
-                                            ]),
-                                            None => concat([text(ty.to_owned()), line()]),
-                                        }
-                                    })),
-                                    text(":"),
-                                    line(),
-                                    Expression::Set.to_doc(false),
-                                    text("}"),
-                                ]),
-                            ])
+                            nil()
                         },
                         if self.predicates.is_empty() {
                             nil()
