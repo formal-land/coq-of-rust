@@ -76,9 +76,9 @@ pub(crate) struct Context<'a> {
 /// a coq typeclass definition
 pub(crate) struct Class<'a> {
     name: String,
-    ty_params: Vec<(String, Option<Doc<'a>>)>,
-    predicates: Vec<Doc<'a>>,
-    bounds: Vec<Doc<'a>>,
+    ty_params: Vec<(String, Option<Expression<'a>>)>,
+    predicates: Vec<ArgDecl<'a>>,
+    bounds: Vec<ArgDecl<'a>>,
     items: Vec<ClassFieldDef<'a>>,
 }
 
@@ -371,11 +371,11 @@ impl<'a> TopLevelItem<'a> {
     /// creates a module with the translation of the given trait
     pub(crate) fn trait_module(
         name: &'a str,
-        ty_params: &[(String, Option<Doc<'a>>)],
-        predicates: &[Doc<'a>],
-        bounds: &[Doc<'a>],
-        items: Vec<ClassFieldDef<'a>>,
-        instances: Vec<Instance<'a>>,
+        ty_params: &[(String, Option<Expression<'a>>)],
+        predicates: &[ArgDecl<'a>],
+        bounds: &[ArgDecl<'a>],
+        items: &[ClassFieldDef<'a>],
+        instances: &[Instance<'a>],
     ) -> Self {
         TopLevelItem::Module(Module::new(
             name,
@@ -387,7 +387,7 @@ impl<'a> TopLevelItem<'a> {
                         ty_params.to_vec(),
                         predicates.to_vec(),
                         bounds.to_vec(),
-                        items,
+                        items.to_vec(),
                     ))],
                 ),
                 TopLevel {
@@ -560,14 +560,14 @@ impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
     pub(crate) fn new(
         name: &str,
-        ty_params: Vec<(String, Option<Doc<'a>>)>,
-        predicates: Vec<Doc<'a>>,
-        bounds: Vec<Doc<'a>>,
+        ty_params: Vec<(String, Option<Expression<'a>>)>,
+        predicates: Vec<ArgDecl<'a>>,
+        bounds: Vec<ArgDecl<'a>>,
         items: Vec<ClassFieldDef<'a>>,
     ) -> Self {
         Class {
             name: name.to_owned(),
-            ty_params: ty_params.to_owned(),
+            ty_params,
             predicates,
             bounds,
             items,
@@ -594,7 +594,13 @@ impl<'a> Class<'a> {
                         if self.bounds.is_empty() {
                             nil()
                         } else {
-                            concat([line(), intersperse(self.bounds.to_vec(), [line()])])
+                            concat([
+                                line(),
+                                intersperse(
+                                    self.bounds.iter().map(|bound| bound.to_doc()),
+                                    [line()],
+                                ),
+                            ])
                         },
                         if self.ty_params.is_empty() {
                             nil()
@@ -625,7 +631,13 @@ impl<'a> Class<'a> {
                         if self.predicates.is_empty() {
                             nil()
                         } else {
-                            concat([line(), concat(self.predicates.clone())])
+                            concat([
+                                line(),
+                                intersperse(
+                                    self.predicates.iter().map(|predicate| predicate.to_doc()),
+                                    [line()],
+                                ),
+                            ])
                         },
                     ]),
                     text(" :"),
