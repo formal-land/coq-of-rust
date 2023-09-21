@@ -39,7 +39,17 @@
     },
     "ink_engine": {
       "top_level": {
-        "database": { "move": "up", "before": "ext" }
+        "database": { "move": "up", "before": "ext" },
+        "types": { "move": "up", "before": "test_api" },
+        "exec_context": { "move": "up", "before": "ext" },
+        "test_api": { "move": "up", "before": "ext" },
+        "chain_extension": { "move": "up", "before": "ext" }
+      },
+      "top_level::chain_extension": {
+        "ExtensionId": { "move": "up", "before": "ChainExtensionHandler" }
+      },
+      "top_level::ext": {
+        "ChainSpec": { "move": "up", "before": "Engine" }
       }
     },
     "ink_env": {
