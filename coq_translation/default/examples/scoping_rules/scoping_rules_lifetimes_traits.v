@@ -11,6 +11,9 @@ Module Borrowed.
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Borrowed.
 Definition Borrowed : Set := Borrowed.t.
 

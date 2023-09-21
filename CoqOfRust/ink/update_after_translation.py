@@ -430,23 +430,29 @@ End TypedEnvBackend.""",
         "",
     )
     content = content.replace(
-        """Parameter build_create :
+        """
+Parameter build_create :
     forall
       `{H' : State.Trait}
       {ContractRef : Set}
       `{ink_env.contract.ContractEnv.Trait ContractRef},
     M (H := H')
         (ink_env.call.create_builder.CreateBuilder
-          ink_env.contract.ContractEnv.Env
+          (ink_env.contract.ContractEnv.Env (Self := ContractRef))
           ContractRef
-          (ink_env.call.common.Unset_ ink_env.types.Environment.Hash)
+          (ink_env.call.common.Unset_
+            (ink_env.types.Environment.Hash
+              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
           (ink_env.call.common.Unset_ u64)
-          (ink_env.call.common.Unset_ ink_env.types.Environment.Balance)
+          (ink_env.call.common.Unset_
+            (ink_env.types.Environment.Balance
+              (Self := ink_env.contract.ContractEnv.Env (Self := ContractRef))))
           (ink_env.call.common.Unset_
             (ink_env.call.execution_input.ExecutionInput
               ink_env.call.execution_input.EmptyArgumentList))
           (ink_env.call.common.Unset_ ink_env.call.create_builder.state.Salt)
-          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).""",
+          (ink_env.call.common.Unset_ (ink_env.call.common.ReturnType unit))).
+""",
         "",
     )
     content = content.replace(
@@ -515,7 +521,8 @@ End OnInstance.""",
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') bool.""",
         "",
@@ -566,6 +573,9 @@ Parameter recorded_events :
   Global Instance Get_engine : Notation.Dot "engine" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End EnvInstance.""",
         """Module EnvInstance.
   Unset Primitive Projections.
@@ -599,8 +609,14 @@ End private.""",
     Global Instance Get_backend : Notation.Dot "backend" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_backend : Notation.DoubleColon t "backend" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_state : Notation.Dot "state" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End TopicsBuilder.
 End TopicsBuilder.
@@ -816,62 +832,17 @@ def update_erc20():
 
 Require CoqOfRust.ink.ink_storage.
 Require CoqOfRust.ink.ink_env.
-(* @TODO Require CoqOfRust.ink.ink. *)
-
-(** @TODO [erc20] dependencies which are WIP *)
-
-Module ink.
-  Module codegen.
-    Module event.
-      Module topics.
-        Module EventTopics.
-          Parameter t : Set.
-        End EventTopics.
-        Module EventLenTopics.
-          Class Trait (Self : Set) : Type := {
-              LenTopics : Set;
-            }.
-        End EventLenTopics.
-        Definition EventTopics := EventTopics.t.
-      End topics.
-    End event.
-  End codegen.
-  Module reflect.
-    Module dispatch.
-      Module ConstructorOutput.
-        Parameter Error : Set.
-        Definition IS_RESULT : bool. Admitted.
-      End ConstructorOutput.
-
-      Module DispatchableConstructorInfo.
-        Class Trait (Self : Set) := {
-
-            Input : Set;
-            Storage : Set;
-            Output : Set;
-            Error : Set;
-            IS_RESULT `{H' : State.Trait} : M bool;
-            CALLABLE `{H' : State.Trait} : M (unit -> M Self);
-            PAYABLE `{H' : State.Trait} : M bool;
-            SELECTOR `{H' : State.Trait} : M (list Z);
-            LABEL `{H' : State.Trait} : M string;
-          }.
-      End DispatchableConstructorInfo.
-    End dispatch.
-  End reflect.
-End ink.
-
-""",
+Require CoqOfRust.ink.ink.""",
         content,
     )
 
-    for field in ("total_supply", "balances", "allowances"):
-        content = sub_exactly_n(
-            f"{field} : ink_storage_traits.storage.AutoStorableHint.Type_",
-            f"{field} `{{ink_storage_traits.storage.AutoStorableHint.Trait}} : ink_storage_traits.storage.AutoStorableHint.Type_",
-            content,
-            2,
-        )
+    # for field in ("total_supply", "balances", "allowances"):
+    #     content = sub_exactly_n(
+    #         f"{field} : ink_storage_traits.storage.AutoStorableHint.Type_",
+    #         f"{field} `{{ink_storage_traits.storage.AutoStorableHint.Trait}} : ink_storage_traits.storage.AutoStorableHint.Type_",
+    #         content,
+    #         2,
+    #     )
 
     content = sub_exactly_once(
         r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
@@ -885,13 +856,6 @@ End ink.
       H0.(ink_storage_traits.storage.AutoStorableHint.Type_)). Admitted.
 """,
         content,
-    )
-
-    content = sub_exactly_n(
-        r"IS_RESULT := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.",
-        r"IS_RESULT `{State.Trait} := Pure ink.reflect.dispatch.ConstructorOutput.IS_RESULT.",
-        content,
-        2,
     )
 
     content = sub_exactly_once(
@@ -927,30 +891,6 @@ End ink.
     Defined.
     Global Hint Resolve I : core.""",
         content,
-    )
-
-    content = sub_exactly_n(
-        r"    Definition PAYABLE := Pure false.",
-        r"    Definition PAYABLE `{State.Trait} := Pure false.",
-        content,
-        7,
-    )
-
-    content = sub_exactly_n(
-        r"    Definition SELECTOR := Pure",
-        r"    Definition SELECTOR `{State.Trait} := Pure",
-        content,
-        7,
-    )
-
-    content = sub_exactly_once(
-        r'    Definition LABEL := Pure "new".',
-        r'    Definition LABEL `{State.Trait} := Pure "new".',
-        content,
-    )
-
-    content = sub_exactly_n(
-        r"CALLABLE := Pure", r"CALLABLE `{State.Trait} := Pure", content, 14
     )
 
     with open(file_name, "w") as f:

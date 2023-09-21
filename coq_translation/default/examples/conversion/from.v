@@ -11,6 +11,9 @@ Module Number.
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Number.
 Definition Number : Set := Number.t.
 

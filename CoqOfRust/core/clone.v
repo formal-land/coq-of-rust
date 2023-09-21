@@ -18,6 +18,10 @@ Module Clone.
     clone `{H : State.Trait} : ref Self -> M (H := H) Self;
   }.
 
+  Global Instance Method_clone `{State.Trait} `(Trait) : Notation.Dot "clone" := {
+    Notation.dot := clone;
+  }.
+
   Module Impl_Clone_for_str.
     Global Instance I : Trait str. Admitted.
   End Impl_Clone_for_str.

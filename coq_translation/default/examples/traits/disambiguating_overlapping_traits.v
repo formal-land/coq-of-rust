@@ -34,8 +34,14 @@ Module Form.
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_age : Notation.Dot "age" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Form.
 Definition Form : Set := Form.t.
@@ -93,9 +99,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         disambiguating_overlapping_traits.Form.age := 28;
       |} in
   let* username :=
-    disambiguating_overlapping_traits.UsernameWidget.get (addr_of form) in
+    (disambiguating_overlapping_traits.UsernameWidget.get
+        (Self := disambiguating_overlapping_traits.Form))
+      (addr_of form) in
   let* _ :=
-    let* α0 := "rustacean".["to_owned"] in
+    let* α0 := "rustacean".["to_string"] in
     match (addr_of α0, addr_of username) with
     | (left_val, right_val) =>
       let* α0 := left_val.["deref"] in
@@ -116,7 +124,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       else
         Pure tt
     end in
-  let* age := disambiguating_overlapping_traits.AgeWidget.get (addr_of form) in
+  let* age :=
+    (disambiguating_overlapping_traits.AgeWidget.get
+        (Self := disambiguating_overlapping_traits.Form))
+      (addr_of form) in
   let* _ :=
     match (addr_of 28, addr_of age) with
     | (left_val, right_val) =>

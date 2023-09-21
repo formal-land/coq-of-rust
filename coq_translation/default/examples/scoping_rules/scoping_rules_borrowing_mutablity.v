@@ -14,11 +14,20 @@ Module Book.
   Global Instance Get_author : Notation.Dot "author" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
+  Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
+    Notation.double_colon '(Build_t x0 _ _) := x0;
+  }.
   Global Instance Get_title : Notation.Dot "title" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
+  Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
+    Notation.double_colon '(Build_t _ x1 _) := x1;
+  }.
   Global Instance Get_year : Notation.Dot "year" := {
     Notation.dot '(Build_t _ _ x2) := x2;
+  }.
+  Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
+    Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End Book.
 Definition Book : Set := Book.t.

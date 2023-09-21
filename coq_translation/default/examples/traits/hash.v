@@ -13,11 +13,20 @@ Module Person.
   Global Instance Get_id : Notation.Dot "id" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
+  Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
+    Notation.double_colon '(Build_t x0 _ _) := x0;
+  }.
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
+  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Notation.double_colon '(Build_t _ x1 _) := x1;
+  }.
   Global Instance Get_phone : Notation.Dot "phone" := {
     Notation.dot '(Build_t _ _ x2) := x2;
+  }.
+  Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
+    Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End Person.
 Definition Person : Set := Person.t.

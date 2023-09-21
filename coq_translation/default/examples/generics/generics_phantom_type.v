@@ -55,7 +55,10 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
       core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -75,8 +78,14 @@ Module PhantomStruct.
     Global Instance Get_first : Notation.Dot "first" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_first : Notation.DoubleColon t "first" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_phantom : Notation.Dot "phantom" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_phantom : Notation.DoubleColon t "phantom" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End PhantomStruct.
 End PhantomStruct.
@@ -116,7 +125,10 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
       Notation.dot := eq;
     }.
     
-    Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
       core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.

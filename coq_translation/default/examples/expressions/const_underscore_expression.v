@@ -11,6 +11,9 @@ Module Foo.
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Foo.
 Definition Foo : Set := Foo.t.
 
@@ -23,6 +26,9 @@ Module Bar.
   
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End Bar.
 Definition Bar : Set := Bar.t.

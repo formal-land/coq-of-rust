@@ -11,6 +11,9 @@ Module Droppable.
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Droppable.
 Definition Droppable : Set := Droppable.t.
 

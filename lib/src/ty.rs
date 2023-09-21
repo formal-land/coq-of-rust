@@ -7,8 +7,9 @@ use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigi
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 pub(crate) enum CoqType {
     Var(Box<Path>),
+    VarWithSelfTy(Box<Path>, Box<CoqType>),
     Application {
-        func: Box<Path>,
+        func: Box<CoqType>,
         args: Vec<Box<CoqType>>,
     },
     Function {
@@ -35,9 +36,9 @@ impl CoqType {
     pub(crate) fn monad(ty: Box<CoqType>) -> Box<CoqType> {
         Box::new(CoqType::Application {
             // TODO: try to remove the explicit parameter
-            func: Box::new(Path::local(format!(
+            func: Box::new(CoqType::Var(Box::new(Path::local(format!(
                 "M (H := {LOCAL_STATE_TRAIT_INSTANCE})"
-            ))),
+            ))))),
             args: vec![ty],
         })
     }
@@ -50,6 +51,7 @@ pub(crate) fn mt_ty_unboxed(ty: CoqType) -> CoqType {
             args: args.into_iter().map(mt_ty).collect(),
         },
         CoqType::Var(..) => ty,
+        CoqType::VarWithSelfTy(path, self_ty) => CoqType::VarWithSelfTy(path, mt_ty(self_ty)),
         CoqType::Function { args, ret } => CoqType::Function {
             args: args.into_iter().map(mt_ty).collect(),
             ret: CoqType::monad(mt_ty(ret)),
@@ -69,7 +71,7 @@ pub(crate) fn mt_ty(ty: Box<CoqType>) -> Box<CoqType> {
 pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
     match &ty.kind {
         TyKind::Slice(ty) => {
-            let func = Box::new(Path::local("Slice".to_string()));
+            let func = Box::new(CoqType::Var(Box::new(Path::local("Slice".to_string()))));
             let args = vec![compile_type(env, ty)];
             Box::new(CoqType::Application { func, args })
         }
@@ -84,18 +86,23 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
             tys.iter().map(|ty| compile_type(env, ty)).collect(),
         )),
         TyKind::Path(qpath) => {
+            let self_ty = match qpath {
+                rustc_hir::QPath::Resolved(Some(self_ty), _) => Some(compile_type(env, self_ty)),
+                _ => None,
+            };
             let params = match qpath {
                 rustc_hir::QPath::Resolved(_, path) => compile_path_ty_params(env, path),
                 _ => vec![],
             };
             let qpath = Box::new(compile_qpath(env, qpath));
+            let func = Box::new(match self_ty {
+                Some(self_ty) => CoqType::VarWithSelfTy(qpath, self_ty),
+                None => CoqType::Var(qpath),
+            });
             if params.is_empty() {
-                Box::new(CoqType::Var(qpath))
+                func
             } else {
-                Box::new(CoqType::Application {
-                    func: qpath,
-                    args: params,
-                })
+                Box::new(CoqType::Application { func, args: params })
             }
         }
         TyKind::OpaqueDef(item_id, _, _) => {
@@ -222,11 +229,14 @@ impl CoqType {
                 ident: *path.clone(),
                 no_implicit: false,
             },
-            CoqType::Application { func, args } => coq::Expression::Variable {
-                ident: *func.clone(),
+            CoqType::VarWithSelfTy(path, self_ty) => coq::Expression::Variable {
+                ident: *path.clone(),
                 no_implicit: false,
             }
-            .apply_many(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
+            .apply_arg(&Some("Self".to_string()), &self_ty.to_coq()),
+            CoqType::Application { func, args } => func
+                .to_coq()
+                .apply_many(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
             CoqType::Function { args, ret } => ret
                 .to_coq()
                 .arrows_from(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
@@ -265,10 +275,18 @@ impl CoqType {
     pub(crate) fn to_doc<'a>(&self, with_paren: bool) -> Doc<'a> {
         match self {
             CoqType::Var(path) => path.to_doc(),
+            CoqType::VarWithSelfTy(path, self_ty) => paren(
+                with_paren,
+                nest([
+                    path.to_doc(),
+                    line(),
+                    nest([text("(Self :="), line(), self_ty.to_doc(false), text(")")]),
+                ]),
+            ),
             CoqType::Application { func, args } => paren(
                 with_paren,
                 nest([
-                    func.to_doc(),
+                    func.to_doc(true),
                     line(),
                     intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
                 ]),
@@ -313,6 +331,9 @@ impl CoqType {
     pub(crate) fn to_name(&self) -> String {
         match self {
             CoqType::Var(path) => path.to_name(),
+            CoqType::VarWithSelfTy(path, self_ty) => {
+                format!("{}_{}", self_ty.to_name(), path.to_name())
+            }
             CoqType::Application { func, args } => {
                 let mut name = func.to_name();
                 for arg in args {
@@ -371,6 +392,7 @@ impl CoqType {
     pub(crate) fn has_opaque_types(&self) -> bool {
         match self {
             CoqType::Var(_) => false,
+            CoqType::VarWithSelfTy(_, self_ty) => self_ty.has_opaque_types(),
             CoqType::Application { args, .. } => args.iter().any(|ty| ty.has_opaque_types()),
             CoqType::Function { args, ret } => {
                 args.iter().any(|ty| ty.has_opaque_types()) && ret.has_opaque_types()
@@ -386,6 +408,7 @@ impl CoqType {
     pub(crate) fn opaque_types_bounds(&self) -> Vec<Vec<Path>> {
         match self {
             CoqType::Var(_) => vec![],
+            CoqType::VarWithSelfTy(_, self_ty) => self_ty.opaque_types_bounds(),
             CoqType::Application { args, .. } => args
                 .iter()
                 .flat_map(|ty| ty.opaque_types_bounds())
@@ -405,10 +428,11 @@ impl CoqType {
         }
     }
 
-    /// substitutes all occurences of OpaqueType with ty
+    /// substitutes all occurrences of OpaqueType with ty
     pub(crate) fn subst_opaque_types(&mut self, ty: &CoqType) {
         match self {
             CoqType::Var(_) => {}
+            CoqType::VarWithSelfTy(_, self_ty) => self_ty.subst_opaque_types(ty),
             CoqType::Application { args, .. } => args
                 .iter_mut()
                 .map(|arg_ty| arg_ty.subst_opaque_types(ty))

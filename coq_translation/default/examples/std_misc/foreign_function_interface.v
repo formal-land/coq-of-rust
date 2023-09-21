@@ -55,8 +55,14 @@ Module Complex.
   Global Instance Get_re : Notation.Dot "re" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_re : Notation.DoubleColon t "re" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_im : Notation.Dot "im" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_im : Notation.DoubleColon t "im" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Complex.
 Definition Complex : Set := Complex.t.

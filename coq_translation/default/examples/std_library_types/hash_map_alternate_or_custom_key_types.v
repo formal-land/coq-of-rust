@@ -12,8 +12,14 @@ Module Account.
   Global Instance Get_username : Notation.Dot "username" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_password : Notation.Dot "password" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Account.
 Definition Account : Set := Account.t.
@@ -46,7 +52,9 @@ Module
     Notation.dot := eq;
   }.
   
-  Global Instance I : core.cmp.PartialEq.Trait Self (Rhs := None) := {
+  Global Instance I
+    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+      := {
     core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
   }.
   Global Hint Resolve I : core.
@@ -118,8 +126,14 @@ Module AccountInfo.
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_email : Notation.Dot "email" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End AccountInfo.
 Definition AccountInfo : Set := AccountInfo.t.
