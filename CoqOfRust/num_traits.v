@@ -1005,21 +1005,21 @@ Module float.
     Global Instance Method_TAU `{H : State.Trait} `(Trait)
       : Notation.Dot "TAU" := {
       Notation.dot`{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Add.Trait Self (Rhs := Self)}
            :=
         (axiom : M (H := H) Self);
     }.
     Global Instance Method_LOG10_2 `{H : State.Trait} `(Trait)
       : Notation.Dot "LOG10_2" := {
       Notation.dot`{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Div.Trait Self (Rhs := Self)}
            :=
         (axiom : M (H := H) Self);
     }.
     Global Instance Method_LOG2_10 `{H : State.Trait} `(Trait)
       : Notation.Dot "LOG2_10" := {
       Notation.dot`{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
+          `{core.ops.arith.Div.Trait Self (Rhs := Self)}
            :=
         (axiom : M (H := H) Self);
     }.
@@ -1558,21 +1558,21 @@ Module FloatConst.
   Global Instance Method_TAU `{H : State.Trait} `(Trait)
     : Notation.Dot "TAU" := {
     Notation.dot`{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)}
          :=
       (axiom : M (H := H) Self);
   }.
   Global Instance Method_LOG10_2 `{H : State.Trait} `(Trait)
     : Notation.Dot "LOG10_2" := {
     Notation.dot`{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Div.Trait Self (Rhs := Self)}
          :=
       (axiom : M (H := H) Self);
   }.
   Global Instance Method_LOG2_10 `{H : State.Trait} `(Trait)
     : Notation.Dot "LOG2_10" := {
     Notation.dot`{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
+        `{core.ops.arith.Div.Trait Self (Rhs := Self)}
          :=
       (axiom : M (H := H) Self);
   }.
@@ -1583,7 +1583,7 @@ Module identities.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
         Set := {
       zero `{H : State.Trait} : (M (H := H) Self);
       is_zero `{H : State.Trait} : (ref Self) -> (M (H := H) bool);
@@ -1607,7 +1607,7 @@ Module identities.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
         Set := {
       one `{H : State.Trait} : (M (H := H) Self);
     }.
@@ -1622,7 +1622,7 @@ Module identities.
     }.
     Global Instance Method_is_one `{H : State.Trait} `(Trait)
       : Notation.Dot "is_one" := {
-      Notation.dot`{core.cmp.PartialEq.Trait Self (Rhs := None)} 
+      Notation.dot`{core.cmp.PartialEq.Trait Self (Rhs := Self)} 
           (self : ref Self) :=
         (axiom : M (H := H) bool);
     }.
@@ -1643,7 +1643,7 @@ Module Zero.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
       Set := {
     zero `{H : State.Trait} : (M (H := H) Self);
     is_zero `{H : State.Trait} : (ref Self) -> (M (H := H) bool);
@@ -1667,7 +1667,7 @@ Module One.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
       Set := {
     one `{H : State.Trait} : (M (H := H) Self);
   }.
@@ -2035,7 +2035,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
           Set := {
         checked_add
           `{H : State.Trait}
@@ -2053,7 +2053,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
           Set := {
         checked_sub
           `{H : State.Trait}
@@ -2071,7 +2071,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
           Set := {
         checked_mul
           `{H : State.Trait}
@@ -2089,7 +2089,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Div.Trait Self (Rhs := Self)} :
           Set := {
         checked_div
           `{H : State.Trait}
@@ -2107,7 +2107,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Rem.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Rem.Trait Self (Rhs := Self)} :
           Set := {
         checked_rem
           `{H : State.Trait}
@@ -2178,8 +2178,8 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
-            `{core.ops.arith.Rem.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Div.Trait Self (Rhs := Self)}
+            `{core.ops.arith.Rem.Trait Self (Rhs := Self)} :
           Set := {
         div_euclid
           `{H : State.Trait}
@@ -2294,7 +2294,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
           Set := {
         overflowing_add
           `{H : State.Trait}
@@ -2312,7 +2312,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
           Set := {
         overflowing_sub
           `{H : State.Trait}
@@ -2330,7 +2330,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
           Set := {
         overflowing_mul
           `{H : State.Trait}
@@ -2366,7 +2366,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
           Set := {
         saturating_add
           `{H : State.Trait}
@@ -2384,7 +2384,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
           Set := {
         saturating_sub
           `{H : State.Trait}
@@ -2402,7 +2402,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
           Set := {
         saturating_mul
           `{H : State.Trait}
@@ -2422,7 +2422,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
           Set := {
         wrapping_add
           `{H : State.Trait}
@@ -2440,7 +2440,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
           Set := {
         wrapping_sub
           `{H : State.Trait}
@@ -2458,7 +2458,7 @@ Module ops.
       Class Trait
           (Self : Set)
             `{core.marker.Sized.Trait Self}
-            `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+            `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
           Set := {
         wrapping_mul
           `{H : State.Trait}
@@ -2705,7 +2705,7 @@ Module checked.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
         Set := {
       checked_add
         `{H : State.Trait}
@@ -2723,7 +2723,7 @@ Module checked.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
         Set := {
       checked_sub
         `{H : State.Trait}
@@ -2741,7 +2741,7 @@ Module checked.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
         Set := {
       checked_mul
         `{H : State.Trait}
@@ -2759,7 +2759,7 @@ Module checked.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Div.Trait Self (Rhs := Self)} :
         Set := {
       checked_div
         `{H : State.Trait}
@@ -2777,7 +2777,7 @@ Module checked.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Rem.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Rem.Trait Self (Rhs := Self)} :
         Set := {
       checked_rem
         `{H : State.Trait}
@@ -2846,7 +2846,7 @@ Module CheckedAdd.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
       Set := {
     checked_add
       `{H : State.Trait}
@@ -2864,7 +2864,7 @@ Module CheckedSub.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
       Set := {
     checked_sub
       `{H : State.Trait}
@@ -2882,7 +2882,7 @@ Module CheckedMul.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
       Set := {
     checked_mul
       `{H : State.Trait}
@@ -2900,7 +2900,7 @@ Module CheckedDiv.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Div.Trait Self (Rhs := Self)} :
       Set := {
     checked_div
       `{H : State.Trait}
@@ -2918,7 +2918,7 @@ Module CheckedRem.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Rem.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Rem.Trait Self (Rhs := Self)} :
       Set := {
     checked_rem
       `{H : State.Trait}
@@ -2987,8 +2987,8 @@ Module euclid.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
-          `{core.ops.arith.Rem.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Div.Trait Self (Rhs := Self)}
+          `{core.ops.arith.Rem.Trait Self (Rhs := Self)} :
         Set := {
       div_euclid
         `{H : State.Trait}
@@ -3039,8 +3039,8 @@ Module Euclid.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Div.Trait Self (Rhs := (Some Self))}
-        `{core.ops.arith.Rem.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Div.Trait Self (Rhs := Self)}
+        `{core.ops.arith.Rem.Trait Self (Rhs := Self)} :
       Set := {
     div_euclid
       `{H : State.Trait}
@@ -3211,7 +3211,7 @@ Module overflowing.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
         Set := {
       overflowing_add
         `{H : State.Trait}
@@ -3229,7 +3229,7 @@ Module overflowing.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
         Set := {
       overflowing_sub
         `{H : State.Trait}
@@ -3247,7 +3247,7 @@ Module overflowing.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
         Set := {
       overflowing_mul
         `{H : State.Trait}
@@ -3266,7 +3266,7 @@ Module OverflowingAdd.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
       Set := {
     overflowing_add
       `{H : State.Trait}
@@ -3284,7 +3284,7 @@ Module OverflowingSub.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
       Set := {
     overflowing_sub
       `{H : State.Trait}
@@ -3302,7 +3302,7 @@ Module OverflowingMul.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
       Set := {
     overflowing_mul
       `{H : State.Trait}
@@ -3337,7 +3337,7 @@ Module saturating.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
         Set := {
       saturating_add
         `{H : State.Trait}
@@ -3355,7 +3355,7 @@ Module saturating.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
         Set := {
       saturating_sub
         `{H : State.Trait}
@@ -3373,7 +3373,7 @@ Module saturating.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
         Set := {
       saturating_mul
         `{H : State.Trait}
@@ -3408,7 +3408,7 @@ Module SaturatingAdd.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
       Set := {
     saturating_add
       `{H : State.Trait}
@@ -3426,7 +3426,7 @@ Module SaturatingSub.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
       Set := {
     saturating_sub
       `{H : State.Trait}
@@ -3444,7 +3444,7 @@ Module SaturatingMul.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
       Set := {
     saturating_mul
       `{H : State.Trait}
@@ -3463,7 +3463,7 @@ Module wrapping.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
         Set := {
       wrapping_add
         `{H : State.Trait}
@@ -3481,7 +3481,7 @@ Module wrapping.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
         Set := {
       wrapping_sub
         `{H : State.Trait}
@@ -3499,7 +3499,7 @@ Module wrapping.
     Class Trait
         (Self : Set)
           `{core.marker.Sized.Trait Self}
-          `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+          `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
         Set := {
       wrapping_mul
         `{H : State.Trait}
@@ -3559,7 +3559,7 @@ Module WrappingAdd.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)} :
       Set := {
     wrapping_add
       `{H : State.Trait}
@@ -3577,7 +3577,7 @@ Module WrappingSub.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Sub.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Sub.Trait Self (Rhs := Self)} :
       Set := {
     wrapping_sub
       `{H : State.Trait}
@@ -3595,7 +3595,7 @@ Module WrappingMul.
   Class Trait
       (Self : Set)
         `{core.marker.Sized.Trait Self}
-        `{core.ops.arith.Mul.Trait Self (Rhs := (Some Self))} :
+        `{core.ops.arith.Mul.Trait Self (Rhs := Self)} :
       Set := {
     wrapping_mul
       `{H : State.Trait}
@@ -4231,7 +4231,7 @@ End Real.
 Module NumOps.
   Unset Primitive Projections.
   Class Trait
-      (Self : Set) {(* TODO *) Rhs (* TODO *) Output : option Set}
+      (Self : Set) {(* TODO *) Rhs : Set} {(* TODO *) Output : option Set}
         `{core.ops.arith.Add.Trait Self (Rhs := (Rhs (* @TODO *)))}
         `{core.ops.arith.Sub.Trait Self (Rhs := (Rhs (* @TODO *)))}
         `{core.ops.arith.Mul.Trait Self (Rhs := (Rhs (* @TODO *)))}
@@ -4246,10 +4246,10 @@ End NumOps.
 Module Num.
   Class Trait
       (Self : Set)
-        `{core.cmp.PartialEq.Trait Self (Rhs := None)}
+        `{core.cmp.PartialEq.Trait Self (Rhs := Self)}
         `{num_traits.identities.Zero.Trait Self}
         `{num_traits.identities.One.Trait Self}
-        `{num_traits.NumOps.Trait Self (Rhs := None) (Output := None)} :
+        `{num_traits.NumOps.Trait Self (Rhs := Self) (Output := None)} :
       Type := {
     FromStrRadixErr : Set;
     from_str_radix

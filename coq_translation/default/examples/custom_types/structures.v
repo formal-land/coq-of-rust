@@ -12,8 +12,14 @@ Module Person.
   Global Instance Get_name : Notation.Dot "name" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_age : Notation.Dot "age" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Person.
 Definition Person : Set := Person.t.
@@ -90,8 +96,14 @@ Module Point.
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_y : Notation.Dot "y" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Point.
 Definition Point : Set := Point.t.
@@ -107,8 +119,15 @@ Module Rectangle.
   Global Instance Get_top_left : Notation.Dot "top_left" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_top_left : Notation.DoubleColon t "top_left" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_bottom_right : Notation.Dot "bottom_right" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_bottom_right
+    : Notation.DoubleColon t "bottom_right" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Rectangle.
 Definition Rectangle : Set := Rectangle.t.

@@ -267,8 +267,8 @@ Module RangeBounds.
     start_bound : ref Self -> Bound (ref T);
     end_bound : ref Self -> Bound (ref T);
     contains (U : Set) {T : Set}
-      `{PartialOrd.Trait U (Some T)}
-      `{PartialOrd.Trait T (Some U)}
+      `{PartialOrd.Trait U (Rhs := T)}
+      `{PartialOrd.Trait T (Rhs := U)}
       : ref Self -> ref U -> bool;
   }.
 End RangeBounds.

@@ -15,6 +15,9 @@ Module result_info.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End IsResultType.
   End IsResultType.
   Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
@@ -69,6 +72,9 @@ Module IsResultType.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End IsResultType.
 End IsResultType.
@@ -425,6 +431,9 @@ Module reflect.
           Global Instance Get_marker : Notation.Dot "marker" := {
             Notation.dot '(Build_t x0) := x0;
           }.
+          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
+          }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
       Definition TraitDefinitionRegistry (E : Set) : Set :=
@@ -541,7 +550,7 @@ Module codegen.
             `{H'0
               :
               core.convert.Into.Trait E
-                (T := ink.reflect.event.ContractEventBase.Type_)}
+                (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
             :
             Self -> E -> M (H := H') unit;
         }.
@@ -553,7 +562,7 @@ Module codegen.
             `{H'0
               :
               core.convert.Into.Trait E
-                (T := ink.reflect.event.ContractEventBase.Type_)}
+                (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
             :=
             emit_event (E := E) (H'0 := H'0);
         }.
@@ -585,7 +594,8 @@ Module codegen.
           Context
             `{ink.codegen.event.topics.EventLenTopics.Trait Event}
             `{ink.codegen.event.topics.RespectTopicLimit.Trait
-                  ink.codegen.event.topics.EventLenTopics.LenTopics}.
+                  (ink.codegen.event.topics.EventLenTopics.LenTopics
+                    (Self := Event))}.
           Unset Primitive Projections.
           Record t : Set := {
             marker : core.marker.PhantomData (Event);
@@ -595,13 +605,17 @@ Module codegen.
           Global Instance Get_marker : Notation.Dot "marker" := {
             Notation.dot '(Build_t x0) := x0;
           }.
+          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
+          }.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
       Definition EventRespectsTopicLimit
           (Event : Set)
           `{ink.codegen.event.topics.EventLenTopics.Trait Event}
           `{ink.codegen.event.topics.RespectTopicLimit.Trait
-                ink.codegen.event.topics.EventLenTopics.LenTopics}
+                (ink.codegen.event.topics.EventLenTopics.LenTopics
+                  (Self := Event))}
           : Set :=
         EventRespectsTopicLimit.t (Event := Event).
       
@@ -683,13 +697,15 @@ Module codegen.
             (ref Self) ->
               M (H := H')
                 (ref
-                  ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+                  (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+                    (Self := Forwarder)));
           build_mut `{H' : State.Trait}
             :
             (mut_ref Self) ->
               M (H := H')
                 (mut_ref
-                  ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+                  (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+                    (Self := Forwarder)));
         }.
         
         Global Instance Method_Forwarder `(Trait)
@@ -747,6 +763,9 @@ Module codegen.
           
           Global Instance Get__marker : Notation.Dot "_marker" := {
             Notation.dot '(Build_t x0) := x0;
+          }.
+          Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
           }.
         End IsSameType.
       End IsSameType.
@@ -994,7 +1013,7 @@ Module event.
           `{H'0
             :
             core.convert.Into.Trait E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
+              (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
           :
           Self -> E -> M (H := H') unit;
       }.
@@ -1006,7 +1025,7 @@ Module event.
           `{H'0
             :
             core.convert.Into.Trait E
-              (T := ink.reflect.event.ContractEventBase.Type_)}
+              (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
           :=
           emit_event (E := E) (H'0 := H'0);
       }.
@@ -1038,7 +1057,8 @@ Module event.
         Context
           `{ink.codegen.event.topics.EventLenTopics.Trait Event}
           `{ink.codegen.event.topics.RespectTopicLimit.Trait
-                ink.codegen.event.topics.EventLenTopics.LenTopics}.
+                (ink.codegen.event.topics.EventLenTopics.LenTopics
+                  (Self := Event))}.
         Unset Primitive Projections.
         Record t : Set := {
           marker : core.marker.PhantomData (Event);
@@ -1048,13 +1068,17 @@ Module event.
         Global Instance Get_marker : Notation.Dot "marker" := {
           Notation.dot '(Build_t x0) := x0;
         }.
+        Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+          Notation.double_colon '(Build_t x0) := x0;
+        }.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
     Definition EventRespectsTopicLimit
         (Event : Set)
         `{ink.codegen.event.topics.EventLenTopics.Trait Event}
         `{ink.codegen.event.topics.RespectTopicLimit.Trait
-              ink.codegen.event.topics.EventLenTopics.LenTopics}
+              (ink.codegen.event.topics.EventLenTopics.LenTopics
+                (Self := Event))}
         : Set :=
       EventRespectsTopicLimit.t (Event := Event).
     
@@ -1078,7 +1102,7 @@ Module emit.
         `{H'0
           :
           core.convert.Into.Trait E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
+            (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
         :
         Self -> E -> M (H := H') unit;
     }.
@@ -1090,7 +1114,7 @@ Module emit.
         `{H'0
           :
           core.convert.Into.Trait E
-            (T := ink.reflect.event.ContractEventBase.Type_)}
+            (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
         :=
         emit_event (E := E) (H'0 := H'0);
     }.
@@ -1109,7 +1133,7 @@ Module EmitEvent.
       `{H'0
         :
         core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_)}
+          (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
       :
       Self -> E -> M (H := H') unit;
   }.
@@ -1121,7 +1145,7 @@ Module EmitEvent.
       `{H'0
         :
         core.convert.Into.Trait E
-          (T := ink.reflect.event.ContractEventBase.Type_)}
+          (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
       :=
       emit_event (E := E) (H'0 := H'0);
   }.
@@ -1152,7 +1176,8 @@ Module topics.
       Context
         `{ink.codegen.event.topics.EventLenTopics.Trait Event}
         `{ink.codegen.event.topics.RespectTopicLimit.Trait
-              ink.codegen.event.topics.EventLenTopics.LenTopics}.
+              (ink.codegen.event.topics.EventLenTopics.LenTopics
+                (Self := Event))}.
       Unset Primitive Projections.
       Record t : Set := {
         marker : core.marker.PhantomData (Event);
@@ -1162,13 +1187,16 @@ Module topics.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
   Definition EventRespectsTopicLimit
       (Event : Set)
       `{ink.codegen.event.topics.EventLenTopics.Trait Event}
       `{ink.codegen.event.topics.RespectTopicLimit.Trait
-            ink.codegen.event.topics.EventLenTopics.LenTopics}
+            (ink.codegen.event.topics.EventLenTopics.LenTopics (Self := Event))}
       : Set :=
     EventRespectsTopicLimit.t (Event := Event).
   
@@ -1184,7 +1212,8 @@ Module EventRespectsTopicLimit.
     Context
       `{ink.codegen.event.topics.EventLenTopics.Trait Event}
       `{ink.codegen.event.topics.RespectTopicLimit.Trait
-            ink.codegen.event.topics.EventLenTopics.LenTopics}.
+            (ink.codegen.event.topics.EventLenTopics.LenTopics
+              (Self := Event))}.
     Unset Primitive Projections.
     Record t : Set := {
       marker : core.marker.PhantomData (Event);
@@ -1194,13 +1223,16 @@ Module EventRespectsTopicLimit.
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
 Definition EventRespectsTopicLimit
     (Event : Set)
     `{ink.codegen.event.topics.EventLenTopics.Trait Event}
     `{ink.codegen.event.topics.RespectTopicLimit.Trait
-          ink.codegen.event.topics.EventLenTopics.LenTopics}
+          (ink.codegen.event.topics.EventLenTopics.LenTopics (Self := Event))}
     : Set :=
   EventRespectsTopicLimit.t (Event := Event).
 
@@ -1302,13 +1334,16 @@ Module trait_def.
           :
           (ref Self) ->
             M (H := H')
-              (ref ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+              (ref
+                (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+                  (Self := Forwarder)));
         build_mut `{H' : State.Trait}
           :
           (mut_ref Self) ->
             M (H := H')
               (mut_ref
-                ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+                (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+                  (Self := Forwarder)));
       }.
       
       Global Instance Method_Forwarder `(Trait)
@@ -1405,13 +1440,16 @@ Module call_builder.
         :
         (ref Self) ->
           M (H := H')
-            (ref ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+            (ref
+              (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+                (Self := Forwarder)));
       build_mut `{H' : State.Trait}
         :
         (mut_ref Self) ->
           M (H := H')
             (mut_ref
-              ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+              (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+                (Self := Forwarder)));
     }.
     
     Global Instance Method_Forwarder `(Trait)
@@ -1492,12 +1530,16 @@ End TraitCallForwarder.
       :
       (ref Self) ->
         M (H := H')
-          (ref ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+          (ref
+            (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+              (Self := Forwarder)));
     build_mut `{H' : State.Trait}
       :
       (mut_ref Self) ->
         M (H := H')
-          (mut_ref ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder);
+          (mut_ref
+            (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
+              (Self := Forwarder)));
   }.
   
   Global Instance Method_Forwarder `(Trait)
@@ -1564,6 +1606,9 @@ Module utils.
         Global Instance Get__marker : Notation.Dot "_marker" := {
           Notation.dot '(Build_t x0) := x0;
         }.
+        Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+          Notation.double_colon '(Build_t x0) := x0;
+        }.
       End IsSameType.
     End IsSameType.
     Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
@@ -1591,6 +1636,9 @@ Module same_type.
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End IsSameType.
   End IsSameType.
   Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
@@ -1607,6 +1655,9 @@ Module IsSameType.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End IsSameType.
 End IsSameType.
@@ -2191,6 +2242,9 @@ Module Wrap_trait_def_1.
           Global Instance Get_marker : Notation.Dot "marker" := {
             Notation.dot '(Build_t x0) := x0;
           }.
+          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+            Notation.double_colon '(Build_t x0) := x0;
+          }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
       Definition TraitDefinitionRegistry (E : Set) : Set :=
@@ -2292,6 +2346,9 @@ Module registry.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
   Definition TraitDefinitionRegistry (E : Set) : Set :=
@@ -2309,6 +2366,9 @@ Module TraitDefinitionRegistry.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
@@ -2503,7 +2563,8 @@ Module contract_ref.
         Type := {
       to_account_id `{H' : State.Trait}
         :
-        (ref Self) -> M (H := H') ink_env.types.Environment.AccountId;
+        (ref Self) ->
+          M (H := H') (ink_env.types.Environment.AccountId (Self := T));
     }.
     
     Global Instance Method_to_account_id `{H' : State.Trait} `(Trait)
@@ -2518,7 +2579,8 @@ Module ToAccountId.
       Type := {
     to_account_id `{H' : State.Trait}
       :
-      (ref Self) -> M (H := H') ink_env.types.Environment.AccountId;
+      (ref Self) ->
+        M (H := H') (ink_env.types.Environment.AccountId (Self := T));
   }.
   
   Global Instance Method_to_account_id `{H' : State.Trait} `(Trait)
@@ -2540,6 +2602,9 @@ Module env_access.
       Global Instance Get_marker : Notation.Dot "marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End EnvAccess.
   End EnvAccess.
   Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
@@ -2556,6 +2621,9 @@ Module EnvAccess.
     
     Global Instance Get_marker : Notation.Dot "marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End EnvAccess.
 End EnvAccess.

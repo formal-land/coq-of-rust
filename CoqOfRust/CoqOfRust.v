@@ -520,11 +520,15 @@ Module core.
   Module ops.
     Module arith.
       Module Add.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           add `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_add `{State.Trait} `(Trait) :
           Notation.Dot "add" := {
@@ -533,10 +537,14 @@ Module core.
       End Add.
 
       Module AddAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           add_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_add_assign `{State.Trait} `(Trait) :
           Notation.Dot "add_assign" := {
@@ -545,11 +553,15 @@ Module core.
       End AddAssign.
 
       Module Sub.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           sub `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_sub `{State.Trait} `(Trait) :
           Notation.Dot "sub" := {
@@ -558,10 +570,14 @@ Module core.
       End Sub.
 
       Module SubAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           sub_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_sub_assign `{State.Trait} `(Trait) :
           Notation.Dot "sub_assign" := {
@@ -570,11 +586,15 @@ Module core.
       End SubAssign.
 
       Module Mul.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           mul `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_mul `{State.Trait} `(Trait) :
           Notation.Dot "mul" := {
@@ -583,10 +603,14 @@ Module core.
       End Mul.
 
       Module MulAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           mul_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_mul_assign `{State.Trait} `(Trait) :
           Notation.Dot "mul_assign" := {
@@ -595,11 +619,15 @@ Module core.
       End MulAssign.
 
       Module Div.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           div `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_div `{State.Trait} `(Trait) :
           Notation.Dot "div" := {
@@ -608,10 +636,14 @@ Module core.
       End Div.
 
       Module DivAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           div_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_div_assign `{State.Trait} `(Trait) :
           Notation.Dot "div_assign" := {
@@ -620,11 +652,15 @@ Module core.
       End DivAssign.
 
       Module Rem.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           rem `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_rem `{State.Trait} `(Trait) :
           Notation.Dot "rem" := {
@@ -633,10 +669,14 @@ Module core.
       End Rem.
 
       Module RemAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           rem_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_rem_assign `{State.Trait} `(Trait) :
           Notation.Dot "rem_assign" := {
@@ -645,11 +685,15 @@ Module core.
       End RemAssign.
 
       Module BitXor.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           bitxor `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_bitxor `{State.Trait} `(Trait) :
           Notation.Dot "bitxor" := {
@@ -658,10 +702,14 @@ Module core.
       End BitXor.
 
       Module BitXorAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           bitxor_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_bitxor_assign `{State.Trait} `(Trait) :
           Notation.Dot "bitxor_assign" := {
@@ -670,11 +718,15 @@ Module core.
       End BitXorAssign.
 
       Module BitAnd.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           bitand `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_bitand `{State.Trait} `(Trait) :
           Notation.Dot "bitand" := {
@@ -683,10 +735,14 @@ Module core.
       End BitAnd.
 
       Module BitAndAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           bitand_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_bitand_assign `{State.Trait} `(Trait) :
           Notation.Dot "bitand_assign" := {
@@ -695,11 +751,15 @@ Module core.
       End BitAndAssign.
 
       Module BitOr.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           bitor `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_bitor `{State.Trait} `(Trait) :
           Notation.Dot "bitor" := {
@@ -708,10 +768,14 @@ Module core.
       End BitOr.
 
       Module BitOrAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           bitor_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_bitor_assign `{State.Trait} `(Trait) :
           Notation.Dot "bitor_assign" := {
@@ -720,11 +784,15 @@ Module core.
       End BitOrAssign.
 
       Module Shl.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           shl `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_shl `{State.Trait} `(Trait) :
           Notation.Dot "shl" := {
@@ -733,10 +801,14 @@ Module core.
       End Shl.
 
       Module ShlAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           shl_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_shl_assign `{State.Trait} `(Trait) :
           Notation.Dot "shl_assign" := {
@@ -745,11 +817,15 @@ Module core.
       End ShlAssign.
 
       Module Shr.
-        Class Trait (Self : Set) {Rhs : option Set} : Type := {
+        Class Trait (Self : Set) {Rhs : Set} : Type := {
           Output : Set;
-          Rhs := defaultType Rhs Self;
+          Rhs := Rhs;
           shr `{State.Trait} : Self -> Rhs -> M Output;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_shr `{State.Trait} `(Trait) :
           Notation.Dot "shr" := {
@@ -758,10 +834,14 @@ Module core.
       End Shr.
 
       Module ShrAssign.
-        Class Trait (Self : Set) {Rhs : option Set} : Set := {
-          Rhs := defaultType Rhs Self;
+        Class Trait (Self : Set) {Rhs : Set} : Set := {
+          Rhs := Rhs;
           shr_assign `{State.Trait} : mut_ref Self -> Rhs -> M unit;
         }.
+
+        Module Default.
+          Definition Rhs (Self : Set) : Set := Self.
+        End Default.
 
         Global Instance Method_shr_assign `{State.Trait} `(Trait) :
           Notation.Dot "shr_assign" := {
@@ -832,7 +912,7 @@ Module core.
         Notation.dot := add;
       }.
 
-      Global Instance Add_for_Z : arith.Add.Trait Z (Rhs := None) := {
+      Global Instance Add_for_Z : arith.Add.Trait Z (Rhs := arith.Add.Default.Rhs Z) := {
         add `{State.Trait} := add;
       }.
     End Impl_Add_for_Z.
@@ -846,7 +926,7 @@ Module core.
       }.
 
       Global Instance AddAssign_for_Z :
-        arith.AddAssign.Trait Z (Rhs := None) := {
+        arith.AddAssign.Trait Z (Rhs := Z) := {
         add_assign `{State.Trait} := add_assign;
       }.
     End Impl_AddAssign_for_Z.
@@ -858,7 +938,7 @@ Module core.
         Notation.dot := sub;
       }.
 
-      Global Instance Sub_for_Z : arith.Sub.Trait Z (Rhs := None) := {
+      Global Instance Sub_for_Z : arith.Sub.Trait Z (Rhs := Z) := {
         sub `{State.Trait} := sub;
       }.
     End Impl_Sub_for_Z.
@@ -872,7 +952,7 @@ Module core.
       }.
 
       Global Instance SubAssign_for_Z :
-        arith.SubAssign.Trait Z (Rhs := None) := {
+        arith.SubAssign.Trait Z (Rhs := Z) := {
         sub_assign `{State.Trait} := sub_assign;
       }.
     End Impl_SubAssign_for_Z.
@@ -884,7 +964,7 @@ Module core.
         Notation.dot := mul;
       }.
 
-      Global Instance Mul_for_Z : arith.Mul.Trait Z (Rhs := None) := {
+      Global Instance Mul_for_Z : arith.Mul.Trait Z (Rhs := Z) := {
         mul `{State.Trait} := mul;
       }.
     End Impl_Mul_for_Z.
@@ -898,7 +978,7 @@ Module core.
       }.
 
       Global Instance MulAssign_for_Z :
-        arith.MulAssign.Trait Z (Rhs := None) := {
+        arith.MulAssign.Trait Z (Rhs := Z) := {
         mul_assign `{State.Trait} := mul_assign;
       }.
     End Impl_MulAssign_for_Z.
@@ -910,7 +990,7 @@ Module core.
         Notation.dot := div;
       }.
 
-      Global Instance Div_for_Z : arith.Div.Trait Z (Rhs := None) := {
+      Global Instance Div_for_Z : arith.Div.Trait Z (Rhs := Z) := {
         div `{State.Trait} := div;
       }.
     End Impl_Div_for_Z.
@@ -924,7 +1004,7 @@ Module core.
       }.
 
       Global Instance DivAssign_for_Z :
-        arith.DivAssign.Trait Z (Rhs := None) := {
+        arith.DivAssign.Trait Z (Rhs := Z) := {
         div_assign `{State.Trait} := div_assign;
       }.
     End Impl_DivAssign_for_Z.
@@ -936,7 +1016,7 @@ Module core.
         Notation.dot := rem;
       }.
 
-      Global Instance Rem_for_Z : arith.Rem.Trait Z (Rhs := None) := {
+      Global Instance Rem_for_Z : arith.Rem.Trait Z (Rhs := Z) := {
         rem `{State.Trait} := rem;
       }.
     End Impl_Rem_for_Z.
@@ -950,7 +1030,7 @@ Module core.
       }.
 
       Global Instance RemAssign_for_Z :
-        arith.RemAssign.Trait Z (Rhs := None) := {
+        arith.RemAssign.Trait Z (Rhs := Z) := {
         rem_assign `{State.Trait} := rem_assign;
       }.
     End Impl_RemAssign_for_Z.
@@ -1329,12 +1409,6 @@ Module _crate.
         assert_receiver_is_total_eq `{State.Trait} : ref Self -> M unit;
       }.
     End Eq.
-
-    Module PartialEq.
-      Class Trait (Self : Set) : Set := {
-        eq `{State.Trait} : ref Self -> ref Self -> M bool;
-      }.
-    End PartialEq.
   End cmp.
 
   Module fmt := core.fmt.

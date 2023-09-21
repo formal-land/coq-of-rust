@@ -12,8 +12,14 @@ Module Fibonacci.
   Global Instance Get_curr : Notation.Dot "curr" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_next : Notation.Dot "next" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Fibonacci.
 Definition Fibonacci : Set := Fibonacci.t.

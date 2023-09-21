@@ -35,6 +35,9 @@ Module codegen.
     Global Instance Get_test : Notation.Dot "test" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End InkE2ETest.
   Definition InkE2ETest : Set := InkE2ETest.t.
 End codegen.
@@ -70,6 +73,9 @@ Module InkE2ETest.
   Global Instance Get_test : Notation.Dot "test" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End InkE2ETest.
 Definition InkE2ETest : Set := InkE2ETest.t.
 
@@ -87,12 +93,24 @@ Module config.
       : Notation.Dot "whitelisted_attributes" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_whitelisted_attributes
+      : Notation.DoubleColon t "whitelisted_attributes" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_additional_contracts
       : Notation.Dot "additional_contracts" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_additional_contracts
+      : Notation.DoubleColon t "additional_contracts" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_environment : Notation.Dot "environment" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_environment
+      : Notation.DoubleColon t "environment" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End E2EConfig.
   Definition E2EConfig : Set := E2EConfig.t.
@@ -111,12 +129,23 @@ Module E2EConfig.
     : Notation.Dot "whitelisted_attributes" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
+  Global Instance Get_AF_whitelisted_attributes
+    : Notation.DoubleColon t "whitelisted_attributes" := {
+    Notation.double_colon '(Build_t x0 _ _) := x0;
+  }.
   Global Instance Get_additional_contracts
     : Notation.Dot "additional_contracts" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
+  Global Instance Get_AF_additional_contracts
+    : Notation.DoubleColon t "additional_contracts" := {
+    Notation.double_colon '(Build_t _ x1 _) := x1;
+  }.
   Global Instance Get_environment : Notation.Dot "environment" := {
     Notation.dot '(Build_t _ _ x2) := x2;
+  }.
+  Global Instance Get_AF_environment : Notation.DoubleColon t "environment" := {
+    Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End E2EConfig.
 Definition E2EConfig : Set := E2EConfig.t.
@@ -133,8 +162,14 @@ Module ir.
     Global Instance Get_item_fn : Notation.Dot "item_fn" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_config : Notation.Dot "config" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_config : Notation.DoubleColon t "config" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End InkE2ETest.
   Definition InkE2ETest : Set := InkE2ETest.t.
@@ -148,6 +183,9 @@ Module ir.
     
     Global Instance Get_item_fn : Notation.Dot "item_fn" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End E2EFn.
   Definition E2EFn : Set := E2EFn.t.
@@ -164,8 +202,14 @@ Module InkE2ETest.
   Global Instance Get_item_fn : Notation.Dot "item_fn" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_config : Notation.Dot "config" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_config : Notation.DoubleColon t "config" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End InkE2ETest.
 Definition InkE2ETest : Set := InkE2ETest.t.
@@ -179,6 +223,9 @@ Module E2EFn.
   
   Global Instance Get_item_fn : Notation.Dot "item_fn" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_item_fn : Notation.DoubleColon t "item_fn" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End E2EFn.
 Definition E2EFn : Set := E2EFn.t.

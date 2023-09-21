@@ -57,8 +57,14 @@ Module test_api.
     Global Instance Get_topics : Notation.Dot "topics" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
   Definition EmittedEvent : Set := EmittedEvent.t.
@@ -72,6 +78,10 @@ Module test_api.
     
     Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_debug_messages
+      : Notation.DoubleColon t "debug_messages" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End RecordedDebugMessages.
   Definition RecordedDebugMessages : Set := RecordedDebugMessages.t.
@@ -98,19 +108,39 @@ Module test_api.
     Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_emitted_events
+      : Notation.DoubleColon t "emitted_events" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+    }.
     Global Instance Get_emitted_debug_messages
       : Notation.Dot "emitted_debug_messages" := {
       Notation.dot '(Build_t _ x1 _ _ _) := x1;
     }.
+    Global Instance Get_AF_emitted_debug_messages
+      : Notation.DoubleColon t "emitted_debug_messages" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
+    }.
     Global Instance Get_count_reads : Notation.Dot "count_reads" := {
       Notation.dot '(Build_t _ _ x2 _ _) := x2;
+    }.
+    Global Instance Get_AF_count_reads
+      : Notation.DoubleColon t "count_reads" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
     }.
     Global Instance Get_count_writes : Notation.Dot "count_writes" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
+    Global Instance Get_AF_count_writes
+      : Notation.DoubleColon t "count_writes" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+    }.
     Global Instance Get_cells_per_account
       : Notation.Dot "cells_per_account" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+    Global Instance Get_AF_cells_per_account
+      : Notation.DoubleColon t "cells_per_account" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
     }.
   End DebugInfo.
   Definition DebugInfo : Set := DebugInfo.t.
@@ -145,8 +175,14 @@ Module chain_extension.
     Global Instance Get_registered : Notation.Dot "registered" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_registered : Notation.DoubleColon t "registered" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_output : Notation.Dot "output" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End ChainExtensionHandler.
   Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
@@ -194,6 +230,9 @@ Module database.
     Global Instance Get_hmap : Notation.Dot "hmap" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End Database.
   Definition Database : Set := Database.t.
 End database.
@@ -214,21 +253,42 @@ Module exec_context.
     Global Instance Get_caller : Notation.Dot "caller" := {
       Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_caller : Notation.DoubleColon t "caller" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _ _) := x0;
+    }.
     Global Instance Get_callee : Notation.Dot "callee" := {
       Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+    }.
+    Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _ _) := x1;
     }.
     Global Instance Get_value_transferred
       : Notation.Dot "value_transferred" := {
       Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
     }.
+    Global Instance Get_AF_value_transferred
+      : Notation.DoubleColon t "value_transferred" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _ _) := x2;
+    }.
     Global Instance Get_block_number : Notation.Dot "block_number" := {
       Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+    }.
+    Global Instance Get_AF_block_number
+      : Notation.DoubleColon t "block_number" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _ _) := x3;
     }.
     Global Instance Get_block_timestamp : Notation.Dot "block_timestamp" := {
       Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
     }.
+    Global Instance Get_AF_block_timestamp
+      : Notation.DoubleColon t "block_timestamp" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4 _) := x4;
+    }.
     Global Instance Get_contracts : Notation.Dot "contracts" := {
       Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+    }.
+    Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
+      Notation.double_colon '(Build_t _ _ _ _ _ x5) := x5;
     }.
   End ExecContext.
   Definition ExecContext : Set := ExecContext.t.
@@ -276,11 +336,21 @@ Module ext.
     Global Instance Get_gas_price : Notation.Dot "gas_price" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_gas_price : Notation.DoubleColon t "gas_price" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_minimum_balance : Notation.Dot "minimum_balance" := {
       Notation.dot '(Build_t _ x1 _) := x1;
     }.
+    Global Instance Get_AF_minimum_balance
+      : Notation.DoubleColon t "minimum_balance" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
+    }.
     Global Instance Get_block_time : Notation.Dot "block_time" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_block_time : Notation.DoubleColon t "block_time" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End ChainSpec.
   Definition ChainSpec : Set := ChainSpec.t.
@@ -301,18 +371,35 @@ Module ext.
     Global Instance Get_database : Notation.Dot "database" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+    }.
     Global Instance Get_exec_context : Notation.Dot "exec_context" := {
       Notation.dot '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get_AF_exec_context
+      : Notation.DoubleColon t "exec_context" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
     }.
     Global Instance Get_debug_info : Notation.Dot "debug_info" := {
       Notation.dot '(Build_t _ _ x2 _ _) := x2;
     }.
+    Global Instance Get_AF_debug_info : Notation.DoubleColon t "debug_info" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+    }.
     Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
+    }.
+    Global Instance Get_AF_chain_spec : Notation.DoubleColon t "chain_spec" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
     }.
     Global Instance Get_chain_extension_handler
       : Notation.Dot "chain_extension_handler" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+    Global Instance Get_AF_chain_extension_handler
+      : Notation.DoubleColon t "chain_extension_handler" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
     }.
   End Engine.
   Definition Engine : Set := Engine.t.
@@ -361,18 +448,35 @@ Module Engine.
   Global Instance Get_database : Notation.Dot "database" := {
     Notation.dot '(Build_t x0 _ _ _ _) := x0;
   }.
+  Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
+    Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+  }.
   Global Instance Get_exec_context : Notation.Dot "exec_context" := {
     Notation.dot '(Build_t _ x1 _ _ _) := x1;
+  }.
+  Global Instance Get_AF_exec_context
+    : Notation.DoubleColon t "exec_context" := {
+    Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
   }.
   Global Instance Get_debug_info : Notation.Dot "debug_info" := {
     Notation.dot '(Build_t _ _ x2 _ _) := x2;
   }.
+  Global Instance Get_AF_debug_info : Notation.DoubleColon t "debug_info" := {
+    Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+  }.
   Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
     Notation.dot '(Build_t _ _ _ x3 _) := x3;
+  }.
+  Global Instance Get_AF_chain_spec : Notation.DoubleColon t "chain_spec" := {
+    Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
   }.
   Global Instance Get_chain_extension_handler
     : Notation.Dot "chain_extension_handler" := {
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
+  }.
+  Global Instance Get_AF_chain_extension_handler
+    : Notation.DoubleColon t "chain_extension_handler" := {
+    Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
   }.
 End Engine.
 Definition Engine : Set := Engine.t.
@@ -389,11 +493,21 @@ Module ChainSpec.
   Global Instance Get_gas_price : Notation.Dot "gas_price" := {
     Notation.dot '(Build_t x0 _ _) := x0;
   }.
+  Global Instance Get_AF_gas_price : Notation.DoubleColon t "gas_price" := {
+    Notation.double_colon '(Build_t x0 _ _) := x0;
+  }.
   Global Instance Get_minimum_balance : Notation.Dot "minimum_balance" := {
     Notation.dot '(Build_t _ x1 _) := x1;
   }.
+  Global Instance Get_AF_minimum_balance
+    : Notation.DoubleColon t "minimum_balance" := {
+    Notation.double_colon '(Build_t _ x1 _) := x1;
+  }.
   Global Instance Get_block_time : Notation.Dot "block_time" := {
     Notation.dot '(Build_t _ _ x2) := x2;
+  }.
+  Global Instance Get_AF_block_time : Notation.DoubleColon t "block_time" := {
+    Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End ChainSpec.
 Definition ChainSpec : Set := ChainSpec.t.
@@ -409,8 +523,14 @@ Module EmittedEvent.
   Global Instance Get_topics : Notation.Dot "topics" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_data : Notation.Dot "data" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
 Definition EmittedEvent : Set := EmittedEvent.t.
@@ -424,6 +544,10 @@ Module RecordedDebugMessages.
   
   Global Instance Get_debug_messages : Notation.Dot "debug_messages" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_debug_messages
+    : Notation.DoubleColon t "debug_messages" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End RecordedDebugMessages.
 Definition RecordedDebugMessages : Set := RecordedDebugMessages.t.
@@ -450,18 +574,37 @@ Module DebugInfo.
   Global Instance Get_emitted_events : Notation.Dot "emitted_events" := {
     Notation.dot '(Build_t x0 _ _ _ _) := x0;
   }.
+  Global Instance Get_AF_emitted_events
+    : Notation.DoubleColon t "emitted_events" := {
+    Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+  }.
   Global Instance Get_emitted_debug_messages
     : Notation.Dot "emitted_debug_messages" := {
     Notation.dot '(Build_t _ x1 _ _ _) := x1;
   }.
+  Global Instance Get_AF_emitted_debug_messages
+    : Notation.DoubleColon t "emitted_debug_messages" := {
+    Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
+  }.
   Global Instance Get_count_reads : Notation.Dot "count_reads" := {
     Notation.dot '(Build_t _ _ x2 _ _) := x2;
+  }.
+  Global Instance Get_AF_count_reads : Notation.DoubleColon t "count_reads" := {
+    Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
   }.
   Global Instance Get_count_writes : Notation.Dot "count_writes" := {
     Notation.dot '(Build_t _ _ _ x3 _) := x3;
   }.
+  Global Instance Get_AF_count_writes
+    : Notation.DoubleColon t "count_writes" := {
+    Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+  }.
   Global Instance Get_cells_per_account : Notation.Dot "cells_per_account" := {
     Notation.dot '(Build_t _ _ _ _ x4) := x4;
+  }.
+  Global Instance Get_AF_cells_per_account
+    : Notation.DoubleColon t "cells_per_account" := {
+    Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
   }.
 End DebugInfo.
 Definition DebugInfo : Set := DebugInfo.t.
@@ -481,8 +624,14 @@ Module ChainExtensionHandler.
   Global Instance Get_registered : Notation.Dot "registered" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_registered : Notation.DoubleColon t "registered" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_output : Notation.Dot "output" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End ChainExtensionHandler.
 Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
@@ -541,6 +690,9 @@ Module Database.
   Global Instance Get_hmap : Notation.Dot "hmap" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_hmap : Notation.DoubleColon t "hmap" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End Database.
 Definition Database : Set := Database.t.
 
@@ -559,20 +711,41 @@ Module ExecContext.
   Global Instance Get_caller : Notation.Dot "caller" := {
     Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
   }.
+  Global Instance Get_AF_caller : Notation.DoubleColon t "caller" := {
+    Notation.double_colon '(Build_t x0 _ _ _ _ _) := x0;
+  }.
   Global Instance Get_callee : Notation.Dot "callee" := {
     Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+  }.
+  Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
+    Notation.double_colon '(Build_t _ x1 _ _ _ _) := x1;
   }.
   Global Instance Get_value_transferred : Notation.Dot "value_transferred" := {
     Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
   }.
+  Global Instance Get_AF_value_transferred
+    : Notation.DoubleColon t "value_transferred" := {
+    Notation.double_colon '(Build_t _ _ x2 _ _ _) := x2;
+  }.
   Global Instance Get_block_number : Notation.Dot "block_number" := {
     Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+  }.
+  Global Instance Get_AF_block_number
+    : Notation.DoubleColon t "block_number" := {
+    Notation.double_colon '(Build_t _ _ _ x3 _ _) := x3;
   }.
   Global Instance Get_block_timestamp : Notation.Dot "block_timestamp" := {
     Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
   }.
+  Global Instance Get_AF_block_timestamp
+    : Notation.DoubleColon t "block_timestamp" := {
+    Notation.double_colon '(Build_t _ _ _ _ x4 _) := x4;
+  }.
   Global Instance Get_contracts : Notation.Dot "contracts" := {
     Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+  }.
+  Global Instance Get_AF_contracts : Notation.DoubleColon t "contracts" := {
+    Notation.double_colon '(Build_t _ _ _ _ _ x5) := x5;
   }.
 End ExecContext.
 Definition ExecContext : Set := ExecContext.t.

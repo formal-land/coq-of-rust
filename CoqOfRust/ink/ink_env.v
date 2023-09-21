@@ -44,18 +44,18 @@ Module arithmetic.
         `{core.convert.From.Trait Self (T := u8)}
         `{num_traits.bounds.Bounded.Trait Self}
         `{core.cmp.Ord.Trait Self}
-        `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
+        `{core.cmp.PartialOrd.Trait Self (Rhs := Self)}
         `{num_traits.identities.Zero.Trait Self}
         `{num_traits.identities.One.Trait Self}
         `{num_traits.bounds.Bounded.Trait Self}
-        `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
-        `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
+        `{core.ops.arith.Add.Trait Self (Rhs := Self)}
+        `{core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
+        `{core.ops.arith.Sub.Trait Self (Rhs := Self)}
+        `{core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
+        `{core.ops.arith.Mul.Trait Self (Rhs := Self)}
+        `{core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
+        `{core.ops.arith.Div.Trait Self (Rhs := Self)}
+        `{core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
         `{num_traits.ops.checked.CheckedMul.Trait Self}
         `{ink_env.arithmetic.Saturating.Trait Self}
         `{core.convert.TryFrom.Trait Self (T := u16)}
@@ -149,7 +149,8 @@ Module types.
           `(parity_scale_codec.codec.Codec.Trait AccountId)
           `(ink_env.types.CodecAsType.Trait AccountId)
           `(core.clone.Clone.Trait AccountId)
-          `(core.cmp.PartialEq.Trait AccountId (Rhs := None))
+          `(core.cmp.PartialEq.Trait AccountId
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait AccountId)
           `(core.cmp.Ord.Trait AccountId)
           `(core.convert.AsRef.Trait AccountId (T := Slice u8))
@@ -163,7 +164,8 @@ Module types.
           `(ink_env.types.CodecAsType.Trait Balance)
           `(core.marker.Copy.Trait Balance)
           `(core.clone.Clone.Trait Balance)
-          `(core.cmp.PartialEq.Trait Balance (Rhs := None))
+          `(core.cmp.PartialEq.Trait Balance
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait Balance)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
           `(ink_env.types.FromLittleEndian.Trait Balance),
@@ -177,7 +179,8 @@ Module types.
           `(core.marker.Copy.Trait Hash)
           `(core.clone.Clone.Trait Hash)
           `(ink_primitives.types.Clear.Trait Hash)
-          `(core.cmp.PartialEq.Trait Hash (Rhs := None))
+          `(core.cmp.PartialEq.Trait Hash
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait Hash)
           `(core.cmp.Ord.Trait Hash)
           `(core.convert.AsRef.Trait Hash (T := Slice u8))
@@ -191,7 +194,8 @@ Module types.
           `(ink_env.types.CodecAsType.Trait Timestamp)
           `(core.marker.Copy.Trait Timestamp)
           `(core.clone.Clone.Trait Timestamp)
-          `(core.cmp.PartialEq.Trait Timestamp (Rhs := None))
+          `(core.cmp.PartialEq.Trait Timestamp
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait Timestamp)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
           `(ink_env.types.FromLittleEndian.Trait Timestamp),
@@ -204,7 +208,8 @@ Module types.
           `(ink_env.types.CodecAsType.Trait BlockNumber)
           `(core.marker.Copy.Trait BlockNumber)
           `(core.clone.Clone.Trait BlockNumber)
-          `(core.cmp.PartialEq.Trait BlockNumber (Rhs := None))
+          `(core.cmp.PartialEq.Trait BlockNumber
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
           `(core.cmp.Eq.Trait BlockNumber)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
           `(ink_env.types.FromLittleEndian.Trait BlockNumber),
@@ -314,7 +319,8 @@ Module Environment.
         `(parity_scale_codec.codec.Codec.Trait AccountId)
         `(ink_env.types.CodecAsType.Trait AccountId)
         `(core.clone.Clone.Trait AccountId)
-        `(core.cmp.PartialEq.Trait AccountId (Rhs := None))
+        `(core.cmp.PartialEq.Trait AccountId
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait AccountId)
         `(core.cmp.Ord.Trait AccountId)
         `(core.convert.AsRef.Trait AccountId (T := Slice u8))
@@ -328,7 +334,8 @@ Module Environment.
         `(ink_env.types.CodecAsType.Trait Balance)
         `(core.marker.Copy.Trait Balance)
         `(core.clone.Clone.Trait Balance)
-        `(core.cmp.PartialEq.Trait Balance (Rhs := None))
+        `(core.cmp.PartialEq.Trait Balance
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait Balance)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
         `(ink_env.types.FromLittleEndian.Trait Balance),
@@ -342,7 +349,8 @@ Module Environment.
         `(core.marker.Copy.Trait Hash)
         `(core.clone.Clone.Trait Hash)
         `(ink_primitives.types.Clear.Trait Hash)
-        `(core.cmp.PartialEq.Trait Hash (Rhs := None))
+        `(core.cmp.PartialEq.Trait Hash
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait Hash)
         `(core.cmp.Ord.Trait Hash)
         `(core.convert.AsRef.Trait Hash (T := Slice u8))
@@ -356,7 +364,8 @@ Module Environment.
         `(ink_env.types.CodecAsType.Trait Timestamp)
         `(core.marker.Copy.Trait Timestamp)
         `(core.clone.Clone.Trait Timestamp)
-        `(core.cmp.PartialEq.Trait Timestamp (Rhs := None))
+        `(core.cmp.PartialEq.Trait Timestamp
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait Timestamp)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
         `(ink_env.types.FromLittleEndian.Trait Timestamp),
@@ -369,7 +378,8 @@ Module Environment.
         `(ink_env.types.CodecAsType.Trait BlockNumber)
         `(core.marker.Copy.Trait BlockNumber)
         `(core.clone.Clone.Trait BlockNumber)
-        `(core.cmp.PartialEq.Trait BlockNumber (Rhs := None))
+        `(core.cmp.PartialEq.Trait BlockNumber
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
         `(core.cmp.Eq.Trait BlockNumber)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
         `(ink_env.types.FromLittleEndian.Trait BlockNumber),
@@ -539,6 +549,9 @@ Module call.
       Global Instance Get_bytes : Notation.Dot "bytes" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End Selector.
     Definition Selector : Set := Selector.t.
   End selector.
@@ -557,8 +570,14 @@ Module call.
         Global Instance Get_selector : Notation.Dot "selector" := {
           Notation.dot '(Build_t x0 _) := x0;
         }.
+        Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
+          Notation.double_colon '(Build_t x0 _) := x0;
+        }.
         Global Instance Get_args : Notation.Dot "args" := {
           Notation.dot '(Build_t _ x1) := x1;
+        }.
+        Global Instance Get_AF_args : Notation.DoubleColon t "args" := {
+          Notation.double_colon '(Build_t _ x1) := x1;
         }.
       End ExecutionInput.
     End ExecutionInput.
@@ -578,8 +597,14 @@ Module call.
         Global Instance Get_head : Notation.Dot "head" := {
           Notation.dot '(Build_t x0 _) := x0;
         }.
+        Global Instance Get_AF_head : Notation.DoubleColon t "head" := {
+          Notation.double_colon '(Build_t x0 _) := x0;
+        }.
         Global Instance Get_rest : Notation.Dot "rest" := {
           Notation.dot '(Build_t _ x1) := x1;
+        }.
+        Global Instance Get_AF_rest : Notation.DoubleColon t "rest" := {
+          Notation.double_colon '(Build_t _ x1) := x1;
         }.
       End ArgumentList.
     End ArgumentList.
@@ -597,6 +622,9 @@ Module call.
         
         Global Instance Get_arg : Notation.Dot "arg" := {
           Notation.dot '(Build_t x0) := x0;
+        }.
+        Global Instance Get_AF_arg : Notation.DoubleColon t "arg" := {
+          Notation.double_colon '(Build_t x0) := x0;
         }.
       End Argument.
     End Argument.
@@ -632,7 +660,7 @@ Module call.
           Type := {
         from_account_id `{H' : State.Trait}
           :
-          ink_env.types.Environment.AccountId -> M (H := H') Self;
+          (ink_env.types.Environment.AccountId (Self := T)) -> M (H := H') Self;
       }.
       
       Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
@@ -693,23 +721,50 @@ Module call.
         Global Instance Get_code_hash : Notation.Dot "code_hash" := {
           Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
         }.
+        Global Instance Get_AF_code_hash
+          : Notation.DoubleColon t "code_hash" := {
+          Notation.double_colon '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
         Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
           Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_AF_gas_limit
+          : Notation.DoubleColon t "gas_limit" := {
+          Notation.double_colon '(Build_t _ x1 _ _ _ _ _) := x1;
         }.
         Global Instance Get_endowment : Notation.Dot "endowment" := {
           Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
         }.
+        Global Instance Get_AF_endowment
+          : Notation.DoubleColon t "endowment" := {
+          Notation.double_colon '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
         Global Instance Get_exec_input : Notation.Dot "exec_input" := {
           Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_AF_exec_input
+          : Notation.DoubleColon t "exec_input" := {
+          Notation.double_colon '(Build_t _ _ _ x3 _ _ _) := x3;
         }.
         Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
           Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
         }.
+        Global Instance Get_AF_salt_bytes
+          : Notation.DoubleColon t "salt_bytes" := {
+          Notation.double_colon '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
         Global Instance Get__return_type : Notation.Dot "_return_type" := {
           Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
         }.
+        Global Instance Get_AF__return_type
+          : Notation.DoubleColon t "_return_type" := {
+          Notation.double_colon '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
         Global Instance Get__phantom : Notation.Dot "_phantom" := {
           Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+        Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+          Notation.double_colon '(Build_t _ _ _ _ _ _ x6) := x6;
         }.
       End CreateParams.
     End CreateParams.
@@ -744,23 +799,49 @@ Module call.
         Global Instance Get_code_hash : Notation.Dot "code_hash" := {
           Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
         }.
+        Global Instance Get_AF_code_hash
+          : Notation.DoubleColon t "code_hash" := {
+          Notation.double_colon '(Build_t x0 _ _ _ _ _ _) := x0;
+        }.
         Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
           Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+        }.
+        Global Instance Get_AF_gas_limit
+          : Notation.DoubleColon t "gas_limit" := {
+          Notation.double_colon '(Build_t _ x1 _ _ _ _ _) := x1;
         }.
         Global Instance Get_endowment : Notation.Dot "endowment" := {
           Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
         }.
+        Global Instance Get_AF_endowment
+          : Notation.DoubleColon t "endowment" := {
+          Notation.double_colon '(Build_t _ _ x2 _ _ _ _) := x2;
+        }.
         Global Instance Get_exec_input : Notation.Dot "exec_input" := {
           Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+        }.
+        Global Instance Get_AF_exec_input
+          : Notation.DoubleColon t "exec_input" := {
+          Notation.double_colon '(Build_t _ _ _ x3 _ _ _) := x3;
         }.
         Global Instance Get_salt : Notation.Dot "salt" := {
           Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
         }.
+        Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+          Notation.double_colon '(Build_t _ _ _ _ x4 _ _) := x4;
+        }.
         Global Instance Get_return_type : Notation.Dot "return_type" := {
           Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
         }.
+        Global Instance Get_AF_return_type
+          : Notation.DoubleColon t "return_type" := {
+          Notation.double_colon '(Build_t _ _ _ _ _ x5 _) := x5;
+        }.
         Global Instance Get__phantom : Notation.Dot "_phantom" := {
           Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+        }.
+        Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+          Notation.double_colon '(Build_t _ _ _ _ _ _ x6) := x6;
         }.
       End CreateBuilder.
     End CreateBuilder.
@@ -793,6 +874,9 @@ Module engine.
         Global Instance Get_bytes : Notation.Dot "bytes" := {
           Notation.dot '(Build_t x0) := x0;
         }.
+        Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+          Notation.double_colon '(Build_t x0) := x0;
+        }.
       End CallData.
       Definition CallData : Set := CallData.t.
     End call_data.
@@ -807,6 +891,9 @@ Module engine.
         
         Global Instance Get_topics : Notation.Dot "topics" := {
           Notation.dot '(Build_t x0) := x0;
+        }.
+        Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+          Notation.double_colon '(Build_t x0) := x0;
         }.
       End TopicsBuilder.
       Definition TopicsBuilder : Set := TopicsBuilder.t.
@@ -855,15 +942,11 @@ Module hash.
   End HashOutput.
   
   Module CryptoHash.
-    Class Trait
-        (Self : Set)
-        `{ink_env.hash.HashOutput.Trait Self}
-        `{ink_env.hash.private.Sealed.Trait Self} :
-        Type := {
+    Class Trait (Self : Set) `{ink_env.hash.HashOutput.Trait Self} : Type := {
       hash `{H' : State.Trait}
         :
         (ref (Slice u8)) ->
-          (mut_ref ink_env.hash.HashOutput.Type_) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
           M (H := H') unit;
     }.
     
@@ -946,8 +1029,14 @@ Module topics.
       Global Instance Get_backend : Notation.Dot "backend" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_backend : Notation.DoubleColon t "backend" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_state : Notation.Dot "state" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End TopicsBuilder.
   End TopicsBuilder.
@@ -1008,7 +1097,7 @@ Module topics.
         :
         (ref Self) ->
           (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-          M (H := H') ink_env.topics.TopicsBuilderBackend.Output;
+          M (H := H') (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
     }.
     
     Global Instance Method_RemainingTopics `(Trait)
@@ -1039,8 +1128,14 @@ Module topics.
       Global Instance Get_prefix : Notation.Dot "prefix" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_prefix : Notation.DoubleColon t "prefix" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_value : Notation.Dot "value" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End PrefixedValue.
   End PrefixedValue.
@@ -1083,8 +1178,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     Global Instance Get_topics : Notation.Dot "topics" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_data : Notation.Dot "data" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End EmittedEvent.
   Definition EmittedEvent : Set := EmittedEvent.t.
@@ -1113,7 +1214,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') unit.
   
@@ -1122,7 +1224,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') unit.
   
@@ -1131,7 +1234,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') unit.
   
@@ -1140,7 +1244,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       T::type["AccountId"] -> M (H := H') bool.
   
@@ -1193,20 +1298,38 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Global Instance Get_alice : Notation.Dot "alice" := {
         Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
       }.
+      Global Instance Get_AF_alice : Notation.DoubleColon t "alice" := {
+        Notation.double_colon '(Build_t x0 _ _ _ _ _) := x0;
+      }.
       Global Instance Get_bob : Notation.Dot "bob" := {
         Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+      }.
+      Global Instance Get_AF_bob : Notation.DoubleColon t "bob" := {
+        Notation.double_colon '(Build_t _ x1 _ _ _ _) := x1;
       }.
       Global Instance Get_charlie : Notation.Dot "charlie" := {
         Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
       }.
+      Global Instance Get_AF_charlie : Notation.DoubleColon t "charlie" := {
+        Notation.double_colon '(Build_t _ _ x2 _ _ _) := x2;
+      }.
       Global Instance Get_django : Notation.Dot "django" := {
         Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+      }.
+      Global Instance Get_AF_django : Notation.DoubleColon t "django" := {
+        Notation.double_colon '(Build_t _ _ _ x3 _ _) := x3;
       }.
       Global Instance Get_eve : Notation.Dot "eve" := {
         Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
       }.
+      Global Instance Get_AF_eve : Notation.DoubleColon t "eve" := {
+        Notation.double_colon '(Build_t _ _ _ _ x4 _) := x4;
+      }.
       Global Instance Get_frank : Notation.Dot "frank" := {
         Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+      }.
+      Global Instance Get_AF_frank : Notation.DoubleColon t "frank" := {
+        Notation.double_colon '(Build_t _ _ _ _ _ x5) := x5;
       }.
     End DefaultAccounts.
   End DefaultAccounts.
@@ -1224,7 +1347,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{core.ops.function.FnOnce.Trait F
             (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
               T)}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       F ->
         M (H := H')
@@ -1236,7 +1360,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{H' : State.Trait}
         {T : Set}
         `{ink_env.types.Environment.Trait T}
-        `{core.convert.From.Trait ink_env.types.Environment.AccountId
+        `{core.convert.From.Trait
+              (ink_env.types.Environment.AccountId (Self := T))
             (T := list u8)},
       M (H := H')
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
@@ -1256,8 +1381,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{ink_env.types.Environment.Trait T}
         `{core.ops.function.FnMut.Trait F (Args := unit)}
         `{core.panic.unwind_safe.UnwindSafe.Trait F}
-        `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
-        `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
+        `{core.fmt.Debug.Trait
+              (ink_env.types.Environment.AccountId (Self := T))}
+        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
       F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H') unit.
   
   Module CallFlags.
@@ -1273,14 +1399,29 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     Global Instance Get_forward_input : Notation.Dot "forward_input" := {
       Notation.dot '(Build_t x0 _ _ _) := x0;
     }.
+    Global Instance Get_AF_forward_input
+      : Notation.DoubleColon t "forward_input" := {
+      Notation.double_colon '(Build_t x0 _ _ _) := x0;
+    }.
     Global Instance Get_clone_input : Notation.Dot "clone_input" := {
       Notation.dot '(Build_t _ x1 _ _) := x1;
+    }.
+    Global Instance Get_AF_clone_input
+      : Notation.DoubleColon t "clone_input" := {
+      Notation.double_colon '(Build_t _ x1 _ _) := x1;
     }.
     Global Instance Get_tail_call : Notation.Dot "tail_call" := {
       Notation.dot '(Build_t _ _ x2 _) := x2;
     }.
+    Global Instance Get_AF_tail_call : Notation.DoubleColon t "tail_call" := {
+      Notation.double_colon '(Build_t _ _ x2 _) := x2;
+    }.
     Global Instance Get_allow_reentry : Notation.Dot "allow_reentry" := {
       Notation.dot '(Build_t _ _ _ x3) := x3;
+    }.
+    Global Instance Get_AF_allow_reentry
+      : Notation.DoubleColon t "allow_reentry" := {
+      Notation.double_colon '(Build_t _ _ _ x3) := x3;
     }.
   End CallFlags.
   Definition CallFlags : Set := CallFlags.t.
@@ -1304,17 +1445,35 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Global Instance Get_call_type : Notation.Dot "call_type" := {
         Notation.dot '(Build_t x0 _ _ _ _) := x0;
       }.
+      Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
+        Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+      }.
       Global Instance Get_call_flags : Notation.Dot "call_flags" := {
         Notation.dot '(Build_t _ x1 _ _ _) := x1;
+      }.
+      Global Instance Get_AF_call_flags
+        : Notation.DoubleColon t "call_flags" := {
+        Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
       }.
       Global Instance Get__return_type : Notation.Dot "_return_type" := {
         Notation.dot '(Build_t _ _ x2 _ _) := x2;
       }.
+      Global Instance Get_AF__return_type
+        : Notation.DoubleColon t "_return_type" := {
+        Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+      }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot '(Build_t _ _ _ x3 _) := x3;
       }.
+      Global Instance Get_AF_exec_input
+        : Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+      }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+        Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
       }.
     End CallParams.
   End CallParams.
@@ -1339,12 +1498,22 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Global Instance Get_callee : Notation.Dot "callee" := {
         Notation.dot '(Build_t x0 _ _) := x0;
       }.
+      Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
+        Notation.double_colon '(Build_t x0 _ _) := x0;
+      }.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ x1 _) := x1;
+      }.
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+        Notation.double_colon '(Build_t _ x1 _) := x1;
       }.
       Global Instance Get_transferred_value
         : Notation.Dot "transferred_value" := {
         Notation.dot '(Build_t _ _ x2) := x2;
+      }.
+      Global Instance Get_AF_transferred_value
+        : Notation.DoubleColon t "transferred_value" := {
+        Notation.double_colon '(Build_t _ _ x2) := x2;
       }.
     End Call.
   End Call.
@@ -1364,6 +1533,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End DelegateCall.
   End DelegateCall.
   Definition DelegateCall
@@ -1381,6 +1553,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End ReturnFlags.
   Definition ReturnFlags : Set := ReturnFlags.t.
@@ -1460,7 +1635,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
-          (mut_ref ink_env.hash.HashOutput.Type_) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
           M (H := H') unit;
       hash_encoded
         `{H' : State.Trait}
@@ -1470,7 +1645,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         :
         (mut_ref Self) ->
           (ref T) ->
-          (mut_ref ink_env.hash.HashOutput.Type_) ->
+          (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
           M (H := H') unit;
       ecdsa_recover `{H' : State.Trait}
         :
@@ -1755,7 +1930,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           M (H := H')
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               (ink_primitives.ConstructorResult
-                ink_env.call.create_builder.ConstructorReturnType.Output));
+                (ink_env.call.create_builder.ConstructorReturnType.Output
+                  (Self := R))));
       terminate_contract
         `{H' : State.Trait}
         {E : Set}
@@ -2029,17 +2205,35 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
       Global Instance Get_call_type : Notation.Dot "call_type" := {
         Notation.dot '(Build_t x0 _ _ _ _) := x0;
       }.
+      Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
+        Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+      }.
       Global Instance Get_call_flags : Notation.Dot "call_flags" := {
         Notation.dot '(Build_t _ x1 _ _ _) := x1;
+      }.
+      Global Instance Get_AF_call_flags
+        : Notation.DoubleColon t "call_flags" := {
+        Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
       }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot '(Build_t _ _ x2 _ _) := x2;
       }.
+      Global Instance Get_AF_exec_input
+        : Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+      }.
       Global Instance Get_return_type : Notation.Dot "return_type" := {
         Notation.dot '(Build_t _ _ _ x3 _) := x3;
       }.
+      Global Instance Get_AF_return_type
+        : Notation.DoubleColon t "return_type" := {
+        Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+      }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot '(Build_t _ _ _ _ x4) := x4;
+      }.
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+        Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
       }.
     End CallBuilder.
   End CallBuilder.
@@ -2210,7 +2404,8 @@ Module api.
         M (H := H')
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output)).
+              (ink_env.call.create_builder.ConstructorReturnType.Output
+                (Self := R)))).
   
   Parameter terminate_contract :
       forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
@@ -2250,7 +2445,7 @@ Module api.
   Parameter hash_bytes :
       forall `{H' : State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
       (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M (H := H') unit.
   
   Parameter hash_encoded :
@@ -2259,7 +2454,9 @@ Module api.
         {H T : Set}
         `{ink_env.hash.CryptoHash.Trait H}
         `{parity_scale_codec.codec.Encode.Trait T},
-      (ref T) -> (mut_ref ink_env.hash.HashOutput.Type_) -> M (H := H') unit.
+      (ref T) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+        M (H := H') unit.
   
   Parameter ecdsa_recover :
       forall `{H' : State.Trait},
@@ -2467,7 +2664,8 @@ Parameter instantiate_contract :
       M (H := H')
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           (ink_primitives.ConstructorResult
-            ink_env.call.create_builder.ConstructorReturnType.Output)).
+            (ink_env.call.create_builder.ConstructorReturnType.Output
+              (Self := R)))).
 
 Parameter terminate_contract :
     forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
@@ -2507,7 +2705,7 @@ Parameter debug_message :
 Parameter hash_bytes :
     forall `{H' : State.Trait} {H : Set} `{ink_env.hash.CryptoHash.Trait H},
     (ref (Slice u8)) ->
-      (mut_ref ink_env.hash.HashOutput.Type_) ->
+      (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
       M (H := H') unit.
 
 Parameter hash_encoded :
@@ -2516,7 +2714,9 @@ Parameter hash_encoded :
       {H T : Set}
       `{ink_env.hash.CryptoHash.Trait H}
       `{parity_scale_codec.codec.Encode.Trait T},
-    (ref T) -> (mut_ref ink_env.hash.HashOutput.Type_) -> M (H := H') unit.
+    (ref T) ->
+      (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
+      M (H := H') unit.
 
 Parameter ecdsa_recover :
     forall `{H' : State.Trait},
@@ -2589,18 +2789,18 @@ Module BaseArithmetic.
       `{core.convert.From.Trait Self (T := u8)}
       `{num_traits.bounds.Bounded.Trait Self}
       `{core.cmp.Ord.Trait Self}
-      `{core.cmp.PartialOrd.Trait Self (Rhs := Some Self)}
+      `{core.cmp.PartialOrd.Trait Self (Rhs := Self)}
       `{num_traits.identities.Zero.Trait Self}
       `{num_traits.identities.One.Trait Self}
       `{num_traits.bounds.Bounded.Trait Self}
-      `{core.ops.arith.Add.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.AddAssign.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.Sub.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.SubAssign.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.Mul.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.MulAssign.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.Div.Trait Self (Rhs := Some Self)}
-      `{core.ops.arith.DivAssign.Trait Self (Rhs := Some Self)}
+      `{core.ops.arith.Add.Trait Self (Rhs := Self)}
+      `{core.ops.arith.AddAssign.Trait Self (Rhs := Self)}
+      `{core.ops.arith.Sub.Trait Self (Rhs := Self)}
+      `{core.ops.arith.SubAssign.Trait Self (Rhs := Self)}
+      `{core.ops.arith.Mul.Trait Self (Rhs := Self)}
+      `{core.ops.arith.MulAssign.Trait Self (Rhs := Self)}
+      `{core.ops.arith.Div.Trait Self (Rhs := Self)}
+      `{core.ops.arith.DivAssign.Trait Self (Rhs := Self)}
       `{num_traits.ops.checked.CheckedMul.Trait Self}
       `{ink_env.arithmetic.Saturating.Trait Self}
       `{core.convert.TryFrom.Trait Self (T := u16)}
@@ -2702,8 +2902,14 @@ Module EmittedEvent.
   Global Instance Get_topics : Notation.Dot "topics" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_data : Notation.Dot "data" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_data : Notation.DoubleColon t "data" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End EmittedEvent.
 Definition EmittedEvent : Set := EmittedEvent.t.
@@ -2736,7 +2942,8 @@ Parameter set_caller :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') unit.
 
@@ -2745,7 +2952,8 @@ Parameter set_callee :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') unit.
 
@@ -2754,7 +2962,8 @@ Parameter set_contract :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     T::type["AccountId"] -> M (H := H') unit.
 
@@ -2799,7 +3008,8 @@ Parameter run_test :
       `{core.ops.function.FnOnce.Trait F
           (Args := ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
             T)}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     F ->
       M (H := H')
@@ -2811,7 +3021,8 @@ Parameter default_accounts :
       `{H' : State.Trait}
       {T : Set}
       `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
+      `{core.convert.From.Trait
+            (ink_env.types.Environment.AccountId (Self := T))
           (T := list u8)},
     M (H := H')
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.DefaultAccounts
@@ -2835,20 +3046,38 @@ Module DefaultAccounts.
     Global Instance Get_alice : Notation.Dot "alice" := {
       Notation.dot '(Build_t x0 _ _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_alice : Notation.DoubleColon t "alice" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _ _) := x0;
+    }.
     Global Instance Get_bob : Notation.Dot "bob" := {
       Notation.dot '(Build_t _ x1 _ _ _ _) := x1;
+    }.
+    Global Instance Get_AF_bob : Notation.DoubleColon t "bob" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _ _) := x1;
     }.
     Global Instance Get_charlie : Notation.Dot "charlie" := {
       Notation.dot '(Build_t _ _ x2 _ _ _) := x2;
     }.
+    Global Instance Get_AF_charlie : Notation.DoubleColon t "charlie" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _ _) := x2;
+    }.
     Global Instance Get_django : Notation.Dot "django" := {
       Notation.dot '(Build_t _ _ _ x3 _ _) := x3;
+    }.
+    Global Instance Get_AF_django : Notation.DoubleColon t "django" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _ _) := x3;
     }.
     Global Instance Get_eve : Notation.Dot "eve" := {
       Notation.dot '(Build_t _ _ _ _ x4 _) := x4;
     }.
+    Global Instance Get_AF_eve : Notation.DoubleColon t "eve" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4 _) := x4;
+    }.
     Global Instance Get_frank : Notation.Dot "frank" := {
       Notation.dot '(Build_t _ _ _ _ _ x5) := x5;
+    }.
+    Global Instance Get_AF_frank : Notation.DoubleColon t "frank" := {
+      Notation.double_colon '(Build_t _ _ _ _ _ x5) := x5;
     }.
   End DefaultAccounts.
 End DefaultAccounts.
@@ -2872,8 +3101,8 @@ Parameter assert_contract_termination :
       `{ink_env.types.Environment.Trait T}
       `{core.ops.function.FnMut.Trait F (Args := unit)}
       `{core.panic.unwind_safe.UnwindSafe.Trait F}
-      `{core.fmt.Debug.Trait ink_env.types.Environment.AccountId}
-      `{core.fmt.Debug.Trait ink_env.types.Environment.Balance},
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := T))}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := T))},
     F -> T::type["AccountId"] -> T::type["Balance"] -> M (H := H') unit.
 
 Module OnInstance.
@@ -2921,17 +3150,33 @@ Module CallParams.
     Global Instance Get_call_type : Notation.Dot "call_type" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+    }.
     Global Instance Get_call_flags : Notation.Dot "call_flags" := {
       Notation.dot '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get_AF_call_flags : Notation.DoubleColon t "call_flags" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
     }.
     Global Instance Get__return_type : Notation.Dot "_return_type" := {
       Notation.dot '(Build_t _ _ x2 _ _) := x2;
     }.
+    Global Instance Get_AF__return_type
+      : Notation.DoubleColon t "_return_type" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+    }.
     Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+    }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
     }.
   End CallParams.
 End CallParams.
@@ -2969,12 +3214,22 @@ Module Call.
     Global Instance Get_callee : Notation.Dot "callee" := {
       Notation.dot '(Build_t x0 _ _) := x0;
     }.
+    Global Instance Get_AF_callee : Notation.DoubleColon t "callee" := {
+      Notation.double_colon '(Build_t x0 _ _) := x0;
+    }.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ x1 _) := x1;
+    }.
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+      Notation.double_colon '(Build_t _ x1 _) := x1;
     }.
     Global Instance Get_transferred_value
       : Notation.Dot "transferred_value" := {
       Notation.dot '(Build_t _ _ x2) := x2;
+    }.
+    Global Instance Get_AF_transferred_value
+      : Notation.DoubleColon t "transferred_value" := {
+      Notation.double_colon '(Build_t _ _ x2) := x2;
     }.
   End Call.
 End Call.
@@ -2993,6 +3248,9 @@ Module DelegateCall.
     
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End DelegateCall.
 End DelegateCall.
@@ -3018,17 +3276,33 @@ Module CallBuilder.
     Global Instance Get_call_type : Notation.Dot "call_type" := {
       Notation.dot '(Build_t x0 _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_call_type : Notation.DoubleColon t "call_type" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+    }.
     Global Instance Get_call_flags : Notation.Dot "call_flags" := {
       Notation.dot '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get_AF_call_flags : Notation.DoubleColon t "call_flags" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
     }.
     Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot '(Build_t _ _ x2 _ _) := x2;
     }.
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+    }.
     Global Instance Get_return_type : Notation.Dot "return_type" := {
       Notation.dot '(Build_t _ _ _ x3 _) := x3;
     }.
+    Global Instance Get_AF_return_type
+      : Notation.DoubleColon t "return_type" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+    }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
     }.
   End CallBuilder.
 End CallBuilder.
@@ -3052,6 +3326,9 @@ Module ReturnFlags.
   Global Instance Get_value : Notation.Dot "value" := {
     Notation.dot '(Build_t x0) := x0;
   }.
+  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End ReturnFlags.
 Definition ReturnFlags : Set := ReturnFlags.t.
 
@@ -3068,14 +3345,28 @@ Module CallFlags.
   Global Instance Get_forward_input : Notation.Dot "forward_input" := {
     Notation.dot '(Build_t x0 _ _ _) := x0;
   }.
+  Global Instance Get_AF_forward_input
+    : Notation.DoubleColon t "forward_input" := {
+    Notation.double_colon '(Build_t x0 _ _ _) := x0;
+  }.
   Global Instance Get_clone_input : Notation.Dot "clone_input" := {
     Notation.dot '(Build_t _ x1 _ _) := x1;
+  }.
+  Global Instance Get_AF_clone_input : Notation.DoubleColon t "clone_input" := {
+    Notation.double_colon '(Build_t _ x1 _ _) := x1;
   }.
   Global Instance Get_tail_call : Notation.Dot "tail_call" := {
     Notation.dot '(Build_t _ _ x2 _) := x2;
   }.
+  Global Instance Get_AF_tail_call : Notation.DoubleColon t "tail_call" := {
+    Notation.double_colon '(Build_t _ _ x2 _) := x2;
+  }.
   Global Instance Get_allow_reentry : Notation.Dot "allow_reentry" := {
     Notation.dot '(Build_t _ _ _ x3) := x3;
+  }.
+  Global Instance Get_AF_allow_reentry
+    : Notation.DoubleColon t "allow_reentry" := {
+    Notation.double_colon '(Build_t _ _ _ x3) := x3;
   }.
 End CallFlags.
 Definition CallFlags : Set := CallFlags.t.
@@ -3155,7 +3446,7 @@ Module EnvBackend.
       :
       (mut_ref Self) ->
         (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M (H := H') unit;
     hash_encoded
       `{H' : State.Trait}
@@ -3165,7 +3456,7 @@ Module EnvBackend.
       :
       (mut_ref Self) ->
         (ref T) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M (H := H') unit;
     ecdsa_recover `{H' : State.Trait}
       :
@@ -3442,7 +3733,8 @@ Module TypedEnvBackend.
         M (H := H')
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (ink_primitives.ConstructorResult
-              ink_env.call.create_builder.ConstructorReturnType.Output));
+              (ink_env.call.create_builder.ConstructorReturnType.Output
+                (Self := R))));
     terminate_contract
       `{H' : State.Trait}
       {E : Set}
@@ -3833,7 +4125,7 @@ Module create_builder.
         Type := {
       from_account_id `{H' : State.Trait}
         :
-        ink_env.types.Environment.AccountId -> M (H := H') Self;
+        (ink_env.types.Environment.AccountId (Self := T)) -> M (H := H') Self;
     }.
     
     Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
@@ -3894,23 +4186,47 @@ Module create_builder.
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
       }.
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+        Notation.double_colon '(Build_t x0 _ _ _ _ _ _) := x0;
+      }.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+      }.
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+        Notation.double_colon '(Build_t _ x1 _ _ _ _ _) := x1;
       }.
       Global Instance Get_endowment : Notation.Dot "endowment" := {
         Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
       }.
+      Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
+        Notation.double_colon '(Build_t _ _ x2 _ _ _ _) := x2;
+      }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+      }.
+      Global Instance Get_AF_exec_input
+        : Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon '(Build_t _ _ _ x3 _ _ _) := x3;
       }.
       Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
         Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
       }.
+      Global Instance Get_AF_salt_bytes
+        : Notation.DoubleColon t "salt_bytes" := {
+        Notation.double_colon '(Build_t _ _ _ _ x4 _ _) := x4;
+      }.
       Global Instance Get__return_type : Notation.Dot "_return_type" := {
         Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
       }.
+      Global Instance Get_AF__return_type
+        : Notation.DoubleColon t "_return_type" := {
+        Notation.double_colon '(Build_t _ _ _ _ _ x5 _) := x5;
+      }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+      }.
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+        Notation.double_colon '(Build_t _ _ _ _ _ _ x6) := x6;
       }.
     End CreateParams.
   End CreateParams.
@@ -3945,23 +4261,46 @@ Module create_builder.
       Global Instance Get_code_hash : Notation.Dot "code_hash" := {
         Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
       }.
+      Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+        Notation.double_colon '(Build_t x0 _ _ _ _ _ _) := x0;
+      }.
       Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
         Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+      }.
+      Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+        Notation.double_colon '(Build_t _ x1 _ _ _ _ _) := x1;
       }.
       Global Instance Get_endowment : Notation.Dot "endowment" := {
         Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
       }.
+      Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
+        Notation.double_colon '(Build_t _ _ x2 _ _ _ _) := x2;
+      }.
       Global Instance Get_exec_input : Notation.Dot "exec_input" := {
         Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+      }.
+      Global Instance Get_AF_exec_input
+        : Notation.DoubleColon t "exec_input" := {
+        Notation.double_colon '(Build_t _ _ _ x3 _ _ _) := x3;
       }.
       Global Instance Get_salt : Notation.Dot "salt" := {
         Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
       }.
+      Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+        Notation.double_colon '(Build_t _ _ _ _ x4 _ _) := x4;
+      }.
       Global Instance Get_return_type : Notation.Dot "return_type" := {
         Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
       }.
+      Global Instance Get_AF_return_type
+        : Notation.DoubleColon t "return_type" := {
+        Notation.double_colon '(Build_t _ _ _ _ _ x5 _) := x5;
+      }.
       Global Instance Get__phantom : Notation.Dot "_phantom" := {
         Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+      }.
+      Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+        Notation.double_colon '(Build_t _ _ _ _ _ _ x6) := x6;
       }.
     End CreateBuilder.
   End CreateBuilder.
@@ -3999,7 +4338,7 @@ Module FromAccountId.
       Type := {
     from_account_id `{H' : State.Trait}
       :
-      ink_env.types.Environment.AccountId -> M (H := H') Self;
+      (ink_env.types.Environment.AccountId (Self := T)) -> M (H := H') Self;
   }.
   
   Global Instance Method_from_account_id `{H' : State.Trait} `(Trait)
@@ -4060,23 +4399,45 @@ Module CreateParams.
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _ _ _) := x0;
+    }.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+    }.
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _ _ _) := x1;
     }.
     Global Instance Get_endowment : Notation.Dot "endowment" := {
       Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
     }.
+    Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _ _ _) := x2;
+    }.
     Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+    }.
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _ _ _) := x3;
     }.
     Global Instance Get_salt_bytes : Notation.Dot "salt_bytes" := {
       Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
     }.
+    Global Instance Get_AF_salt_bytes : Notation.DoubleColon t "salt_bytes" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4 _ _) := x4;
+    }.
     Global Instance Get__return_type : Notation.Dot "_return_type" := {
       Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
     }.
+    Global Instance Get_AF__return_type
+      : Notation.DoubleColon t "_return_type" := {
+      Notation.double_colon '(Build_t _ _ _ _ _ x5 _) := x5;
+    }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+    }.
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+      Notation.double_colon '(Build_t _ _ _ _ _ _ x6) := x6;
     }.
   End CreateParams.
 End CreateParams.
@@ -4110,23 +4471,45 @@ Module CreateBuilder.
     Global Instance Get_code_hash : Notation.Dot "code_hash" := {
       Notation.dot '(Build_t x0 _ _ _ _ _ _) := x0;
     }.
+    Global Instance Get_AF_code_hash : Notation.DoubleColon t "code_hash" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _ _ _) := x0;
+    }.
     Global Instance Get_gas_limit : Notation.Dot "gas_limit" := {
       Notation.dot '(Build_t _ x1 _ _ _ _ _) := x1;
+    }.
+    Global Instance Get_AF_gas_limit : Notation.DoubleColon t "gas_limit" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _ _ _) := x1;
     }.
     Global Instance Get_endowment : Notation.Dot "endowment" := {
       Notation.dot '(Build_t _ _ x2 _ _ _ _) := x2;
     }.
+    Global Instance Get_AF_endowment : Notation.DoubleColon t "endowment" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _ _ _) := x2;
+    }.
     Global Instance Get_exec_input : Notation.Dot "exec_input" := {
       Notation.dot '(Build_t _ _ _ x3 _ _ _) := x3;
+    }.
+    Global Instance Get_AF_exec_input : Notation.DoubleColon t "exec_input" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _ _ _) := x3;
     }.
     Global Instance Get_salt : Notation.Dot "salt" := {
       Notation.dot '(Build_t _ _ _ _ x4 _ _) := x4;
     }.
+    Global Instance Get_AF_salt : Notation.DoubleColon t "salt" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4 _ _) := x4;
+    }.
     Global Instance Get_return_type : Notation.Dot "return_type" := {
       Notation.dot '(Build_t _ _ _ _ _ x5 _) := x5;
     }.
+    Global Instance Get_AF_return_type
+      : Notation.DoubleColon t "return_type" := {
+      Notation.double_colon '(Build_t _ _ _ _ _ x5 _) := x5;
+    }.
     Global Instance Get__phantom : Notation.Dot "_phantom" := {
       Notation.dot '(Build_t _ _ _ _ _ _ x6) := x6;
+    }.
+    Global Instance Get_AF__phantom : Notation.DoubleColon t "_phantom" := {
+      Notation.double_colon '(Build_t _ _ _ _ _ _ x6) := x6;
     }.
   End CreateBuilder.
 End CreateBuilder.
@@ -4144,8 +4527,6 @@ Definition CreateBuilder
     (Salt := Salt)
     (RetType := RetType).
 
-
-
 Module execution_input.
   Module ExecutionInput.
     Section ExecutionInput.
@@ -4160,8 +4541,14 @@ Module execution_input.
       Global Instance Get_selector : Notation.Dot "selector" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_args : Notation.Dot "args" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_args : Notation.DoubleColon t "args" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End ExecutionInput.
   End ExecutionInput.
@@ -4181,8 +4568,14 @@ Module execution_input.
       Global Instance Get_head : Notation.Dot "head" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_head : Notation.DoubleColon t "head" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_rest : Notation.Dot "rest" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_rest : Notation.DoubleColon t "rest" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End ArgumentList.
   End ArgumentList.
@@ -4200,6 +4593,9 @@ Module execution_input.
       
       Global Instance Get_arg : Notation.Dot "arg" := {
         Notation.dot '(Build_t x0) := x0;
+      }.
+      Global Instance Get_AF_arg : Notation.DoubleColon t "arg" := {
+        Notation.double_colon '(Build_t x0) := x0;
       }.
     End Argument.
   End Argument.
@@ -4234,8 +4630,14 @@ Module ExecutionInput.
     Global Instance Get_selector : Notation.Dot "selector" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_selector : Notation.DoubleColon t "selector" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_args : Notation.Dot "args" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_args : Notation.DoubleColon t "args" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End ExecutionInput.
 End ExecutionInput.
@@ -4254,8 +4656,14 @@ Module ArgumentList.
     Global Instance Get_head : Notation.Dot "head" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_head : Notation.DoubleColon t "head" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_rest : Notation.Dot "rest" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_rest : Notation.DoubleColon t "rest" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End ArgumentList.
 End ArgumentList.
@@ -4278,6 +4686,9 @@ Module Argument.
     
     Global Instance Get_arg : Notation.Dot "arg" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_arg : Notation.DoubleColon t "arg" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End Argument.
 End Argument.
@@ -4304,6 +4715,9 @@ Module selector.
     Global Instance Get_bytes : Notation.Dot "bytes" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End Selector.
   Definition Selector : Set := Selector.t.
 End selector.
@@ -4317,6 +4731,9 @@ Module Selector.
   
   Global Instance Get_bytes : Notation.Dot "bytes" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End Selector.
 Definition Selector : Set := Selector.t.
@@ -4348,8 +4765,14 @@ Module chain_extension.
       Global Instance Get_func_id : Notation.Dot "func_id" := {
         Notation.dot '(Build_t x0 _) := x0;
       }.
+      Global Instance Get_AF_func_id : Notation.DoubleColon t "func_id" := {
+        Notation.double_colon '(Build_t x0 _) := x0;
+      }.
       Global Instance Get_state : Notation.Dot "state" := {
         Notation.dot '(Build_t _ x1) := x1;
+      }.
+      Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
+        Notation.double_colon '(Build_t _ x1) := x1;
       }.
     End ChainExtensionMethod.
   End ChainExtensionMethod.
@@ -4374,6 +4797,10 @@ Module chain_extension.
         
         Global Instance Get_error_code : Notation.Dot "error_code" := {
           Notation.dot '(Build_t x0) := x0;
+        }.
+        Global Instance Get_AF_error_code
+          : Notation.DoubleColon t "error_code" := {
+          Notation.double_colon '(Build_t x0) := x0;
         }.
       End HandleErrorCode.
     End HandleErrorCode.
@@ -4434,8 +4861,14 @@ Module ChainExtensionMethod.
     Global Instance Get_func_id : Notation.Dot "func_id" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_func_id : Notation.DoubleColon t "func_id" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_state : Notation.Dot "state" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_state : Notation.DoubleColon t "state" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End ChainExtensionMethod.
 End ChainExtensionMethod.
@@ -4462,6 +4895,10 @@ Module Wrap_state_1.
         Global Instance Get_error_code : Notation.Dot "error_code" := {
           Notation.dot '(Build_t x0) := x0;
         }.
+        Global Instance Get_AF_error_code
+          : Notation.DoubleColon t "error_code" := {
+          Notation.double_colon '(Build_t x0) := x0;
+        }.
       End HandleErrorCode.
     End HandleErrorCode.
     Definition HandleErrorCode (T : Set) : Set := HandleErrorCode.t (T := T).
@@ -4486,6 +4923,9 @@ Module HandleErrorCode.
     
     Global Instance Get_error_code : Notation.Dot "error_code" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_error_code : Notation.DoubleColon t "error_code" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End HandleErrorCode.
 End HandleErrorCode.
@@ -4558,6 +4998,9 @@ Module off_chain.
       Global Instance Get_bytes : Notation.Dot "bytes" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End CallData.
     Definition CallData : Set := CallData.t.
   End call_data.
@@ -4572,6 +5015,9 @@ Module off_chain.
       
       Global Instance Get_topics : Notation.Dot "topics" := {
         Notation.dot '(Build_t x0) := x0;
+      }.
+      Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+        Notation.double_colon '(Build_t x0) := x0;
       }.
     End TopicsBuilder.
     Definition TopicsBuilder : Set := TopicsBuilder.t.
@@ -4606,6 +5052,9 @@ Module call_data.
     Global Instance Get_bytes : Notation.Dot "bytes" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End CallData.
   Definition CallData : Set := CallData.t.
 End call_data.
@@ -4619,6 +5068,9 @@ Module CallData.
   
   Global Instance Get_bytes : Notation.Dot "bytes" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_bytes : Notation.DoubleColon t "bytes" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End CallData.
 Definition CallData : Set := CallData.t.
@@ -4634,6 +5086,9 @@ Module impls.
     Global Instance Get_topics : Notation.Dot "topics" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End TopicsBuilder.
   Definition TopicsBuilder : Set := TopicsBuilder.t.
 End impls.
@@ -4647,6 +5102,9 @@ Module TopicsBuilder.
   
   Global Instance Get_topics : Notation.Dot "topics" := {
     Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_topics : Notation.DoubleColon t "topics" := {
+    Notation.double_colon '(Build_t x0) := x0;
   }.
 End TopicsBuilder.
 Definition TopicsBuilder : Set := TopicsBuilder.t.
@@ -4689,15 +5147,11 @@ Module HashOutput.
 End HashOutput.
 
 Module CryptoHash.
-  Class Trait
-      (Self : Set)
-      `{ink_env.hash.HashOutput.Trait Self}
-      `{ink_env.hash.private.Sealed.Trait Self} :
-      Type := {
+  Class Trait (Self : Set) `{ink_env.hash.HashOutput.Trait Self} : Type := {
     hash `{H' : State.Trait}
       :
       (ref (Slice u8)) ->
-        (mut_ref ink_env.hash.HashOutput.Type_) ->
+        (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
         M (H := H') unit;
   }.
   
@@ -4860,7 +5314,7 @@ Module Topics.
       :
       (ref Self) ->
         (ink_env.topics.TopicsBuilder ink_env.topics.state.Uninit E B) ->
-        M (H := H') ink_env.topics.TopicsBuilderBackend.Output;
+        M (H := H') (ink_env.topics.TopicsBuilderBackend.Output (Self := B));
   }.
   
   Global Instance Method_RemainingTopics `(Trait)
@@ -4891,8 +5345,14 @@ Module PrefixedValue.
     Global Instance Get_prefix : Notation.Dot "prefix" := {
       Notation.dot '(Build_t x0 _) := x0;
     }.
+    Global Instance Get_AF_prefix : Notation.DoubleColon t "prefix" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
     Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
     }.
   End PrefixedValue.
 End PrefixedValue.

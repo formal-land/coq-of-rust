@@ -12,8 +12,14 @@ Module Point.
   Global Instance Get_x : Notation.Dot "x" := {
     Notation.dot '(Build_t x0 _) := x0;
   }.
+  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
   Global Instance Get_y : Notation.Dot "y" := {
     Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Point.
 Definition Point : Set := Point.t.

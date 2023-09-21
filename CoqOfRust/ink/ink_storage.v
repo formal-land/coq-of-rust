@@ -20,6 +20,9 @@ Module lazy.
         Global Instance Get__marker : Notation.Dot "_marker" := {
           Notation.dot '(Build_t x0) := x0;
         }.
+        Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+          Notation.double_colon '(Build_t x0) := x0;
+        }.
       End Mapping.
     End Mapping.
     Definition Mapping
@@ -42,6 +45,9 @@ Module lazy.
       
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t x0) := x0;
+      }.
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
       }.
     End Lazy.
   End Lazy.
@@ -68,6 +74,9 @@ Module mapping.
       Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot '(Build_t x0) := x0;
       }.
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
     End Mapping.
   End Mapping.
   Definition Mapping
@@ -93,6 +102,9 @@ Module Mapping.
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
     }.
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
   End Mapping.
 End Mapping.
 Definition Mapping
@@ -114,6 +126,9 @@ Module Lazy.
     
     Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon '(Build_t x0) := x0;
     }.
   End Lazy.
 End Lazy.
