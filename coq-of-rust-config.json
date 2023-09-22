@@ -71,9 +71,7 @@
         "CallParams": { "move": "up", "before": "OnInstance" },
         "TypedEnvBackend": { "move": "up", "before": "OnInstance" },
         "EnvBackend": { "move": "up", "before": "OnInstance" },
-        "DefaultAccounts": { "move": "up", "before": "run_test" },
-        "register_chain_extension": { "move": "up" },
-        "recorded_debug_messages": { "move": "up" }
+        "DefaultAccounts": { "move": "up", "before": "run_test" }
       },
       "top_level::arithmetic": { 
         "Saturating": { "move": "up", "before": "BaseArithmetic" }
