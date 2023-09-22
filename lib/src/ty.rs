@@ -2,6 +2,7 @@ use crate::coq::{self, LOCAL_STATE_TRAIT_INSTANCE};
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
+use itertools::Itertools;
 //use crate::top_level::get_full_ty_params;
 use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigin, Ty, TyKind};
 
@@ -475,5 +476,48 @@ impl CoqType {
             CoqType::OpaqueType(_) => *self = ty.clone(),
             CoqType::Dyn(_) => (),
         }
+    }
+
+    /// returns the list of the names for the opaque types
+    /// generated for the trait objects from the subtree rooted in [self]
+    pub(crate) fn collect_and_subst_trait_objects(&mut self) -> Vec<String> {
+        match self {
+            CoqType::Var(_) => vec![],
+            CoqType::VarWithSelfTy(_, self_ty) => self_ty.collect_and_subst_trait_objects(),
+            CoqType::Application { args, .. } => args
+                .iter_mut()
+                .flat_map(|ty| ty.collect_and_subst_trait_objects())
+                .collect(),
+            CoqType::Function { args, ret } => args
+                .iter_mut()
+                .flat_map(|ty| ty.collect_and_subst_trait_objects())
+                .chain(ret.collect_and_subst_trait_objects())
+                .collect(),
+            CoqType::Tuple(types) => types
+                .iter_mut()
+                .flat_map(|ty| ty.collect_and_subst_trait_objects())
+                .collect(),
+            CoqType::Array(ty) => ty.collect_and_subst_trait_objects(),
+            CoqType::Ref(ty, _) => ty.collect_and_subst_trait_objects(),
+            CoqType::OpaqueType(..) => vec![],
+            CoqType::Dyn(trait_names) => {
+                let name = CoqType::trait_object_to_name(trait_names);
+                *self = *CoqType::var(name.clone());
+                vec![name]
+            }
+        }
+    }
+
+    /// produces a name for the opaque type generated for the trait object
+    pub(crate) fn trait_object_to_name(trait_names: &[Path]) -> String {
+        [
+            "Dyn_",
+            &trait_names
+                .iter()
+                .map(|name| name.to_name())
+                .collect_vec()
+                .join("_"),
+        ]
+        .concat()
     }
 }

@@ -16,6 +16,7 @@ use rustc_hir::{
 use rustc_middle::ty::TyCtxt;
 use rustc_span::symbol::sym;
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::iter::repeat;
 use std::string::ToString;
 
@@ -129,13 +130,7 @@ enum TopLevelItem {
         name: String,
         variants: Vec<(String, VariantItem)>,
     },
-    TypeStructStruct {
-        name: String,
-        ty_params: Vec<String>,
-        predicates: Vec<WherePredicate>,
-        fields: Vec<(String, Box<CoqType>)>,
-        is_dead_code: bool,
-    },
+    TypeStructStruct(TypeStructStruct),
     TypeStructTuple {
         name: String,
         ty_params: Vec<String>,
@@ -173,6 +168,15 @@ enum TopLevelItem {
         has_predicates_on_assoc_ty: bool,
     },
     Error(String),
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct TypeStructStruct {
+    name: String,
+    ty_params: Vec<String>,
+    predicates: Vec<WherePredicate>,
+    fields: Vec<(String, Box<CoqType>)>,
+    is_dead_code: bool,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -421,13 +425,13 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         .iter()
                         .map(|field| (field.ident.name.to_string(), compile_type(env, field.ty)))
                         .collect();
-                    vec![TopLevelItem::TypeStructStruct {
+                    vec![TopLevelItem::TypeStructStruct(TypeStructStruct {
                         name,
                         ty_params,
                         predicates,
                         fields,
                         is_dead_code,
-                    }]
+                    })]
                 }
                 VariantData::Tuple(fields, _, _) => {
                     vec![TopLevelItem::TypeStructTuple {
@@ -947,12 +951,12 @@ fn is_extra(extra_data: Option<&TopLevelItem>) -> bool {
     match extra_data {
         // @TODO this is support for TypeStructStruct,
         // add support for more items
-        Some(TopLevelItem::TypeStructStruct {
+        Some(TopLevelItem::TypeStructStruct(TypeStructStruct {
             name: _,
             fields: _,
             is_dead_code: _,
             ..
-        }) => true,
+        })) => true,
         _ => false,
     }
 }
@@ -1143,12 +1147,12 @@ impl FunDefinition {
         match extra_data {
             // @TODO this is support for TypeStructStruct,
             // add support for more items
-            Some(TopLevelItem::TypeStructStruct {
+            Some(TopLevelItem::TypeStructStruct(TypeStructStruct {
                 name: _,
                 fields,
                 is_dead_code: _,
                 .. // @TODO do generic params should be used here?
-            }) => {
+            })) => {
                 [
                     vec![coq::Expression::just_name("string")],
                     fields
@@ -1837,162 +1841,7 @@ impl TopLevelItem {
                     text(".t."),
                 ]),
             ]),
-            TopLevelItem::TypeStructStruct {
-                name,
-                ty_params,
-                predicates,
-                fields,
-                is_dead_code,
-            } => coq::TopLevel::new(
-                &[
-                    if *is_dead_code {
-                        vec![coq::TopLevelItem::Comment(coq::Comment::new(
-                            "#[allow(dead_code)] - struct was ignored by the compiler",
-                        ))]
-                    } else {
-                        vec![]
-                    },
-                    vec![
-                        coq::TopLevelItem::Module(coq::Module::new(
-                            name,
-                            coq::TopLevel::add_context_in_section_if_necessary(
-                                name,
-                                ty_params,
-                                &coq::TopLevel::concat(&[
-                                    coq::TopLevel::new(
-                                        &if predicates.is_empty() {
-                                            vec![]
-                                        } else {
-                                            vec![coq::TopLevelItem::Context(coq::Context::new(
-                                                &predicates
-                                                    .iter()
-                                                    .map(|predicate| predicate.to_coq())
-                                                    .collect::<Vec<_>>(),
-                                            ))]
-                                        },
-                                    ),
-                                    coq::TopLevel::locally_unset_primitive_projections(&[
-                                        coq::TopLevelItem::Record(coq::Record::new(
-                                            "t",
-                                            &coq::Expression::Set,
-                                            &fields
-                                                .iter()
-                                                .map(|(name, ty)| {
-                                                    coq::FieldDef::new(&Some(name.to_owned()), &ty.to_coq())
-                                                })
-                                                .collect::<Vec<_>>(),
-                                        )),
-                                    ]),
-                                    coq::TopLevel::new(
-                                        &if fields.is_empty() {
-                                            vec![]
-                                        } else {
-                                            vec![coq::TopLevelItem::Line]
-                                        }
-                                    ),
-                                    coq::TopLevel::new(&fields
-                                        .iter()
-                                        .enumerate()
-                                        .flat_map(|(i, (name, _))| {
-                                            let projection_pattern = [coq::ArgDecl::new(
-                                                &coq::ArgDeclVar::Destructured {
-                                                    pattern: coq::Expression::just_name("Build_t")
-                                                        .apply_many(
-                                                            &fields
-                                                                .iter()
-                                                                .enumerate()
-                                                                .map(|(j, _)| if i == j {
-                                                                    coq::Expression::just_name(&format!("x{j}"))
-                                                                } else {
-                                                                    coq::Expression::Wild
-                                                                })
-                                                                .collect::<Vec<_>>()
-                                                        ),
-                                                },
-                                                coq::ArgSpecKind::Explicit,
-                                            )];
-                                            [
-                                                coq::TopLevelItem::Instance(coq::Instance::new(
-                                                    false,
-                                                    &format!("Get_{name}"),
-                                                    &[],
-                                                    coq::Expression::Variable {
-                                                        ident: Path::new(&["Notation", "Dot"]),
-                                                        no_implicit: false,
-                                                    }
-                                                    .apply(&coq::Expression::String(name.to_owned())),
-                                                    &coq::Expression::Record {
-                                                        fields: vec![coq::Field::new(
-                                                            &Path::new(&["Notation", "dot"]),
-                                                            &projection_pattern,
-                                                            &coq::Expression::just_name(&format!("x{i}")),
-                                                        )],
-                                                    },
-                                                    vec![],
-                                                )),
-                                                coq::TopLevelItem::Instance(coq::Instance::new(
-                                                    false,
-                                                    &format!("Get_AF_{name}"),
-                                                    &[],
-                                                    coq::Expression::Variable {
-                                                        ident: Path::new(&["Notation", "DoubleColon"]),
-                                                        no_implicit: false,
-                                                    }
-                                                    .apply_many(&[
-                                                        coq::Expression::just_name("t"),
-                                                        coq::Expression::String(name.to_owned())
-                                                    ]),
-                                                    &coq::Expression::Record {
-                                                        fields: vec![coq::Field::new(
-                                                            &Path::new(&["Notation", "double_colon"]),
-                                                            &projection_pattern,
-                                                            &coq::Expression::just_name(&format!("x{i}")),
-                                                        )],
-                                                    },
-                                                    vec![],
-                                                ))
-                                            ]
-                                        })
-                                        .collect::<Vec<_>>(),
-                                    ),
-                                ]),
-                            ),
-                        )),
-                        coq::TopLevelItem::Definition(coq::Definition::new(
-                            name,
-                            &coq::DefinitionKind::Alias {
-                                args: [
-                                    if ty_params.is_empty() {
-                                        vec![]
-                                    } else {
-                                        vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Explicit)]
-                                    },
-                                    predicates
-                                        .iter()
-                                        .map(|predicate| predicate.to_coq())
-                                        .collect()
-                                ]
-                                .concat(),
-                                ty: Some(coq::Expression::Set),
-                                body: coq::Expression::Variable {
-                                    ident: Path::new(&[name, &"t".to_string()]),
-                                    no_implicit: false,
-                                }
-                                .apply_many_args(
-                                    &ty_params
-                                        .iter()
-                                        .map(|ty_param| {
-                                            (Some(ty_param.to_owned()), coq::Expression::just_name(ty_param))
-                                        })
-                                        .collect::<Vec<_>>(),
-                                ),
-                            },
-                        )),
-                    ],
-                ]
-                .concat(),
-            )
-            .to_doc(),
+            TopLevelItem::TypeStructStruct(tss) => tss.to_doc(),
             TopLevelItem::TypeStructTuple {
                 name,
                 ty_params,
@@ -2517,17 +2366,225 @@ impl TopLevelItem {
     }
 }
 
+impl TypeStructStruct {
+    fn to_doc(&self) -> Doc {
+        let TypeStructStruct {
+            name,
+            ty_params,
+            predicates,
+            fields,
+            is_dead_code,
+        } = self;
+
+        // making fields mutable to extract trait objects from the types
+        let mut fields = fields.clone();
+        let trait_object_names: HashSet<_> = fields
+            .iter_mut()
+            .flat_map(|(_, ty)| ty.collect_and_subst_trait_objects())
+            .collect();
+
+        // making fields immutable, just in case
+        let fields = fields;
+
+        coq::TopLevel::new(
+            &[
+                if *is_dead_code {
+                    vec![coq::TopLevelItem::Comment(coq::Comment::new(
+                        "#[allow(dead_code)] - struct was ignored by the compiler",
+                    ))]
+                } else {
+                    vec![]
+                },
+                vec![
+                    coq::TopLevelItem::Module(coq::Module::new(
+                        name,
+                        coq::TopLevel::add_context_in_section_if_necessary(
+                            name,
+                            ty_params,
+                            &coq::TopLevel::concat(&[
+                                coq::TopLevel::new(&if predicates.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![coq::TopLevelItem::Context(coq::Context::new(
+                                        &predicates
+                                            .iter()
+                                            .map(|predicate| predicate.to_coq())
+                                            .collect::<Vec<_>>(),
+                                    ))]
+                                }),
+                                coq::TopLevel::new(&if trait_object_names.is_empty() {
+                                    vec![]
+                                } else {
+                                    trait_object_names
+                                        .iter()
+                                        .map(|trait_object_name| {
+                                            coq::TopLevelItem::Module(coq::Module::new(
+                                                trait_object_name,
+                                                coq::TopLevel::new(&[]),
+                                            ))
+                                        })
+                                        .collect_vec()
+                                }),
+                                coq::TopLevel::locally_unset_primitive_projections(&[
+                                    coq::TopLevelItem::Record(coq::Record::new(
+                                        "t",
+                                        &coq::Expression::Set,
+                                        &fields
+                                            .iter()
+                                            .map(|(name, ty)| {
+                                                coq::FieldDef::new(
+                                                    &Some(name.to_owned()),
+                                                    &ty.to_coq(),
+                                                )
+                                            })
+                                            .collect::<Vec<_>>(),
+                                    )),
+                                ]),
+                                coq::TopLevel::new(&if fields.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![coq::TopLevelItem::Line]
+                                }),
+                                coq::TopLevel::new(
+                                    &fields
+                                        .iter()
+                                        .enumerate()
+                                        .flat_map(|(i, (name, _))| {
+                                            let projection_pattern = [coq::ArgDecl::new(
+                                                &coq::ArgDeclVar::Destructured {
+                                                    pattern: coq::Expression::just_name("Build_t")
+                                                        .apply_many(
+                                                            &fields
+                                                                .iter()
+                                                                .enumerate()
+                                                                .map(|(j, _)| {
+                                                                    if i == j {
+                                                                        coq::Expression::just_name(
+                                                                            &format!("x{j}"),
+                                                                        )
+                                                                    } else {
+                                                                        coq::Expression::Wild
+                                                                    }
+                                                                })
+                                                                .collect::<Vec<_>>(),
+                                                        ),
+                                                },
+                                                coq::ArgSpecKind::Explicit,
+                                            )];
+                                            [
+                                                coq::TopLevelItem::Instance(coq::Instance::new(
+                                                    false,
+                                                    &format!("Get_{name}"),
+                                                    &[],
+                                                    coq::Expression::Variable {
+                                                        ident: Path::new(&["Notation", "Dot"]),
+                                                        no_implicit: false,
+                                                    }
+                                                    .apply(&coq::Expression::String(
+                                                        name.to_owned(),
+                                                    )),
+                                                    &coq::Expression::Record {
+                                                        fields: vec![coq::Field::new(
+                                                            &Path::new(&["Notation", "dot"]),
+                                                            &projection_pattern,
+                                                            &coq::Expression::just_name(&format!(
+                                                                "x{i}"
+                                                            )),
+                                                        )],
+                                                    },
+                                                    vec![],
+                                                )),
+                                                coq::TopLevelItem::Instance(coq::Instance::new(
+                                                    false,
+                                                    &format!("Get_AF_{name}"),
+                                                    &[],
+                                                    coq::Expression::Variable {
+                                                        ident: Path::new(&[
+                                                            "Notation",
+                                                            "DoubleColon",
+                                                        ]),
+                                                        no_implicit: false,
+                                                    }
+                                                    .apply_many(&[
+                                                        coq::Expression::just_name("t"),
+                                                        coq::Expression::String(name.to_owned()),
+                                                    ]),
+                                                    &coq::Expression::Record {
+                                                        fields: vec![coq::Field::new(
+                                                            &Path::new(&[
+                                                                "Notation",
+                                                                "double_colon",
+                                                            ]),
+                                                            &projection_pattern,
+                                                            &coq::Expression::just_name(&format!(
+                                                                "x{i}"
+                                                            )),
+                                                        )],
+                                                    },
+                                                    vec![],
+                                                )),
+                                            ]
+                                        })
+                                        .collect::<Vec<_>>(),
+                                ),
+                            ]),
+                        ),
+                    )),
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Alias {
+                            args: [
+                                if ty_params.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![coq::ArgDecl::of_ty_params(
+                                        ty_params,
+                                        coq::ArgSpecKind::Explicit,
+                                    )]
+                                },
+                                predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_coq())
+                                    .collect(),
+                            ]
+                            .concat(),
+                            ty: Some(coq::Expression::Set),
+                            body: coq::Expression::Variable {
+                                ident: Path::new(&[name, &"t".to_string()]),
+                                no_implicit: false,
+                            }
+                            .apply_many_args(
+                                &ty_params
+                                    .iter()
+                                    .map(|ty_param| {
+                                        (
+                                            Some(ty_param.to_owned()),
+                                            coq::Expression::just_name(ty_param),
+                                        )
+                                    })
+                                    .collect::<Vec<_>>(),
+                            ),
+                        },
+                    )),
+                ],
+            ]
+            .concat(),
+        )
+        .to_doc()
+    }
+}
+
 impl TopLevel {
     // function returns TopLevelItem::TypeStructStruct (comparing name)
     fn find_tli_by_name(&self, self_ty: &CoqType) -> Option<&TopLevelItem> {
         //Option<TopLevelItem> {
         self.0.iter().find(|item_ins| match item_ins {
-            TopLevelItem::TypeStructStruct {
+            TopLevelItem::TypeStructStruct(TypeStructStruct {
                 name,
                 fields: _,
                 is_dead_code: _,
                 .. // @TODO should generic parameters be used here?
-            } => {
+            }) => {
                 // check if it is the struct we are looking for
                 *name == self_ty.to_item_name()
             }
