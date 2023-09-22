@@ -175,8 +175,8 @@ Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.scale_decode.
-Require CoqOfRust.ink.scale_encode.""",
-        # TODO: add Require CoqOfRust.ink.ink_engine.
+Require CoqOfRust.ink.scale_encode.
+Require CoqOfRust.ink.ink_engine.""",
         content,
     )
     content = content.replace(
