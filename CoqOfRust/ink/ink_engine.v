@@ -161,13 +161,16 @@ Module chain_extension.
   Definition ExtensionId := @ExtensionId.t.
   
   Module ChainExtensionHandler.
+    Module Dyn_ink_engine_chain_extension_ChainExtension.
+      
+    End Dyn_ink_engine_chain_extension_ChainExtension.
     Unset Primitive Projections.
     Record t : Set := {
       registered
         :
         std.collections.hash.map.HashMap
           ink_engine.chain_extension.ExtensionId
-          (alloc.boxed.Box _ (* dyn *));
+          (alloc.boxed.Box Dyn_ink_engine_chain_extension_ChainExtension);
       output : alloc.vec.Vec u8;
     }.
     Global Set Primitive Projections.
@@ -610,13 +613,16 @@ End DebugInfo.
 Definition DebugInfo : Set := DebugInfo.t.
 
 Module ChainExtensionHandler.
+  Module Dyn_ink_engine_chain_extension_ChainExtension.
+    
+  End Dyn_ink_engine_chain_extension_ChainExtension.
   Unset Primitive Projections.
   Record t : Set := {
     registered
       :
       std.collections.hash.map.HashMap
         ink_engine.chain_extension.ExtensionId
-        (alloc.boxed.Box _ (* dyn *));
+        (alloc.boxed.Box Dyn_ink_engine_chain_extension_ChainExtension);
     output : alloc.vec.Vec u8;
   }.
   Global Set Primitive Projections.
