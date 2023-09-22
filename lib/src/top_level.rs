@@ -2460,6 +2460,48 @@ impl TypeStructStruct {
                                                                 )
                                                             })
                                                             .collect(),
+                                                        vec![coq::TopLevelItem::Definition(coq::Definition::new(
+                                                            "conv_Dyn",
+                                                            &coq::DefinitionKind::Assumption {
+                                                                ty: coq::Expression::PiType {
+                                                                    args: [
+                                                                        vec![coq::ArgDecl::new(
+                                                                            &coq::ArgDeclVar::Normal {
+                                                                                idents: vec!["A".to_string()],
+                                                                                ty: Some(coq::Expression::Set),
+                                                                            },
+                                                                            coq::ArgSpecKind::Implicit,
+                                                                        )],
+                                                                        single_trait_object_traits
+                                                                            .iter()
+                                                                            .map(|single_trait_object_trait| {
+                                                                                coq::ArgDecl::new(
+                                                                                    &coq::ArgDeclVar::Generalized {
+                                                                                        idents: vec![],
+                                                                                        ty: coq::Expression::Variable {
+                                                                                            ident: Path::concat(&[
+                                                                                                single_trait_object_trait.to_owned(),
+                                                                                                Path::new(&["Trait"]),
+                                                                                            ]),
+                                                                                            no_implicit: false,
+                                                                                        }
+                                                                                        .apply(&coq::Expression::just_name("t")),
+                                                                                    },
+                                                                                    coq::ArgSpecKind::Implicit,
+                                                                                )
+                                                                            })
+                                                                            .collect()
+                                                                    ]
+                                                                    .concat(),
+                                                                    image: Box::new(
+                                                                        coq::Expression::just_name("t")
+                                                                            .arrows_from(&[
+                                                                                coq::Expression::just_name("A"),
+                                                                            ]),
+                                                                    ),
+                                                                },
+                                                            },
+                                                        ))],
                                                     ].concat()),
                                                 )),
                                                 coq::TopLevelItem::Definition(

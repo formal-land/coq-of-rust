@@ -186,6 +186,9 @@ Module chain_extension.
       Parameter t : Set.
       Global Instance I_ink_engine_chain_extension_ChainExtension
         : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
+      Parameter conv_Dyn :
+          forall {A : Set} `{ink_engine.chain_extension.ChainExtension.Trait t},
+          A -> t.
     End Dyn_ink_engine_chain_extension_ChainExtension.
     Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
       Dyn_ink_engine_chain_extension_ChainExtension.t.
@@ -606,6 +609,9 @@ Module ChainExtensionHandler.
     Parameter t : Set.
     Global Instance I_ink_engine_chain_extension_ChainExtension
       : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
+    Parameter conv_Dyn :
+        forall {A : Set} `{ink_engine.chain_extension.ChainExtension.Trait t},
+        A -> t.
   End Dyn_ink_engine_chain_extension_ChainExtension.
   Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
     Dyn_ink_engine_chain_extension_ChainExtension.t.
