@@ -160,11 +160,32 @@ Module chain_extension.
   End ExtensionId.
   Definition ExtensionId := @ExtensionId.t.
   
+  Module ChainExtension.
+    Class Trait (Self : Set) : Type := {
+      func_id `{H' : State.Trait} : (ref Self) -> M (H := H') u32;
+      call `{H' : State.Trait}
+        :
+        (mut_ref Self) ->
+          (ref (Slice u8)) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') u32;
+    }.
+    
+    Global Instance Method_func_id `{H' : State.Trait} `(Trait)
+      : Notation.Dot "func_id" := {
+      Notation.dot := func_id;
+    }.
+    Global Instance Method_call `{H' : State.Trait} `(Trait)
+      : Notation.Dot "call" := {
+      Notation.dot := call;
+    }.
+  End ChainExtension.
+  
   Module ChainExtensionHandler.
     Module Dyn_ink_engine_chain_extension_ChainExtension.
       Parameter t : Set.
       Global Instance I_ink_engine_chain_extension_ChainExtension
-        : ink_engine.chain_extension.ChainExtension := axiom.
+        : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
     End Dyn_ink_engine_chain_extension_ChainExtension.
     Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
       Dyn_ink_engine_chain_extension_ChainExtension.t.
@@ -194,27 +215,6 @@ Module chain_extension.
     }.
   End ChainExtensionHandler.
   Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
-  
-  Module ChainExtension.
-    Class Trait (Self : Set) : Type := {
-      func_id `{H' : State.Trait} : (ref Self) -> M (H := H') u32;
-      call `{H' : State.Trait}
-        :
-        (mut_ref Self) ->
-          (ref (Slice u8)) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
-          M (H := H') u32;
-    }.
-    
-    Global Instance Method_func_id `{H' : State.Trait} `(Trait)
-      : Notation.Dot "func_id" := {
-      Notation.dot := func_id;
-    }.
-    Global Instance Method_call `{H' : State.Trait} `(Trait)
-      : Notation.Dot "call" := {
-      Notation.dot := call;
-    }.
-  End ChainExtension.
 End chain_extension.
 
 Module database.
@@ -413,22 +413,6 @@ Module ext.
   Definition Engine : Set := Engine.t.
 End ext.
 
-Module Error.
-  Inductive t : Set :=
-  | CalleeTrapped
-  | CalleeReverted
-  | KeyNotFound
-  | _BelowSubsistenceThreshold
-  | TransferFailed
-  | _EndowmentTooLow
-  | CodeNotFound
-  | NotCallable
-  | LoggingDisabled
-  | EcdsaRecoveryFailed
-  | Unknown.
-End Error.
-Definition Error := Error.t.
-
 Module ReturnCode.
   Unset Primitive Projections.
   Record t : Set := {
@@ -621,7 +605,7 @@ Module ChainExtensionHandler.
   Module Dyn_ink_engine_chain_extension_ChainExtension.
     Parameter t : Set.
     Global Instance I_ink_engine_chain_extension_ChainExtension
-      : ink_engine.chain_extension.ChainExtension := axiom.
+      : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
   End Dyn_ink_engine_chain_extension_ChainExtension.
   Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
     Dyn_ink_engine_chain_extension_ChainExtension.t.

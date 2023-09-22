@@ -2447,9 +2447,13 @@ impl TypeStructStruct {
                                                                         .concat(),
                                                                         &[],
                                                                         coq::Expression::Variable {
-                                                                            ident: single_trait_object_trait.to_owned(),
+                                                                            ident: Path::concat(&[
+                                                                                single_trait_object_trait.to_owned(),
+                                                                                Path::new(&["Trait"]),
+                                                                            ]),
                                                                             no_implicit: false,
-                                                                        },
+                                                                        }
+                                                                        .apply(&coq::Expression::just_name("t")),
                                                                         &coq::Expression::just_name("axiom"),
                                                                         vec![],
                                                                     ),

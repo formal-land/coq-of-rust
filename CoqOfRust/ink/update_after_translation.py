@@ -63,6 +63,26 @@ def update_ink_engine():
 Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
+    content = content.replace(
+        """
+Module Error.
+  Inductive t : Set :=
+  | CalleeTrapped
+  | CalleeReverted
+  | KeyNotFound
+  | _BelowSubsistenceThreshold
+  | TransferFailed
+  | _EndowmentTooLow
+  | CodeNotFound
+  | NotCallable
+  | LoggingDisabled
+  | EcdsaRecoveryFailed
+  | Unknown.
+End Error.
+Definition Error := Error.t.
+""",
+        "",
+    )
     with open(file_name, "w") as f:
         f.write(content)
 
