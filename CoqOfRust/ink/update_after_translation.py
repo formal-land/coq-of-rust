@@ -165,28 +165,6 @@ End state_.
         "",
     )
     content = content.replace(
-        """Module EnvInstance.
-  Unset Primitive Projections.
-  Record t : Set := {
-    engine : ink_engine.ext.Engine;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_engine : Notation.Dot "engine" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-  Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
-    Notation.double_colon '(Build_t x0) := x0;
-  }.
-End EnvInstance.""",
-        """Module EnvInstance.
-  Unset Primitive Projections.
-  Record t : Set := {
-  }.
-  Global Set Primitive Projections.
-End EnvInstance.""",
-    )
-    content = content.replace(
         """Module TopicsBuilder.
   Section TopicsBuilder.
     Context {S E B : Set}.
