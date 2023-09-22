@@ -8,6 +8,7 @@ Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.scale_decode.
 Require CoqOfRust.ink.scale_encode.
+Require CoqOfRust.ink.ink_engine.
 
 Module arithmetic.
   Module Saturating.
@@ -1200,6 +1201,17 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         M (H := H')
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             T::type["Balance"]).
+  
+  Parameter register_chain_extension :
+      forall
+        `{H' : State.Trait}
+        {E : Set}
+        `{ink_engine.chain_extension.ChainExtension.Trait E},
+      E -> M (H := H') unit.
+  
+  Parameter recorded_debug_messages :
+      forall `{H' : State.Trait},
+      M (H := H') ink_engine.test_api.RecordedDebugMessages.
   
   Parameter set_clear_storage_disabled :
       forall `{H' : State.Trait},
@@ -2925,9 +2937,16 @@ Parameter get_account_balance :
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           T::type["Balance"]).
 
+Parameter register_chain_extension :
+    forall
+      `{H' : State.Trait}
+      {E : Set}
+      `{ink_engine.chain_extension.ChainExtension.Trait E},
+    E -> M (H := H') unit.
 
-
-
+Parameter recorded_debug_messages :
+    forall `{H' : State.Trait},
+    M (H := H') ink_engine.test_api.RecordedDebugMessages.
 
 Parameter set_clear_storage_disabled :
     forall `{H' : State.Trait},
