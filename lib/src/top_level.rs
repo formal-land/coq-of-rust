@@ -1277,7 +1277,7 @@ impl FunDefinition {
                                     ty: coq::Expression::SigmaType {
                                         args: [
                                             vec![coq::ArgDecl::new(
-                                                &coq::ArgDeclVar::Normal {
+                                                &coq::ArgDeclVar::Simple {
                                                     idents: vec!["Ty".to_string()],
                                                     ty: Some(coq::Expression::Set),
                                                 },
@@ -1394,7 +1394,7 @@ impl FunDefinition {
                                     .iter()
                                     .map(|(name, ty)| {
                                         coq::ArgDecl::new(
-                                            &coq::ArgDeclVar::Normal {
+                                            &coq::ArgDeclVar::Simple {
                                                 idents: vec![name.to_owned()],
                                                 ty: Some(ty.to_coq()),
                                             },
@@ -2038,7 +2038,7 @@ impl TopLevelItem {
                                     vec![]
                                 } else {
                                     vec![coq::ArgDecl::new(
-                                        &coq::ArgDeclVar::Normal {
+                                        &coq::ArgDeclVar::Simple {
                                             idents: ty_params.to_owned(),
                                             ty: Some(coq::Expression::Set),
                                         },
@@ -2217,7 +2217,7 @@ impl TopLevelItem {
                                             .iter()
                                             .map(|(name, ty)| {
                                                 coq::ArgDecl::new(
-                                                    &coq::ArgDeclVar::Normal {
+                                                    &coq::ArgDeclVar::Simple {
                                                         idents: vec![name.to_owned()],
                                                         ty: Some(ty.to_coq()),
                                                     },
@@ -2466,7 +2466,7 @@ impl TypeStructStruct {
                                                                 ty: coq::Expression::PiType {
                                                                     args: [
                                                                         vec![coq::ArgDecl::new(
-                                                                            &coq::ArgDeclVar::Normal {
+                                                                            &coq::ArgDeclVar::Simple {
                                                                                 idents: vec!["A".to_string()],
                                                                                 ty: Some(coq::Expression::Set),
                                                                             },
