@@ -162,8 +162,11 @@ Module chain_extension.
   
   Module ChainExtensionHandler.
     Module Dyn_ink_engine_chain_extension_ChainExtension.
-      
+      Parameter t : Set.
     End Dyn_ink_engine_chain_extension_ChainExtension.
+    Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
+      Dyn_ink_engine_chain_extension_ChainExtension.t.
+    
     Unset Primitive Projections.
     Record t : Set := {
       registered
@@ -614,8 +617,11 @@ Definition DebugInfo : Set := DebugInfo.t.
 
 Module ChainExtensionHandler.
   Module Dyn_ink_engine_chain_extension_ChainExtension.
-    
+    Parameter t : Set.
   End Dyn_ink_engine_chain_extension_ChainExtension.
+  Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
+    Dyn_ink_engine_chain_extension_ChainExtension.t.
+  
   Unset Primitive Projections.
   Record t : Set := {
     registered

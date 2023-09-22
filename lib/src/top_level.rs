@@ -2417,13 +2417,41 @@ impl TypeStructStruct {
                                 } else {
                                     trait_object_names
                                         .iter()
-                                        .map(|trait_object_name| {
-                                            coq::TopLevelItem::Module(coq::Module::new(
-                                                trait_object_name,
-                                                coq::TopLevel::new(&[]),
-                                            ))
+                                        .flat_map(|trait_object_name| {
+                                            [
+                                                coq::TopLevelItem::Module(coq::Module::new(
+                                                    trait_object_name,
+                                                    coq::TopLevel::new(&[
+                                                        coq::TopLevelItem::Definition(
+                                                            coq::Definition::new(
+                                                                "t",
+                                                                &coq::DefinitionKind::Assumption {
+                                                                    ty: coq::Expression::Set,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    ]),
+                                                )),
+                                                coq::TopLevelItem::Definition(
+                                                    coq::Definition::new(
+                                                        trait_object_name,
+                                                        &coq::DefinitionKind::Alias {
+                                                            args: vec![],
+                                                            ty: Some(coq::Expression::Set),
+                                                            body: coq::Expression::Variable {
+                                                                ident: Path::new(&[
+                                                                    trait_object_name.as_ref(),
+                                                                    "t",
+                                                                ]),
+                                                                no_implicit: false,
+                                                            },
+                                                        },
+                                                    ),
+                                                ),
+                                                coq::TopLevelItem::Line,
+                                            ]
                                         })
-                                        .collect_vec()
+                                        .collect()
                                 }),
                                 coq::TopLevel::locally_unset_primitive_projections(&[
                                     coq::TopLevelItem::Record(coq::Record::new(
