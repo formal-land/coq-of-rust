@@ -78,7 +78,6 @@
         "Saturating": { "move": "up", "before": "BaseArithmetic" }
       },
       "top_level::engine::off_chain": {
-        "EnvInstance": { "move": "up" },
         "AccountError": { "move": "up", "before": "OffChainError" }
       },
       "top_level::hash": {

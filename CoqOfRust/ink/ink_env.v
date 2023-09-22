@@ -900,6 +900,22 @@ Module engine.
       Definition TopicsBuilder : Set := TopicsBuilder.t.
     End impls.
     
+    Module EnvInstance.
+      Unset Primitive Projections.
+      Record t : Set := {
+        engine : ink_engine.ext.Engine;
+      }.
+      Global Set Primitive Projections.
+      
+      Global Instance Get_engine : Notation.Dot "engine" := {
+        Notation.dot '(Build_t x0) := x0;
+      }.
+      Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+        Notation.double_colon '(Build_t x0) := x0;
+      }.
+    End EnvInstance.
+    Definition EnvInstance : Set := EnvInstance.t.
+    
     Module AccountError.
       Inductive t : Set :=
       | Decoding (_ : parity_scale_codec.error.Error)
@@ -5042,6 +5058,22 @@ Module off_chain.
     Definition TopicsBuilder : Set := TopicsBuilder.t.
   End impls.
   
+  Module EnvInstance.
+    Unset Primitive Projections.
+    Record t : Set := {
+      engine : ink_engine.ext.Engine;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_engine : Notation.Dot "engine" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+    Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+      Notation.double_colon '(Build_t x0) := x0;
+    }.
+  End EnvInstance.
+  Definition EnvInstance : Set := EnvInstance.t.
+  
   Module AccountError.
     Inductive t : Set :=
     | Decoding (_ : parity_scale_codec.error.Error)
@@ -5131,8 +5163,16 @@ Definition TopicsBuilder : Set := TopicsBuilder.t.
 Module EnvInstance.
   Unset Primitive Projections.
   Record t : Set := {
+    engine : ink_engine.ext.Engine;
   }.
   Global Set Primitive Projections.
+  
+  Global Instance Get_engine : Notation.Dot "engine" := {
+    Notation.dot '(Build_t x0) := x0;
+  }.
+  Global Instance Get_AF_engine : Notation.DoubleColon t "engine" := {
+    Notation.double_colon '(Build_t x0) := x0;
+  }.
 End EnvInstance.
 Definition EnvInstance : Set := EnvInstance.t.
 
