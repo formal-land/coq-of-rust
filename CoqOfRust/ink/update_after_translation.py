@@ -237,41 +237,6 @@ End state_.
         "",
     )
     content = content.replace(
-        """Parameter run_test :
-    forall
-      `{H' : State.Trait}
-      {T F : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.ops.function.FnOnce.Trait F
-          (Args := ink_env.engine.off_chain.test_api.DefaultAccounts T)}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
-          (T := list u8)},
-    F -> M (H := H') (ink_env.error.Result unit).""",
-        "",
-    )
-    content = content.replace(
-        """Parameter default_accounts :
-    forall
-      `{H' : State.Trait}
-      {T : Set}
-      `{ink_env.types.Environment.Trait T}
-      `{core.convert.From.Trait ink_env.types.Environment.AccountId
-          (T := list u8)},
-    M (H := H') (ink_env.engine.off_chain.test_api.DefaultAccounts T).""",
-        "",
-    )
-    content = content.replace(
-        """Parameter recorded_events_ret_ty :
-    forall `{"""
-        + "core.iter.traits.iterator.Iterator"
-        + """},
-    Set.
-Parameter recorded_events :
-    forall `{H' : State.Trait},
-    M (H := H') recorded_events_ret_ty.""",
-        "",
-    )
-    content = content.replace(
         """Module EnvInstance.
   Unset Primitive Projections.
   Record t : Set := {
@@ -292,17 +257,6 @@ End EnvInstance.""",
   }.
   Global Set Primitive Projections.
 End EnvInstance.""",
-    )
-    content = content.replace(
-        """Module private.
-  Module Sealed.
-    Unset Primitive Projections.
-    Class Trait (Self : Set) : Type := {
-    }.
-    Global Set Primitive Projections.
-  End Sealed.
-End private.""",
-        "",
     )
     content = content.replace(
         """Module TopicsBuilder.
