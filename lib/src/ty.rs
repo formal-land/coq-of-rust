@@ -478,9 +478,9 @@ impl CoqType {
         }
     }
 
-    /// returns the list of the names for the opaque types
+    /// returns the list of the trait names for the opaque types
     /// generated for the trait objects from the subtree rooted in [self]
-    pub(crate) fn collect_and_subst_trait_objects(&mut self) -> Vec<String> {
+    pub(crate) fn collect_and_subst_trait_objects(&mut self) -> Vec<Vec<Path>> {
         match self {
             CoqType::Var(_) => vec![],
             CoqType::VarWithSelfTy(_, self_ty) => self_ty.collect_and_subst_trait_objects(),
@@ -501,9 +501,9 @@ impl CoqType {
             CoqType::Ref(ty, _) => ty.collect_and_subst_trait_objects(),
             CoqType::OpaqueType(..) => vec![],
             CoqType::Dyn(trait_names) => {
-                let name = CoqType::trait_object_to_name(trait_names);
-                *self = *CoqType::var(name.clone());
-                vec![name]
+                let tn = trait_names.to_owned();
+                *self = *CoqType::var(CoqType::trait_object_to_name(trait_names));
+                vec![tn]
             }
         }
     }

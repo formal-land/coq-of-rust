@@ -2378,7 +2378,7 @@ impl TypeStructStruct {
 
         // making fields mutable to extract trait objects from the types
         let mut fields = fields.clone();
-        let trait_object_names: HashSet<_> = fields
+        let trait_objects_traits: HashSet<_> = fields
             .iter_mut()
             .flat_map(|(_, ty)| ty.collect_and_subst_trait_objects())
             .collect();
@@ -2412,25 +2412,51 @@ impl TypeStructStruct {
                                             .collect::<Vec<_>>(),
                                     ))]
                                 }),
-                                coq::TopLevel::new(&if trait_object_names.is_empty() {
+                                coq::TopLevel::new(&if trait_objects_traits.is_empty() {
                                     vec![]
                                 } else {
-                                    trait_object_names
+                                    trait_objects_traits
                                         .iter()
-                                        .flat_map(|trait_object_name| {
+                                        .flat_map(|single_trait_object_traits| {
+                                            let trait_object_name =
+                                                &CoqType::trait_object_to_name(
+                                                    single_trait_object_traits,
+                                                );
                                             [
                                                 coq::TopLevelItem::Module(coq::Module::new(
                                                     trait_object_name,
                                                     coq::TopLevel::new(&[
-                                                        coq::TopLevelItem::Definition(
+                                                        vec![coq::TopLevelItem::Definition(
                                                             coq::Definition::new(
                                                                 "t",
                                                                 &coq::DefinitionKind::Assumption {
                                                                     ty: coq::Expression::Set,
                                                                 },
                                                             ),
-                                                        ),
-                                                    ]),
+                                                        )],
+                                                        single_trait_object_traits
+                                                            .iter()
+                                                            .map(|single_trait_object_trait| {
+                                                                coq::TopLevelItem::Instance(
+                                                                    coq::Instance::new(
+                                                                        false,
+                                                                        &[
+                                                                            "I_",
+                                                                            &single_trait_object_trait.to_name(),
+                                                                        ]
+                                                                        .concat(),
+                                                                        &[],
+                                                                        coq::Expression::Variable {
+                                                                            ident: single_trait_object_trait.to_owned(),
+                                                                            no_implicit: false,
+                                                                        },
+                                                                        &coq::Expression::just_name("axiom"),
+                                                                        vec![],
+                                                                    ),
+                                                                )
+                                                            })
+                                                            .collect(),
+                                                    ].concat()),
                                                 )),
                                                 coq::TopLevelItem::Definition(
                                                     coq::Definition::new(
