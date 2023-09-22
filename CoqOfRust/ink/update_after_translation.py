@@ -225,47 +225,6 @@ End state_.
 """,
         )
     content = content.replace(
-        """Module OnInstance.
-  Class Trait
-      (Self : Set)
-        `{ink_env.backend.EnvBackend.Trait Self}
-        `{ink_env.backend.TypedEnvBackend.Trait Self} :
-      Type := {
-    on_instance
-      `{H' : State.Trait}
-      {F R: Set}
-      `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-      :
-      F -> (M (H := H') R);
-  }.
-  
-  Global Instance Method_on_instance `{H' : State.Trait} `(Trait)
-    : Notation.Dot "on_instance" := {
-    Notation.dot
-      {F R : Set}
-      `{core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
-      :=
-      on_instance;
-  }.
-End OnInstance.""",
-        "",
-    )
-    content = content.replace(
-        """Parameter register_chain_extension :
-    forall
-      `{H' : State.Trait}
-      {E : Set}
-      `{ink_engine.chain_extension.ChainExtension.Trait E},
-    E -> M (H := H') unit.""",
-        "",
-    )
-    content = content.replace(
-        """Parameter recorded_debug_messages :
-    forall `{H' : State.Trait},
-    M (H := H') ink_engine.test_api.RecordedDebugMessages.""",
-        "",
-    )
-    content = content.replace(
         """Parameter is_contract :
     forall
       `{H' : State.Trait}

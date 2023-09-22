@@ -2937,9 +2937,16 @@ Parameter get_account_balance :
         (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
           T::type["Balance"]).
 
+Parameter register_chain_extension :
+    forall
+      `{H' : State.Trait}
+      {E : Set}
+      `{ink_engine.chain_extension.ChainExtension.Trait E},
+    E -> M (H := H') unit.
 
-
-
+Parameter recorded_debug_messages :
+    forall `{H' : State.Trait},
+    M (H := H') ink_engine.test_api.RecordedDebugMessages.
 
 Parameter set_clear_storage_disabled :
     forall `{H' : State.Trait},
