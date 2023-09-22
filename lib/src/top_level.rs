@@ -751,7 +751,7 @@ fn compile_generic_bounds(
         .collect()
 }
 
-//// computes the list of actual type parameters with their default status
+/// computes the list of actual type parameters with their default status
 fn get_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
@@ -764,6 +764,32 @@ fn get_ty_params_with_default_status(
 
     let ty_params = compile_path_ty_params(env, path);
     add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
+}
+
+/// computes the full list of actual type parameters with their default status
+/// (for items other than traits)
+fn get_full_ty_params_with_default_status(
+    env: &Env,
+    generics: &rustc_middle::ty::Generics,
+    path: &rustc_hir::Path,
+) -> Vec<Box<TraitTyParamValue>> {
+    let type_params_name_and_default_status = type_params_name_and_default_status(generics);
+    let ty_params = compile_path_ty_params(env, path);
+    add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
+}
+
+#[allow(dead_code)]
+/// computes the full list of actual type parameters
+/// (for items other than traits)
+pub(crate) fn get_full_ty_params(
+    env: &Env,
+    generics: &rustc_middle::ty::Generics,
+    path: &rustc_hir::Path,
+) -> Vec<Box<CoqType>> {
+    get_full_ty_params_with_default_status(env, generics, path)
+        .into_iter()
+        .map(|ty_param| ty_param.to_coq_type())
+        .collect()
 }
 
 /// takes a list of actual type parameters
@@ -1517,7 +1543,7 @@ impl WherePredicate {
 }
 
 impl TraitBound {
-    // Get the generics for the trait
+    /// Get the generics for the trait
     fn compile(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> TraitBound {
         TraitBound {
             name: compile_path(env, ptraitref.trait_ref.path),
@@ -1578,6 +1604,15 @@ impl TraitTyParamValue {
             ),
             TraitTyParamValue::JustValue { name, ty } => apply_argument(name, ty.to_doc(false)),
             TraitTyParamValue::JustDefault { name } => apply_argument(name, text("None")),
+        }
+    }
+
+    #[allow(dead_code)]
+    fn to_coq_type(&self) -> Box<CoqType> {
+        match self {
+            TraitTyParamValue::JustValue { name: _, ty } => ty.to_owned(),
+            TraitTyParamValue::ValWithDef { name: _, ty } => ty.to_owned(),
+            TraitTyParamValue::JustDefault { name: _ } => CoqType::var("None".to_string()),
         }
     }
 }

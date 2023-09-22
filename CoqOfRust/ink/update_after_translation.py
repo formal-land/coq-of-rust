@@ -50,6 +50,23 @@ Module Output.""",
         f.write(content)
 
 
+def update_ink_engine():
+    file_name = "ink_engine.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = sub_exactly_once(
+        pattern,
+        pattern
+        + """
+
+Require CoqOfRust.ink.parity_scale_codec.""",
+        content,
+    )
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 def update_ink_env():
     file_name = "ink_env.v"
     with open(file_name, "r") as f:
@@ -899,6 +916,7 @@ Require CoqOfRust.ink.ink.""",
 
 update_ink()
 update_ink_e2e_macro()
+update_ink_engine()
 update_ink_env()
 update_ink_macro()
 update_ink_primitives()

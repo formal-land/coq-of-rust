@@ -2,6 +2,7 @@ use crate::coq::{self, LOCAL_STATE_TRAIT_INSTANCE};
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
+//use crate::top_level::get_full_ty_params;
 use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigin, Ty, TyKind};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
@@ -92,6 +93,15 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
             };
             let params = match qpath {
                 rustc_hir::QPath::Resolved(_, path) => compile_path_ty_params(env, path),
+                /*{
+                    if let Some(params) = get_path_generics(env, path)
+                        .map(|generics| get_full_ty_params(env, generics, path))
+                    {
+                        params
+                    } else {
+                        vec![]
+                    }
+                }*/
                 _ => vec![],
             };
             let qpath = Box::new(compile_qpath(env, qpath));

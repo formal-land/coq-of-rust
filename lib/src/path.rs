@@ -160,6 +160,17 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
     }
 }
 
+#[allow(dead_code)]
+/// returns generics for the given path
+pub(crate) fn get_path_generics<'a>(
+    env: &Env<'a>,
+    path: &rustc_hir::Path,
+) -> Option<&'a rustc_middle::ty::Generics> {
+    path.res
+        .opt_def_id()
+        .map(|def_id| env.tcx.generics_of(def_id))
+}
+
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum StructOrVariant {
     Struct,
