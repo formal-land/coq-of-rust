@@ -68,7 +68,7 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 Definition random_animal
     `{H' : State.Trait}
     (random_number : f64)
-    : M (H := H') (alloc.boxed.Box TraitObject) :=
+    : M (H := H') (alloc.boxed.Box _ (* dyn *)) :=
   let* α0 := random_number.["lt"] 1 (* 0.5 *) in
   if (α0 : bool) then
     alloc.boxed.Box::["new"] {|  |}

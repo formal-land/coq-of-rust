@@ -167,7 +167,7 @@ Module chain_extension.
         :
         std.collections.hash.map.HashMap
           ink_engine.chain_extension.ExtensionId
-          (alloc.boxed.Box TraitObject);
+          (alloc.boxed.Box _ (* dyn *));
       output : alloc.vec.Vec u8;
     }.
     Global Set Primitive Projections.
@@ -616,7 +616,7 @@ Module ChainExtensionHandler.
       :
       std.collections.hash.map.HashMap
         ink_engine.chain_extension.ExtensionId
-        (alloc.boxed.Box TraitObject);
+        (alloc.boxed.Box _ (* dyn *));
     output : alloc.vec.Vec u8;
   }.
   Global Set Primitive Projections.

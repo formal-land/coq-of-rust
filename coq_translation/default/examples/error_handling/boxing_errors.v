@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition Result (T : Set) : Set :=
-  core.result.Result T (alloc.boxed.Box TraitObject).
+  core.result.Result T (alloc.boxed.Box _ (* OpaqueTy *)).
 
 Module EmptyVec.
   Inductive t : Set := Build.

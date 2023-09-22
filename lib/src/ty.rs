@@ -23,6 +23,7 @@ pub(crate) enum CoqType {
     Array(Box<CoqType>),
     Ref(Box<CoqType>, rustc_hir::Mutability),
     OpaqueType(Vec<Path>),
+    Dyn(Vec<Path>),
 }
 
 impl CoqType {
@@ -61,6 +62,7 @@ pub(crate) fn mt_ty_unboxed(ty: CoqType) -> CoqType {
         CoqType::Array(ty) => CoqType::Array(mt_ty(ty)),
         CoqType::Ref(ty, mutability) => CoqType::Ref(mt_ty(ty), mutability),
         CoqType::OpaqueType(..) => ty,
+        CoqType::Dyn(..) => ty,
     }
 }
 
@@ -190,7 +192,12 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 CoqType::var("OpaqueDef".to_string())
             }
         }
-        TyKind::TraitObject(_, _, _) => CoqType::var("TraitObject".to_string()),
+        TyKind::TraitObject(ptrait_refs, _, _) => Box::new(CoqType::Dyn(
+            ptrait_refs
+                .iter()
+                .map(|ptrait_ref| compile_path(env, ptrait_ref.trait_ref.path))
+                .collect(),
+        )),
         TyKind::Typeof(_) => CoqType::var("Typeof".to_string()),
         TyKind::Infer => CoqType::var("_".to_string()),
         TyKind::Err(_) => CoqType::var("Error_type".to_string()),
@@ -266,9 +273,12 @@ impl CoqType {
                 no_implicit: false,
             }
             .apply(&ty.to_coq()),
-            // @TODO: translate OpaqueType
             CoqType::OpaqueType(_) => coq::Expression::Variable {
                 ident: Path::new(&["_ (* OpaqueTy *)"]),
+                no_implicit: false,
+            },
+            CoqType::Dyn(_) => coq::Expression::Variable {
+                ident: Path::new(&["_ (* dyn *)"]),
                 no_implicit: false,
             },
         }
@@ -332,8 +342,8 @@ impl CoqType {
                     rustc_hir::Mutability::Not => nest([text("ref"), line(), ty.to_doc(true)]),
                 },
             ),
-            // @TODO: translate OpaqueType
             CoqType::OpaqueType(_) => text("_ (* OpaqueTy *)"),
+            CoqType::Dyn(_) => text("_ (* OpaqueTy *)"),
         }
     }
 
@@ -383,6 +393,7 @@ impl CoqType {
                 name
             }
             CoqType::OpaqueType(_) => todo!(),
+            CoqType::Dyn(_) => todo!(),
         }
     }
 
@@ -411,6 +422,7 @@ impl CoqType {
             CoqType::Array(ty) => ty.has_opaque_types(),
             CoqType::Ref(ty, _) => ty.has_opaque_types(),
             CoqType::OpaqueType(_) => true,
+            CoqType::Dyn(_) => false,
         }
     }
 
@@ -435,6 +447,7 @@ impl CoqType {
             CoqType::Array(ty) => ty.opaque_types_bounds(),
             CoqType::Ref(ty, _) => ty.opaque_types_bounds(),
             CoqType::OpaqueType(bounds) => vec![bounds.to_owned()],
+            CoqType::Dyn(..) => vec![],
         }
     }
 
@@ -460,6 +473,7 @@ impl CoqType {
             CoqType::Array(item_ty) => item_ty.subst_opaque_types(ty),
             CoqType::Ref(ref_ty, _) => ref_ty.subst_opaque_types(ty),
             CoqType::OpaqueType(_) => *self = ty.clone(),
+            CoqType::Dyn(_) => (),
         }
     }
 }
