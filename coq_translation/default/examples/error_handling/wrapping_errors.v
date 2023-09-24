@@ -77,7 +77,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Definition source
       `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H') (core.option.Option (ref TraitObject)) :=
+      : M (H := H') (core.option.Option (ref _ (* dyn *))) :=
     let* α0 := self.["deref"] in
     match α0 with
     | wrapping_errors.DoubleError.EmptyVec => Pure core.option.Option.None

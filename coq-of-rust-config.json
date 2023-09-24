@@ -46,10 +46,11 @@
         "chain_extension": { "move": "up", "before": "ext" }
       },
       "top_level::chain_extension": {
-        "ChainExtensionHandler": { "move": "up" }
+        "ExtensionId": { "move": "up", "before": "ChainExtensionHandler" },
+        "ChainExtension": { "move": "up", "before": "ChainExtensionHandler" }
       },
       "top_level::ext": {
-        "Engine": { "move": "up" }
+        "ChainSpec": { "move": "up", "before": "Engine" }
       }
     },
     "ink_env": {

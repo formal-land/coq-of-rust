@@ -180,6 +180,44 @@ Module chain_extension.
       Notation.dot := call;
     }.
   End ChainExtension.
+  
+  Module ChainExtensionHandler.
+    Module Dyn_ink_engine_chain_extension_ChainExtension.
+      Parameter t : Set.
+      Global Instance I_ink_engine_chain_extension_ChainExtension
+        : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
+      Parameter conv_Dyn :
+          forall {A : Set} `{ink_engine.chain_extension.ChainExtension.Trait t},
+          A -> t.
+    End Dyn_ink_engine_chain_extension_ChainExtension.
+    Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
+      Dyn_ink_engine_chain_extension_ChainExtension.t.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      registered
+        :
+        std.collections.hash.map.HashMap
+          ink_engine.chain_extension.ExtensionId
+          (alloc.boxed.Box Dyn_ink_engine_chain_extension_ChainExtension);
+      output : alloc.vec.Vec u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_registered : Notation.Dot "registered" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_AF_registered : Notation.DoubleColon t "registered" := {
+      Notation.double_colon '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_output : Notation.Dot "output" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+    Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
+      Notation.double_colon '(Build_t _ x1) := x1;
+    }.
+  End ChainExtensionHandler.
+  Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
 End chain_extension.
 
 Module database.
@@ -327,23 +365,56 @@ Module ext.
     }.
   End ChainSpec.
   Definition ChainSpec : Set := ChainSpec.t.
+  
+  Module Engine.
+    Unset Primitive Projections.
+    Record t : Set := {
+      database : ink_engine.database.Database;
+      exec_context : ink_engine.exec_context.ExecContext;
+      debug_info : ink_engine.test_api.DebugInfo;
+      chain_spec : ink_engine.ext.ChainSpec;
+      chain_extension_handler
+        :
+        ink_engine.chain_extension.ChainExtensionHandler;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_database : Notation.Dot "database" := {
+      Notation.dot '(Build_t x0 _ _ _ _) := x0;
+    }.
+    Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
+      Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+    }.
+    Global Instance Get_exec_context : Notation.Dot "exec_context" := {
+      Notation.dot '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get_AF_exec_context
+      : Notation.DoubleColon t "exec_context" := {
+      Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
+    }.
+    Global Instance Get_debug_info : Notation.Dot "debug_info" := {
+      Notation.dot '(Build_t _ _ x2 _ _) := x2;
+    }.
+    Global Instance Get_AF_debug_info : Notation.DoubleColon t "debug_info" := {
+      Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+    }.
+    Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
+      Notation.dot '(Build_t _ _ _ x3 _) := x3;
+    }.
+    Global Instance Get_AF_chain_spec : Notation.DoubleColon t "chain_spec" := {
+      Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+    }.
+    Global Instance Get_chain_extension_handler
+      : Notation.Dot "chain_extension_handler" := {
+      Notation.dot '(Build_t _ _ _ _ x4) := x4;
+    }.
+    Global Instance Get_AF_chain_extension_handler
+      : Notation.DoubleColon t "chain_extension_handler" := {
+      Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
+    }.
+  End Engine.
+  Definition Engine : Set := Engine.t.
 End ext.
-
-Module Error.
-  Inductive t : Set :=
-  | CalleeTrapped
-  | CalleeReverted
-  | KeyNotFound
-  | _BelowSubsistenceThreshold
-  | TransferFailed
-  | _EndowmentTooLow
-  | CodeNotFound
-  | NotCallable
-  | LoggingDisabled
-  | EcdsaRecoveryFailed
-  | Unknown.
-End Error.
-Definition Error := Error.t.
 
 Module ReturnCode.
   Unset Primitive Projections.
@@ -358,6 +429,52 @@ Module ReturnCode.
 End ReturnCode.
 Definition ReturnCode := @ReturnCode.t.
 
+Module Engine.
+  Unset Primitive Projections.
+  Record t : Set := {
+    database : ink_engine.database.Database;
+    exec_context : ink_engine.exec_context.ExecContext;
+    debug_info : ink_engine.test_api.DebugInfo;
+    chain_spec : ink_engine.ext.ChainSpec;
+    chain_extension_handler : ink_engine.chain_extension.ChainExtensionHandler;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_database : Notation.Dot "database" := {
+    Notation.dot '(Build_t x0 _ _ _ _) := x0;
+  }.
+  Global Instance Get_AF_database : Notation.DoubleColon t "database" := {
+    Notation.double_colon '(Build_t x0 _ _ _ _) := x0;
+  }.
+  Global Instance Get_exec_context : Notation.Dot "exec_context" := {
+    Notation.dot '(Build_t _ x1 _ _ _) := x1;
+  }.
+  Global Instance Get_AF_exec_context
+    : Notation.DoubleColon t "exec_context" := {
+    Notation.double_colon '(Build_t _ x1 _ _ _) := x1;
+  }.
+  Global Instance Get_debug_info : Notation.Dot "debug_info" := {
+    Notation.dot '(Build_t _ _ x2 _ _) := x2;
+  }.
+  Global Instance Get_AF_debug_info : Notation.DoubleColon t "debug_info" := {
+    Notation.double_colon '(Build_t _ _ x2 _ _) := x2;
+  }.
+  Global Instance Get_chain_spec : Notation.Dot "chain_spec" := {
+    Notation.dot '(Build_t _ _ _ x3 _) := x3;
+  }.
+  Global Instance Get_AF_chain_spec : Notation.DoubleColon t "chain_spec" := {
+    Notation.double_colon '(Build_t _ _ _ x3 _) := x3;
+  }.
+  Global Instance Get_chain_extension_handler
+    : Notation.Dot "chain_extension_handler" := {
+    Notation.dot '(Build_t _ _ _ _ x4) := x4;
+  }.
+  Global Instance Get_AF_chain_extension_handler
+    : Notation.DoubleColon t "chain_extension_handler" := {
+    Notation.double_colon '(Build_t _ _ _ _ x4) := x4;
+  }.
+End Engine.
+Definition Engine : Set := Engine.t.
 
 Module ChainSpec.
   Unset Primitive Projections.
@@ -487,6 +604,43 @@ Module DebugInfo.
 End DebugInfo.
 Definition DebugInfo : Set := DebugInfo.t.
 
+Module ChainExtensionHandler.
+  Module Dyn_ink_engine_chain_extension_ChainExtension.
+    Parameter t : Set.
+    Global Instance I_ink_engine_chain_extension_ChainExtension
+      : ink_engine.chain_extension.ChainExtension.Trait t := axiom.
+    Parameter conv_Dyn :
+        forall {A : Set} `{ink_engine.chain_extension.ChainExtension.Trait t},
+        A -> t.
+  End Dyn_ink_engine_chain_extension_ChainExtension.
+  Definition Dyn_ink_engine_chain_extension_ChainExtension : Set :=
+    Dyn_ink_engine_chain_extension_ChainExtension.t.
+  
+  Unset Primitive Projections.
+  Record t : Set := {
+    registered
+      :
+      std.collections.hash.map.HashMap
+        ink_engine.chain_extension.ExtensionId
+        (alloc.boxed.Box Dyn_ink_engine_chain_extension_ChainExtension);
+    output : alloc.vec.Vec u8;
+  }.
+  Global Set Primitive Projections.
+  
+  Global Instance Get_registered : Notation.Dot "registered" := {
+    Notation.dot '(Build_t x0 _) := x0;
+  }.
+  Global Instance Get_AF_registered : Notation.DoubleColon t "registered" := {
+    Notation.double_colon '(Build_t x0 _) := x0;
+  }.
+  Global Instance Get_output : Notation.Dot "output" := {
+    Notation.dot '(Build_t _ x1) := x1;
+  }.
+  Global Instance Get_AF_output : Notation.DoubleColon t "output" := {
+    Notation.double_colon '(Build_t _ x1) := x1;
+  }.
+End ChainExtensionHandler.
+Definition ChainExtensionHandler : Set := ChainExtensionHandler.t.
 
 Module ExtensionId.
   Unset Primitive Projections.
@@ -676,3 +830,11 @@ Module AccountError.
 End AccountError.
 Definition AccountError := AccountError.t.
 
+Module Error.
+  Inductive t : Set :=
+  | Account (_ : ink_engine.types.AccountError)
+  | UninitializedBlocks
+  | UninitializedExecutionContext
+  | UnregisteredChainExtension.
+End Error.
+Definition Error := Error.t.

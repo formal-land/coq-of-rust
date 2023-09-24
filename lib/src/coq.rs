@@ -218,7 +218,7 @@ pub(crate) struct ArgDecl<'a> {
 /// a variant of the argument declaration
 pub(crate) enum ArgDeclVar<'a> {
     /// a regular declaration
-    Normal {
+    Simple {
         // @TODO: try to make it really non-empty
         /// a non-empty vector of identifiers
         idents: Vec<String>,
@@ -334,7 +334,7 @@ impl<'a> TopLevel<'a> {
                 &TopLevel {
                     items: [
                         vec![TopLevelItem::Context(Context::new(&[ArgDecl::new(
-                            &ArgDeclVar::Normal {
+                            &ArgDeclVar::Simple {
                                 idents: ty_params.iter().map(|arg| arg.to_owned()).collect(),
                                 ty: Some(Expression::Set),
                             },
@@ -384,7 +384,7 @@ impl<'a> TopLevelItem<'a> {
                         "Trait",
                         &[
                             vec![ArgDecl::new(
-                                &ArgDeclVar::Normal {
+                                &ArgDeclVar::Simple {
                                     idents: vec!["Self".to_string()],
                                     ty: Some(Expression::Set),
                                 },
@@ -395,7 +395,7 @@ impl<'a> TopLevelItem<'a> {
                                 vec![]
                             } else {
                                 vec![ArgDecl::new(
-                                    &ArgDeclVar::Normal {
+                                    &ArgDeclVar::Simple {
                                         idents: ty_params
                                             .iter()
                                             .map(|(ty, default)| {
@@ -994,7 +994,7 @@ impl<'a> ArgDecl<'a> {
             ArgSpecKind::Implicit => render::curly_brackets,
         };
         match self.decl.to_owned() {
-            ArgDeclVar::Normal { idents, ty } => brackets(nest([
+            ArgDeclVar::Simple { idents, ty } => brackets(nest([
                 intersperse(idents, [line()]),
                 match ty {
                     Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
@@ -1020,7 +1020,7 @@ impl<'a> ArgDecl<'a> {
 
     pub(crate) fn of_ty_params(ty_params: &[String], kind: ArgSpecKind) -> Self {
         ArgDecl {
-            decl: ArgDeclVar::Normal {
+            decl: ArgDeclVar::Simple {
                 idents: ty_params.to_owned(),
                 ty: Some(Expression::Set),
             },
@@ -1031,7 +1031,7 @@ impl<'a> ArgDecl<'a> {
     pub(crate) fn add_var(&self, ident: &str) -> Self {
         ArgDecl {
             decl: match &self.decl {
-                ArgDeclVar::Normal { idents, ty } => ArgDeclVar::Normal {
+                ArgDeclVar::Simple { idents, ty } => ArgDeclVar::Simple {
                     idents: [idents.to_owned(), vec![ident.to_owned()]].concat(),
                     ty: ty.to_owned(),
                 },
