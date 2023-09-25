@@ -87,7 +87,7 @@ pub(crate) struct Instance<'a> {
     name: String,
     parameters: Vec<ArgDecl<'a>>,
     class: Expression<'a>,
-    bulid_expr: Expression<'a>,
+    bulid_expr: Option<Expression<'a>>,
     proof_lines: Vec<Doc<'a>>,
 }
 
@@ -365,67 +365,6 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Section(section) => section.to_doc(),
         }
     }
-
-    /// creates a module with the translation of the given trait
-    pub(crate) fn trait_module(
-        name: &'a str,
-        ty_params: &[(String, Option<Expression<'a>>)],
-        predicates: &[ArgDecl<'a>],
-        bounds: &[ArgDecl<'a>],
-        items: &[ClassFieldDef<'a>],
-        instances: &[Instance<'a>],
-    ) -> Self {
-        TopLevelItem::Module(Module::new(
-            name,
-            TopLevel::concat(&[
-                TopLevel::locally_unset_primitive_projections_if(
-                    items.is_empty(),
-                    &[TopLevelItem::Class(Class::new(
-                        "Trait",
-                        &[
-                            vec![ArgDecl::new(
-                                &ArgDeclVar::Simple {
-                                    idents: vec!["Self".to_string()],
-                                    ty: Some(Expression::Set),
-                                },
-                                ArgSpecKind::Explicit,
-                            )],
-                            bounds.to_vec(),
-                            if ty_params.is_empty() {
-                                vec![]
-                            } else {
-                                vec![ArgDecl::new(
-                                    &ArgDeclVar::Simple {
-                                        idents: ty_params
-                                            .iter()
-                                            .map(|(ty, default)| {
-                                                match default {
-                                                    // @TODO: implement the translation of type parameters with default
-                                                    Some(_default) => ["(* TODO *) ", ty].concat(),
-                                                    None => ty.to_string(),
-                                                }
-                                            })
-                                            .collect(),
-                                        ty: Some(Expression::Set),
-                                    },
-                                    ArgSpecKind::Implicit,
-                                )]
-                            },
-                            predicates.to_vec(),
-                        ]
-                        .concat(),
-                        items.to_vec(),
-                    ))],
-                ),
-                TopLevel {
-                    items: instances
-                        .iter()
-                        .map(|i| TopLevelItem::Instance(i.to_owned()))
-                        .collect(),
-                },
-            ]),
-        ))
-    }
 }
 
 impl<'a> Module<'a> {
@@ -585,11 +524,11 @@ impl<'a> Context<'a> {
 
 impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
-    pub(crate) fn new(name: &str, params: &[ArgDecl<'a>], items: Vec<ClassFieldDef<'a>>) -> Self {
+    pub(crate) fn new(name: &str, params: &[ArgDecl<'a>], items: &[ClassFieldDef<'a>]) -> Self {
         Class {
             name: name.to_owned(),
             params: params.to_owned(),
-            items,
+            items: items.to_owned(),
         }
     }
 
@@ -638,7 +577,7 @@ impl<'a> Instance<'a> {
         name: &str,
         parameters: &[ArgDecl<'a>],
         class: Expression<'a>,
-        bulid_expr: &Expression<'a>,
+        bulid_expr: &Option<Expression<'a>>,
         proof_lines: Vec<Doc<'a>>,
     ) -> Self {
         Instance {
@@ -673,10 +612,19 @@ impl<'a> Instance<'a> {
                     },
                 ]),
                 line(),
-                nest([text(": "), self.class.to_doc(false), line(), text(":= ")]),
+                nest([
+                    concat([text(": "), self.class.to_doc(false)]),
+                    if self.bulid_expr.is_some() {
+                        concat([line(), text(":= ")])
+                    } else {
+                        text(".")
+                    },
+                ]),
             ]),
-            self.bulid_expr.to_doc(false),
-            text("."),
+            match &self.bulid_expr {
+                Some(build_expr) => concat([build_expr.to_doc(false), text(".")]),
+                None => nil(),
+            },
             if self.proof_lines.is_empty() {
                 nil()
             } else {

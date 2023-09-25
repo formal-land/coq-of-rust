@@ -41,7 +41,7 @@ struct FnSigAndBody {
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-enum TraitItem {
+enum TraitItemData {
     Definition {
         ty_params: Vec<String>,
         where_predicates: Vec<WherePredicate>,
@@ -151,13 +151,7 @@ enum TopLevelItem {
         counter: u64,
         items: Vec<ImplItem>,
     },
-    Trait {
-        name: String,
-        ty_params: Vec<(String, Option<Box<CoqType>>)>,
-        predicates: Vec<WherePredicate>,
-        bounds: Vec<TraitBound>,
-        body: Vec<(String, TraitItem)>,
-    },
+    Trait(Trait),
     TraitImpl {
         generic_tys: Vec<String>,
         ty_params: Vec<Box<TraitTyParamValue>>,
@@ -177,6 +171,21 @@ struct TypeStructStruct {
     predicates: Vec<WherePredicate>,
     fields: Vec<(String, Box<CoqType>)>,
     is_dead_code: bool,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct TraitItem {
+    item_name: String,
+    item_data: TraitItemData,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+struct Trait {
+    name: String,
+    ty_params: Vec<(String, Option<Box<CoqType>>)>,
+    predicates: Vec<WherePredicate>,
+    bounds: Vec<TraitBound>,
+    body: Vec<TraitItem>,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -450,7 +459,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
         ItemKind::Trait(_, _, generics, generic_bounds, items) => {
-            vec![TopLevelItem::Trait {
+            vec![TopLevelItem::Trait(Trait {
                 name,
                 ty_params: get_ty_params(env, generics),
                 predicates: get_where_predicates(tcx, env, generics),
@@ -463,10 +472,14 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         let where_predicates = get_where_predicates(tcx, env, item.generics);
                         let body =
                             compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
-                        (to_valid_coq_name(item.ident.name.to_string()), body)
+
+                        TraitItem {
+                            item_name: to_valid_coq_name(item.ident.name.to_string()),
+                            item_data: body,
+                        }
                     })
                     .collect(),
-            }]
+            })]
         }
         ItemKind::TraitAlias(_, _) => {
             vec![TopLevelItem::Error("TraitAlias".to_string())]
@@ -863,15 +876,15 @@ fn compile_trait_item_body(
     ty_params: Vec<String>,
     where_predicates: Vec<WherePredicate>,
     item: &rustc_hir::TraitItem,
-) -> TraitItem {
+) -> TraitItemData {
     match &item.kind {
-        TraitItemKind::Const(ty, _) => TraitItem::Definition {
+        TraitItemKind::Const(ty, _) => TraitItemData::Definition {
             ty_params,
             where_predicates,
             ty: compile_type(env, ty),
         },
         TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
-            TraitFn::Required(_) => TraitItem::Definition {
+            TraitFn::Required(_) => TraitItemData::Definition {
                 ty_params,
                 where_predicates,
                 ty: compile_fn_decl(env, fn_sig.decl),
@@ -880,7 +893,7 @@ fn compile_trait_item_body(
                 let env_tcx = env.tcx;
                 let fn_sig_and_body = get_hir_fn_sig_and_body(&env_tcx, fn_sig, body_id);
                 let signature_and_body = compile_fn_sig_and_body(env, &fn_sig_and_body, "arg");
-                TraitItem::DefinitionWithDefault {
+                TraitItemData::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
                     signature_and_body,
@@ -895,7 +908,7 @@ fn compile_trait_item_body(
                 emit_warning_with_note(env, span, warning_msg, note_msg);
             }
             let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
-            TraitItem::Type(generic_bounds)
+            TraitItemData::Type(generic_bounds)
         }
     }
 }
@@ -1006,34 +1019,37 @@ impl FnSigAndBody {
     }
 }
 
-fn mt_trait_item(body: TraitItem) -> TraitItem {
-    match body {
-        TraitItem::Definition {
-            ty_params,
-            where_predicates,
-            ty,
-        } => TraitItem::Definition {
-            ty_params,
-            where_predicates,
-            ty: mt_ty(ty),
-        },
-        TraitItem::Type(x) => TraitItem::Type(x), // @TODO apply MT
-        TraitItem::DefinitionWithDefault {
-            ty_params,
-            where_predicates,
-            signature_and_body,
-        } => TraitItem::DefinitionWithDefault {
-            ty_params,
-            where_predicates,
-            signature_and_body: signature_and_body.mt(),
-        },
+impl TraitItem {
+    fn mt(&self) -> Self {
+        TraitItem {
+            item_name: self.item_name.to_owned(),
+            item_data: match self.item_data.to_owned() {
+                TraitItemData::Definition {
+                    ty_params,
+                    where_predicates,
+                    ty,
+                } => TraitItemData::Definition {
+                    ty_params,
+                    where_predicates,
+                    ty: mt_ty(ty),
+                },
+                TraitItemData::Type(x) => TraitItemData::Type(x), // @TODO apply MT
+                TraitItemData::DefinitionWithDefault {
+                    ty_params,
+                    where_predicates,
+                    signature_and_body,
+                } => TraitItemData::DefinitionWithDefault {
+                    ty_params,
+                    where_predicates,
+                    signature_and_body: signature_and_body.mt(),
+                },
+            },
+        }
     }
 }
 
-fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
-    body.into_iter()
-        .map(|(s, item)| (s, mt_trait_item(item)))
-        .collect()
+fn mt_trait_items(body: Vec<TraitItem>) -> Vec<TraitItem> {
+    body.into_iter().map(|trait_item| trait_item.mt()).collect()
 }
 
 /// Monad transform for [TopLevelItem]
@@ -1074,19 +1090,19 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             counter,
             items: mt_impl_items(items),
         },
-        TopLevelItem::Trait {
+        TopLevelItem::Trait(Trait {
             name,
             ty_params,
             predicates,
             bounds,
             body,
-        } => TopLevelItem::Trait {
+        }) => TopLevelItem::Trait(Trait {
             name,
             ty_params,
             predicates,
             bounds,
             body: mt_trait_items(body),
-        },
+        }),
         TopLevelItem::TraitImpl {
             generic_tys,
             ty_params,
@@ -1879,7 +1895,7 @@ impl TopLevelItem {
                                                     no_implicit: false,
                                                 }
                                                 .apply(&coq::Expression::just_name(&i.to_string())),
-                                                &coq::Expression::Record {
+                                                &Some(coq::Expression::Record {
                                                     fields: vec![coq::Field::new(
                                                         &Path::new(&["Notation", "dot"]),
                                                         &[coq::ArgDecl::new(
@@ -1902,7 +1918,7 @@ impl TopLevelItem {
                                                         )],
                                                         &coq::Expression::just_name(&format!("x{i}")),
                                                     )],
-                                                },
+                                                }),
                                                 vec![],
                                             ))
                                         })
@@ -1994,261 +2010,7 @@ impl TopLevelItem {
                 ))])
                 .to_doc()
             }
-            TopLevelItem::Trait {
-                name,
-                ty_params,
-                predicates,
-                bounds,
-                body,
-            } => coq::TopLevelItem::trait_module(
-                name,
-                &ty_params
-                    .iter()
-                    .map(|(ty, default)| {
-                        (
-                            ty.to_owned(),
-                            default.as_ref().map(|default| default.to_coq()),
-                        )
-                    })
-                    .collect::<Vec<_>>(),
-                &predicates
-                    .iter()
-                    .map(|predicate| predicate.to_coq())
-                    .collect::<Vec<_>>(),
-                &bounds
-                    .iter()
-                    .map(|bound| {
-                        bound.to_coq(
-                            coq::Expression::just_name("Self"),
-                            coq::ArgSpecKind::Implicit,
-                        )
-                    })
-                    .collect::<Vec<_>>(),
-                &body.iter()
-                    .map(|(name, item)| match item {
-                        TraitItem::Definition {
-                            ty_params,
-                            where_predicates,
-                            ty,
-                        } => vec![coq::ClassFieldDef::new(
-                            &Some(name.to_owned()),
-                            &[
-                                vec![coq::ArgDecl::monadic_typeclass_parameter()],
-                                if ty_params.is_empty() {
-                                    vec![]
-                                } else {
-                                    vec![coq::ArgDecl::new(
-                                        &coq::ArgDeclVar::Simple {
-                                            idents: ty_params.to_owned(),
-                                            ty: Some(coq::Expression::Set),
-                                        },
-                                        coq::ArgSpecKind::Implicit,
-                                    )]
-                                },
-                                where_predicates
-                                    .iter()
-                                    .enumerate()
-                                    .map(|(i, predicate)| {
-                                        predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
-                                    })
-                                    .collect(),
-                            ]
-                            .concat(),
-                            &ty.to_coq(),
-                        )],
-                        TraitItem::DefinitionWithDefault { .. } => vec![],
-                        TraitItem::Type(bounds) => [
-                            vec![coq::ClassFieldDef::new(
-                                &Some(name.to_owned()),
-                                &[],
-                                &coq::Expression::Set,
-                            )],
-                            if bounds.is_empty() {
-                                vec![]
-                            } else {
-                                vec![coq::ClassFieldDef::new(
-                                    &None,
-                                    &[],
-                                    &coq::Expression::SigmaType {
-                                        args: bounds
-                                            .iter()
-                                            .map(|bound| {
-                                                bound.to_coq(
-                                                    coq::Expression::just_name(name),
-                                                    coq::ArgSpecKind::Explicit,
-                                                )
-                                            })
-                                            .collect::<Vec<_>>(),
-                                        image: Box::new(coq::Expression::Unit),
-                                    },
-                                )]
-                            },
-                        ]
-                        .concat(),
-                    })
-                    .concat(),
-                &body.iter()
-                    .map(|(name, item)| match item {
-                        TraitItem::Definition {
-                            ty_params,
-                            where_predicates,
-                            ty: _,
-                        } => coq::Instance::new(
-                            false,
-                            &format!("Method_{name}"),
-                            &[
-                                coq::ArgDecl::monadic_typeclass_parameter(),
-                                coq::ArgDecl::new(
-                                    &coq::ArgDeclVar::Generalized {
-                                        idents: vec![],
-                                        ty: coq::Expression::just_name("Trait"),
-                                    },
-                                    coq::ArgSpecKind::Explicit,
-                                ),
-                            ],
-                            coq::Expression::Variable {
-                                ident: Path::new(&["Notation", "Dot"]),
-                                no_implicit: false,
-                            }
-                            .apply(&coq::Expression::String(name.to_owned())),
-                            &coq::Expression::Record {
-                                fields: vec![coq::Field::new(
-                                    &Path::new(&["Notation", "dot"]),
-                                    &[
-                                        if ty_params.is_empty() {
-                                            vec![]
-                                        } else {
-                                            vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
-                                        },
-                                        where_predicates
-                                            .iter()
-                                            .enumerate()
-                                            .map(|(i, predicate)| {
-                                                predicate.to_coq().add_var(&["H'".to_string(), i.to_string()].concat())
-                                            })
-                                            .collect(),
-                                    ]
-                                    .concat(),
-                                    &coq::Expression::just_name(name)
-                                        .apply_many_args(
-                                            &ty_params
-                                                .iter()
-                                                .map(|ty_param| {
-                                                    (Some(ty_param.to_owned()), coq::Expression::just_name(ty_param))
-                                                })
-                                                .collect::<Vec<_>>(),
-                                        )
-                                        .apply_many_args(
-                                            &where_predicates
-                                                .iter()
-                                                .enumerate()
-                                                .map(|(i, _)| {
-                                                    let var_name = ["H'".to_string(), i.to_string()].concat();
-                                                    (Some(var_name.clone()), coq::Expression::just_name(&var_name))
-                                                })
-                                                .collect::<Vec<_>>()
-                                        ),
-                                )],
-                            },
-                            vec![],
-                        ),
-                        TraitItem::Type { .. } => coq::Instance::new(
-                            false,
-                            &format!("Method_{name}"),
-                            &[coq::ArgDecl::new(
-                                &coq::ArgDeclVar::Generalized {
-                                    idents: vec![],
-                                    ty: coq::Expression::just_name("Trait"),
-                                },
-                                coq::ArgSpecKind::Explicit,
-                            )],
-                            coq::Expression::Variable {
-                                ident: Path::new(&["Notation", "DoubleColonType"]),
-                                no_implicit: false,
-                            }
-                            .apply(&coq::Expression::just_name("Self"))
-                            .apply(&coq::Expression::String(name.to_owned())),
-                            &coq::Expression::Record {
-                                fields: vec![coq::Field::new(
-                                    &Path::new(&["Notation", "double_colon_type"]),
-                                    &[],
-                                    &coq::Expression::just_name(name),
-                                )],
-                            },
-                            vec![],
-                        ),
-                        TraitItem::DefinitionWithDefault {
-                            ty_params,
-                            where_predicates,
-                            signature_and_body,
-                        } => coq::Instance::new(
-                            false,
-                            &format!("Method_{name}"),
-                            &[
-                                coq::ArgDecl::monadic_typeclass_parameter(),
-                                coq::ArgDecl::new(
-                                    &coq::ArgDeclVar::Generalized {
-                                        idents: vec![],
-                                        ty: coq::Expression::just_name("Trait"),
-                                    },
-                                    coq::ArgSpecKind::Explicit,
-                                ),
-                            ],
-                            coq::Expression::Variable {
-                                ident: Path::new(&["Notation", "Dot"]),
-                                no_implicit: false,
-                            }
-                            .apply(&coq::Expression::String(name.to_owned())),
-                            &coq::Expression::Record {
-                                fields: vec![coq::Field::new(
-                                    &Path::new(&["Notation", "dot"]),
-                                    &[
-                                        if ty_params.is_empty() {
-                                            vec![]
-                                        } else {
-                                            vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
-                                        },
-                                        where_predicates
-                                            .iter()
-                                            .map(|predicate| predicate.to_coq())
-                                            .collect(),
-                                        signature_and_body
-                                            .args
-                                            .iter()
-                                            .map(|(name, ty)| {
-                                                coq::ArgDecl::new(
-                                                    &coq::ArgDeclVar::Simple {
-                                                        idents: vec![name.to_owned()],
-                                                        ty: Some(ty.to_coq()),
-                                                    },
-                                                    coq::ArgSpecKind::Explicit,
-                                                )
-                                            })
-                                            .collect::<Vec<_>>(),
-                                    ]
-                                    .concat(),
-                                    &coq::Expression::Code(group([
-                                        text("("),
-                                        match &signature_and_body.body {
-                                            None => text("axiom"),
-                                            Some(body) => body.to_doc(false),
-                                        },
-                                        line(),
-                                        nest([
-                                            text(":"),
-                                            line(),
-                                            signature_and_body.ret_ty.to_doc(false),
-                                            text(")"),
-                                        ]),
-                                    ])),
-                                )],
-                            },
-                            vec![],
-                        ),
-                    })
-                    .collect::<Vec<_>>(),
-            )
-            .to_doc(),
+            TopLevelItem::Trait(tr) => tr.to_doc(),
             TopLevelItem::TraitImpl {
                 generic_tys,
                 ty_params,
@@ -2318,7 +2080,7 @@ impl TopLevelItem {
                                             })
                                             .collect::<Vec<_>>(),
                                     ),
-                                    &if items.is_empty() {
+                                    &Some(if items.is_empty() {
                                         coq::Expression::Variable {
                                             ident: Path::concat(&[
                                                 of_trait.to_owned(),
@@ -2344,7 +2106,7 @@ impl TopLevelItem {
                                                 })
                                                 .collect::<Vec<_>>(),
                                         }
-                                    },
+                                    }),
                                     if *has_predicates_on_assoc_ty {
                                         vec![text("eauto.")]
                                     } else {
@@ -2454,7 +2216,7 @@ impl TypeStructStruct {
                                                                             no_implicit: false,
                                                                         }
                                                                         .apply(&coq::Expression::just_name("t")),
-                                                                        &coq::Expression::just_name("axiom"),
+                                                                        &Some(coq::Expression::just_name("axiom")),
                                                                         vec![],
                                                                     ),
                                                                 )
@@ -2583,7 +2345,7 @@ impl TypeStructStruct {
                                                     .apply(&coq::Expression::String(
                                                         name.to_owned(),
                                                     )),
-                                                    &coq::Expression::Record {
+                                                    &Some(coq::Expression::Record {
                                                         fields: vec![coq::Field::new(
                                                             &Path::new(&["Notation", "dot"]),
                                                             &projection_pattern,
@@ -2591,7 +2353,7 @@ impl TypeStructStruct {
                                                                 "x{i}"
                                                             )),
                                                         )],
-                                                    },
+                                                    }),
                                                     vec![],
                                                 )),
                                                 coq::TopLevelItem::Instance(coq::Instance::new(
@@ -2609,7 +2371,7 @@ impl TypeStructStruct {
                                                         coq::Expression::just_name("t"),
                                                         coq::Expression::String(name.to_owned()),
                                                     ]),
-                                                    &coq::Expression::Record {
+                                                    &Some(coq::Expression::Record {
                                                         fields: vec![coq::Field::new(
                                                             &Path::new(&[
                                                                 "Notation",
@@ -2620,7 +2382,7 @@ impl TypeStructStruct {
                                                                 "x{i}"
                                                             )),
                                                         )],
-                                                    },
+                                                    }),
                                                     vec![],
                                                 )),
                                             ]
@@ -2670,6 +2432,396 @@ impl TypeStructStruct {
             ]
             .concat(),
         )
+        .to_doc()
+    }
+}
+
+impl Trait {
+    fn to_doc(&self) -> Doc {
+        let Trait {
+            name,
+            ty_params,
+            predicates,
+            bounds,
+            body,
+        } = self;
+
+        let items = &body
+            .iter()
+            .map(|item| match &item.item_data {
+                TraitItemData::Definition {
+                    ty_params,
+                    where_predicates,
+                    ty,
+                } => vec![coq::ClassFieldDef::new(
+                    &Some(item.item_name.to_owned()),
+                    &[
+                        vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                        if ty_params.is_empty() {
+                            vec![]
+                        } else {
+                            vec![coq::ArgDecl::new(
+                                &coq::ArgDeclVar::Simple {
+                                    idents: ty_params.to_owned(),
+                                    ty: Some(coq::Expression::Set),
+                                },
+                                coq::ArgSpecKind::Implicit,
+                            )]
+                        },
+                        where_predicates
+                            .iter()
+                            .enumerate()
+                            .map(|(i, predicate)| {
+                                predicate
+                                    .to_coq()
+                                    .add_var(&["H'".to_string(), i.to_string()].concat())
+                            })
+                            .collect(),
+                    ]
+                    .concat(),
+                    &ty.to_coq(),
+                )],
+                TraitItemData::DefinitionWithDefault { .. } => vec![],
+                TraitItemData::Type(bounds) => [
+                    vec![coq::ClassFieldDef::new(
+                        &Some(item.item_name.to_owned()),
+                        &[],
+                        &coq::Expression::Set,
+                    )],
+                    if bounds.is_empty() {
+                        vec![]
+                    } else {
+                        vec![coq::ClassFieldDef::new(
+                            &Some(["__the_bounds_of_", &item.item_name].concat()),
+                            &[],
+                            &coq::Expression::SigmaType {
+                                args: bounds
+                                    .iter()
+                                    .map(|bound| {
+                                        bound.to_coq(
+                                            coq::Expression::just_name(&item.item_name),
+                                            coq::ArgSpecKind::Explicit,
+                                        )
+                                    })
+                                    .collect::<Vec<_>>(),
+                                image: Box::new(coq::Expression::Unit),
+                            },
+                        )]
+                    },
+                ]
+                .concat(),
+            })
+            .concat();
+
+        coq::TopLevelItem::Module(coq::Module::new(
+            name,
+            coq::TopLevel::concat(&[
+                coq::TopLevel::locally_unset_primitive_projections_if(
+                    items.is_empty(),
+                    &[coq::TopLevelItem::Class(coq::Class::new(
+                        "Trait",
+                        &[
+                            vec![coq::ArgDecl::new(
+                                &coq::ArgDeclVar::Simple {
+                                    idents: vec!["Self".to_string()],
+                                    ty: Some(coq::Expression::Set),
+                                },
+                                coq::ArgSpecKind::Explicit,
+                            )],
+                            bounds
+                                .iter()
+                                .map(|bound| {
+                                    bound.to_coq(
+                                        coq::Expression::just_name("Self"),
+                                        coq::ArgSpecKind::Implicit,
+                                    )
+                                })
+                                .collect(),
+                            if ty_params.is_empty() {
+                                vec![]
+                            } else {
+                                vec![coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Simple {
+                                        idents: ty_params
+                                            .iter()
+                                            .map(|(ty, default)| {
+                                                match default {
+                                                    // @TODO: implement the translation of type parameters with default
+                                                    Some(_default) => ["(* TODO *) ", ty].concat(),
+                                                    None => ty.to_string(),
+                                                }
+                                            })
+                                            .collect(),
+                                        ty: Some(coq::Expression::Set),
+                                    },
+                                    coq::ArgSpecKind::Implicit,
+                                )]
+                            },
+                            predicates
+                                .iter()
+                                .map(|predicate| predicate.to_coq())
+                                .collect(),
+                        ]
+                        .concat(),
+                        items,
+                    ))],
+                ),
+                coq::TopLevel::new(
+                    &body
+                        .iter()
+                        .map(|item| match &item.item_data {
+                            TraitItemData::Definition {
+                                ty_params,
+                                where_predicates,
+                                ty: _,
+                            } => coq::Instance::new(
+                                false,
+                                &["Method_", &item.item_name].concat(),
+                                &[
+                                    coq::ArgDecl::monadic_typeclass_parameter(),
+                                    coq::ArgDecl::new(
+                                        &coq::ArgDeclVar::Generalized {
+                                            idents: vec![],
+                                            ty: coq::Expression::just_name("Trait"),
+                                        },
+                                        coq::ArgSpecKind::Explicit,
+                                    ),
+                                ],
+                                coq::Expression::Variable {
+                                    ident: Path::new(&["Notation", "Dot"]),
+                                    no_implicit: false,
+                                }
+                                .apply(&coq::Expression::String(item.item_name.to_owned())),
+                                &Some(coq::Expression::Record {
+                                    fields: vec![coq::Field::new(
+                                        &Path::new(&["Notation", "dot"]),
+                                        &[
+                                            if ty_params.is_empty() {
+                                                vec![]
+                                            } else {
+                                                vec![coq::ArgDecl::of_ty_params(
+                                                    ty_params,
+                                                    coq::ArgSpecKind::Implicit,
+                                                )]
+                                            },
+                                            where_predicates
+                                                .iter()
+                                                .enumerate()
+                                                .map(|(i, predicate)| {
+                                                    predicate.to_coq().add_var(
+                                                        &["H'".to_string(), i.to_string()].concat(),
+                                                    )
+                                                })
+                                                .collect(),
+                                        ]
+                                        .concat(),
+                                        &coq::Expression::just_name(&item.item_name)
+                                            .apply_many_args(
+                                                &ty_params
+                                                    .iter()
+                                                    .map(|ty_param| {
+                                                        (
+                                                            Some(ty_param.to_owned()),
+                                                            coq::Expression::just_name(ty_param),
+                                                        )
+                                                    })
+                                                    .collect::<Vec<_>>(),
+                                            )
+                                            .apply_many_args(
+                                                &where_predicates
+                                                    .iter()
+                                                    .enumerate()
+                                                    .map(|(i, _)| {
+                                                        let var_name =
+                                                            ["H'".to_string(), i.to_string()]
+                                                                .concat();
+                                                        (
+                                                            Some(var_name.clone()),
+                                                            coq::Expression::just_name(&var_name),
+                                                        )
+                                                    })
+                                                    .collect::<Vec<_>>(),
+                                            ),
+                                    )],
+                                }),
+                                vec![],
+                            ),
+                            TraitItemData::Type { .. } => coq::Instance::new(
+                                false,
+                                &["Method_", &item.item_name].concat(),
+                                &[coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Generalized {
+                                        idents: vec![],
+                                        ty: coq::Expression::just_name("Trait"),
+                                    },
+                                    coq::ArgSpecKind::Explicit,
+                                )],
+                                coq::Expression::Variable {
+                                    ident: Path::new(&["Notation", "DoubleColonType"]),
+                                    no_implicit: false,
+                                }
+                                .apply(&coq::Expression::just_name("Self"))
+                                .apply(&coq::Expression::String(item.item_name.to_owned())),
+                                &Some(coq::Expression::Record {
+                                    fields: vec![coq::Field::new(
+                                        &Path::new(&["Notation", "double_colon_type"]),
+                                        &[],
+                                        &coq::Expression::just_name(&item.item_name),
+                                    )],
+                                }),
+                                vec![],
+                            ),
+                            TraitItemData::DefinitionWithDefault {
+                                ty_params,
+                                where_predicates,
+                                signature_and_body,
+                            } => coq::Instance::new(
+                                false,
+                                &["Method_", &item.item_name].concat(),
+                                &[
+                                    coq::ArgDecl::monadic_typeclass_parameter(),
+                                    coq::ArgDecl::new(
+                                        &coq::ArgDeclVar::Generalized {
+                                            idents: vec![],
+                                            ty: coq::Expression::just_name("Trait"),
+                                        },
+                                        coq::ArgSpecKind::Explicit,
+                                    ),
+                                ],
+                                coq::Expression::Variable {
+                                    ident: Path::new(&["Notation", "Dot"]),
+                                    no_implicit: false,
+                                }
+                                .apply(&coq::Expression::String(item.item_name.to_owned())),
+                                &Some(coq::Expression::Record {
+                                    fields: vec![coq::Field::new(
+                                        &Path::new(&["Notation", "dot"]),
+                                        &[
+                                            if ty_params.is_empty() {
+                                                vec![]
+                                            } else {
+                                                vec![coq::ArgDecl::of_ty_params(
+                                                    ty_params,
+                                                    coq::ArgSpecKind::Implicit,
+                                                )]
+                                            },
+                                            where_predicates
+                                                .iter()
+                                                .map(|predicate| predicate.to_coq())
+                                                .collect(),
+                                            signature_and_body
+                                                .args
+                                                .iter()
+                                                .map(|(name, ty)| {
+                                                    coq::ArgDecl::new(
+                                                        &coq::ArgDeclVar::Simple {
+                                                            idents: vec![name.to_owned()],
+                                                            ty: Some(ty.to_coq()),
+                                                        },
+                                                        coq::ArgSpecKind::Explicit,
+                                                    )
+                                                })
+                                                .collect::<Vec<_>>(),
+                                        ]
+                                        .concat(),
+                                        &coq::Expression::Code(group([
+                                            text("("),
+                                            match &signature_and_body.body {
+                                                None => text("axiom"),
+                                                Some(body) => body.to_doc(false),
+                                            },
+                                            line(),
+                                            nest([
+                                                text(":"),
+                                                line(),
+                                                signature_and_body.ret_ty.to_doc(false),
+                                                text(")"),
+                                            ]),
+                                        ])),
+                                    )],
+                                }),
+                                vec![],
+                            ),
+                        })
+                        .map(|i| coq::TopLevelItem::Instance(i.to_owned()))
+                        .collect_vec(),
+                ),
+                // extraction of the trait instances
+                coq::TopLevel::new(
+                    &body
+                        .iter()
+                        .filter_map(|item| match &item.item_data {
+                            TraitItemData::Definition { .. }
+                            | TraitItemData::DefinitionWithDefault { .. } => None,
+                            TraitItemData::Type(bounds) => {
+                                if bounds.is_empty() {
+                                    None
+                                } else {
+                                    Some(coq::TopLevelItem::Module(coq::Module::new(
+                                        &[
+                                            "The_Bounds_Of_",
+                                            &item.item_name,
+                                        ]
+                                        .concat(),
+                                        coq::TopLevel::new(
+                                            &bounds
+                                                .iter()
+                                                .map(|bound| coq::TopLevelItem::Module(coq::Module::new(
+                                                    &bound.name.to_name(),
+                                                    coq::TopLevel::new(&[
+                                                        coq::TopLevelItem::Instance(coq::Instance::new(
+                                                            false,
+                                                            "I",
+                                                            &[coq::ArgDecl::new(
+                                                                &coq::ArgDeclVar::Generalized {
+                                                                    idents: vec![],
+                                                                    ty: coq::Expression::just_name("Trait"),
+                                                                },
+                                                                coq::ArgSpecKind::Explicit,
+                                                            )],
+                                                            coq::Expression::Variable {
+                                                                ident: Path::concat(&[
+                                                                    bound.name.to_owned(),
+                                                                    Path::new(&["Trait"]),
+                                                                ]),
+                                                                no_implicit: false,
+                                                            }
+                                                            .apply(&coq::Expression::just_name(&item.item_name)),
+                                                            &None,
+                                                            {
+                                                                let proj_name = ["__the_bounds_of_", &item.item_name].concat();
+                                                                vec![concat([
+                                                                    text("repeat"),
+                                                                    line(),
+                                                                    group([
+                                                                        text("("),
+                                                                        text([
+                                                                            "destruct ",
+                                                                            &proj_name,
+                                                                            " [? ",
+                                                                            &proj_name,
+                                                                            "]",
+                                                                        ].concat()),
+                                                                        line(),
+                                                                        text("try assumption"),
+                                                                        text(")"),
+                                                                    ]),
+                                                                    text("."),
+                                                                ])]
+                                                            },
+                                                        )),
+                                                    ]),
+                                                )))
+                                                .collect_vec(),
+                                        ),
+                                    )))
+                                }
+                            },
+                        })
+                        .collect_vec(),
+                ),
+            ]),
+        ))
         .to_doc()
     }
 }

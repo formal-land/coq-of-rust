@@ -161,9 +161,12 @@ Module storage.
         `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
-      _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
+      __the_bounds_of_Type_
+        :
+        Sigma `(ink_storage_traits.storage.Storable.Trait Type_),
+        unit;
       PreferredKey : Set;
-      _
+      __the_bounds_of_PreferredKey
         :
         Sigma `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
         unit;
@@ -177,6 +180,26 @@ Module storage.
       : Notation.DoubleColonType Self "PreferredKey" := {
       Notation.double_colon_type := PreferredKey;
     }.
+    Module The_Bounds_Of_Type_.
+      Module ink_storage_traits_storage_Storable.
+        Global Instance I `(Trait)
+          : ink_storage_traits.storage.Storable.Trait Type_.
+        repeat
+        (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+        try assumption).
+        Defined.
+      End ink_storage_traits_storage_Storable.
+    End The_Bounds_Of_Type_.
+    Module The_Bounds_Of_PreferredKey.
+      Module ink_storage_traits_storage_StorageKey.
+        Global Instance I `(Trait)
+          : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
+        repeat
+        (destruct __the_bounds_of_PreferredKey [? __the_bounds_of_PreferredKey]
+        try assumption).
+        Defined.
+      End ink_storage_traits_storage_StorageKey.
+    End The_Bounds_Of_PreferredKey.
   End StorableHint.
   
   Module AutoStorableHint.
@@ -186,13 +209,26 @@ Module storage.
         `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
-      _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
+      __the_bounds_of_Type_
+        :
+        Sigma `(ink_storage_traits.storage.Storable.Trait Type_),
+        unit;
     }.
     
     Global Instance Method_Type_ `(Trait)
       : Notation.DoubleColonType Self "Type_" := {
       Notation.double_colon_type := Type_;
     }.
+    Module The_Bounds_Of_Type_.
+      Module ink_storage_traits_storage_Storable.
+        Global Instance I `(Trait)
+          : ink_storage_traits.storage.Storable.Trait Type_.
+        repeat
+        (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+        try assumption).
+        Defined.
+      End ink_storage_traits_storage_Storable.
+    End The_Bounds_Of_Type_.
   End AutoStorableHint.
 End storage.
 
@@ -283,9 +319,15 @@ Module StorableHint.
       `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
-    _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
+    __the_bounds_of_Type_
+      :
+      Sigma `(ink_storage_traits.storage.Storable.Trait Type_),
+      unit;
     PreferredKey : Set;
-    _ : Sigma `(ink_storage_traits.storage.StorageKey.Trait PreferredKey), unit;
+    __the_bounds_of_PreferredKey
+      :
+      Sigma `(ink_storage_traits.storage.StorageKey.Trait PreferredKey),
+      unit;
   }.
   
   Global Instance Method_Type_ `(Trait)
@@ -296,6 +338,25 @@ Module StorableHint.
     : Notation.DoubleColonType Self "PreferredKey" := {
     Notation.double_colon_type := PreferredKey;
   }.
+  Module The_Bounds_Of_Type_.
+    Module ink_storage_traits_storage_Storable.
+      Global Instance I `(Trait)
+        : ink_storage_traits.storage.Storable.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      Defined.
+    End ink_storage_traits_storage_Storable.
+  End The_Bounds_Of_Type_.
+  Module The_Bounds_Of_PreferredKey.
+    Module ink_storage_traits_storage_StorageKey.
+      Global Instance I `(Trait)
+        : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
+      repeat
+      (destruct __the_bounds_of_PreferredKey [? __the_bounds_of_PreferredKey]
+      try assumption).
+      Defined.
+    End ink_storage_traits_storage_StorageKey.
+  End The_Bounds_Of_PreferredKey.
 End StorableHint.
 
 Module AutoStorableHint.
@@ -305,13 +366,25 @@ Module AutoStorableHint.
       `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
-    _ : Sigma `(ink_storage_traits.storage.Storable.Trait Type_), unit;
+    __the_bounds_of_Type_
+      :
+      Sigma `(ink_storage_traits.storage.Storable.Trait Type_),
+      unit;
   }.
   
   Global Instance Method_Type_ `(Trait)
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
+  Module The_Bounds_Of_Type_.
+    Module ink_storage_traits_storage_Storable.
+      Global Instance I `(Trait)
+        : ink_storage_traits.storage.Storable.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      Defined.
+    End ink_storage_traits_storage_Storable.
+  End The_Bounds_Of_Type_.
 End AutoStorableHint.
 
 Module layout.
