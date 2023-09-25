@@ -4,31 +4,43 @@ In this file we apply a list of manual updates to the translated Rust files.
 import re
 
 
+def sub_at_least_once(pattern, replacement, text) -> str:
+    regex_flags = re.MULTILINE | re.DOTALL
+    matches = list(re.finditer(pattern, text, regex_flags))
+    if len(matches) >= 1:
+        return re.sub(
+            pattern=pattern,
+            repl=replacement,
+            string=text,
+            flags=regex_flags,
+        )
+    else:
+        raise ValueError(f"Pattern {pattern} not found in text")
+
+
 def update_ink():
     file_name = "ink.v"
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
 Require CoqOfRust.ink.ink_env.""",
         content,
     )
-    content = sub_exactly_n(
+    content = sub_at_least_once(
         "Module TraitCallForwarderFor.",
         "(* Module TraitCallForwarderFor.",
         content,
-        4,
     )
-    content = sub_exactly_n(
+    content = sub_at_least_once(
         "End TraitCallForwarderFor.",
         "End TraitCallForwarderFor. *)",
         content,
-        4,
     )
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         """End ChainExtension.
 
 Module IsResultType.""",
@@ -37,7 +49,7 @@ Module IsResultType.""",
 (* Module IsResultType.""",
         content,
     )
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         """End IsResultType.
 
 Module Output.""",
@@ -55,7 +67,7 @@ def update_ink_engine():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
@@ -92,7 +104,7 @@ def update_ink_env():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
@@ -243,37 +255,12 @@ End state__.""",
         f.write(content)
 
 
-def sub_exactly_n(pattern, replacement, text, times) -> str:
-    regex_flags = re.MULTILINE | re.DOTALL
-    matches = list(re.finditer(pattern, text, regex_flags))
-    if len(matches) == times:
-        return re.sub(
-            pattern=pattern,
-            repl=replacement,
-            string=text,
-            flags=regex_flags,
-        )
-    else:
-        raise ValueError(
-            f"Pattern {pattern} not found exactly {times} times in text\n"
-            + f"It was found {len(matches)} times."
-        )
-
-
-def sub_exactly_once(
-    pattern,
-    replacement,
-    text,
-) -> str:
-    return sub_exactly_n(pattern, replacement, text, 1)
-
-
 def update_ink_e2e_macro():
     file_name = "ink_e2e_macro.v"
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
@@ -290,7 +277,7 @@ def update_ink_macro():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
@@ -300,7 +287,7 @@ Require CoqOfRust.ink.syn.
 Require CoqOfRust.ink.synstructure.""",
         content,
     )
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         """End storage_item.
 
 Parameter generate""",
@@ -309,7 +296,7 @@ Parameter generate""",
 (* Parameter generate""",
         content,
     )
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         r"""M \(H := H'\) \(syn.error.Result proc_macro2.TokenStream\).
 
 Module trait_def.""",
@@ -326,19 +313,6 @@ def update_ink_primitives():
     file_name = "ink_primitives.v"
     with open(file_name, "r") as f:
         content = f.read()
-    # NOTE: Commented out because the generics are being satisfied in newer commits.
-    # content = \
-    #     sub_exactly_once(
-    #         "Definition MessageResult",
-    #         "Definition MessageResult (T : Set)",
-    #         content,
-    #     )
-    # content = \
-    #     sub_exactly_once(
-    #         "Definition ConstructorResult",
-    #         "Definition ConstructorResult (T : Set)",
-    #         content,
-    #     )
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -348,7 +322,7 @@ def update_storage():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
@@ -364,7 +338,7 @@ def update_storage_traits():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
@@ -373,17 +347,15 @@ Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
-    content = sub_exactly_n(
+    content = sub_at_least_once(
         "Global Instance Method_key",
         "(* Global Instance Method_key",
         content,
-        2,
     )
-    content = sub_exactly_n(
+    content = sub_at_least_once(
         "End StorageKey.",
         "*) End StorageKey.",
         content,
-        2,
     )
     with open(file_name, "w") as f:
         f.write(content)
@@ -394,7 +366,7 @@ def update_erc20():
     with open(file_name, "r") as f:
         content = f.read()
     pattern = "Require Import CoqOfRust.CoqOfRust."
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         pattern,
         pattern
         + """
@@ -405,15 +377,7 @@ Require CoqOfRust.ink.ink.""",
         content,
     )
 
-    # for field in ("total_supply", "balances", "allowances"):
-    #     content = sub_exactly_n(
-    #         f"{field} : ink_storage_traits.storage.AutoStorableHint.Type_",
-    #         f"{field} `{{ink_storage_traits.storage.AutoStorableHint.Trait}} : ink_storage_traits.storage.AutoStorableHint.Type_",
-    #         content,
-    #         2,
-    #     )
-
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.""",
         """Module Impl_core_default_Default_for_erc20_erc20_Erc20.
@@ -427,7 +391,7 @@ Require CoqOfRust.ink.ink.""",
         content,
     )
 
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         r"""  End Erc20.
   Definition Erc20 : Set := Erc20.t.
 """,
@@ -439,7 +403,7 @@ Require CoqOfRust.ink.ink.""",
         content,
     )
 
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         """    Definition Env : Set := ink_env.types.DefaultEnvironment.""",
         """    Definition Env : Set := ink_env.types.DefaultEnvironment.
 
@@ -448,7 +412,7 @@ Require CoqOfRust.ink.ink.""",
         content,
     )
 
-    content = sub_exactly_once(
+    content = sub_at_least_once(
         """    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
       ink_env.contract.ContractEnv.Env := Env;
     }.""",
