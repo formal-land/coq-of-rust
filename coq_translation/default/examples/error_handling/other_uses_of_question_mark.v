@@ -55,8 +55,8 @@ End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
   Definition Self := other_uses_of_question_mark.EmptyVec.
   
-  Global Instance I
-    : core.error.Error.Trait Self := core.error.Error.Build_Trait _.
+  Global Instance I : core.error.Error.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 

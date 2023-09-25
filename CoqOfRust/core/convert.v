@@ -40,8 +40,8 @@ where
 }
 *)
 Module AsMut.
-  Class Trait (Self T : Set) : Set := { 
-    as_mut : mut_ref Self -> mut_ref T;
+  Class Trait (Self : Set) {T : Set} : Set := {
+    as_mut `{H : State.Trait} : mut_ref Self -> M (H := H) (mut_ref T);
   }.
 End AsMut.
 
@@ -55,14 +55,14 @@ where
 }
 *)
 Module AsRef.
-  Class Trait (Self T : Set) : Set := { 
-    as_ref : ref Self -> ref T;
+  Class Trait (Self : Set) {T : Set} : Set := {
+    as_ref `{H : State.Trait} : ref Self -> M (H := H) (ref T);
   }.
 End AsRef.
 
 Module Impl_AsRef_for_string.
-  Global Instance I : convert.AsRef.Trait string string := {
-    as_ref self := self;
+  Global Instance I : convert.AsRef.Trait string (T := string) := {
+    as_ref `{State.Trait} self := Pure self;
   }.
 End Impl_AsRef_for_string.
 

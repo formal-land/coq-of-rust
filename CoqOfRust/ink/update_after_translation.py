@@ -18,6 +18,29 @@ def sub_at_least_once(pattern, replacement, text) -> str:
         raise ValueError(f"Pattern {pattern} not found in text")
 
 
+def ignore_module_names(module_names, content):
+    for module_name in module_names:
+        content = sub_at_least_once(
+            fr"Module\s+{module_name}.",
+            f"(* Module {module_name}.",
+            content,
+        )
+        try:
+            content = sub_at_least_once(
+                fr"Section\s+{module_name}.",
+                f"(* Section {module_name}.",
+                content,
+            )
+        except ValueError:
+            pass
+        content = sub_at_least_once(
+            fr"End\s+{module_name}.",
+            f"End {module_name}. *)",
+            content,
+        )
+    return content
+
+
 def update_ink():
     file_name = "ink.v"
     with open(file_name, "r") as f:
@@ -38,24 +61,6 @@ Require CoqOfRust.ink.ink_env.""",
     content = sub_at_least_once(
         "End TraitCallForwarderFor.",
         "End TraitCallForwarderFor. *)",
-        content,
-    )
-    content = sub_at_least_once(
-        """End ChainExtension.
-
-Module IsResultType.""",
-        """End ChainExtension.
-
-(* Module IsResultType.""",
-        content,
-    )
-    content = sub_at_least_once(
-        """End IsResultType.
-
-Module Output.""",
-        """End IsResultType. *)
-
-Module Output.""",
         content,
     )
     with open(file_name, "w") as f:
@@ -95,6 +100,24 @@ Definition Error := Error.t.
 """,
         "",
     )
+
+    content = sub_at_least_once(
+        "core.hash.Hash.hash `{H' : State.Trait} := hash;",
+        "core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);",
+        content,
+    )
+
+    content = ignore_module_names(
+        [
+            "Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages",
+            "Impl_core_convert_From_for_ink_engine_ext_Result",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_engine_chain_extension_ExtensionId",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extension_ExtensionId",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId",
+        ],
+        content,
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -313,6 +336,73 @@ def update_ink_primitives():
     file_name = "ink_primitives.v"
     with open(file_name, "r") as f:
         content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = sub_at_least_once(
+        pattern,
+        pattern
+        + """
+Require CoqOfRust.ink.scale_encode.
+Require CoqOfRust.ink.scale_info.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        "core.hash.Hash.hash `{H' : State.Trait} := hash;",
+        "core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);",
+        content,
+    )
+
+    content = sub_at_least_once(
+        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
+  
+  Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.""",
+        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
+  
+  (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
+  
+  Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.""",
+        """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
+  
+  Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        "scale_info.ty.Type_",
+        "(scale_info.ty.Type_ scale_info.ty.Type_.Default.T)",
+        content,
+    )
+
+    content = ignore_module_names(
+        [
+            "Impl_ink_primitives_types_Clear_for_Array_u8",
+            "Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash",
+            "Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId",
+            "Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor",
+            "Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId",
+            "Impl_core_convert_AsRef_for_ink_primitives_types_AccountId",
+            "Impl_core_convert_AsMut_for_ink_primitives_types_AccountId",
+            "Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash",
+            "Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor",
+            "Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError",
+        ],
+        content,
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -357,6 +447,30 @@ Require CoqOfRust.ink.parity_scale_codec.""",
         "*) End StorageKey.",
         content,
     )
+
+    content = sub_at_least_once(
+        "scale_info.ty.Type_",
+        "(scale_info.ty.Type_ scale_info.ty.Type_.Default.T)",
+        content,
+    )
+
+    content = ignore_module_names(
+        [
+            "Impl_ink_storage_traits_storage_Storable_for_P",
+            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_AutoKey",
+            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey",
+            "Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R",
+            "Impl_ink_storage_traits_storage_AutoStorableHint_for_T",
+            "Impl_ink_storage_traits_storage_Packed_for_P",
+            "Impl_ink_storage_traits_storage_StorageKey_for_P",
+            "Impl_ink_storage_traits_storage_StorableHint_for_P",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T",
+        ],
+        content,
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 

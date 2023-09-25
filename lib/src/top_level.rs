@@ -9,6 +9,7 @@ use crate::reorder::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
+use rustc_hir::def::Res;
 use rustc_hir::{
     GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, ImplItemRef, Item, ItemId,
     ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
@@ -289,6 +290,30 @@ fn deduplicate_top_level_items(items: Vec<TopLevelItem>) -> Vec<TopLevelItem> {
     items.into_iter().unique().collect()
 }
 
+fn is_top_level_item_public(tcx: &TyCtxt, item: &Item) -> bool {
+    let def_id = item.owner_id.to_def_id();
+    let id_to_check = match &item.kind {
+        ItemKind::Impl(Impl {
+            of_trait: Some(trait_ref),
+            self_ty,
+            ..
+        }) => {
+            // if let TyKind::Path(QPath::Resolved(_, path)) = self_ty.kind {
+            //     if let Res::Def(_, def_id) = path.res {
+            //         if let Result::Ok(false) =
+            //             std::panic::catch_unwind(|| !tcx.visibility(def_id).is_public())
+            //         {
+            //             return false;
+            //         }
+            //     }
+            // }
+            trait_ref.trait_def_id().unwrap()
+        }
+        _ => def_id,
+    };
+    tcx.visibility(id_to_check).is_public()
+}
+
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
 /// items.
 /// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
@@ -299,8 +324,7 @@ fn deduplicate_top_level_items(items: Vec<TopLevelItem>) -> Vec<TopLevelItem> {
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
     let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize {
-        let def_id = item.owner_id.to_def_id();
-        let is_public = tcx.visibility(def_id).is_public();
+        let is_public = is_top_level_item_public(tcx, item);
         if !is_public {
             // Do not generate anything if the item is not public and we are
             // axiomatizing the definitions (for a library). Also, still
@@ -2318,32 +2342,21 @@ impl TopLevelItem {
                                             })
                                             .collect::<Vec<_>>(),
                                     ),
-                                    &if items.is_empty() {
-                                        coq::Expression::Variable {
-                                            ident: Path::concat(&[
-                                                of_trait.to_owned(),
-                                                Path::new(&["Build_Trait"]),
-                                            ]),
-                                            no_implicit: false,
-                                        }
-                                        .apply(&coq::Expression::Wild)
-                                    } else {
-                                        coq::Expression::Record {
-                                            fields: trait_non_default_items
-                                                .iter()
-                                                .map(|(name, is_type)| {
-                                                    coq::Field::new(
-                                                        &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
-                                                        &if *is_type {
-                                                            vec![]
-                                                        } else {
-                                                            vec![coq::ArgDecl::monadic_typeclass_parameter()]
-                                                        },
-                                                        &coq::Expression::just_name(name),
-                                                    )
-                                                })
-                                                .collect::<Vec<_>>(),
-                                        }
+                                    &coq::Expression::Record {
+                                        fields: trait_non_default_items
+                                            .iter()
+                                            .map(|(name, is_type)| {
+                                                coq::Field::new(
+                                                    &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
+                                                    &if *is_type {
+                                                        vec![]
+                                                    } else {
+                                                        vec![coq::ArgDecl::monadic_typeclass_parameter()]
+                                                    },
+                                                    &coq::Expression::just_name(name),
+                                                )
+                                            })
+                                            .collect::<Vec<_>>(),
                                     },
                                     if *has_predicates_on_assoc_ty {
                                         vec![text("eauto.")]

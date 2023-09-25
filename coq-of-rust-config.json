@@ -1,10 +1,10 @@
 {
   "axiomatize": false,
-  "debug_reorder": false,
+  "debug_reorder": true,
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": {
-	"depends_on_trait_impl": { "move": "down", "after": "Impl_SomeTrait_for_OtherType" },
+      	"depends_on_trait_impl": { "move": "down", "after": "Impl_SomeTrait_for_OtherType" },
         "foo": { "move": "up", "before": "main" }
       },
       "top_level::Impl_SomeType": {
@@ -45,12 +45,16 @@
         "test_api": { "move": "up", "before": "ext" },
         "chain_extension": { "move": "up", "before": "ext" }
       },
+      "top_level::test_api": {
+        "Impl_IntoIterator_for_RecordedDebugMessages": { "move": "up" }
+      },
       "top_level::chain_extension": {
         "ExtensionId": { "move": "up", "before": "ChainExtensionHandler" },
         "ChainExtension": { "move": "up", "before": "ChainExtensionHandler" }
       },
       "top_level::ext": {
-        "ChainSpec": { "move": "up", "before": "Engine" }
+        "ChainSpec": { "move": "up", "before": "Engine" },
+        "Impl_From_for_Result": { "move": "up" }
       }
     },
     "ink_env": {
@@ -100,6 +104,32 @@
       },
       "top_level::chain_extension": {
         "private": { "move": "up", "before": "IsResultType" }
+      }
+    },
+    "ink_primitives": {
+      "top_level": {
+        "Impl_core_clone_Clone_for_ink_primitives_types_AccountId": { "move": "up", "before": "Impl_core_marker_Copy_for_ink_primitives_types_AccountId" },
+        "Impl_$crate::clone::Clone_for_LangError": { "move": "up", "before": "Impl_$crate::marker::Copy_for_LangError" }
+      },
+      "top_level::types": {
+        "Impl_$crate::clone::Clone_for_AccountId": { "move": "up", "before": "Impl_$crate::marker::Copy_for_AccountId" },
+        "Impl_$crate::cmp::PartialOrd_for_AccountId": { "move": "up", "before": "Impl_$crate::cmp::Ord_for_AccountId" },
+        "Impl_$crate::clone::Clone_for_Hash": { "move": "up", "before": "Impl_$crate::marker::Copy_for_Hash" },
+        "Impl_$crate::cmp::PartialOrd_for_Hash": { "move": "up", "before": "Impl_$crate::cmp::Ord_for_Hash" }
+      }
+    },
+    "ink_storage_traits": {
+      "top_level": {
+        "storage": { "move": "up", "before": "impls" }
+      },
+      "top_level::impls": {
+        "Impl_$crate::clone::Clone_for_AutoKey": { "move": "up", "before": "Impl_$crate::marker::Copy_for_AutoKey" },
+        "Impl_$crate::clone::Clone_for_ManualKey": { "move": "up", "before": "Impl_$crate::marker::Copy_for_ManualKey" },
+        "Impl_$crate::clone::Clone_for_ResolverKey": { "move": "up", "before": "Impl_$crate::marker::Copy_for_ResolverKey" },
+        "Impl_$crate::cmp::PartialEq_for_ManualKey": { "move": "up", "before": "Impl_$crate::cmp::Eq_for_ManualKey" }
+      },
+      "top_level::layout": {
+        "StorageLayout": { "move": "up", "before": "impls" }
       }
     },
     "erc20": {

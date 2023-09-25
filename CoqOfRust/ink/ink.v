@@ -33,6 +33,21 @@ Module result_info.
     }.
   End IsResultTypeFallback.
   
+  Module
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+    Section
+      Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+      Context {T : Set}.
+      Definition Self := ink.result_info.IsResultType T.
+      
+      Global Instance I : ink.result_info.IsResultTypeFallback.Trait Self := {
+      }.
+    End
+      Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+  
   Module IsResultErr.
     Section IsResultErr.
       Context {T : Set}.
@@ -59,6 +74,21 @@ Module result_info.
       Notation.dot (self : ref Self) := (axiom : M (H := H') bool);
     }.
   End IsResultErrFallback.
+  
+  Module
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+    Section
+      Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+      Context {T : Set}.
+      Definition Self := ink.result_info.IsResultErr T.
+      
+      Global Instance I : ink.result_info.IsResultErrFallback.Trait Self := {
+      }.
+    End
+      Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
 End result_info.
 
 Module IsResultType.
@@ -91,6 +121,21 @@ Module IsResultTypeFallback.
   }.
 End IsResultTypeFallback.
 
+Module
+  Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+  Section
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+    Context {T : Set}.
+    Definition Self := ink.result_info.IsResultType T.
+    
+    Global Instance I : ink.result_info.IsResultTypeFallback.Trait Self := {
+    }.
+  End
+    Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_result_info_IsResultTypeFallback_for_ink_result_info_IsResultType_T.
+
 Module IsResultErr.
   Section IsResultErr.
     Context {T : Set}.
@@ -117,6 +162,20 @@ Module IsResultErrFallback.
     Notation.dot (self : ref Self) := (axiom : M (H := H') bool);
   }.
 End IsResultErrFallback.
+
+Module
+  Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+  Section
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+    Context {T : Set}.
+    Definition Self := ink.result_info.IsResultErr T.
+    
+    Global Instance I : ink.result_info.IsResultErrFallback.Trait Self := {
+    }.
+  End
+    Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
+  Global Hint Resolve I : core.
+End Impl_ink_result_info_IsResultErrFallback_for_ink_result_info_IsResultErr_T.
 
 Module reflect.
   Module contract.
@@ -284,6 +343,91 @@ Module reflect.
     End ConstructorOutputValue.
     Definition ConstructorOutputValue := @ConstructorOutputValue.t.
     
+    Module
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+      Section
+        Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+        Context {T : Set}.
+        Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+        
+        Global Instance I : ink.reflect.dispatch.private.Sealed.Trait Self := {
+        }.
+      End
+        Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+    
+    Module
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Section
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+        Context {C : Set}.
+        Definition Self := ink.reflect.dispatch.ConstructorOutputValue C.
+        
+        Definition Error : Set := ref unit.
+        
+        Parameter as_result :
+            forall `{H' : State.Trait},
+            (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error)).
+        
+        Global Instance Method_as_result `{H' : State.Trait} :
+          Notation.Dot "as_result" := {
+          Notation.dot := as_result;
+        }.
+        
+        Global Instance I
+          : ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Error := Error;
+          ink.reflect.dispatch.ConstructorOutput.as_result `{H' : State.Trait}
+            :=
+            as_result;
+        }.
+      End
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    
+    Module
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Section
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+        Context {C E : Set}.
+        Definition Self :=
+          ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
+        
+        Definition IS_RESULT `{H' : State.Trait} := Pure true.
+        
+        Global Instance AssociatedFunction_IS_RESULT `{H' : State.Trait} :
+          Notation.DoubleColon Self "IS_RESULT" := {
+          Notation.double_colon := IS_RESULT;
+        }.
+        
+        Definition Error : Set := E.
+        
+        Parameter as_result :
+            forall `{H' : State.Trait},
+            (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error)).
+        
+        Global Instance Method_as_result `{H' : State.Trait} :
+          Notation.Dot "as_result" := {
+          Notation.dot := as_result;
+        }.
+        
+        Global Instance I
+          : ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Error := Error;
+          ink.reflect.dispatch.ConstructorOutput.as_result `{H' : State.Trait}
+            :=
+            as_result;
+        }.
+      End
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    
     Module DispatchError.
       Inductive t : Set :=
       | InvalidSelector
@@ -363,6 +507,147 @@ Module reflect.
         Notation.double_colon_type := Type_;
       }.
     End ContractConstructorDecoder.
+    
+    Module Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.Copy.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter clone :
+          forall `{H' : State.Trait},
+          (ref Self) -> M (H := H') ink.reflect.dispatch.DispatchError.
+      
+      Global Instance Method_clone `{H' : State.Trait} :
+        Notation.Dot "clone" := {
+        Notation.dot := clone;
+      }.
+      
+      Global Instance I : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone `{H' : State.Trait} := clone;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+    
+    Module
+      Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End
+      Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter eq :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref ink.reflect.dispatch.DispatchError) ->
+            M (H := H') bool.
+      
+      Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+        Notation.dot := eq;
+      }.
+      
+      Global Instance I
+        : core.cmp.PartialEq.Trait Self
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+          := {
+        core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter assert_receiver_is_total_eq :
+          forall `{H' : State.Trait},
+          (ref Self) -> M (H := H') unit.
+      
+      Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+        Notation.Dot "assert_receiver_is_total_eq" := {
+        Notation.dot := assert_receiver_is_total_eq;
+      }.
+      
+      Global Instance I : core.cmp.Eq.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Display.Trait Self := {
+        core.fmt.Display.fmt `{H' : State.Trait} := fmt;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
+      Definition Self := parity_scale_codec.error.Error.
+      
+      Parameter from :
+          forall `{H' : State.Trait},
+          ink.reflect.dispatch.DispatchError -> M (H := H') Self.
+      
+      Global Instance AssociatedFunction_from `{H' : State.Trait} :
+        Notation.DoubleColon Self "from" := {
+        Notation.double_colon := from;
+      }.
+      
+      Global Instance I
+        : core.convert.From.Trait Self (T := ink.reflect.dispatch.DispatchError)
+          := {
+        core.convert.From.from `{H' : State.Trait} := from;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_convert_From_for_parity_scale_codec_error_Error.
   End dispatch.
   
   Module event.
@@ -438,6 +723,25 @@ Module reflect.
       End TraitDefinitionRegistry.
       Definition TraitDefinitionRegistry (E : Set) : Set :=
         TraitDefinitionRegistry.t (E := E).
+      
+      Module
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+        Section
+          Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+          Context {E : Set}.
+          Definition Self :=
+            ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+          
+          Definition Env : Set := E.
+          
+          Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+            ink_env.contract.ContractEnv.Env := Env;
+          }.
+        End
+          Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+        Global Hint Resolve I : core.
+      End
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
     End registry.
   End trait_def.
 End reflect.
@@ -623,6 +927,17 @@ Module codegen.
         Inductive t : Set := Build.
       End EventTopics.
       Definition EventTopics := @EventTopics.t.
+      
+      Module
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+        Definition Self := ink.codegen.event.topics.EventTopics.
+        
+        Global Instance I
+          : ink.codegen.event.topics.RespectTopicLimit.Trait Self := {
+        }.
+        Global Hint Resolve I : core.
+      End
+        Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
     End topics.
   End event.
   
@@ -633,6 +948,62 @@ Module codegen.
       }.
       Global Set Primitive Projections.
     End ImpliesReturn.
+    
+    Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+      Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+        Context {T : Set}.
+        Definition Self := T.
+        
+        Global Instance I
+          : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
+        }.
+      End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+      Global Hint Resolve I : core.
+    End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    
+    Module
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+      Section
+        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+        Context {T E CallType Args : Set}.
+        Definition Self :=
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            E
+            (ink_env.call.common.Set_ CallType)
+            (ink_env.call.common.Set_
+              (ink_env.call.execution_input.ExecutionInput Args))
+            (ink_env.call.common.Set_ (ink_env.call.common.ReturnType T)).
+        
+        Global Instance I
+          : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
+        }.
+      End
+        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    
+    Module
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+      Section
+        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+        Context {E CallType Args : Set}.
+        Definition Self :=
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+            E
+            (ink_env.call.common.Set_ CallType)
+            (ink_env.call.common.Set_
+              (ink_env.call.execution_input.ExecutionInput Args))
+            (ink_env.call.common.Set_ unit).
+        
+        Global Instance I
+          : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := unit) := {
+        }.
+      End
+        Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
   End implies_return.
   
   Module trait_def.
@@ -1086,6 +1457,17 @@ Module event.
       Inductive t : Set := Build.
     End EventTopics.
     Definition EventTopics := @EventTopics.t.
+    
+    Module
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+      Definition Self := ink.codegen.event.topics.EventTopics.
+      
+      Global Instance I
+        : ink.codegen.event.topics.RespectTopicLimit.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
   End topics.
 End event.
 
@@ -1204,6 +1586,17 @@ Module topics.
     Inductive t : Set := Build.
   End EventTopics.
   Definition EventTopics := @EventTopics.t.
+  
+  Module
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+    Definition Self := ink.codegen.event.topics.EventTopics.
+    
+    Global Instance I
+      : ink.codegen.event.topics.RespectTopicLimit.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
 End topics.
 
 Module EventRespectsTopicLimit.
@@ -1248,6 +1641,16 @@ Module EventTopics.
 End EventTopics.
 Definition EventTopics := @EventTopics.t.
 
+Module
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+  Definition Self := ink.codegen.event.topics.EventTopics.
+  
+  Global Instance I : ink.codegen.event.topics.RespectTopicLimit.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_codegen_event_topics_RespectTopicLimit_for_ink_codegen_event_topics_EventTopics.
+
 Module EventLenTopics.
   Class Trait (Self : Set) : Type := {
     LenTopics : Set;
@@ -1266,6 +1669,62 @@ Module implies_return.
     }.
     Global Set Primitive Projections.
   End ImpliesReturn.
+  
+  Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+      Context {T : Set}.
+      Definition Self := T.
+      
+      Global Instance I
+        : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
+      }.
+    End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    Global Hint Resolve I : core.
+  End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  
+  Module
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    Section
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+      Context {T E CallType Args : Set}.
+      Definition Self :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+          E
+          (ink_env.call.common.Set_ CallType)
+          (ink_env.call.common.Set_
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set_ (ink_env.call.common.ReturnType T)).
+      
+      Global Instance I
+        : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
+      }.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+  
+  Module
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+    Section
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+      Context {E CallType Args : Set}.
+      Definition Self :=
+        ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+          E
+          (ink_env.call.common.Set_ CallType)
+          (ink_env.call.common.Set_
+            (ink_env.call.execution_input.ExecutionInput Args))
+          (ink_env.call.common.Set_ unit).
+      
+      Global Instance I
+        : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := unit) := {
+      }.
+    End
+      Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
 End implies_return.
 
 Module ImpliesReturn.
@@ -1274,6 +1733,62 @@ Module ImpliesReturn.
   }.
   Global Set Primitive Projections.
 End ImpliesReturn.
+
+Module Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  Section Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+    Context {T : Set}.
+    Definition Self := T.
+    
+    Global Instance I
+      : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
+    }.
+  End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+  Global Hint Resolve I : core.
+End Impl_ink_codegen_implies_return_ImpliesReturn_for_T.
+
+Module
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+  Section
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+    Context {T E CallType Args : Set}.
+    Definition Self :=
+      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+        E
+        (ink_env.call.common.Set_ CallType)
+        (ink_env.call.common.Set_
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set_ (ink_env.call.common.ReturnType T)).
+    
+    Global Instance I
+      : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := T) := {
+    }.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__ink_env_call_common_ReturnType_T.
+
+Module
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+  Section
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+    Context {E CallType Args : Set}.
+    Definition Self :=
+      ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
+        E
+        (ink_env.call.common.Set_ CallType)
+        (ink_env.call.common.Set_
+          (ink_env.call.execution_input.ExecutionInput Args))
+        (ink_env.call.common.Set_ unit).
+    
+    Global Instance I
+      : ink.codegen.implies_return.ImpliesReturn.Trait Self (T := unit) := {
+    }.
+  End
+    Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_codegen_implies_return_ImpliesReturn_for_ink_env_backend_and_call_builder_and_engine_and_engine_test_api_and_error_CallBuilder_E_ink_env_call_common_Set__CallType_ink_env_call_common_Set__ink_env_call_execution_input_ExecutionInput_Args_ink_env_call_common_Set__Tuple_.
 
 Module trait_def.
   Module call_builder.
@@ -1840,6 +2355,91 @@ Module Wrap_dispatch_1.
     End ConstructorOutputValue.
     Definition ConstructorOutputValue := @ConstructorOutputValue.t.
     
+    Module
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+      Section
+        Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+        Context {T : Set}.
+        Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+        
+        Global Instance I : ink.reflect.dispatch.private.Sealed.Trait Self := {
+        }.
+      End
+        Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+    
+    Module
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Section
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+        Context {C : Set}.
+        Definition Self := ink.reflect.dispatch.ConstructorOutputValue C.
+        
+        Definition Error : Set := ref unit.
+        
+        Parameter as_result :
+            forall `{H' : State.Trait},
+            (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error)).
+        
+        Global Instance Method_as_result `{H' : State.Trait} :
+          Notation.Dot "as_result" := {
+          Notation.dot := as_result;
+        }.
+        
+        Global Instance I
+          : ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Error := Error;
+          ink.reflect.dispatch.ConstructorOutput.as_result `{H' : State.Trait}
+            :=
+            as_result;
+        }.
+      End
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    
+    Module
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Section
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+        Context {C E : Set}.
+        Definition Self :=
+          ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
+        
+        Definition IS_RESULT `{H' : State.Trait} := Pure true.
+        
+        Global Instance AssociatedFunction_IS_RESULT `{H' : State.Trait} :
+          Notation.DoubleColon Self "IS_RESULT" := {
+          Notation.double_colon := IS_RESULT;
+        }.
+        
+        Definition Error : Set := E.
+        
+        Parameter as_result :
+            forall `{H' : State.Trait},
+            (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error)).
+        
+        Global Instance Method_as_result `{H' : State.Trait} :
+          Notation.Dot "as_result" := {
+          Notation.dot := as_result;
+        }.
+        
+        Global Instance I
+          : ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+          ink.reflect.dispatch.ConstructorOutput.Error := Error;
+          ink.reflect.dispatch.ConstructorOutput.as_result `{H' : State.Trait}
+            :=
+            as_result;
+        }.
+      End
+        Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+      Global Hint Resolve I : core.
+    End
+      Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    
     Module DispatchError.
       Inductive t : Set :=
       | InvalidSelector
@@ -1919,6 +2519,147 @@ Module Wrap_dispatch_1.
         Notation.double_colon_type := Type_;
       }.
     End ContractConstructorDecoder.
+    
+    Module Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.Copy.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter clone :
+          forall `{H' : State.Trait},
+          (ref Self) -> M (H := H') ink.reflect.dispatch.DispatchError.
+      
+      Global Instance Method_clone `{H' : State.Trait} :
+        Notation.Dot "clone" := {
+        Notation.dot := clone;
+      }.
+      
+      Global Instance I : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone `{H' : State.Trait} := clone;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+    
+    Module
+      Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End
+      Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter eq :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref ink.reflect.dispatch.DispatchError) ->
+            M (H := H') bool.
+      
+      Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+        Notation.dot := eq;
+      }.
+      
+      Global Instance I
+        : core.cmp.PartialEq.Trait Self
+            (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+          := {
+        core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Global Instance I : core.marker.StructuralEq.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter assert_receiver_is_total_eq :
+          forall `{H' : State.Trait},
+          (ref Self) -> M (H := H') unit.
+      
+      Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+        Notation.Dot "assert_receiver_is_total_eq" := {
+        Notation.dot := assert_receiver_is_total_eq;
+      }.
+      
+      Global Instance I : core.cmp.Eq.Trait Self := {
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+      Definition Self := ink.reflect.dispatch.DispatchError.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Display.Trait Self := {
+        core.fmt.Display.fmt `{H' : State.Trait} := fmt;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+    
+    Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
+      Definition Self := parity_scale_codec.error.Error.
+      
+      Parameter from :
+          forall `{H' : State.Trait},
+          ink.reflect.dispatch.DispatchError -> M (H := H') Self.
+      
+      Global Instance AssociatedFunction_from `{H' : State.Trait} :
+        Notation.DoubleColon Self "from" := {
+        Notation.double_colon := from;
+      }.
+      
+      Global Instance I
+        : core.convert.From.Trait Self (T := ink.reflect.dispatch.DispatchError)
+          := {
+        core.convert.From.from `{H' : State.Trait} := from;
+      }.
+      Global Hint Resolve I : core.
+    End Impl_core_convert_From_for_parity_scale_codec_error_Error.
   End dispatch.
 End Wrap_dispatch_1.
 Import Wrap_dispatch_1.
@@ -2081,6 +2822,91 @@ Module ConstructorOutputValue.
 End ConstructorOutputValue.
 Definition ConstructorOutputValue := @ConstructorOutputValue.t.
 
+Module
+  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+  Section
+    Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+    Context {T : Set}.
+    Definition Self := ink.reflect.dispatch.ConstructorOutputValue T.
+    
+    Global Instance I : ink.reflect.dispatch.private.Sealed.Trait Self := {
+    }.
+  End
+    Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_reflect_dispatch_private_Sealed_for_ink_reflect_dispatch_ConstructorOutputValue_T.
+
+Module
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  Section
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+    Context {C : Set}.
+    Definition Self := ink.reflect.dispatch.ConstructorOutputValue C.
+    
+    Definition Error : Set := ref unit.
+    
+    Parameter as_result :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error)).
+    
+    Global Instance Method_as_result `{H' : State.Trait} :
+      Notation.Dot "as_result" := {
+      Notation.dot := as_result;
+    }.
+    
+    Global Instance I
+      : ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+      ink.reflect.dispatch.ConstructorOutput.Error := Error;
+      ink.reflect.dispatch.ConstructorOutput.as_result `{H' : State.Trait}
+        :=
+        as_result;
+    }.
+  End
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_C.
+
+Module
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+  Section
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+    Context {C E : Set}.
+    Definition Self :=
+      ink.reflect.dispatch.ConstructorOutputValue (core.result.Result C E).
+    
+    Definition IS_RESULT `{H' : State.Trait} := Pure true.
+    
+    Global Instance AssociatedFunction_IS_RESULT `{H' : State.Trait} :
+      Notation.DoubleColon Self "IS_RESULT" := {
+      Notation.double_colon := IS_RESULT;
+    }.
+    
+    Definition Error : Set := E.
+    
+    Parameter as_result :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error)).
+    
+    Global Instance Method_as_result `{H' : State.Trait} :
+      Notation.Dot "as_result" := {
+      Notation.dot := as_result;
+    }.
+    
+    Global Instance I
+      : ink.reflect.dispatch.ConstructorOutput.Trait Self (C := C) := {
+      ink.reflect.dispatch.ConstructorOutput.Error := Error;
+      ink.reflect.dispatch.ConstructorOutput.as_result `{H' : State.Trait}
+        :=
+        as_result;
+    }.
+  End
+    Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_reflect_dispatch_ConstructorOutput_for_ink_reflect_dispatch_ConstructorOutputValue_core_result_Result_C_E.
+
 Module ContractMessageDecoder.
   Class Trait (Self : Set) : Type := {
     Type_ : Set;
@@ -2139,6 +2965,140 @@ Module DispatchError.
   | PaidUnpayableMessage.
 End DispatchError.
 Definition DispatchError := DispatchError.t.
+
+Module Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter fmt :
+      forall `{H' : State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+  
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Notation.dot := fmt;
+  }.
+  
+  Global Instance I : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Global Instance I : core.marker.Copy.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_Copy_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter clone :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') ink.reflect.dispatch.DispatchError.
+  
+  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+    Notation.dot := clone;
+  }.
+  
+  Global Instance I : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_clone_Clone_for_ink_reflect_dispatch_DispatchError.
+
+Module
+  Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralPartialEq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter eq :
+      forall `{H' : State.Trait},
+      (ref Self) ->
+        (ref ink.reflect.dispatch.DispatchError) ->
+        M (H := H') bool.
+  
+  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Notation.dot := eq;
+  }.
+  
+  Global Instance I
+    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+      := {
+    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_PartialEq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralEq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter assert_receiver_is_total_eq :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') unit.
+  
+  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+    Notation.Dot "assert_receiver_is_total_eq" := {
+    Notation.dot := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance I : core.cmp.Eq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_Eq_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+  Definition Self := ink.reflect.dispatch.DispatchError.
+  
+  Parameter fmt :
+      forall `{H' : State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+  
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Notation.dot := fmt;
+  }.
+  
+  Global Instance I : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt `{H' : State.Trait} := fmt;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Display_for_ink_reflect_dispatch_DispatchError.
+
+Module Impl_core_convert_From_for_parity_scale_codec_error_Error.
+  Definition Self := parity_scale_codec.error.Error.
+  
+  Parameter from :
+      forall `{H' : State.Trait},
+      ink.reflect.dispatch.DispatchError -> M (H := H') Self.
+  
+  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+    Notation.DoubleColon Self "from" := {
+    Notation.double_colon := from;
+  }.
+  
+  Global Instance I
+    : core.convert.From.Trait Self (T := ink.reflect.dispatch.DispatchError)
+      := {
+    core.convert.From.from `{H' : State.Trait} := from;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_convert_From_for_parity_scale_codec_error_Error.
 
 Module DecodeDispatch.
   Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
@@ -2249,6 +3209,25 @@ Module Wrap_trait_def_1.
       End TraitDefinitionRegistry.
       Definition TraitDefinitionRegistry (E : Set) : Set :=
         TraitDefinitionRegistry.t (E := E).
+      
+      Module
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+        Section
+          Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+          Context {E : Set}.
+          Definition Self :=
+            ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+          
+          Definition Env : Set := E.
+          
+          Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+            ink_env.contract.ContractEnv.Env := Env;
+          }.
+        End
+          Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+        Global Hint Resolve I : core.
+      End
+        Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
     End registry.
   End trait_def.
 End Wrap_trait_def_1.
@@ -2353,6 +3332,25 @@ Module registry.
   End TraitDefinitionRegistry.
   Definition TraitDefinitionRegistry (E : Set) : Set :=
     TraitDefinitionRegistry.t (E := E).
+  
+  Module
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+    Section
+      Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+      Context {E : Set}.
+      Definition Self :=
+        ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+      
+      Definition Env : Set := E.
+      
+      Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+        ink_env.contract.ContractEnv.Env := Env;
+      }.
+    End
+      Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
 End registry.
 
 Module TraitDefinitionRegistry.
@@ -2374,6 +3372,24 @@ Module TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
 Definition TraitDefinitionRegistry (E : Set) : Set :=
   TraitDefinitionRegistry.t (E := E).
+
+Module
+  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+  Section
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+    Context {E : Set}.
+    Definition Self := ink.reflect.trait_def.registry.TraitDefinitionRegistry E.
+    
+    Definition Env : Set := E.
+    
+    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+      ink_env.contract.ContractEnv.Env := Env;
+    }.
+  End
+    Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_env_contract_ContractEnv_for_ink_reflect_trait_def_registry_TraitDefinitionRegistry_E.
 
 Module chain_extension.
   Module ChainExtensionInstance.
@@ -2438,6 +3454,39 @@ Module chain_extension.
     }.
   End IsResultType.
   
+  Module
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+    Section
+      Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+      Context {T E : Set}.
+      Definition Self := core.result.Result T E.
+      
+      Global Instance I
+        : ink.chain_extension.private.IsResultSealed.Trait Self := {
+      }.
+    End
+      Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+  
+  Module Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+    Section Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+      Context {T E : Set}.
+      Definition Self := core.result.Result T E.
+      
+      Definition Ok : Set := T.
+      
+      Definition Err : Set := E.
+      
+      Global Instance I : ink.chain_extension.IsResultType.Trait Self := {
+        ink.chain_extension.IsResultType.Ok := Ok;
+        ink.chain_extension.IsResultType.Err := Err;
+      }.
+    End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+    Global Hint Resolve I : core.
+  End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+  
   Module Output.
     Class Trait
         (Self : Set)
@@ -2457,6 +3506,48 @@ Module chain_extension.
     Inductive t : Set := Build.
   End ValueReturned.
   Definition ValueReturned := @ValueReturned.t.
+  
+  Module
+    Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Global Instance I : ink.chain_extension.private.OutputSealed.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End
+    Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+  
+  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Section
+      Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+      Context {T E : Set}.
+      Definition Self := ink.chain_extension.ValueReturned.
+      
+      Definition ReturnType : Set := T.
+      
+      Global Instance I
+        : ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+        ink.chain_extension.Output.ReturnType := ReturnType;
+      }.
+    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Global Hint Resolve I : core.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  
+  Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Section
+      Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+      Context {T E : Set}.
+      Definition Self := ink.chain_extension.ValueReturned.
+      
+      Definition ReturnType : Set := core.result.Result T E.
+      
+      Global Instance I
+        : ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+        ink.chain_extension.Output.ReturnType := ReturnType;
+      }.
+    End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Global Hint Resolve I : core.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
 End chain_extension.
 
 Module ChainExtensionInstance.
@@ -2487,7 +3578,7 @@ Module ChainExtension.
   }.
 End ChainExtension.
 
-(* Module IsResultType.
+Module IsResultType.
   Class Trait
       (Self : Set)
       `{ink.chain_extension.private.IsResultSealed.Trait Self} :
@@ -2502,7 +3593,39 @@ End ChainExtension.
   Global Instance Method_Err `(Trait) : Notation.DoubleColonType Self "Err" := {
     Notation.double_colon_type := Err;
   }.
-End IsResultType. *)
+End IsResultType.
+
+Module
+  Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+  Section
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+    Context {T E : Set}.
+    Definition Self := core.result.Result T E.
+    
+    Global Instance I
+      : ink.chain_extension.private.IsResultSealed.Trait Self := {
+    }.
+  End
+    Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+  Global Hint Resolve I : core.
+End Impl_ink_chain_extension_private_IsResultSealed_for_core_result_Result_T_E.
+
+Module Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+  Section Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+    Context {T E : Set}.
+    Definition Self := core.result.Result T E.
+    
+    Definition Ok : Set := T.
+    
+    Definition Err : Set := E.
+    
+    Global Instance I : ink.chain_extension.IsResultType.Trait Self := {
+      ink.chain_extension.IsResultType.Ok := Ok;
+      ink.chain_extension.IsResultType.Err := Err;
+    }.
+  End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
+  Global Hint Resolve I : core.
+End Impl_ink_chain_extension_IsResultType_for_core_result_Result_T_E.
 
 Module Output.
   Class Trait
@@ -2523,6 +3646,46 @@ Module ValueReturned.
   Inductive t : Set := Build.
 End ValueReturned.
 Definition ValueReturned := @ValueReturned.t.
+
+Module
+  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+  Definition Self := ink.chain_extension.ValueReturned.
+  
+  Global Instance I : ink.chain_extension.private.OutputSealed.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End
+  Impl_ink_chain_extension_private_OutputSealed_for_ink_chain_extension_ValueReturned.
+
+Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Context {T E : Set}.
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Definition ReturnType : Set := T.
+    
+    Global Instance I
+      : ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+      ink.chain_extension.Output.ReturnType := ReturnType;
+    }.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Global Hint Resolve I : core.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+
+Module Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Section Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+    Context {T E : Set}.
+    Definition Self := ink.chain_extension.ValueReturned.
+    
+    Definition ReturnType : Set := core.result.Result T E.
+    
+    Global Instance I
+      : ink.chain_extension.Output.Trait Self (T := T) (E := E) := {
+      ink.chain_extension.Output.ReturnType := ReturnType;
+    }.
+  End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
+  Global Hint Resolve I : core.
+End Impl_ink_chain_extension_Output_for_ink_chain_extension_ValueReturned.
 
 Module Wrap_private_1.
   Module private.
@@ -2608,6 +3771,79 @@ Module env_access.
     End EnvAccess.
   End EnvAccess.
   Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
+  
+  Module Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+    Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+      Context {E : Set}.
+      Definition Self := ink.env_access.EnvAccess E.
+      
+      Global Instance I : core.marker.Copy.Trait Self := {
+      }.
+    End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+  
+  Module Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+    Section Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+      Context {E : Set}.
+      Definition Self := ink.env_access.EnvAccess E.
+      
+      Parameter clone :
+          forall `{H' : State.Trait},
+          (ref Self) -> M (H := H') (ink.env_access.EnvAccess E).
+      
+      Global Instance Method_clone `{H' : State.Trait} :
+        Notation.Dot "clone" := {
+        Notation.dot := clone;
+      }.
+      
+      Global Instance I : core.clone.Clone.Trait Self := {
+        core.clone.Clone.clone `{H' : State.Trait} := clone;
+      }.
+    End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+    Global Hint Resolve I : core.
+  End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+  
+  Module Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+    Section Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+      Context {E : Set}.
+      Definition Self := ink.env_access.EnvAccess E.
+      
+      Parameter default : forall `{H' : State.Trait}, M (H := H') Self.
+      
+      Global Instance AssociatedFunction_default `{H' : State.Trait} :
+        Notation.DoubleColon Self "default" := {
+        Notation.double_colon := default;
+      }.
+      
+      Global Instance I : core.default.Default.Trait Self := {
+        core.default.Default.default `{H' : State.Trait} := default;
+      }.
+    End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+    Global Hint Resolve I : core.
+  End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+  
+  Module Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+    Section Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+      Context {E : Set}.
+      Definition Self := ink.env_access.EnvAccess E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
 End env_access.
 
 Module EnvAccess.
@@ -2628,3 +3864,75 @@ Module EnvAccess.
   End EnvAccess.
 End EnvAccess.
 Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
+
+Module Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+  End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+  Global Hint Resolve I : core.
+End Impl_core_marker_Copy_for_ink_env_access_EnvAccess_E.
+
+Module Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter clone :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') (ink.env_access.EnvAccess E).
+    
+    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+      Notation.dot := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    }.
+  End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+  Global Hint Resolve I : core.
+End Impl_core_clone_Clone_for_ink_env_access_EnvAccess_E.
+
+Module Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter default : forall `{H' : State.Trait}, M (H := H') Self.
+    
+    Global Instance AssociatedFunction_default `{H' : State.Trait} :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    Global Instance I : core.default.Default.Trait Self := {
+      core.default.Default.default `{H' : State.Trait} := default;
+    }.
+  End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+  Global Hint Resolve I : core.
+End Impl_core_default_Default_for_ink_env_access_EnvAccess_E.
+
+Module Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+  Section Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+    Context {E : Set}.
+    Definition Self := ink.env_access.EnvAccess E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_env_access_EnvAccess_E.

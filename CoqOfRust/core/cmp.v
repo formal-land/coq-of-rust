@@ -124,13 +124,9 @@ pub trait Ord: Eq + PartialOrd<Self> {
 Module Ord.
   Class Trait (Self : Set) 
     `{Eq.Trait Self}
-    `{PartialOrd.Trait Self (Rhs := Self)} :={
-    cmp : ref Self -> ref Self -> Ordering;
-    max : Self -> Self -> Self;
-    min : Self -> Self -> Self;
-    clamp `{PartialOrd.Trait Self (Rhs := Self)} : Self -> Self -> Self;
-
-    }.
+    `{PartialOrd.Trait Self (Rhs := Self)} := {
+    cmp `{H : State.Trait} : ref Self -> ref Self -> M (H := H) Ordering;
+  }.
 
   Module Impl_Ord_for_str.
     Global Instance I : Trait str. Admitted.
