@@ -312,7 +312,7 @@ Module reflect.
     Module ContractMessageDecoder.
       Class Trait (Self : Set) : Type := {
         Type_ : Set;
-        _
+        __the_bounds_of_Type_
           :
           Sigma
             `(parity_scale_codec.codec.Decode.Trait Type_)
@@ -324,6 +324,24 @@ Module reflect.
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
+      Module The_Bounds_Of_Type_.
+        Module parity_scale_codec_codec_Decode.
+          Global Instance I `(Trait)
+            : parity_scale_codec.codec.Decode.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End parity_scale_codec_codec_Decode.
+        Module ink_reflect_dispatch_ExecuteDispatchable.
+          Global Instance I `(Trait)
+            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End ink_reflect_dispatch_ExecuteDispatchable.
+      End The_Bounds_Of_Type_.
     End ContractMessageDecoder.
     
     Module DecodeDispatch.
@@ -350,7 +368,7 @@ Module reflect.
     Module ContractConstructorDecoder.
       Class Trait (Self : Set) : Type := {
         Type_ : Set;
-        _
+        __the_bounds_of_Type_
           :
           Sigma
             `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
@@ -362,6 +380,24 @@ Module reflect.
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
+      Module The_Bounds_Of_Type_.
+        Module ink_reflect_dispatch_DecodeDispatch.
+          Global Instance I `(Trait)
+            : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End ink_reflect_dispatch_DecodeDispatch.
+        Module ink_reflect_dispatch_ExecuteDispatchable.
+          Global Instance I `(Trait)
+            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End ink_reflect_dispatch_ExecuteDispatchable.
+      End The_Bounds_Of_Type_.
     End ContractConstructorDecoder.
   End dispatch.
   
@@ -663,7 +699,7 @@ Module codegen.
       Module TraitCallForwarder.
         Class Trait (Self : Set) : Type := {
           Forwarder : Set;
-          _
+          __the_bounds_of_Forwarder
             :
             Sigma
               `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
@@ -675,12 +711,23 @@ Module codegen.
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
+        Module The_Bounds_Of_Forwarder.
+          Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+            Global Instance I `(Trait)
+              : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                  Forwarder.
+            repeat
+            (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+            try assumption).
+            Defined.
+          End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+        End The_Bounds_Of_Forwarder.
       End TraitCallForwarder.
       
       (* Module TraitCallForwarderFor.
         Class Trait (Self : Set) : Type := {
           Forwarder : Set;
-          _
+          __the_bounds_of_Forwarder
             :
             Sigma
               `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
@@ -728,6 +775,17 @@ Module codegen.
           : Notation.Dot "build_mut" := {
           Notation.dot := build_mut;
         }.
+        Module The_Bounds_Of_Forwarder.
+          Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+            Global Instance I `(Trait)
+              : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                  Forwarder.
+            repeat
+            (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+            try assumption).
+            Defined.
+          End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+        End The_Bounds_Of_Forwarder.
       End TraitCallForwarderFor. *)
     End call_builder.
     
@@ -1303,7 +1361,7 @@ Module trait_def.
     Module TraitCallForwarder.
       Class Trait (Self : Set) : Type := {
         Forwarder : Set;
-        _
+        __the_bounds_of_Forwarder
           :
           Sigma
             `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
@@ -1315,12 +1373,23 @@ Module trait_def.
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
+      Module The_Bounds_Of_Forwarder.
+        Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+          Global Instance I `(Trait)
+            : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                Forwarder.
+          repeat
+          (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+          try assumption).
+          Defined.
+        End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+      End The_Bounds_Of_Forwarder.
     End TraitCallForwarder.
     
     (* Module TraitCallForwarderFor.
       Class Trait (Self : Set) : Type := {
         Forwarder : Set;
-        _
+        __the_bounds_of_Forwarder
           :
           Sigma
             `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
@@ -1366,6 +1435,17 @@ Module trait_def.
         : Notation.Dot "build_mut" := {
         Notation.dot := build_mut;
       }.
+      Module The_Bounds_Of_Forwarder.
+        Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+          Global Instance I `(Trait)
+            : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                Forwarder.
+          repeat
+          (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+          try assumption).
+          Defined.
+        End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+      End The_Bounds_Of_Forwarder.
     End TraitCallForwarderFor. *)
   End call_builder.
   
@@ -1409,7 +1489,7 @@ Module call_builder.
   Module TraitCallForwarder.
     Class Trait (Self : Set) : Type := {
       Forwarder : Set;
-      _
+      __the_bounds_of_Forwarder
         :
         Sigma
           `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
@@ -1421,12 +1501,22 @@ Module call_builder.
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
+    Module The_Bounds_Of_Forwarder.
+      Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+        Global Instance I `(Trait)
+          : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
+        repeat
+        (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+        try assumption).
+        Defined.
+      End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+    End The_Bounds_Of_Forwarder.
   End TraitCallForwarder.
   
   (* Module TraitCallForwarderFor.
     Class Trait (Self : Set) : Type := {
       Forwarder : Set;
-      _
+      __the_bounds_of_Forwarder
         :
         Sigma
           `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
@@ -1472,6 +1562,16 @@ Module call_builder.
       : Notation.Dot "build_mut" := {
       Notation.dot := build_mut;
     }.
+    Module The_Bounds_Of_Forwarder.
+      Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+        Global Instance I `(Trait)
+          : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
+        repeat
+        (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+        try assumption).
+        Defined.
+      End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+    End The_Bounds_Of_Forwarder.
   End TraitCallForwarderFor. *)
 End call_builder.
 
@@ -1501,7 +1601,7 @@ End TraitCallBuilder.
 Module TraitCallForwarder.
   Class Trait (Self : Set) : Type := {
     Forwarder : Set;
-    _
+    __the_bounds_of_Forwarder
       :
       Sigma
         `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder),
@@ -1512,12 +1612,22 @@ Module TraitCallForwarder.
     : Notation.DoubleColonType Self "Forwarder" := {
     Notation.double_colon_type := Forwarder;
   }.
+  Module The_Bounds_Of_Forwarder.
+    Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+      Global Instance I `(Trait)
+        : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
+      repeat
+      (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+      try assumption).
+      Defined.
+    End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+  End The_Bounds_Of_Forwarder.
 End TraitCallForwarder.
 
 (* Module TraitCallForwarderFor.
   Class Trait (Self : Set) : Type := {
     Forwarder : Set;
-    _
+    __the_bounds_of_Forwarder
       :
       Sigma
         `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder),
@@ -1562,6 +1672,16 @@ End TraitCallForwarder.
     : Notation.Dot "build_mut" := {
     Notation.dot := build_mut;
   }.
+  Module The_Bounds_Of_Forwarder.
+    Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
+      Global Instance I `(Trait)
+        : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
+      repeat
+      (destruct __the_bounds_of_Forwarder [? __the_bounds_of_Forwarder]
+      try assumption).
+      Defined.
+    End ink_codegen_trait_def_call_builder_TraitCallBuilder.
+  End The_Bounds_Of_Forwarder.
 End TraitCallForwarderFor. *)
 
 Module trait_message.
@@ -1868,7 +1988,7 @@ Module Wrap_dispatch_1.
     Module ContractMessageDecoder.
       Class Trait (Self : Set) : Type := {
         Type_ : Set;
-        _
+        __the_bounds_of_Type_
           :
           Sigma
             `(parity_scale_codec.codec.Decode.Trait Type_)
@@ -1880,6 +2000,24 @@ Module Wrap_dispatch_1.
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
+      Module The_Bounds_Of_Type_.
+        Module parity_scale_codec_codec_Decode.
+          Global Instance I `(Trait)
+            : parity_scale_codec.codec.Decode.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End parity_scale_codec_codec_Decode.
+        Module ink_reflect_dispatch_ExecuteDispatchable.
+          Global Instance I `(Trait)
+            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End ink_reflect_dispatch_ExecuteDispatchable.
+      End The_Bounds_Of_Type_.
     End ContractMessageDecoder.
     
     Module DecodeDispatch.
@@ -1906,7 +2044,7 @@ Module Wrap_dispatch_1.
     Module ContractConstructorDecoder.
       Class Trait (Self : Set) : Type := {
         Type_ : Set;
-        _
+        __the_bounds_of_Type_
           :
           Sigma
             `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
@@ -1918,6 +2056,24 @@ Module Wrap_dispatch_1.
         : Notation.DoubleColonType Self "Type_" := {
         Notation.double_colon_type := Type_;
       }.
+      Module The_Bounds_Of_Type_.
+        Module ink_reflect_dispatch_DecodeDispatch.
+          Global Instance I `(Trait)
+            : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End ink_reflect_dispatch_DecodeDispatch.
+        Module ink_reflect_dispatch_ExecuteDispatchable.
+          Global Instance I `(Trait)
+            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+          try assumption).
+          Defined.
+        End ink_reflect_dispatch_ExecuteDispatchable.
+      End The_Bounds_Of_Type_.
     End ContractConstructorDecoder.
   End dispatch.
 End Wrap_dispatch_1.
@@ -2084,7 +2240,7 @@ Definition ConstructorOutputValue := @ConstructorOutputValue.t.
 Module ContractMessageDecoder.
   Class Trait (Self : Set) : Type := {
     Type_ : Set;
-    _
+    __the_bounds_of_Type_
       :
       Sigma
         `(parity_scale_codec.codec.Decode.Trait Type_)
@@ -2096,12 +2252,27 @@ Module ContractMessageDecoder.
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
+  Module The_Bounds_Of_Type_.
+    Module parity_scale_codec_codec_Decode.
+      Global Instance I `(Trait) : parity_scale_codec.codec.Decode.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      Defined.
+    End parity_scale_codec_codec_Decode.
+    Module ink_reflect_dispatch_ExecuteDispatchable.
+      Global Instance I `(Trait)
+        : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      Defined.
+    End ink_reflect_dispatch_ExecuteDispatchable.
+  End The_Bounds_Of_Type_.
 End ContractMessageDecoder.
 
 Module ContractConstructorDecoder.
   Class Trait (Self : Set) : Type := {
     Type_ : Set;
-    _
+    __the_bounds_of_Type_
       :
       Sigma
         `(ink.reflect.dispatch.DecodeDispatch.Trait Type_)
@@ -2113,6 +2284,22 @@ Module ContractConstructorDecoder.
     : Notation.DoubleColonType Self "Type_" := {
     Notation.double_colon_type := Type_;
   }.
+  Module The_Bounds_Of_Type_.
+    Module ink_reflect_dispatch_DecodeDispatch.
+      Global Instance I `(Trait)
+        : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      Defined.
+    End ink_reflect_dispatch_DecodeDispatch.
+    Module ink_reflect_dispatch_ExecuteDispatchable.
+      Global Instance I `(Trait)
+        : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      Defined.
+    End ink_reflect_dispatch_ExecuteDispatchable.
+  End The_Bounds_Of_Type_.
 End ContractConstructorDecoder.
 
 Module ExecuteDispatchable.
@@ -2395,13 +2582,26 @@ Module chain_extension.
   Module ChainExtension.
     Class Trait (Self : Set) : Type := {
       ErrorCode : Set;
-      _ : Sigma `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode), unit;
+      __the_bounds_of_ErrorCode
+        :
+        Sigma `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode),
+        unit;
     }.
     
     Global Instance Method_ErrorCode `(Trait)
       : Notation.DoubleColonType Self "ErrorCode" := {
       Notation.double_colon_type := ErrorCode;
     }.
+    Module The_Bounds_Of_ErrorCode.
+      Module ink_env_chain_extension_FromStatusCode.
+        Global Instance I `(Trait)
+          : ink_env.chain_extension.FromStatusCode.Trait ErrorCode.
+        repeat
+        (destruct __the_bounds_of_ErrorCode [? __the_bounds_of_ErrorCode]
+        try assumption).
+        Defined.
+      End ink_env_chain_extension_FromStatusCode.
+    End The_Bounds_Of_ErrorCode.
   End ChainExtension.
   
   Module private.
@@ -2478,13 +2678,26 @@ End ChainExtensionInstance.
 Module ChainExtension.
   Class Trait (Self : Set) : Type := {
     ErrorCode : Set;
-    _ : Sigma `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode), unit;
+    __the_bounds_of_ErrorCode
+      :
+      Sigma `(ink_env.chain_extension.FromStatusCode.Trait ErrorCode),
+      unit;
   }.
   
   Global Instance Method_ErrorCode `(Trait)
     : Notation.DoubleColonType Self "ErrorCode" := {
     Notation.double_colon_type := ErrorCode;
   }.
+  Module The_Bounds_Of_ErrorCode.
+    Module ink_env_chain_extension_FromStatusCode.
+      Global Instance I `(Trait)
+        : ink_env.chain_extension.FromStatusCode.Trait ErrorCode.
+      repeat
+      (destruct __the_bounds_of_ErrorCode [? __the_bounds_of_ErrorCode]
+      try assumption).
+      Defined.
+    End ink_env_chain_extension_FromStatusCode.
+  End The_Bounds_Of_ErrorCode.
 End ChainExtension.
 
 (* Module IsResultType.

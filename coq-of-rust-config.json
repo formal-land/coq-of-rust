@@ -95,9 +95,6 @@
         "CallBuilder": { "move": "up", "before": "build_call" },
         "Call": { "move": "up", "before": "build_call" }
       },
-      "top_level::call::create_builder": {
-        "build_create": { "move": "up" }
-      },
       "top_level::chain_extension": {
         "private": { "move": "up", "before": "IsResultType" }
       }

@@ -63,6 +63,7 @@ def update_ink_engine():
 Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
+    # the part below removes a duplicated module that caused a name conflict
     content = content.replace(
         """
 Module Error.
