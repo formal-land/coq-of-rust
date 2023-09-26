@@ -28,9 +28,8 @@ Module
     Context {A B : Set}.
     Definition Self := generics_phantom_type.PhantomTuple A B.
     
-    Global Instance I
-      : core.marker.StructuralPartialEq.Trait Self
-        := core.marker.StructuralPartialEq.Build_Trait _.
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Global Hint Resolve I : core.
@@ -98,9 +97,8 @@ Module
     Context {A B : Set}.
     Definition Self := generics_phantom_type.PhantomStruct A B.
     
-    Global Instance I
-      : core.marker.StructuralPartialEq.Trait Self
-        := core.marker.StructuralPartialEq.Build_Trait _.
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Global Hint Resolve I : core.

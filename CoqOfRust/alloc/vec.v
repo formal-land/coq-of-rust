@@ -59,25 +59,29 @@ Definition Drain (T : Set) (A : option Set) : Set :=
     Drain.t T A_type. *)
 
 (* BUGGED: same as above *)
-(* 
-pub struct IntoIter<T, A = Global>
-where
-    A: Allocator,
-{ /* private fields */ }
-*)
-Module IntoIter.
-  Parameter t : forall (T A : Set), Set.
-End IntoIter.
-Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
-  (* 
-  let A_type := (defaultType A Global) in
-  let traits 
-    `{Allocator.Trait A_type} 
-    := unit in
-    IntoIter.t T A_type. *)
 
-(* BUGGED: same as above *)
-(* BUGGED: Iterator dependency *)
+Module into_iter.
+  (* 
+  pub struct IntoIter<T, A = Global>
+  where
+      A: Allocator,
+  { /* private fields */ }
+  *)
+  Module IntoIter.
+    Parameter t : forall (T A : Set), Set.
+  End IntoIter.
+  Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
+    (* 
+    let A_type := (defaultType A Global) in
+    let traits 
+      `{Allocator.Trait A_type} 
+      := unit in
+      IntoIter.t T A_type. *)
+
+  (* BUGGED: same as above *)
+  (* BUGGED: Iterator dependency *)
+End into_iter.
+
 (* 
 pub struct Splice<'a, I, A = Global>
 where

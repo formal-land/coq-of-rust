@@ -64,8 +64,8 @@ End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
   
-  Global Instance I
-    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
+  Global Instance I : core.marker.Copy.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
@@ -118,8 +118,8 @@ Module
   Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
   Definition Self := unpacking_options_via_question_mark.PhoneNumber.
   
-  Global Instance I
-    : core.marker.Copy.Trait Self := core.marker.Copy.Build_Trait _.
+  Global Instance I : core.marker.Copy.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 

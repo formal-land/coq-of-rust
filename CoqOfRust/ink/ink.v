@@ -3,8 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.ink_env.
 
 Module result_info.
-  Module IsResultType.
-    Section IsResultType.
+  (* Module IsResultType.
+    (* Section IsResultType.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t : Set := {
@@ -18,9 +18,9 @@ Module result_info.
       Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
         Notation.double_colon '(Build_t x0) := x0;
       }.
-    End IsResultType.
-  End IsResultType.
-  Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
+    End IsResultType. *)
+  End IsResultType. *)
+  
   
   Module IsResultTypeFallback.
     Class Trait (Self : Set) : Type := {
@@ -61,8 +61,8 @@ Module result_info.
   End IsResultErrFallback.
 End result_info.
 
-Module IsResultType.
-  Section IsResultType.
+(* Module IsResultType.
+  (* Section IsResultType.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t : Set := {
@@ -76,9 +76,9 @@ Module IsResultType.
     Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
       Notation.double_colon '(Build_t x0) := x0;
     }.
-  End IsResultType.
-End IsResultType.
-Definition IsResultType (T : Set) : Set := IsResultType.t (T := T).
+  End IsResultType. *)
+End IsResultType. *)
+
 
 Module IsResultTypeFallback.
   Class Trait (Self : Set) : Type := {
@@ -2420,7 +2420,7 @@ Module chain_extension.
     End OutputSealed.
   End private.
   
-  Module IsResultType.
+  (* Module IsResultType.
     Class Trait
         (Self : Set)
         `{ink.chain_extension.private.IsResultSealed.Trait Self} :
@@ -2436,7 +2436,7 @@ Module chain_extension.
       : Notation.DoubleColonType Self "Err" := {
       Notation.double_colon_type := Err;
     }.
-  End IsResultType.
+  End IsResultType. *)
   
   Module Output.
     Class Trait

@@ -841,9 +841,8 @@ Module erc20.
   Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Global Instance I
-      : core.marker.StructuralPartialEq.Trait Self
-        := core.marker.StructuralPartialEq.Build_Trait _.
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
   
@@ -873,9 +872,8 @@ Module erc20.
   Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
     Definition Self := erc20.erc20.Erc20Ref.
     
-    Global Instance I
-      : core.marker.StructuralEq.Trait Self
-        := core.marker.StructuralEq.Build_Trait _.
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
   
@@ -1390,9 +1388,8 @@ Module erc20.
   Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
     
-    Global Instance I
-      : core.marker.StructuralPartialEq.Trait Self
-        := core.marker.StructuralPartialEq.Build_Trait _.
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
   
@@ -1424,9 +1421,8 @@ Module erc20.
   Module Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
     
-    Global Instance I
-      : core.marker.StructuralEq.Trait Self
-        := core.marker.StructuralEq.Build_Trait _.
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
   
@@ -2036,7 +2032,8 @@ Module
   Global Instance I
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+      := {
+  }.
   Global Hint Resolve I : core.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___ink_EventBase.
@@ -2344,7 +2341,8 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
   Global Instance I
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+      := {
+  }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Transfer.
 
@@ -2479,7 +2477,8 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
   Global Instance I
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+      := {
+  }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Approval.
 
@@ -4541,7 +4540,8 @@ Module
   Global Instance I
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+      := {
+  }.
   Global Hint Resolve I : core.
 End
   Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20___CallBuilder.
@@ -4685,9 +4685,8 @@ End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
 Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Global Instance I
-    : core.marker.StructuralPartialEq.Trait Self
-      := core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_erc20_erc20___CallBuilder.
 
@@ -4716,9 +4715,8 @@ End Impl_core_cmp_PartialEq_for_erc20_erc20___CallBuilder.
 Module Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
-  Global Instance I
-    : core.marker.StructuralEq.Trait Self
-      := core.marker.StructuralEq.Build_Trait _.
+  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_erc20_erc20___CallBuilder.
 
@@ -5285,7 +5283,8 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
   Global Instance I
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+      := {
+  }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Erc20Ref.
 
@@ -5349,9 +5348,8 @@ End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
 Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Global Instance I
-    : core.marker.StructuralPartialEq.Trait Self
-      := core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Erc20Ref.
 
@@ -5380,9 +5378,8 @@ End Impl_core_cmp_PartialEq_for_erc20_erc20_Erc20Ref.
 Module Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
-  Global Instance I
-    : core.marker.StructuralEq.Trait Self
-      := core.marker.StructuralEq.Build_Trait _.
+  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_erc20_erc20_Erc20Ref.
 
@@ -6551,9 +6548,8 @@ End Impl_core_fmt_Debug_for_erc20_erc20_Error.
 Module Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Global Instance I
-    : core.marker.StructuralPartialEq.Trait Self
-      := core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_erc20_erc20_Error.
 
@@ -6584,9 +6580,8 @@ End Impl_core_cmp_PartialEq_for_erc20_erc20_Error.
 Module Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.
   
-  Global Instance I
-    : core.marker.StructuralEq.Trait Self
-      := core.marker.StructuralEq.Build_Trait _.
+  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_erc20_erc20_Error.
 
@@ -6649,7 +6644,8 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
   Global Instance I
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
-      := parity_scale_codec.encode_like.EncodeLike.Build_Trait _.
+      := {
+  }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_erc20_erc20_Error.
 

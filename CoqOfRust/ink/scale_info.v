@@ -626,6 +626,28 @@ Module interner.
   End Impl_Debug_for_UntrackedSymbol.
 End interner.
 
+Module meta_type.
+  Module MetaType.
+    Parameter T_fn_type_info : Set.
+
+    Unset Primitive Projections.
+    Record t : Set := {
+      (* fn_type_info : (scale_info.ty.Type_ scale_info.form.MetaForm); *)
+      fn_type_info : T_fn_type_info;
+      type_id : core.any.TypeId;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_fn_type_info : Notation.Dot "fn_type_info" := {
+      Notation.dot '(Build_t x0 _) := x0;
+    }.
+    Global Instance Get_type_id : Notation.Dot "type_id" := {
+      Notation.dot '(Build_t _ x1) := x1;
+    }.
+  End MetaType.
+  Definition MetaType : Set := @MetaType.t.
+End meta_type.
+
 Module form.
   Module JsonSchemaMaybe.
     Unset Primitive Projections.
@@ -649,47 +671,37 @@ Module form.
   End Impl_JsonSchemaMaybe_for_str.
 
   Module Form.
-    Class Trait
-        (Self : Set)
-        {Type_ : Set}
-        `{core.cmp.PartialEq.Trait Type_ (Rhs := Type_)}
-        `{core.cmp.Eq.Trait Type_}
-        `{core.cmp.PartialOrd.Trait Type_ (Rhs := Type_)}
-        `{core.cmp.Ord.Trait Type_}
-        `{core.clone.Clone.Trait Type_}
-        `{core.fmt.Debug.Trait Type_}
-        `{scale_info.form.JsonSchemaMaybe.Trait Type_}
-        {String : Set}
-        `{core.convert.AsRef.Trait String (T := str)}
-        `{core.cmp.PartialEq.Trait String (Rhs := String)}
-        `{core.cmp.Eq.Trait String}
-        `{core.cmp.PartialOrd.Trait String (Rhs := String)}
-        `{core.cmp.Ord.Trait String}
-        `{core.clone.Clone.Trait String}
-        `{core.fmt.Debug.Trait String}
-        `{scale_info.form.JsonSchemaMaybe.Trait String} :
-        Set := {
-      Type_ := Type_;
-      String := String;
+    Class Trait (Self : Set) : Type := {
+      Type_ : Set;
+      _ : Sigma
+        `(core.cmp.PartialEq.Trait Type_ (Rhs := Type_))
+        `(core.cmp.Eq.Trait Type_)
+        `(core.cmp.PartialOrd.Trait Type_ (Rhs := Type_))
+        `(core.cmp.Ord.Trait Type_)
+        `(core.clone.Clone.Trait Type_)
+        `(core.fmt.Debug.Trait Type_)
+        `(scale_info.form.JsonSchemaMaybe.Trait Type_),
+        unit;
+      String : Set;
+      _ : Sigma
+        `(core.convert.AsRef.Trait String (T := str))
+        `(core.cmp.PartialEq.Trait String (Rhs := String))
+        `(core.cmp.Eq.Trait String)
+        `(core.cmp.PartialOrd.Trait String (Rhs := String))
+        `(core.cmp.Ord.Trait String)
+        `(core.clone.Clone.Trait String)
+        `(core.fmt.Debug.Trait String)
+        `(scale_info.form.JsonSchemaMaybe.Trait String),
+        unit;
     }.
-    
-    Global Instance
-        Method_Type_
-        `{H : State.Trait}
-        {Type_}
-        `(Trait
-        (Type_ := Type_))
+
+    Global Instance Method_Type_ `(Trait)
       : Notation.DoubleColonType Self "Type_" := {
-      Notation.double_colon_type := Type_;
+      Notation.double_colon_type := form.Form.Type_;
     }.
-    Global Instance
-        Method_String
-        `{H : State.Trait}
-        {String}
-        `(Trait
-        (String := String))
+    Global Instance Method_String `(Trait)
       : Notation.DoubleColonType Self "String" := {
-      Notation.double_colon_type := String;
+      Notation.double_colon_type := form.Form.String;
     }.
   End Form.
   
@@ -698,7 +710,19 @@ Module form.
     .
   End MetaForm.
   Definition MetaForm := MetaForm.t.
-  
+
+  Global Instance Form_for_MetaForm : form.Form.Trait MetaForm.
+  Admitted.
+
+  Global Instance Method_Type_
+    : Notation.DoubleColonType MetaForm "Type_" := {
+    Notation.double_colon_type := form.Form.Type_ (Self := MetaForm);
+  }.
+  Global Instance Method_String
+    : Notation.DoubleColonType MetaForm "String" := {
+    Notation.double_colon_type := form.Form.String (Self := MetaForm);
+  }.
+
   Module PortableForm.
     Inductive t : Set :=
     .
@@ -750,8 +774,7 @@ Module form.
 
   (* manual implementation *)
   Module Impl_Form_for_PortableForm.
-    Global Instance I : scale_info.form.Form.Trait PortableForm
-      (Type_ := interner.UntrackedSymbol core.any.TypeId) (String := str).
+    Global Instance I : scale_info.form.Form.Trait PortableForm.
     Admitted.
   End Impl_Form_for_PortableForm.
 End form.
@@ -882,25 +905,6 @@ Module Interner.
 End Interner.
 Definition Interner : Set := @Interner.t.
 
-Module meta_type.
-  Module MetaType.
-    Unset Primitive Projections.
-    Record t : Set := {
-      fn_type_info : (scale_info.ty.Type_ scale_info.form.MetaForm);
-      type_id : core.any.TypeId;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_fn_type_info : Notation.Dot "fn_type_info" := {
-      Notation.dot '(Build_t x0 _) := x0;
-    }.
-    Global Instance Get_type_id : Notation.Dot "type_id" := {
-      Notation.dot '(Build_t _ x1) := x1;
-    }.
-  End MetaType.
-  Definition MetaType : Set := @MetaType.t.
-End meta_type.
-
 Module MetaType.
   Unset Primitive Projections.
   Record t : Set := {
@@ -925,15 +929,13 @@ Module ty.
       Section Field.
         Context {T : Set}.
         Context `{form.Form.Trait T}.
+
         Unset Primitive Projections.
         Record t : Set := {
-          name : core.option.Option (* T::type["String"] *)
-            (* temporary: *) String0;
-          ty : (* T::type["Type_"] *) (* temporary: *) Type_;
-          type_name : core.option.Option (* T::type["String"] *)
-          (* temporary: *) String0;
-          docs : alloc.vec.Vec (* T::type["String"] *)
-          (* temporary: *) String0;
+          name : core.option.Option T::type["String"];
+          ty : T::type["Type_"];
+          type_name : core.option.Option T::type["String"];
+          docs : alloc.vec.Vec T::type["String"];
         }.
         Global Set Primitive Projections.
         
@@ -951,8 +953,8 @@ Module ty.
         }.
       End Field.
     End Field.
-    Definition Field (T : Set) `{form.Form.Trait T}
-      := Field.t (Type_ := Type_) (String0 := String0).
+    Definition Field (T : Set) `{form.Form.Trait T} : Set :=
+      Field.t (T := T).
   End fields.
 
   Module composite.
@@ -960,7 +962,7 @@ Module ty.
       Section TypeDefComposite.
         Context {T : Set}.
         Context `{form.Form.Trait T}.
-        Unset Primitive Projections.
+
         Record t : Set := {
           fields : alloc.vec.Vec (scale_info.ty.fields.Field T);
         }.
@@ -971,8 +973,8 @@ Module ty.
         }.
       End TypeDefComposite.
     End TypeDefComposite.
-    Definition TypeDefComposite (T : Set) `{form.Form.Trait T}
-      := TypeDefComposite.t (Type_ := Type_) (String0 := String0).
+    Definition TypeDefComposite (T : Set) `{form.Form.Trait T} : Set :=
+      TypeDefComposite.t (T := T).
   End composite.
   (* moved: Module TypeDef. *)
   
@@ -981,10 +983,10 @@ Module ty.
       Section Path.
         Context {T : Set}.
         Context `{form.Form.Trait T}.
+
         Unset Primitive Projections.
         Record t : Set := {
-          segments : alloc.vec.Vec
-            (* T::type["String"] *) (* temporary: *) String0;
+          segments : alloc.vec.Vec T::type["String"];
         }.
         Global Set Primitive Projections.
         
@@ -993,7 +995,8 @@ Module ty.
         }.
       End Path.
     End Path.
-    Definition Path := @Path.t.
+    Definition Path (T : Set) `{form.Form.Trait T} : Set :=
+      Path.t (T := T).
     
     Module PathError.
       Module InvalidIdentifier.
@@ -1016,13 +1019,13 @@ Module ty.
       Section Variant.
         Context {T : Set}.
         Context `{form.Form.Trait T}.
+
         Unset Primitive Projections.
         Record t : Set := {
-          name : (* T::type["String"] *) (* temporary: *) String0;
+          name : T::type["String"];
           fields : alloc.vec.Vec (scale_info.ty.fields.Field T);
           index : u8;
-          docs : alloc.vec.Vec
-            (* T::type["String"] *) (* temporary: *) String0;
+          docs : alloc.vec.Vec T::type["String"];
         }.
         Global Set Primitive Projections.
         
@@ -1040,13 +1043,14 @@ Module ty.
         }.
       End Variant.
     End Variant.
-    Definition Variant (T : Set) `{form.Form.Trait T}
-      := Variant.t (Type_ := Type_) (String0 := String0).
+    Definition Variant (T : Set) `{form.Form.Trait T} : Set :=
+      Variant.t (T := T).
 
     Module TypeDefVariant.
       Section TypeDefVariant.
         Context {T : Set}.
         Context `{form.Form.Trait T}.
+
         Unset Primitive Projections.
         Record t : Set := {
           variants : alloc.vec.Vec (scale_info.ty.variant.Variant T);
@@ -1058,8 +1062,8 @@ Module ty.
         }.
       End TypeDefVariant.
     End TypeDefVariant.
-    Definition TypeDefVariant (T : Set) `{form.Form.Trait T}
-      := TypeDefVariant.t (Type_ := Type_) (String0 := String0).
+    Definition TypeDefVariant (T : Set) `{form.Form.Trait T} : Set :=
+      TypeDefVariant.t (T := T).
     (* moved: Module Variant. *)
   End variant.
   
@@ -1067,12 +1071,11 @@ Module ty.
     Section TypeParameter.
       Context {T : Set}.
       Context `{form.Form.Trait T}.
+
       Unset Primitive Projections.
       Record t : Set := {
-        name : (* T::type["String"] *)
-          (* temporary *) String0;
-        ty : core.option.Option (* T::type["Type_"] *)
-          (* temporary *) Type_;
+        name : T::type["String"];
+        ty : core.option.Option T::type["Type_"];
       }.
       Global Set Primitive Projections.
       
@@ -1084,17 +1087,17 @@ Module ty.
       }.
     End TypeParameter.
   End TypeParameter.
-  Definition TypeParameter (T : Set) `{form.Form.Trait T}
-    := TypeParameter.t (Type_ := Type_) (String0 := String0).
+  Definition TypeParameter (T : Set) `{form.Form.Trait T} : Set :=
+    TypeParameter.t (T := T).
 
   Module TypeDefSequence.
     Section TypeDefSequence.
       Context {T : Set}.
       Context `{form.Form.Trait T}.
+
       Unset Primitive Projections.
       Record t : Set := {
-        type_param : (* T::type["Type_"] *)
-        (* temporary *) Type_;
+        type_param : T::type["Type_"];
       }.
       Global Set Primitive Projections.
       
@@ -1103,8 +1106,8 @@ Module ty.
       }.
     End TypeDefSequence.
   End TypeDefSequence.
-  Definition TypeDefSequence (T : Set) `{form.Form.Trait T}
-    := TypeDefSequence.t (Type_ := Type_).
+  Definition TypeDefSequence (T : Set) `{form.Form.Trait T} : Set :=
+    TypeDefSequence.t (T := T).
   
   Module TypeDefArray.
     Section TypeDefArray.
@@ -1113,8 +1116,7 @@ Module ty.
       Unset Primitive Projections.
       Record t : Set := {
         len : u32;
-        type_param : (* T::type["Type_"] *)
-        (* temporary *) Type_;
+        type_param : T::type["Type_"];
       }.
       Global Set Primitive Projections.
       
@@ -1126,8 +1128,8 @@ Module ty.
       }.
     End TypeDefArray.
   End TypeDefArray.
-  Definition TypeDefArray (T : Set) `{form.Form.Trait T}
-    := TypeDefArray.t (Type_ := Type_).
+  Definition TypeDefArray (T : Set) `{form.Form.Trait T} : Set :=
+    TypeDefArray.t (T := T).
   
   Module TypeDefTuple.
     Section TypeDefTuple.
@@ -1135,8 +1137,7 @@ Module ty.
       Context `{form.Form.Trait T}.
       Unset Primitive Projections.
       Record t : Set := {
-        fields : alloc.vec.Vec (* T::type["Type_"] *)
-        (* temporary *) Type_;
+        fields : alloc.vec.Vec T::type["Type_"];
       }.
       Global Set Primitive Projections.
       
@@ -1145,8 +1146,8 @@ Module ty.
       }.
     End TypeDefTuple.
   End TypeDefTuple.
-  Definition TypeDefTuple (T : Set) `{form.Form.Trait T}
-    := TypeDefTuple.t (Type_ := Type_).
+  Definition TypeDefTuple (T : Set) `{form.Form.Trait T} : Set :=
+    TypeDefTuple.t (T := T).
 
   Module TypeDefPrimitive.
     Inductive t : Set :=
@@ -1174,8 +1175,7 @@ Module ty.
       Context `{form.Form.Trait T}.
       Unset Primitive Projections.
       Record t : Set := {
-        type_param : (* T::type["Type_"] *)
-        (* temporary *) Type_;
+        type_param : T::type["Type_"];
       }.
       Global Set Primitive Projections.
       
@@ -1185,7 +1185,7 @@ Module ty.
     End TypeDefCompact.
   End TypeDefCompact.
   Definition TypeDefCompact (T : Set) `{form.Form.Trait T}
-    := TypeDefCompact.t (Type_ := Type_).
+    := TypeDefCompact.t (T := T).
   
   Module TypeDefBitSequence.
     Section TypeDefBitSequence.
@@ -1193,10 +1193,8 @@ Module ty.
       Context `{form.Form.Trait T}.
       Unset Primitive Projections.
       Record t : Set := {
-        bit_store_type : (* T::type["Type_"] *)
-        (* temporary *) Type_;
-        bit_order_type : (* T::type["Type_"] *)
-        (* temporary *) Type_;
+        bit_store_type : T::type["Type_"];
+        bit_order_type : T::type["Type_"];
       }.
       Global Set Primitive Projections.
       
@@ -1209,7 +1207,7 @@ Module ty.
     End TypeDefBitSequence.
   End TypeDefBitSequence.
   Definition TypeDefBitSequence (T : Set) `{form.Form.Trait T}
-    := TypeDefBitSequence.t (Type_ := Type_).
+    := TypeDefBitSequence.t (T := T).
 
   Module TypeDef.
     Section TypeDef.
@@ -1232,13 +1230,13 @@ Module ty.
     Section Type_.
       Context {T : Set}.
       Context `{form.Form.Trait T}.
+
       Unset Primitive Projections.
       Record t : Set := {
         path : scale_info.ty.path.Path T;
         type_params : alloc.vec.Vec (scale_info.ty.TypeParameter T);
         type_def : scale_info.ty.TypeDef T;
-        docs : alloc.vec.Vec (* T::type["String"] *)
-          (* temporary *) String0;
+        docs : alloc.vec.Vec T::type["String"];
       }.
       Global Set Primitive Projections.
       
@@ -1255,8 +1253,13 @@ Module ty.
         Notation.dot '(Build_t _ _ _ x3) := x3;
       }.
     End Type_.
+
+    Module Default.
+      Definition T : Set := form.MetaForm.
+    End Default.
   End Type_.
-  Definition Type_ (T : Set) `{form.Form.Trait T} := Type_.t (T := T).
+  Definition Type_ (T : Set) `{form.Form.Trait T} : Set :=
+    Type_.t (T := T).
   (* moved: Module TypeParameter. *)
   (* moved: Module TypeDef. *)
   (* moved: Module TypeDefPrimitive. *)
@@ -1268,20 +1271,6 @@ Module ty.
 End ty.
 
 Module portable.
-  (*
-  Module PortableRegistry.
-    Unset Primitive Projections.
-    Record t : Set := {
-      types : alloc.vec.Vec scale_info.portable.PortableType;
-    }.
-    Global Set Primitive Projections.
-    
-    Global Instance Get_types : Notation.Dot "types" := {
-      Notation.dot '(Build_t x0) := x0;
-    }.
-  End PortableRegistry.
-  Definition PortableRegistry : Set := @PortableRegistry.t.
-  *)
   Module PortableType.
     Unset Primitive Projections.
     Record t : Set := {
@@ -1298,6 +1287,20 @@ Module portable.
     }.
   End PortableType.
   Definition PortableType : Set := @PortableType.t.
+
+  Module PortableRegistry.
+    Unset Primitive Projections.
+    Record t : Set := {
+      types : alloc.vec.Vec scale_info.portable.PortableType;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_types : Notation.Dot "types" := {
+      Notation.dot '(Build_t x0) := x0;
+    }.
+  End PortableRegistry.
+  Definition PortableRegistry : Set := PortableRegistry.t.
+
   (*
   Module PortableRegistryBuilder.
     Unset Primitive Projections.
@@ -1317,18 +1320,8 @@ Module portable.
   *)
 End portable.
 
-Module PortableRegistry.
-  Unset Primitive Projections.
-  Record t : Set := {
-    types : alloc.vec.Vec scale_info.portable.PortableType;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_types : Notation.Dot "types" := {
-    Notation.dot '(Build_t x0) := x0;
-  }.
-End PortableRegistry.
-Definition PortableRegistry : Set := @PortableRegistry.t.
+Definition PortableRegistry : Set := portable.PortableRegistry.
+
 (*
 Module PortableType.
   Unset Primitive Projections.
@@ -1881,23 +1874,16 @@ End utils.
 Parameter is_rust_identifier : forall `{H : State.Trait},
     ref str ->
     M (H := H) bool.
+*)
 
 Module TypeInfo.
-  Class Trait
-      (Self : Set)
-      {Identity : Set}
-      `{core.marker.Sized.Trait Identity} :
-      Set := {
-    Identity := Identity;
-    type_info `{H : State.Trait} : (M (H := H) scale_info.ty.Type_);
+  Class Trait (Self : Set) : Type := {
+    Identity : Set;
+    type_info `{H : State.Trait} :
+      M (H := H) (scale_info.ty.Type_ scale_info.ty.Type_.Default.T);
   }.
   
-  Global Instance
-      Method_Identity
-      `{H : State.Trait}
-      {Identity}
-      `(Trait
-      (Identity := Identity))
+  Global Instance Method_Identity `(Trait)
     : Notation.DoubleColonType Self "Identity" := {
     Notation.double_colon_type := Identity;
   }.
@@ -1921,4 +1907,3 @@ Parameter meta_type : forall `{H : State.Trait},
       `{scale_info.TypeInfo.Trait
       T},
       M (H := H) scale_info.meta_type.MetaType.
-*)

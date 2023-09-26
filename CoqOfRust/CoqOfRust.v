@@ -32,8 +32,9 @@ Global Set Primitive Projections.
 Global Set Printing Projections.
 Global Open Scope list_scope.
 Global Open Scope string_scope.
-Global Open Scope type_scope.
 Global Open Scope Z_scope.
+(* We open the type scope after the Z scope for the [*] operator. *)
+Global Open Scope type_scope.
 
 Export List.ListNotations.
 
@@ -181,6 +182,7 @@ End alloc.
 
 Require CoqOfRust.core.alloc.
 Require CoqOfRust.core.any.
+Require CoqOfRust.core.array.
 Require CoqOfRust.core.borrow.
 Require CoqOfRust.core.cell.
 Require CoqOfRust.core.clone.
@@ -198,6 +200,7 @@ Require CoqOfRust.core.panic.unwind_safe.
 Module core.
   Export CoqOfRust.core.alloc.
   Export CoqOfRust.core.any.
+  Export CoqOfRust.core.array.
   Export CoqOfRust.core.borrow.
   Export CoqOfRust.core.cell.
   Export CoqOfRust.core.clone.
@@ -1077,7 +1080,6 @@ Module core.
 End core.
 
 Require CoqOfRust._std.arch.
-Require CoqOfRust._std.array.
 Require CoqOfRust._std.ascii.
 Require CoqOfRust._std.assert_matches.
 Require CoqOfRust._std.async_iter.
@@ -1118,7 +1120,6 @@ Require Import CoqOfRust._std.time.
 
 Module std.
   Module arch := _std.arch.
-  Module array := _std.array.
   Module ascii := _std.ascii.
   Module backtrace := _std.backtrace.
   Module borrow := core.borrow.
@@ -1698,7 +1699,7 @@ Module Impl_IntoIter_for_Vec.
   Definition Self := alloc.vec.Vec T (* (Some A) *).
 
   Definition Item := T.
-  Definition IntoIter := alloc.vec.IntoIter T None (* (Some A) *).
+  Definition IntoIter := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
 
   Parameter into_iter :
     forall `{State.Trait}, Self -> M IntoIter.
@@ -1721,7 +1722,7 @@ Module Impl_Iterator_for_Vec_IntoIter.
   Section Impl_Iterator_for_Vec_IntoIter.
   Context {T (* A *) : Set}.
 (*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := alloc.vec.IntoIter T None (* (Some A) *).
+  Definition Self := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
 
   Definition Item := T.
 
@@ -1740,10 +1741,10 @@ Module Impl_IntoIter_for_Vec_IntoIter.
   Section Impl_IntoIter_for_Vec_IntoIter.
   Context {T (* A *) : Set}.
 (*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := alloc.vec.IntoIter T None (* (Some A) *).
+  Definition Self := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
 
   Definition Item := T.
-  Definition IntoIter := alloc.vec.IntoIter T None (* (Some A) *).
+  Definition IntoIter := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
 
   Definition into_iter `{State.Trait} (self : Self) : M IntoIter := Pure self.
 

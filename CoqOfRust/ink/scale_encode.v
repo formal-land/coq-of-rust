@@ -3,15 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.ink.alloc.
 Require Import CoqOfRust.ink.scale_info.
 
+Parameter PortableField : Set.
+
 Definition PortableRegistry := scale_info.PortableRegistry.
 
-(* pub struct Error { /* private fields */ } *)
-Module Error.
-  Unset Primitive Projections.
-  Record t : Set := {}.
-  Set Primitive Projections.
-End Error.
-Definition Error := Error.t.
+Module error.
+  Parameter Error : Set.
+End error.
+
+Definition Error : Set := error.Error.
 
 (*
 pub trait EncodeAsType {
@@ -29,8 +29,21 @@ pub trait EncodeAsType {
 *)
 Module EncodeAsType.
   Class Trait (Self : Set) := {
-    encode_as_type_to :
+    encode_as_type_to `{H' : State.Trait} :
       ref Self -> u32 -> ref PortableRegistry -> mut_ref (alloc.vec.Vec u8) ->
-        core.result.Result unit Error;
+      M (H := H') (core.result.Result unit Error);
   }.
 End EncodeAsType.
+
+Module EncodeAsFields.
+  Class Trait (Self : Set) : Type := {
+    encode_as_fields_to
+      `{H' : State.Trait}
+      :
+      (ref Self) ->
+      (ref (Slice scale_encode.PortableField)) ->
+      (ref scale_info.portable.PortableRegistry) ->
+      (mut_ref (alloc.vec.Vec u8)) ->
+      (M (H := H') (core.result.Result unit scale_encode.error.Error));
+  }.
+End EncodeAsFields.

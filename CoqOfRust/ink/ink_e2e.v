@@ -148,6 +148,50 @@ Module client.
       : Set :=
     UploadResult.t (C := C) (E := E).
   
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+      Context {C E : Set}.
+      Definition Self := ink_e2e.client.UploadResult C E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+      Context {C E : Set}.
+      Definition Self := ink_e2e.client.InstantiationResult C E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+  
   Module CallResult.
     Section CallResult.
       Context {C E V : Set}.
@@ -181,6 +225,28 @@ Module client.
       `{ink_env.types.Environment.Trait E}
       : Set :=
     CallResult.t (C := C) (E := E) (V := V).
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+      Context {C E V : Set}.
+      Definition Self := ink_e2e.client.CallResult C E V.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   
   Module CallDryRunResult.
     Section CallDryRunResult.
@@ -216,6 +282,28 @@ Module client.
       : Set :=
     CallDryRunResult.t (E := E) (V := V).
   
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+      Context {E V : Set}.
+      Definition Self := ink_e2e.client.CallDryRunResult E V.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+  
   Module Error.
     Inductive t : Set :=
     | ContractNotFound (_ : alloc.string.String)
@@ -243,6 +331,247 @@ Module client.
     | Decoding (_ : subxt.error.Error).
   End Error.
   Definition Error := Error.t.
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+      Context {C E : Set}.
+      Definition Self := ink_e2e.client.Error C E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  
+  Module
+    Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Section
+      Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Parameter encode_as_type_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_type_to" := {
+        Notation.dot := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+          :=
+          encode_as_type_to;
+      }.
+    End
+      Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Global Hint Resolve I : core.
+  End
+    Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  
+  Module
+    Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Section
+      Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Parameter encode_as_fields_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_fields_to" := {
+        Notation.dot := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+          :=
+          encode_as_fields_to;
+      }.
+    End
+      Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Global Hint Resolve I : core.
+  End
+    Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  
+  Module
+    Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Section
+      Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+      
+      Definition PALLET `{H' : State.Trait} := Pure "Contracts".
+      
+      Global Instance AssociatedFunction_PALLET `{H' : State.Trait} :
+        Notation.DoubleColon Self "PALLET" := {
+        Notation.double_colon := PALLET;
+      }.
+      
+      Definition EVENT `{H' : State.Trait} := Pure "Instantiated".
+      
+      Global Instance AssociatedFunction_EVENT `{H' : State.Trait} :
+        Notation.DoubleColon Self "EVENT" := {
+        Notation.double_colon := EVENT;
+      }.
+      
+      Global Instance I : subxt.events.StaticEvent.Trait Self := {
+        subxt.events.StaticEvent.PALLET `{H' : State.Trait} := PALLET;
+        subxt.events.StaticEvent.EVENT `{H' : State.Trait} := EVENT;
+      }.
+    End
+      Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Global Hint Resolve I : core.
+  End
+    Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.CodeStoredEvent E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+  
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+    Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.CodeStoredEvent E.
+      
+      Parameter encode_as_type_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_type_to" := {
+        Notation.dot := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+          :=
+          encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+  
+  Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+    Section
+      Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.CodeStoredEvent E.
+      
+      Parameter encode_as_fields_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_fields_to" := {
+        Notation.dot := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+          :=
+          encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+  
+  Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+    Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.client.CodeStoredEvent E.
+      
+      Definition PALLET `{H' : State.Trait} := Pure "Contracts".
+      
+      Global Instance AssociatedFunction_PALLET `{H' : State.Trait} :
+        Notation.DoubleColon Self "PALLET" := {
+        Notation.double_colon := PALLET;
+      }.
+      
+      Definition EVENT `{H' : State.Trait} := Pure "CodeStored".
+      
+      Global Instance AssociatedFunction_EVENT `{H' : State.Trait} :
+        Notation.DoubleColon Self "EVENT" := {
+        Notation.double_colon := EVENT;
+      }.
+      
+      Global Instance I : subxt.events.StaticEvent.Trait Self := {
+        subxt.events.StaticEvent.PALLET `{H' : State.Trait} := PALLET;
+        subxt.events.StaticEvent.EVENT `{H' : State.Trait} := EVENT;
+      }.
+    End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+    Global Hint Resolve I : core.
+  End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   
   Module Client.
     Section Client.
@@ -379,6 +708,50 @@ Definition UploadResult
     : Set :=
   UploadResult.t (C := C) (E := E).
 
+Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.client.UploadResult C E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.client.InstantiationResult C E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
+
 Module CallResult.
   Section CallResult.
     Context {C E V : Set}.
@@ -410,6 +783,28 @@ Definition CallResult
     `{ink_env.types.Environment.Trait E}
     : Set :=
   CallResult.t (C := C) (E := E) (V := V).
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+    Context {C E V : Set}.
+    Definition Self := ink_e2e.client.CallResult C E V.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
 
 Module CallDryRunResult.
   Section CallDryRunResult.
@@ -445,6 +840,28 @@ Definition CallDryRunResult
     : Set :=
   CallDryRunResult.t (E := E) (V := V).
 
+Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+    Context {E V : Set}.
+    Definition Self := ink_e2e.client.CallDryRunResult E V.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
+
 Module Error.
   Inductive t : Set :=
   | ContractNotFound (_ : alloc.string.String)
@@ -472,6 +889,600 @@ Module Error.
   | Decoding (_ : subxt.error.Error).
 End Error.
 Definition Error := Error.t.
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.client.Error C E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module
+  Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Parameter decode :
+        forall
+          `{H' : State.Trait}
+          {__CodecInputEdqy : Set}
+          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    }.
+  End
+    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module
+  Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Definition Visitor : Set := ink_e2e.client._.Visitor E.
+    
+    Parameter into_visitor : forall `{H' : State.Trait}, M (H := H') Visitor.
+    
+    Global Instance AssociatedFunction_into_visitor `{H' : State.Trait} :
+      Notation.DoubleColon Self "into_visitor" := {
+      Notation.double_colon := into_visitor;
+    }.
+    
+    Global Instance I : scale_decode.IntoVisitor.Trait Self := {
+      scale_decode.IntoVisitor.Visitor := Visitor;
+      scale_decode.IntoVisitor.into_visitor `{H' : State.Trait} := into_visitor;
+    }.
+  End
+    Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client._.Visitor E.
+    
+    Definition Error : Set := scale_decode.error.Error.
+    
+    Definition Value : Set := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Parameter visit_composite :
+        forall `{H' : State.Trait},
+        Self ->
+          (mut_ref scale_decode.visitor.types.composite.Composite) ->
+          scale_decode.visitor.TypeId ->
+          M (H := H') (core.result.Result Value Error).
+    
+    Global Instance Method_visit_composite `{H' : State.Trait} :
+      Notation.Dot "visit_composite" := {
+      Notation.dot := visit_composite;
+    }.
+    
+    Parameter visit_tuple :
+        forall `{H' : State.Trait},
+        Self ->
+          (mut_ref scale_decode.visitor.types.tuple.Tuple) ->
+          scale_decode.visitor.TypeId ->
+          M (H := H') (core.result.Result Value Error).
+    
+    Global Instance Method_visit_tuple `{H' : State.Trait} :
+      Notation.Dot "visit_tuple" := {
+      Notation.dot := visit_tuple;
+    }.
+    
+    Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
+      scale_decode.visitor.Visitor.Value := Value;
+      scale_decode.visitor.Visitor.Error := Error;
+    }.
+  End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  Global Hint Resolve I : core.
+End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+
+Module
+  Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Parameter decode_as_fields :
+        forall `{H' : State.Trait},
+        (mut_ref (ref (Slice u8))) ->
+          (ref (Slice scale_decode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          M (H := H') (core.result.Result Self scale_decode.error.Error).
+    
+    Global Instance AssociatedFunction_decode_as_fields `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode_as_fields" := {
+      Notation.double_colon := decode_as_fields;
+    }.
+    
+    Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
+      scale_decode.DecodeAsFields.decode_as_fields `{H' : State.Trait}
+        :=
+        decode_as_fields;
+    }.
+  End
+    Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module
+  Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+  End
+    Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module
+  Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Parameter encode_as_fields_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_fields_to" := {
+      Notation.dot := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+        :=
+        encode_as_fields_to;
+    }.
+  End
+    Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module
+  Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Section
+    Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
+    
+    Definition PALLET `{H' : State.Trait} := Pure "Contracts".
+    
+    Global Instance AssociatedFunction_PALLET `{H' : State.Trait} :
+      Notation.DoubleColon Self "PALLET" := {
+      Notation.double_colon := PALLET;
+    }.
+    
+    Definition EVENT `{H' : State.Trait} := Pure "Instantiated".
+    
+    Global Instance AssociatedFunction_EVENT `{H' : State.Trait} :
+      Notation.DoubleColon Self "EVENT" := {
+      Notation.double_colon := EVENT;
+    }.
+    
+    Global Instance I : subxt.events.StaticEvent.Trait Self := {
+      subxt.events.StaticEvent.PALLET `{H' : State.Trait} := PALLET;
+      subxt.events.StaticEvent.EVENT `{H' : State.Trait} := EVENT;
+    }.
+  End
+    Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
+
+Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module
+  Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+  Section
+    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Parameter decode :
+        forall
+          `{H' : State.Trait}
+          {__CodecInputEdqy : Set}
+          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Parameter encode :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') (alloc.vec.Vec Root.core.primitive.u8).
+    
+    Global Instance Method_encode `{H' : State.Trait} :
+      Notation.Dot "encode" := {
+      Notation.dot := encode;
+    }.
+    
+    Parameter using_encoded :
+        forall
+          `{H' : State.Trait}
+          {R F : Set}
+          `{core.ops.function.FnOnce.Trait F
+              (Args := ref (Slice Root.core.primitive.u8))},
+        (ref Self) -> F -> M (H := H') R.
+    
+    Global Instance Method_using_encoded `{H' : State.Trait} :
+      Notation.Dot "using_encoded" := {
+      Notation.dot := using_encoded;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+  Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Definition Visitor : Set := ink_e2e.client._.Visitor E.
+    
+    Parameter into_visitor : forall `{H' : State.Trait}, M (H := H') Visitor.
+    
+    Global Instance AssociatedFunction_into_visitor `{H' : State.Trait} :
+      Notation.DoubleColon Self "into_visitor" := {
+      Notation.double_colon := into_visitor;
+    }.
+    
+    Global Instance I : scale_decode.IntoVisitor.Trait Self := {
+      scale_decode.IntoVisitor.Visitor := Visitor;
+      scale_decode.IntoVisitor.into_visitor `{H' : State.Trait} := into_visitor;
+    }.
+  End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client._.Visitor E.
+    
+    Definition Error : Set := scale_decode.error.Error.
+    
+    Definition Value : Set := ink_e2e.client.CodeStoredEvent E.
+    
+    Parameter visit_composite :
+        forall `{H' : State.Trait},
+        Self ->
+          (mut_ref scale_decode.visitor.types.composite.Composite) ->
+          scale_decode.visitor.TypeId ->
+          M (H := H') (core.result.Result Value Error).
+    
+    Global Instance Method_visit_composite `{H' : State.Trait} :
+      Notation.Dot "visit_composite" := {
+      Notation.dot := visit_composite;
+    }.
+    
+    Parameter visit_tuple :
+        forall `{H' : State.Trait},
+        Self ->
+          (mut_ref scale_decode.visitor.types.tuple.Tuple) ->
+          scale_decode.visitor.TypeId ->
+          M (H := H') (core.result.Result Value Error).
+    
+    Global Instance Method_visit_tuple `{H' : State.Trait} :
+      Notation.Dot "visit_tuple" := {
+      Notation.dot := visit_tuple;
+    }.
+    
+    Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
+      scale_decode.visitor.Visitor.Value := Value;
+      scale_decode.visitor.Visitor.Error := Error;
+    }.
+  End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  Global Hint Resolve I : core.
+End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+
+Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+  Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Parameter decode_as_fields :
+        forall `{H' : State.Trait},
+        (mut_ref (ref (Slice u8))) ->
+          (ref (Slice scale_decode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          M (H := H') (core.result.Result Self scale_decode.error.Error).
+    
+    Global Instance AssociatedFunction_decode_as_fields `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode_as_fields" := {
+      Notation.double_colon := decode_as_fields;
+    }.
+    
+    Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
+      scale_decode.DecodeAsFields.decode_as_fields `{H' : State.Trait}
+        :=
+        decode_as_fields;
+    }.
+  End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+  Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Parameter encode_as_fields_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_fields_to" := {
+      Notation.dot := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+        :=
+        encode_as_fields_to;
+    }.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+
+Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+  Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.client.CodeStoredEvent E.
+    
+    Definition PALLET `{H' : State.Trait} := Pure "Contracts".
+    
+    Global Instance AssociatedFunction_PALLET `{H' : State.Trait} :
+      Notation.DoubleColon Self "PALLET" := {
+      Notation.double_colon := PALLET;
+    }.
+    
+    Definition EVENT `{H' : State.Trait} := Pure "CodeStored".
+    
+    Global Instance AssociatedFunction_EVENT `{H' : State.Trait} :
+      Notation.DoubleColon Self "EVENT" := {
+      Notation.double_colon := EVENT;
+    }.
+    
+    Global Instance I : subxt.events.StaticEvent.Trait Self := {
+      subxt.events.StaticEvent.PALLET `{H' : State.Trait} := PALLET;
+      subxt.events.StaticEvent.EVENT `{H' : State.Trait} := EVENT;
+    }.
+  End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
+  Global Hint Resolve I : core.
+End Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
 
 Module Client.
   Section Client.
@@ -731,6 +1742,26 @@ Module node_proc.
   Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
     TestNodeProcess.t (R := R).
   
+  Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+    Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+      Context {R : Set}.
+      Definition Self := ink_e2e.node_proc.TestNodeProcess R.
+      
+      Parameter drop :
+          forall `{H' : State.Trait},
+          (mut_ref Self) -> M (H := H') unit.
+      
+      Global Instance Method_drop `{H' : State.Trait} : Notation.Dot "drop" := {
+        Notation.dot := drop;
+      }.
+      
+      Global Instance I : core.ops.drop.Drop.Trait Self := {
+        core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
+      }.
+    End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+    Global Hint Resolve I : core.
+  End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+  
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
       Context {R : Set}.
@@ -801,6 +1832,26 @@ End TestNodeProcess.
 Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
   TestNodeProcess.t (R := R).
 
+Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+  Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+    Context {R : Set}.
+    Definition Self := ink_e2e.node_proc.TestNodeProcess R.
+    
+    Parameter drop :
+        forall `{H' : State.Trait},
+        (mut_ref Self) -> M (H := H') unit.
+    
+    Global Instance Method_drop `{H' : State.Trait} : Notation.Dot "drop" := {
+      Notation.dot := drop;
+    }.
+    
+    Global Instance I : core.ops.drop.Drop.Trait Self := {
+      core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
+    }.
+  End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+  Global Hint Resolve I : core.
+End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
     Context {R : Set}.
@@ -858,6 +1909,207 @@ Module xts.
     }.
   End Weight.
   Definition Weight : Set := Weight.t.
+  
+  Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter clone :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') ink_e2e.xts.Weight.
+    
+    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+      Notation.dot := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter assert_receiver_is_total_eq :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') unit.
+    
+    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+      Notation.Dot "assert_receiver_is_total_eq" := {
+      Notation.dot := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter eq :
+        forall `{H' : State.Trait},
+        (ref Self) -> (ref ink_e2e.xts.Weight) -> M (H := H') bool.
+    
+    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+      Notation.dot := eq;
+    }.
+    
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
+      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter default :
+        forall `{H' : State.Trait},
+        M (H := H') ink_e2e.xts.Weight.
+    
+    Global Instance AssociatedFunction_default `{H' : State.Trait} :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    Global Instance I : core.default.Default.Trait Self := {
+      core.default.Default.default `{H' : State.Trait} := default;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_default_Default_for_ink_e2e_xts_Weight.
+  
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
+  
+  Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter encode_as_fields_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_fields_to" := {
+      Notation.dot := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+        :=
+        encode_as_fields_to;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
+    Definition Self := ink_e2e.xts.Weight.
+    
+    Parameter from :
+        forall `{H' : State.Trait},
+        sp_weights.weight_v2.Weight -> M (H := H') Self.
+    
+    Global Instance AssociatedFunction_from `{H' : State.Trait} :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
+      core.convert.From.from `{H' : State.Trait} := from;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_convert_From_for_ink_e2e_xts_Weight.
+  
+  Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+    Definition Self := sp_weights.weight_v2.Weight.
+    
+    Parameter from :
+        forall `{H' : State.Trait},
+        ink_e2e.xts.Weight -> M (H := H') Self.
+    
+    Global Instance AssociatedFunction_from `{H' : State.Trait} :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
+      core.convert.From.from `{H' : State.Trait} := from;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
   
   Module InstantiateWithCode.
     Section InstantiateWithCode.
@@ -920,6 +2172,84 @@ Module xts.
       : Set :=
     InstantiateWithCode.t (E := E).
   
+  Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.InstantiateWithCode E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+  
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+    Section
+      Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.InstantiateWithCode E.
+      
+      Parameter encode_as_type_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_type_to" := {
+        Notation.dot := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+          :=
+          encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+  
+  Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+    Section
+      Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.InstantiateWithCode E.
+      
+      Parameter encode_as_fields_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_fields_to" := {
+        Notation.dot := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+          :=
+          encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+  
   Module Call.
     Section Call.
       Context {E : Set}.
@@ -971,6 +2301,82 @@ Module xts.
   Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
     Call.t (E := E).
   
+  Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.Call E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+  
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+    Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.Call E.
+      
+      Parameter encode_as_type_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_type_to" := {
+        Notation.dot := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+          :=
+          encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+  
+  Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+    Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.Call E.
+      
+      Parameter encode_as_fields_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_fields_to" := {
+        Notation.dot := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+          :=
+          encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+  
   Module Transfer.
     Section Transfer.
       Context {E C : Set}.
@@ -1005,12 +2411,209 @@ Module xts.
       : Set :=
     Transfer.t (E := E) (C := C).
   
+  Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+    Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+      Context {E C : Set}.
+      Definition Self := ink_e2e.xts.Transfer E C.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+  
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+    Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+      Context {E C : Set}.
+      Definition Self := ink_e2e.xts.Transfer E C.
+      
+      Parameter encode_as_type_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_type_to" := {
+        Notation.dot := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+          :=
+          encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+  
+  Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+    Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+      Context {E C : Set}.
+      Definition Self := ink_e2e.xts.Transfer E C.
+      
+      Parameter encode_as_fields_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_fields_to" := {
+        Notation.dot := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+          :=
+          encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+  
   Module Determinism.
     Inductive t : Set :=
     | Enforced
     | Relaxed.
   End Determinism.
   Definition Determinism := Determinism.t.
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
+  
+  Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Parameter clone :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') ink_e2e.xts.Determinism.
+    
+    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+      Notation.dot := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
+  
+  Module Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
+  
+  Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Parameter eq :
+        forall `{H' : State.Trait},
+        (ref Self) -> (ref ink_e2e.xts.Determinism) -> M (H := H') bool.
+    
+    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+      Notation.dot := eq;
+    }.
+    
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
+      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
+  
+  Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
+  
+  Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Parameter assert_receiver_is_total_eq :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') unit.
+    
+    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+      Notation.Dot "assert_receiver_is_total_eq" := {
+      Notation.dot := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+    Global Hint Resolve I : core.
+  End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
+  
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
+    Definition Self := ink_e2e.xts.Determinism.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
   
   Module UploadCode.
     Section UploadCode.
@@ -1049,6 +2652,82 @@ Module xts.
   End UploadCode.
   Definition UploadCode (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
     UploadCode.t (E := E).
+  
+  Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.UploadCode E.
+      
+      Parameter fmt :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (mut_ref core.fmt.Formatter) ->
+            M (H := H') core.fmt.Result.
+      
+      Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+        Notation.dot := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+    Global Hint Resolve I : core.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+  
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+    Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.UploadCode E.
+      
+      Parameter encode_as_type_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            u32 ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_type_to" := {
+        Notation.dot := encode_as_type_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+        scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+          :=
+          encode_as_type_to;
+      }.
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+  
+  Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+    Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+      Context {E : Set}.
+      Definition Self := ink_e2e.xts.UploadCode E.
+      
+      Parameter encode_as_fields_to :
+          forall `{H' : State.Trait},
+          (ref Self) ->
+            (ref (Slice scale_encode.PortableField)) ->
+            (ref scale_info.portable.PortableRegistry) ->
+            (mut_ref (alloc.vec.Vec u8)) ->
+            M (H := H') (core.result.Result unit scale_encode.error.Error).
+      
+      Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+        Notation.Dot "encode_as_fields_to" := {
+        Notation.dot := encode_as_fields_to;
+      }.
+      
+      Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+        scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+          :=
+          encode_as_fields_to;
+      }.
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+    Global Hint Resolve I : core.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   
   Module ContractsApi.
     Section ContractsApi.
@@ -1107,6 +2786,425 @@ Module Weight.
   }.
 End Weight.
 Definition Weight : Set := Weight.t.
+
+Module Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Global Instance I : core.marker.Copy.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_Copy_for_ink_e2e_xts_Weight.
+
+Module Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter clone :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') ink_e2e.xts.Weight.
+  
+  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+    Notation.dot := clone;
+  }.
+  
+  Global Instance I : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_clone_Clone_for_ink_e2e_xts_Weight.
+
+Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Weight.
+
+Module Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter assert_receiver_is_total_eq :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') unit.
+  
+  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+    Notation.Dot "assert_receiver_is_total_eq" := {
+    Notation.dot := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance I : core.cmp.Eq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_Eq_for_ink_e2e_xts_Weight.
+
+Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Weight.
+
+Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter eq :
+      forall `{H' : State.Trait},
+      (ref Self) -> (ref ink_e2e.xts.Weight) -> M (H := H') bool.
+  
+  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Notation.dot := eq;
+  }.
+  
+  Global Instance I
+    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+      := {
+    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Weight.
+
+Module Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter fmt :
+      forall `{H' : State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+  
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Notation.dot := fmt;
+  }.
+  
+  Global Instance I : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_xts_Weight.
+
+Module Impl_core_default_Default_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter default :
+      forall `{H' : State.Trait},
+      M (H := H') ink_e2e.xts.Weight.
+  
+  Global Instance AssociatedFunction_default `{H' : State.Trait} :
+    Notation.DoubleColon Self "default" := {
+    Notation.double_colon := default;
+  }.
+  
+  Global Instance I : core.default.Default.Trait Self := {
+    core.default.Default.default `{H' : State.Trait} := default;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_default_Default_for_ink_e2e_xts_Weight.
+
+Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter encode_to :
+      forall
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy},
+      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+  
+  Global Instance Method_encode_to `{H' : State.Trait} :
+    Notation.Dot "encode_to" := {
+    Notation.dot := encode_to;
+  }.
+  
+  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
+
+Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+      := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Weight.
+
+Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter decode :
+      forall
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+      (mut_ref __CodecInputEdqy) ->
+        M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+  
+  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Notation.DoubleColon Self "decode" := {
+    Notation.double_colon := decode;
+  }.
+  
+  Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
+
+Module
+  Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter max_encoded_len :
+      forall `{H' : State.Trait},
+      M (H := H') Root.core.primitive.usize.
+  
+  Global Instance AssociatedFunction_max_encoded_len `{H' : State.Trait} :
+    Notation.DoubleColon Self "max_encoded_len" := {
+    Notation.double_colon := max_encoded_len;
+  }.
+  
+  Global Instance I
+    : parity_scale_codec.max_encoded_len.MaxEncodedLen.Trait Self := {
+    parity_scale_codec.max_encoded_len.MaxEncodedLen.max_encoded_len
+      `{H' : State.Trait}
+      :=
+      max_encoded_len;
+  }.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
+
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter encode_as_type_to :
+      forall `{H' : State.Trait},
+      (ref Self) ->
+        u32 ->
+        (ref scale_info.portable.PortableRegistry) ->
+        (mut_ref (alloc.vec.Vec u8)) ->
+        M (H := H') (core.result.Result unit scale_encode.error.Error).
+  
+  Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+    Notation.Dot "encode_as_type_to" := {
+    Notation.dot := encode_as_type_to;
+  }.
+  
+  Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+      :=
+      encode_as_type_to;
+  }.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
+
+Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter encode_as_fields_to :
+      forall `{H' : State.Trait},
+      (ref Self) ->
+        (ref (Slice scale_encode.PortableField)) ->
+        (ref scale_info.portable.PortableRegistry) ->
+        (mut_ref (alloc.vec.Vec u8)) ->
+        M (H := H') (core.result.Result unit scale_encode.error.Error).
+  
+  Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+    Notation.Dot "encode_as_fields_to" := {
+    Notation.dot := encode_as_fields_to;
+  }.
+  
+  Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+    scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+      :=
+      encode_as_fields_to;
+  }.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
+
+Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter serialize :
+      forall `{H' : State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
+      (ref Self) ->
+        __S ->
+        M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
+  
+  Global Instance Method_serialize `{H' : State.Trait} :
+    Notation.Dot "serialize" := {
+    Notation.dot := serialize;
+  }.
+  
+  Global Instance I : serde.ser.Serialize.Trait Self := {
+    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+  }.
+  Global Hint Resolve I : core.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
+
+Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter deserialize :
+      forall `{H' : State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
+      __D -> M (H := H') (core.result.Result Self __D::type["Error"]).
+  
+  Global Instance AssociatedFunction_deserialize `{H' : State.Trait} :
+    Notation.DoubleColon Self "deserialize" := {
+    Notation.double_colon := deserialize;
+  }.
+  
+  Global Instance I : serde.de.Deserialize.Trait Self := {
+    serde.de.Deserialize.deserialize `{H' : State.Trait} := deserialize;
+  }.
+  Global Hint Resolve I : core.
+End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
+
+Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
+  Definition Self := ink_e2e.xts._.deserialize.__FieldVisitor.
+  
+  Definition Value : Set := ink_e2e.xts._.deserialize.__Field.
+  
+  Parameter expecting :
+      forall `{H' : State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+  
+  Global Instance Method_expecting `{H' : State.Trait} :
+    Notation.Dot "expecting" := {
+    Notation.dot := expecting;
+  }.
+  
+  Parameter visit_u64 :
+      forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
+      Self -> u64 -> M (H := H') (core.result.Result Value __E).
+  
+  Global Instance Method_visit_u64 `{H' : State.Trait} :
+    Notation.Dot "visit_u64" := {
+    Notation.dot := visit_u64;
+  }.
+  
+  Parameter visit_str :
+      forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
+      Self -> (ref str) -> M (H := H') (core.result.Result Value __E).
+  
+  Global Instance Method_visit_str `{H' : State.Trait} :
+    Notation.Dot "visit_str" := {
+    Notation.dot := visit_str;
+  }.
+  
+  Parameter visit_bytes :
+      forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
+      Self -> (ref (Slice u8)) -> M (H := H') (core.result.Result Value __E).
+  
+  Global Instance Method_visit_bytes `{H' : State.Trait} :
+    Notation.Dot "visit_bytes" := {
+    Notation.dot := visit_bytes;
+  }.
+  
+  Global Instance I : serde.de.Visitor.Trait Self := {
+    serde.de.Visitor.Value := Value;
+    serde.de.Visitor.expecting `{H' : State.Trait} := expecting;
+  }.
+  Global Hint Resolve I : core.
+End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
+
+Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
+  Definition Self := ink_e2e.xts._.deserialize.__Field.
+  
+  Parameter deserialize :
+      forall `{H' : State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
+      __D -> M (H := H') (core.result.Result Self __D::type["Error"]).
+  
+  Global Instance AssociatedFunction_deserialize `{H' : State.Trait} :
+    Notation.DoubleColon Self "deserialize" := {
+    Notation.double_colon := deserialize;
+  }.
+  
+  Global Instance I : serde.de.Deserialize.Trait Self := {
+    serde.de.Deserialize.deserialize `{H' : State.Trait} := deserialize;
+  }.
+  Global Hint Resolve I : core.
+End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
+
+Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
+  Definition Self := ink_e2e.xts._.deserialize.__Visitor.
+  
+  Definition Value : Set := ink_e2e.xts.Weight.
+  
+  Parameter expecting :
+      forall `{H' : State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+  
+  Global Instance Method_expecting `{H' : State.Trait} :
+    Notation.Dot "expecting" := {
+    Notation.dot := expecting;
+  }.
+  
+  Parameter visit_seq :
+      forall `{H' : State.Trait} {__A : Set} `{serde.de.SeqAccess.Trait __A},
+      Self -> __A -> M (H := H') (core.result.Result Value __A::type["Error"]).
+  
+  Global Instance Method_visit_seq `{H' : State.Trait} :
+    Notation.Dot "visit_seq" := {
+    Notation.dot := visit_seq;
+  }.
+  
+  Parameter visit_map :
+      forall `{H' : State.Trait} {__A : Set} `{serde.de.MapAccess.Trait __A},
+      Self -> __A -> M (H := H') (core.result.Result Value __A::type["Error"]).
+  
+  Global Instance Method_visit_map `{H' : State.Trait} :
+    Notation.Dot "visit_map" := {
+    Notation.dot := visit_map;
+  }.
+  
+  Global Instance I : serde.de.Visitor.Trait Self := {
+    serde.de.Visitor.Value := Value;
+    serde.de.Visitor.expecting `{H' : State.Trait} := expecting;
+  }.
+  Global Hint Resolve I : core.
+End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
+
+Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
+  Definition Self := ink_e2e.xts.Weight.
+  
+  Parameter from :
+      forall `{H' : State.Trait},
+      sp_weights.weight_v2.Weight -> M (H := H') Self.
+  
+  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+    Notation.DoubleColon Self "from" := {
+    Notation.double_colon := from;
+  }.
+  
+  Global Instance I
+    : core.convert.From.Trait Self (T := sp_weights.weight_v2.Weight) := {
+    core.convert.From.from `{H' : State.Trait} := from;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_convert_From_for_ink_e2e_xts_Weight.
+
+Module Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
+  Definition Self := sp_weights.weight_v2.Weight.
+  
+  Parameter from :
+      forall `{H' : State.Trait},
+      ink_e2e.xts.Weight -> M (H := H') Self.
+  
+  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+    Notation.DoubleColon Self "from" := {
+    Notation.double_colon := from;
+  }.
+  
+  Global Instance I
+    : core.convert.From.Trait Self (T := ink_e2e.xts.Weight) := {
+    core.convert.From.from `{H' : State.Trait} := from;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_convert_From_for_sp_weights_weight_v2_Weight.
 
 Module InstantiateWithCode.
   Section InstantiateWithCode.
@@ -1169,6 +3267,156 @@ Definition InstantiateWithCode
     : Set :=
   InstantiateWithCode.t (E := E).
 
+Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.InstantiateWithCode E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+
+Module
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.InstantiateWithCode E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.InstantiateWithCode E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
+
+Module
+  Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section
+    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.InstantiateWithCode E.
+    
+    Parameter decode :
+        forall
+          `{H' : State.Trait}
+          {__CodecInputEdqy : Set}
+          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    }.
+  End
+    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
+
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.InstantiateWithCode E.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+
+Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section
+    Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.InstantiateWithCode E.
+    
+    Parameter encode_as_fields_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_fields_to" := {
+      Notation.dot := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+        :=
+        encode_as_fields_to;
+    }.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+
 Module Call.
   Section Call.
     Context {E : Set}.
@@ -1220,6 +3468,145 @@ End Call.
 Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
   Call.t (E := E).
 
+Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.Call E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
+
+Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
+  Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.Call E.
+    
+    Parameter decode :
+        forall
+          `{H' : State.Trait}
+          {__CodecInputEdqy : Set}
+          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
+
+Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
+  Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.Call E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
+
+Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
+  Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.Call E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
+
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.Call E.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
+
+Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+  Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.Call E.
+    
+    Parameter encode_as_fields_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_fields_to" := {
+      Notation.dot := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+        :=
+        encode_as_fields_to;
+    }.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
+
 Module Transfer.
   Section Transfer.
     Context {E C : Set}.
@@ -1252,12 +3639,347 @@ Definition Transfer
     : Set :=
   Transfer.t (E := E) (C := C).
 
+Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+  Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+    Context {E C : Set}.
+    Definition Self := ink_e2e.xts.Transfer E C.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
+
+Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
+  Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
+    Context {E C : Set}.
+    Definition Self := ink_e2e.xts.Transfer E C.
+    
+    Parameter decode :
+        forall
+          `{H' : State.Trait}
+          {__CodecInputEdqy : Set}
+          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
+
+Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
+  Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
+    Context {E C : Set}.
+    Definition Self := ink_e2e.xts.Transfer E C.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
+    Context {E C : Set}.
+    Definition Self := ink_e2e.xts.Transfer E C.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
+
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+    Context {E C : Set}.
+    Definition Self := ink_e2e.xts.Transfer E C.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
+
+Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+  Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+    Context {E C : Set}.
+    Definition Self := ink_e2e.xts.Transfer E C.
+    
+    Parameter encode_as_fields_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_fields_to" := {
+      Notation.dot := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+        :=
+        encode_as_fields_to;
+    }.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
+
 Module Determinism.
   Inductive t : Set :=
   | Enforced
   | Relaxed.
 End Determinism.
 Definition Determinism := Determinism.t.
+
+Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter fmt :
+      forall `{H' : State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+  
+  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Notation.dot := fmt;
+  }.
+  
+  Global Instance I : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
+
+Module Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter clone :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') ink_e2e.xts.Determinism.
+  
+  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+    Notation.dot := clone;
+  }.
+  
+  Global Instance I : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_clone_Clone_for_ink_e2e_xts_Determinism.
+
+Module Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Global Instance I : core.marker.Copy.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_Copy_for_ink_e2e_xts_Determinism.
+
+Module Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralPartialEq_for_ink_e2e_xts_Determinism.
+
+Module Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter eq :
+      forall `{H' : State.Trait},
+      (ref Self) -> (ref ink_e2e.xts.Determinism) -> M (H := H') bool.
+  
+  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Notation.dot := eq;
+  }.
+  
+  Global Instance I
+    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+      := {
+    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_PartialEq_for_ink_e2e_xts_Determinism.
+
+Module Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_marker_StructuralEq_for_ink_e2e_xts_Determinism.
+
+Module Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter assert_receiver_is_total_eq :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') unit.
+  
+  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+    Notation.Dot "assert_receiver_is_total_eq" := {
+    Notation.dot := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance I : core.cmp.Eq.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_core_cmp_Eq_for_ink_e2e_xts_Determinism.
+
+Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter serialize :
+      forall `{H' : State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
+      (ref Self) ->
+        __S ->
+        M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
+  
+  Global Instance Method_serialize `{H' : State.Trait} :
+    Notation.Dot "serialize" := {
+    Notation.dot := serialize;
+  }.
+  
+  Global Instance I : serde.ser.Serialize.Trait Self := {
+    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+  }.
+  Global Hint Resolve I : core.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
+
+Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter decode :
+      forall
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+      (mut_ref __CodecInputEdqy) ->
+        M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+  
+  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Notation.DoubleColon Self "decode" := {
+    Notation.double_colon := decode;
+  }.
+  
+  Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
+
+Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter encode_to :
+      forall
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy},
+      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+  
+  Global Instance Method_encode_to `{H' : State.Trait} :
+    Notation.Dot "encode_to" := {
+    Notation.dot := encode_to;
+  }.
+  
+  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+      := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Determinism.
+
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
+  Definition Self := ink_e2e.xts.Determinism.
+  
+  Parameter encode_as_type_to :
+      forall `{H' : State.Trait},
+      (ref Self) ->
+        u32 ->
+        (ref scale_info.portable.PortableRegistry) ->
+        (mut_ref (alloc.vec.Vec u8)) ->
+        M (H := H') (core.result.Result unit scale_encode.error.Error).
+  
+  Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+    Notation.Dot "encode_as_type_to" := {
+    Notation.dot := encode_as_type_to;
+  }.
+  
+  Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+    scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+      :=
+      encode_as_type_to;
+  }.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
 
 Module UploadCode.
   Section UploadCode.
@@ -1297,6 +4019,413 @@ End UploadCode.
 Definition UploadCode (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
   UploadCode.t (E := E).
 
+Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.UploadCode E.
+    
+    Parameter fmt :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (mut_ref core.fmt.Formatter) ->
+          M (H := H') core.fmt.Result.
+    
+    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+      Notation.dot := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+  Global Hint Resolve I : core.
+End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
+
+Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
+  Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.UploadCode E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.UploadCode E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
+
+Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
+  Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.UploadCode E.
+    
+    Parameter decode :
+        forall
+          `{H' : State.Trait}
+          {__CodecInputEdqy : Set}
+          `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
+        (mut_ref __CodecInputEdqy) ->
+          M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+    
+    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+      Notation.DoubleColon Self "decode" := {
+      Notation.double_colon := decode;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    }.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
+
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.UploadCode E.
+    
+    Parameter encode_as_type_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          u32 ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_type_to" := {
+      Notation.dot := encode_as_type_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
+        :=
+        encode_as_type_to;
+    }.
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
+
+Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+  Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+    Context {E : Set}.
+    Definition Self := ink_e2e.xts.UploadCode E.
+    
+    Parameter encode_as_fields_to :
+        forall `{H' : State.Trait},
+        (ref Self) ->
+          (ref (Slice scale_encode.PortableField)) ->
+          (ref scale_info.portable.PortableRegistry) ->
+          (mut_ref (alloc.vec.Vec u8)) ->
+          M (H := H') (core.result.Result unit scale_encode.error.Error).
+    
+    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+      Notation.Dot "encode_as_fields_to" := {
+      Notation.dot := encode_as_fields_to;
+    }.
+    
+    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
+        :=
+        encode_as_fields_to;
+    }.
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+  Global Hint Resolve I : core.
+End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
+
+Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
+    
+    Parameter serialize :
+        forall
+          `{H' : State.Trait}
+          {__S : Set}
+          `{serde.ser.Serializer.Trait __S},
+        (ref Self) ->
+          __S ->
+          M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
+    
+    Global Instance Method_serialize `{H' : State.Trait} :
+      Notation.Dot "serialize" := {
+      Notation.dot := serialize;
+    }.
+    
+    Global Instance I : serde.ser.Serialize.Trait Self := {
+      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    }.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  Global Hint Resolve I : core.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+
+Module
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+
+Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
+    
+    Parameter serialize :
+        forall
+          `{H' : State.Trait}
+          {__S : Set}
+          `{serde.ser.Serializer.Trait __S},
+        (ref Self) ->
+          __S ->
+          M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
+    
+    Global Instance Method_serialize `{H' : State.Trait} :
+      Notation.Dot "serialize" := {
+      Notation.dot := serialize;
+    }.
+    
+    Global Instance I : serde.ser.Serialize.Trait Self := {
+      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    }.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  Global Hint Resolve I : core.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+
+Module
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+
+Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcCallRequest C E.
+    
+    Parameter serialize :
+        forall
+          `{H' : State.Trait}
+          {__S : Set}
+          `{serde.ser.Serializer.Trait __S},
+        (ref Self) ->
+          __S ->
+          M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
+    
+    Global Instance Method_serialize `{H' : State.Trait} :
+      Notation.Dot "serialize" := {
+      Notation.dot := serialize;
+    }.
+    
+    Global Instance I : serde.ser.Serialize.Trait Self := {
+      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    }.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+  Global Hint Resolve I : core.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+
+Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+  Section
+    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcCallRequest C E.
+    
+    Parameter encode_to :
+        forall
+          `{H' : State.Trait}
+          {__CodecOutputEdqy : Set}
+          `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+          `{core.marker.Sized.Trait __CodecOutputEdqy},
+        (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+    
+    Global Instance Method_encode_to `{H' : State.Trait} :
+      Notation.Dot "encode_to" := {
+      Notation.dot := encode_to;
+    }.
+    
+    Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+    }.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+
+Module
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+  Section
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+    Context {C E : Set}.
+    Definition Self := ink_e2e.xts.RpcCallRequest C E.
+    
+    Global Instance I
+      : parity_scale_codec.encode_like.EncodeLike.Trait Self
+          (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+        := {
+    }.
+  End
+    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+  Global Hint Resolve I : core.
+End
+  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+
+Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
+  Definition Self := ink_e2e.xts.Code.
+  
+  Parameter serialize :
+      forall `{H' : State.Trait} {__S : Set} `{serde.ser.Serializer.Trait __S},
+      (ref Self) ->
+        __S ->
+        M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
+  
+  Global Instance Method_serialize `{H' : State.Trait} :
+    Notation.Dot "serialize" := {
+    Notation.dot := serialize;
+  }.
+  
+  Global Instance I : serde.ser.Serialize.Trait Self := {
+    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+  }.
+  Global Hint Resolve I : core.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
+
+Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
+  Definition Self := ink_e2e.xts.Code.
+  
+  Parameter encode_to :
+      forall
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy},
+      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+  
+  Global Instance Method_encode_to `{H' : State.Trait} :
+    Notation.Dot "encode_to" := {
+    Notation.dot := encode_to;
+  }.
+  
+  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
+
+Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
+  Definition Self := ink_e2e.xts.Code.
+  
+  Global Instance I
+    : parity_scale_codec.encode_like.EncodeLike.Trait Self
+        (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
+      := {
+  }.
+  Global Hint Resolve I : core.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
+
 Module ContractsApi.
   Section ContractsApi.
     Context {C E : Set}.
@@ -1334,6 +4463,43 @@ Module SubstrateConfig.
   .
 End SubstrateConfig.
 Definition SubstrateConfig := SubstrateConfig.t.
+
+Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
+  Definition Self := ink_e2e.SubstrateConfig.
+  
+  Definition Index : Set := u32.
+  
+  Definition Hash : Set := primitive_types.H256.
+  
+  Definition Hasher : Set := subxt.config.substrate.BlakeTwo256.
+  
+  Definition AccountId : Set := subxt.utils.account_id.AccountId32.
+  
+  Definition Address : Set :=
+    sp_runtime.multiaddress.MultiAddress AccountId u32.
+  
+  Definition Header : Set :=
+    subxt.config.substrate.SubstrateHeader
+      u32
+      subxt.config.substrate.BlakeTwo256.
+  
+  Definition Signature : Set := sp_runtime.MultiSignature.
+  
+  Definition ExtrinsicParams : Set :=
+    subxt.config.substrate.SubstrateExtrinsicParams Self.
+  
+  Global Instance I : subxt.config.Config.Trait Self := {
+    subxt.config.Config.Index := Index;
+    subxt.config.Config.Hash := Hash;
+    subxt.config.Config.AccountId := AccountId;
+    subxt.config.Config.Address := Address;
+    subxt.config.Config.Signature := Signature;
+    subxt.config.Config.Hasher := Hasher;
+    subxt.config.Config.Header := Header;
+    subxt.config.Config.ExtrinsicParams := ExtrinsicParams;
+  }.
+  Global Hint Resolve I : core.
+End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
 
 Definition PolkadotConfig : Set :=
   subxt.config.WithExtrinsicParams

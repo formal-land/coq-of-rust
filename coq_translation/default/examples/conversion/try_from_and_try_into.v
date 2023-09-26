@@ -41,9 +41,8 @@ Module
   Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
   Definition Self := try_from_and_try_into.EvenNumber.
   
-  Global Instance I
-    : core.marker.StructuralPartialEq.Trait Self
-      := core.marker.StructuralPartialEq.Build_Trait _.
+  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
