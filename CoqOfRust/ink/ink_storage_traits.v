@@ -185,7 +185,7 @@ Module storage.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
         repeat
-        (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
         try assumption).
         Defined.
       End ink_storage_traits_storage_Storable.
@@ -195,7 +195,7 @@ Module storage.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
         repeat
-        (destruct __the_bounds_of_PreferredKey [? __the_bounds_of_PreferredKey]
+        (destruct __the_bounds_of_PreferredKey as [? __the_bounds_of_PreferredKey];
         try assumption).
         Defined.
       End ink_storage_traits_storage_StorageKey.
@@ -224,7 +224,7 @@ Module storage.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
         repeat
-        (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
         try assumption).
         Defined.
       End ink_storage_traits_storage_Storable.
@@ -343,7 +343,8 @@ Module StorableHint.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
       repeat
-      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+      try assumption).
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.
@@ -352,7 +353,7 @@ Module StorableHint.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
       repeat
-      (destruct __the_bounds_of_PreferredKey [? __the_bounds_of_PreferredKey]
+      (destruct __the_bounds_of_PreferredKey as [? __the_bounds_of_PreferredKey];
       try assumption).
       Defined.
     End ink_storage_traits_storage_StorageKey.
@@ -381,7 +382,8 @@ Module AutoStorableHint.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
       repeat
-      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+      try assumption).
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.

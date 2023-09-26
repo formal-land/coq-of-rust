@@ -124,21 +124,21 @@ Module types.
       Module core_default_Default.
         Global Instance I `(Trait) : core.default.Default.Trait Bytes.
         repeat
-        (destruct __the_bounds_of_Bytes [? __the_bounds_of_Bytes]
+        (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
         try assumption).
         Defined.
       End core_default_Default.
       Module core_convert_AsRef.
         Global Instance I `(Trait) : core.convert.AsRef.Trait Bytes.
         repeat
-        (destruct __the_bounds_of_Bytes [? __the_bounds_of_Bytes]
+        (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
         try assumption).
         Defined.
       End core_convert_AsRef.
       Module core_convert_AsMut.
         Global Instance I `(Trait) : core.convert.AsMut.Trait Bytes.
         repeat
-        (destruct __the_bounds_of_Bytes [? __the_bounds_of_Bytes]
+        (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
         try assumption).
         Defined.
       End core_convert_AsMut.
@@ -274,56 +274,56 @@ Module types.
         Global Instance I `(Trait)
           : parity_scale_codec.codec.Codec.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End ink_env_types_CodecAsType.
       Module core_clone_Clone.
         Global Instance I `(Trait) : core.clone.Clone.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
         Global Instance I `(Trait) : core.cmp.PartialEq.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
         Global Instance I `(Trait) : core.cmp.Eq.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End core_cmp_Eq.
       Module core_cmp_Ord.
         Global Instance I `(Trait) : core.cmp.Ord.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End core_cmp_Ord.
       Module core_convert_AsRef.
         Global Instance I `(Trait) : core.convert.AsRef.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End core_convert_AsRef.
       Module core_convert_AsMut.
         Global Instance I `(Trait) : core.convert.AsMut.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
         try assumption).
         Defined.
       End core_convert_AsMut.
@@ -333,42 +333,42 @@ Module types.
         Global Instance I `(Trait)
           : parity_scale_codec.codec.Codec.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
         Global Instance I `(Trait) : core.marker.Copy.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
         Global Instance I `(Trait) : core.clone.Clone.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
         Global Instance I `(Trait) : core.cmp.PartialEq.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
         Global Instance I `(Trait) : core.cmp.Eq.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End core_cmp_Eq.
@@ -376,7 +376,7 @@ Module types.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
@@ -384,7 +384,7 @@ Module types.
         Global Instance I `(Trait)
           : ink_env.types.FromLittleEndian.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
         try assumption).
         Defined.
       End ink_env_types_FromLittleEndian.
@@ -393,61 +393,71 @@ Module types.
       Module parity_scale_codec_codec_Codec.
         Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
         Global Instance I `(Trait) : core.marker.Copy.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
         Global Instance I `(Trait) : core.clone.Clone.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End core_clone_Clone.
       Module ink_primitives_types_Clear.
         Global Instance I `(Trait) : ink_primitives.types.Clear.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End ink_primitives_types_Clear.
       Module core_cmp_PartialEq.
         Global Instance I `(Trait) : core.cmp.PartialEq.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
         Global Instance I `(Trait) : core.cmp.Eq.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End core_cmp_Eq.
       Module core_cmp_Ord.
         Global Instance I `(Trait) : core.cmp.Ord.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End core_cmp_Ord.
       Module core_convert_AsRef.
         Global Instance I `(Trait) : core.convert.AsRef.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End core_convert_AsRef.
       Module core_convert_AsMut.
         Global Instance I `(Trait) : core.convert.AsMut.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+        try assumption).
         Defined.
       End core_convert_AsMut.
     End The_Bounds_Of_Hash.
@@ -456,42 +466,42 @@ Module types.
         Global Instance I `(Trait)
           : parity_scale_codec.codec.Codec.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
         Global Instance I `(Trait) : core.marker.Copy.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
         Global Instance I `(Trait) : core.clone.Clone.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
         Global Instance I `(Trait) : core.cmp.PartialEq.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
         Global Instance I `(Trait) : core.cmp.Eq.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End core_cmp_Eq.
@@ -499,7 +509,7 @@ Module types.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
@@ -507,7 +517,7 @@ Module types.
         Global Instance I `(Trait)
           : ink_env.types.FromLittleEndian.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
         try assumption).
         Defined.
       End ink_env_types_FromLittleEndian.
@@ -517,7 +527,7 @@ Module types.
         Global Instance I `(Trait)
           : parity_scale_codec.codec.Codec.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End parity_scale_codec_codec_Codec.
@@ -525,35 +535,35 @@ Module types.
         Global Instance I `(Trait)
           : ink_env.types.CodecAsType.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
         Global Instance I `(Trait) : core.marker.Copy.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
         Global Instance I `(Trait) : core.clone.Clone.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
         Global Instance I `(Trait) : core.cmp.PartialEq.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
         Global Instance I `(Trait) : core.cmp.Eq.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End core_cmp_Eq.
@@ -561,7 +571,7 @@ Module types.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
@@ -569,7 +579,7 @@ Module types.
         Global Instance I `(Trait)
           : ink_env.types.FromLittleEndian.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
         try assumption).
         Defined.
       End ink_env_types_FromLittleEndian.
@@ -622,19 +632,22 @@ Module FromLittleEndian.
     Module core_default_Default.
       Global Instance I `(Trait) : core.default.Default.Trait Bytes.
       repeat
-      (destruct __the_bounds_of_Bytes [? __the_bounds_of_Bytes] try assumption).
+      (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
+      try assumption).
       Defined.
     End core_default_Default.
     Module core_convert_AsRef.
       Global Instance I `(Trait) : core.convert.AsRef.Trait Bytes.
       repeat
-      (destruct __the_bounds_of_Bytes [? __the_bounds_of_Bytes] try assumption).
+      (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
+      try assumption).
       Defined.
     End core_convert_AsRef.
     Module core_convert_AsMut.
       Global Instance I `(Trait) : core.convert.AsMut.Trait Bytes.
       repeat
-      (destruct __the_bounds_of_Bytes [? __the_bounds_of_Bytes] try assumption).
+      (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
+      try assumption).
       Defined.
     End core_convert_AsMut.
   End The_Bounds_Of_Bytes.
@@ -769,56 +782,56 @@ Module Environment.
       Global Instance I `(Trait)
         : parity_scale_codec.codec.Codec.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End ink_env_types_CodecAsType.
     Module core_clone_Clone.
       Global Instance I `(Trait) : core.clone.Clone.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
       Global Instance I `(Trait) : core.cmp.PartialEq.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
       Global Instance I `(Trait) : core.cmp.Eq.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End core_cmp_Eq.
     Module core_cmp_Ord.
       Global Instance I `(Trait) : core.cmp.Ord.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End core_cmp_Ord.
     Module core_convert_AsRef.
       Global Instance I `(Trait) : core.convert.AsRef.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End core_convert_AsRef.
     Module core_convert_AsMut.
       Global Instance I `(Trait) : core.convert.AsMut.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId [? __the_bounds_of_AccountId]
+      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
       try assumption).
       Defined.
     End core_convert_AsMut.
@@ -827,42 +840,42 @@ Module Environment.
     Module parity_scale_codec_codec_Codec.
       Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
       Global Instance I `(Trait) : core.marker.Copy.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
       Global Instance I `(Trait) : core.clone.Clone.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
       Global Instance I `(Trait) : core.cmp.PartialEq.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
       Global Instance I `(Trait) : core.cmp.Eq.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End core_cmp_Eq.
@@ -870,14 +883,14 @@ Module Environment.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
     Module ink_env_types_FromLittleEndian.
       Global Instance I `(Trait) : ink_env.types.FromLittleEndian.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance [? __the_bounds_of_Balance]
+      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
       try assumption).
       Defined.
     End ink_env_types_FromLittleEndian.
@@ -886,61 +899,71 @@ Module Environment.
     Module parity_scale_codec_codec_Codec.
       Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
       Global Instance I `(Trait) : core.marker.Copy.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
       Global Instance I `(Trait) : core.clone.Clone.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End core_clone_Clone.
     Module ink_primitives_types_Clear.
       Global Instance I `(Trait) : ink_primitives.types.Clear.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End ink_primitives_types_Clear.
     Module core_cmp_PartialEq.
       Global Instance I `(Trait) : core.cmp.PartialEq.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
       Global Instance I `(Trait) : core.cmp.Eq.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End core_cmp_Eq.
     Module core_cmp_Ord.
       Global Instance I `(Trait) : core.cmp.Ord.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End core_cmp_Ord.
     Module core_convert_AsRef.
       Global Instance I `(Trait) : core.convert.AsRef.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End core_convert_AsRef.
     Module core_convert_AsMut.
       Global Instance I `(Trait) : core.convert.AsMut.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash [? __the_bounds_of_Hash] try assumption).
+      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
+      try assumption).
       Defined.
     End core_convert_AsMut.
   End The_Bounds_Of_Hash.
@@ -949,42 +972,42 @@ Module Environment.
       Global Instance I `(Trait)
         : parity_scale_codec.codec.Codec.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
       Global Instance I `(Trait) : core.marker.Copy.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
       Global Instance I `(Trait) : core.clone.Clone.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
       Global Instance I `(Trait) : core.cmp.PartialEq.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
       Global Instance I `(Trait) : core.cmp.Eq.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End core_cmp_Eq.
@@ -992,7 +1015,7 @@ Module Environment.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
@@ -1000,7 +1023,7 @@ Module Environment.
       Global Instance I `(Trait)
         : ink_env.types.FromLittleEndian.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp [? __the_bounds_of_Timestamp]
+      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
       try assumption).
       Defined.
     End ink_env_types_FromLittleEndian.
@@ -1010,42 +1033,42 @@ Module Environment.
       Global Instance I `(Trait)
         : parity_scale_codec.codec.Codec.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
       Global Instance I `(Trait) : core.marker.Copy.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
       Global Instance I `(Trait) : core.clone.Clone.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
       Global Instance I `(Trait) : core.cmp.PartialEq.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
       Global Instance I `(Trait) : core.cmp.Eq.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End core_cmp_Eq.
@@ -1053,7 +1076,7 @@ Module Environment.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
@@ -1061,7 +1084,7 @@ Module Environment.
       Global Instance I `(Trait)
         : ink_env.types.FromLittleEndian.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber [? __the_bounds_of_BlockNumber]
+      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
       try assumption).
       Defined.
     End ink_env_types_FromLittleEndian.
@@ -1103,7 +1126,8 @@ Module contract.
       Module ink_env_types_Environment.
         Global Instance I `(Trait) : ink_env.types.Environment.Trait Env.
         repeat
-        (destruct __the_bounds_of_Env [? __the_bounds_of_Env] try assumption).
+        (destruct __the_bounds_of_Env as [? __the_bounds_of_Env];
+        try assumption).
         Defined.
       End ink_env_types_Environment.
     End The_Bounds_Of_Env.
@@ -1367,7 +1391,7 @@ Module call.
           Global Instance I `(Trait)
             : parity_scale_codec.codec.Decode.Trait Error.
           repeat
-          (destruct __the_bounds_of_Error [? __the_bounds_of_Error]
+          (destruct __the_bounds_of_Error as [? __the_bounds_of_Error];
           try assumption).
           Defined.
         End parity_scale_codec_codec_Decode.
@@ -1657,7 +1681,7 @@ Module hash.
       Module core_default_Default.
         Global Instance I `(Trait) : core.default.Default.Trait Type_.
         repeat
-        (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_]
+        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
         try assumption).
         Defined.
       End core_default_Default.
@@ -1844,7 +1868,7 @@ Module topics.
         Global Instance I `(Trait)
           : ink_env.topics.EventTopicsAmount.Trait RemainingTopics.
         repeat
-        (destruct __the_bounds_of_RemainingTopics [? __the_bounds_of_RemainingTopics]
+        (destruct __the_bounds_of_RemainingTopics as [? __the_bounds_of_RemainingTopics];
         try assumption).
         Defined.
       End ink_env_topics_EventTopicsAmount.
@@ -4927,7 +4951,7 @@ Module create_builder.
         Global Instance I `(Trait)
           : parity_scale_codec.codec.Decode.Trait Error.
         repeat
-        (destruct __the_bounds_of_Error [? __the_bounds_of_Error]
+        (destruct __the_bounds_of_Error as [? __the_bounds_of_Error];
         try assumption).
         Defined.
       End parity_scale_codec_codec_Decode.
@@ -5176,7 +5200,8 @@ Module ConstructorReturnType.
     Module parity_scale_codec_codec_Decode.
       Global Instance I `(Trait) : parity_scale_codec.codec.Decode.Trait Error.
       repeat
-      (destruct __the_bounds_of_Error [? __the_bounds_of_Error] try assumption).
+      (destruct __the_bounds_of_Error as [? __the_bounds_of_Error];
+      try assumption).
       Defined.
     End parity_scale_codec_codec_Decode.
   End The_Bounds_Of_Error.
@@ -5779,7 +5804,7 @@ Module ContractEnv.
     Module ink_env_types_Environment.
       Global Instance I `(Trait) : ink_env.types.Environment.Trait Env.
       repeat
-      (destruct __the_bounds_of_Env [? __the_bounds_of_Env] try assumption).
+      (destruct __the_bounds_of_Env as [? __the_bounds_of_Env]; try assumption).
       Defined.
     End ink_env_types_Environment.
   End The_Bounds_Of_Env.
@@ -5982,7 +6007,8 @@ Module HashOutput.
     Module core_default_Default.
       Global Instance I `(Trait) : core.default.Default.Trait Type_.
       repeat
-      (destruct __the_bounds_of_Type_ [? __the_bounds_of_Type_] try assumption).
+      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+      try assumption).
       Defined.
     End core_default_Default.
   End The_Bounds_Of_Type_.
@@ -6180,7 +6206,7 @@ Module Topics.
       Global Instance I `(Trait)
         : ink_env.topics.EventTopicsAmount.Trait RemainingTopics.
       repeat
-      (destruct __the_bounds_of_RemainingTopics [? __the_bounds_of_RemainingTopics]
+      (destruct __the_bounds_of_RemainingTopics as [? __the_bounds_of_RemainingTopics];
       try assumption).
       Defined.
     End ink_env_topics_EventTopicsAmount.

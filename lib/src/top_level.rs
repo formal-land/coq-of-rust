@@ -305,7 +305,12 @@ fn deduplicate_top_level_items(items: Vec<TopLevelItem>) -> Vec<TopLevelItem> {
 /// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
-fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
+fn compile_top_level_item(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    item: &Item,
+    path: Path,
+) -> Vec<TopLevelItem> {
     let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize {
         let def_id = item.owner_id.to_def_id();
@@ -371,7 +376,8 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     .iter()
                     .flat_map(|item_id| {
                         let item = tcx.hir().item(*item_id);
-                        compile_top_level_item(tcx, env, item)
+                        let path = path.push(&name);
+                        compile_top_level_item(tcx, env, item, path)
                     })
                     .collect(),
             );
@@ -459,6 +465,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
         ItemKind::Trait(_, _, generics, generic_bounds, items) => {
+            collect_supertraits(env, generic_bounds, path);
             vec![TopLevelItem::Trait(Trait {
                 name,
                 ty_params: get_ty_params(env, generics),
@@ -559,6 +566,24 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             }
         }
     }
+}
+
+/// inserts paths of all immediate supertraits of a trait with
+/// the given generic_bounds to [env.supertraits]
+fn collect_supertraits(env: &mut Env, generic_bounds: &GenericBounds, path: Path) {
+    let supertraits = generic_bounds
+        .iter()
+        .filter_map(|generic_bound| match generic_bound {
+            GenericBound::Trait(ptraitref, _) => {
+                Some(compile_path(env, ptraitref.trait_ref.path))
+            },
+            // @TODO: should we include GenericBound::LangItemTrait ?
+            GenericBound::LangItemTrait { .. }
+            // we ignore lifetimes
+            | GenericBound::Outlives { .. } => None,
+        })
+        .collect();
+    env.supertraits.insert(path, supertraits);
 }
 
 /// returns a pair of function signature and its body
@@ -745,7 +770,7 @@ fn trait_bound_to_where_predicate(bound: TraitBound, ty: Box<CoqType>) -> WhereP
     WherePredicate { bound, ty }
 }
 
-/// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
+/// [compile_generic_bounds] compiles generic bounds
 fn compile_generic_bounds(
     tcx: &TyCtxt,
     env: &Env,
@@ -913,14 +938,23 @@ fn compile_trait_item_body(
     }
 }
 
-fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
+fn compile_top_level(
+    tcx: &TyCtxt,
+    opts: TopLevelOptions,
+    supertraits_map: &mut HashMap<Path, Vec<Path>>,
+) -> TopLevel {
+    let file = opts.filename;
+    // the path to the item being compiled
+    let path = Path::new(&[file.clone()]);
+
     let mut env = Env {
         impl_counter: HashMap::new(),
         tcx: *tcx,
         axiomatize: opts.axiomatize,
-        file: opts.filename,
+        file,
         reorder_map: HashMap::new(),
         configuration: get_configuration(&opts.configuration_file),
+        supertraits: supertraits_map,
     };
 
     let mut results: Vec<ItemId> = tcx.hir().items().collect();
@@ -931,7 +965,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
             .iter()
             .flat_map(|item_id| {
                 let item = tcx.hir().item(*item_id);
-                compile_top_level_item(tcx, &mut env, item)
+                compile_top_level_item(tcx, &mut env, item, path.clone())
             })
             .collect(),
     );
@@ -954,9 +988,10 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
         axiomatize: opts.axiomatize || configuration.axiomatize,
         ..opts
     };
-    let top_level = compile_top_level(tcx, opts);
+    let mut supertraits_map = HashMap::new();
+    let top_level = compile_top_level(tcx, opts, &mut supertraits_map);
     let top_level = mt_top_level(top_level);
-    top_level.to_pretty(LINE_WIDTH)
+    top_level.to_pretty(LINE_WIDTH, &supertraits_map)
 }
 
 // additional check. can be eliminated when all possible cases will be covered
@@ -1564,7 +1599,7 @@ impl WherePredicate {
 
 impl TraitBound {
     /// Get the generics for the trait
-    fn compile(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> TraitBound {
+    fn compile(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> Self {
         TraitBound {
             name: compile_path(env, ptraitref.trait_ref.path),
             ty_params: get_ty_params_with_default_status(
@@ -1627,7 +1662,6 @@ impl TraitTyParamValue {
         }
     }
 
-    #[allow(dead_code)]
     fn to_coq_type(&self) -> Box<CoqType> {
         match self {
             TraitTyParamValue::JustValue { name: _, ty } => ty.to_owned(),
@@ -1637,13 +1671,14 @@ impl TraitTyParamValue {
     }
 }
 
-struct ToDocContext<'a> {
+struct ToDocContext<'a, 'b> {
     extra_data: Option<&'a TopLevelItem>,
     previous_module_names: Vec<String>,
+    supertraits_map: &'b HashMap<Path, Vec<Path>>,
 }
 
 impl TopLevelItem {
-    fn to_doc<'a>(&'a self, to_doc_context: ToDocContext<'a>) -> Doc {
+    fn to_doc<'a>(&'a self, to_doc_context: ToDocContext<'a, '_>) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => match value {
                 None => coq::TopLevel::new(&[
@@ -1698,7 +1733,7 @@ impl TopLevelItem {
                         vec![coq::TopLevelItem::Module(coq::Module::new_with_repeat(
                             name,
                             nb_previous_occurrences_of_module_name,
-                            coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc())]),
+                            coq::TopLevel::new(&[coq::TopLevelItem::Code(body.to_doc(to_doc_context.supertraits_map))]),
                         ))],
                     ]
                     .concat(),
@@ -2010,7 +2045,7 @@ impl TopLevelItem {
                 ))])
                 .to_doc()
             }
-            TopLevelItem::Trait(tr) => tr.to_doc(),
+            TopLevelItem::Trait(tr) => tr.to_doc(to_doc_context.supertraits_map),
             TopLevelItem::TraitImpl {
                 generic_tys,
                 ty_params,
@@ -2437,7 +2472,7 @@ impl TypeStructStruct {
 }
 
 impl Trait {
-    fn to_doc(&self) -> Doc {
+    fn to_doc(&self, _supertraits_map: &HashMap<Path, Vec<Path>>) -> Doc {
         let Trait {
             name,
             ty_params,
@@ -2798,9 +2833,9 @@ impl Trait {
                                                                         text([
                                                                             "destruct ",
                                                                             &proj_name,
-                                                                            " [? ",
+                                                                            " as [? ",
                                                                             &proj_name,
-                                                                            "]",
+                                                                            "];",
                                                                         ].concat()),
                                                                         line(),
                                                                         text("try assumption"),
@@ -2826,6 +2861,9 @@ impl Trait {
     }
 }
 
+// @TODO
+//fn collect_supertraits_in_order
+
 impl TopLevel {
     // function returns TopLevelItem::TypeStructStruct (comparing name)
     fn find_tli_by_name(&self, self_ty: &CoqType) -> Option<&TopLevelItem> {
@@ -2844,7 +2882,7 @@ impl TopLevel {
         })
     }
 
-    fn to_doc(&self) -> Doc {
+    fn to_doc(&self, supertraits_map: &HashMap<Path, Vec<Path>>) -> Doc {
         // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
         // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
         // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
@@ -2891,6 +2929,7 @@ impl TopLevel {
                 let to_doc_context = ToDocContext {
                     extra_data,
                     previous_module_names: previous_module_names.clone(),
+                    supertraits_map,
                 };
                 let doc = item.to_doc(to_doc_context);
                 if let TopLevelItem::Module { name, .. } = item {
@@ -2902,9 +2941,9 @@ impl TopLevel {
         )
     }
 
-    pub fn to_pretty(&self, width: usize) -> String {
+    pub fn to_pretty(&self, width: usize, supertraits_map: &HashMap<Path, Vec<Path>>) -> String {
         let mut w = Vec::new();
-        self.to_doc().render(width, &mut w).unwrap();
+        self.to_doc(supertraits_map).render(width, &mut w).unwrap();
         format!("{}{}\n", HEADER, String::from_utf8(w).unwrap())
     }
 }

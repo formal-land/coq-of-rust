@@ -163,7 +163,7 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
 #[allow(dead_code)]
 /// returns generics for the given path
 pub(crate) fn get_path_generics<'a>(
-    env: &Env<'a>,
+    env: &Env<'a, '_>,
     path: &rustc_hir::Path,
 ) -> Option<&'a rustc_middle::ty::Generics> {
     path.res
@@ -271,5 +271,11 @@ impl Path {
                 .flat_map(|path| path.segments.to_owned())
                 .collect(),
         }
+    }
+
+    pub(crate) fn push<S: ToString>(&self, segment: S) -> Self {
+        let mut path = self.clone();
+        path.segments.push(segment.to_string());
+        path
     }
 }
