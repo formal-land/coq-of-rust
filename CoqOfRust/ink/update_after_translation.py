@@ -21,20 +21,20 @@ def sub_at_least_once(pattern, replacement, text) -> str:
 def ignore_module_names(module_names, content):
     for module_name in module_names:
         content = sub_at_least_once(
-            fr"Module\s+{module_name}.",
+            fr"Module\s+{module_name}\.",
             f"(* Module {module_name}.",
             content,
         )
         try:
             content = sub_at_least_once(
-                fr"Section\s+{module_name}.",
+                fr"Section\s+{module_name}\.",
                 f"(* Section {module_name}.",
                 content,
             )
         except ValueError:
             pass
         content = sub_at_least_once(
-            fr"End\s+{module_name}.",
+            fr"End\s+{module_name}\.",
             f"End {module_name}. *)",
             content,
         )
@@ -45,6 +45,7 @@ def update_ink():
     file_name = "ink.v"
     with open(file_name, "r") as f:
         content = f.read()
+
     pattern = "Require Import CoqOfRust.CoqOfRust."
     content = sub_at_least_once(
         pattern,
@@ -53,16 +54,22 @@ def update_ink():
 Require CoqOfRust.ink.ink_env.""",
         content,
     )
-    content = sub_at_least_once(
-        "Module TraitCallForwarderFor.",
-        "(* Module TraitCallForwarderFor.",
+
+    content = ignore_module_names(
+        [
+            "IsResultType",
+            "TraitCallForwarderFor",
+        ],
         content,
     )
     content = sub_at_least_once(
-        "End TraitCallForwarderFor.",
-        "End TraitCallForwarderFor. *)",
+        re.escape(
+            "Definition IsResultType (T : Set) : Set := IsResultType.t (T := T)."
+        ),
+        "",
         content,
     )
+
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -451,6 +458,17 @@ Require CoqOfRust.ink.parity_scale_codec.""",
     content = sub_at_least_once(
         "scale_info.ty.Type_",
         "(scale_info.ty.Type_ scale_info.ty.Type_.Default.T)",
+        content,
+    )
+
+    content = sub_at_least_once(
+        "Global Instance I",
+        "Global Instance I'",
+        content,
+    )
+    content = sub_at_least_once(
+        "Global Hint Resolve I : core.",
+        "Global Hint Resolve I' : core.",
         content,
     )
 

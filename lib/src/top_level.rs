@@ -9,7 +9,6 @@ use crate::reorder::*;
 use crate::ty::*;
 use itertools::Itertools;
 use rustc_ast::ast::{AttrArgs, AttrKind};
-use rustc_hir::def::Res;
 use rustc_hir::{
     GenericBound, GenericBounds, GenericParamKind, Impl, ImplItemKind, ImplItemRef, Item, ItemId,
     ItemKind, PatKind, QPath, TraitFn, TraitItemKind, Ty, TyKind, VariantData,
@@ -290,25 +289,14 @@ fn deduplicate_top_level_items(items: Vec<TopLevelItem>) -> Vec<TopLevelItem> {
     items.into_iter().unique().collect()
 }
 
-fn is_top_level_item_public(tcx: &TyCtxt, item: &Item) -> bool {
+fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
     let def_id = item.owner_id.to_def_id();
+    let ignore_impls = env.configuration.impl_ignore_axioms.contains(&env.file);
     let id_to_check = match &item.kind {
         ItemKind::Impl(Impl {
             of_trait: Some(trait_ref),
-            self_ty,
             ..
-        }) => {
-            // if let TyKind::Path(QPath::Resolved(_, path)) = self_ty.kind {
-            //     if let Res::Def(_, def_id) = path.res {
-            //         if let Result::Ok(false) =
-            //             std::panic::catch_unwind(|| !tcx.visibility(def_id).is_public())
-            //         {
-            //             return false;
-            //         }
-            //     }
-            // }
-            trait_ref.trait_def_id().unwrap()
-        }
+        }) if !ignore_impls => trait_ref.trait_def_id().unwrap(),
         _ => def_id,
     };
     tcx.visibility(id_to_check).is_public()
@@ -324,7 +312,7 @@ fn is_top_level_item_public(tcx: &TyCtxt, item: &Item) -> bool {
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
     let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize {
-        let is_public = is_top_level_item_public(tcx, item);
+        let is_public = is_top_level_item_public(tcx, env, item);
         if !is_public {
             // Do not generate anything if the item is not public and we are
             // axiomatizing the definitions (for a library). Also, still

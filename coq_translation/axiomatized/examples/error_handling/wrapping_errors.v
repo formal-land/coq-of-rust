@@ -40,7 +40,7 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   
   Parameter source :
       forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (core.option.Option (ref TraitObject)).
+      (ref Self) -> M (H := H') (core.option.Option (ref _ (* dyn *))).
   
   Global Instance Method_source `{H' : State.Trait} : Notation.Dot "source" := {
     Notation.dot := source;

@@ -1,6 +1,22 @@
 {
   "axiomatize": false,
-  "debug_reorder": true,
+  "debug_reorder": false,
+  "impl_ignore_axioms": [
+    "examples/conversion/converting_to_string.rs",
+    "examples/error_handling/combinators_and_then.rs",
+    "examples/error_handling/combinators_map.rs",
+    "examples/error_handling/defining_an_error_type.rs",
+    "examples/error_handling/unpacking_options_and_defaults_via_get_or_insert.rs",
+    "examples/error_handling/unpacking_options_and_defaults_via_get_or_insert_with.rs",
+    "examples/error_handling/unpacking_options_and_defaults_via_or_else.rs",
+    "examples/error_handling/unpacking_options_and_defaults_via_or.rs",
+    "examples/primitives/tuples.rs",
+    "examples/std_library_types/result_chaining_with_question_mark.rs",
+    "examples/traits/operator_overloading.rs",
+    "ink",
+    "ink_env",
+    "ink_storage"
+  ],
   "reorder": {
     "examples/functions/functions_order.rs": {
       "top_level": {

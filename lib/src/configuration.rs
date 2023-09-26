@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /// Used for moving definitions up and down
-/// by specifing it in the configuration file
+/// by specifying it in the configuration file
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub(crate) struct DefinitionMove {
     #[serde(rename = "move")]
@@ -47,8 +47,9 @@ pub(crate) struct Configuration {
     ///   },
     ///  ...
     /// }
-    pub(crate) reorder: Reorder,
     pub(crate) debug_reorder: bool,
+    pub(crate) impl_ignore_axioms: Vec<File>,
+    pub(crate) reorder: Reorder,
 }
 
 pub(crate) fn get_configuration(configuration_file_path: &str) -> Configuration {
