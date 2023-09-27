@@ -6,17 +6,21 @@ pub(crate) fn find_last<V>(start: V, graph: DirectedGraph<V>) -> V
 where
     V: core::clone::Clone + std::cmp::Eq + std::hash::Hash,
 {
-    let mut current_last = start;
+    let mut current_last = &start;
     let mut queue = VecDeque::new();
 
-    while let Some(vertices) = graph.get(&current_last) {
+    while let Some(vertices) = graph.get(current_last) {
         for v in vertices {
             queue.push_back(v);
         }
-        current_last = queue.pop_front();
+        if let Some(new_last) = queue.pop_front() {
+            current_last = new_last;
+        } else {
+            break;
+        }
     }
 
-    current_last
+    current_last.to_owned()
 }
 
 /// changes the direction of edges in a given directed graph
