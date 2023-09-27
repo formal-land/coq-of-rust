@@ -213,7 +213,6 @@ examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/supertraits.v
 ink/erc20.v
-ink/ink_allocator.v
 ink/ink_e2e.v
 ink/ink_e2e_macro.v
 # ink/ink_env.v

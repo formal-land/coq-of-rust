@@ -74,6 +74,24 @@ Require CoqOfRust.ink.ink_env.""",
         f.write(content)
 
 
+def update_ink_allocator():
+    file_name = "ink_allocator.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+
+    content = ignore_module_names(
+        [
+            "Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc",
+            "Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc",
+            "Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc",
+        ],
+        content,
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 def update_ink_engine():
     file_name = "ink_engine.v"
     with open(file_name, "r") as f:
@@ -560,6 +578,7 @@ Require CoqOfRust.ink.ink.""",
 
 
 update_ink()
+update_ink_allocator()
 update_ink_e2e_macro()
 update_ink_engine()
 update_ink_env()

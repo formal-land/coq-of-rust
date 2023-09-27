@@ -47,7 +47,7 @@ Module bump.
     Global Hint Resolve I : core.
   End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   
-  Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
+  (* Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
     Parameter fmt :
@@ -64,17 +64,17 @@ Module bump.
       core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
     }.
     Global Hint Resolve I : core.
-  End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
+  End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc. *)
   
-  Module Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
+  (* Module Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
     Global Instance I : core.marker.Copy.Trait Self := {
     }.
     Global Hint Resolve I : core.
-  End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
+  End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc. *)
   
-  Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
+  (* Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
     Definition Self := ink_allocator.bump.InnerAlloc.
     
     Parameter clone :
@@ -89,7 +89,7 @@ Module bump.
       core.clone.Clone.clone `{H' : State.Trait} := clone;
     }.
     Global Hint Resolve I : core.
-  End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
+  End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc. *)
 End bump.
 
 Module BumpAllocator.
@@ -136,7 +136,7 @@ Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   Global Hint Resolve I : core.
 End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
 
-Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
+(* Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
   Parameter fmt :
@@ -151,17 +151,17 @@ Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
     core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
   }.
   Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
+End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc. *)
 
-Module Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
+(* Module Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
   Global Instance I : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
-End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
+End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc. *)
 
-Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
+(* Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
   Definition Self := ink_allocator.bump.InnerAlloc.
   
   Parameter clone :
@@ -176,4 +176,4 @@ Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
   Global Hint Resolve I : core.
-End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
+End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc. *)
