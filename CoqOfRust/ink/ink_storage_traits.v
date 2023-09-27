@@ -181,6 +181,13 @@ Module storage.
       Notation.double_colon_type := PreferredKey;
     }.
     Module The_Bounds_Of_Type_.
+      Module core_marker_Sized.
+        Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
+        repeat
+        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+        try assumption).
+        Defined.
+      End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
@@ -220,6 +227,13 @@ Module storage.
       Notation.double_colon_type := Type_;
     }.
     Module The_Bounds_Of_Type_.
+      Module core_marker_Sized.
+        Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
+        repeat
+        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+        try assumption).
+        Defined.
+      End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
@@ -339,6 +353,13 @@ Module StorableHint.
     Notation.double_colon_type := PreferredKey;
   }.
   Module The_Bounds_Of_Type_.
+    Module core_marker_Sized.
+      Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+      try assumption).
+      Defined.
+    End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
@@ -378,6 +399,13 @@ Module AutoStorableHint.
     Notation.double_colon_type := Type_;
   }.
   Module The_Bounds_Of_Type_.
+    Module core_marker_Sized.
+      Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+      try assumption).
+      Defined.
+    End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.

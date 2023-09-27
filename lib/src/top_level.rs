@@ -1,3 +1,4 @@
+use crate::algs;
 use crate::configuration::*;
 use crate::coq;
 use crate::env::*;
@@ -19,7 +20,6 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::iter::repeat;
 use std::string::ToString;
-use topological_sort::TopologicalSort;
 
 pub(crate) struct TopLevelOptions {
     pub(crate) configuration_file: String,
@@ -466,7 +466,7 @@ fn compile_top_level_item(
         }
         ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
         ItemKind::Trait(_, _, generics, generic_bounds, items) => {
-            collect_supertraits(env, generic_bounds, path);
+            collect_supertraits(env, generic_bounds, path.push(name.clone()));
             vec![TopLevelItem::Trait(Trait {
                 name,
                 ty_params: get_ty_params(env, generics),
@@ -571,18 +571,21 @@ fn compile_top_level_item(
 
 /// inserts paths of all immediate supertraits of a trait with
 /// the given generic_bounds to [env.supertraits]
-fn collect_supertraits(env: &mut Env, generic_bounds: GenericBounds, path: Path) {
-    for generic_bound in generic_bounds {
-        match generic_bound {
+fn collect_supertraits(env: &mut Env, generic_bounds: &GenericBounds, path: Path) {
+    eprintln!("{:?}\n", path);
+    let supertraits = generic_bounds
+        .iter()
+        .filter_map(|generic_bound| match generic_bound {
             GenericBound::Trait(ptraitref, _) => {
-                env.supertraits.add_dependency(path.clone(), compile_path(env, ptraitref.trait_ref.path));
+                Some(compile_path(env, ptraitref.trait_ref.path))
             },
             // @TODO: should we include GenericBound::LangItemTrait ?
             GenericBound::LangItemTrait { .. }
             // we ignore lifetimes
-            | GenericBound::Outlives { .. } => (),
-        }
-    }
+            | GenericBound::Outlives { .. } => None,
+        })
+        .collect();
+    env.supertraits.insert(path, supertraits);
 }
 
 /// returns a pair of function signature and its body
@@ -940,7 +943,7 @@ fn compile_trait_item_body(
 fn compile_top_level(
     tcx: &TyCtxt,
     opts: TopLevelOptions,
-    supertraits_map: &mut TopologicalSort<Path>,
+    supertraits_map: &mut HashMap<Path, HashSet<Path>>,
 ) -> TopLevel {
     let file = opts.filename;
     // the path to the item being compiled
@@ -987,7 +990,7 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
         axiomatize: opts.axiomatize || configuration.axiomatize,
         ..opts
     };
-    let mut supertraits_map = TopologicalSort::new();
+    let mut supertraits_map = HashMap::new();
     let top_level = compile_top_level(tcx, opts, &mut supertraits_map);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH, &supertraits_map)
@@ -1673,7 +1676,7 @@ impl TraitTyParamValue {
 struct ToDocContext<'a, 'b> {
     extra_data: Option<&'a TopLevelItem>,
     previous_module_names: Vec<String>,
-    supertraits_map: &'b TopologicalSort<Path>,
+    supertraits_map: &'b HashMap<Path, HashSet<Path>>,
 }
 
 impl TopLevelItem {
@@ -2471,7 +2474,7 @@ impl TypeStructStruct {
 }
 
 impl Trait {
-    fn to_doc(&self, _supertraits_map: &TopologicalSort<Path>) -> Doc {
+    fn to_doc(&self, supertraits_map: &HashMap<Path, HashSet<Path>>) -> Doc {
         let Trait {
             name,
             ty_params,
@@ -2800,52 +2803,110 @@ impl Trait {
                                         coq::TopLevel::new(
                                             &bounds
                                                 .iter()
-                                                .map(|bound| coq::TopLevelItem::Module(coq::Module::new(
-                                                    &bound.name.to_name(),
-                                                    coq::TopLevel::new(&[
-                                                        coq::TopLevelItem::Instance(coq::Instance::new(
-                                                            false,
-                                                            "I",
-                                                            &[coq::ArgDecl::new(
-                                                                &coq::ArgDeclVar::Generalized {
-                                                                    idents: vec![],
-                                                                    ty: coq::Expression::just_name("Trait"),
-                                                                },
-                                                                coq::ArgSpecKind::Explicit,
-                                                            )],
-                                                            coq::Expression::Variable {
-                                                                ident: Path::concat(&[
-                                                                    bound.name.to_owned(),
-                                                                    Path::new(&["Trait"]),
-                                                                ]),
-                                                                no_implicit: false,
-                                                            }
-                                                            .apply(&coq::Expression::just_name(&item.item_name)),
-                                                            &None,
-                                                            {
-                                                                let proj_name = ["__the_bounds_of_", &item.item_name].concat();
-                                                                vec![concat([
-                                                                    text("repeat"),
-                                                                    line(),
-                                                                    group([
-                                                                        text("("),
-                                                                        text([
-                                                                            "destruct ",
-                                                                            &proj_name,
-                                                                            " as [? ",
-                                                                            &proj_name,
-                                                                            "];",
-                                                                        ].concat()),
-                                                                        line(),
-                                                                        text("try assumption"),
-                                                                        text(")"),
+                                                .flat_map(|bound| {
+                                                    let topological_sort = algs::DirectedGraph::of_hashmap(supertraits_map)
+                                                        .get_subgraph_of(&bound.name)
+                                                        .to_topological_sort();
+                                                    if topological_sort.is_empty() {
+                                                        vec![coq::TopLevelItem::Module(coq::Module::new(
+                                                            &bound.name.to_name(),
+                                                            coq::TopLevel::new(&[
+                                                                coq::TopLevelItem::Instance(coq::Instance::new(
+                                                                    false,
+                                                                    "I",
+                                                                    &[coq::ArgDecl::new(
+                                                                        &coq::ArgDeclVar::Generalized {
+                                                                            idents: vec![],
+                                                                            ty: coq::Expression::just_name("Trait"),
+                                                                        },
+                                                                        coq::ArgSpecKind::Explicit,
+                                                                    )],
+                                                                    coq::Expression::Variable {
+                                                                        ident: Path::concat(&[
+                                                                            bound.name.to_owned(),
+                                                                            Path::new(&["Trait"]),
+                                                                        ]),
+                                                                        no_implicit: false,
+                                                                    }
+                                                                    .apply(&coq::Expression::just_name(&item.item_name)),
+                                                                    &None,
+                                                                    {
+                                                                        let proj_name = ["__the_bounds_of_", &item.item_name].concat();
+                                                                        vec![concat([
+                                                                            text("repeat"),
+                                                                            line(),
+                                                                            group([
+                                                                                text("("),
+                                                                                text([
+                                                                                    "destruct ",
+                                                                                    &proj_name,
+                                                                                    " as [? ",
+                                                                                    &proj_name,
+                                                                                    "];",
+                                                                                ].concat()),
+                                                                                line(),
+                                                                                text("try assumption"),
+                                                                                text(")"),
+                                                                            ]),
+                                                                            text("."),
+                                                                        ])]
+                                                                    },
+                                                                )),
+                                                            ]),
+                                                        ))]
+                                                    } else {
+                                                        topological_sort
+                                                            .map(|bound| {
+                                                                coq::TopLevelItem::Module(coq::Module::new(
+                                                                    &bound.to_name(),
+                                                                    coq::TopLevel::new(&[
+                                                                        coq::TopLevelItem::Instance(coq::Instance::new(
+                                                                            false,
+                                                                            "I",
+                                                                            &[coq::ArgDecl::new(
+                                                                                &coq::ArgDeclVar::Generalized {
+                                                                                    idents: vec![],
+                                                                                    ty: coq::Expression::just_name("Trait"),
+                                                                                },
+                                                                                coq::ArgSpecKind::Explicit,
+                                                                            )],
+                                                                            coq::Expression::Variable {
+                                                                                ident: Path::concat(&[
+                                                                                    bound,
+                                                                                    Path::new(&["Trait"]),
+                                                                                ]),
+                                                                                no_implicit: false,
+                                                                            }
+                                                                            .apply(&coq::Expression::just_name(&item.item_name)),
+                                                                            &None,
+                                                                            {
+                                                                                let proj_name = ["__the_bounds_of_", &item.item_name].concat();
+                                                                                vec![concat([
+                                                                                    text("repeat"),
+                                                                                    line(),
+                                                                                    group([
+                                                                                        text("("),
+                                                                                        text([
+                                                                                            "destruct ",
+                                                                                            &proj_name,
+                                                                                            " as [? ",
+                                                                                            &proj_name,
+                                                                                            "];",
+                                                                                        ].concat()),
+                                                                                        line(),
+                                                                                        text("try assumption"),
+                                                                                        text(")"),
+                                                                                    ]),
+                                                                                    text("."),
+                                                                                ])]
+                                                                            },
+                                                                        )),
                                                                     ]),
-                                                                    text("."),
-                                                                ])]
-                                                            },
-                                                        )),
-                                                    ]),
-                                                )))
+                                                                ))
+                                                            })
+                                                            .collect()
+                                                    }
+                                                })
                                                 .collect_vec(),
                                         ),
                                     )))
@@ -2881,7 +2942,7 @@ impl TopLevel {
         })
     }
 
-    fn to_doc(&self, supertraits_map: &TopologicalSort<Path>) -> Doc {
+    fn to_doc(&self, supertraits_map: &HashMap<Path, HashSet<Path>>) -> Doc {
         // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
         // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
         // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
@@ -2940,7 +3001,11 @@ impl TopLevel {
         )
     }
 
-    pub fn to_pretty(&self, width: usize, supertraits_map: &TopologicalSort<Path>) -> String {
+    pub fn to_pretty(
+        &self,
+        width: usize,
+        supertraits_map: &HashMap<Path, HashSet<Path>>,
+    ) -> String {
         let mut w = Vec::new();
         self.to_doc(supertraits_map).render(width, &mut w).unwrap();
         format!("{}{}\n", HEADER, String::from_utf8(w).unwrap())

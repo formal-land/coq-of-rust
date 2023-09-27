@@ -3,8 +3,7 @@ use crate::path::Path;
 use crate::ty::*;
 
 use rustc_middle::ty::TyCtxt;
-use std::collections::HashMap;
-use topological_sort::TopologicalSort;
+use std::collections::{HashMap, HashSet};
 
 /// The environment used for the translation steps, holding various state
 /// information
@@ -20,5 +19,5 @@ pub(crate) struct Env<'a, 'b> {
     pub(crate) reorder_map: HashMap<String, Vec<String>>,
     /// the configuration read or default if no config file is found
     pub(crate) configuration: Configuration,
-    pub(crate) supertraits: &'b mut TopologicalSort<Path>,
+    pub(crate) supertraits: &'b mut HashMap<Path, HashSet<Path>>,
 }

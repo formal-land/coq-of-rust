@@ -381,6 +381,14 @@ Module reflect.
         Notation.double_colon_type := Type_;
       }.
       Module The_Bounds_Of_Type_.
+        Module parity_scale_codec_codec_Decode.
+          Global Instance I `(Trait)
+            : parity_scale_codec.codec.Decode.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+          try assumption).
+          Defined.
+        End parity_scale_codec_codec_Decode.
         Module ink_reflect_dispatch_DecodeDispatch.
           Global Instance I `(Trait)
             : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
@@ -2057,6 +2065,14 @@ Module Wrap_dispatch_1.
         Notation.double_colon_type := Type_;
       }.
       Module The_Bounds_Of_Type_.
+        Module parity_scale_codec_codec_Decode.
+          Global Instance I `(Trait)
+            : parity_scale_codec.codec.Decode.Trait Type_.
+          repeat
+          (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+          try assumption).
+          Defined.
+        End parity_scale_codec_codec_Decode.
         Module ink_reflect_dispatch_DecodeDispatch.
           Global Instance I `(Trait)
             : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
@@ -2287,6 +2303,13 @@ Module ContractConstructorDecoder.
     Notation.double_colon_type := Type_;
   }.
   Module The_Bounds_Of_Type_.
+    Module parity_scale_codec_codec_Decode.
+      Global Instance I `(Trait) : parity_scale_codec.codec.Decode.Trait Type_.
+      repeat
+      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
+      try assumption).
+      Defined.
+    End parity_scale_codec_codec_Decode.
     Module ink_reflect_dispatch_DecodeDispatch.
       Global Instance I `(Trait)
         : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
