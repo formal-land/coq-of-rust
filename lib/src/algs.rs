@@ -1,11 +1,28 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap, HashSet, VecDeque};
 
-type DirectedGraph<K> = HashMap<K, HashSet<K>>;
+type DirectedGraph<V> = HashMap<V, HashSet<V>>;
+
+pub(crate) fn find_last<V>(start: V, graph: DirectedGraph<V>) -> V
+where
+    V: core::clone::Clone + std::cmp::Eq + std::hash::Hash,
+{
+    let mut current_last = start;
+    let mut queue = VecDeque::new();
+
+    while let Some(vertices) = graph.get(&current_last) {
+        for v in vertices {
+            queue.push_back(v);
+        }
+        current_last = queue.pop_front();
+    }
+
+    current_last
+}
 
 /// changes the direction of edges in a given directed graph
-pub(crate) fn reverse_graph<K>(graph: DirectedGraph<K>) -> DirectedGraph<K>
+pub(crate) fn reverse_graph<V>(graph: DirectedGraph<V>) -> DirectedGraph<V>
 where
-    K: core::clone::Clone + std::cmp::Eq + std::hash::Hash,
+    V: core::clone::Clone + std::cmp::Eq + std::hash::Hash,
 {
     let mut reversed = HashMap::new();
 
@@ -19,4 +36,12 @@ where
     }
 
     reversed
+}
+
+#[inline]
+pub(crate) fn to_set<A>(v: &[A]) -> HashSet<A>
+where
+    A: core::clone::Clone + std::cmp::Eq + std::hash::Hash,
+{
+    v.into_iter().map(|x| x.to_owned()).collect()
 }
