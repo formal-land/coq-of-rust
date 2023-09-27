@@ -19,6 +19,7 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::iter::repeat;
 use std::string::ToString;
+use topological_sort::TopologicalSort;
 
 pub(crate) struct TopLevelOptions {
     pub(crate) configuration_file: String,
@@ -570,20 +571,18 @@ fn compile_top_level_item(
 
 /// inserts paths of all immediate supertraits of a trait with
 /// the given generic_bounds to [env.supertraits]
-fn collect_supertraits(env: &mut Env, generic_bounds: &GenericBounds, path: Path) {
-    let supertraits = generic_bounds
-        .iter()
-        .filter_map(|generic_bound| match generic_bound {
+fn collect_supertraits(env: &mut Env, generic_bounds: GenericBounds, path: Path) {
+    for generic_bound in generic_bounds {
+        match generic_bound {
             GenericBound::Trait(ptraitref, _) => {
-                Some(compile_path(env, ptraitref.trait_ref.path))
+                env.supertraits.add_dependency(path.clone(), compile_path(env, ptraitref.trait_ref.path));
             },
             // @TODO: should we include GenericBound::LangItemTrait ?
             GenericBound::LangItemTrait { .. }
             // we ignore lifetimes
-            | GenericBound::Outlives { .. } => None,
-        })
-        .collect();
-    env.supertraits.insert(path, supertraits);
+            | GenericBound::Outlives { .. } => (),
+        }
+    }
 }
 
 /// returns a pair of function signature and its body
@@ -941,7 +940,7 @@ fn compile_trait_item_body(
 fn compile_top_level(
     tcx: &TyCtxt,
     opts: TopLevelOptions,
-    supertraits_map: &mut HashMap<Path, Vec<Path>>,
+    supertraits_map: &mut TopologicalSort<Path>,
 ) -> TopLevel {
     let file = opts.filename;
     // the path to the item being compiled
@@ -988,7 +987,7 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
         axiomatize: opts.axiomatize || configuration.axiomatize,
         ..opts
     };
-    let mut supertraits_map = HashMap::new();
+    let mut supertraits_map = TopologicalSort::new();
     let top_level = compile_top_level(tcx, opts, &mut supertraits_map);
     let top_level = mt_top_level(top_level);
     top_level.to_pretty(LINE_WIDTH, &supertraits_map)
@@ -1674,7 +1673,7 @@ impl TraitTyParamValue {
 struct ToDocContext<'a, 'b> {
     extra_data: Option<&'a TopLevelItem>,
     previous_module_names: Vec<String>,
-    supertraits_map: &'b HashMap<Path, Vec<Path>>,
+    supertraits_map: &'b TopologicalSort<Path>,
 }
 
 impl TopLevelItem {
@@ -2472,7 +2471,7 @@ impl TypeStructStruct {
 }
 
 impl Trait {
-    fn to_doc(&self, _supertraits_map: &HashMap<Path, Vec<Path>>) -> Doc {
+    fn to_doc(&self, _supertraits_map: &TopologicalSort<Path>) -> Doc {
         let Trait {
             name,
             ty_params,
@@ -2882,7 +2881,7 @@ impl TopLevel {
         })
     }
 
-    fn to_doc(&self, supertraits_map: &HashMap<Path, Vec<Path>>) -> Doc {
+    fn to_doc(&self, supertraits_map: &TopologicalSort<Path>) -> Doc {
         // check if there is a Debug Trait implementation in the code (#[derive(Debug)])
         // for a TopLevelItem::TypeStructStruct (@TODO extend to cover more cases)
         // if "yes" - get both TopLevelItems (Struct itself and TraitImpl for it)
@@ -2941,7 +2940,7 @@ impl TopLevel {
         )
     }
 
-    pub fn to_pretty(&self, width: usize, supertraits_map: &HashMap<Path, Vec<Path>>) -> String {
+    pub fn to_pretty(&self, width: usize, supertraits_map: &TopologicalSort<Path>) -> String {
         let mut w = Vec::new();
         self.to_doc(supertraits_map).render(width, &mut w).unwrap();
         format!("{}{}\n", HEADER, String::from_utf8(w).unwrap())
