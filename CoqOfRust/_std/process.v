@@ -100,8 +100,8 @@ pub struct Output {
 Module Output.
   Record t : Set := { 
     status : ExitStatus;
-    stdout : Vec u8;
-    stderr : Vec u8;
+    stdout : Vec u8 Vec.Default.A;
+    stderr : Vec u8 Vec.Default.A;
   }.
 End Output.
 Definition Output := Output.t.

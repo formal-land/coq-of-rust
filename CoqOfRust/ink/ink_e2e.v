@@ -22,7 +22,7 @@ Module builders.
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{ink_env.types.Environment.Trait E},
       (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-        M (H := H') (alloc.vec.Vec u8).
+        M (H := H') (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End builders.
 
 Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :=
@@ -44,7 +44,7 @@ Parameter constructor_exec_input :
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{ink_env.types.Environment.Trait E},
     (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-      M (H := H') (alloc.vec.Vec u8).
+      M (H := H') (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 
 Module client.
   Definition CallBuilderFinal (E Args RetType : Set) : Set :=
@@ -388,7 +388,7 @@ Module client.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -419,7 +419,7 @@ Module client.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -501,7 +501,7 @@ Module client.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -529,7 +529,7 @@ Module client.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -586,7 +586,8 @@ Module client.
           :
           alloc.collections.btree.map.BTreeMap
             alloc.string.String
-            std.path.PathBuf;
+            std.path.PathBuf
+            alloc.collections.btree.map.BTreeMap.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -1118,7 +1119,7 @@ Module
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -1149,7 +1150,7 @@ Module
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -1270,7 +1271,9 @@ Module
     
     Parameter encode :
         forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') (alloc.vec.Vec Root.core.primitive.u8).
+        (ref Self) ->
+          M (H := H')
+            (alloc.vec.Vec Root.core.primitive.u8 alloc.vec.Vec.Default.A).
     
     Global Instance Method_encode `{H' : State.Trait} :
       Notation.Dot "encode" := {
@@ -1413,7 +1416,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -1440,7 +1443,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -1495,7 +1498,8 @@ Module Client.
         :
         alloc.collections.btree.map.BTreeMap
           alloc.string.String
-          std.path.PathBuf;
+          std.path.PathBuf
+          alloc.collections.btree.map.BTreeMap.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -2033,7 +2037,7 @@ Module xts.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2057,7 +2061,7 @@ Module xts.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2120,9 +2124,9 @@ Module xts.
         value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
         storage_deposit_limit : core.option.Option E::type["Balance"];
-        code : alloc.vec.Vec u8;
-        data : alloc.vec.Vec u8;
-        salt : alloc.vec.Vec u8;
+        code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+        data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+        salt : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -2205,7 +2209,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2233,7 +2237,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2260,7 +2264,7 @@ Module xts.
         value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
         storage_deposit_limit : core.option.Option E::type["Balance"];
-        data : alloc.vec.Vec u8;
+        data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -2333,7 +2337,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2360,7 +2364,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2443,7 +2447,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2470,7 +2474,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2599,7 +2603,7 @@ Module xts.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2621,7 +2625,7 @@ Module xts.
       Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
-        code : alloc.vec.Vec u8;
+        code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
         storage_deposit_limit : core.option.Option E::type["Balance"];
         determinism : ink_e2e.xts.Determinism;
       }.
@@ -2685,7 +2689,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2712,7 +2716,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2985,7 +2989,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3009,7 +3013,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
       (ref Self) ->
         (ref (Slice scale_encode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3215,9 +3219,9 @@ Module InstantiateWithCode.
       value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
       storage_deposit_limit : core.option.Option E::type["Balance"];
-      code : alloc.vec.Vec u8;
-      data : alloc.vec.Vec u8;
-      salt : alloc.vec.Vec u8;
+      code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      salt : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -3372,7 +3376,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3400,7 +3404,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3427,7 +3431,7 @@ Module Call.
       value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
       storage_deposit_limit : core.option.Option E::type["Balance"];
-      data : alloc.vec.Vec u8;
+      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -3563,7 +3567,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3590,7 +3594,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3737,7 +3741,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3764,7 +3768,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3965,7 +3969,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3987,7 +3991,7 @@ Module UploadCode.
     Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
-      code : alloc.vec.Vec u8;
+      code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       storage_deposit_limit : core.option.Option E::type["Balance"];
       determinism : ink_e2e.xts.Determinism;
     }.
@@ -4117,7 +4121,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -4144,7 +4148,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :

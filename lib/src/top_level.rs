@@ -102,7 +102,7 @@ enum VariantItem {
 
 /// The actual value of the type parameter of the trait's generic parameter
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-enum TraitTyParamValue {
+pub(crate) enum TraitTyParamValue {
     /// the value of the parameter that has no default
     JustValue { name: String, ty: Box<CoqType> },
     /// the value that replaces the default value of the parameter
@@ -133,12 +133,12 @@ enum TopLevelItem {
     TypeStructStruct(TypeStructStruct),
     TypeStructTuple {
         name: String,
-        ty_params: Vec<String>,
+        ty_params: Vec<(String, Option<Box<CoqType>>)>,
         fields: Vec<Box<CoqType>>,
     },
     TypeStructUnit {
         name: String,
-        ty_params: Vec<String>,
+        ty_params: Vec<(String, Option<Box<CoqType>>)>,
     },
     Module {
         name: String,
@@ -173,7 +173,7 @@ enum TopLevelItem {
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 struct TypeStructStruct {
     name: String,
-    ty_params: Vec<String>,
+    ty_params: Vec<(String, Option<Box<CoqType>>)>,
     predicates: Vec<WherePredicate>,
     fields: Vec<(String, Box<CoqType>)>,
     is_dead_code: bool,
@@ -428,7 +428,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         }],
         ItemKind::Struct(body, generics) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let ty_params = get_ty_params_names(env, generics);
+            let ty_params = get_ty_params(env, generics);
             let predicates = get_where_predicates(tcx, env, generics);
 
             match body {
@@ -784,7 +784,7 @@ fn get_ty_params_with_default_status(
 
 /// computes the full list of actual type parameters with their default status
 /// (for items other than traits)
-fn get_full_ty_params_with_default_status(
+pub(crate) fn get_full_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
@@ -853,7 +853,7 @@ fn compile_ty_param_value(
 }
 
 /// Get the list of type parameters names and default status (true if it has a default)
-fn type_params_name_and_default_status(
+pub(crate) fn type_params_name_and_default_status(
     generics: &rustc_middle::ty::Generics,
 ) -> Vec<(String, bool)> {
     generics
@@ -1062,7 +1062,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 }
             },
         },
-        TopLevelItem::Definition(definiiton) => TopLevelItem::Definition(definiiton.mt()),
+        TopLevelItem::Definition(definition) => TopLevelItem::Definition(definition.mt()),
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
         TopLevelItem::TypeStructStruct { .. } => item,
@@ -1864,7 +1864,7 @@ impl TopLevelItem {
                         name,
                         coq::TopLevel::add_context_in_section_if_necessary(
                             name,
-                            ty_params,
+                            &ty_params.iter().map(|(name, _)| name.clone()).collect::<Vec<_>>(),
                             &coq::TopLevel::concat(&[
                                 coq::TopLevel::locally_unset_primitive_projections(&[
                                     coq::TopLevelItem::Record(coq::Record::new(
@@ -1942,7 +1942,7 @@ impl TopLevelItem {
                     name,
                     coq::TopLevel::add_context_in_section_if_necessary(
                         name,
-                        ty_params,
+                        &ty_params.iter().map(|(name, _)| name.clone()).collect::<Vec<_>>(),
                         &coq::TopLevel::new(&[coq::TopLevelItem::Code(group([
                             nest([
                                 text("Inductive"),
@@ -2401,7 +2401,7 @@ impl TypeStructStruct {
                         name,
                         coq::TopLevel::add_context_in_section_if_necessary(
                             name,
-                            ty_params,
+                            &ty_params.iter().map(|(name, _)| name.clone()).collect::<Vec<_>>(),
                             &coq::TopLevel::concat(&[
                                 coq::TopLevel::new(&if predicates.is_empty() {
                                     vec![]
@@ -2639,7 +2639,7 @@ impl TypeStructStruct {
                                     vec![]
                                 } else {
                                     vec![coq::ArgDecl::of_ty_params(
-                                        ty_params,
+                                        &ty_params.iter().map(|(name, _)| name.clone()).collect::<Vec<_>>(),
                                         coq::ArgSpecKind::Explicit,
                                     )]
                                 },
@@ -2657,7 +2657,7 @@ impl TypeStructStruct {
                             .apply_many_args(
                                 &ty_params
                                     .iter()
-                                    .map(|ty_param| {
+                                    .map(|(ty_param, _)| {
                                         (
                                             Some(ty_param.to_owned()),
                                             coq::Expression::just_name(ty_param),

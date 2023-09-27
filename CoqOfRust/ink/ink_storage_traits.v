@@ -1772,7 +1772,9 @@ Module layout.
     Class Trait (Self : Set) : Type := {
       layout `{H' : State.Trait}
         :
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout;
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
     }.
     
     Global Instance Method_layout `{H' : State.Trait} `(Trait)
@@ -1789,7 +1791,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1813,7 +1816,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1836,7 +1840,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1858,7 +1863,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1880,7 +1886,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1902,7 +1909,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1924,7 +1932,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1946,7 +1955,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1968,7 +1978,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -1990,7 +2001,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2012,7 +2024,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2034,7 +2047,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2056,7 +2070,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2078,7 +2093,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2100,7 +2116,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2122,7 +2139,8 @@ Module layout.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2146,7 +2164,9 @@ Module layout.
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2163,16 +2183,19 @@ Module layout.
       Global Hint Resolve I' : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
     
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Section
-        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.boxed.Box T.
+        Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2185,9 +2208,11 @@ Module layout.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
@@ -2199,7 +2224,9 @@ Module layout.
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2226,7 +2253,9 @@ Module layout.
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2244,15 +2273,19 @@ Module layout.
       Global Hint Resolve I' : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
     
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
-      Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.vec.Vec T.
+        Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2265,19 +2298,27 @@ Module layout.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V.
+    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
         Context {K V : Set}.
-        Definition Self := alloc.collections.btree.map.BTreeMap K V.
+        Definition Self :=
+          alloc.collections.btree.map.BTreeMap
+            K
+            V
+            alloc.collections.btree.map.BTreeMap.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2290,19 +2331,24 @@ Module layout.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V. *)
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V. *)
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T.
+    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.collections.btree.set.BTreeSet T.
+        Definition Self :=
+          alloc.collections.btree.set.BTreeSet
+            T
+            alloc.collections.btree.set.BTreeSet.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2315,19 +2361,24 @@ Module layout.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T. *)
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T. *)
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T.
+    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.collections.vec_deque.VecDeque T.
+        Definition Self :=
+          alloc.collections.vec_deque.VecDeque
+            T
+            alloc.collections.vec_deque.VecDeque.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2340,9 +2391,9 @@ Module layout.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T. *)
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T. *)
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
   End impls.
 End layout.
 
@@ -2355,7 +2406,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2379,7 +2431,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2402,7 +2455,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2424,7 +2478,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2446,7 +2501,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2468,7 +2524,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2490,7 +2547,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2512,7 +2570,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2534,7 +2593,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2556,7 +2616,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2578,7 +2639,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2600,7 +2662,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2622,7 +2685,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2644,7 +2708,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2666,7 +2731,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2688,7 +2754,8 @@ Module Wrap_impls_1.
       Parameter layout :
           forall `{H' : State.Trait},
           (ref ink_primitives.key.Key) ->
-            M (H := H') ink_metadata.layout.Layout.
+            M (H := H')
+              (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
       
       Global Instance AssociatedFunction_layout `{H' : State.Trait} :
         Notation.DoubleColon Self "layout" := {
@@ -2712,7 +2779,9 @@ Module Wrap_impls_1.
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2729,16 +2798,19 @@ Module Wrap_impls_1.
       Global Hint Resolve I' : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
     
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Section
-        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.boxed.Box T.
+        Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2751,9 +2823,11 @@ Module Wrap_impls_1.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
     
     Module
       Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
@@ -2765,7 +2839,9 @@ Module Wrap_impls_1.
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2792,7 +2868,9 @@ Module Wrap_impls_1.
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2810,15 +2888,19 @@ Module Wrap_impls_1.
       Global Hint Resolve I' : core.
     End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
     
-    Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
-      Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+    Module
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
+      Section
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.vec.Vec T.
+        Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2831,19 +2913,27 @@ Module Wrap_impls_1.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+      End
+        Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+    End
+      Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V.
+    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
         Context {K V : Set}.
-        Definition Self := alloc.collections.btree.map.BTreeMap K V.
+        Definition Self :=
+          alloc.collections.btree.map.BTreeMap
+            K
+            V
+            alloc.collections.btree.map.BTreeMap.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2856,19 +2946,24 @@ Module Wrap_impls_1.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V. *)
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V. *)
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T.
+    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.collections.btree.set.BTreeSet T.
+        Definition Self :=
+          alloc.collections.btree.set.BTreeSet
+            T
+            alloc.collections.btree.set.BTreeSet.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2881,19 +2976,24 @@ Module Wrap_impls_1.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T. *)
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T. *)
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
     
-    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T.
-      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T.
+    (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+      (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
         Context {T : Set}.
-        Definition Self := alloc.collections.vec_deque.VecDeque T.
+        Definition Self :=
+          alloc.collections.vec_deque.VecDeque
+            T
+            alloc.collections.vec_deque.VecDeque.Default.A.
         
         Parameter layout :
             forall `{H' : State.Trait},
             (ref ink_primitives.key.Key) ->
-              M (H := H') ink_metadata.layout.Layout.
+              M (H := H')
+                (ink_metadata.layout.Layout
+                  ink_metadata.layout.Layout.Default.F).
         
         Global Instance AssociatedFunction_layout `{H' : State.Trait} :
           Notation.DoubleColon Self "layout" := {
@@ -2906,9 +3006,9 @@ Module Wrap_impls_1.
             :=
             layout;
         }.
-      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T. *)
+      End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
       Global Hint Resolve I' : core.
-    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T. *)
+    End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
   End impls.
 End Wrap_impls_1.
 Import Wrap_impls_1.
@@ -2919,7 +3019,9 @@ Module
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -2941,7 +3043,9 @@ Module
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -2961,7 +3065,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_string_String.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -2981,7 +3087,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_bool.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3001,7 +3109,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_char.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3021,7 +3131,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3041,7 +3153,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u8.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3061,7 +3175,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u16.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3081,7 +3197,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u32.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3101,7 +3219,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u64.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3121,7 +3241,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_u128.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3141,7 +3263,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i8.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3161,7 +3285,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i16.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3181,7 +3307,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i32.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3201,7 +3329,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i64.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3221,7 +3351,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_i128.
   
   Parameter layout :
       forall `{H' : State.Trait},
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
     Notation.DoubleColon Self "layout" := {
@@ -3243,7 +3375,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3266,7 +3400,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3289,7 +3425,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3312,7 +3450,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3335,7 +3475,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3358,7 +3500,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3381,7 +3525,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3405,7 +3551,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3430,7 +3578,9 @@ Module
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3455,7 +3605,9 @@ Module
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3479,7 +3631,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3495,14 +3649,18 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
   Global Hint Resolve I' : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
 
-Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
-  Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
     Context {T : Set}.
-    Definition Self := alloc.boxed.Box T.
+    Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3514,9 +3672,11 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
         :=
         layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
   Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T.
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
 
 Module Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
@@ -3525,7 +3685,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3549,7 +3711,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3565,14 +3729,18 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
   Global Hint Resolve I' : core.
 End Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
 
-Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
-  Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+Module
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
+  Section
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     Context {T : Set}.
-    Definition Self := alloc.vec.Vec T.
+    Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3584,18 +3752,26 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
         :=
         layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+  End
+    Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
   Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
+End
+  Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V.
+(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
+  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
     Context {K V : Set}.
-    Definition Self := alloc.collections.btree.map.BTreeMap K V.
+    Definition Self :=
+      alloc.collections.btree.map.BTreeMap
+        K
+        V
+        alloc.collections.btree.map.BTreeMap.Default.A.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3607,18 +3783,23 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T.
         :=
         layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V. *)
+  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
   Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V. *)
+End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A. *)
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T.
+(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
+  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
     Context {T : Set}.
-    Definition Self := alloc.collections.btree.set.BTreeSet T.
+    Definition Self :=
+      alloc.collections.btree.set.BTreeSet
+        T
+        alloc.collections.btree.set.BTreeSet.Default.A.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3630,18 +3811,23 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map
         :=
         layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T. *)
+  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
   Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T. *)
+End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A. *)
 
-(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T.
-  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T.
+(* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
+  (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
     Context {T : Set}.
-    Definition Self := alloc.collections.vec_deque.VecDeque T.
+    Definition Self :=
+      alloc.collections.vec_deque.VecDeque
+        T
+        alloc.collections.vec_deque.VecDeque.Default.A.
     
     Parameter layout :
         forall `{H' : State.Trait},
-        (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout.
+        (ref ink_primitives.key.Key) ->
+          M (H := H')
+            (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F).
     
     Global Instance AssociatedFunction_layout `{H' : State.Trait} :
       Notation.DoubleColon Self "layout" := {
@@ -3653,15 +3839,17 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set
         :=
         layout;
     }.
-  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T. *)
+  End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
   Global Hint Resolve I' : core.
-End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T. *)
+End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
 
 Module StorageLayout.
   Class Trait (Self : Set) : Type := {
     layout `{H' : State.Trait}
       :
-      (ref ink_primitives.key.Key) -> M (H := H') ink_metadata.layout.Layout;
+      (ref ink_primitives.key.Key) ->
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
   }.
   
   Global Instance Method_layout `{H' : State.Trait} `(Trait)

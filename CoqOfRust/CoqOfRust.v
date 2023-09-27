@@ -1568,8 +1568,8 @@ Module Impl_Slice.
     Parameter into_vec :
       forall `{State.Trait} {T (* A *) : Set}
       (* `{(* core. *) alloc.Allocator.Trait A} *)
-      (b : alloc.boxed.Box (Slice T) (* A *)),
-        M (alloc.vec.Vec T (* (Some A) *)).
+      (b : alloc.boxed.Box (Slice T) alloc.boxed.Box.Default.A),
+        M (alloc.vec.Vec T alloc.vec.Vec.Default.A).
   End hack.
   Definition hack := hack.t.
 
@@ -1577,7 +1577,7 @@ Module Impl_Slice.
     Global Instance hack_into_vec `{State.Trait}
       {T (* A *) : Set} (* `{(* core. *) alloc.Allocator.Trait A} *) :
       Notation.DoubleColon hack "into_vec" := {
-      Notation.double_colon (b : alloc.boxed.Box (Slice T) (* A *)) :=
+      Notation.double_colon (b : alloc.boxed.Box (Slice T) alloc.boxed.Box.Default.A) :=
         hack.into_vec (T := T) (* (A := A) *) b;
     }.
   End hack_notations.
@@ -1589,7 +1589,7 @@ Module Impl_Slice.
     Definition into_vec `{State.Trait}
       {A : Set} `{alloc.Allocator.Trait A}
       (self : ref Self) (alloc : A) :
-      M (alloc.vec.Vec T).
+      M (alloc.vec.Vec T alloc.vec.Vec.Default.A).
     Admitted.
 
     Global Instance Method_into_vec `{State.Trait}
@@ -1602,7 +1602,7 @@ Module Impl_Slice.
     Global Instance Method_into_vec_box `{State.Trait}
       (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *) :
       Notation.DoubleColon (Slice T) "into_vec" := {
-        Notation.double_colon (self : alloc.boxed.Box Self) (* (alloc : A) *) :=
+        Notation.double_colon (self : alloc.boxed.Box Self alloc.boxed.Box.Default.A) (* (alloc : A) *) :=
           hack.into_vec self (* alloc *);
       }.
   End Impl_Slice.
@@ -1696,7 +1696,7 @@ Module Impl_IntoIter_for_Vec.
   Section Impl_IntoIter_for_Vec.
   Context {T (* A *) : Set}.
 (*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := alloc.vec.Vec T (* (Some A) *).
+  Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
 
   Definition Item := T.
   Definition IntoIter := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
@@ -1762,7 +1762,7 @@ Module Temp_Impl_for_Vec.
   Section Temp_Impl_for_Vec.
   Context {T : Set}.
 
-  Definition Self := alloc.vec.Vec T.
+  Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
 
   Parameter iter : forall `{State.Trait}, ref Self -> M (std.slice.Iter T).
   Parameter iter_mut :
@@ -1780,11 +1780,11 @@ End Temp_Impl_for_Vec.
 
 Module Impl_Debug_for_Vec.
   Section Impl_Debug_for_Vec.
-  Context {T (* A *) : Set}.
+  Context {T A : Set}.
   Context `{core.fmt.Debug.Trait T}.
 (*   Context `{alloc.Allocator.Trait A}. *)
 
-  Definition Self := alloc.vec.Vec T (* (Some A) *).
+  Definition Self := alloc.vec.Vec T A.
 
   Global Instance IDebug : core.fmt.Debug.Trait Self. Admitted.
   End Impl_Debug_for_Vec.

@@ -379,12 +379,6 @@ Require CoqOfRust.ink.scale_info.""",
         content,
     )
 
-    content = sub_at_least_once(
-        "scale_info.ty.Type_",
-        "(scale_info.ty.Type_ scale_info.ty.Type_.Default.T)",
-        content,
-    )
-
     content = ignore_module_names(
         [
             "Impl_ink_primitives_types_Clear_for_Array_u8",
@@ -456,12 +450,6 @@ Require CoqOfRust.ink.parity_scale_codec.""",
     )
 
     content = sub_at_least_once(
-        "scale_info.ty.Type_",
-        "(scale_info.ty.Type_ scale_info.ty.Type_.Default.T)",
-        content,
-    )
-
-    content = sub_at_least_once(
         "Global Instance I",
         "Global Instance I'",
         content,
@@ -482,9 +470,9 @@ Require CoqOfRust.ink.parity_scale_codec.""",
             "Impl_ink_storage_traits_storage_Packed_for_P",
             "Impl_ink_storage_traits_storage_StorageKey_for_P",
             "Impl_ink_storage_traits_storage_StorableHint_for_P",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A",
         ],
         content,
     )
@@ -536,10 +524,11 @@ Require CoqOfRust.ink.ink.""",
     )
 
     content = sub_at_least_once(
-        """    Definition Env : Set := ink_env.types.DefaultEnvironment.""",
-        """    Definition Env : Set := ink_env.types.DefaultEnvironment.
-
-    Global Instance Impl_Environment_for_Env : ink_env.types.Environment.Trait Env. Admitted.
+        """Module erc20.""",
+        """Module erc20.
+    Global Instance Impl_Environment_for_Env :
+      ink_env.types.Environment.Trait ink_env.types.DefaultEnvironment.
+    Admitted.
     Global Hint Resolve Impl_Environment_for_Env : core.""",
         content,
     )
@@ -555,6 +544,14 @@ Require CoqOfRust.ink.ink.""",
     eauto.
     Defined.
     Global Hint Resolve I : core.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape(
+            "ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)"
+        ),
+        "ink_env.types.DefaultEnvironment",
         content,
     )
 

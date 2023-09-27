@@ -4,12 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* a :=
-    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
     let* α1 := (Slice _)::["into_vec"] α0 in
     let* α2 := α1.["into_iter"] in
     α2.["collect"] in
   let* b :=
-    let* α0 := alloc.boxed.Box::["new"] [ 2; 3; 4 ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 2; 3; 4 ] in
     let* α1 := (Slice _)::["into_vec"] α0 in
     let* α2 := α1.["into_iter"] in
     α2.["collect"] in
@@ -51,7 +53,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := a.["union"] (addr_of b) in
-      let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
+      let* α1 :=
+        α0.["collect"] : M (alloc.vec.Vec (ref i32) alloc.vec.Vec.Default.A) in
       let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
         format_arguments::["new_v1"]
@@ -63,7 +66,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := a.["difference"] (addr_of b) in
-      let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
+      let* α1 :=
+        α0.["collect"] : M (alloc.vec.Vec (ref i32) alloc.vec.Vec.Default.A) in
       let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
         format_arguments::["new_v1"]
@@ -75,7 +79,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := a.["intersection"] (addr_of b) in
-      let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
+      let* α1 :=
+        α0.["collect"] : M (alloc.vec.Vec (ref i32) alloc.vec.Vec.Default.A) in
       let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
         format_arguments::["new_v1"]
@@ -87,7 +92,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 := a.["symmetric_difference"] (addr_of b) in
-      let* α1 := α0.["collect"] : M (alloc.vec.Vec (ref i32)) in
+      let* α1 :=
+        α0.["collect"] : M (alloc.vec.Vec (ref i32) alloc.vec.Vec.Default.A) in
       let* α2 := format_argument::["new_debug"] (addr_of α1) in
       let* α3 :=
         format_arguments::["new_v1"]

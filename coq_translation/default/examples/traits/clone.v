@@ -56,8 +56,8 @@ End Impl_core_marker_Copy_for_clone_Unit.
 Module Pair.
   Unset Primitive Projections.
   Record t : Set := {
-    _ : alloc.boxed.Box i32;
-    _ : alloc.boxed.Box i32;
+    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -140,8 +140,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α1 in
     Pure tt in
   let* pair :=
-    let* α0 := alloc.boxed.Box::["new"] 1 in
-    let* α1 := alloc.boxed.Box::["new"] 2 in
+    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 1 in
+    let* α1 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 2 in
     Pure (clone.Pair.Build_t α0 α1) in
   let* _ :=
     let* _ :=

@@ -6,8 +6,8 @@ use std::fmt;
 use std::vec;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Path {
-    segments: Vec<String>,
+pub(crate) struct Path {
+    pub(crate) segments: Vec<String>,
 }
 
 impl fmt::Display for Path {
@@ -26,12 +26,6 @@ impl Path {
 
     pub fn last(&self) -> &String {
         self.segments.last().unwrap()
-    }
-
-    pub fn base_before_last(&self) -> Path {
-        Path {
-            segments: self.segments[..self.segments.len() - 1].to_vec(),
-        }
     }
 
     fn prefix_last_by_impl(&mut self) {

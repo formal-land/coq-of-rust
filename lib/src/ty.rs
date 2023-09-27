@@ -2,8 +2,8 @@ use crate::coq::{self, LOCAL_STATE_TRAIT_INSTANCE};
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
+use crate::top_level::*;
 use itertools::Itertools;
-//use crate::top_level::get_full_ty_params;
 use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigin, Ty, TyKind};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
@@ -94,24 +94,42 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 rustc_hir::QPath::Resolved(Some(self_ty), _) => Some(compile_type(env, self_ty)),
                 _ => None,
             };
+            let coq_path = Box::new(compile_qpath(env, qpath));
+            let func = Box::new(match self_ty {
+                Some(self_ty) => CoqType::VarWithSelfTy(coq_path.clone(), self_ty),
+                None => CoqType::Var(coq_path.clone()),
+            });
             let params = match qpath {
-                rustc_hir::QPath::Resolved(_, path) => compile_path_ty_params(env, path),
-                /*{
-                    if let Some(params) = get_path_generics(env, path)
-                        .map(|generics| get_full_ty_params(env, generics, path))
-                    {
-                        params
+                rustc_hir::QPath::Resolved(_, path) => {
+                    if let Some(generics) = get_path_generics(env, path) {
+                        let type_params_name_and_default_status =
+                            type_params_name_and_default_status(generics);
+                        let ty_params = compile_path_ty_params(env, path);
+                        ty_params
+                            .iter()
+                            .map(Some)
+                            .chain(std::iter::repeat(None))
+                            .zip(type_params_name_and_default_status)
+                            .map(|(ty, (name, has_default))| match ty {
+                                Some(ty) => ty.clone(),
+                                None => {
+                                    if has_default {
+                                        let mut segments = coq_path.segments.clone();
+                                        segments.push("Default".to_string());
+                                        segments.push(name);
+                                        Box::new(CoqType::Var(Box::new(Path { segments })))
+                                    } else {
+                                        CoqType::var("_".to_string())
+                                    }
+                                }
+                            })
+                            .collect()
                     } else {
                         vec![]
                     }
-                }*/
+                }
                 _ => vec![],
             };
-            let qpath = Box::new(compile_qpath(env, qpath));
-            let func = Box::new(match self_ty {
-                Some(self_ty) => CoqType::VarWithSelfTy(qpath, self_ty),
-                None => CoqType::Var(qpath),
-            });
             if params.is_empty() {
                 func
             } else {

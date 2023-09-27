@@ -54,6 +54,6 @@ Definition read_lines
       Return α0
     | LanguageItem.Continue val => Pure val
     end in
-  let* α0 := std.io.buffered.bufreader.BufReader::["new"] file in
+  let* α0 := (std.io.buffered.bufreader.BufReader _)::["new"] file in
   let* α1 := α0.["lines"] in
   Pure (core.result.Result.Ok α1).

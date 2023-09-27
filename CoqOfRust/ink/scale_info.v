@@ -935,7 +935,7 @@ Module ty.
           name : core.option.Option T::type["String"];
           ty : T::type["Type_"];
           type_name : core.option.Option T::type["String"];
-          docs : alloc.vec.Vec T::type["String"];
+          docs : alloc.vec.Vec T::type["String"] alloc.vec.Vec.Default.A;
         }.
         Global Set Primitive Projections.
         
@@ -964,7 +964,7 @@ Module ty.
         Context `{form.Form.Trait T}.
 
         Record t : Set := {
-          fields : alloc.vec.Vec (scale_info.ty.fields.Field T);
+          fields : alloc.vec.Vec (scale_info.ty.fields.Field T) alloc.vec.Vec.Default.A;
         }.
         Global Set Primitive Projections.
         
@@ -986,7 +986,7 @@ Module ty.
 
         Unset Primitive Projections.
         Record t : Set := {
-          segments : alloc.vec.Vec T::type["String"];
+          segments : alloc.vec.Vec T::type["String"] alloc.vec.Vec.Default.A;
         }.
         Global Set Primitive Projections.
         
@@ -1023,9 +1023,9 @@ Module ty.
         Unset Primitive Projections.
         Record t : Set := {
           name : T::type["String"];
-          fields : alloc.vec.Vec (scale_info.ty.fields.Field T);
+          fields : alloc.vec.Vec (scale_info.ty.fields.Field T) alloc.vec.Vec.Default.A;
           index : u8;
-          docs : alloc.vec.Vec T::type["String"];
+          docs : alloc.vec.Vec T::type["String"] alloc.vec.Vec.Default.A;
         }.
         Global Set Primitive Projections.
         
@@ -1053,7 +1053,10 @@ Module ty.
 
         Unset Primitive Projections.
         Record t : Set := {
-          variants : alloc.vec.Vec (scale_info.ty.variant.Variant T);
+          variants :
+            alloc.vec.Vec
+              (scale_info.ty.variant.Variant T)
+              alloc.vec.Vec.Default.A;
         }.
         Global Set Primitive Projections.
         
@@ -1137,7 +1140,7 @@ Module ty.
       Context `{form.Form.Trait T}.
       Unset Primitive Projections.
       Record t : Set := {
-        fields : alloc.vec.Vec T::type["Type_"];
+        fields : alloc.vec.Vec T::type["Type_"] alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -1234,9 +1237,13 @@ Module ty.
       Unset Primitive Projections.
       Record t : Set := {
         path : scale_info.ty.path.Path T;
-        type_params : alloc.vec.Vec (scale_info.ty.TypeParameter T);
+        type_params :
+          alloc.vec.Vec
+            (scale_info.ty.TypeParameter T)
+            alloc.vec.Vec.Default.A;
         type_def : scale_info.ty.TypeDef T;
-        docs : alloc.vec.Vec T::type["String"];
+        docs :
+          alloc.vec.Vec T::type["String"] alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -1291,7 +1298,10 @@ Module portable.
   Module PortableRegistry.
     Unset Primitive Projections.
     Record t : Set := {
-      types : alloc.vec.Vec scale_info.portable.PortableType;
+      types :
+        alloc.vec.Vec
+          scale_info.portable.PortableType
+          alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     

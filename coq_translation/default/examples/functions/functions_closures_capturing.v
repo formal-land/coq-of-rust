@@ -37,7 +37,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := inc in
   let* _ := inc in
   let _count_reborrowed := addr_of count in
-  let* movable := alloc.boxed.Box::["new"] 3 in
+  let* movable := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 3 in
   let consume :=
     fun  =>
       let* _ :=

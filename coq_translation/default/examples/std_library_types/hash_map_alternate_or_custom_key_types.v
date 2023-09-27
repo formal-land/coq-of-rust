@@ -139,7 +139,8 @@ Definition AccountInfo : Set := AccountInfo.t.
 Definition Accounts : Set :=
   std.collections.hash.map.HashMap
     hash_map_alternate_or_custom_key_types.Account
-    hash_map_alternate_or_custom_key_types.AccountInfo.
+    hash_map_alternate_or_custom_key_types.AccountInfo
+    std.collections.hash.map.HashMap.Default.S.
 
 Definition try_logon
     `{H' : State.Trait}
@@ -223,7 +224,11 @@ Definition try_logon
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* accounts := std.collections.hash.map.HashMap::["new"] in
+  let* accounts :=
+    (std.collections.hash.map.HashMap
+          _
+          _
+          std.collections.hash.map.HashMap.Default.S)::["new"] in
   let account :=
     {|
       hash_map_alternate_or_custom_key_types.Account.username := "j.everyman";

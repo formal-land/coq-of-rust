@@ -6,7 +6,7 @@ Definition NTHREADS `{H' : State.Trait} : i32 := run (Pure 3).
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* '(tx, rx) := std.sync.mpsc.channel in
-  let* children := alloc.vec.Vec::["new"] in
+  let* children := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
   let* _ :=
     let* α0 :=
       {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;
@@ -43,7 +43,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           end in
         Pure tt)
     end in
-  let* ids := alloc.vec.Vec::["with_capacity"] (cast channels.NTHREADS usize) in
+  let* ids :=
+    (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["with_capacity"]
+      (cast channels.NTHREADS usize) in
   let* _ :=
     let* α0 :=
       {| std.ops.Range.start := 0; std.ops.Range._end := channels.NTHREADS;

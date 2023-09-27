@@ -52,7 +52,8 @@ End Impl_generics_where_clauses_PrintInOption_for_T.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* vec :=
-    let* α0 := alloc.boxed.Box::["new"] [ 1; 2; 3 ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
     (Slice _)::["into_vec"] α0 in
   let* _ := vec.["print_in_option"] in
   Pure tt.

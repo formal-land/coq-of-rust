@@ -10,18 +10,23 @@ Module codegen.
         (core.cell.RefCell
           (std.collections.hash.map.HashMap
             alloc.string.String
-            alloc.string.String)).
+            alloc.string.String
+            std.collections.hash.map.HashMap.Default.S)).
   
   Parameter already_built_contracts :
       forall `{H' : State.Trait},
       M (H := H')
           (std.collections.hash.map.HashMap
             alloc.string.String
-            alloc.string.String).
+            alloc.string.String
+            std.collections.hash.map.HashMap.Default.S).
   
   Parameter set_already_built_contracts :
       forall `{H' : State.Trait},
-      (std.collections.hash.map.HashMap alloc.string.String alloc.string.String)
+      (std.collections.hash.map.HashMap
+          alloc.string.String
+          alloc.string.String
+          std.collections.hash.map.HashMap.Default.S)
         ->
         M (H := H') unit.
   
@@ -87,18 +92,23 @@ Parameter ALREADY_BUILT_CONTRACTS :
       (core.cell.RefCell
         (std.collections.hash.map.HashMap
           alloc.string.String
-          alloc.string.String)).
+          alloc.string.String
+          std.collections.hash.map.HashMap.Default.S)).
 
 Parameter already_built_contracts :
     forall `{H' : State.Trait},
     M (H := H')
         (std.collections.hash.map.HashMap
           alloc.string.String
-          alloc.string.String).
+          alloc.string.String
+          std.collections.hash.map.HashMap.Default.S).
 
 Parameter set_already_built_contracts :
     forall `{H' : State.Trait},
-    (std.collections.hash.map.HashMap alloc.string.String alloc.string.String)
+    (std.collections.hash.map.HashMap
+        alloc.string.String
+        alloc.string.String
+        std.collections.hash.map.HashMap.Default.S)
       ->
       M (H := H') unit.
 
@@ -160,7 +170,9 @@ Module config.
     Unset Primitive Projections.
     Record t : Set := {
       whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
-      additional_contracts : alloc.vec.Vec alloc.string.String;
+      additional_contracts
+        :
+        alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
       environment : core.option.Option syn.path.Path;
     }.
     Global Set Primitive Projections.
@@ -312,7 +324,9 @@ Module E2EConfig.
   Unset Primitive Projections.
   Record t : Set := {
     whitelisted_attributes : ink_ir.ir.utils.WhitelistedAttributes;
-    additional_contracts : alloc.vec.Vec alloc.string.String;
+    additional_contracts
+      :
+      alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
     environment : core.option.Option syn.path.Path;
   }.
   Global Set Primitive Projections.

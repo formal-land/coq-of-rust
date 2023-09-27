@@ -11,7 +11,7 @@ Definition read_lines
     let* α0 := std.fs.File::["open"] filename in
     α0.["unwrap"] in
   let* _ :=
-    let* α0 := std.io.buffered.bufreader.BufReader::["new"] file in
+    let* α0 := (std.io.buffered.bufreader.BufReader _)::["new"] file in
     let* α1 := α0.["lines"] in
     Return α1 in
   Pure tt.

@@ -68,12 +68,12 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 Definition random_animal
     `{H' : State.Trait}
     (random_number : f64)
-    : M (H := H') (alloc.boxed.Box _ (* dyn *)) :=
+    : M (H := H') (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A) :=
   let* α0 := random_number.["lt"] 1 (* 0.5 *) in
   if (α0 : bool) then
-    alloc.boxed.Box::["new"] {|  |}
+    (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] {|  |}
   else
-    alloc.boxed.Box::["new"] {|  |}.
+    (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] {|  |}.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=

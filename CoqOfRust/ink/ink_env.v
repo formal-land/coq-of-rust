@@ -868,7 +868,7 @@ Module engine.
       Module CallData.
         Unset Primitive Projections.
         Record t : Set := {
-          bytes : alloc.vec.Vec u8;
+          bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
         }.
         Global Set Primitive Projections.
         
@@ -886,7 +886,11 @@ Module engine.
       Module TopicsBuilder.
         Unset Primitive Projections.
         Record t : Set := {
-          topics : alloc.vec.Vec (alloc.vec.Vec u8);
+          topics
+            :
+            alloc.vec.Vec
+              (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+              alloc.vec.Vec.Default.A;
         }.
         Global Set Primitive Projections.
         
@@ -920,7 +924,7 @@ Module engine.
       Inductive t : Set :=
       | Decoding (_ : parity_scale_codec.error.Error)
       | UnexpectedUserAccount
-      | NoAccountForId (_ : alloc.vec.Vec u8).
+      | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
     End AccountError.
     Definition AccountError := AccountError.t.
     
@@ -1187,8 +1191,12 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Module EmittedEvent.
     Unset Primitive Projections.
     Record t : Set := {
-      topics : alloc.vec.Vec (alloc.vec.Vec u8);
-      data : alloc.vec.Vec u8;
+      topics
+        :
+        alloc.vec.Vec
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          alloc.vec.Vec.Default.A;
+      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -2922,8 +2930,12 @@ Definition Result (T : Set) : Set :=
 Module EmittedEvent.
   Unset Primitive Projections.
   Record t : Set := {
-    topics : alloc.vec.Vec (alloc.vec.Vec u8);
-    data : alloc.vec.Vec u8;
+    topics
+      :
+      alloc.vec.Vec
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        alloc.vec.Vec.Default.A;
+    data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -5026,7 +5038,7 @@ Module off_chain.
     Module CallData.
       Unset Primitive Projections.
       Record t : Set := {
-        bytes : alloc.vec.Vec u8;
+        bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -5044,7 +5056,11 @@ Module off_chain.
     Module TopicsBuilder.
       Unset Primitive Projections.
       Record t : Set := {
-        topics : alloc.vec.Vec (alloc.vec.Vec u8);
+        topics
+          :
+          alloc.vec.Vec
+            (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+            alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -5078,7 +5094,7 @@ Module off_chain.
     Inductive t : Set :=
     | Decoding (_ : parity_scale_codec.error.Error)
     | UnexpectedUserAccount
-    | NoAccountForId (_ : alloc.vec.Vec u8).
+    | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
   Definition AccountError := AccountError.t.
   
@@ -5096,7 +5112,7 @@ Module call_data.
   Module CallData.
     Unset Primitive Projections.
     Record t : Set := {
-      bytes : alloc.vec.Vec u8;
+      bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -5113,7 +5129,7 @@ End call_data.
 Module CallData.
   Unset Primitive Projections.
   Record t : Set := {
-    bytes : alloc.vec.Vec u8;
+    bytes : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -5130,7 +5146,11 @@ Module impls.
   Module TopicsBuilder.
     Unset Primitive Projections.
     Record t : Set := {
-      topics : alloc.vec.Vec (alloc.vec.Vec u8);
+      topics
+        :
+        alloc.vec.Vec
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -5147,7 +5167,11 @@ End impls.
 Module TopicsBuilder.
   Unset Primitive Projections.
   Record t : Set := {
-    topics : alloc.vec.Vec (alloc.vec.Vec u8);
+    topics
+      :
+      alloc.vec.Vec
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -5189,7 +5213,7 @@ Module AccountError.
   Inductive t : Set :=
   | Decoding (_ : parity_scale_codec.error.Error)
   | UnexpectedUserAccount
-  | NoAccountForId (_ : alloc.vec.Vec u8).
+  | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
 Definition AccountError := AccountError.t.
 

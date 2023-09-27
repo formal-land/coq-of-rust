@@ -4,7 +4,9 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* names :=
-    let* α0 := alloc.boxed.Box::["new"] [ "Bob"; "Frank"; "Ferris" ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ "Bob"; "Frank"; "Ferris" ] in
     (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := names.["iter"] in

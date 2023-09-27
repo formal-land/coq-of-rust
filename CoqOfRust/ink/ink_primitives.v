@@ -196,7 +196,7 @@ Module types.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -220,7 +220,7 @@ Module types.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -527,7 +527,7 @@ Module types.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -551,7 +551,7 @@ Module types.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -1044,7 +1044,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -1068,7 +1068,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
       (ref Self) ->
         (ref (Slice scale_encode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -1277,7 +1277,9 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
   
   Parameter encode :
       forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (alloc.vec.Vec Root.core.primitive.u8).
+      (ref Self) ->
+        M (H := H')
+          (alloc.vec.Vec Root.core.primitive.u8 alloc.vec.Vec.Default.A).
   
   Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
@@ -1542,7 +1544,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -1566,7 +1568,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
       (ref Self) ->
         (ref (Slice scale_encode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -1775,7 +1777,9 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
   
   Parameter encode :
       forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (alloc.vec.Vec Root.core.primitive.u8).
+      (ref Self) ->
+        M (H := H')
+          (alloc.vec.Vec Root.core.primitive.u8 alloc.vec.Vec.Default.A).
   
   Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;

@@ -44,4 +44,4 @@ Module Report.
   Parameter t : forall (E : Set), Set.
 End Report.
 Definition Report (E : option Set) : Set :=
-  Report.t (defaultType E (Box Error)).
+  Report.t (defaultType E (Box Error Box.Default.A)).

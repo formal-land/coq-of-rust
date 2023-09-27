@@ -1727,7 +1727,7 @@ Module Impl_subtle_CtOption_T_4.
         (addr_of self.["value"])
         self.["is_some"] in
     let* α2 := f α1 in
-    subtle.CtOption::["new"] α2 self.["is_some"].
+    (subtle.CtOption _)::["new"] α2 self.["is_some"].
   
   Global Instance Method_map `{H' : State.Trait} : Notation.Dot "map" := {
     Notation.dot := map;
@@ -1797,7 +1797,7 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
           (addr_of a.["is_some"])
           (addr_of b.["is_some"])
           choice in
-      subtle.CtOption::["new"] α0 α1.
+      (subtle.CtOption _)::["new"] α0 α1.
     
     Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
       Notation.DoubleColon Self "conditional_select" := {
