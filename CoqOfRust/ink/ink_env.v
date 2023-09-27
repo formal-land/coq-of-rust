@@ -121,27 +121,7 @@ Module types.
       Notation.dot := from_le_bytes;
     }.
     Module The_Bounds_Of_Bytes.
-      Module core_default_Default.
-        Global Instance I `(Trait) : core.default.Default.Trait Bytes.
-        repeat
-        (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
-        try assumption).
-        Defined.
-      End core_default_Default.
-      Module core_convert_AsRef.
-        Global Instance I `(Trait) : core.convert.AsRef.Trait Bytes.
-        repeat
-        (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
-        try assumption).
-        Defined.
-      End core_convert_AsRef.
-      Module core_convert_AsMut.
-        Global Instance I `(Trait) : core.convert.AsMut.Trait Bytes.
-        repeat
-        (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
-        try assumption).
-        Defined.
-      End core_convert_AsMut.
+      
     End The_Bounds_Of_Bytes.
   End FromLittleEndian.
   
@@ -270,868 +250,497 @@ Module types.
       Notation.double_colon_type := ChainExtension;
     }.
     Module The_Bounds_Of_AccountId.
-      Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
-        Defined.
-      End parity_scale_codec_codec_Codec.
       Module scale_encode_EncodeAsType.
         Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
+        
         Defined.
       End scale_encode_EncodeAsType.
       Module scale_decode_DecodeAsType.
         Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
+        
         Defined.
       End scale_decode_DecodeAsType.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait AccountId.
         repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
+        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_types_CodecAsType.
-      Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
-        Defined.
-      End core_clone_Clone.
-      Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
-        Defined.
-      End core_cmp_PartialEq.
-      Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
-        Defined.
-      End core_cmp_Eq.
-      Module core_cmp_Ord.
-        Global Instance I `(Trait) : core.cmp.Ord.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
-        Defined.
-      End core_cmp_Ord.
-      Module core_convert_AsRef.
-        Global Instance I `(Trait) : core.convert.AsRef.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
-        Defined.
-      End core_convert_AsRef.
-      Module core_convert_AsMut.
-        Global Instance I `(Trait) : core.convert.AsMut.Trait AccountId.
-        repeat
-        (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-        try assumption).
-        Defined.
-      End core_convert_AsMut.
     End The_Bounds_Of_AccountId.
     Module The_Bounds_Of_Balance.
-      Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End parity_scale_codec_codec_Codec.
-      Module scale_decode_DecodeAsType.
-        Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End scale_decode_DecodeAsType.
       Module scale_encode_EncodeAsType.
         Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        
         Defined.
       End scale_encode_EncodeAsType.
+      Module scale_decode_DecodeAsType.
+        Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait Balance.
+        
+        Defined.
+      End scale_decode_DecodeAsType.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_types_CodecAsType.
-      Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+      Module core_ops_arith_AddAssign.
+        Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait Balance.
+        
         Defined.
-      End core_marker_Copy.
-      Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_clone_Clone.
-      Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_cmp_PartialEq.
-      Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_cmp_Eq.
-      Module num_traits_sign_Unsigned.
-        Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End num_traits_sign_Unsigned.
-      Module core_ops_arith_Sub.
-        Global Instance I `(Trait) : core.ops.arith.Sub.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_ops_arith_Sub.
-      Module core_ops_arith_Div.
-        Global Instance I `(Trait) : core.ops.arith.Div.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_ops_arith_Div.
-      Module num_traits_bounds_Bounded.
-        Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End num_traits_bounds_Bounded.
+      End core_ops_arith_AddAssign.
       Module core_cmp_Ord.
         Global Instance I `(Trait) : core.cmp.Ord.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        
         Defined.
       End core_cmp_Ord.
+      Module core_ops_arith_Add.
+        Global Instance I `(Trait) : core.ops.arith.Add.Trait Balance.
+        
+        Defined.
+      End core_ops_arith_Add.
+      Module core_ops_arith_Sub.
+        Global Instance I `(Trait) : core.ops.arith.Sub.Trait Balance.
+        
+        Defined.
+      End core_ops_arith_Sub.
+      Module ink_env_arithmetic_Saturating.
+        Global Instance I `(Trait)
+          : ink_env.arithmetic.Saturating.Trait Balance.
+        
+        Defined.
+      End ink_env_arithmetic_Saturating.
       Module core_convert_TryInto.
         Global Instance I `(Trait) : core.convert.TryInto.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        
         Defined.
       End core_convert_TryInto.
-      Module core_ops_arith_DivAssign.
-        Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_ops_arith_DivAssign.
-      Module core_ops_arith_SubAssign.
-        Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_ops_arith_SubAssign.
-      Module core_convert_From.
-        Global Instance I `(Trait) : core.convert.From.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_convert_From.
-      Module core_marker_Sized.
-        Global Instance I `(Trait) : core.marker.Sized.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_marker_Sized.
-      Module num_traits_identities_One.
-        Global Instance I `(Trait) : num_traits.identities.One.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End num_traits_identities_One.
-      Module core_ops_arith_Mul.
-        Global Instance I `(Trait) : core.ops.arith.Mul.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_ops_arith_Mul.
       Module num_traits_identities_Zero.
         Global Instance I `(Trait) : num_traits.identities.Zero.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        
         Defined.
       End num_traits_identities_Zero.
+      Module core_ops_arith_SubAssign.
+        Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait Balance.
+        
+        Defined.
+      End core_ops_arith_SubAssign.
+      Module core_marker_Sized.
+        Global Instance I `(Trait) : core.marker.Sized.Trait Balance.
+        
+        Defined.
+      End core_marker_Sized.
+      Module core_ops_arith_Div.
+        Global Instance I `(Trait) : core.ops.arith.Div.Trait Balance.
+        
+        Defined.
+      End core_ops_arith_Div.
       Module core_cmp_PartialOrd.
         Global Instance I `(Trait) : core.cmp.PartialOrd.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        
         Defined.
       End core_cmp_PartialOrd.
       Module num_traits_ops_checked_CheckedMul.
         Global Instance I `(Trait)
           : num_traits.ops.checked.CheckedMul.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        
         Defined.
       End num_traits_ops_checked_CheckedMul.
-      Module core_ops_arith_MulAssign.
-        Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+      Module core_ops_arith_DivAssign.
+        Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Balance.
+        
         Defined.
-      End core_ops_arith_MulAssign.
-      Module core_ops_arith_AddAssign.
-        Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End core_ops_arith_AddAssign.
+      End core_ops_arith_DivAssign.
       Module core_convert_TryFrom.
         Global Instance I `(Trait) : core.convert.TryFrom.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        
         Defined.
       End core_convert_TryFrom.
-      Module ink_env_arithmetic_Saturating.
-        Global Instance I `(Trait)
-          : ink_env.arithmetic.Saturating.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+      Module core_ops_arith_Mul.
+        Global Instance I `(Trait) : core.ops.arith.Mul.Trait Balance.
+        
         Defined.
-      End ink_env_arithmetic_Saturating.
-      Module core_ops_arith_Add.
-        Global Instance I `(Trait) : core.ops.arith.Add.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+      End core_ops_arith_Mul.
+      Module core_convert_From.
+        Global Instance I `(Trait) : core.convert.From.Trait Balance.
+        
         Defined.
-      End core_ops_arith_Add.
+      End core_convert_From.
+      Module num_traits_bounds_Bounded.
+        Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait Balance.
+        
+        Defined.
+      End num_traits_bounds_Bounded.
+      Module core_ops_arith_MulAssign.
+        Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait Balance.
+        
+        Defined.
+      End core_ops_arith_MulAssign.
+      Module num_traits_identities_One.
+        Global Instance I `(Trait) : num_traits.identities.One.Trait Balance.
+        
+        Defined.
+      End num_traits_identities_One.
+      Module num_traits_sign_Unsigned.
+        Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait Balance.
+        
+        Defined.
+      End num_traits_sign_Unsigned.
       Module ink_env_arithmetic_BaseArithmetic.
         Global Instance I `(Trait)
           : ink_env.arithmetic.BaseArithmetic.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_BaseArithmetic.
       Module ink_env_arithmetic_AtLeast32Bit.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32Bit.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_AtLeast32Bit.
       Module ink_env_arithmetic_AtLeast32BitUnsigned.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance.
         repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
+        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
-      Module ink_env_types_FromLittleEndian.
-        Global Instance I `(Trait)
-          : ink_env.types.FromLittleEndian.Trait Balance.
-        repeat
-        (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-        try assumption).
-        Defined.
-      End ink_env_types_FromLittleEndian.
     End The_Bounds_Of_Balance.
     Module The_Bounds_Of_Hash.
-      Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End parity_scale_codec_codec_Codec.
       Module scale_decode_DecodeAsType.
         Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
+        
         Defined.
       End scale_decode_DecodeAsType.
       Module scale_encode_EncodeAsType.
         Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
+        
         Defined.
       End scale_encode_EncodeAsType.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Hash.
         repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
+        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_types_CodecAsType.
-      Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End core_marker_Copy.
-      Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End core_clone_Clone.
-      Module ink_primitives_types_Clear.
-        Global Instance I `(Trait) : ink_primitives.types.Clear.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End ink_primitives_types_Clear.
-      Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End core_cmp_PartialEq.
-      Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End core_cmp_Eq.
-      Module core_cmp_Ord.
-        Global Instance I `(Trait) : core.cmp.Ord.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End core_cmp_Ord.
-      Module core_convert_AsRef.
-        Global Instance I `(Trait) : core.convert.AsRef.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End core_convert_AsRef.
-      Module core_convert_AsMut.
-        Global Instance I `(Trait) : core.convert.AsMut.Trait Hash.
-        repeat
-        (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-        try assumption).
-        Defined.
-      End core_convert_AsMut.
     End The_Bounds_Of_Hash.
     Module The_Bounds_Of_Timestamp.
-      Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End parity_scale_codec_codec_Codec.
       Module scale_decode_DecodeAsType.
         Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        
         Defined.
       End scale_decode_DecodeAsType.
       Module scale_encode_EncodeAsType.
         Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        
         Defined.
       End scale_encode_EncodeAsType.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_types_CodecAsType.
-      Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+      Module core_ops_arith_Sub.
+        Global Instance I `(Trait) : core.ops.arith.Sub.Trait Timestamp.
+        
         Defined.
-      End core_marker_Copy.
-      Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+      End core_ops_arith_Sub.
+      Module core_convert_From.
+        Global Instance I `(Trait) : core.convert.From.Trait Timestamp.
+        
         Defined.
-      End core_clone_Clone.
-      Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+      End core_convert_From.
+      Module num_traits_identities_One.
+        Global Instance I `(Trait) : num_traits.identities.One.Trait Timestamp.
+        
         Defined.
-      End core_cmp_PartialEq.
-      Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_cmp_Eq.
-      Module core_ops_arith_DivAssign.
-        Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_ops_arith_DivAssign.
-      Module num_traits_ops_checked_CheckedMul.
-        Global Instance I `(Trait)
-          : num_traits.ops.checked.CheckedMul.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End num_traits_ops_checked_CheckedMul.
-      Module core_ops_arith_MulAssign.
-        Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_ops_arith_MulAssign.
-      Module core_cmp_PartialOrd.
-        Global Instance I `(Trait) : core.cmp.PartialOrd.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_cmp_PartialOrd.
-      Module core_ops_arith_Add.
-        Global Instance I `(Trait) : core.ops.arith.Add.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_ops_arith_Add.
+      End num_traits_identities_One.
       Module ink_env_arithmetic_Saturating.
         Global Instance I `(Trait)
           : ink_env.arithmetic.Saturating.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        
         Defined.
       End ink_env_arithmetic_Saturating.
-      Module core_ops_arith_AddAssign.
-        Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+      Module core_cmp_Ord.
+        Global Instance I `(Trait) : core.cmp.Ord.Trait Timestamp.
+        
         Defined.
-      End core_ops_arith_AddAssign.
-      Module core_ops_arith_Sub.
-        Global Instance I `(Trait) : core.ops.arith.Sub.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_ops_arith_Sub.
-      Module core_marker_Sized.
-        Global Instance I `(Trait) : core.marker.Sized.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_marker_Sized.
-      Module num_traits_identities_Zero.
-        Global Instance I `(Trait) : num_traits.identities.Zero.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End num_traits_identities_Zero.
-      Module core_ops_arith_SubAssign.
-        Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End core_ops_arith_SubAssign.
-      Module num_traits_bounds_Bounded.
-        Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End num_traits_bounds_Bounded.
-      Module num_traits_sign_Unsigned.
-        Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End num_traits_sign_Unsigned.
-      Module num_traits_identities_One.
-        Global Instance I `(Trait) : num_traits.identities.One.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End num_traits_identities_One.
+      End core_cmp_Ord.
       Module core_ops_arith_Mul.
         Global Instance I `(Trait) : core.ops.arith.Mul.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        
         Defined.
       End core_ops_arith_Mul.
-      Module core_convert_From.
-        Global Instance I `(Trait) : core.convert.From.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+      Module core_ops_arith_DivAssign.
+        Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Timestamp.
+        
         Defined.
-      End core_convert_From.
+      End core_ops_arith_DivAssign.
+      Module num_traits_sign_Unsigned.
+        Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait Timestamp.
+        
+        Defined.
+      End num_traits_sign_Unsigned.
+      Module core_convert_TryInto.
+        Global Instance I `(Trait) : core.convert.TryInto.Trait Timestamp.
+        
+        Defined.
+      End core_convert_TryInto.
+      Module num_traits_bounds_Bounded.
+        Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait Timestamp.
+        
+        Defined.
+      End num_traits_bounds_Bounded.
+      Module core_marker_Sized.
+        Global Instance I `(Trait) : core.marker.Sized.Trait Timestamp.
+        
+        Defined.
+      End core_marker_Sized.
+      Module core_ops_arith_MulAssign.
+        Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait Timestamp.
+        
+        Defined.
+      End core_ops_arith_MulAssign.
+      Module num_traits_identities_Zero.
+        Global Instance I `(Trait) : num_traits.identities.Zero.Trait Timestamp.
+        
+        Defined.
+      End num_traits_identities_Zero.
+      Module core_ops_arith_Add.
+        Global Instance I `(Trait) : core.ops.arith.Add.Trait Timestamp.
+        
+        Defined.
+      End core_ops_arith_Add.
+      Module core_ops_arith_SubAssign.
+        Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait Timestamp.
+        
+        Defined.
+      End core_ops_arith_SubAssign.
+      Module core_ops_arith_AddAssign.
+        Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait Timestamp.
+        
+        Defined.
+      End core_ops_arith_AddAssign.
       Module core_convert_TryFrom.
         Global Instance I `(Trait) : core.convert.TryFrom.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        
         Defined.
       End core_convert_TryFrom.
       Module core_ops_arith_Div.
         Global Instance I `(Trait) : core.ops.arith.Div.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        
         Defined.
       End core_ops_arith_Div.
-      Module core_convert_TryInto.
-        Global Instance I `(Trait) : core.convert.TryInto.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+      Module num_traits_ops_checked_CheckedMul.
+        Global Instance I `(Trait)
+          : num_traits.ops.checked.CheckedMul.Trait Timestamp.
+        
         Defined.
-      End core_convert_TryInto.
-      Module core_cmp_Ord.
-        Global Instance I `(Trait) : core.cmp.Ord.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+      End num_traits_ops_checked_CheckedMul.
+      Module core_cmp_PartialOrd.
+        Global Instance I `(Trait) : core.cmp.PartialOrd.Trait Timestamp.
+        
         Defined.
-      End core_cmp_Ord.
+      End core_cmp_PartialOrd.
       Module ink_env_arithmetic_BaseArithmetic.
         Global Instance I `(Trait)
           : ink_env.arithmetic.BaseArithmetic.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_BaseArithmetic.
       Module ink_env_arithmetic_AtLeast32Bit.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32Bit.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_AtLeast32Bit.
       Module ink_env_arithmetic_AtLeast32BitUnsigned.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp.
         repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
+        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
-      Module ink_env_types_FromLittleEndian.
-        Global Instance I `(Trait)
-          : ink_env.types.FromLittleEndian.Trait Timestamp.
-        repeat
-        (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-        try assumption).
-        Defined.
-      End ink_env_types_FromLittleEndian.
     End The_Bounds_Of_Timestamp.
     Module The_Bounds_Of_BlockNumber.
-      Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End parity_scale_codec_codec_Codec.
-      Module scale_encode_EncodeAsType.
-        Global Instance I `(Trait)
-          : scale_encode.EncodeAsType.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End scale_encode_EncodeAsType.
       Module scale_decode_DecodeAsType.
         Global Instance I `(Trait)
           : scale_decode.DecodeAsType.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        
         Defined.
       End scale_decode_DecodeAsType.
+      Module scale_encode_EncodeAsType.
+        Global Instance I `(Trait)
+          : scale_encode.EncodeAsType.Trait BlockNumber.
+        
+        Defined.
+      End scale_encode_EncodeAsType.
       Module ink_env_types_CodecAsType.
         Global Instance I `(Trait)
           : ink_env.types.CodecAsType.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_types_CodecAsType.
-      Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_marker_Copy.
-      Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_clone_Clone.
-      Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_cmp_PartialEq.
-      Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_cmp_Eq.
       Module core_convert_TryFrom.
         Global Instance I `(Trait) : core.convert.TryFrom.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        
         Defined.
       End core_convert_TryFrom.
-      Module core_ops_arith_Add.
-        Global Instance I `(Trait) : core.ops.arith.Add.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_ops_arith_Add.
-      Module num_traits_identities_Zero.
-        Global Instance I `(Trait)
-          : num_traits.identities.Zero.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End num_traits_identities_Zero.
-      Module core_ops_arith_SubAssign.
-        Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_ops_arith_SubAssign.
-      Module core_ops_arith_MulAssign.
-        Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_ops_arith_MulAssign.
-      Module core_ops_arith_AddAssign.
-        Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_ops_arith_AddAssign.
-      Module ink_env_arithmetic_Saturating.
-        Global Instance I `(Trait)
-          : ink_env.arithmetic.Saturating.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End ink_env_arithmetic_Saturating.
-      Module num_traits_ops_checked_CheckedMul.
-        Global Instance I `(Trait)
-          : num_traits.ops.checked.CheckedMul.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End num_traits_ops_checked_CheckedMul.
-      Module num_traits_bounds_Bounded.
-        Global Instance I `(Trait)
-          : num_traits.bounds.Bounded.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End num_traits_bounds_Bounded.
-      Module core_ops_arith_Mul.
-        Global Instance I `(Trait) : core.ops.arith.Mul.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_ops_arith_Mul.
-      Module core_ops_arith_Sub.
-        Global Instance I `(Trait) : core.ops.arith.Sub.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_ops_arith_Sub.
-      Module core_ops_arith_DivAssign.
-        Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End core_ops_arith_DivAssign.
       Module num_traits_identities_One.
         Global Instance I `(Trait)
           : num_traits.identities.One.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        
         Defined.
       End num_traits_identities_One.
-      Module core_cmp_PartialOrd.
-        Global Instance I `(Trait) : core.cmp.PartialOrd.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+      Module num_traits_ops_checked_CheckedMul.
+        Global Instance I `(Trait)
+          : num_traits.ops.checked.CheckedMul.Trait BlockNumber.
+        
         Defined.
-      End core_cmp_PartialOrd.
+      End num_traits_ops_checked_CheckedMul.
+      Module core_ops_arith_DivAssign.
+        Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait BlockNumber.
+        
+        Defined.
+      End core_ops_arith_DivAssign.
+      Module core_marker_Sized.
+        Global Instance I `(Trait) : core.marker.Sized.Trait BlockNumber.
+        
+        Defined.
+      End core_marker_Sized.
       Module core_ops_arith_Div.
         Global Instance I `(Trait) : core.ops.arith.Div.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        
         Defined.
       End core_ops_arith_Div.
       Module core_cmp_Ord.
         Global Instance I `(Trait) : core.cmp.Ord.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        
         Defined.
       End core_cmp_Ord.
+      Module ink_env_arithmetic_Saturating.
+        Global Instance I `(Trait)
+          : ink_env.arithmetic.Saturating.Trait BlockNumber.
+        
+        Defined.
+      End ink_env_arithmetic_Saturating.
+      Module num_traits_sign_Unsigned.
+        Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait BlockNumber.
+        
+        Defined.
+      End num_traits_sign_Unsigned.
+      Module core_ops_arith_Sub.
+        Global Instance I `(Trait) : core.ops.arith.Sub.Trait BlockNumber.
+        
+        Defined.
+      End core_ops_arith_Sub.
       Module core_convert_TryInto.
         Global Instance I `(Trait) : core.convert.TryInto.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        
         Defined.
       End core_convert_TryInto.
-      Module core_marker_Sized.
-        Global Instance I `(Trait) : core.marker.Sized.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+      Module core_ops_arith_Add.
+        Global Instance I `(Trait) : core.ops.arith.Add.Trait BlockNumber.
+        
         Defined.
-      End core_marker_Sized.
+      End core_ops_arith_Add.
+      Module core_ops_arith_SubAssign.
+        Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait BlockNumber.
+        
+        Defined.
+      End core_ops_arith_SubAssign.
+      Module core_ops_arith_MulAssign.
+        Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait BlockNumber.
+        
+        Defined.
+      End core_ops_arith_MulAssign.
+      Module core_ops_arith_AddAssign.
+        Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait BlockNumber.
+        
+        Defined.
+      End core_ops_arith_AddAssign.
+      Module core_ops_arith_Mul.
+        Global Instance I `(Trait) : core.ops.arith.Mul.Trait BlockNumber.
+        
+        Defined.
+      End core_ops_arith_Mul.
       Module core_convert_From.
         Global Instance I `(Trait) : core.convert.From.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        
         Defined.
       End core_convert_From.
+      Module num_traits_identities_Zero.
+        Global Instance I `(Trait)
+          : num_traits.identities.Zero.Trait BlockNumber.
+        
+        Defined.
+      End num_traits_identities_Zero.
+      Module num_traits_bounds_Bounded.
+        Global Instance I `(Trait)
+          : num_traits.bounds.Bounded.Trait BlockNumber.
+        
+        Defined.
+      End num_traits_bounds_Bounded.
+      Module core_cmp_PartialOrd.
+        Global Instance I `(Trait) : core.cmp.PartialOrd.Trait BlockNumber.
+        
+        Defined.
+      End core_cmp_PartialOrd.
       Module ink_env_arithmetic_BaseArithmetic.
         Global Instance I `(Trait)
           : ink_env.arithmetic.BaseArithmetic.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_BaseArithmetic.
       Module ink_env_arithmetic_AtLeast32Bit.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32Bit.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_AtLeast32Bit.
-      Module num_traits_sign_Unsigned.
-        Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End num_traits_sign_Unsigned.
       Module ink_env_arithmetic_AtLeast32BitUnsigned.
         Global Instance I `(Trait)
           : ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber.
         repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
+        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
-      Module ink_env_types_FromLittleEndian.
-        Global Instance I `(Trait)
-          : ink_env.types.FromLittleEndian.Trait BlockNumber.
-        repeat
-        (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-        try assumption).
-        Defined.
-      End ink_env_types_FromLittleEndian.
     End The_Bounds_Of_BlockNumber.
   End Environment.
   
@@ -1178,27 +787,7 @@ Module FromLittleEndian.
     Notation.dot := from_le_bytes;
   }.
   Module The_Bounds_Of_Bytes.
-    Module core_default_Default.
-      Global Instance I `(Trait) : core.default.Default.Trait Bytes.
-      repeat
-      (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
-      try assumption).
-      Defined.
-    End core_default_Default.
-    Module core_convert_AsRef.
-      Global Instance I `(Trait) : core.convert.AsRef.Trait Bytes.
-      repeat
-      (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
-      try assumption).
-      Defined.
-    End core_convert_AsRef.
-    Module core_convert_AsMut.
-      Global Instance I `(Trait) : core.convert.AsMut.Trait Bytes.
-      repeat
-      (destruct __the_bounds_of_Bytes as [? __the_bounds_of_Bytes];
-      try assumption).
-      Defined.
-    End core_convert_AsMut.
+    
   End The_Bounds_Of_Bytes.
 End FromLittleEndian.
 
@@ -1327,859 +916,490 @@ Module Environment.
     Notation.double_colon_type := ChainExtension;
   }.
   Module The_Bounds_Of_AccountId.
-    Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait)
-        : parity_scale_codec.codec.Codec.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
-      Defined.
-    End parity_scale_codec_codec_Codec.
     Module scale_decode_DecodeAsType.
       Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
+      
       Defined.
     End scale_decode_DecodeAsType.
     Module scale_encode_EncodeAsType.
       Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
+      
       Defined.
     End scale_encode_EncodeAsType.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait AccountId.
       repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
+      (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_types_CodecAsType.
-    Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
-      Defined.
-    End core_clone_Clone.
-    Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
-      Defined.
-    End core_cmp_PartialEq.
-    Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
-      Defined.
-    End core_cmp_Eq.
-    Module core_cmp_Ord.
-      Global Instance I `(Trait) : core.cmp.Ord.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
-      Defined.
-    End core_cmp_Ord.
-    Module core_convert_AsRef.
-      Global Instance I `(Trait) : core.convert.AsRef.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
-      Defined.
-    End core_convert_AsRef.
-    Module core_convert_AsMut.
-      Global Instance I `(Trait) : core.convert.AsMut.Trait AccountId.
-      repeat
-      (destruct __the_bounds_of_AccountId as [? __the_bounds_of_AccountId];
-      try assumption).
-      Defined.
-    End core_convert_AsMut.
   End The_Bounds_Of_AccountId.
   Module The_Bounds_Of_Balance.
-    Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End parity_scale_codec_codec_Codec.
     Module scale_encode_EncodeAsType.
       Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End scale_encode_EncodeAsType.
     Module scale_decode_DecodeAsType.
       Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End scale_decode_DecodeAsType.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_types_CodecAsType.
-    Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+    Module core_convert_From.
+      Global Instance I `(Trait) : core.convert.From.Trait Balance.
+      
       Defined.
-    End core_marker_Copy.
-    Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+    End core_convert_From.
+    Module num_traits_identities_Zero.
+      Global Instance I `(Trait) : num_traits.identities.Zero.Trait Balance.
+      
       Defined.
-    End core_clone_Clone.
-    Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_cmp_PartialEq.
-    Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_cmp_Eq.
-    Module core_ops_arith_Add.
-      Global Instance I `(Trait) : core.ops.arith.Add.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_ops_arith_Add.
-    Module core_ops_arith_AddAssign.
-      Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_ops_arith_AddAssign.
-    Module num_traits_sign_Unsigned.
-      Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End num_traits_sign_Unsigned.
+    End num_traits_identities_Zero.
     Module core_cmp_PartialOrd.
       Global Instance I `(Trait) : core.cmp.PartialOrd.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End core_cmp_PartialOrd.
+    Module num_traits_sign_Unsigned.
+      Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait Balance.
+      
+      Defined.
+    End num_traits_sign_Unsigned.
+    Module core_ops_arith_Add.
+      Global Instance I `(Trait) : core.ops.arith.Add.Trait Balance.
+      
+      Defined.
+    End core_ops_arith_Add.
+    Module core_ops_arith_DivAssign.
+      Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Balance.
+      
+      Defined.
+    End core_ops_arith_DivAssign.
+    Module core_convert_TryFrom.
+      Global Instance I `(Trait) : core.convert.TryFrom.Trait Balance.
+      
+      Defined.
+    End core_convert_TryFrom.
     Module num_traits_bounds_Bounded.
       Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End num_traits_bounds_Bounded.
     Module core_convert_TryInto.
       Global Instance I `(Trait) : core.convert.TryInto.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End core_convert_TryInto.
+    Module core_ops_arith_Sub.
+      Global Instance I `(Trait) : core.ops.arith.Sub.Trait Balance.
+      
+      Defined.
+    End core_ops_arith_Sub.
+    Module core_ops_arith_MulAssign.
+      Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait Balance.
+      
+      Defined.
+    End core_ops_arith_MulAssign.
+    Module core_cmp_Ord.
+      Global Instance I `(Trait) : core.cmp.Ord.Trait Balance.
+      
+      Defined.
+    End core_cmp_Ord.
     Module core_marker_Sized.
       Global Instance I `(Trait) : core.marker.Sized.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End core_marker_Sized.
     Module ink_env_arithmetic_Saturating.
       Global Instance I `(Trait) : ink_env.arithmetic.Saturating.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End ink_env_arithmetic_Saturating.
+    Module core_ops_arith_Div.
+      Global Instance I `(Trait) : core.ops.arith.Div.Trait Balance.
+      
+      Defined.
+    End core_ops_arith_Div.
     Module core_ops_arith_SubAssign.
       Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End core_ops_arith_SubAssign.
-    Module core_convert_From.
-      Global Instance I `(Trait) : core.convert.From.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+    Module core_ops_arith_AddAssign.
+      Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait Balance.
+      
       Defined.
-    End core_convert_From.
-    Module core_cmp_Ord.
-      Global Instance I `(Trait) : core.cmp.Ord.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_cmp_Ord.
+    End core_ops_arith_AddAssign.
     Module num_traits_ops_checked_CheckedMul.
       Global Instance I `(Trait)
         : num_traits.ops.checked.CheckedMul.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End num_traits_ops_checked_CheckedMul.
-    Module num_traits_identities_Zero.
-      Global Instance I `(Trait) : num_traits.identities.Zero.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End num_traits_identities_Zero.
-    Module core_ops_arith_DivAssign.
-      Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_ops_arith_DivAssign.
-    Module core_ops_arith_MulAssign.
-      Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_ops_arith_MulAssign.
-    Module core_ops_arith_Div.
-      Global Instance I `(Trait) : core.ops.arith.Div.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_ops_arith_Div.
-    Module core_ops_arith_Sub.
-      Global Instance I `(Trait) : core.ops.arith.Sub.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_ops_arith_Sub.
     Module core_ops_arith_Mul.
       Global Instance I `(Trait) : core.ops.arith.Mul.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End core_ops_arith_Mul.
-    Module core_convert_TryFrom.
-      Global Instance I `(Trait) : core.convert.TryFrom.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End core_convert_TryFrom.
     Module num_traits_identities_One.
       Global Instance I `(Trait) : num_traits.identities.One.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      
       Defined.
     End num_traits_identities_One.
     Module ink_env_arithmetic_BaseArithmetic.
       Global Instance I `(Trait)
         : ink_env.arithmetic.BaseArithmetic.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_BaseArithmetic.
     Module ink_env_arithmetic_AtLeast32Bit.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32Bit.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_AtLeast32Bit.
     Module ink_env_arithmetic_AtLeast32BitUnsigned.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance.
       repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
+      (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
-    Module ink_env_types_FromLittleEndian.
-      Global Instance I `(Trait) : ink_env.types.FromLittleEndian.Trait Balance.
-      repeat
-      (destruct __the_bounds_of_Balance as [? __the_bounds_of_Balance];
-      try assumption).
-      Defined.
-    End ink_env_types_FromLittleEndian.
   End The_Bounds_Of_Balance.
   Module The_Bounds_Of_Hash.
-    Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End parity_scale_codec_codec_Codec.
     Module scale_encode_EncodeAsType.
       Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
+      
       Defined.
     End scale_encode_EncodeAsType.
     Module scale_decode_DecodeAsType.
       Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
+      
       Defined.
     End scale_decode_DecodeAsType.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Hash.
       repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
+      (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_types_CodecAsType.
-    Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End core_marker_Copy.
-    Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End core_clone_Clone.
-    Module ink_primitives_types_Clear.
-      Global Instance I `(Trait) : ink_primitives.types.Clear.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End ink_primitives_types_Clear.
-    Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End core_cmp_PartialEq.
-    Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End core_cmp_Eq.
-    Module core_cmp_Ord.
-      Global Instance I `(Trait) : core.cmp.Ord.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End core_cmp_Ord.
-    Module core_convert_AsRef.
-      Global Instance I `(Trait) : core.convert.AsRef.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End core_convert_AsRef.
-    Module core_convert_AsMut.
-      Global Instance I `(Trait) : core.convert.AsMut.Trait Hash.
-      repeat
-      (destruct __the_bounds_of_Hash as [? __the_bounds_of_Hash];
-      try assumption).
-      Defined.
-    End core_convert_AsMut.
   End The_Bounds_Of_Hash.
   Module The_Bounds_Of_Timestamp.
-    Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait)
-        : parity_scale_codec.codec.Codec.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End parity_scale_codec_codec_Codec.
     Module scale_decode_DecodeAsType.
       Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End scale_decode_DecodeAsType.
     Module scale_encode_EncodeAsType.
       Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End scale_encode_EncodeAsType.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_types_CodecAsType.
-    Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+    Module core_convert_From.
+      Global Instance I `(Trait) : core.convert.From.Trait Timestamp.
+      
       Defined.
-    End core_marker_Copy.
-    Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+    End core_convert_From.
+    Module core_marker_Sized.
+      Global Instance I `(Trait) : core.marker.Sized.Trait Timestamp.
+      
       Defined.
-    End core_clone_Clone.
-    Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_cmp_PartialEq.
-    Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_cmp_Eq.
-    Module core_ops_arith_Sub.
-      Global Instance I `(Trait) : core.ops.arith.Sub.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_ops_arith_Sub.
-    Module core_cmp_Ord.
-      Global Instance I `(Trait) : core.cmp.Ord.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_cmp_Ord.
+    End core_marker_Sized.
     Module num_traits_identities_One.
       Global Instance I `(Trait) : num_traits.identities.One.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End num_traits_identities_One.
     Module core_ops_arith_Mul.
       Global Instance I `(Trait) : core.ops.arith.Mul.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End core_ops_arith_Mul.
+    Module core_ops_arith_DivAssign.
+      Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Timestamp.
+      
+      Defined.
+    End core_ops_arith_DivAssign.
     Module core_ops_arith_SubAssign.
       Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End core_ops_arith_SubAssign.
+    Module core_cmp_PartialOrd.
+      Global Instance I `(Trait) : core.cmp.PartialOrd.Trait Timestamp.
+      
+      Defined.
+    End core_cmp_PartialOrd.
+    Module core_cmp_Ord.
+      Global Instance I `(Trait) : core.cmp.Ord.Trait Timestamp.
+      
+      Defined.
+    End core_cmp_Ord.
+    Module core_convert_TryInto.
+      Global Instance I `(Trait) : core.convert.TryInto.Trait Timestamp.
+      
+      Defined.
+    End core_convert_TryInto.
     Module core_ops_arith_Div.
       Global Instance I `(Trait) : core.ops.arith.Div.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End core_ops_arith_Div.
+    Module core_ops_arith_Add.
+      Global Instance I `(Trait) : core.ops.arith.Add.Trait Timestamp.
+      
+      Defined.
+    End core_ops_arith_Add.
+    Module core_convert_TryFrom.
+      Global Instance I `(Trait) : core.convert.TryFrom.Trait Timestamp.
+      
+      Defined.
+    End core_convert_TryFrom.
+    Module num_traits_bounds_Bounded.
+      Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait Timestamp.
+      
+      Defined.
+    End num_traits_bounds_Bounded.
     Module num_traits_ops_checked_CheckedMul.
       Global Instance I `(Trait)
         : num_traits.ops.checked.CheckedMul.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End num_traits_ops_checked_CheckedMul.
-    Module core_cmp_PartialOrd.
-      Global Instance I `(Trait) : core.cmp.PartialOrd.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_cmp_PartialOrd.
-    Module num_traits_identities_Zero.
-      Global Instance I `(Trait) : num_traits.identities.Zero.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End num_traits_identities_Zero.
     Module core_ops_arith_MulAssign.
       Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End core_ops_arith_MulAssign.
-    Module core_ops_arith_DivAssign.
-      Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_ops_arith_DivAssign.
     Module core_ops_arith_AddAssign.
       Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End core_ops_arith_AddAssign.
-    Module core_convert_From.
-      Global Instance I `(Trait) : core.convert.From.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+    Module num_traits_identities_Zero.
+      Global Instance I `(Trait) : num_traits.identities.Zero.Trait Timestamp.
+      
       Defined.
-    End core_convert_From.
-    Module core_ops_arith_Add.
-      Global Instance I `(Trait) : core.ops.arith.Add.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_ops_arith_Add.
+    End num_traits_identities_Zero.
     Module ink_env_arithmetic_Saturating.
       Global Instance I `(Trait)
         : ink_env.arithmetic.Saturating.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End ink_env_arithmetic_Saturating.
-    Module core_convert_TryInto.
-      Global Instance I `(Trait) : core.convert.TryInto.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_convert_TryInto.
-    Module num_traits_bounds_Bounded.
-      Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End num_traits_bounds_Bounded.
     Module num_traits_sign_Unsigned.
       Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      
       Defined.
     End num_traits_sign_Unsigned.
-    Module core_convert_TryFrom.
-      Global Instance I `(Trait) : core.convert.TryFrom.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+    Module core_ops_arith_Sub.
+      Global Instance I `(Trait) : core.ops.arith.Sub.Trait Timestamp.
+      
       Defined.
-    End core_convert_TryFrom.
-    Module core_marker_Sized.
-      Global Instance I `(Trait) : core.marker.Sized.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End core_marker_Sized.
+    End core_ops_arith_Sub.
     Module ink_env_arithmetic_BaseArithmetic.
       Global Instance I `(Trait)
         : ink_env.arithmetic.BaseArithmetic.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_BaseArithmetic.
     Module ink_env_arithmetic_AtLeast32Bit.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32Bit.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_AtLeast32Bit.
     Module ink_env_arithmetic_AtLeast32BitUnsigned.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp.
       repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
+      (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
-    Module ink_env_types_FromLittleEndian.
-      Global Instance I `(Trait)
-        : ink_env.types.FromLittleEndian.Trait Timestamp.
-      repeat
-      (destruct __the_bounds_of_Timestamp as [? __the_bounds_of_Timestamp];
-      try assumption).
-      Defined.
-    End ink_env_types_FromLittleEndian.
   End The_Bounds_Of_Timestamp.
   Module The_Bounds_Of_BlockNumber.
-    Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait)
-        : parity_scale_codec.codec.Codec.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End parity_scale_codec_codec_Codec.
-    Module scale_decode_DecodeAsType.
-      Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End scale_decode_DecodeAsType.
     Module scale_encode_EncodeAsType.
       Global Instance I `(Trait) : scale_encode.EncodeAsType.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      
       Defined.
     End scale_encode_EncodeAsType.
+    Module scale_decode_DecodeAsType.
+      Global Instance I `(Trait) : scale_decode.DecodeAsType.Trait BlockNumber.
+      
+      Defined.
+    End scale_decode_DecodeAsType.
     Module ink_env_types_CodecAsType.
       Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_types_CodecAsType.
-    Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+    Module core_ops_arith_Sub.
+      Global Instance I `(Trait) : core.ops.arith.Sub.Trait BlockNumber.
+      
       Defined.
-    End core_marker_Copy.
-    Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_clone_Clone.
-    Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_cmp_PartialEq.
-    Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_cmp_Eq.
-    Module core_ops_arith_Mul.
-      Global Instance I `(Trait) : core.ops.arith.Mul.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_ops_arith_Mul.
-    Module num_traits_identities_Zero.
-      Global Instance I `(Trait) : num_traits.identities.Zero.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End num_traits_identities_Zero.
+    End core_ops_arith_Sub.
     Module core_convert_TryFrom.
       Global Instance I `(Trait) : core.convert.TryFrom.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      
       Defined.
     End core_convert_TryFrom.
-    Module core_ops_arith_DivAssign.
-      Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+    Module core_marker_Sized.
+      Global Instance I `(Trait) : core.marker.Sized.Trait BlockNumber.
+      
       Defined.
-    End core_ops_arith_DivAssign.
-    Module core_ops_arith_AddAssign.
-      Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+    End core_marker_Sized.
+    Module num_traits_identities_One.
+      Global Instance I `(Trait) : num_traits.identities.One.Trait BlockNumber.
+      
       Defined.
-    End core_ops_arith_AddAssign.
-    Module num_traits_ops_checked_CheckedMul.
-      Global Instance I `(Trait)
-        : num_traits.ops.checked.CheckedMul.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End num_traits_ops_checked_CheckedMul.
+    End num_traits_identities_One.
     Module num_traits_bounds_Bounded.
       Global Instance I `(Trait) : num_traits.bounds.Bounded.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      
       Defined.
     End num_traits_bounds_Bounded.
     Module num_traits_sign_Unsigned.
       Global Instance I `(Trait) : num_traits.sign.Unsigned.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      
       Defined.
     End num_traits_sign_Unsigned.
-    Module core_ops_arith_MulAssign.
-      Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_ops_arith_MulAssign.
     Module core_cmp_Ord.
       Global Instance I `(Trait) : core.cmp.Ord.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      
       Defined.
     End core_cmp_Ord.
-    Module num_traits_identities_One.
-      Global Instance I `(Trait) : num_traits.identities.One.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+    Module core_ops_arith_MulAssign.
+      Global Instance I `(Trait) : core.ops.arith.MulAssign.Trait BlockNumber.
+      
       Defined.
-    End num_traits_identities_One.
+    End core_ops_arith_MulAssign.
+    Module num_traits_ops_checked_CheckedMul.
+      Global Instance I `(Trait)
+        : num_traits.ops.checked.CheckedMul.Trait BlockNumber.
+      
+      Defined.
+    End num_traits_ops_checked_CheckedMul.
+    Module num_traits_identities_Zero.
+      Global Instance I `(Trait) : num_traits.identities.Zero.Trait BlockNumber.
+      
+      Defined.
+    End num_traits_identities_Zero.
+    Module core_ops_arith_Add.
+      Global Instance I `(Trait) : core.ops.arith.Add.Trait BlockNumber.
+      
+      Defined.
+    End core_ops_arith_Add.
+    Module core_ops_arith_Mul.
+      Global Instance I `(Trait) : core.ops.arith.Mul.Trait BlockNumber.
+      
+      Defined.
+    End core_ops_arith_Mul.
+    Module core_ops_arith_SubAssign.
+      Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait BlockNumber.
+      
+      Defined.
+    End core_ops_arith_SubAssign.
+    Module core_convert_From.
+      Global Instance I `(Trait) : core.convert.From.Trait BlockNumber.
+      
+      Defined.
+    End core_convert_From.
+    Module core_ops_arith_Div.
+      Global Instance I `(Trait) : core.ops.arith.Div.Trait BlockNumber.
+      
+      Defined.
+    End core_ops_arith_Div.
+    Module core_convert_TryInto.
+      Global Instance I `(Trait) : core.convert.TryInto.Trait BlockNumber.
+      
+      Defined.
+    End core_convert_TryInto.
+    Module core_ops_arith_DivAssign.
+      Global Instance I `(Trait) : core.ops.arith.DivAssign.Trait BlockNumber.
+      
+      Defined.
+    End core_ops_arith_DivAssign.
     Module ink_env_arithmetic_Saturating.
       Global Instance I `(Trait)
         : ink_env.arithmetic.Saturating.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      
       Defined.
     End ink_env_arithmetic_Saturating.
     Module core_cmp_PartialOrd.
       Global Instance I `(Trait) : core.cmp.PartialOrd.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      
       Defined.
     End core_cmp_PartialOrd.
-    Module core_convert_TryInto.
-      Global Instance I `(Trait) : core.convert.TryInto.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+    Module core_ops_arith_AddAssign.
+      Global Instance I `(Trait) : core.ops.arith.AddAssign.Trait BlockNumber.
+      
       Defined.
-    End core_convert_TryInto.
-    Module core_ops_arith_Add.
-      Global Instance I `(Trait) : core.ops.arith.Add.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_ops_arith_Add.
-    Module core_ops_arith_SubAssign.
-      Global Instance I `(Trait) : core.ops.arith.SubAssign.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_ops_arith_SubAssign.
-    Module core_ops_arith_Sub.
-      Global Instance I `(Trait) : core.ops.arith.Sub.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_ops_arith_Sub.
-    Module core_marker_Sized.
-      Global Instance I `(Trait) : core.marker.Sized.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_marker_Sized.
-    Module core_ops_arith_Div.
-      Global Instance I `(Trait) : core.ops.arith.Div.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_ops_arith_Div.
-    Module core_convert_From.
-      Global Instance I `(Trait) : core.convert.From.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End core_convert_From.
+    End core_ops_arith_AddAssign.
     Module ink_env_arithmetic_BaseArithmetic.
       Global Instance I `(Trait)
         : ink_env.arithmetic.BaseArithmetic.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_BaseArithmetic.
     Module ink_env_arithmetic_AtLeast32Bit.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32Bit.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_AtLeast32Bit.
     Module ink_env_arithmetic_AtLeast32BitUnsigned.
       Global Instance I `(Trait)
         : ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber.
       repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
+      (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
-    Module ink_env_types_FromLittleEndian.
-      Global Instance I `(Trait)
-        : ink_env.types.FromLittleEndian.Trait BlockNumber.
-      repeat
-      (destruct __the_bounds_of_BlockNumber as [? __the_bounds_of_BlockNumber];
-      try assumption).
-      Defined.
-    End ink_env_types_FromLittleEndian.
   End The_Bounds_Of_BlockNumber.
 End Environment.
 
@@ -2215,13 +1435,7 @@ Module contract.
       Notation.double_colon_type := Env;
     }.
     Module The_Bounds_Of_Env.
-      Module ink_env_types_Environment.
-        Global Instance I `(Trait) : ink_env.types.Environment.Trait Env.
-        repeat
-        (destruct __the_bounds_of_Env as [? __the_bounds_of_Env];
-        try assumption).
-        Defined.
-      End ink_env_types_Environment.
+      
     End The_Bounds_Of_Env.
   End ContractEnv.
   
@@ -2479,14 +1693,7 @@ Module call.
           (axiom : M (H := H') (core.option.Option Output));
       }.
       Module The_Bounds_Of_Error.
-        Module parity_scale_codec_codec_Decode.
-          Global Instance I `(Trait)
-            : parity_scale_codec.codec.Decode.Trait Error.
-          repeat
-          (destruct __the_bounds_of_Error as [? __the_bounds_of_Error];
-          try assumption).
-          Defined.
-        End parity_scale_codec_codec_Decode.
+        
       End The_Bounds_Of_Error.
     End ConstructorReturnType.
     
@@ -2770,13 +1977,7 @@ Module hash.
       Notation.double_colon_type := Type_;
     }.
     Module The_Bounds_Of_Type_.
-      Module core_default_Default.
-        Global Instance I `(Trait) : core.default.Default.Trait Type_.
-        repeat
-        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-        try assumption).
-        Defined.
-      End core_default_Default.
+      
     End The_Bounds_Of_Type_.
   End HashOutput.
   
@@ -2956,14 +2157,7 @@ Module topics.
         topics (E := E) (B := B) (H'0 := H'0) (H'1 := H'1);
     }.
     Module The_Bounds_Of_RemainingTopics.
-      Module ink_env_topics_EventTopicsAmount.
-        Global Instance I `(Trait)
-          : ink_env.topics.EventTopicsAmount.Trait RemainingTopics.
-        repeat
-        (destruct __the_bounds_of_RemainingTopics as [? __the_bounds_of_RemainingTopics];
-        try assumption).
-        Defined.
-      End ink_env_topics_EventTopicsAmount.
+      
     End The_Bounds_Of_RemainingTopics.
   End Topics.
   
@@ -6039,14 +5233,7 @@ Module create_builder.
         (axiom : M (H := H') (core.option.Option Output));
     }.
     Module The_Bounds_Of_Error.
-      Module parity_scale_codec_codec_Decode.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Decode.Trait Error.
-        repeat
-        (destruct __the_bounds_of_Error as [? __the_bounds_of_Error];
-        try assumption).
-        Defined.
-      End parity_scale_codec_codec_Decode.
+      
     End The_Bounds_Of_Error.
   End ConstructorReturnType.
   
@@ -6289,13 +5476,7 @@ Module ConstructorReturnType.
       (axiom : M (H := H') (core.option.Option Output));
   }.
   Module The_Bounds_Of_Error.
-    Module parity_scale_codec_codec_Decode.
-      Global Instance I `(Trait) : parity_scale_codec.codec.Decode.Trait Error.
-      repeat
-      (destruct __the_bounds_of_Error as [? __the_bounds_of_Error];
-      try assumption).
-      Defined.
-    End parity_scale_codec_codec_Decode.
+    
   End The_Bounds_Of_Error.
 End ConstructorReturnType.
 
@@ -6893,12 +6074,7 @@ Module ContractEnv.
     Notation.double_colon_type := Env;
   }.
   Module The_Bounds_Of_Env.
-    Module ink_env_types_Environment.
-      Global Instance I `(Trait) : ink_env.types.Environment.Trait Env.
-      repeat
-      (destruct __the_bounds_of_Env as [? __the_bounds_of_Env]; try assumption).
-      Defined.
-    End ink_env_types_Environment.
+    
   End The_Bounds_Of_Env.
 End ContractEnv.
 
@@ -7096,13 +6272,7 @@ Module HashOutput.
     Notation.double_colon_type := Type_;
   }.
   Module The_Bounds_Of_Type_.
-    Module core_default_Default.
-      Global Instance I `(Trait) : core.default.Default.Trait Type_.
-      repeat
-      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-      try assumption).
-      Defined.
-    End core_default_Default.
+    
   End The_Bounds_Of_Type_.
 End HashOutput.
 
@@ -7294,14 +6464,7 @@ Module Topics.
       topics (E := E) (B := B) (H'0 := H'0) (H'1 := H'1);
   }.
   Module The_Bounds_Of_RemainingTopics.
-    Module ink_env_topics_EventTopicsAmount.
-      Global Instance I `(Trait)
-        : ink_env.topics.EventTopicsAmount.Trait RemainingTopics.
-      repeat
-      (destruct __the_bounds_of_RemainingTopics as [? __the_bounds_of_RemainingTopics];
-      try assumption).
-      Defined.
-    End ink_env_topics_EventTopicsAmount.
+    
   End The_Bounds_Of_RemainingTopics.
 End Topics.
 

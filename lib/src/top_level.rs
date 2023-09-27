@@ -2804,12 +2804,16 @@ impl Trait {
                                             &bounds
                                                 .iter()
                                                 .flat_map(|bound| {
-                                                    let topological_sort = algs::DirectedGraph::of_hashmap(supertraits_map)
+                                                    let mut topological_sort = algs::DirectedGraph::of_hashmap(supertraits_map)
                                                         .get_subgraph_of(&bound.name)
                                                         .to_topological_sort();
-                                                    if topological_sort.is_empty() {
-                                                        vec![coq::TopLevelItem::Module(coq::Module::new(
-                                                            &bound.name.to_name(),
+                                                    // traits with no supertraits
+                                                    let base_traits = topological_sort.pop_all();
+                                                    base_traits
+                                                        .into_iter()
+                                                        .map(|bound| {
+                                                        coq::TopLevelItem::Module(coq::Module::new(
+                                                            &bound.to_name(),
                                                             coq::TopLevel::new(&[
                                                                 coq::TopLevelItem::Instance(coq::Instance::new(
                                                                     false,
@@ -2823,38 +2827,19 @@ impl Trait {
                                                                     )],
                                                                     coq::Expression::Variable {
                                                                         ident: Path::concat(&[
-                                                                            bound.name.to_owned(),
+                                                                            bound,
                                                                             Path::new(&["Trait"]),
                                                                         ]),
                                                                         no_implicit: false,
                                                                     }
                                                                     .apply(&coq::Expression::just_name(&item.item_name)),
                                                                     &None,
-                                                                    {
-                                                                        let proj_name = ["__the_bounds_of_", &item.item_name].concat();
-                                                                        vec![concat([
-                                                                            text("repeat"),
-                                                                            line(),
-                                                                            group([
-                                                                                text("("),
-                                                                                text([
-                                                                                    "destruct ",
-                                                                                    &proj_name,
-                                                                                    " as [? ",
-                                                                                    &proj_name,
-                                                                                    "];",
-                                                                                ].concat()),
-                                                                                line(),
-                                                                                text("try assumption"),
-                                                                                text(")"),
-                                                                            ]),
-                                                                            text("."),
-                                                                        ])]
-                                                                    },
+                                                                    vec![text("")],
                                                                 )),
                                                             ]),
-                                                        ))]
-                                                    } else {
+                                                        ))
+                                                    })
+                                                    .chain(
                                                         topological_sort
                                                             .map(|bound| {
                                                                 coq::TopLevelItem::Module(coq::Module::new(
@@ -2889,12 +2874,14 @@ impl Trait {
                                                                                         text([
                                                                                             "destruct ",
                                                                                             &proj_name,
-                                                                                            " as [? ",
+                                                                                            " as [x ",
                                                                                             &proj_name,
                                                                                             "];",
                                                                                         ].concat()),
                                                                                         line(),
-                                                                                        text("try assumption"),
+                                                                                        text("try assumption;"),
+                                                                                        line(),
+                                                                                        text("try destruct x"),
                                                                                         text(")"),
                                                                                     ]),
                                                                                     text("."),
@@ -2904,8 +2891,8 @@ impl Trait {
                                                                     ]),
                                                                 ))
                                                             })
-                                                            .collect()
-                                                    }
+                                                            .collect_vec()
+                                                    )
                                                 })
                                                 .collect_vec(),
                                         ),

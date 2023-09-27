@@ -183,29 +183,21 @@ Module storage.
     Module The_Bounds_Of_Type_.
       Module core_marker_Sized.
         Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-        repeat
-        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-        try assumption).
+        
         Defined.
       End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
         repeat
-        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-        try assumption).
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_storage_traits_storage_Storable.
     End The_Bounds_Of_Type_.
     Module The_Bounds_Of_PreferredKey.
-      Module ink_storage_traits_storage_StorageKey.
-        Global Instance I `(Trait)
-          : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
-        repeat
-        (destruct __the_bounds_of_PreferredKey as [? __the_bounds_of_PreferredKey];
-        try assumption).
-        Defined.
-      End ink_storage_traits_storage_StorageKey.
+      
     End The_Bounds_Of_PreferredKey.
   End StorableHint.
   
@@ -229,17 +221,16 @@ Module storage.
     Module The_Bounds_Of_Type_.
       Module core_marker_Sized.
         Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-        repeat
-        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-        try assumption).
+        
         Defined.
       End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
         repeat
-        (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-        try assumption).
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
         Defined.
       End ink_storage_traits_storage_Storable.
     End The_Bounds_Of_Type_.
@@ -355,29 +346,21 @@ Module StorableHint.
   Module The_Bounds_Of_Type_.
     Module core_marker_Sized.
       Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-      repeat
-      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-      try assumption).
+      
       Defined.
     End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
       repeat
-      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-      try assumption).
+      (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.
   Module The_Bounds_Of_PreferredKey.
-    Module ink_storage_traits_storage_StorageKey.
-      Global Instance I `(Trait)
-        : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
-      repeat
-      (destruct __the_bounds_of_PreferredKey as [? __the_bounds_of_PreferredKey];
-      try assumption).
-      Defined.
-    End ink_storage_traits_storage_StorageKey.
+    
   End The_Bounds_Of_PreferredKey.
 End StorableHint.
 
@@ -401,17 +384,16 @@ Module AutoStorableHint.
   Module The_Bounds_Of_Type_.
     Module core_marker_Sized.
       Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-      repeat
-      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-      try assumption).
+      
       Defined.
     End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
       repeat
-      (destruct __the_bounds_of_Type_ as [? __the_bounds_of_Type_];
-      try assumption).
+      (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+      try assumption;
+      try destruct x).
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.
