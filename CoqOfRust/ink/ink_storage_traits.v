@@ -183,16 +183,19 @@ Module storage.
     Module The_Bounds_Of_Type_.
       Module core_marker_Sized.
         Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-        
+        all: repeat
+          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+          try assumption;
+          try destruct x).
         Defined.
       End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
-        repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+        all: repeat
+          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+          try assumption;
+          try destruct x).
         Defined.
       End ink_storage_traits_storage_Storable.
     End The_Bounds_Of_Type_.
@@ -221,16 +224,19 @@ Module storage.
     Module The_Bounds_Of_Type_.
       Module core_marker_Sized.
         Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-        
+        all: repeat
+          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+          try assumption;
+          try destruct x).
         Defined.
       End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
-        repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+        all: repeat
+          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+          try assumption;
+          try destruct x).
         Defined.
       End ink_storage_traits_storage_Storable.
     End The_Bounds_Of_Type_.
@@ -346,16 +352,19 @@ Module StorableHint.
   Module The_Bounds_Of_Type_.
     Module core_marker_Sized.
       Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-      
+      all: repeat
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
       Defined.
     End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
-      repeat
-      (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-      try assumption;
-      try destruct x).
+      all: repeat
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.
@@ -384,16 +393,19 @@ Module AutoStorableHint.
   Module The_Bounds_Of_Type_.
     Module core_marker_Sized.
       Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-      
+      all: repeat
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
       Defined.
     End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
-      repeat
-      (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-      try assumption;
-      try destruct x).
+      all: repeat
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.

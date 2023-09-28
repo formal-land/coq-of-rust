@@ -369,16 +369,19 @@ Module reflect.
         Module parity_scale_codec_codec_Decode.
           Global Instance I `(Trait)
             : parity_scale_codec.codec.Decode.Trait Type_.
-          
+          all: repeat
+            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+            try assumption;
+            try destruct x).
           Defined.
         End parity_scale_codec_codec_Decode.
         Module ink_reflect_dispatch_DecodeDispatch.
           Global Instance I `(Trait)
             : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
-          repeat
-          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-          try assumption;
-          try destruct x).
+          all: repeat
+            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+            try assumption;
+            try destruct x).
           Defined.
         End ink_reflect_dispatch_DecodeDispatch.
       End The_Bounds_Of_Type_.
@@ -1969,16 +1972,19 @@ Module Wrap_dispatch_1.
         Module parity_scale_codec_codec_Decode.
           Global Instance I `(Trait)
             : parity_scale_codec.codec.Decode.Trait Type_.
-          
+          all: repeat
+            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+            try assumption;
+            try destruct x).
           Defined.
         End parity_scale_codec_codec_Decode.
         Module ink_reflect_dispatch_DecodeDispatch.
           Global Instance I `(Trait)
             : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
-          repeat
-          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-          try assumption;
-          try destruct x).
+          all: repeat
+            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+            try assumption;
+            try destruct x).
           Defined.
         End ink_reflect_dispatch_DecodeDispatch.
       End The_Bounds_Of_Type_.
@@ -2183,16 +2189,19 @@ Module ContractConstructorDecoder.
   Module The_Bounds_Of_Type_.
     Module parity_scale_codec_codec_Decode.
       Global Instance I `(Trait) : parity_scale_codec.codec.Decode.Trait Type_.
-      
+      all: repeat
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
       Defined.
     End parity_scale_codec_codec_Decode.
     Module ink_reflect_dispatch_DecodeDispatch.
       Global Instance I `(Trait)
         : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
-      repeat
-      (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-      try assumption;
-      try destruct x).
+      all: repeat
+        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
+        try assumption;
+        try destruct x).
       Defined.
     End ink_reflect_dispatch_DecodeDispatch.
   End The_Bounds_Of_Type_.
