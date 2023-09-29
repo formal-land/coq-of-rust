@@ -181,14 +181,6 @@ Module storage.
       Notation.double_colon_type := PreferredKey;
     }.
     Module The_Bounds_Of_Type_.
-      Module core_marker_Sized.
-        Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-        all: repeat
-          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-          try assumption;
-          try destruct x).
-        Defined.
-      End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
@@ -200,7 +192,15 @@ Module storage.
       End ink_storage_traits_storage_Storable.
     End The_Bounds_Of_Type_.
     Module The_Bounds_Of_PreferredKey.
-      
+      Module ink_storage_traits_storage_StorageKey.
+        Global Instance I `(Trait)
+          : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
+        all: repeat
+          (destruct __the_bounds_of_PreferredKey as [x __the_bounds_of_PreferredKey];
+          try assumption;
+          try destruct x).
+        Defined.
+      End ink_storage_traits_storage_StorageKey.
     End The_Bounds_Of_PreferredKey.
   End StorableHint.
   
@@ -222,14 +222,6 @@ Module storage.
       Notation.double_colon_type := Type_;
     }.
     Module The_Bounds_Of_Type_.
-      Module core_marker_Sized.
-        Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-        all: repeat
-          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-          try assumption;
-          try destruct x).
-        Defined.
-      End core_marker_Sized.
       Module ink_storage_traits_storage_Storable.
         Global Instance I `(Trait)
           : ink_storage_traits.storage.Storable.Trait Type_.
@@ -350,14 +342,6 @@ Module StorableHint.
     Notation.double_colon_type := PreferredKey;
   }.
   Module The_Bounds_Of_Type_.
-    Module core_marker_Sized.
-      Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
-      Defined.
-    End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
@@ -369,7 +353,15 @@ Module StorableHint.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.
   Module The_Bounds_Of_PreferredKey.
-    
+    Module ink_storage_traits_storage_StorageKey.
+      Global Instance I `(Trait)
+        : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
+      all: repeat
+        (destruct __the_bounds_of_PreferredKey as [x __the_bounds_of_PreferredKey];
+        try assumption;
+        try destruct x).
+      Defined.
+    End ink_storage_traits_storage_StorageKey.
   End The_Bounds_Of_PreferredKey.
 End StorableHint.
 
@@ -391,14 +383,6 @@ Module AutoStorableHint.
     Notation.double_colon_type := Type_;
   }.
   Module The_Bounds_Of_Type_.
-    Module core_marker_Sized.
-      Global Instance I `(Trait) : core.marker.Sized.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
-      Defined.
-    End core_marker_Sized.
     Module ink_storage_traits_storage_Storable.
       Global Instance I `(Trait)
         : ink_storage_traits.storage.Storable.Trait Type_.
