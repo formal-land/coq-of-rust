@@ -236,7 +236,7 @@ pub(crate) fn to_valid_coq_name(str: String) -> String {
         return "Unset_".to_string();
     }
     let str = str::replace(&str, "$", "_");
-    let str = str::replace(&str, "{{root}}", "Root");
+    let str = str::replace(&str, "{{root}}", "CoqOfRust");
     str::replace(&str, "::", ".")
 }
 

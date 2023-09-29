@@ -53,9 +53,13 @@ Module storage.
             `{core.marker.Sized.Trait T},
           (ref Self) -> (mut_ref T) -> M (H := H') unit.
       
-      Global Instance Method_encode `{H' : State.Trait} :
+      Global Instance Method_encode
+          `{H' : State.Trait}
+          {T : Set}
+          `{parity_scale_codec.codec.Output.Trait T}
+          `{core.marker.Sized.Trait T} :
         Notation.Dot "encode" := {
-        Notation.dot := encode;
+        Notation.dot := encode (T := T);
       }.
       
       Parameter decode :
@@ -67,9 +71,12 @@ Module storage.
             M (H := H')
               (core.result.Result Self parity_scale_codec.error.Error).
       
-      Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+      Global Instance AssociatedFunction_decode
+          `{H' : State.Trait}
+          {I : Set}
+          `{parity_scale_codec.codec.Input.Trait I} :
         Notation.DoubleColon Self "decode" := {
-        Notation.double_colon := decode;
+        Notation.double_colon := decode (I := I);
       }.
       
       Global Instance I' : ink_storage_traits.storage.Storable.Trait Self := {
@@ -1658,9 +1665,13 @@ End Storable.
           `{core.marker.Sized.Trait T},
         (ref Self) -> (mut_ref T) -> M (H := H') unit.
     
-    Global Instance Method_encode `{H' : State.Trait} :
+    Global Instance Method_encode
+        `{H' : State.Trait}
+        {T : Set}
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T} :
       Notation.Dot "encode" := {
-      Notation.dot := encode;
+      Notation.dot := encode (T := T);
     }.
     
     Parameter decode :
@@ -1671,9 +1682,12 @@ End Storable.
         (mut_ref I) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {I : Set}
+        `{parity_scale_codec.codec.Input.Trait I} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (I := I);
     }.
     
     Global Instance I' : ink_storage_traits.storage.Storable.Trait Self := {

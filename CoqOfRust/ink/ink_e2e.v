@@ -950,9 +950,12 @@ Module
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -979,9 +982,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -1237,9 +1244,12 @@ Module
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -1264,16 +1274,20 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Parameter encode :
         forall `{H' : State.Trait},
         (ref Self) ->
           M (H := H')
-            (alloc.vec.Vec Root.core.primitive.u8 alloc.vec.Vec.Default.A).
+            (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
     
     Global Instance Method_encode `{H' : State.Trait} :
       Notation.Dot "encode" := {
@@ -1285,12 +1299,16 @@ Module
           `{H' : State.Trait}
           {R F : Set}
           `{core.ops.function.FnOnce.Trait F
-              (Args := ref (Slice Root.core.primitive.u8))},
+              (Args := ref (Slice CoqOfRust.core.primitive.u8))},
         (ref Self) -> F -> M (H := H') R.
     
-    Global Instance Method_using_encoded `{H' : State.Trait} :
+    Global Instance Method_using_encoded
+        `{H' : State.Trait}
+        {R F : Set}
+        `{core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
       Notation.Dot "using_encoded" := {
-      Notation.dot := using_encoded;
+      Notation.dot := using_encoded (R := R) (F := F);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2914,9 +2932,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2946,9 +2968,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
       (mut_ref __CodecInputEdqy) ->
         M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -2963,7 +2988,7 @@ Module
   
   Parameter max_encoded_len :
       forall `{H' : State.Trait},
-      M (H := H') Root.core.primitive.usize.
+      M (H := H') CoqOfRust.core.primitive.usize.
   
   Global Instance AssociatedFunction_max_encoded_len `{H' : State.Trait} :
     Notation.DoubleColon Self "max_encoded_len" := {
@@ -3038,9 +3063,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
         __S ->
         M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
   
-  Global Instance Method_serialize `{H' : State.Trait} :
+  Global Instance Method_serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S} :
     Notation.Dot "serialize" := {
-    Notation.dot := serialize;
+    Notation.dot := serialize (__S := __S);
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
@@ -3056,9 +3084,12 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
       forall `{H' : State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
       __D -> M (H := H') (core.result.Result Self __D::type["Error"]).
   
-  Global Instance AssociatedFunction_deserialize `{H' : State.Trait} :
+  Global Instance AssociatedFunction_deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D} :
     Notation.DoubleColon Self "deserialize" := {
-    Notation.double_colon := deserialize;
+    Notation.double_colon := deserialize (__D := __D);
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
@@ -3085,27 +3116,36 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
       forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
       Self -> u64 -> M (H := H') (core.result.Result Value __E).
   
-  Global Instance Method_visit_u64 `{H' : State.Trait} :
+  Global Instance Method_visit_u64
+      `{H' : State.Trait}
+      {__E : Set}
+      `{serde.de.Error.Trait __E} :
     Notation.Dot "visit_u64" := {
-    Notation.dot := visit_u64;
+    Notation.dot := visit_u64 (__E := __E);
   }.
   
   Parameter visit_str :
       forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
       Self -> (ref str) -> M (H := H') (core.result.Result Value __E).
   
-  Global Instance Method_visit_str `{H' : State.Trait} :
+  Global Instance Method_visit_str
+      `{H' : State.Trait}
+      {__E : Set}
+      `{serde.de.Error.Trait __E} :
     Notation.Dot "visit_str" := {
-    Notation.dot := visit_str;
+    Notation.dot := visit_str (__E := __E);
   }.
   
   Parameter visit_bytes :
       forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
       Self -> (ref (Slice u8)) -> M (H := H') (core.result.Result Value __E).
   
-  Global Instance Method_visit_bytes `{H' : State.Trait} :
+  Global Instance Method_visit_bytes
+      `{H' : State.Trait}
+      {__E : Set}
+      `{serde.de.Error.Trait __E} :
     Notation.Dot "visit_bytes" := {
-    Notation.dot := visit_bytes;
+    Notation.dot := visit_bytes (__E := __E);
   }.
   
   Global Instance I : serde.de.Visitor.Trait Self := {
@@ -3122,9 +3162,12 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
       forall `{H' : State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
       __D -> M (H := H') (core.result.Result Self __D::type["Error"]).
   
-  Global Instance AssociatedFunction_deserialize `{H' : State.Trait} :
+  Global Instance AssociatedFunction_deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D} :
     Notation.DoubleColon Self "deserialize" := {
-    Notation.double_colon := deserialize;
+    Notation.double_colon := deserialize (__D := __D);
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
@@ -3151,18 +3194,24 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
       forall `{H' : State.Trait} {__A : Set} `{serde.de.SeqAccess.Trait __A},
       Self -> __A -> M (H := H') (core.result.Result Value __A::type["Error"]).
   
-  Global Instance Method_visit_seq `{H' : State.Trait} :
+  Global Instance Method_visit_seq
+      `{H' : State.Trait}
+      {__A : Set}
+      `{serde.de.SeqAccess.Trait __A} :
     Notation.Dot "visit_seq" := {
-    Notation.dot := visit_seq;
+    Notation.dot := visit_seq (__A := __A);
   }.
   
   Parameter visit_map :
       forall `{H' : State.Trait} {__A : Set} `{serde.de.MapAccess.Trait __A},
       Self -> __A -> M (H := H') (core.result.Result Value __A::type["Error"]).
   
-  Global Instance Method_visit_map `{H' : State.Trait} :
+  Global Instance Method_visit_map
+      `{H' : State.Trait}
+      {__A : Set}
+      `{serde.de.MapAccess.Trait __A} :
     Notation.Dot "visit_map" := {
-    Notation.dot := visit_map;
+    Notation.dot := visit_map (__A := __A);
   }.
   
   Global Instance I : serde.de.Visitor.Trait Self := {
@@ -3308,9 +3357,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -3353,9 +3406,12 @@ Module
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -3507,9 +3563,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -3532,9 +3591,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -3678,9 +3741,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -3703,9 +3769,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -3895,9 +3965,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
         __S ->
         M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
   
-  Global Instance Method_serialize `{H' : State.Trait} :
+  Global Instance Method_serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S} :
     Notation.Dot "serialize" := {
-    Notation.dot := serialize;
+    Notation.dot := serialize (__S := __S);
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
@@ -3917,9 +3990,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
       (mut_ref __CodecInputEdqy) ->
         M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -3939,9 +4015,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4058,9 +4138,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4099,9 +4183,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -4179,9 +4266,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
           __S ->
           M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize `{H' : State.Trait} :
+    Global Instance Method_serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S} :
       Notation.Dot "serialize" := {
-      Notation.dot := serialize;
+      Notation.dot := serialize (__S := __S);
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
@@ -4206,9 +4296,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4251,9 +4345,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
           __S ->
           M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize `{H' : State.Trait} :
+    Global Instance Method_serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S} :
       Notation.Dot "serialize" := {
-      Notation.dot := serialize;
+      Notation.dot := serialize (__S := __S);
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
@@ -4278,9 +4375,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4323,9 +4424,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
           __S ->
           M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize `{H' : State.Trait} :
+    Global Instance Method_serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S} :
       Notation.Dot "serialize" := {
-      Notation.dot := serialize;
+      Notation.dot := serialize (__S := __S);
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
@@ -4349,9 +4453,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4387,9 +4495,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
         __S ->
         M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
   
-  Global Instance Method_serialize `{H' : State.Trait} :
+  Global Instance Method_serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S} :
     Notation.Dot "serialize" := {
-    Notation.dot := serialize;
+    Notation.dot := serialize (__S := __S);
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
@@ -4409,9 +4520,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {

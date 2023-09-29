@@ -1665,7 +1665,9 @@ Module Impl_subtle_CtOption_T_4.
       (addr_of self.["value"])
       self.["is_some"].
   
-  Global Instance Method_unwrap_or `{H' : State.Trait} :
+  Global Instance Method_unwrap_or
+      `{H' : State.Trait}
+      `{subtle.ConditionallySelectable.Trait T} :
     Notation.Dot "unwrap_or" := {
     Notation.dot := unwrap_or;
   }.
@@ -1684,9 +1686,13 @@ Module Impl_subtle_CtOption_T_4.
       (addr_of self.["value"])
       self.["is_some"].
   
-  Global Instance Method_unwrap_or_else `{H' : State.Trait} :
+  Global Instance Method_unwrap_or_else
+      `{H' : State.Trait}
+      {F : Set}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)} :
     Notation.Dot "unwrap_or_else" := {
-    Notation.dot := unwrap_or_else;
+    Notation.dot := unwrap_or_else (F := F);
   }.
   
   Definition is_some
@@ -1729,8 +1735,14 @@ Module Impl_subtle_CtOption_T_4.
     let* α2 := f α1 in
     (subtle.CtOption _)::["new"] α2 self.["is_some"].
   
-  Global Instance Method_map `{H' : State.Trait} : Notation.Dot "map" := {
-    Notation.dot := map;
+  Global Instance Method_map
+      `{H' : State.Trait}
+      {U F : Set}
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := T)} :
+    Notation.Dot "map" := {
+    Notation.dot := map (U := U) (F := F);
   }.
   
   Definition and_then
@@ -1753,9 +1765,14 @@ Module Impl_subtle_CtOption_T_4.
     let* _ := tmp.["is_some"].["bitand_assign"] self.["is_some"] in
     Pure tmp.
   
-  Global Instance Method_and_then `{H' : State.Trait} :
+  Global Instance Method_and_then
+      `{H' : State.Trait}
+      {U F : Set}
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := T)} :
     Notation.Dot "and_then" := {
-    Notation.dot := and_then;
+    Notation.dot := and_then (U := U) (F := F);
   }.
   
   Definition or_else
@@ -1770,9 +1787,13 @@ Module Impl_subtle_CtOption_T_4.
     let* f := f in
     Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
   
-  Global Instance Method_or_else `{H' : State.Trait} :
+  Global Instance Method_or_else
+      `{H' : State.Trait}
+      {F : Set}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)} :
     Notation.Dot "or_else" := {
-    Notation.dot := or_else;
+    Notation.dot := or_else (F := F);
   }.
 End Impl_subtle_CtOption_T_4.
 

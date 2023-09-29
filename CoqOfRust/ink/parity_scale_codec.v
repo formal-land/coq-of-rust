@@ -1,6 +1,10 @@
 (* Written by hand *)
 Require Import CoqOfRust.CoqOfRust.
 
+Module error.
+  Parameter Error : Set.
+End error.
+
 Module codec.
   Module Input.
     Unset Primitive Projections.
@@ -26,6 +30,10 @@ Module codec.
   Module Decode.
     Unset Primitive Projections.
     Class Trait (Self : Set) : Set := {
+      decode `{H' : State.Trait} {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
+        mut_ref __CodecInputEdqy ->
+        M (H := H') (core.result.Result Self parity_scale_codec.error.Error);
     }.
     Global Set Primitive Projections.
   End Decode.
@@ -53,7 +61,3 @@ Module codec.
     
   End _Impl.
 End codec.
-
-Module error.
-  Parameter Error : Set.
-End error.

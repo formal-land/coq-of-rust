@@ -1436,17 +1436,36 @@ impl ImplItem {
     fn class_instance_to_doc<'a>(
         instance_prefix: &'a str,
         name: &'a str,
+        ty_params: Option<&'a [String]>,
+        where_predicates: Option<&'a [WherePredicate]>,
         class_name: &'a str,
         method_name: &'a str,
     ) -> Doc<'a> {
         group([
             nest([
                 nest([
-                    text("Global Instance"),
-                    line(),
+                    text("Global Instance "),
                     text(format!("{instance_prefix}_{name}")),
                     line(),
                     monadic_typeclass_parameter(),
+                    // Type parameters a, b, c... compiles to {a b c ... : Set}
+                    match ty_params {
+                        None | Some([]) => nil(),
+                        Some(ty_params) => concat([
+                            line(),
+                            coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)
+                                .to_doc(),
+                        ]),
+                    },
+                    // where predicates types
+                    match where_predicates {
+                        None => nil(),
+                        Some(where_predicates) => {
+                            concat(where_predicates.iter().map(move |predicate| {
+                                concat([line(), predicate.to_coq().to_doc()])
+                            }))
+                        }
+                    },
                     text(" :"),
                 ]),
                 line(),
@@ -1464,7 +1483,24 @@ impl ImplItem {
                     line(),
                     text(":="),
                     line(),
-                    text(name),
+                    {
+                        let body = coq::Expression::just_name(name);
+                        match ty_params {
+                            None => body,
+                            Some(ty_params) => body.apply_many_args(
+                                &ty_params
+                                    .iter()
+                                    .map(|ty_param| {
+                                        (
+                                            Some(ty_param.to_owned()),
+                                            coq::Expression::just_name(ty_param),
+                                        )
+                                    })
+                                    .collect::<Vec<_>>(),
+                            ),
+                        }
+                        .to_doc(false)
+                    },
                     text(";"),
                 ]),
             ]),
@@ -1503,6 +1539,8 @@ impl ImplItem {
                 Self::class_instance_to_doc(
                     "AssociatedFunction",
                     name,
+                    None,
+                    None,
                     "Notation.DoubleColon Self",
                     "Notation.double_colon",
                 ),
@@ -1518,6 +1556,8 @@ impl ImplItem {
                     concat([Self::class_instance_to_doc(
                         "Method",
                         &definition.name,
+                        Some(&definition.ty_params),
+                        Some(&definition.where_predicates),
                         "Notation.Dot",
                         "Notation.dot",
                     )])
@@ -1525,6 +1565,8 @@ impl ImplItem {
                     Self::class_instance_to_doc(
                         "AssociatedFunction",
                         &definition.name,
+                        Some(&definition.ty_params),
+                        Some(&definition.where_predicates),
                         "Notation.DoubleColon Self",
                         "Notation.double_colon",
                     )

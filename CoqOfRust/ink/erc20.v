@@ -6,10 +6,45 @@ Require CoqOfRust.ink.ink_env.
 Require CoqOfRust.ink.ink.
 
 Module erc20.
-    Global Instance Impl_Environment_for_Env :
-      ink_env.types.Environment.Trait ink_env.types.DefaultEnvironment.
-    Admitted.
-    Global Hint Resolve Impl_Environment_for_Env : core.
+  Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+    Definition Self := ink_env.types.DefaultEnvironment.
+    
+    Definition MAX_EVENT_TOPICS := 4.
+    
+    Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H' : State.Trait} :
+      Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
+      Notation.double_colon := MAX_EVENT_TOPICS;
+    }.
+    
+    Definition AccountId : Set := ink_primitives.types.AccountId.
+    
+    Definition Balance : Set := ink_env.types.Balance.
+    
+    Definition Hash : Set := ink_primitives.types.Hash.
+    
+    Definition Timestamp : Set := ink_env.types.Timestamp.
+    
+    Definition BlockNumber : Set := ink_env.types.BlockNumber.
+    
+    Definition ChainExtension : Set := ink_env.types.NoChainExtension.
+    
+    #[refine]
+    Global Instance I : ink_env.types.Environment.Trait Self := {
+      ink_env.types.Environment.MAX_EVENT_TOPICS `{H' : State.Trait}
+        :=
+        MAX_EVENT_TOPICS;
+      ink_env.types.Environment.AccountId := AccountId;
+      ink_env.types.Environment.Balance := Balance;
+      ink_env.types.Environment.Hash := Hash;
+      ink_env.types.Environment.Timestamp := Timestamp;
+      ink_env.types.Environment.BlockNumber := BlockNumber;
+      ink_env.types.Environment.ChainExtension := ChainExtension;
+    }.
+    eauto.
+    Defined.
+    Global Hint Resolve I : core.
+  End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+
   Definition AccountId : Set :=
     ink_env.types.Environment.AccountId
       (Self := ink_env.types.DefaultEnvironment).
@@ -831,8 +866,12 @@ Module erc20.
         : M (H := H') unit :=
       core.hash.Hash.hash (addr_of self.["inner"]) state.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
@@ -1695,9 +1734,12 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
           erc20.erc20.Erc20.allowances := α8;
         |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__ink_I : Set}
+      `{parity_scale_codec.codec.Input.Trait __ink_I} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__ink_I := __ink_I);
   }.
   
   Definition encode
@@ -1728,8 +1770,13 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       Pure tt
     end.
   
-  Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
-    Notation.dot := encode;
+  Global Instance Method_encode
+      `{H' : State.Trait}
+      {__ink_O : Set}
+      `{parity_scale_codec.codec.Output.Trait __ink_O}
+      `{core.marker.Sized.Trait __ink_O} :
+    Notation.Dot "encode" := {
+    Notation.dot := encode (__ink_O := __ink_O);
   }.
   
   Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
@@ -2001,9 +2048,14 @@ Module
       ink_env.api.emit_event α0 in
     Pure tt.
   
-  Global Instance Method_emit_event `{H' : State.Trait} :
+  Global Instance Method_emit_event
+      `{H' : State.Trait}
+      {E : Set}
+      `{core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_
+            (Self := erc20.erc20.Erc20))} :
     Notation.Dot "emit_event" := {
-    Notation.dot := emit_event;
+    Notation.dot := emit_event (E := E);
   }.
   
   Global Instance I
@@ -2038,22 +2090,26 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
     match α0 with
     | erc20.erc20.__ink_EventBase.Transfer aa =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 0 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 0 CoqOfRust.core.primitive.u8) in
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to aa __codec_dest_edqy in
       Pure tt
     | erc20.erc20.__ink_EventBase.Approval aa =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 1 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 1 CoqOfRust.core.primitive.u8) in
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to aa __codec_dest_edqy in
       Pure tt
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2156,9 +2212,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
       Pure tt
     end.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -2273,8 +2332,13 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       core.panicking.panic_fmt α0
     end.
   
-  Global Instance Method_topics `{H' : State.Trait} : Notation.Dot "topics" := {
-    Notation.dot := topics;
+  Global Instance Method_topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+    Notation.Dot "topics" := {
+    Notation.dot := topics (E := E) (B := B);
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
@@ -2361,9 +2425,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2431,9 +2499,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
           erc20.erc20.Transfer.value := α2;
         |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -2497,9 +2568,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2565,9 +2640,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
           erc20.erc20.Approval.value := α2;
         |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -2622,8 +2700,13 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
           (core.option.Option erc20.erc20.AccountId)) in
     α3.["finish"].
   
-  Global Instance Method_topics `{H' : State.Trait} : Notation.Dot "topics" := {
-    Notation.dot := topics;
+  Global Instance Method_topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+    Notation.Dot "topics" := {
+    Notation.dot := topics (E := E) (B := B);
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
@@ -2677,8 +2760,13 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
         (ink_env.topics.PrefixedValue erc20.erc20.AccountId) in
     α3.["finish"].
   
-  Global Instance Method_topics `{H' : State.Trait} : Notation.Dot "topics" := {
-    Notation.dot := topics;
+  Global Instance Method_topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+    Notation.Dot "topics" := {
+    Notation.dot := topics (E := E) (B := B);
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
@@ -3239,7 +3327,7 @@ Module
           (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 :=
       (parity_scale_codec.codec.Decode.decode
-          (Self := (list Root.core.primitive.u8)))
+          (Self := (list CoqOfRust.core.primitive.u8)))
         input in
     let* α1 :=
       α0.["map_err"]
@@ -3280,9 +3368,12 @@ Module
           ink.reflect.dispatch.DispatchError.UnknownSelector)
     end.
   
-  Global Instance AssociatedFunction_decode_dispatch `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode_dispatch" := {
-    Notation.double_colon := decode_dispatch;
+    Notation.double_colon := decode_dispatch (I := I);
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
@@ -3294,7 +3385,9 @@ Module
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
 
-Definition CONSTRUCTOR_0 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition CONSTRUCTOR_0
+    `{H' : State.Trait}
+    : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
@@ -3315,9 +3408,12 @@ Module
         input in
     α0.["map_err"] core.convert.Into.into.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (I := I);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -3482,7 +3578,7 @@ Module
           (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 :=
       (parity_scale_codec.codec.Decode.decode
-          (Self := (list Root.core.primitive.u8)))
+          (Self := (list CoqOfRust.core.primitive.u8)))
         input in
     let* α1 :=
       α0.["map_err"]
@@ -3628,9 +3724,12 @@ Module
           ink.reflect.dispatch.DispatchError.UnknownSelector)
     end.
   
-  Global Instance AssociatedFunction_decode_dispatch `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode_dispatch" := {
-    Notation.double_colon := decode_dispatch;
+    Notation.double_colon := decode_dispatch (I := I);
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
@@ -3642,37 +3741,37 @@ Module
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
 
-Definition MESSAGE_0 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_0 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_1 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_1 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_2 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_2 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_3 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_3 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_4 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_4 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_5 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_5 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
@@ -3693,9 +3792,12 @@ Module
         input in
     α0.["map_err"] core.convert.Into.into.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (I := I);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -4535,9 +4637,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       (addr_of (addr_of self.["account_id"]))
       __codec_dest_edqy.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Definition encode
@@ -4545,7 +4651,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       (self : ref Self)
       :
         M (H := H')
-          (alloc.vec.Vec Root.core.primitive.u8 alloc.vec.Vec.Default.A) :=
+          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A) :=
     parity_scale_codec.codec.Encode.encode
       (addr_of (addr_of self.["account_id"])).
   
@@ -4557,7 +4663,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       `{H' : State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice Root.core.primitive.u8))}
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H') R :=
@@ -4565,9 +4671,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       (addr_of (addr_of self.["account_id"]))
       f.
   
-  Global Instance Method_using_encoded `{H' : State.Trait} :
+  Global Instance Method_using_encoded
+      `{H' : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
     Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded;
+    Notation.dot := using_encoded (R := R) (F := F);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4610,9 +4720,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
     Pure
       (core.result.Result.Ok {| erc20.erc20._.CallBuilder.account_id := α0; |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Definition decode_into
@@ -4691,9 +4804,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
     Pure (core.result.Result.Ok α0).
   
-  Global Instance AssociatedFunction_decode_into `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_into
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode_into" := {
-    Notation.double_colon := decode_into;
+    Notation.double_colon := decode_into (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -4714,8 +4830,12 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
       : M (H := H') unit :=
     core.hash.Hash.hash (addr_of self.["account_id"]) state.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
@@ -5298,9 +5418,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       (addr_of (addr_of self.["inner"]))
       __codec_dest_edqy.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Definition encode
@@ -5308,7 +5432,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       (self : ref Self)
       :
         M (H := H')
-          (alloc.vec.Vec Root.core.primitive.u8 alloc.vec.Vec.Default.A) :=
+          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A) :=
     parity_scale_codec.codec.Encode.encode (addr_of (addr_of self.["inner"])).
   
   Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
@@ -5319,7 +5443,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       `{H' : State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice Root.core.primitive.u8))}
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H') R :=
@@ -5327,9 +5451,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       (addr_of (addr_of self.["inner"]))
       f.
   
-  Global Instance Method_using_encoded `{H' : State.Trait} :
+  Global Instance Method_using_encoded
+      `{H' : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
     Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded;
+    Notation.dot := using_encoded (R := R) (F := F);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -5372,9 +5500,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
       end in
     Pure (core.result.Result.Ok {| erc20.erc20.Erc20Ref.inner := α0; |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -5395,8 +5526,12 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
       : M (H := H') unit :=
     core.hash.Hash.hash (addr_of self.["inner"]) state.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
@@ -6773,7 +6908,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
       α6.["variant"]
         "InsufficientBalance"
         (fun v =>
-          let* α0 := v.["index"] (cast 0 Root.core.primitive.u8) in
+          let* α0 := v.["index"] (cast 0 CoqOfRust.core.primitive.u8) in
           α0.["docs"]
             (addr_of
               [
@@ -6783,7 +6918,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
       α7.["variant"]
         "InsufficientAllowance"
         (fun v =>
-          let* α0 := v.["index"] (cast 1 Root.core.primitive.u8) in
+          let* α0 := v.["index"] (cast 1 CoqOfRust.core.primitive.u8) in
           α0.["docs"]
             (addr_of
               [
@@ -6902,18 +7037,22 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
     match α0 with
     | erc20.erc20.Error.InsufficientBalance =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 0 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 0 CoqOfRust.core.primitive.u8) in
       Pure tt
     | erc20.erc20.Error.InsufficientAllowance =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 1 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 1 CoqOfRust.core.primitive.u8) in
       Pure tt
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -6986,9 +7125,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
       Pure tt
     end.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {

@@ -194,6 +194,7 @@ Require CoqOfRust.core.iter.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.mem.
 Require CoqOfRust.core.option.
+Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.result.
 Require CoqOfRust.core.panic.unwind_safe.
 
@@ -212,6 +213,7 @@ Module core.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.mem.
   Export CoqOfRust.core.option.
+  Export CoqOfRust.core.primitive.
   Export CoqOfRust.core.result.
 
   Module fmt.

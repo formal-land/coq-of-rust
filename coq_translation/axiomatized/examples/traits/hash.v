@@ -8,8 +8,12 @@ Module Impl_core_hash_Hash_for_hash_Person.
       forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M (H := H') unit.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {

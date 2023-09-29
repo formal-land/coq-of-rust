@@ -366,6 +366,7 @@ def update_ink_primitives():
         pattern,
         pattern
         + """
+Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.scale_info.""",
         content,
@@ -544,10 +545,45 @@ Require CoqOfRust.ink.ink.""",
     content = sub_at_least_once(
         """Module erc20.""",
         """Module erc20.
-    Global Instance Impl_Environment_for_Env :
-      ink_env.types.Environment.Trait ink_env.types.DefaultEnvironment.
-    Admitted.
-    Global Hint Resolve Impl_Environment_for_Env : core.""",
+  Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+    Definition Self := ink_env.types.DefaultEnvironment.
+    
+    Definition MAX_EVENT_TOPICS := 4.
+    
+    Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H' : State.Trait} :
+      Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
+      Notation.double_colon := MAX_EVENT_TOPICS;
+    }.
+    
+    Definition AccountId : Set := ink_primitives.types.AccountId.
+    
+    Definition Balance : Set := ink_env.types.Balance.
+    
+    Definition Hash : Set := ink_primitives.types.Hash.
+    
+    Definition Timestamp : Set := ink_env.types.Timestamp.
+    
+    Definition BlockNumber : Set := ink_env.types.BlockNumber.
+    
+    Definition ChainExtension : Set := ink_env.types.NoChainExtension.
+    
+    #[refine]
+    Global Instance I : ink_env.types.Environment.Trait Self := {
+      ink_env.types.Environment.MAX_EVENT_TOPICS `{H' : State.Trait}
+        :=
+        MAX_EVENT_TOPICS;
+      ink_env.types.Environment.AccountId := AccountId;
+      ink_env.types.Environment.Balance := Balance;
+      ink_env.types.Environment.Hash := Hash;
+      ink_env.types.Environment.Timestamp := Timestamp;
+      ink_env.types.Environment.BlockNumber := BlockNumber;
+      ink_env.types.Environment.ChainExtension := ChainExtension;
+    }.
+    eauto.
+    Defined.
+    Global Hint Resolve I : core.
+  End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+""",
         content,
     )
 

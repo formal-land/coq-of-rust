@@ -183,8 +183,12 @@ Module types.
         forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
         (ref Self) -> (mut_ref __H) -> M (H := H') unit.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
@@ -365,8 +369,12 @@ Module types.
         forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
         (ref Self) -> (mut_ref __H) -> M (H := H') unit.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
@@ -918,8 +926,12 @@ Module chain_extension.
         forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
         (ref Self) -> (mut_ref __H) -> M (H := H') unit.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
@@ -1719,16 +1731,20 @@ End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Parameter encode :
       forall `{H' : State.Trait},
       (ref Self) ->
         M (H := H')
-          (alloc.vec.Vec Root.core.primitive.u8 alloc.vec.Vec.Default.A).
+          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
   
   Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
@@ -1739,12 +1755,16 @@ End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
         `{H' : State.Trait}
         {R F : Set}
         `{core.ops.function.FnOnce.Trait F
-            (Args := ref (Slice Root.core.primitive.u8))},
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))},
       (ref Self) -> F -> M (H := H') R.
   
-  Global Instance Method_using_encoded `{H' : State.Trait} :
+  Global Instance Method_using_encoded
+      `{H' : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
     Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded;
+    Notation.dot := using_encoded (R := R) (F := F);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -1774,9 +1794,12 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extensio
       (mut_ref __CodecInputEdqy) ->
         M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
@@ -1890,8 +1913,12 @@ Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
       forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M (H := H') unit.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
@@ -2272,8 +2299,12 @@ Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
       forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M (H := H') unit.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
@@ -2451,8 +2482,12 @@ Module Impl_core_hash_Hash_for_ink_engine_types_Key.
       forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M (H := H') unit.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
