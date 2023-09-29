@@ -326,21 +326,40 @@ Module reflect.
       }.
       Module The_Bounds_Of_Type_.
         Module parity_scale_codec_codec_Decode.
-          Global Instance I `(Trait)
-            : parity_scale_codec.codec.Decode.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (parity_scale_codec.codec.Decode.Trait (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End parity_scale_codec_codec_Decode.
         Module ink_reflect_dispatch_ExecuteDispatchable.
-          Global Instance I `(Trait)
-            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.reflect.dispatch.ExecuteDispatchable.Trait
+                    (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End ink_reflect_dispatch_ExecuteDispatchable.
       End The_Bounds_Of_Type_.
@@ -384,21 +403,41 @@ Module reflect.
       }.
       Module The_Bounds_Of_Type_.
         Module ink_reflect_dispatch_DecodeDispatch.
-          Global Instance I `(Trait)
-            : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.reflect.dispatch.DecodeDispatch.Trait
+                    (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End ink_reflect_dispatch_DecodeDispatch.
         Module ink_reflect_dispatch_ExecuteDispatchable.
-          Global Instance I `(Trait)
-            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.reflect.dispatch.ExecuteDispatchable.Trait
+                    (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End ink_reflect_dispatch_ExecuteDispatchable.
       End The_Bounds_Of_Type_.
@@ -717,13 +756,28 @@ Module codegen.
         }.
         Module The_Bounds_Of_Forwarder.
           Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-            Global Instance I `(Trait)
-              : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                  Forwarder.
-            all: repeat
-              (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-              try assumption;
-              try destruct x).
+            Global Instance I `(_Tr : Trait)
+              : ltac:(unshelve
+                  eapply
+                  (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                      (Forwarder (Trait := _Tr)));
+                  compute;
+                  destruct _Tr;
+                  repeat
+                    destruct
+                    __the_bounds_of_Forwarder0
+                    as
+                    [? __the_bounds_of_Forwarder0];
+                    try assumption).
+            all:
+              compute;
+              destruct _Tr;
+              repeat
+                (destruct
+                __the_bounds_of_Forwarder0
+                as
+                [? __the_bounds_of_Forwarder0]);
+              assumption.
             Defined.
           End ink_codegen_trait_def_call_builder_TraitCallBuilder.
         End The_Bounds_Of_Forwarder.
@@ -782,13 +836,28 @@ Module codegen.
         }.
         Module The_Bounds_Of_Forwarder.
           Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-            Global Instance I `(Trait)
-              : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                  Forwarder.
-            all: repeat
-              (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-              try assumption;
-              try destruct x).
+            Global Instance I `(_Tr : Trait)
+              : ltac:(unshelve
+                  eapply
+                  (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                      (Forwarder (Trait := _Tr)));
+                  compute;
+                  destruct _Tr;
+                  repeat
+                    destruct
+                    __the_bounds_of_Forwarder0
+                    as
+                    [? __the_bounds_of_Forwarder0];
+                    try assumption).
+            all:
+              compute;
+              destruct _Tr;
+              repeat
+                (destruct
+                __the_bounds_of_Forwarder0
+                as
+                [? __the_bounds_of_Forwarder0]);
+              assumption.
             Defined.
           End ink_codegen_trait_def_call_builder_TraitCallBuilder.
         End The_Bounds_Of_Forwarder.
@@ -1381,13 +1450,28 @@ Module trait_def.
       }.
       Module The_Bounds_Of_Forwarder.
         Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-          Global Instance I `(Trait)
-            : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                Forwarder.
-          all: repeat
-            (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                    (Forwarder (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct
+                  __the_bounds_of_Forwarder0
+                  as
+                  [? __the_bounds_of_Forwarder0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct
+              __the_bounds_of_Forwarder0
+              as
+              [? __the_bounds_of_Forwarder0]);
+            assumption.
           Defined.
         End ink_codegen_trait_def_call_builder_TraitCallBuilder.
       End The_Bounds_Of_Forwarder.
@@ -1444,13 +1528,28 @@ Module trait_def.
       }.
       Module The_Bounds_Of_Forwarder.
         Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-          Global Instance I `(Trait)
-            : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
-                Forwarder.
-          all: repeat
-            (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                    (Forwarder (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct
+                  __the_bounds_of_Forwarder0
+                  as
+                  [? __the_bounds_of_Forwarder0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct
+              __the_bounds_of_Forwarder0
+              as
+              [? __the_bounds_of_Forwarder0]);
+            assumption.
           Defined.
         End ink_codegen_trait_def_call_builder_TraitCallBuilder.
       End The_Bounds_Of_Forwarder.
@@ -1511,12 +1610,28 @@ Module call_builder.
     }.
     Module The_Bounds_Of_Forwarder.
       Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-        Global Instance I `(Trait)
-          : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
-        all: repeat
-          (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                  (Forwarder (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Forwarder0
+                as
+                [? __the_bounds_of_Forwarder0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Forwarder0
+            as
+            [? __the_bounds_of_Forwarder0]);
+          assumption.
         Defined.
       End ink_codegen_trait_def_call_builder_TraitCallBuilder.
     End The_Bounds_Of_Forwarder.
@@ -1573,12 +1688,28 @@ Module call_builder.
     }.
     Module The_Bounds_Of_Forwarder.
       Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-        Global Instance I `(Trait)
-          : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
-        all: repeat
-          (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                  (Forwarder (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Forwarder0
+                as
+                [? __the_bounds_of_Forwarder0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Forwarder0
+            as
+            [? __the_bounds_of_Forwarder0]);
+          assumption.
         Defined.
       End ink_codegen_trait_def_call_builder_TraitCallBuilder.
     End The_Bounds_Of_Forwarder.
@@ -1624,12 +1755,28 @@ Module TraitCallForwarder.
   }.
   Module The_Bounds_Of_Forwarder.
     Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-      Global Instance I `(Trait)
-        : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
-      all: repeat
-        (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                (Forwarder (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Forwarder0
+              as
+              [? __the_bounds_of_Forwarder0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Forwarder0
+          as
+          [? __the_bounds_of_Forwarder0]);
+        assumption.
       Defined.
     End ink_codegen_trait_def_call_builder_TraitCallBuilder.
   End The_Bounds_Of_Forwarder.
@@ -1685,12 +1832,28 @@ End TraitCallForwarder.
   }.
   Module The_Bounds_Of_Forwarder.
     Module ink_codegen_trait_def_call_builder_TraitCallBuilder.
-      Global Instance I `(Trait)
-        : ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder.
-      all: repeat
-        (destruct __the_bounds_of_Forwarder as [x __the_bounds_of_Forwarder];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
+                (Forwarder (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Forwarder0
+              as
+              [? __the_bounds_of_Forwarder0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Forwarder0
+          as
+          [? __the_bounds_of_Forwarder0]);
+        assumption.
       Defined.
     End ink_codegen_trait_def_call_builder_TraitCallBuilder.
   End The_Bounds_Of_Forwarder.
@@ -2014,21 +2177,40 @@ Module Wrap_dispatch_1.
       }.
       Module The_Bounds_Of_Type_.
         Module parity_scale_codec_codec_Decode.
-          Global Instance I `(Trait)
-            : parity_scale_codec.codec.Decode.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (parity_scale_codec.codec.Decode.Trait (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End parity_scale_codec_codec_Decode.
         Module ink_reflect_dispatch_ExecuteDispatchable.
-          Global Instance I `(Trait)
-            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.reflect.dispatch.ExecuteDispatchable.Trait
+                    (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End ink_reflect_dispatch_ExecuteDispatchable.
       End The_Bounds_Of_Type_.
@@ -2072,21 +2254,41 @@ Module Wrap_dispatch_1.
       }.
       Module The_Bounds_Of_Type_.
         Module ink_reflect_dispatch_DecodeDispatch.
-          Global Instance I `(Trait)
-            : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.reflect.dispatch.DecodeDispatch.Trait
+                    (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End ink_reflect_dispatch_DecodeDispatch.
         Module ink_reflect_dispatch_ExecuteDispatchable.
-          Global Instance I `(Trait)
-            : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
-          all: repeat
-            (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (ink.reflect.dispatch.ExecuteDispatchable.Trait
+                    (Type_ (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+            assumption.
           Defined.
         End ink_reflect_dispatch_ExecuteDispatchable.
       End The_Bounds_Of_Type_.
@@ -2270,20 +2472,38 @@ Module ContractMessageDecoder.
   }.
   Module The_Bounds_Of_Type_.
     Module parity_scale_codec_codec_Decode.
-      Global Instance I `(Trait) : parity_scale_codec.codec.Decode.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (parity_scale_codec.codec.Decode.Trait (Type_ (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+        assumption.
       Defined.
     End parity_scale_codec_codec_Decode.
     Module ink_reflect_dispatch_ExecuteDispatchable.
-      Global Instance I `(Trait)
-        : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink.reflect.dispatch.ExecuteDispatchable.Trait
+                (Type_ (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+        assumption.
       Defined.
     End ink_reflect_dispatch_ExecuteDispatchable.
   End The_Bounds_Of_Type_.
@@ -2306,21 +2526,38 @@ Module ContractConstructorDecoder.
   }.
   Module The_Bounds_Of_Type_.
     Module ink_reflect_dispatch_DecodeDispatch.
-      Global Instance I `(Trait)
-        : ink.reflect.dispatch.DecodeDispatch.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink.reflect.dispatch.DecodeDispatch.Trait (Type_ (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+        assumption.
       Defined.
     End ink_reflect_dispatch_DecodeDispatch.
     Module ink_reflect_dispatch_ExecuteDispatchable.
-      Global Instance I `(Trait)
-        : ink.reflect.dispatch.ExecuteDispatchable.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink.reflect.dispatch.ExecuteDispatchable.Trait
+                (Type_ (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+        assumption.
       Defined.
     End ink_reflect_dispatch_ExecuteDispatchable.
   End The_Bounds_Of_Type_.
@@ -2618,12 +2855,28 @@ Module chain_extension.
     }.
     Module The_Bounds_Of_ErrorCode.
       Module ink_env_chain_extension_FromStatusCode.
-        Global Instance I `(Trait)
-          : ink_env.chain_extension.FromStatusCode.Trait ErrorCode.
-        all: repeat
-          (destruct __the_bounds_of_ErrorCode as [x __the_bounds_of_ErrorCode];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.chain_extension.FromStatusCode.Trait
+                  (ErrorCode (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_ErrorCode0
+                as
+                [? __the_bounds_of_ErrorCode0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_ErrorCode0
+            as
+            [? __the_bounds_of_ErrorCode0]);
+          assumption.
         Defined.
       End ink_env_chain_extension_FromStatusCode.
     End The_Bounds_Of_ErrorCode.
@@ -2715,12 +2968,28 @@ Module ChainExtension.
   }.
   Module The_Bounds_Of_ErrorCode.
     Module ink_env_chain_extension_FromStatusCode.
-      Global Instance I `(Trait)
-        : ink_env.chain_extension.FromStatusCode.Trait ErrorCode.
-      all: repeat
-        (destruct __the_bounds_of_ErrorCode as [x __the_bounds_of_ErrorCode];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.chain_extension.FromStatusCode.Trait
+                (ErrorCode (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_ErrorCode0
+              as
+              [? __the_bounds_of_ErrorCode0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_ErrorCode0
+          as
+          [? __the_bounds_of_ErrorCode0]);
+        assumption.
       Defined.
     End ink_env_chain_extension_FromStatusCode.
   End The_Bounds_Of_ErrorCode.

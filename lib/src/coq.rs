@@ -816,8 +816,12 @@ impl<'a> Expression<'a> {
     }
 
     pub(crate) fn just_name(name: &str) -> Self {
+        Expression::single_var(&Path::new(&[name]))
+    }
+
+    pub(crate) fn single_var(path: &Path) -> Self {
         Expression::Variable {
-            ident: Path::new(&[name]),
+            ident: path.to_owned(),
             no_implicit: false,
         }
     }
@@ -876,6 +880,16 @@ impl<'a> Expression<'a> {
             Some(product) => product,
             None => Expression::Unit,
         }
+    }
+
+    #[allow(dead_code)]
+    pub(crate) fn some() -> Self {
+        Expression::just_name("Some")
+    }
+
+    #[allow(dead_code)]
+    pub(crate) fn none() -> Self {
+        Expression::just_name("None")
     }
 }
 

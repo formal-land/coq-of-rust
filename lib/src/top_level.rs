@@ -1627,26 +1627,29 @@ impl TraitBound {
                     args: self
                         .ty_params
                         .iter()
-                        .map(|ty_param| match *ty_param.to_owned() {
-                            TraitTyParamValue::JustValue { name, ty }
-                            | TraitTyParamValue::ValWithDef { name, ty } => {
-                                (Some(name), ty.to_coq())
-                            }
-                            TraitTyParamValue::JustDefault { name } => (
-                                Some(name.clone()),
-                                coq::Expression::Code(concat([
-                                    self.name.to_doc(),
-                                    text(".Default."),
-                                    text(name),
-                                ]))
-                                .apply(&coq::Expression::just_name("Self")),
-                            ),
-                        })
+                        .map(|ty_param| ty_param.to_coq_arg_value(&self.name))
                         .collect(),
                 },
             },
             kind,
         )
+    }
+}
+
+impl TraitTyParamValue {
+    fn to_coq_arg_value<'a>(&self, bound_name: &Path) -> (Option<String>, coq::Expression<'a>) {
+        match self {
+            TraitTyParamValue::JustValue { name, ty }
+            | TraitTyParamValue::ValWithDef { name, ty } => (Some(name.to_owned()), ty.to_coq()),
+            TraitTyParamValue::JustDefault { name } => (
+                Some(name.clone()),
+                coq::Expression::single_var(&Path::concat(&[
+                    bound_name.to_owned(),
+                    Path::new(&["Default", name]),
+                ]))
+                .apply(&coq::Expression::just_name("Self")),
+            ),
+        }
     }
 }
 
@@ -2793,6 +2796,12 @@ impl Trait {
                                 if bounds.is_empty() {
                                     None
                                 } else {
+                                    let proj_name = [
+                                        "__the_bounds_of_",
+                                        &item.item_name,
+                                        "0",
+                                    ]
+                                    .concat();
                                     Some(coq::TopLevelItem::Module(coq::Module::new(
                                         &[
                                             "The_Bounds_Of_",
@@ -2803,6 +2812,14 @@ impl Trait {
                                             &bounds
                                                 .iter()
                                                 .map(|bound| {
+                                                    let local_trait_name = "_Tr";
+                                                    let item_for_the_trait = coq::Expression::just_name(
+                                                        &item.item_name
+                                                    )
+                                                    .apply_arg(
+                                                        &Some("Trait".to_string()),
+                                                        &coq::Expression::just_name(local_trait_name),
+                                                    );
                                                     coq::TopLevelItem::Module(coq::Module::new(
                                                         &bound.name.to_name(),
                                                         coq::TopLevel::new(&[
@@ -2811,39 +2828,108 @@ impl Trait {
                                                                 "I",
                                                                 &[coq::ArgDecl::new(
                                                                     &coq::ArgDeclVar::Generalized {
-                                                                        idents: vec![],
+                                                                        idents: vec!["_Tr".to_string()],
                                                                         ty: coq::Expression::just_name("Trait"),
                                                                     },
                                                                     coq::ArgSpecKind::Explicit,
                                                                 )],
-                                                                coq::Expression::Variable {
-                                                                    ident: Path::concat(&[
-                                                                        bound.name.to_owned(),
-                                                                        Path::new(&["Trait"]),
-                                                                    ]),
-                                                                    no_implicit: false,
-                                                                }
-                                                                .apply(&coq::Expression::just_name(&item.item_name)),
-                                                                &None,
-                                                                {
-                                                                    let proj_name = ["__the_bounds_of_", &item.item_name].concat();
-                                                                    vec![nest([
-                                                                        text("all: repeat"),
+                                                                coq::Expression::Code(nest([
+                                                                    text("ltac:"),
+                                                                    round_brackets(group([
+                                                                        group([
+                                                                            text("unshelve"),
+                                                                            line(),
+                                                                            text("eapply"),
+                                                                            line(),
+                                                                            coq::Expression::Variable {
+                                                                                ident: Path::concat(&[
+                                                                                    bound.name.to_owned(),
+                                                                                    Path::new(&["Trait"]),
+                                                                                ]),
+                                                                                no_implicit: false,
+                                                                            }
+                                                                            .apply(
+                                                                                &item_for_the_trait,
+                                                                            )
+                                                                            .apply_many_args(
+                                                                                &bound.ty_params
+                                                                                    .iter()
+                                                                                    .map(|ty_param| {
+                                                                                        ty_param.to_coq_arg_value(&bound.name)
+                                                                                    })
+                                                                                    .collect_vec(),
+                                                                            )
+                                                                            .to_doc(true),
+                                                                            text(";"),
+                                                                        ]),
+                                                                        line(),
+                                                                        text("compute;"),
                                                                         line(),
                                                                         group([
-                                                                            text("("),
-                                                                            text([
-                                                                                "destruct ",
-                                                                                &proj_name,
-                                                                                " as [x ",
-                                                                                &proj_name,
-                                                                                "];",
-                                                                            ].concat()),
+                                                                            text("destruct"),
                                                                             line(),
-                                                                            text("try assumption;"),
+                                                                            text("_Tr"),
+                                                                            text(";"),
+                                                                        ]),
+                                                                        line(),
+                                                                        nest([
+                                                                            text("repeat"),
                                                                             line(),
-                                                                            text("try destruct x"),
-                                                                            text(")"),
+                                                                            group([
+                                                                                group([
+                                                                                    text("destruct"),
+                                                                                    line(),
+                                                                                    text(proj_name.clone()),
+                                                                                    line(),
+                                                                                    text("as"),
+                                                                                    line(),
+                                                                                    square_brackets(nest([
+                                                                                        text("?"),
+                                                                                        line(),
+                                                                                        text(proj_name.clone()),
+                                                                                    ])),
+                                                                                    text(";"),
+                                                                                ]),
+                                                                                line(),
+                                                                                group([
+                                                                                    text("try"),
+                                                                                    line(),
+                                                                                    text("assumption"),
+                                                                                ]),
+                                                                            ]),
+                                                                        ]),
+                                                                    ])),
+                                                                ])),
+                                                                &None,
+                                                                {
+                                                                    vec![nest([
+                                                                        text("all:"),
+                                                                        line(),
+                                                                        group([
+                                                                            text("compute;"),
+                                                                            line(),
+                                                                            text("destruct _Tr;"),
+                                                                            line(),
+                                                                            nest([
+                                                                                text("repeat"),
+                                                                                line(),
+                                                                                round_brackets(group([
+                                                                                    text("destruct"),
+                                                                                    line(),
+                                                                                    text(proj_name.clone()),
+                                                                                    line(),
+                                                                                    text("as"),
+                                                                                    line(),
+                                                                                    square_brackets(nest([
+                                                                                        text("?"),
+                                                                                        line(),
+                                                                                        text(proj_name.clone()),
+                                                                                    ])),
+                                                                                ])),
+                                                                            ]),
+                                                                            text(";"),
+                                                                            line(),
+                                                                            text("assumption"),
                                                                         ]),
                                                                         text("."),
                                                                     ])]

@@ -122,27 +122,57 @@ Module types.
     }.
     Module The_Bounds_Of_Bytes.
       Module core_default_Default.
-        Global Instance I `(Trait) : core.default.Default.Trait Bytes.
-        all: repeat
-          (destruct __the_bounds_of_Bytes as [x __the_bounds_of_Bytes];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.default.Default.Trait (Bytes (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0]);
+          assumption.
         Defined.
       End core_default_Default.
       Module core_convert_AsRef.
-        Global Instance I `(Trait) : core.convert.AsRef.Trait Bytes.
-        all: repeat
-          (destruct __the_bounds_of_Bytes as [x __the_bounds_of_Bytes];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.convert.AsRef.Trait (Bytes (Trait := _Tr)) (T := Slice u8));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0]);
+          assumption.
         Defined.
       End core_convert_AsRef.
       Module core_convert_AsMut.
-        Global Instance I `(Trait) : core.convert.AsMut.Trait Bytes.
-        all: repeat
-          (destruct __the_bounds_of_Bytes as [x __the_bounds_of_Bytes];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.convert.AsMut.Trait (Bytes (Trait := _Tr)) (T := Slice u8));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0]);
+          assumption.
         Defined.
       End core_convert_AsMut.
     End The_Bounds_Of_Bytes.
@@ -274,358 +304,931 @@ Module types.
     }.
     Module The_Bounds_Of_AccountId.
       Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (parity_scale_codec.codec.Codec.Trait (AccountId (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
-        Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.CodecAsType.Trait (AccountId (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End ink_env_types_CodecAsType.
       Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.clone.Clone.Trait (AccountId (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.PartialEq.Trait (AccountId (Trait := _Tr))
+                (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.Eq.Trait (AccountId (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End core_cmp_Eq.
       Module core_cmp_Ord.
-        Global Instance I `(Trait) : core.cmp.Ord.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.Ord.Trait (AccountId (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End core_cmp_Ord.
       Module core_convert_AsRef.
-        Global Instance I `(Trait) : core.convert.AsRef.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.convert.AsRef.Trait (AccountId (Trait := _Tr))
+                (T := Slice u8));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End core_convert_AsRef.
       Module core_convert_AsMut.
-        Global Instance I `(Trait) : core.convert.AsMut.Trait AccountId.
-        all: repeat
-          (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.convert.AsMut.Trait (AccountId (Trait := _Tr))
+                (T := Slice u8));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_AccountId0
+                as
+                [? __the_bounds_of_AccountId0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_AccountId0
+            as
+            [? __the_bounds_of_AccountId0]);
+          assumption.
         Defined.
       End core_convert_AsMut.
     End The_Bounds_Of_AccountId.
     Module The_Bounds_Of_Balance.
       Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (parity_scale_codec.codec.Codec.Trait (Balance (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
-        Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.CodecAsType.Trait (Balance (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.marker.Copy.Trait (Balance (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.clone.Clone.Trait (Balance (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.PartialEq.Trait (Balance (Trait := _Tr))
+                (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve eapply (core.cmp.Eq.Trait (Balance (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End core_cmp_Eq.
       Module ink_env_arithmetic_AtLeast32BitUnsigned.
-        Global Instance I `(Trait)
-          : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.arithmetic.AtLeast32BitUnsigned.Trait
+                  (Balance (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
       Module ink_env_types_FromLittleEndian.
-        Global Instance I `(Trait)
-          : ink_env.types.FromLittleEndian.Trait Balance.
-        all: repeat
-          (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.FromLittleEndian.Trait (Balance (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Balance0
+                as
+                [? __the_bounds_of_Balance0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+          assumption.
         Defined.
       End ink_env_types_FromLittleEndian.
     End The_Bounds_Of_Balance.
     Module The_Bounds_Of_Hash.
       Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (parity_scale_codec.codec.Codec.Trait (Hash (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
-        Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.CodecAsType.Trait (Hash (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.marker.Copy.Trait (Hash (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.clone.Clone.Trait (Hash (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End core_clone_Clone.
       Module ink_primitives_types_Clear.
-        Global Instance I `(Trait) : ink_primitives.types.Clear.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_primitives.types.Clear.Trait (Hash (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End ink_primitives_types_Clear.
       Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.PartialEq.Trait (Hash (Trait := _Tr))
+                (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve eapply (core.cmp.Eq.Trait (Hash (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End core_cmp_Eq.
       Module core_cmp_Ord.
-        Global Instance I `(Trait) : core.cmp.Ord.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve eapply (core.cmp.Ord.Trait (Hash (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End core_cmp_Ord.
       Module core_convert_AsRef.
-        Global Instance I `(Trait) : core.convert.AsRef.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.convert.AsRef.Trait (Hash (Trait := _Tr)) (T := Slice u8));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End core_convert_AsRef.
       Module core_convert_AsMut.
-        Global Instance I `(Trait) : core.convert.AsMut.Trait Hash.
-        all: repeat
-          (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.convert.AsMut.Trait (Hash (Trait := _Tr)) (T := Slice u8));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+          assumption.
         Defined.
       End core_convert_AsMut.
     End The_Bounds_Of_Hash.
     Module The_Bounds_Of_Timestamp.
       Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (parity_scale_codec.codec.Codec.Trait (Timestamp (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
-        Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.CodecAsType.Trait (Timestamp (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.marker.Copy.Trait (Timestamp (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.clone.Clone.Trait (Timestamp (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.PartialEq.Trait (Timestamp (Trait := _Tr))
+                (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.Eq.Trait (Timestamp (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End core_cmp_Eq.
       Module ink_env_arithmetic_AtLeast32BitUnsigned.
-        Global Instance I `(Trait)
-          : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.arithmetic.AtLeast32BitUnsigned.Trait
+                  (Timestamp (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
       Module ink_env_types_FromLittleEndian.
-        Global Instance I `(Trait)
-          : ink_env.types.FromLittleEndian.Trait Timestamp.
-        all: repeat
-          (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.FromLittleEndian.Trait (Timestamp (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_Timestamp0
+                as
+                [? __the_bounds_of_Timestamp0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_Timestamp0
+            as
+            [? __the_bounds_of_Timestamp0]);
+          assumption.
         Defined.
       End ink_env_types_FromLittleEndian.
     End The_Bounds_Of_Timestamp.
     Module The_Bounds_Of_BlockNumber.
       Module parity_scale_codec_codec_Codec.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Codec.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (parity_scale_codec.codec.Codec.Trait
+                  (BlockNumber (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End parity_scale_codec_codec_Codec.
       Module ink_env_types_CodecAsType.
-        Global Instance I `(Trait)
-          : ink_env.types.CodecAsType.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.CodecAsType.Trait (BlockNumber (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End ink_env_types_CodecAsType.
       Module core_marker_Copy.
-        Global Instance I `(Trait) : core.marker.Copy.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.marker.Copy.Trait (BlockNumber (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End core_marker_Copy.
       Module core_clone_Clone.
-        Global Instance I `(Trait) : core.clone.Clone.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.clone.Clone.Trait (BlockNumber (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End core_clone_Clone.
       Module core_cmp_PartialEq.
-        Global Instance I `(Trait) : core.cmp.PartialEq.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.PartialEq.Trait (BlockNumber (Trait := _Tr))
+                (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End core_cmp_PartialEq.
       Module core_cmp_Eq.
-        Global Instance I `(Trait) : core.cmp.Eq.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.cmp.Eq.Trait (BlockNumber (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End core_cmp_Eq.
       Module ink_env_arithmetic_AtLeast32BitUnsigned.
-        Global Instance I `(Trait)
-          : ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.arithmetic.AtLeast32BitUnsigned.Trait
+                  (BlockNumber (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End ink_env_arithmetic_AtLeast32BitUnsigned.
       Module ink_env_types_FromLittleEndian.
-        Global Instance I `(Trait)
-          : ink_env.types.FromLittleEndian.Trait BlockNumber.
-        all: repeat
-          (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.FromLittleEndian.Trait
+                  (BlockNumber (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_BlockNumber0
+                as
+                [? __the_bounds_of_BlockNumber0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_BlockNumber0
+            as
+            [? __the_bounds_of_BlockNumber0]);
+          assumption.
         Defined.
       End ink_env_types_FromLittleEndian.
     End The_Bounds_Of_BlockNumber.
@@ -675,27 +1278,54 @@ Module FromLittleEndian.
   }.
   Module The_Bounds_Of_Bytes.
     Module core_default_Default.
-      Global Instance I `(Trait) : core.default.Default.Trait Bytes.
-      all: repeat
-        (destruct __the_bounds_of_Bytes as [x __the_bounds_of_Bytes];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.default.Default.Trait (Bytes (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0]);
+        assumption.
       Defined.
     End core_default_Default.
     Module core_convert_AsRef.
-      Global Instance I `(Trait) : core.convert.AsRef.Trait Bytes.
-      all: repeat
-        (destruct __the_bounds_of_Bytes as [x __the_bounds_of_Bytes];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.convert.AsRef.Trait (Bytes (Trait := _Tr)) (T := Slice u8));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0]);
+        assumption.
       Defined.
     End core_convert_AsRef.
     Module core_convert_AsMut.
-      Global Instance I `(Trait) : core.convert.AsMut.Trait Bytes.
-      all: repeat
-        (destruct __the_bounds_of_Bytes as [x __the_bounds_of_Bytes];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.convert.AsMut.Trait (Bytes (Trait := _Tr)) (T := Slice u8));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Bytes0 as [? __the_bounds_of_Bytes0]);
+        assumption.
       Defined.
     End core_convert_AsMut.
   End The_Bounds_Of_Bytes.
@@ -827,355 +1457,895 @@ Module Environment.
   }.
   Module The_Bounds_Of_AccountId.
     Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait)
-        : parity_scale_codec.codec.Codec.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (parity_scale_codec.codec.Codec.Trait (AccountId (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
-      Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.CodecAsType.Trait (AccountId (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End ink_env_types_CodecAsType.
     Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.clone.Clone.Trait (AccountId (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.cmp.PartialEq.Trait (AccountId (Trait := _Tr))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.cmp.Eq.Trait (AccountId (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End core_cmp_Eq.
     Module core_cmp_Ord.
-      Global Instance I `(Trait) : core.cmp.Ord.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.cmp.Ord.Trait (AccountId (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End core_cmp_Ord.
     Module core_convert_AsRef.
-      Global Instance I `(Trait) : core.convert.AsRef.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.convert.AsRef.Trait (AccountId (Trait := _Tr))
+              (T := Slice u8));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End core_convert_AsRef.
     Module core_convert_AsMut.
-      Global Instance I `(Trait) : core.convert.AsMut.Trait AccountId.
-      all: repeat
-        (destruct __the_bounds_of_AccountId as [x __the_bounds_of_AccountId];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.convert.AsMut.Trait (AccountId (Trait := _Tr))
+              (T := Slice u8));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_AccountId0
+              as
+              [? __the_bounds_of_AccountId0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_AccountId0
+          as
+          [? __the_bounds_of_AccountId0]);
+        assumption.
       Defined.
     End core_convert_AsMut.
   End The_Bounds_Of_AccountId.
   Module The_Bounds_Of_Balance.
     Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (parity_scale_codec.codec.Codec.Trait (Balance (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
-      Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.CodecAsType.Trait (Balance (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.marker.Copy.Trait (Balance (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.clone.Clone.Trait (Balance (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.cmp.PartialEq.Trait (Balance (Trait := _Tr))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.cmp.Eq.Trait (Balance (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End core_cmp_Eq.
     Module ink_env_arithmetic_AtLeast32BitUnsigned.
-      Global Instance I `(Trait)
-        : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.arithmetic.AtLeast32BitUnsigned.Trait
+                (Balance (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
     Module ink_env_types_FromLittleEndian.
-      Global Instance I `(Trait) : ink_env.types.FromLittleEndian.Trait Balance.
-      all: repeat
-        (destruct __the_bounds_of_Balance as [x __the_bounds_of_Balance];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.FromLittleEndian.Trait (Balance (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct __the_bounds_of_Balance0 as [? __the_bounds_of_Balance0]);
+        assumption.
       Defined.
     End ink_env_types_FromLittleEndian.
   End The_Bounds_Of_Balance.
   Module The_Bounds_Of_Hash.
     Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait) : parity_scale_codec.codec.Codec.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (parity_scale_codec.codec.Codec.Trait (Hash (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
-      Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.CodecAsType.Trait (Hash (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.marker.Copy.Trait (Hash (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.clone.Clone.Trait (Hash (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End core_clone_Clone.
     Module ink_primitives_types_Clear.
-      Global Instance I `(Trait) : ink_primitives.types.Clear.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_primitives.types.Clear.Trait (Hash (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End ink_primitives_types_Clear.
     Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.cmp.PartialEq.Trait (Hash (Trait := _Tr))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.cmp.Eq.Trait (Hash (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End core_cmp_Eq.
     Module core_cmp_Ord.
-      Global Instance I `(Trait) : core.cmp.Ord.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.cmp.Ord.Trait (Hash (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End core_cmp_Ord.
     Module core_convert_AsRef.
-      Global Instance I `(Trait) : core.convert.AsRef.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.convert.AsRef.Trait (Hash (Trait := _Tr)) (T := Slice u8));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End core_convert_AsRef.
     Module core_convert_AsMut.
-      Global Instance I `(Trait) : core.convert.AsMut.Trait Hash.
-      all: repeat
-        (destruct __the_bounds_of_Hash as [x __the_bounds_of_Hash];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.convert.AsMut.Trait (Hash (Trait := _Tr)) (T := Slice u8));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Hash0 as [? __the_bounds_of_Hash0]);
+        assumption.
       Defined.
     End core_convert_AsMut.
   End The_Bounds_Of_Hash.
   Module The_Bounds_Of_Timestamp.
     Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait)
-        : parity_scale_codec.codec.Codec.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (parity_scale_codec.codec.Codec.Trait (Timestamp (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
-      Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.CodecAsType.Trait (Timestamp (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.marker.Copy.Trait (Timestamp (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.clone.Clone.Trait (Timestamp (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.cmp.PartialEq.Trait (Timestamp (Trait := _Tr))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve eapply (core.cmp.Eq.Trait (Timestamp (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End core_cmp_Eq.
     Module ink_env_arithmetic_AtLeast32BitUnsigned.
-      Global Instance I `(Trait)
-        : ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.arithmetic.AtLeast32BitUnsigned.Trait
+                (Timestamp (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
     Module ink_env_types_FromLittleEndian.
-      Global Instance I `(Trait)
-        : ink_env.types.FromLittleEndian.Trait Timestamp.
-      all: repeat
-        (destruct __the_bounds_of_Timestamp as [x __the_bounds_of_Timestamp];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.FromLittleEndian.Trait (Timestamp (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_Timestamp0
+              as
+              [? __the_bounds_of_Timestamp0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_Timestamp0
+          as
+          [? __the_bounds_of_Timestamp0]);
+        assumption.
       Defined.
     End ink_env_types_FromLittleEndian.
   End The_Bounds_Of_Timestamp.
   Module The_Bounds_Of_BlockNumber.
     Module parity_scale_codec_codec_Codec.
-      Global Instance I `(Trait)
-        : parity_scale_codec.codec.Codec.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (parity_scale_codec.codec.Codec.Trait (BlockNumber (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End parity_scale_codec_codec_Codec.
     Module ink_env_types_CodecAsType.
-      Global Instance I `(Trait) : ink_env.types.CodecAsType.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.CodecAsType.Trait (BlockNumber (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End ink_env_types_CodecAsType.
     Module core_marker_Copy.
-      Global Instance I `(Trait) : core.marker.Copy.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.marker.Copy.Trait (BlockNumber (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End core_marker_Copy.
     Module core_clone_Clone.
-      Global Instance I `(Trait) : core.clone.Clone.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.clone.Clone.Trait (BlockNumber (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End core_clone_Clone.
     Module core_cmp_PartialEq.
-      Global Instance I `(Trait) : core.cmp.PartialEq.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.cmp.PartialEq.Trait (BlockNumber (Trait := _Tr))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Self));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End core_cmp_PartialEq.
     Module core_cmp_Eq.
-      Global Instance I `(Trait) : core.cmp.Eq.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.cmp.Eq.Trait (BlockNumber (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End core_cmp_Eq.
     Module ink_env_arithmetic_AtLeast32BitUnsigned.
-      Global Instance I `(Trait)
-        : ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.arithmetic.AtLeast32BitUnsigned.Trait
+                (BlockNumber (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End ink_env_arithmetic_AtLeast32BitUnsigned.
     Module ink_env_types_FromLittleEndian.
-      Global Instance I `(Trait)
-        : ink_env.types.FromLittleEndian.Trait BlockNumber.
-      all: repeat
-        (destruct __the_bounds_of_BlockNumber as [x __the_bounds_of_BlockNumber];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.FromLittleEndian.Trait (BlockNumber (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_BlockNumber0
+              as
+              [? __the_bounds_of_BlockNumber0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_BlockNumber0
+          as
+          [? __the_bounds_of_BlockNumber0]);
+        assumption.
       Defined.
     End ink_env_types_FromLittleEndian.
   End The_Bounds_Of_BlockNumber.
@@ -1214,11 +2384,20 @@ Module contract.
     }.
     Module The_Bounds_Of_Env.
       Module ink_env_types_Environment.
-        Global Instance I `(Trait) : ink_env.types.Environment.Trait Env.
-        all: repeat
-          (destruct __the_bounds_of_Env as [x __the_bounds_of_Env];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.types.Environment.Trait (Env (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Env0 as [? __the_bounds_of_Env0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat (destruct __the_bounds_of_Env0 as [? __the_bounds_of_Env0]);
+          assumption.
         Defined.
       End ink_env_types_Environment.
     End The_Bounds_Of_Env.
@@ -1479,12 +2658,21 @@ Module call.
       }.
       Module The_Bounds_Of_Error.
         Module parity_scale_codec_codec_Decode.
-          Global Instance I `(Trait)
-            : parity_scale_codec.codec.Decode.Trait Error.
-          all: repeat
-            (destruct __the_bounds_of_Error as [x __the_bounds_of_Error];
-            try assumption;
-            try destruct x).
+          Global Instance I `(_Tr : Trait)
+            : ltac:(unshelve
+                eapply
+                (parity_scale_codec.codec.Decode.Trait (Error (Trait := _Tr)));
+                compute;
+                destruct _Tr;
+                repeat
+                  destruct __the_bounds_of_Error0 as [? __the_bounds_of_Error0];
+                  try assumption).
+          all:
+            compute;
+            destruct _Tr;
+            repeat
+              (destruct __the_bounds_of_Error0 as [? __the_bounds_of_Error0]);
+            assumption.
           Defined.
         End parity_scale_codec_codec_Decode.
       End The_Bounds_Of_Error.
@@ -1771,11 +2959,21 @@ Module hash.
     }.
     Module The_Bounds_Of_Type_.
       Module core_default_Default.
-        Global Instance I `(Trait) : core.default.Default.Trait Type_.
-        all: repeat
-          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (core.default.Default.Trait (Type_ (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+          assumption.
         Defined.
       End core_default_Default.
     End The_Bounds_Of_Type_.
@@ -1958,12 +3156,28 @@ Module topics.
     }.
     Module The_Bounds_Of_RemainingTopics.
       Module ink_env_topics_EventTopicsAmount.
-        Global Instance I `(Trait)
-          : ink_env.topics.EventTopicsAmount.Trait RemainingTopics.
-        all: repeat
-          (destruct __the_bounds_of_RemainingTopics as [x __the_bounds_of_RemainingTopics];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_env.topics.EventTopicsAmount.Trait
+                  (RemainingTopics (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_RemainingTopics0
+                as
+                [? __the_bounds_of_RemainingTopics0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_RemainingTopics0
+            as
+            [? __the_bounds_of_RemainingTopics0]);
+          assumption.
         Defined.
       End ink_env_topics_EventTopicsAmount.
     End The_Bounds_Of_RemainingTopics.
@@ -5042,12 +6256,21 @@ Module create_builder.
     }.
     Module The_Bounds_Of_Error.
       Module parity_scale_codec_codec_Decode.
-        Global Instance I `(Trait)
-          : parity_scale_codec.codec.Decode.Trait Error.
-        all: repeat
-          (destruct __the_bounds_of_Error as [x __the_bounds_of_Error];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (parity_scale_codec.codec.Decode.Trait (Error (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Error0 as [? __the_bounds_of_Error0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Error0 as [? __the_bounds_of_Error0]);
+          assumption.
         Defined.
       End parity_scale_codec_codec_Decode.
     End The_Bounds_Of_Error.
@@ -5293,11 +6516,20 @@ Module ConstructorReturnType.
   }.
   Module The_Bounds_Of_Error.
     Module parity_scale_codec_codec_Decode.
-      Global Instance I `(Trait) : parity_scale_codec.codec.Decode.Trait Error.
-      all: repeat
-        (destruct __the_bounds_of_Error as [x __the_bounds_of_Error];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (parity_scale_codec.codec.Decode.Trait (Error (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Error0 as [? __the_bounds_of_Error0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Error0 as [? __the_bounds_of_Error0]);
+        assumption.
       Defined.
     End parity_scale_codec_codec_Decode.
   End The_Bounds_Of_Error.
@@ -5898,11 +7130,20 @@ Module ContractEnv.
   }.
   Module The_Bounds_Of_Env.
     Module ink_env_types_Environment.
-      Global Instance I `(Trait) : ink_env.types.Environment.Trait Env.
-      all: repeat
-        (destruct __the_bounds_of_Env as [x __the_bounds_of_Env];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.types.Environment.Trait (Env (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Env0 as [? __the_bounds_of_Env0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Env0 as [? __the_bounds_of_Env0]);
+        assumption.
       Defined.
     End ink_env_types_Environment.
   End The_Bounds_Of_Env.
@@ -6103,11 +7344,20 @@ Module HashOutput.
   }.
   Module The_Bounds_Of_Type_.
     Module core_default_Default.
-      Global Instance I `(Trait) : core.default.Default.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (core.default.Default.Trait (Type_ (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+        assumption.
       Defined.
     End core_default_Default.
   End The_Bounds_Of_Type_.
@@ -6302,12 +7552,28 @@ Module Topics.
   }.
   Module The_Bounds_Of_RemainingTopics.
     Module ink_env_topics_EventTopicsAmount.
-      Global Instance I `(Trait)
-        : ink_env.topics.EventTopicsAmount.Trait RemainingTopics.
-      all: repeat
-        (destruct __the_bounds_of_RemainingTopics as [x __the_bounds_of_RemainingTopics];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_env.topics.EventTopicsAmount.Trait
+                (RemainingTopics (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_RemainingTopics0
+              as
+              [? __the_bounds_of_RemainingTopics0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_RemainingTopics0
+          as
+          [? __the_bounds_of_RemainingTopics0]);
+        assumption.
       Defined.
     End ink_env_topics_EventTopicsAmount.
   End The_Bounds_Of_RemainingTopics.

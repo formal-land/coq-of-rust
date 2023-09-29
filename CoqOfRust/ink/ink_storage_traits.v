@@ -182,23 +182,49 @@ Module storage.
     }.
     Module The_Bounds_Of_Type_.
       Module ink_storage_traits_storage_Storable.
-        Global Instance I `(Trait)
-          : ink_storage_traits.storage.Storable.Trait Type_.
-        all: repeat
-          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_storage_traits.storage.Storable.Trait
+                  (Type_ (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+          assumption.
         Defined.
       End ink_storage_traits_storage_Storable.
     End The_Bounds_Of_Type_.
     Module The_Bounds_Of_PreferredKey.
       Module ink_storage_traits_storage_StorageKey.
-        Global Instance I `(Trait)
-          : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
-        all: repeat
-          (destruct __the_bounds_of_PreferredKey as [x __the_bounds_of_PreferredKey];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_storage_traits.storage.StorageKey.Trait
+                  (PreferredKey (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct
+                __the_bounds_of_PreferredKey0
+                as
+                [? __the_bounds_of_PreferredKey0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct
+            __the_bounds_of_PreferredKey0
+            as
+            [? __the_bounds_of_PreferredKey0]);
+          assumption.
         Defined.
       End ink_storage_traits_storage_StorageKey.
     End The_Bounds_Of_PreferredKey.
@@ -223,12 +249,22 @@ Module storage.
     }.
     Module The_Bounds_Of_Type_.
       Module ink_storage_traits_storage_Storable.
-        Global Instance I `(Trait)
-          : ink_storage_traits.storage.Storable.Trait Type_.
-        all: repeat
-          (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-          try assumption;
-          try destruct x).
+        Global Instance I `(_Tr : Trait)
+          : ltac:(unshelve
+              eapply
+              (ink_storage_traits.storage.Storable.Trait
+                  (Type_ (Trait := _Tr)));
+              compute;
+              destruct _Tr;
+              repeat
+                destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+                try assumption).
+        all:
+          compute;
+          destruct _Tr;
+          repeat
+            (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+          assumption.
         Defined.
       End ink_storage_traits_storage_Storable.
     End The_Bounds_Of_Type_.
@@ -343,23 +379,47 @@ Module StorableHint.
   }.
   Module The_Bounds_Of_Type_.
     Module ink_storage_traits_storage_Storable.
-      Global Instance I `(Trait)
-        : ink_storage_traits.storage.Storable.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_storage_traits.storage.Storable.Trait (Type_ (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+        assumption.
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.
   Module The_Bounds_Of_PreferredKey.
     Module ink_storage_traits_storage_StorageKey.
-      Global Instance I `(Trait)
-        : ink_storage_traits.storage.StorageKey.Trait PreferredKey.
-      all: repeat
-        (destruct __the_bounds_of_PreferredKey as [x __the_bounds_of_PreferredKey];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_storage_traits.storage.StorageKey.Trait
+                (PreferredKey (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct
+              __the_bounds_of_PreferredKey0
+              as
+              [? __the_bounds_of_PreferredKey0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat
+          (destruct
+          __the_bounds_of_PreferredKey0
+          as
+          [? __the_bounds_of_PreferredKey0]);
+        assumption.
       Defined.
     End ink_storage_traits_storage_StorageKey.
   End The_Bounds_Of_PreferredKey.
@@ -384,12 +444,20 @@ Module AutoStorableHint.
   }.
   Module The_Bounds_Of_Type_.
     Module ink_storage_traits_storage_Storable.
-      Global Instance I `(Trait)
-        : ink_storage_traits.storage.Storable.Trait Type_.
-      all: repeat
-        (destruct __the_bounds_of_Type_ as [x __the_bounds_of_Type_];
-        try assumption;
-        try destruct x).
+      Global Instance I `(_Tr : Trait)
+        : ltac:(unshelve
+            eapply
+            (ink_storage_traits.storage.Storable.Trait (Type_ (Trait := _Tr)));
+            compute;
+            destruct _Tr;
+            repeat
+              destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0];
+              try assumption).
+      all:
+        compute;
+        destruct _Tr;
+        repeat (destruct __the_bounds_of_Type_0 as [? __the_bounds_of_Type_0]);
+        assumption.
       Defined.
     End ink_storage_traits_storage_Storable.
   End The_Bounds_Of_Type_.

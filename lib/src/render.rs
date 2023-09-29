@@ -16,6 +16,11 @@ pub(crate) fn curly_brackets(doc: RcDoc<()>) -> RcDoc<()> {
     RcDoc::concat([RcDoc::text("{"), doc, RcDoc::text("}")])
 }
 
+/// encloses an expression in square brackets
+pub(crate) fn square_brackets(doc: RcDoc<()>) -> RcDoc<()> {
+    RcDoc::concat([RcDoc::text("["), doc, RcDoc::text("]")])
+}
+
 /// encloses an expression in regular brackets
 pub(crate) fn round_brackets(doc: RcDoc<()>) -> RcDoc<()> {
     RcDoc::concat([RcDoc::text("("), doc, RcDoc::text(")")])
