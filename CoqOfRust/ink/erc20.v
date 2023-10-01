@@ -6,6 +6,53 @@ Require CoqOfRust.ink.ink_env.
 Require CoqOfRust.ink.ink.
 
 Module erc20.
+  Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+    Definition Self := ink_env.types.DefaultEnvironment.
+    
+    Definition MAX_EVENT_TOPICS := 4.
+    
+    Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H' : State.Trait} :
+      Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
+      Notation.double_colon := MAX_EVENT_TOPICS;
+    }.
+    
+    Definition AccountId : Set := ink_primitives.types.AccountId.
+    
+    Definition Balance : Set := ink_env.types.Balance.
+    
+    Definition Hash : Set := ink_primitives.types.Hash.
+    
+    Definition Timestamp : Set := ink_env.types.Timestamp.
+    
+    Definition BlockNumber : Set := ink_env.types.BlockNumber.
+    
+    Definition ChainExtension : Set := ink_env.types.NoChainExtension.
+    
+    #[refine]
+    Global Instance I : ink_env.types.Environment.Trait Self := {
+      ink_env.types.Environment.MAX_EVENT_TOPICS `{H' : State.Trait}
+        :=
+        MAX_EVENT_TOPICS;
+      ink_env.types.Environment.AccountId := AccountId;
+      ink_env.types.Environment.Balance := Balance;
+      ink_env.types.Environment.Hash := Hash;
+      ink_env.types.Environment.Timestamp := Timestamp;
+      ink_env.types.Environment.BlockNumber := BlockNumber;
+      ink_env.types.Environment.ChainExtension := ChainExtension;
+    }.
+    eauto.
+    Defined.
+    Global Hint Resolve I : core.
+  End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+
+  Definition AccountId : Set :=
+    ink_env.types.Environment.AccountId
+      (Self := ink_env.types.DefaultEnvironment).
+  
+  Definition Balance : Set :=
+    ink_env.types.Environment.Balance
+      (Self := ink_env.types.DefaultEnvironment).
+  
   Module Erc20.
     Unset Primitive Projections.
     Record t : Set := {
@@ -18,13 +65,15 @@ Module erc20.
         ink_storage_traits.storage.AutoStorableHint.Type_
           (Self := ink_storage.lazy.mapping.Mapping
             erc20.erc20.AccountId
-            erc20.erc20.Balance);
+            erc20.erc20.Balance
+            ink_storage.lazy.mapping.Mapping.Default.KeyType);
       allowances
         :
         ink_storage_traits.storage.AutoStorableHint.Type_
           (Self := ink_storage.lazy.mapping.Mapping
             (erc20.erc20.AccountId * erc20.erc20.AccountId)
-            erc20.erc20.Balance);
+            erc20.erc20.Balance
+            ink_storage.lazy.mapping.Mapping.Default.KeyType);
     }.
     Global Set Primitive Projections.
     
@@ -56,9 +105,6 @@ Module erc20.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Env : Set := ink_env.types.DefaultEnvironment.
-
-    Global Instance Impl_Environment_for_Env : ink_env.types.Environment.Trait Env. Admitted.
-    Global Hint Resolve Impl_Environment_for_Env : core.
     
     #[refine]
     Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
@@ -71,38 +117,30 @@ Module erc20.
   End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   
   Definition Environment : Set :=
-    ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
-  
-  Definition AccountId : Set :=
-    ink_env.types.Environment.AccountId
-      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
-  
-  Definition Balance : Set :=
-    ink_env.types.Environment.Balance
-      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+    ink_env.types.DefaultEnvironment.
   
   Definition Hash : Set :=
     ink_env.types.Environment.Hash
-      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+      (Self := ink_env.types.DefaultEnvironment).
   
   Definition Timestamp : Set :=
     ink_env.types.Environment.Timestamp
-      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+      (Self := ink_env.types.DefaultEnvironment).
   
   Definition BlockNumber : Set :=
     ink_env.types.Environment.BlockNumber
-      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+      (Self := ink_env.types.DefaultEnvironment).
   
   Definition ChainExtension : Set :=
     ink_env.types.Environment.ChainExtension
-      (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+      (Self := ink_env.types.DefaultEnvironment).
   
   Definition MAX_EVENT_TOPICS `{H' : State.Trait} : usize :=
     run
       (Pure
         (ink_env.types.Environment.MAX_EVENT_TOPICS
           (Self :=
-            (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20))))).
+            (ink_env.types.DefaultEnvironment)))).
   
   Module Impl_core_default_Default_for_erc20_erc20_Erc20.
     Definition Self := erc20.erc20.Erc20.
@@ -283,8 +321,8 @@ Module erc20.
     Global Instance I
       : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
-      ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
       ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
         `{H' : State.Trait}
@@ -366,15 +404,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -439,15 +477,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -515,15 +553,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -591,15 +629,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -667,15 +705,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -745,15 +783,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -828,12 +866,21 @@ Module erc20.
         : M (H := H') unit :=
       core.hash.Hash.hash (addr_of self.["inner"]) state.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} := hash;
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -948,7 +995,7 @@ Module erc20.
       let* α0 := ink_env.call.create_builder.build_create in
       let* α1 :=
         ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
-      let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
+      let* α2 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α1 in
       let* α3 := α2.["push_arg"] __ink_binding_0 in
       let* α4 := α0.["exec_input"] α3 in
       α4.["returns"] : M Self.
@@ -1460,38 +1507,38 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
 
 Definition Environment : Set :=
-  ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
+  ink_env.types.DefaultEnvironment.
 
 Definition AccountId : Set :=
   ink_env.types.Environment.AccountId
-    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+    (Self := ink_env.types.DefaultEnvironment).
 
 Definition Balance : Set :=
   ink_env.types.Environment.Balance
-    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+    (Self := ink_env.types.DefaultEnvironment).
 
 Definition Hash : Set :=
   ink_env.types.Environment.Hash
-    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+    (Self := ink_env.types.DefaultEnvironment).
 
 Definition Timestamp : Set :=
   ink_env.types.Environment.Timestamp
-    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+    (Self := ink_env.types.DefaultEnvironment).
 
 Definition BlockNumber : Set :=
   ink_env.types.Environment.BlockNumber
-    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+    (Self := ink_env.types.DefaultEnvironment).
 
 Definition ChainExtension : Set :=
   ink_env.types.Environment.ChainExtension
-    (Self := ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+    (Self := ink_env.types.DefaultEnvironment).
 
 Definition MAX_EVENT_TOPICS `{H' : State.Trait} : usize :=
   run
     (Pure
       (ink_env.types.Environment.MAX_EVENT_TOPICS
         (Self :=
-          (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20))))).
+          (ink_env.types.DefaultEnvironment)))).
 
 Module Check.
   Unset Primitive Projections.
@@ -1502,12 +1549,14 @@ Module Check.
       :
       ink_storage.lazy.mapping.Mapping
         erc20.erc20.AccountId
-        erc20.erc20.Balance;
+        erc20.erc20.Balance
+        ink_storage.lazy.mapping.Mapping.Default.KeyType;
     field_2
       :
       ink_storage.lazy.mapping.Mapping
         (erc20.erc20.AccountId * erc20.erc20.AccountId)
-        erc20.erc20.Balance;
+        erc20.erc20.Balance
+        ink_storage.lazy.mapping.Mapping.Default.KeyType;
   }.
   Global Set Primitive Projections.
   
@@ -1550,13 +1599,15 @@ Module Erc20.
       ink_storage_traits.storage.AutoStorableHint.Type_
         (Self := ink_storage.lazy.mapping.Mapping
           erc20.erc20.AccountId
-          erc20.erc20.Balance);
+          erc20.erc20.Balance
+          ink_storage.lazy.mapping.Mapping.Default.KeyType);
     allowances
       :
       ink_storage_traits.storage.AutoStorableHint.Type_
         (Self := ink_storage.lazy.mapping.Mapping
           (erc20.erc20.AccountId * erc20.erc20.AccountId)
-          erc20.erc20.Balance);
+          erc20.erc20.Balance
+          ink_storage.lazy.mapping.Mapping.Default.KeyType);
   }.
   Global Set Primitive Projections.
   
@@ -1651,7 +1702,8 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
               (Self :=
                 ink_storage.lazy.mapping.Mapping
                   erc20.erc20.AccountId
-                  erc20.erc20.Balance))))
+                  erc20.erc20.Balance
+                  ink_storage.lazy.mapping.Mapping.Default.KeyType))))
         __input in
     let* α4 := α3.["branch"] in
     let* α5 :=
@@ -1668,7 +1720,8 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
               (Self :=
                 ink_storage.lazy.mapping.Mapping
                   (erc20.erc20.AccountId * erc20.erc20.AccountId)
-                  erc20.erc20.Balance))))
+                  erc20.erc20.Balance
+                  ink_storage.lazy.mapping.Mapping.Default.KeyType))))
         __input in
     let* α7 := α6.["branch"] in
     let* α8 :=
@@ -1686,9 +1739,12 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
           erc20.erc20.Erc20.allowances := α8;
         |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__ink_I : Set}
+      `{parity_scale_codec.codec.Input.Trait __ink_I} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__ink_I := __ink_I);
   }.
   
   Definition encode
@@ -1719,13 +1775,29 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
       Pure tt
     end.
   
-  Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
-    Notation.dot := encode;
+  Global Instance Method_encode
+      `{H' : State.Trait}
+      {__ink_O : Set}
+      `{parity_scale_codec.codec.Output.Trait __ink_O}
+      `{core.marker.Sized.Trait __ink_O} :
+    Notation.Dot "encode" := {
+    Notation.dot := encode (__ink_O := __ink_O);
   }.
   
   Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-    ink_storage_traits.storage.Storable.encode `{H' : State.Trait} := encode;
-    ink_storage_traits.storage.Storable.decode `{H' : State.Trait} := decode;
+    ink_storage_traits.storage.Storable.decode
+      `{H' : State.Trait}
+      {__ink_I : Set}
+      `{parity_scale_codec.codec.Input.Trait __ink_I}
+      :=
+      decode (__ink_I := __ink_I);
+    ink_storage_traits.storage.Storable.encode
+      `{H' : State.Trait}
+      {__ink_O : Set}
+      `{parity_scale_codec.codec.Output.Trait __ink_O}
+      `{core.marker.Sized.Trait __ink_O}
+      :=
+      encode (__ink_O := __ink_O);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
@@ -1735,14 +1807,20 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "Erc20" "erc20::erc20" in
+  Definition type_info
+      `{H' : State.Trait}
+      : M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+    let* α0 :=
+      (scale_info.ty.Type_ scale_info.ty.Type_.Default.T)::["builder"] in
+    let* α1 :=
+      (scale_info.ty.path.Path scale_info.ty.path.Path.Default.T)::["new"]
+        "Erc20"
+        "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := (scale_info.build.Fields _)::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -1765,7 +1843,8 @@ storage::traits::ManualKey<375105693u32, ()>,>>::Type" in
                 (Self :=
                   ink_storage.lazy.mapping.Mapping
                     erc20.erc20.AccountId
-                    erc20.erc20.Balance)) in
+                    erc20.erc20.Balance
+                    ink_storage.lazy.mapping.Mapping.Default.KeyType)) in
           let* α1 := α0.["name"] "balances" in
           let* α2 :=
             α1.["type_name"]
@@ -1783,7 +1862,8 @@ AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
                 (Self :=
                   ink_storage.lazy.mapping.Mapping
                     (erc20.erc20.AccountId * erc20.erc20.AccountId)
-                    erc20.erc20.Balance)) in
+                    erc20.erc20.Balance
+                    ink_storage.lazy.mapping.Mapping.Default.KeyType)) in
           let* α1 := α0.["name"] "allowances" in
           let* α2 :=
             α1.["type_name"]
@@ -1816,14 +1896,20 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
   Definition layout
       `{H' : State.Trait}
       (__key : ref ink_primitives.key.Key)
-      : M (H := H') ink_metadata.layout.Layout :=
+      :
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
     let* α0 :=
       (ink_storage_traits.layout.StorageLayout.layout
           (Self :=
             (ink_storage_traits.storage.AutoStorableHint.Type_
               (Self := erc20.erc20.Balance))))
         __key in
-    let* α1 := ink_metadata.layout.FieldLayout::["new"] "total_supply" α0 in
+    let* α1 :=
+      (ink_metadata.layout.FieldLayout
+            ink_metadata.layout.FieldLayout.Default.F)::["new"]
+        "total_supply"
+        α0 in
     let* α2 :=
       (ink_storage_traits.layout.StorageLayout.layout
           (Self :=
@@ -1831,9 +1917,14 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
               (Self :=
                 ink_storage.lazy.mapping.Mapping
                   erc20.erc20.AccountId
-                  erc20.erc20.Balance))))
+                  erc20.erc20.Balance
+                  ink_storage.lazy.mapping.Mapping.Default.KeyType))))
         __key in
-    let* α3 := ink_metadata.layout.FieldLayout::["new"] "balances" α2 in
+    let* α3 :=
+      (ink_metadata.layout.FieldLayout
+            ink_metadata.layout.FieldLayout.Default.F)::["new"]
+        "balances"
+        α2 in
     let* α4 :=
       (ink_storage_traits.layout.StorageLayout.layout
           (Self :=
@@ -1841,11 +1932,19 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20.
               (Self :=
                 ink_storage.lazy.mapping.Mapping
                   (erc20.erc20.AccountId * erc20.erc20.AccountId)
-                  erc20.erc20.Balance))))
+                  erc20.erc20.Balance
+                  ink_storage.lazy.mapping.Mapping.Default.KeyType))))
         __key in
-    let* α5 := ink_metadata.layout.FieldLayout::["new"] "allowances" α4 in
+    let* α5 :=
+      (ink_metadata.layout.FieldLayout
+            ink_metadata.layout.FieldLayout.Default.F)::["new"]
+        "allowances"
+        α4 in
     let* α6 :=
-      ink_metadata.layout.StructLayout::["new"] "Erc20" [ α1; α3; α5 ] in
+      (ink_metadata.layout.StructLayout
+            ink_metadata.layout.StructLayout.Default.F)::["new"]
+        "Erc20"
+        [ α1; α3; α5 ] in
     Pure (ink_metadata.layout.Layout.Struct α6).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
@@ -1907,7 +2006,7 @@ Module Impl_ink_codegen_env_Env_for_StaticRef_erc20_erc20_Erc20.
   
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess
-      (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+      (ink_env.types.DefaultEnvironment).
   
   Definition env `{H' : State.Trait} (self : Self) : M (H := H') EnvAccess :=
     (core.default.Default.default
@@ -1929,7 +2028,7 @@ Module Impl_ink_codegen_env_StaticEnv_for_erc20_erc20_Erc20.
   
   Definition EnvAccess : Set :=
     ink.env_access.EnvAccess
-      (ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)).
+      (ink_env.types.DefaultEnvironment).
   
   Definition env `{H' : State.Trait} : M (H := H') EnvAccess :=
     (core.default.Default.default
@@ -1965,16 +2064,26 @@ Module
       ink_env.api.emit_event α0 in
     Pure tt.
   
-  Global Instance Method_emit_event `{H' : State.Trait} :
+  Global Instance Method_emit_event
+      `{H' : State.Trait}
+      {E : Set}
+      `{core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_
+            (Self := erc20.erc20.Erc20))} :
     Notation.Dot "emit_event" := {
-    Notation.dot := emit_event;
+    Notation.dot := emit_event (E := E);
   }.
   
   Global Instance I
     : ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
-    ink.codegen.event.emit.EmitEvent.emit_event `{H' : State.Trait}
+    ink.codegen.event.emit.EmitEvent.emit_event
+      `{H' : State.Trait}
+      {E : Set}
+      `{core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_
+            (Self := erc20.erc20.Erc20))}
       :=
-      emit_event;
+      emit_event (E := E);
   }.
   Global Hint Resolve I : core.
 End
@@ -2002,22 +2111,26 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
     match α0 with
     | erc20.erc20.__ink_EventBase.Transfer aa =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 0 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 0 CoqOfRust.core.primitive.u8) in
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to aa __codec_dest_edqy in
       Pure tt
     | erc20.erc20.__ink_EventBase.Approval aa =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 1 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 1 CoqOfRust.core.primitive.u8) in
       let* _ :=
         parity_scale_codec.codec.Encode.encode_to aa __codec_dest_edqy in
       Pure tt
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2120,13 +2233,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
       Pure tt
     end.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
@@ -2237,13 +2358,24 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
       core.panicking.panic_fmt α0
     end.
   
-  Global Instance Method_topics `{H' : State.Trait} : Notation.Dot "topics" := {
-    Notation.dot := topics;
+  Global Instance Method_topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+    Notation.Dot "topics" := {
+    Notation.dot := topics (E := E) (B := B);
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
     ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
+    ink_env.topics.Topics.topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+      :=
+      topics (E := E) (B := B);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
@@ -2325,9 +2457,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Transfer.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2395,13 +2531,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
           erc20.erc20.Transfer.value := α2;
         |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
@@ -2461,9 +2605,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Approval.
         __codec_dest_edqy in
     Pure tt.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2529,13 +2677,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
           erc20.erc20.Approval.value := α2;
         |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
@@ -2586,13 +2742,24 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
           (core.option.Option erc20.erc20.AccountId)) in
     α3.["finish"].
   
-  Global Instance Method_topics `{H' : State.Trait} : Notation.Dot "topics" := {
-    Notation.dot := topics;
+  Global Instance Method_topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+    Notation.Dot "topics" := {
+    Notation.dot := topics (E := E) (B := B);
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
     ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
+    ink_env.topics.Topics.topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+      :=
+      topics (E := E) (B := B);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
@@ -2641,13 +2808,24 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
         (ink_env.topics.PrefixedValue erc20.erc20.AccountId) in
     α3.["finish"].
   
-  Global Instance Method_topics `{H' : State.Trait} : Notation.Dot "topics" := {
-    Notation.dot := topics;
+  Global Instance Method_topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)} :
+    Notation.Dot "topics" := {
+    Notation.dot := topics (E := E) (B := B);
   }.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
     ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
+    ink_env.topics.Topics.topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+      :=
+      topics (E := E) (B := B);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
@@ -2711,8 +2889,8 @@ Module
   Global Instance I
     : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
     ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
       `{H' : State.Trait}
@@ -2791,15 +2969,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -2863,15 +3041,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -2938,15 +3116,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3013,15 +3191,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3085,15 +3263,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3162,15 +3340,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3203,7 +3381,7 @@ Module
           (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 :=
       (parity_scale_codec.codec.Decode.decode
-          (Self := (list Root.core.primitive.u8)))
+          (Self := (list CoqOfRust.core.primitive.u8)))
         input in
     let* α1 :=
       α0.["map_err"]
@@ -3244,21 +3422,29 @@ Module
           ink.reflect.dispatch.DispatchError.UnknownSelector)
     end.
   
-  Global Instance AssociatedFunction_decode_dispatch `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode_dispatch" := {
-    Notation.double_colon := decode_dispatch;
+    Notation.double_colon := decode_dispatch (I := I);
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch `{H' : State.Trait}
+    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       :=
-      decode_dispatch;
+      decode_dispatch (I := I);
   }.
   Global Hint Resolve I : core.
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
 
-Definition CONSTRUCTOR_0 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition CONSTRUCTOR_0
+    `{H' : State.Trait}
+    : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableConstructorInfo.SELECTOR
@@ -3279,13 +3465,21 @@ Module
         input in
     α0.["map_err"] core.convert.Into.into.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (I := I);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
+      :=
+      decode (I := I);
   }.
   Global Hint Resolve I : core.
 End
@@ -3331,7 +3525,7 @@ Module
             (Self := erc20.erc20.Erc20))
           input in
       let* output_value :=
-        ink.reflect.dispatch.ConstructorOutputValue::["new"] result in
+        (ink.reflect.dispatch.ConstructorOutputValue _)::["new"] result in
       let* output_result :=
         (ink.reflect.dispatch.ConstructorOutput.as_result
             (Self :=
@@ -3358,7 +3552,7 @@ Module
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             α0 in
         let* α2 := output_result.["map"] (fun _ => Pure tt) in
-        let* α3 := ink_primitives.ConstructorResult::["Ok"] α2 in
+        let* α3 := (ink_primitives.ConstructorResult _)::["Ok"] α2 in
         ink_env.api.return_value α1 (addr_of α3) in
       Pure tt
     end.
@@ -3446,7 +3640,7 @@ Module
           (core.result.Result Self ink.reflect.dispatch.DispatchError) :=
     let* α0 :=
       (parity_scale_codec.codec.Decode.decode
-          (Self := (list Root.core.primitive.u8)))
+          (Self := (list CoqOfRust.core.primitive.u8)))
         input in
     let* α1 :=
       α0.["map_err"]
@@ -3592,51 +3786,57 @@ Module
           ink.reflect.dispatch.DispatchError.UnknownSelector)
     end.
   
-  Global Instance AssociatedFunction_decode_dispatch `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode_dispatch" := {
-    Notation.double_colon := decode_dispatch;
+    Notation.double_colon := decode_dispatch (I := I);
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch `{H' : State.Trait}
+    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       :=
-      decode_dispatch;
+      decode_dispatch (I := I);
   }.
   Global Hint Resolve I : core.
 End
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
 
-Definition MESSAGE_0 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_0 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_1 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_1 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_2 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_2 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_3 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_3 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_4 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_4 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
         (Self := erc20.erc20.Erc20))).
 
-Definition MESSAGE_5 `{H' : State.Trait} : list Root.core.primitive.u8 :=
+Definition MESSAGE_5 `{H' : State.Trait} : list CoqOfRust.core.primitive.u8 :=
   run
     (Pure
       (ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR
@@ -3657,13 +3857,21 @@ Module
         input in
     α0.["map_err"] core.convert.Into.into.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (I := I);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
+      :=
+      decode (I := I);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
@@ -3712,7 +3920,7 @@ Module
               (addr_of [ "could not properly decode storage entry" ]) in
           core.panicking.panic_fmt α0
         end in
-      core.mem.manually_drop.ManuallyDrop::["new"] α1 in
+      (core.mem.manually_drop.ManuallyDrop _)::["new"] α1 in
     let* _ :=
       match self with
       | Message0.Build_t input =>
@@ -3790,7 +3998,7 @@ Module
         let* α0 :=
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message1.Build_t input =>
         let* _ :=
@@ -3867,7 +4075,7 @@ Module
         let* α0 :=
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message2.Build_t input =>
         let* _ :=
@@ -3944,7 +4152,7 @@ Module
         let* α0 :=
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message3.Build_t input =>
         let* _ :=
@@ -4021,7 +4229,7 @@ Module
         let* α0 :=
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message4.Build_t input =>
         let* _ :=
@@ -4098,7 +4306,7 @@ Module
         let* α0 :=
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       | Message5.Build_t input =>
         let* _ :=
@@ -4175,7 +4383,7 @@ Module
         let* α0 :=
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             is_reverted in
-        let* α1 := ink_primitives.MessageResult::["Ok"] result in
+        let* α1 := (ink_primitives.MessageResult _)::["Ok"] result in
         ink_env.api.return_value α0 (addr_of α1)
       end in
     Pure tt.
@@ -4219,7 +4427,11 @@ Module Impl_erc20_erc20_Erc20_29.
       `{H' : State.Trait}
       (total_supply : erc20.erc20.Balance)
       : M (H := H') Self :=
-    let* balances := ink_storage.lazy.mapping.Mapping::["default"] in
+    let* balances :=
+      (ink_storage.lazy.mapping.Mapping
+            _
+            _
+            ink_storage.lazy.mapping.Mapping.Default.KeyType)::["default"] in
     let* caller :=
       let* α0 := Self::["env"] in
       α0.["caller"] in
@@ -4495,15 +4707,21 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       (addr_of (addr_of self.["account_id"]))
       __codec_dest_edqy.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Definition encode
       `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H') (alloc.vec.Vec Root.core.primitive.u8) :=
+      :
+        M (H := H')
+          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A) :=
     parity_scale_codec.codec.Encode.encode
       (addr_of (addr_of self.["account_id"])).
   
@@ -4515,7 +4733,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       `{H' : State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice Root.core.primitive.u8))}
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H') R :=
@@ -4523,9 +4741,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___CallBuilder.
       (addr_of (addr_of self.["account_id"]))
       f.
   
-  Global Instance Method_using_encoded `{H' : State.Trait} :
+  Global Instance Method_using_encoded
+      `{H' : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
     Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded;
+    Notation.dot := using_encoded (R := R) (F := F);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4568,9 +4790,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
     Pure
       (core.result.Result.Ok {| erc20.erc20._.CallBuilder.account_id := α0; |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Definition decode_into
@@ -4649,13 +4874,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
       parity_scale_codec.decode_finished.DecodeFinished::["assert_decoding_finished"] in
     Pure (core.result.Result.Ok α0).
   
-  Global Instance AssociatedFunction_decode_into `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_into
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode_into" := {
-    Notation.double_colon := decode_into;
+    Notation.double_colon := decode_into (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
@@ -4672,12 +4905,21 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
       : M (H := H') unit :=
     core.hash.Hash.hash (addr_of self.["account_id"]) state.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} := hash;
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
@@ -4765,11 +5007,17 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "CallBuilder" "erc20::erc20" in
+  Definition type_info
+      `{H' : State.Trait}
+      : M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+    let* α0 :=
+      (scale_info.ty.Type_ scale_info.ty.Type_.Default.T)::["builder"] in
+    let* α1 :=
+      (scale_info.ty.path.Path scale_info.ty.path.Path.Default.T)::["new"]
+        "CallBuilder"
+        "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 :=
       α4.["docs"]
@@ -4780,7 +5028,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
             "Implements the underlying on-chain calling of the ink! smart contract";
             "messages and trait implementations in a type safe way."
           ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := (scale_info.build.Fields _)::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -4808,13 +5056,23 @@ Module
   Definition layout
       `{H' : State.Trait}
       (__key : ref ink_primitives.key.Key)
-      : M (H := H') ink_metadata.layout.Layout :=
+      :
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
     let* α0 :=
       (ink_storage_traits.layout.StorageLayout.layout
           (Self := erc20.erc20.AccountId))
         __key in
-    let* α1 := ink_metadata.layout.FieldLayout::["new"] "account_id" α0 in
-    let* α2 := ink_metadata.layout.StructLayout::["new"] "CallBuilder" [ α1 ] in
+    let* α1 :=
+      (ink_metadata.layout.FieldLayout
+            ink_metadata.layout.FieldLayout.Default.F)::["new"]
+        "account_id"
+        α0 in
+    let* α2 :=
+      (ink_metadata.layout.StructLayout
+            ink_metadata.layout.StructLayout.Default.F)::["new"]
+        "CallBuilder"
+        [ α1 ] in
     Pure (ink_metadata.layout.Layout.Struct α2).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
@@ -4846,7 +5104,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20___CallBuilder.
   Definition Self := erc20.erc20._.CallBuilder.
   
   Definition Env : Set :=
-    ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
+    ink_env.types.DefaultEnvironment.
   
   Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
     ink_env.contract.ContractEnv.Env := Env;
@@ -4970,7 +5228,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 219; 99; 117; 168 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α2.["exec_input"] α4 in
     α5.["returns"] : M erc20.erc20.Balance.
   
@@ -5002,7 +5260,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 15; 117; 90; 86 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α2.["exec_input"] α5 in
     α6.["returns"] : M erc20.erc20.Balance.
@@ -5039,7 +5297,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 106; 0; 22; 94 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
@@ -5077,7 +5335,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 132; 161; 93; 161 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
@@ -5115,7 +5373,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 104; 18; 102; 160 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α2.["exec_input"] α6 in
@@ -5157,7 +5415,7 @@ Module Impl_erc20_erc20___CallBuilder_18.
     let* α1 := ink.contract_ref.ToAccountId.to_account_id self in
     let* α2 := α0.["call"] α1 in
     let* α3 := ink_env.call.selector.Selector::["new"] [ 11; 57; 111; 24 ] in
-    let* α4 := ink_env.call.execution_input.ExecutionInput::["new"] α3 in
+    let* α4 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α3 in
     let* α5 := α4.["push_arg"] __ink_binding_0 in
     let* α6 := α5.["push_arg"] __ink_binding_1 in
     let* α7 := α6.["push_arg"] __ink_binding_2 in
@@ -5240,15 +5498,21 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       (addr_of (addr_of self.["inner"]))
       __codec_dest_edqy.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Definition encode
       `{H' : State.Trait}
       (self : ref Self)
-      : M (H := H') (alloc.vec.Vec Root.core.primitive.u8) :=
+      :
+        M (H := H')
+          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A) :=
     parity_scale_codec.codec.Encode.encode (addr_of (addr_of self.["inner"])).
   
   Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
@@ -5259,7 +5523,7 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       `{H' : State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait F
-          (Args := ref (Slice Root.core.primitive.u8))}
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))}
       (self : ref Self)
       (f : F)
       : M (H := H') R :=
@@ -5267,9 +5531,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Erc20Ref.
       (addr_of (addr_of self.["inner"]))
       f.
   
-  Global Instance Method_using_encoded `{H' : State.Trait} :
+  Global Instance Method_using_encoded
+      `{H' : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
     Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded;
+    Notation.dot := using_encoded (R := R) (F := F);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -5312,13 +5580,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
       end in
     Pure (core.result.Result.Ok {| erc20.erc20.Erc20Ref.inner := α0; |}).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
@@ -5335,12 +5611,21 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
       : M (H := H') unit :=
     core.hash.Hash.hash (addr_of self.["inner"]) state.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} := hash;
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -5433,14 +5718,20 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "Erc20Ref" "erc20::erc20" in
+  Definition type_info
+      `{H' : State.Trait}
+      : M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+    let* α0 :=
+      (scale_info.ty.Type_ scale_info.ty.Type_.Default.T)::["builder"] in
+    let* α1 :=
+      (scale_info.ty.path.Path scale_info.ty.path.Path.Default.T)::["new"]
+        "Erc20Ref"
+        "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "A simple ERC-20 contract." ]) in
-    let* α6 := scale_info.build.Fields::["named"] in
+    let* α6 := (scale_info.build.Fields _)::["named"] in
     let* α7 :=
       α6.["field"]
         (fun f =>
@@ -5471,15 +5762,25 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_erc20_erc20_Erc20Ref.
   Definition layout
       `{H' : State.Trait}
       (__key : ref ink_primitives.key.Key)
-      : M (H := H') ink_metadata.layout.Layout :=
+      :
+        M (H := H')
+          (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F) :=
     let* α0 :=
       (ink_storage_traits.layout.StorageLayout.layout
           (Self :=
             (ink.codegen.dispatch.info.ContractCallBuilder.Type_
               (Self := erc20.erc20.Erc20))))
         __key in
-    let* α1 := ink_metadata.layout.FieldLayout::["new"] "inner" α0 in
-    let* α2 := ink_metadata.layout.StructLayout::["new"] "Erc20Ref" [ α1 ] in
+    let* α1 :=
+      (ink_metadata.layout.FieldLayout
+            ink_metadata.layout.FieldLayout.Default.F)::["new"]
+        "inner"
+        α0 in
+    let* α2 :=
+      (ink_metadata.layout.StructLayout
+            ink_metadata.layout.StructLayout.Default.F)::["new"]
+        "Erc20Ref"
+        [ α1 ] in
     Pure (ink_metadata.layout.Layout.Struct α2).
   
   Global Instance AssociatedFunction_layout `{H' : State.Trait} :
@@ -5599,7 +5900,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
   Definition Self := erc20.erc20.Erc20Ref.
   
   Definition Env : Set :=
-    ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20).
+    ink_env.types.DefaultEnvironment.
   
   Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
     ink_env.contract.ContractEnv.Env := Env;
@@ -5630,7 +5931,7 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Set_ (ink_env.call.common.ReturnType Self))) :=
     let* α0 := ink_env.call.create_builder.build_create in
     let* α1 := ink_env.call.selector.Selector::["new"] [ 155; 174; 157; 94 ] in
-    let* α2 := ink_env.call.execution_input.ExecutionInput::["new"] α1 in
+    let* α2 := (ink_env.call.execution_input.ExecutionInput _)::["new"] α1 in
     let* α3 := α2.["push_arg"] __ink_binding_0 in
     let* α4 := α0.["exec_input"] α3 in
     α4.["returns"] : M Self.
@@ -6078,7 +6379,11 @@ Definition __ink_generate_metadata
         (addr_of
           (ink_storage_traits.storage.StorageKey.KEY
             (Self := erc20.erc20.Erc20))) in
-    let* α2 := ink_metadata.layout.RootLayout::["new"] α0 α1 in
+    let* α2 :=
+      (ink_metadata.layout.RootLayout
+            ink_metadata.layout.RootLayout.Default.F)::["new"]
+        α0
+        α1 in
     Pure (ink_metadata.layout.Layout.Root α2) in
   let* _ :=
     let* α0 :=
@@ -6092,14 +6397,25 @@ Definition __ink_generate_metadata
             (addr_of [ "metadata ink! generation failed: " ])
             (addr_of [ α0 ]) in
         core.panicking.panic_fmt α1) in
-  let* α0 := ink_metadata.specs.ContractSpec::["new"] in
-  let* α1 := ink_metadata.specs.ConstructorSpec::["from_label"] "new" in
+  let* α0 :=
+    (ink_metadata.specs.ContractSpec
+          ink_metadata.specs.ContractSpec.Default.F)::["new"] in
+  let* α1 :=
+    (ink_metadata.specs.ConstructorSpec
+          ink_metadata.specs.ConstructorSpec.Default.F)::["from_label"]
+      "new" in
   let* α2 := α1.["selector"] [ 155; 174; 157; 94 ] in
-  let* α3 := ink_metadata.specs.MessageParamSpec::["new"] "total_supply" in
+  let* α3 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "total_supply" in
   let* α4 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α5 :=
     core.iter.traits.iterator.Iterator.map α4 core.convert.AsRef.as_ref in
-  let* α6 := ink_metadata.specs.TypeSpec::["with_name_segs"] α5 in
+  let* α6 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α5 in
   let* α7 := α3.["of_type"] α6 in
   let* α8 := α7.["done"] in
   let* α9 := α2.["args"] [ α8 ] in
@@ -6112,22 +6428,30 @@ Definition __ink_generate_metadata
       : bool)
     then
       let* α0 :=
-        ink_metadata.specs.TypeSpec::["with_name_str"]
+        (ink_metadata.specs.TypeSpec
+              ink_metadata.specs.TypeSpec.Default.F)::["with_name_str"]
           "ink_primitives::ConstructorResult" in
       Pure (core.option.Option.Some α0)
     else
       let* α0 :=
-        ink_metadata.specs.TypeSpec::["with_name_str"]
+        (ink_metadata.specs.TypeSpec
+              ink_metadata.specs.TypeSpec.Default.F)::["with_name_str"]
           "ink_primitives::ConstructorResult" in
       Pure (core.option.Option.Some α0) in
-  let* α13 := ink_metadata.specs.ReturnTypeSpec::["new"] α12 in
+  let* α13 :=
+    (ink_metadata.specs.ReturnTypeSpec
+          ink_metadata.specs.ReturnTypeSpec.Default.F)::["new"]
+      α12 in
   let* α14 := α11.["returns"] α13 in
   let* α15 :=
     α14.["docs"]
       [ " Creates a new ERC-20 contract with the specified initial supply." ] in
   let* α16 := α15.["done"] in
   let* α17 := α0.["constructors"] [ α16 ] in
-  let* α18 := ink_metadata.specs.MessageSpec::["from_label"] "total_supply" in
+  let* α18 :=
+    (ink_metadata.specs.MessageSpec
+          ink_metadata.specs.MessageSpec.Default.F)::["from_label"]
+      "total_supply" in
   let* α19 := α18.["selector"] [ 219; 99; 117; 168 ] in
   let* α20 := α19.["args"] [ ] in
   let* α21 :=
@@ -6135,21 +6459,36 @@ Definition __ink_generate_metadata
       [ "ink"; "MessageResult" ] in
   let* α22 :=
     core.iter.traits.iterator.Iterator.map α21 core.convert.AsRef.as_ref in
-  let* α23 := ink_metadata.specs.TypeSpec::["with_name_segs"] α22 in
-  let* α24 := ink_metadata.specs.ReturnTypeSpec::["new"] α23 in
+  let* α23 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α22 in
+  let* α24 :=
+    (ink_metadata.specs.ReturnTypeSpec
+          ink_metadata.specs.ReturnTypeSpec.Default.F)::["new"]
+      α23 in
   let* α25 := α20.["returns"] α24 in
   let* α26 := α25.["mutates"] false in
   let* α27 := α26.["payable"] false in
   let* α28 := α27.["default"] false in
   let* α29 := α28.["docs"] [ " Returns the total token supply." ] in
   let* α30 := α29.["done"] in
-  let* α31 := ink_metadata.specs.MessageSpec::["from_label"] "balance_of" in
+  let* α31 :=
+    (ink_metadata.specs.MessageSpec
+          ink_metadata.specs.MessageSpec.Default.F)::["from_label"]
+      "balance_of" in
   let* α32 := α31.["selector"] [ 15; 117; 90; 86 ] in
-  let* α33 := ink_metadata.specs.MessageParamSpec::["new"] "owner" in
+  let* α33 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "owner" in
   let* α34 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α35 :=
     core.iter.traits.iterator.Iterator.map α34 core.convert.AsRef.as_ref in
-  let* α36 := ink_metadata.specs.TypeSpec::["with_name_segs"] α35 in
+  let* α36 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α35 in
   let* α37 := α33.["of_type"] α36 in
   let* α38 := α37.["done"] in
   let* α39 := α32.["args"] [ α38 ] in
@@ -6158,8 +6497,14 @@ Definition __ink_generate_metadata
       [ "ink"; "MessageResult" ] in
   let* α41 :=
     core.iter.traits.iterator.Iterator.map α40 core.convert.AsRef.as_ref in
-  let* α42 := ink_metadata.specs.TypeSpec::["with_name_segs"] α41 in
-  let* α43 := ink_metadata.specs.ReturnTypeSpec::["new"] α42 in
+  let* α42 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α41 in
+  let* α43 :=
+    (ink_metadata.specs.ReturnTypeSpec
+          ink_metadata.specs.ReturnTypeSpec.Default.F)::["new"]
+      α42 in
   let* α44 := α39.["returns"] α43 in
   let* α45 := α44.["mutates"] false in
   let* α46 := α45.["payable"] false in
@@ -6172,20 +6517,35 @@ Definition __ink_generate_metadata
         " Returns `0` if the account is non-existent."
       ] in
   let* α49 := α48.["done"] in
-  let* α50 := ink_metadata.specs.MessageSpec::["from_label"] "allowance" in
+  let* α50 :=
+    (ink_metadata.specs.MessageSpec
+          ink_metadata.specs.MessageSpec.Default.F)::["from_label"]
+      "allowance" in
   let* α51 := α50.["selector"] [ 106; 0; 22; 94 ] in
-  let* α52 := ink_metadata.specs.MessageParamSpec::["new"] "owner" in
+  let* α52 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "owner" in
   let* α53 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α54 :=
     core.iter.traits.iterator.Iterator.map α53 core.convert.AsRef.as_ref in
-  let* α55 := ink_metadata.specs.TypeSpec::["with_name_segs"] α54 in
+  let* α55 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α54 in
   let* α56 := α52.["of_type"] α55 in
   let* α57 := α56.["done"] in
-  let* α58 := ink_metadata.specs.MessageParamSpec::["new"] "spender" in
+  let* α58 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "spender" in
   let* α59 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α60 :=
     core.iter.traits.iterator.Iterator.map α59 core.convert.AsRef.as_ref in
-  let* α61 := ink_metadata.specs.TypeSpec::["with_name_segs"] α60 in
+  let* α61 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α60 in
   let* α62 := α58.["of_type"] α61 in
   let* α63 := α62.["done"] in
   let* α64 := α51.["args"] [ α57; α63 ] in
@@ -6194,8 +6554,14 @@ Definition __ink_generate_metadata
       [ "ink"; "MessageResult" ] in
   let* α66 :=
     core.iter.traits.iterator.Iterator.map α65 core.convert.AsRef.as_ref in
-  let* α67 := ink_metadata.specs.TypeSpec::["with_name_segs"] α66 in
-  let* α68 := ink_metadata.specs.ReturnTypeSpec::["new"] α67 in
+  let* α67 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α66 in
+  let* α68 :=
+    (ink_metadata.specs.ReturnTypeSpec
+          ink_metadata.specs.ReturnTypeSpec.Default.F)::["new"]
+      α67 in
   let* α69 := α64.["returns"] α68 in
   let* α70 := α69.["mutates"] false in
   let* α71 := α70.["payable"] false in
@@ -6208,20 +6574,35 @@ Definition __ink_generate_metadata
         " Returns `0` if no allowance has been set."
       ] in
   let* α74 := α73.["done"] in
-  let* α75 := ink_metadata.specs.MessageSpec::["from_label"] "transfer" in
+  let* α75 :=
+    (ink_metadata.specs.MessageSpec
+          ink_metadata.specs.MessageSpec.Default.F)::["from_label"]
+      "transfer" in
   let* α76 := α75.["selector"] [ 132; 161; 93; 161 ] in
-  let* α77 := ink_metadata.specs.MessageParamSpec::["new"] "to" in
+  let* α77 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "to" in
   let* α78 := core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α79 :=
     core.iter.traits.iterator.Iterator.map α78 core.convert.AsRef.as_ref in
-  let* α80 := ink_metadata.specs.TypeSpec::["with_name_segs"] α79 in
+  let* α80 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α79 in
   let* α81 := α77.["of_type"] α80 in
   let* α82 := α81.["done"] in
-  let* α83 := ink_metadata.specs.MessageParamSpec::["new"] "value" in
+  let* α83 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "value" in
   let* α84 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α85 :=
     core.iter.traits.iterator.Iterator.map α84 core.convert.AsRef.as_ref in
-  let* α86 := ink_metadata.specs.TypeSpec::["with_name_segs"] α85 in
+  let* α86 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α85 in
   let* α87 := α83.["of_type"] α86 in
   let* α88 := α87.["done"] in
   let* α89 := α76.["args"] [ α82; α88 ] in
@@ -6230,8 +6611,14 @@ Definition __ink_generate_metadata
       [ "ink"; "MessageResult" ] in
   let* α91 :=
     core.iter.traits.iterator.Iterator.map α90 core.convert.AsRef.as_ref in
-  let* α92 := ink_metadata.specs.TypeSpec::["with_name_segs"] α91 in
-  let* α93 := ink_metadata.specs.ReturnTypeSpec::["new"] α92 in
+  let* α92 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α91 in
+  let* α93 :=
+    (ink_metadata.specs.ReturnTypeSpec
+          ink_metadata.specs.ReturnTypeSpec.Default.F)::["new"]
+      α92 in
   let* α94 := α89.["returns"] α93 in
   let* α95 := α94.["mutates"] true in
   let* α96 := α95.["payable"] false in
@@ -6249,21 +6636,36 @@ Definition __ink_generate_metadata
         " the caller's account balance."
       ] in
   let* α99 := α98.["done"] in
-  let* α100 := ink_metadata.specs.MessageSpec::["from_label"] "approve" in
+  let* α100 :=
+    (ink_metadata.specs.MessageSpec
+          ink_metadata.specs.MessageSpec.Default.F)::["from_label"]
+      "approve" in
   let* α101 := α100.["selector"] [ 104; 18; 102; 160 ] in
-  let* α102 := ink_metadata.specs.MessageParamSpec::["new"] "spender" in
+  let* α102 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "spender" in
   let* α103 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α104 :=
     core.iter.traits.iterator.Iterator.map α103 core.convert.AsRef.as_ref in
-  let* α105 := ink_metadata.specs.TypeSpec::["with_name_segs"] α104 in
+  let* α105 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α104 in
   let* α106 := α102.["of_type"] α105 in
   let* α107 := α106.["done"] in
-  let* α108 := ink_metadata.specs.MessageParamSpec::["new"] "value" in
+  let* α108 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "value" in
   let* α109 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α110 :=
     core.iter.traits.iterator.Iterator.map α109 core.convert.AsRef.as_ref in
-  let* α111 := ink_metadata.specs.TypeSpec::["with_name_segs"] α110 in
+  let* α111 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α110 in
   let* α112 := α108.["of_type"] α111 in
   let* α113 := α112.["done"] in
   let* α114 := α101.["args"] [ α107; α113 ] in
@@ -6272,8 +6674,14 @@ Definition __ink_generate_metadata
       [ "ink"; "MessageResult" ] in
   let* α116 :=
     core.iter.traits.iterator.Iterator.map α115 core.convert.AsRef.as_ref in
-  let* α117 := ink_metadata.specs.TypeSpec::["with_name_segs"] α116 in
-  let* α118 := ink_metadata.specs.ReturnTypeSpec::["new"] α117 in
+  let* α117 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α116 in
+  let* α118 :=
+    (ink_metadata.specs.ReturnTypeSpec
+          ink_metadata.specs.ReturnTypeSpec.Default.F)::["new"]
+      α117 in
   let* α119 := α114.["returns"] α118 in
   let* α120 := α119.["mutates"] true in
   let* α121 := α120.["payable"] false in
@@ -6290,29 +6698,50 @@ Definition __ink_generate_metadata
         " An `Approval` event is emitted."
       ] in
   let* α124 := α123.["done"] in
-  let* α125 := ink_metadata.specs.MessageSpec::["from_label"] "transfer_from" in
+  let* α125 :=
+    (ink_metadata.specs.MessageSpec
+          ink_metadata.specs.MessageSpec.Default.F)::["from_label"]
+      "transfer_from" in
   let* α126 := α125.["selector"] [ 11; 57; 111; 24 ] in
-  let* α127 := ink_metadata.specs.MessageParamSpec::["new"] "from" in
+  let* α127 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "from" in
   let* α128 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α129 :=
     core.iter.traits.iterator.Iterator.map α128 core.convert.AsRef.as_ref in
-  let* α130 := ink_metadata.specs.TypeSpec::["with_name_segs"] α129 in
+  let* α130 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α129 in
   let* α131 := α127.["of_type"] α130 in
   let* α132 := α131.["done"] in
-  let* α133 := ink_metadata.specs.MessageParamSpec::["new"] "to" in
+  let* α133 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "to" in
   let* α134 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α135 :=
     core.iter.traits.iterator.Iterator.map α134 core.convert.AsRef.as_ref in
-  let* α136 := ink_metadata.specs.TypeSpec::["with_name_segs"] α135 in
+  let* α136 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α135 in
   let* α137 := α133.["of_type"] α136 in
   let* α138 := α137.["done"] in
-  let* α139 := ink_metadata.specs.MessageParamSpec::["new"] "value" in
+  let* α139 :=
+    (ink_metadata.specs.MessageParamSpec
+          ink_metadata.specs.MessageParamSpec.Default.F)::["new"]
+      "value" in
   let* α140 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α141 :=
     core.iter.traits.iterator.Iterator.map α140 core.convert.AsRef.as_ref in
-  let* α142 := ink_metadata.specs.TypeSpec::["with_name_segs"] α141 in
+  let* α142 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α141 in
   let* α143 := α139.["of_type"] α142 in
   let* α144 := α143.["done"] in
   let* α145 := α126.["args"] [ α132; α138; α144 ] in
@@ -6321,8 +6750,14 @@ Definition __ink_generate_metadata
       [ "ink"; "MessageResult" ] in
   let* α147 :=
     core.iter.traits.iterator.Iterator.map α146 core.convert.AsRef.as_ref in
-  let* α148 := ink_metadata.specs.TypeSpec::["with_name_segs"] α147 in
-  let* α149 := ink_metadata.specs.ReturnTypeSpec::["new"] α148 in
+  let* α148 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α147 in
+  let* α149 :=
+    (ink_metadata.specs.ReturnTypeSpec
+          ink_metadata.specs.ReturnTypeSpec.Default.F)::["new"]
+      α148 in
   let* α150 := α145.["returns"] α149 in
   let* α151 := α150.["mutates"] true in
   let* α152 := α151.["payable"] false in
@@ -6347,30 +6782,51 @@ Definition __ink_generate_metadata
       ] in
   let* α155 := α154.["done"] in
   let* α156 := α17.["messages"] [ α30; α49; α74; α99; α124; α155 ] in
-  let* α157 := ink_metadata.specs.EventSpec::["new"] "Transfer" in
-  let* α158 := ink_metadata.specs.EventParamSpec::["new"] "from" in
+  let* α157 :=
+    (ink_metadata.specs.EventSpec
+          ink_metadata.specs.EventSpec.Default.F)::["new"]
+      "Transfer" in
+  let* α158 :=
+    (ink_metadata.specs.EventParamSpec
+          ink_metadata.specs.EventParamSpec.Default.F)::["new"]
+      "from" in
   let* α159 := core.iter.traits.collect.IntoIterator.into_iter [ "Option" ] in
   let* α160 :=
     core.iter.traits.iterator.Iterator.map α159 core.convert.AsRef.as_ref in
-  let* α161 := ink_metadata.specs.TypeSpec::["with_name_segs"] α160 in
+  let* α161 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α160 in
   let* α162 := α158.["of_type"] α161 in
   let* α163 := α162.["indexed"] true in
   let* α164 := α163.["docs"] [ ] in
   let* α165 := α164.["done"] in
-  let* α166 := ink_metadata.specs.EventParamSpec::["new"] "to" in
+  let* α166 :=
+    (ink_metadata.specs.EventParamSpec
+          ink_metadata.specs.EventParamSpec.Default.F)::["new"]
+      "to" in
   let* α167 := core.iter.traits.collect.IntoIterator.into_iter [ "Option" ] in
   let* α168 :=
     core.iter.traits.iterator.Iterator.map α167 core.convert.AsRef.as_ref in
-  let* α169 := ink_metadata.specs.TypeSpec::["with_name_segs"] α168 in
+  let* α169 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α168 in
   let* α170 := α166.["of_type"] α169 in
   let* α171 := α170.["indexed"] true in
   let* α172 := α171.["docs"] [ ] in
   let* α173 := α172.["done"] in
-  let* α174 := ink_metadata.specs.EventParamSpec::["new"] "value" in
+  let* α174 :=
+    (ink_metadata.specs.EventParamSpec
+          ink_metadata.specs.EventParamSpec.Default.F)::["new"]
+      "value" in
   let* α175 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α176 :=
     core.iter.traits.iterator.Iterator.map α175 core.convert.AsRef.as_ref in
-  let* α177 := ink_metadata.specs.TypeSpec::["with_name_segs"] α176 in
+  let* α177 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α176 in
   let* α178 := α174.["of_type"] α177 in
   let* α179 := α178.["indexed"] false in
   let* α180 := α179.["docs"] [ ] in
@@ -6379,32 +6835,53 @@ Definition __ink_generate_metadata
   let* α183 :=
     α182.["docs"] [ " Event emitted when a token transfer occurs." ] in
   let* α184 := α183.["done"] in
-  let* α185 := ink_metadata.specs.EventSpec::["new"] "Approval" in
-  let* α186 := ink_metadata.specs.EventParamSpec::["new"] "owner" in
+  let* α185 :=
+    (ink_metadata.specs.EventSpec
+          ink_metadata.specs.EventSpec.Default.F)::["new"]
+      "Approval" in
+  let* α186 :=
+    (ink_metadata.specs.EventParamSpec
+          ink_metadata.specs.EventParamSpec.Default.F)::["new"]
+      "owner" in
   let* α187 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α188 :=
     core.iter.traits.iterator.Iterator.map α187 core.convert.AsRef.as_ref in
-  let* α189 := ink_metadata.specs.TypeSpec::["with_name_segs"] α188 in
+  let* α189 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α188 in
   let* α190 := α186.["of_type"] α189 in
   let* α191 := α190.["indexed"] true in
   let* α192 := α191.["docs"] [ ] in
   let* α193 := α192.["done"] in
-  let* α194 := ink_metadata.specs.EventParamSpec::["new"] "spender" in
+  let* α194 :=
+    (ink_metadata.specs.EventParamSpec
+          ink_metadata.specs.EventParamSpec.Default.F)::["new"]
+      "spender" in
   let* α195 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α196 :=
     core.iter.traits.iterator.Iterator.map α195 core.convert.AsRef.as_ref in
-  let* α197 := ink_metadata.specs.TypeSpec::["with_name_segs"] α196 in
+  let* α197 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α196 in
   let* α198 := α194.["of_type"] α197 in
   let* α199 := α198.["indexed"] true in
   let* α200 := α199.["docs"] [ ] in
   let* α201 := α200.["done"] in
-  let* α202 := ink_metadata.specs.EventParamSpec::["new"] "value" in
+  let* α202 :=
+    (ink_metadata.specs.EventParamSpec
+          ink_metadata.specs.EventParamSpec.Default.F)::["new"]
+      "value" in
   let* α203 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α204 :=
     core.iter.traits.iterator.Iterator.map α203 core.convert.AsRef.as_ref in
-  let* α205 := ink_metadata.specs.TypeSpec::["with_name_segs"] α204 in
+  let* α205 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α204 in
   let* α206 := α202.["of_type"] α205 in
   let* α207 := α206.["indexed"] false in
   let* α208 := α207.["docs"] [ ] in
@@ -6423,42 +6900,65 @@ Definition __ink_generate_metadata
     core.iter.traits.collect.IntoIterator.into_iter [ "ink"; "LangError" ] in
   let* α216 :=
     core.iter.traits.iterator.Iterator.map α215 core.convert.AsRef.as_ref in
-  let* α217 := ink_metadata.specs.TypeSpec::["with_name_segs"] α216 in
+  let* α217 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α216 in
   let* α218 := α214.["lang_error"] α217 in
-  let* α219 := ink_metadata.specs.EnvironmentSpec::["new"] in
+  let* α219 :=
+    (ink_metadata.specs.EnvironmentSpec
+          ink_metadata.specs.EnvironmentSpec.Default.F)::["new"] in
   let* α220 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "AccountId" ] in
   let* α221 :=
     core.iter.traits.iterator.Iterator.map α220 core.convert.AsRef.as_ref in
-  let* α222 := ink_metadata.specs.TypeSpec::["with_name_segs"] α221 in
+  let* α222 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α221 in
   let* α223 := α219.["account_id"] α222 in
   let* α224 := core.iter.traits.collect.IntoIterator.into_iter [ "Balance" ] in
   let* α225 :=
     core.iter.traits.iterator.Iterator.map α224 core.convert.AsRef.as_ref in
-  let* α226 := ink_metadata.specs.TypeSpec::["with_name_segs"] α225 in
+  let* α226 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α225 in
   let* α227 := α223.["balance"] α226 in
   let* α228 := core.iter.traits.collect.IntoIterator.into_iter [ "Hash" ] in
   let* α229 :=
     core.iter.traits.iterator.Iterator.map α228 core.convert.AsRef.as_ref in
-  let* α230 := ink_metadata.specs.TypeSpec::["with_name_segs"] α229 in
+  let* α230 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α229 in
   let* α231 := α227.["hash"] α230 in
   let* α232 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "Timestamp" ] in
   let* α233 :=
     core.iter.traits.iterator.Iterator.map α232 core.convert.AsRef.as_ref in
-  let* α234 := ink_metadata.specs.TypeSpec::["with_name_segs"] α233 in
+  let* α234 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α233 in
   let* α235 := α231.["timestamp"] α234 in
   let* α236 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "BlockNumber" ] in
   let* α237 :=
     core.iter.traits.iterator.Iterator.map α236 core.convert.AsRef.as_ref in
-  let* α238 := ink_metadata.specs.TypeSpec::["with_name_segs"] α237 in
+  let* α238 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α237 in
   let* α239 := α235.["block_number"] α238 in
   let* α240 :=
     core.iter.traits.collect.IntoIterator.into_iter [ "ChainExtension" ] in
   let* α241 :=
     core.iter.traits.iterator.Iterator.map α240 core.convert.AsRef.as_ref in
-  let* α242 := ink_metadata.specs.TypeSpec::["with_name_segs"] α241 in
+  let* α242 :=
+    (ink_metadata.specs.TypeSpec
+          ink_metadata.specs.TypeSpec.Default.F)::["with_name_segs"]
+      α241 in
   let* α243 := α239.["chain_extension"] α242 in
   let* α244 := α243.["max_event_topics"] erc20.erc20.MAX_EVENT_TOPICS in
   let* α245 := α244.["done"] in
@@ -6478,19 +6978,27 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   
   Definition Identity : Set := Self.
   
-  Definition type_info `{H' : State.Trait} : M (H := H') scale_info.ty.Type_ :=
-    let* α0 := scale_info.ty.Type_::["builder"] in
-    let* α1 := scale_info.ty.path.Path::["new"] "Error" "erc20::erc20" in
+  Definition type_info
+      `{H' : State.Trait}
+      : M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T) :=
+    let* α0 :=
+      (scale_info.ty.Type_ scale_info.ty.Type_.Default.T)::["builder"] in
+    let* α1 :=
+      (scale_info.ty.path.Path scale_info.ty.path.Path.Default.T)::["new"]
+        "Error"
+        "erc20::erc20" in
     let* α2 := α0.["path"] α1 in
-    let* α3 := alloc.vec.Vec::["new"] in
+    let* α3 := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
     let* α4 := α2.["type_params"] α3 in
     let* α5 := α4.["docs"] (addr_of [ "The ERC-20 error types." ]) in
-    let* α6 := scale_info.build.Variants::["new"] in
+    let* α6 :=
+      (scale_info.build.Variants
+            scale_info.build.Variants.Default.F)::["new"] in
     let* α7 :=
       α6.["variant"]
         "InsufficientBalance"
         (fun v =>
-          let* α0 := v.["index"] (cast 0 Root.core.primitive.u8) in
+          let* α0 := v.["index"] (cast 0 CoqOfRust.core.primitive.u8) in
           α0.["docs"]
             (addr_of
               [
@@ -6500,7 +7008,7 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
       α7.["variant"]
         "InsufficientAllowance"
         (fun v =>
-          let* α0 := v.["index"] (cast 1 Root.core.primitive.u8) in
+          let* α0 := v.["index"] (cast 1 CoqOfRust.core.primitive.u8) in
           α0.["docs"]
             (addr_of
               [
@@ -6619,18 +7127,22 @@ Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20_Error.
     match α0 with
     | erc20.erc20.Error.InsufficientBalance =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 0 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 0 CoqOfRust.core.primitive.u8) in
       Pure tt
     | erc20.erc20.Error.InsufficientAllowance =>
       let* _ :=
-        __codec_dest_edqy.["push_byte"] (cast 1 Root.core.primitive.u8) in
+        __codec_dest_edqy.["push_byte"] (cast 1 CoqOfRust.core.primitive.u8) in
       Pure tt
     | _ => Pure tt
     end.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -6703,13 +7215,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
       Pure tt
     end.
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.

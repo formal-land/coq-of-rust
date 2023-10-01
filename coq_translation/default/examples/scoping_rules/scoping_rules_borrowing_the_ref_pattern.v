@@ -120,7 +120,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α2 in
     Pure tt in
   let* mutable_tuple :=
-    let* α0 := alloc.boxed.Box::["new"] 5 in
+    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 5 in
     Pure (α0, 3) in
   let* _ :=
     let '(_, last) := mutable_tuple in

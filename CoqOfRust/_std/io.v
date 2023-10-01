@@ -415,7 +415,8 @@ Module BufRead.
     fill_buf : mut_ref Self -> Result (ref (slice u8));
     consume : mut_ref Self -> usize -> unit;
     has_data_left : mut_ref Self -> Result bool;
-    read_until : mut_ref Self -> u8 -> mut_ref (Vec u8) -> Result usize;
+    read_until :
+      mut_ref Self -> u8 -> mut_ref (Vec u8 Vec.Default.A) -> Result usize;
     read_line : mut_ref Self -> mut_ref String -> Result usize;
     split : Self -> u8 -> Split Self;
     lines : mut_ref Self -> Lines Self;

@@ -2,7 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition Result (T : Set) : Set :=
-  core.result.Result T (alloc.boxed.Box _ (* OpaqueTy *)).
+  core.result.Result
+    T
+    (alloc.boxed.Box _ (* OpaqueTy *) alloc.boxed.Box.Default.A).
 
 Module EmptyVec.
   Inductive t : Set := Build.
@@ -62,7 +64,7 @@ End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Definition double_first
     `{H' : State.Trait}
-    (vec : alloc.vec.Vec (ref str))
+    (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M (H := H') (other_uses_of_question_mark.Result i32) :=
   let* first :=
     let* α0 := vec.["first"] in
@@ -116,11 +118,15 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ "42"; "93"; "18" ] in
     (Slice _)::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] in
+  let* empty := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
   let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ "tofu"; "93"; "18" ] in
     (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := other_uses_of_question_mark.double_first numbers in

@@ -165,8 +165,8 @@ End Impl_associated_functions_and_methods_Rectangle.
 Module Pair.
   Unset Primitive Projections.
   Record t : Set := {
-    _ : alloc.boxed.Box i32;
-    _ : alloc.boxed.Box i32;
+    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -247,8 +247,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       |} in
   let* _ := square.["translate"] 1 (* 1.0 *) 1 (* 1.0 *) in
   let* pair :=
-    let* α0 := alloc.boxed.Box::["new"] 1 in
-    let* α1 := alloc.boxed.Box::["new"] 2 in
+    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 1 in
+    let* α1 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 2 in
     Pure (associated_functions_and_methods.Pair.Build_t α0 α1) in
   let* _ := pair.["destroy"] in
   Pure tt.

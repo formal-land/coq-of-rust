@@ -102,9 +102,13 @@ where
 { /* private fields */ }
 *)
 Module Vec.
-  Parameter t : forall (T (*A*) : Set), Set.
+  Parameter t : forall (T A : Set), Set.
+
+  Module Default.
+    Definition A : Set := Global.
+  End Default.
 End Vec.
-Definition Vec (T : Set) (*(A : option Set)*) := Vec.t T (*(defaultType A Global)*).
+Definition Vec := Vec.t.
 
   (* 
   let A_type := (defaultType A Global) in
@@ -117,7 +121,7 @@ Module Impl_Vec.
 Section Impl_Vec.
   Context {T : Set}.
 
-  Definition Self : Set := Vec T.
+  Definition Self : Set := Vec T Global.
 
   Parameter new :
     forall `{H : State.Trait},

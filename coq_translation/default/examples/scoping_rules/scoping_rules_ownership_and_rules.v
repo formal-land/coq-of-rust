@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition destroy_box
     `{H' : State.Trait}
-    (c : alloc.boxed.Box i32)
+    (c : alloc.boxed.Box i32 alloc.boxed.Box.Default.A)
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
@@ -32,7 +32,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           (addr_of [ α0; α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
-  let* a := alloc.boxed.Box::["new"] 5 in
+  let* a := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 5 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of a) in

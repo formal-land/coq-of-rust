@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first
     `{H' : State.Trait}
-    (vec : alloc.vec.Vec (ref str))
+    (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M (H := H') i32 :=
   let* first :=
     let* α0 := vec.["first"] in
@@ -15,11 +15,15 @@ Definition double_first
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ "42"; "93"; "18" ] in
     (Slice _)::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] in
+  let* empty := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
   let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ "tofu"; "93"; "18" ] in
     (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* _ :=

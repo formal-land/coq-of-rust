@@ -88,12 +88,12 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   }.
   
   Global Instance I : functions_order.SomeTrait.Trait Self := {
-    functions_order.SomeTrait.some_trait_foo `{H' : State.Trait}
-      :=
-      some_trait_foo;
     functions_order.SomeTrait.some_trait_bar `{H' : State.Trait}
       :=
       some_trait_bar;
+    functions_order.SomeTrait.some_trait_foo `{H' : State.Trait}
+      :=
+      some_trait_foo;
   }.
   Global Hint Resolve I : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.

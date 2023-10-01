@@ -60,9 +60,9 @@ pub struct ExecReturnValue {
 *)
 Unset Primitive Projections.
 Module ExecReturnValue.
-  Record t : Set := { 
+  Record t : Set := {
     flags: ReturnFlags;
-    data: alloc.vec.Vec u8;
+    data: alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
 End ExecReturnValue.
 Global Set Primitive Projections.
@@ -100,7 +100,7 @@ Module ContractResult.
     gas_consumed: Weight;
     gas_required: Weight;
     storage_deposit: StorageDeposit Balance;
-    debug_message: alloc.vec.Vec u8;
+    debug_message: alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     result: R;
   }.
 End ContractResult.

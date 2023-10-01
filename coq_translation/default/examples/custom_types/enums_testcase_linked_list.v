@@ -3,7 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module List.
   Inductive t : Set :=
-  | Cons (_ : u32) (_ : alloc.boxed.Box enums_testcase_linked_list.List)
+  |
+    Cons
+    (_ : u32)
+    (_
+      :
+      alloc.boxed.Box enums_testcase_linked_list.List alloc.boxed.Box.Default.A)
   | Nil.
 End List.
 Definition List := List.t.
@@ -26,7 +31,7 @@ Module Impl_enums_testcase_linked_list_List.
       (self : Self)
       (elem : u32)
       : M (H := H') enums_testcase_linked_list.List :=
-    let* α0 := alloc.boxed.Box::["new"] self in
+    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
   
   Global Instance Method_prepend `{H' : State.Trait} :

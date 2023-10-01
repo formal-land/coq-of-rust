@@ -96,8 +96,10 @@ Module config.
         OtherParams : Set;
 
         new : u32 -> u32 -> u64 -> Hash -> OtherParams -> Self;
-        encode_extra_to : ref Self -> mut_ref (alloc.vec.Vec u8);
-        encode_additional_to : ref Self -> mut_ref (alloc.vec.Vec u8);
+        encode_extra_to :
+          ref Self -> mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A);
+        encode_additional_to :
+          ref Self -> mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A);
         }.
     End ExtrinsicParams.
   End extrinsic_params.
@@ -261,7 +263,8 @@ Module utils.
       Inductive t (AccountId AccountIndex : Set) : Set := 
       | Id : AccountId -> t AccountId AccountIndex
       | Index : AccountIndex -> t AccountId AccountIndex
-      | Raw : alloc.vec.Vec u8 -> t AccountId AccountIndex
+      | Raw :
+        alloc.vec.Vec u8 alloc.vec.Vec.Default.A -> t AccountId AccountIndex
       | Address32 : Slice u8 -> t AccountId AccountIndex
       | Address20 : Slice u8 -> t AccountId AccountIndex
       .

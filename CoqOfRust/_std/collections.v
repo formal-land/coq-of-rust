@@ -646,9 +646,12 @@ Module map.
   (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
   Module HashMap.
     Parameter t : Set -> Set -> Set -> Set.
+
+    Module Default.
+      Definition S : Set := RandomState.
+    End Default.
   End HashMap.
-  Definition HashMap (K V : Set) : Set :=
-    HashMap.t K V (defaultType None RandomState).
+  Definition HashMap := HashMap.t.
 
   (* pub struct IntoIter<K, V> { /* private fields */ } *)
   Module IntoIter.
@@ -1029,10 +1032,6 @@ Module BinaryHeap.
   Parameter t : Set -> Set.
 End BinaryHeap.
 Definition BinaryHeap := BinaryHeap.t.
-
-(* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
-Definition HashMap (K V : Set) {S : option Set} : Set :=
-  hash.map.HashMap K V.
 
 (* pub struct HashSet<T, S = RandomState> { /* private fields */ } *)
 Definition HashSet (T : Set) (S : option Set) : Set :=

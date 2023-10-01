@@ -103,12 +103,21 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
     let* _ := core.hash.Hash.hash (addr_of self.["username"]) state in
     core.hash.Hash.hash (addr_of self.["password"]) state.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} := hash;
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
@@ -139,7 +148,8 @@ Definition AccountInfo : Set := AccountInfo.t.
 Definition Accounts : Set :=
   std.collections.hash.map.HashMap
     hash_map_alternate_or_custom_key_types.Account
-    hash_map_alternate_or_custom_key_types.AccountInfo.
+    hash_map_alternate_or_custom_key_types.AccountInfo
+    std.collections.hash.map.HashMap.Default.S.
 
 Definition try_logon
     `{H' : State.Trait}
@@ -223,7 +233,11 @@ Definition try_logon
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* accounts := std.collections.hash.map.HashMap::["new"] in
+  let* accounts :=
+    (std.collections.hash.map.HashMap
+          _
+          _
+          std.collections.hash.map.HashMap.Default.S)::["new"] in
   let account :=
     {|
       hash_map_alternate_or_custom_key_types.Account.username := "j.everyman";

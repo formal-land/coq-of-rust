@@ -73,7 +73,7 @@ End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
 Definition double_first
     `{H' : State.Trait}
-    (vec : alloc.vec.Vec (ref str))
+    (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M (H := H') (defining_an_error_type.Result i32) :=
   let* α0 := vec.["first"] in
   let* α1 := α0.["ok_or"] defining_an_error_type.DoubleError.Build in
@@ -115,11 +115,15 @@ Definition print
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 := alloc.boxed.Box::["new"] [ "42"; "93"; "18" ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ "42"; "93"; "18" ] in
     (Slice _)::["into_vec"] α0 in
-  let* empty := alloc.vec.Vec::["new"] in
+  let* empty := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
   let* strings :=
-    let* α0 := alloc.boxed.Box::["new"] [ "tofu"; "93"; "18" ] in
+    let* α0 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ "tofu"; "93"; "18" ] in
     (Slice _)::["into_vec"] α0 in
   let* _ :=
     let* α0 := defining_an_error_type.double_first numbers in

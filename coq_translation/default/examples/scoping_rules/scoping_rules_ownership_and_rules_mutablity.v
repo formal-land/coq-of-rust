@@ -3,7 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* immutable_box := alloc.boxed.Box::["new"] 5 in
+  let* immutable_box :=
+    (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 5 in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of immutable_box) in

@@ -125,5 +125,5 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α1 in
     Pure tt in
   let* _closed_box :=
-    struct_visibility.my.ClosedBox::["new"] "classified information" in
+    (struct_visibility.my.ClosedBox _)::["new"] "classified information" in
   Pure tt.

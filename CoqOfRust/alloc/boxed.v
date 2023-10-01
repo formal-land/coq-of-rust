@@ -13,17 +13,21 @@ where
          T: ?Sized;
 *)
 Module Box.
-  Definition t (T (*A*) : Set) : Set := T.
+  Definition t (T A : Set) : Set := T.
+
+  Module Default.
+    Definition A : Set := core.alloc.Global.
+  End Default.
 End Box.
 Definition Box (T : Set) (*(A : option Set)
   `{Allocator.Trait (defaultType A Global)}*)
   := Box.t T (*(defaultType A Global)*).
 
 Parameter new :
-  forall `{State.Trait} {A : Set},
-  A -> M (Box A (*None*)).
+  forall `{State.Trait} {T : Set},
+  T -> M (Box T core.alloc.Global).
 
-Global Instance Method_Box_new `{State.Trait} {A : Set} :
-  Notation.DoubleColon Box "new" := {
-  Notation.double_colon (x : A) := new x;
+Global Instance Method_Box_new `{State.Trait} {T : Set} :
+  Notation.DoubleColon (Box T core.alloc.Global) "new" := {
+  Notation.double_colon (x : T) := new x;
 }.

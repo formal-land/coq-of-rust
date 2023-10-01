@@ -22,7 +22,7 @@ Module builders.
         `{parity_scale_codec.codec.Encode.Trait Args}
         `{ink_env.types.Environment.Trait E},
       (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-        M (H := H') (alloc.vec.Vec u8).
+        M (H := H') (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End builders.
 
 Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :=
@@ -44,7 +44,7 @@ Parameter constructor_exec_input :
       `{parity_scale_codec.codec.Encode.Trait Args}
       `{ink_env.types.Environment.Trait E},
     (ink_e2e.builders.CreateBuilderPartial E ContractRef Args R) ->
-      M (H := H') (alloc.vec.Vec u8).
+      M (H := H') (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 
 Module client.
   Definition CallBuilderFinal (E Args RetType : Set) : Set :=
@@ -388,7 +388,7 @@ Module client.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -419,7 +419,7 @@ Module client.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -501,7 +501,7 @@ Module client.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -529,7 +529,7 @@ Module client.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -586,7 +586,8 @@ Module client.
           :
           alloc.collections.btree.map.BTreeMap
             alloc.string.String
-            std.path.PathBuf;
+            std.path.PathBuf
+            alloc.collections.btree.map.BTreeMap.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -949,13 +950,21 @@ Module
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -978,9 +987,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -1069,8 +1082,8 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     }.
     
     Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
-      scale_decode.visitor.Visitor.Value := Value;
       scale_decode.visitor.Visitor.Error := Error;
+      scale_decode.visitor.Visitor.Value := Value;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   Global Hint Resolve I : core.
@@ -1118,7 +1131,7 @@ Module
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -1149,7 +1162,7 @@ Module
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -1236,13 +1249,21 @@ Module
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
   Global Hint Resolve I : core.
@@ -1263,14 +1284,20 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Parameter encode :
         forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') (alloc.vec.Vec Root.core.primitive.u8).
+        (ref Self) ->
+          M (H := H')
+            (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
     
     Global Instance Method_encode `{H' : State.Trait} :
       Notation.Dot "encode" := {
@@ -1282,12 +1309,16 @@ Module
           `{H' : State.Trait}
           {R F : Set}
           `{core.ops.function.FnOnce.Trait F
-              (Args := ref (Slice Root.core.primitive.u8))},
+              (Args := ref (Slice CoqOfRust.core.primitive.u8))},
         (ref Self) -> F -> M (H := H') R.
     
-    Global Instance Method_using_encoded `{H' : State.Trait} :
+    Global Instance Method_using_encoded
+        `{H' : State.Trait}
+        {R F : Set}
+        `{core.ops.function.FnOnce.Trait F
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
       Notation.Dot "using_encoded" := {
-      Notation.dot := using_encoded;
+      Notation.dot := using_encoded (R := R) (F := F);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -1370,8 +1401,8 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     }.
     
     Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
-      scale_decode.visitor.Visitor.Value := Value;
       scale_decode.visitor.Visitor.Error := Error;
+      scale_decode.visitor.Visitor.Value := Value;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   Global Hint Resolve I : core.
@@ -1413,7 +1444,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -1440,7 +1471,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -1495,7 +1526,8 @@ Module Client.
         :
         alloc.collections.btree.map.BTreeMap
           alloc.string.String
-          std.path.PathBuf;
+          std.path.PathBuf
+          alloc.collections.btree.map.BTreeMap.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -2033,7 +2065,7 @@ Module xts.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2057,7 +2089,7 @@ Module xts.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2120,9 +2152,9 @@ Module xts.
         value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
         storage_deposit_limit : core.option.Option E::type["Balance"];
-        code : alloc.vec.Vec u8;
-        data : alloc.vec.Vec u8;
-        salt : alloc.vec.Vec u8;
+        code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+        data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+        salt : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -2205,7 +2237,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2233,7 +2265,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2260,7 +2292,7 @@ Module xts.
         value : E::type["Balance"];
         gas_limit : ink_e2e.xts.Weight;
         storage_deposit_limit : core.option.Option E::type["Balance"];
-        data : alloc.vec.Vec u8;
+        data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       }.
       Global Set Primitive Projections.
       
@@ -2333,7 +2365,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2360,7 +2392,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2443,7 +2475,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2470,7 +2502,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2599,7 +2631,7 @@ Module xts.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2621,7 +2653,7 @@ Module xts.
       Context `{ink_env.types.Environment.Trait E}.
       Unset Primitive Projections.
       Record t : Set := {
-        code : alloc.vec.Vec u8;
+        code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
         storage_deposit_limit : core.option.Option E::type["Balance"];
         determinism : ink_e2e.xts.Determinism;
       }.
@@ -2685,7 +2717,7 @@ Module xts.
           (ref Self) ->
             u32 ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -2712,7 +2744,7 @@ Module xts.
           (ref Self) ->
             (ref (Slice scale_encode.PortableField)) ->
             (ref scale_info.portable.PortableRegistry) ->
-            (mut_ref (alloc.vec.Vec u8)) ->
+            (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
             M (H := H') (core.result.Result unit scale_encode.error.Error).
       
       Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -2910,9 +2942,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Weight.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -2942,13 +2978,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
       (mut_ref __CodecInputEdqy) ->
         M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
@@ -2959,7 +3003,7 @@ Module
   
   Parameter max_encoded_len :
       forall `{H' : State.Trait},
-      M (H := H') Root.core.primitive.usize.
+      M (H := H') CoqOfRust.core.primitive.usize.
   
   Global Instance AssociatedFunction_max_encoded_len `{H' : State.Trait} :
     Notation.DoubleColon Self "max_encoded_len" := {
@@ -2985,7 +3029,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3009,7 +3053,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Weight.
       (ref Self) ->
         (ref (Slice scale_encode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3034,13 +3078,21 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
         __S ->
         M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
   
-  Global Instance Method_serialize `{H' : State.Trait} :
+  Global Instance Method_serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S} :
     Notation.Dot "serialize" := {
-    Notation.dot := serialize;
+    Notation.dot := serialize (__S := __S);
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    serde.ser.Serialize.serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S}
+      :=
+      serialize (__S := __S);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
@@ -3052,13 +3104,21 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
       forall `{H' : State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
       __D -> M (H := H') (core.result.Result Self __D::type["Error"]).
   
-  Global Instance AssociatedFunction_deserialize `{H' : State.Trait} :
+  Global Instance AssociatedFunction_deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D} :
     Notation.DoubleColon Self "deserialize" := {
-    Notation.double_colon := deserialize;
+    Notation.double_colon := deserialize (__D := __D);
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize `{H' : State.Trait} := deserialize;
+    serde.de.Deserialize.deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D}
+      :=
+      deserialize (__D := __D);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
@@ -3081,27 +3141,36 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
       forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
       Self -> u64 -> M (H := H') (core.result.Result Value __E).
   
-  Global Instance Method_visit_u64 `{H' : State.Trait} :
+  Global Instance Method_visit_u64
+      `{H' : State.Trait}
+      {__E : Set}
+      `{serde.de.Error.Trait __E} :
     Notation.Dot "visit_u64" := {
-    Notation.dot := visit_u64;
+    Notation.dot := visit_u64 (__E := __E);
   }.
   
   Parameter visit_str :
       forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
       Self -> (ref str) -> M (H := H') (core.result.Result Value __E).
   
-  Global Instance Method_visit_str `{H' : State.Trait} :
+  Global Instance Method_visit_str
+      `{H' : State.Trait}
+      {__E : Set}
+      `{serde.de.Error.Trait __E} :
     Notation.Dot "visit_str" := {
-    Notation.dot := visit_str;
+    Notation.dot := visit_str (__E := __E);
   }.
   
   Parameter visit_bytes :
       forall `{H' : State.Trait} {__E : Set} `{serde.de.Error.Trait __E},
       Self -> (ref (Slice u8)) -> M (H := H') (core.result.Result Value __E).
   
-  Global Instance Method_visit_bytes `{H' : State.Trait} :
+  Global Instance Method_visit_bytes
+      `{H' : State.Trait}
+      {__E : Set}
+      `{serde.de.Error.Trait __E} :
     Notation.Dot "visit_bytes" := {
-    Notation.dot := visit_bytes;
+    Notation.dot := visit_bytes (__E := __E);
   }.
   
   Global Instance I : serde.de.Visitor.Trait Self := {
@@ -3118,13 +3187,21 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
       forall `{H' : State.Trait} {__D : Set} `{serde.de.Deserializer.Trait __D},
       __D -> M (H := H') (core.result.Result Self __D::type["Error"]).
   
-  Global Instance AssociatedFunction_deserialize `{H' : State.Trait} :
+  Global Instance AssociatedFunction_deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D} :
     Notation.DoubleColon Self "deserialize" := {
-    Notation.double_colon := deserialize;
+    Notation.double_colon := deserialize (__D := __D);
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize `{H' : State.Trait} := deserialize;
+    serde.de.Deserialize.deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D}
+      :=
+      deserialize (__D := __D);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
@@ -3147,18 +3224,24 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
       forall `{H' : State.Trait} {__A : Set} `{serde.de.SeqAccess.Trait __A},
       Self -> __A -> M (H := H') (core.result.Result Value __A::type["Error"]).
   
-  Global Instance Method_visit_seq `{H' : State.Trait} :
+  Global Instance Method_visit_seq
+      `{H' : State.Trait}
+      {__A : Set}
+      `{serde.de.SeqAccess.Trait __A} :
     Notation.Dot "visit_seq" := {
-    Notation.dot := visit_seq;
+    Notation.dot := visit_seq (__A := __A);
   }.
   
   Parameter visit_map :
       forall `{H' : State.Trait} {__A : Set} `{serde.de.MapAccess.Trait __A},
       Self -> __A -> M (H := H') (core.result.Result Value __A::type["Error"]).
   
-  Global Instance Method_visit_map `{H' : State.Trait} :
+  Global Instance Method_visit_map
+      `{H' : State.Trait}
+      {__A : Set}
+      `{serde.de.MapAccess.Trait __A} :
     Notation.Dot "visit_map" := {
-    Notation.dot := visit_map;
+    Notation.dot := visit_map (__A := __A);
   }.
   
   Global Instance I : serde.de.Visitor.Trait Self := {
@@ -3215,9 +3298,9 @@ Module InstantiateWithCode.
       value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
       storage_deposit_limit : core.option.Option E::type["Balance"];
-      code : alloc.vec.Vec u8;
-      data : alloc.vec.Vec u8;
-      salt : alloc.vec.Vec u8;
+      code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      salt : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -3304,9 +3387,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -3349,13 +3436,21 @@ Module
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3372,7 +3467,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3400,7 +3495,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3427,7 +3522,7 @@ Module Call.
       value : E::type["Balance"];
       gas_limit : ink_e2e.xts.Weight;
       storage_deposit_limit : core.option.Option E::type["Balance"];
-      data : alloc.vec.Vec u8;
+      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -3503,13 +3598,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   Global Hint Resolve I : core.
@@ -3528,9 +3631,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -3563,7 +3670,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3590,7 +3697,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3674,13 +3781,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve I : core.
@@ -3699,9 +3814,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -3737,7 +3856,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3764,7 +3883,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -3891,13 +4010,21 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
         __S ->
         M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
   
-  Global Instance Method_serialize `{H' : State.Trait} :
+  Global Instance Method_serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S} :
     Notation.Dot "serialize" := {
-    Notation.dot := serialize;
+    Notation.dot := serialize (__S := __S);
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    serde.ser.Serialize.serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S}
+      :=
+      serialize (__S := __S);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
@@ -3913,13 +4040,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
       (mut_ref __CodecInputEdqy) ->
         M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
@@ -3935,9 +4070,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Determinism.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -3965,7 +4104,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Determinism.
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') (core.result.Result unit scale_encode.error.Error).
   
   Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -3987,7 +4126,7 @@ Module UploadCode.
     Context `{ink_env.types.Environment.Trait E}.
     Unset Primitive Projections.
     Record t : Set := {
-      code : alloc.vec.Vec u8;
+      code : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
       storage_deposit_limit : core.option.Option E::type["Balance"];
       determinism : ink_e2e.xts.Determinism;
     }.
@@ -4054,9 +4193,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4095,13 +4238,21 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
         (mut_ref __CodecInputEdqy) ->
           M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
     
-    Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+    Global Instance AssociatedFunction_decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
       Notation.DoubleColon Self "decode" := {
-      Notation.double_colon := decode;
+      Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve I : core.
@@ -4117,7 +4268,7 @@ Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_type_to `{H' : State.Trait} :
@@ -4144,7 +4295,7 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') (core.result.Result unit scale_encode.error.Error).
     
     Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
@@ -4175,13 +4326,21 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
           __S ->
           M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize `{H' : State.Trait} :
+    Global Instance Method_serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S} :
       Notation.Dot "serialize" := {
-      Notation.dot := serialize;
+      Notation.dot := serialize (__S := __S);
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
-      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+      serde.ser.Serialize.serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   Global Hint Resolve I : core.
@@ -4202,9 +4361,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4247,13 +4410,21 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
           __S ->
           M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize `{H' : State.Trait} :
+    Global Instance Method_serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S} :
       Notation.Dot "serialize" := {
-      Notation.dot := serialize;
+      Notation.dot := serialize (__S := __S);
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
-      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+      serde.ser.Serialize.serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   Global Hint Resolve I : core.
@@ -4274,9 +4445,13 @@ Module
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4319,13 +4494,21 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
           __S ->
           M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
     
-    Global Instance Method_serialize `{H' : State.Trait} :
+    Global Instance Method_serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S} :
       Notation.Dot "serialize" := {
-      Notation.dot := serialize;
+      Notation.dot := serialize (__S := __S);
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
-      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+      serde.ser.Serialize.serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
   Global Hint Resolve I : core.
@@ -4345,9 +4528,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
           `{core.marker.Sized.Trait __CodecOutputEdqy},
         (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
     
-    Global Instance Method_encode_to `{H' : State.Trait} :
+    Global Instance Method_encode_to
+        `{H' : State.Trait}
+        {__CodecOutputEdqy : Set}
+        `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+        `{core.marker.Sized.Trait __CodecOutputEdqy} :
       Notation.Dot "encode_to" := {
-      Notation.dot := encode_to;
+      Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
     }.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4383,13 +4570,21 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
         __S ->
         M (H := H') (core.result.Result __S::type["Ok"] __S::type["Error"]).
   
-  Global Instance Method_serialize `{H' : State.Trait} :
+  Global Instance Method_serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S} :
     Notation.Dot "serialize" := {
-    Notation.dot := serialize;
+    Notation.dot := serialize (__S := __S);
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    serde.ser.Serialize.serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S}
+      :=
+      serialize (__S := __S);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
@@ -4405,9 +4600,13 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -4491,11 +4690,11 @@ Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
   Global Instance I : subxt.config.Config.Trait Self := {
     subxt.config.Config.Index := Index;
     subxt.config.Config.Hash := Hash;
+    subxt.config.Config.Hasher := Hasher;
     subxt.config.Config.AccountId := AccountId;
     subxt.config.Config.Address := Address;
-    subxt.config.Config.Signature := Signature;
-    subxt.config.Config.Hasher := Hasher;
     subxt.config.Config.Header := Header;
+    subxt.config.Config.Signature := Signature;
     subxt.config.Config.ExtrinsicParams := ExtrinsicParams;
   }.
   Global Hint Resolve I : core.

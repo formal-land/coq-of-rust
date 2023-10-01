@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition eat_box_i32
     `{H' : State.Trait}
-    (boxed_i32 : alloc.boxed.Box i32)
+    (boxed_i32 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A)
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
@@ -35,7 +35,7 @@ Definition borrow_i32
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* boxed_i32 := alloc.boxed.Box::["new"] 5 in
+  let* boxed_i32 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 5 in
   let stacked_i32 := 6 in
   let* _ := scoping_rules_borrowing.borrow_i32 (addr_of boxed_i32) in
   let* _ := scoping_rules_borrowing.borrow_i32 (addr_of stacked_i32) in

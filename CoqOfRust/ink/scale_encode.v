@@ -30,7 +30,8 @@ pub trait EncodeAsType {
 Module EncodeAsType.
   Class Trait (Self : Set) := {
     encode_as_type_to `{H' : State.Trait} :
-      ref Self -> u32 -> ref PortableRegistry -> mut_ref (alloc.vec.Vec u8) ->
+      ref Self -> u32 -> ref PortableRegistry ->
+      mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A) ->
       M (H := H') (core.result.Result unit Error);
   }.
 End EncodeAsType.
@@ -43,7 +44,7 @@ Module EncodeAsFields.
       (ref Self) ->
       (ref (Slice scale_encode.PortableField)) ->
       (ref scale_info.portable.PortableRegistry) ->
-      (mut_ref (alloc.vec.Vec u8)) ->
+      (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
       (M (H := H') (core.result.Result unit scale_encode.error.Error));
   }.
 End EncodeAsFields.

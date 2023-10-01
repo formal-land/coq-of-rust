@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* person :=
     let* α0 := alloc.string.String::["from"] "Alice" in
-    let* α1 := alloc.boxed.Box::["new"] 20 in
+    let* α1 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 20 in
     Pure
       {|
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α0;
@@ -55,7 +55,7 @@ Module Person.
   Unset Primitive Projections.
   Record t : Set := {
     name : alloc.string.String;
-    age : alloc.boxed.Box u8;
+    age : alloc.boxed.Box u8 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -85,7 +85,7 @@ Module
           string ->
           alloc_string_String ->
           string ->
-          alloc_boxed_Box_u8 ->
+          alloc_boxed_Box_u8_alloc_boxed_Box_Default_A ->
           M (H := H') core.fmt.Result.
   
   Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon

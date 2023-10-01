@@ -13,7 +13,7 @@ Module types.
   Module AccountId.
     Unset Primitive Projections.
     Record t : Set := {
-      _ : alloc.vec.Vec u8;
+      _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -47,7 +47,8 @@ Module types.
     
     Parameter from :
         forall `{H' : State.Trait},
-        (alloc.vec.Vec u8) -> M (H := H') ink_engine.types.AccountId.
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A) ->
+          M (H := H') ink_engine.types.AccountId.
     
     Global Instance AssociatedFunction_from `{H' : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -55,7 +56,9 @@ Module types.
     }.
     
     Global Instance I
-      : core.convert.From.Trait Self (T := alloc.vec.Vec u8) := {
+      : core.convert.From.Trait Self
+          (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        := {
       core.convert.From.from `{H' : State.Trait} := from;
     }.
     Global Hint Resolve I : core.
@@ -180,12 +183,21 @@ Module types.
         forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
         (ref Self) -> (mut_ref __H) -> M (H := H') unit.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -193,7 +205,7 @@ Module types.
   Module Key.
     Unset Primitive Projections.
     Record t : Set := {
-      _ : alloc.vec.Vec u8;
+      _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -226,7 +238,8 @@ Module types.
     
     Parameter from :
         forall `{H' : State.Trait},
-        (alloc.vec.Vec u8) -> M (H := H') ink_engine.types.Key.
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A) ->
+          M (H := H') ink_engine.types.Key.
     
     Global Instance AssociatedFunction_from `{H' : State.Trait} :
       Notation.DoubleColon Self "from" := {
@@ -234,7 +247,9 @@ Module types.
     }.
     
     Global Instance I
-      : core.convert.From.Trait Self (T := alloc.vec.Vec u8) := {
+      : core.convert.From.Trait Self
+          (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        := {
       core.convert.From.from `{H' : State.Trait} := from;
     }.
     Global Hint Resolve I : core.
@@ -359,12 +374,21 @@ Module types.
         forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
         (ref Self) -> (mut_ref __H) -> M (H := H') unit.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_engine_types_Key.
@@ -373,7 +397,7 @@ Module types.
     Inductive t : Set :=
     | Decoding (_ : parity_scale_codec.error.Error)
     | UnexpectedUserAccount
-    | NoAccountForId (_ : alloc.vec.Vec u8).
+    | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
   Definition AccountError := AccountError.t.
   
@@ -491,8 +515,12 @@ Module test_api.
   Module EmittedEvent.
     Unset Primitive Projections.
     Record t : Set := {
-      topics : alloc.vec.Vec (alloc.vec.Vec u8);
-      data : alloc.vec.Vec u8;
+      topics
+        :
+        alloc.vec.Vec
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          alloc.vec.Vec.Default.A;
+      data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -550,7 +578,9 @@ Module test_api.
   Module RecordedDebugMessages.
     Unset Primitive Projections.
     Record t : Set := {
-      debug_messages : alloc.vec.Vec alloc.string.String;
+      debug_messages
+        :
+        alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -601,19 +631,31 @@ Module test_api.
   Module DebugInfo.
     Unset Primitive Projections.
     Record t : Set := {
-      emitted_events : alloc.vec.Vec ink_engine.test_api.EmittedEvent;
+      emitted_events
+        :
+        alloc.vec.Vec ink_engine.test_api.EmittedEvent alloc.vec.Vec.Default.A;
       emitted_debug_messages : ink_engine.test_api.RecordedDebugMessages;
       count_reads
         :
-        std.collections.hash.map.HashMap ink_engine.types.AccountId usize;
+        std.collections.hash.map.HashMap
+          ink_engine.types.AccountId
+          usize
+          std.collections.hash.map.HashMap.Default.S;
       count_writes
         :
-        std.collections.hash.map.HashMap ink_engine.types.AccountId usize;
+        std.collections.hash.map.HashMap
+          ink_engine.types.AccountId
+          usize
+          std.collections.hash.map.HashMap.Default.S;
       cells_per_account
         :
         std.collections.hash.map.HashMap
           ink_engine.types.AccountId
-          (std.collections.hash.map.HashMap (alloc.vec.Vec u8) bool);
+          (std.collections.hash.map.HashMap
+            (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+            bool
+            std.collections.hash.map.HashMap.Default.S)
+          std.collections.hash.map.HashMap.Default.S;
     }.
     Global Set Primitive Projections.
     
@@ -695,7 +737,7 @@ Module chain_extension.
         :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
-          (mut_ref (alloc.vec.Vec u8)) ->
+          (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
           M (H := H') u32;
     }.
     
@@ -727,8 +769,11 @@ Module chain_extension.
         :
         std.collections.hash.map.HashMap
           ink_engine.chain_extension.ExtensionId
-          (alloc.boxed.Box Dyn_ink_engine_chain_extension_ChainExtension);
-      output : alloc.vec.Vec u8;
+          (alloc.boxed.Box
+            Dyn_ink_engine_chain_extension_ChainExtension
+            alloc.boxed.Box.Default.A)
+          std.collections.hash.map.HashMap.Default.S;
+      output : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -891,12 +936,21 @@ Module chain_extension.
         forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
         (ref Self) -> (mut_ref __H) -> M (H := H') unit.
     
-    Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-      Notation.dot := hash;
+    Global Instance Method_hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H} :
+      Notation.Dot "hash" := {
+      Notation.dot := hash (__H := __H);
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -934,7 +988,10 @@ Module database.
     Record t : Set := {
       hmap
         :
-        std.collections.hash.map.HashMap (alloc.vec.Vec u8) (alloc.vec.Vec u8);
+        std.collections.hash.map.HashMap
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          std.collections.hash.map.HashMap.Default.S;
     }.
     Global Set Primitive Projections.
     
@@ -975,7 +1032,11 @@ Module exec_context.
       value_transferred : ink_engine.types.Balance;
       block_number : ink_engine.types.BlockNumber;
       block_timestamp : ink_engine.types.BlockTimestamp;
-      contracts : alloc.vec.Vec (alloc.vec.Vec u8);
+      contracts
+        :
+        alloc.vec.Vec
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
@@ -1365,8 +1426,12 @@ End Impl_core_default_Default_for_ink_engine_ext_Engine.
 Module EmittedEvent.
   Unset Primitive Projections.
   Record t : Set := {
-    topics : alloc.vec.Vec (alloc.vec.Vec u8);
-    data : alloc.vec.Vec u8;
+    topics
+      :
+      alloc.vec.Vec
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        alloc.vec.Vec.Default.A;
+    data : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -1422,7 +1487,7 @@ End Impl_core_clone_Clone_for_ink_engine_test_api_EmittedEvent.
 Module RecordedDebugMessages.
   Unset Primitive Projections.
   Record t : Set := {
-    debug_messages : alloc.vec.Vec alloc.string.String;
+    debug_messages : alloc.vec.Vec alloc.string.String alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -1474,7 +1539,8 @@ End Impl_core_default_Default_for_ink_engine_test_api_RecordedDebugMessages.
   
   Definition Item : Set := alloc.string.String.
   
-  Definition IntoIter : Set := alloc.vec.into_iter.IntoIter Item.
+  Definition IntoIter : Set :=
+    alloc.vec.into_iter.IntoIter Item alloc.vec.into_iter.IntoIter.Default.A.
   
   Parameter into_iter :
       forall `{H' : State.Trait},
@@ -1498,19 +1564,31 @@ End Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedD
 Module DebugInfo.
   Unset Primitive Projections.
   Record t : Set := {
-    emitted_events : alloc.vec.Vec ink_engine.test_api.EmittedEvent;
+    emitted_events
+      :
+      alloc.vec.Vec ink_engine.test_api.EmittedEvent alloc.vec.Vec.Default.A;
     emitted_debug_messages : ink_engine.test_api.RecordedDebugMessages;
     count_reads
       :
-      std.collections.hash.map.HashMap ink_engine.types.AccountId usize;
+      std.collections.hash.map.HashMap
+        ink_engine.types.AccountId
+        usize
+        std.collections.hash.map.HashMap.Default.S;
     count_writes
       :
-      std.collections.hash.map.HashMap ink_engine.types.AccountId usize;
+      std.collections.hash.map.HashMap
+        ink_engine.types.AccountId
+        usize
+        std.collections.hash.map.HashMap.Default.S;
     cells_per_account
       :
       std.collections.hash.map.HashMap
         ink_engine.types.AccountId
-        (std.collections.hash.map.HashMap (alloc.vec.Vec u8) bool);
+        (std.collections.hash.map.HashMap
+          (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+          bool
+          std.collections.hash.map.HashMap.Default.S)
+        std.collections.hash.map.HashMap.Default.S;
   }.
   Global Set Primitive Projections.
   
@@ -1586,8 +1664,11 @@ Module ChainExtensionHandler.
       :
       std.collections.hash.map.HashMap
         ink_engine.chain_extension.ExtensionId
-        (alloc.boxed.Box Dyn_ink_engine_chain_extension_ChainExtension);
-    output : alloc.vec.Vec u8;
+        (alloc.boxed.Box
+          Dyn_ink_engine_chain_extension_ChainExtension
+          alloc.boxed.Box.Default.A)
+        std.collections.hash.map.HashMap.Default.S;
+    output : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -1665,14 +1746,20 @@ End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
         `{core.marker.Sized.Trait __CodecOutputEdqy},
       (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
   
-  Global Instance Method_encode_to `{H' : State.Trait} :
+  Global Instance Method_encode_to
+      `{H' : State.Trait}
+      {__CodecOutputEdqy : Set}
+      `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
+      `{core.marker.Sized.Trait __CodecOutputEdqy} :
     Notation.Dot "encode_to" := {
-    Notation.dot := encode_to;
+    Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
   Parameter encode :
       forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (alloc.vec.Vec Root.core.primitive.u8).
+      (ref Self) ->
+        M (H := H')
+          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
   
   Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
@@ -1683,12 +1770,16 @@ End Impl_core_convert_From_for_ink_engine_chain_extension_ExtensionId.
         `{H' : State.Trait}
         {R F : Set}
         `{core.ops.function.FnOnce.Trait F
-            (Args := ref (Slice Root.core.primitive.u8))},
+            (Args := ref (Slice CoqOfRust.core.primitive.u8))},
       (ref Self) -> F -> M (H := H') R.
   
-  Global Instance Method_using_encoded `{H' : State.Trait} :
+  Global Instance Method_using_encoded
+      `{H' : State.Trait}
+      {R F : Set}
+      `{core.ops.function.FnOnce.Trait F
+          (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
     Notation.Dot "using_encoded" := {
-    Notation.dot := using_encoded;
+    Notation.dot := using_encoded (R := R) (F := F);
   }.
   
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
@@ -1718,13 +1809,21 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extensio
       (mut_ref __CodecInputEdqy) ->
         M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
   
-  Global Instance AssociatedFunction_decode `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
-    Notation.double_colon := decode;
+    Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId. *)
@@ -1834,12 +1933,21 @@ Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
       forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M (H := H') unit.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -1851,7 +1959,7 @@ Module ChainExtension.
       :
       (mut_ref Self) ->
         (ref (Slice u8)) ->
-        (mut_ref (alloc.vec.Vec u8)) ->
+        (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
         M (H := H') u32;
   }.
   
@@ -1896,7 +2004,10 @@ Module Database.
   Record t : Set := {
     hmap
       :
-      std.collections.hash.map.HashMap (alloc.vec.Vec u8) (alloc.vec.Vec u8);
+      std.collections.hash.map.HashMap
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        std.collections.hash.map.HashMap.Default.S;
   }.
   Global Set Primitive Projections.
   
@@ -1935,7 +2046,11 @@ Module ExecContext.
     value_transferred : ink_engine.types.Balance;
     block_number : ink_engine.types.BlockNumber;
     block_timestamp : ink_engine.types.BlockTimestamp;
-    contracts : alloc.vec.Vec (alloc.vec.Vec u8);
+    contracts
+      :
+      alloc.vec.Vec
+        (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+        alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -2042,7 +2157,7 @@ Definition Balance : Set := u128.
 Module AccountId.
   Unset Primitive Projections.
   Record t : Set := {
-    _ : alloc.vec.Vec u8;
+    _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -2074,14 +2189,18 @@ Module Impl_core_convert_From_for_ink_engine_types_AccountId.
   
   Parameter from :
       forall `{H' : State.Trait},
-      (alloc.vec.Vec u8) -> M (H := H') ink_engine.types.AccountId.
+      (alloc.vec.Vec u8 alloc.vec.Vec.Default.A) ->
+        M (H := H') ink_engine.types.AccountId.
   
   Global Instance AssociatedFunction_from `{H' : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T := alloc.vec.Vec u8) := {
+  Global Instance I
+    : core.convert.From.Trait Self
+        (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+      := {
     core.convert.From.from `{H' : State.Trait} := from;
   }.
   Global Hint Resolve I : core.
@@ -2205,12 +2324,21 @@ Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
       forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M (H := H') unit.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -2218,7 +2346,7 @@ End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
 Module Key.
   Unset Primitive Projections.
   Record t : Set := {
-    _ : alloc.vec.Vec u8;
+    _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
@@ -2251,14 +2379,18 @@ Module Impl_core_convert_From_for_ink_engine_types_Key.
   
   Parameter from :
       forall `{H' : State.Trait},
-      (alloc.vec.Vec u8) -> M (H := H') ink_engine.types.Key.
+      (alloc.vec.Vec u8 alloc.vec.Vec.Default.A) ->
+        M (H := H') ink_engine.types.Key.
   
   Global Instance AssociatedFunction_from `{H' : State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T := alloc.vec.Vec u8) := {
+  Global Instance I
+    : core.convert.From.Trait Self
+        (T := alloc.vec.Vec u8 alloc.vec.Vec.Default.A)
+      := {
     core.convert.From.from `{H' : State.Trait} := from;
   }.
   Global Hint Resolve I : core.
@@ -2380,12 +2512,21 @@ Module Impl_core_hash_Hash_for_ink_engine_types_Key.
       forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M (H := H') unit.
   
-  Global Instance Method_hash `{H' : State.Trait} : Notation.Dot "hash" := {
-    Notation.dot := hash;
+  Global Instance Method_hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H} :
+    Notation.Dot "hash" := {
+    Notation.dot := hash (__H := __H);
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_engine_types_Key.
@@ -2394,7 +2535,7 @@ Module AccountError.
   Inductive t : Set :=
   | Decoding (_ : parity_scale_codec.error.Error)
   | UnexpectedUserAccount
-  | NoAccountForId (_ : alloc.vec.Vec u8).
+  | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
 Definition AccountError := AccountError.t.
 

@@ -74,6 +74,24 @@ Require CoqOfRust.ink.ink_env.""",
         f.write(content)
 
 
+def update_ink_allocator():
+    file_name = "ink_allocator.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+
+    content = ignore_module_names(
+        [
+            "Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc",
+            "Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc",
+            "Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc",
+        ],
+        content,
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 def update_ink_engine():
     file_name = "ink_engine.v"
     with open(file_name, "r") as f:
@@ -106,12 +124,6 @@ End Error.
 Definition Error := Error.t.
 """,
         "",
-    )
-
-    content = sub_at_least_once(
-        "core.hash.Hash.hash `{H' : State.Trait} := hash;",
-        "core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);",
-        content,
     )
 
     content = ignore_module_names(
@@ -348,14 +360,9 @@ def update_ink_primitives():
         pattern,
         pattern
         + """
+Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.scale_info.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        "core.hash.Hash.hash `{H' : State.Trait} := hash;",
-        "core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);",
         content,
     )
 
@@ -376,12 +383,6 @@ Require CoqOfRust.ink.scale_info.""",
         """End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
   
   Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        "scale_info.ty.Type_",
-        "(scale_info.ty.Type_ scale_info.ty.Type_.Default.T)",
         content,
     )
 
@@ -456,12 +457,6 @@ Require CoqOfRust.ink.parity_scale_codec.""",
     )
 
     content = sub_at_least_once(
-        "scale_info.ty.Type_",
-        "(scale_info.ty.Type_ scale_info.ty.Type_.Default.T)",
-        content,
-    )
-
-    content = sub_at_least_once(
         "Global Instance I",
         "Global Instance I'",
         content,
@@ -482,9 +477,9 @@ Require CoqOfRust.ink.parity_scale_codec.""",
             "Impl_ink_storage_traits_storage_Packed_for_P",
             "Impl_ink_storage_traits_storage_StorageKey_for_P",
             "Impl_ink_storage_traits_storage_StorableHint_for_P",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T",
-            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A",
+            "Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A",
         ],
         content,
     )
@@ -536,11 +531,47 @@ Require CoqOfRust.ink.ink.""",
     )
 
     content = sub_at_least_once(
-        """    Definition Env : Set := ink_env.types.DefaultEnvironment.""",
-        """    Definition Env : Set := ink_env.types.DefaultEnvironment.
-
-    Global Instance Impl_Environment_for_Env : ink_env.types.Environment.Trait Env. Admitted.
-    Global Hint Resolve Impl_Environment_for_Env : core.""",
+        """Module erc20.""",
+        """Module erc20.
+  Module Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+    Definition Self := ink_env.types.DefaultEnvironment.
+    
+    Definition MAX_EVENT_TOPICS := 4.
+    
+    Global Instance AssociatedFunction_MAX_EVENT_TOPICS `{H' : State.Trait} :
+      Notation.DoubleColon Self "MAX_EVENT_TOPICS" := {
+      Notation.double_colon := MAX_EVENT_TOPICS;
+    }.
+    
+    Definition AccountId : Set := ink_primitives.types.AccountId.
+    
+    Definition Balance : Set := ink_env.types.Balance.
+    
+    Definition Hash : Set := ink_primitives.types.Hash.
+    
+    Definition Timestamp : Set := ink_env.types.Timestamp.
+    
+    Definition BlockNumber : Set := ink_env.types.BlockNumber.
+    
+    Definition ChainExtension : Set := ink_env.types.NoChainExtension.
+    
+    #[refine]
+    Global Instance I : ink_env.types.Environment.Trait Self := {
+      ink_env.types.Environment.MAX_EVENT_TOPICS `{H' : State.Trait}
+        :=
+        MAX_EVENT_TOPICS;
+      ink_env.types.Environment.AccountId := AccountId;
+      ink_env.types.Environment.Balance := Balance;
+      ink_env.types.Environment.Hash := Hash;
+      ink_env.types.Environment.Timestamp := Timestamp;
+      ink_env.types.Environment.BlockNumber := BlockNumber;
+      ink_env.types.Environment.ChainExtension := ChainExtension;
+    }.
+    eauto.
+    Defined.
+    Global Hint Resolve I : core.
+  End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
+""",
         content,
     )
 
@@ -558,11 +589,20 @@ Require CoqOfRust.ink.ink.""",
         content,
     )
 
+    content = sub_at_least_once(
+        re.escape(
+            "ink_env.contract.ContractEnv.Env (Self := erc20.erc20.Erc20)"
+        ),
+        "ink_env.types.DefaultEnvironment",
+        content,
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 
 
 update_ink()
+update_ink_allocator()
 update_ink_e2e_macro()
 update_ink_engine()
 update_ink_env()
