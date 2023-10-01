@@ -393,7 +393,12 @@ Module types.
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
@@ -727,7 +732,12 @@ Module types.
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
@@ -1016,8 +1026,8 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
   }.
   
   Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
-    scale_decode.visitor.Visitor.Value := Value;
     scale_decode.visitor.Visitor.Error := Error;
+    scale_decode.visitor.Visitor.Value := Value;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
@@ -1245,7 +1255,12 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
@@ -1270,7 +1285,12 @@ End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
@@ -1531,8 +1551,8 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
   }.
   
   Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
-    scale_decode.visitor.Visitor.Value := Value;
     scale_decode.visitor.Visitor.Error := Error;
+    scale_decode.visitor.Visitor.Value := Value;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
@@ -1760,7 +1780,12 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
@@ -1785,7 +1810,12 @@ End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
@@ -2212,7 +2242,12 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)

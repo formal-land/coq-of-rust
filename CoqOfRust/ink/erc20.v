@@ -321,8 +321,8 @@ Module erc20.
     Global Instance I
       : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
       ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
-      ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
+      ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
       ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
       ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
         `{H' : State.Trait}
@@ -404,15 +404,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -477,15 +477,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -553,15 +553,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -629,15 +629,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -705,15 +705,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -783,15 +783,15 @@ Module erc20.
       ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
         :=
         CALLABLE;
-      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-        :=
-        MUTATES;
-      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-        :=
-        PAYABLE;
       ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
         :=
         SELECTOR;
+      ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+        :=
+        PAYABLE;
+      ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+        :=
+        MUTATES;
       ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
         :=
         LABEL;
@@ -875,7 +875,12 @@ Module erc20.
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} := hash;
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -1780,8 +1785,19 @@ Module Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
   }.
   
   Global Instance I : ink_storage_traits.storage.Storable.Trait Self := {
-    ink_storage_traits.storage.Storable.encode `{H' : State.Trait} := encode;
-    ink_storage_traits.storage.Storable.decode `{H' : State.Trait} := decode;
+    ink_storage_traits.storage.Storable.decode
+      `{H' : State.Trait}
+      {__ink_I : Set}
+      `{parity_scale_codec.codec.Input.Trait __ink_I}
+      :=
+      decode (__ink_I := __ink_I);
+    ink_storage_traits.storage.Storable.encode
+      `{H' : State.Trait}
+      {__ink_O : Set}
+      `{parity_scale_codec.codec.Output.Trait __ink_O}
+      `{core.marker.Sized.Trait __ink_O}
+      :=
+      encode (__ink_O := __ink_O);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_storage_traits_storage_Storable_for_erc20_erc20_Erc20.
@@ -2060,9 +2076,14 @@ Module
   
   Global Instance I
     : ink.codegen.event.emit.EmitEvent.Trait Self (C := erc20.erc20.Erc20) := {
-    ink.codegen.event.emit.EmitEvent.emit_event `{H' : State.Trait}
+    ink.codegen.event.emit.EmitEvent.emit_event
+      `{H' : State.Trait}
+      {E : Set}
+      `{core.convert.Into.Trait E
+          (T := ink.reflect.event.ContractEventBase.Type_
+            (Self := erc20.erc20.Erc20))}
       :=
-      emit_event;
+      emit_event (E := E);
   }.
   Global Hint Resolve I : core.
 End
@@ -2221,7 +2242,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
@@ -2343,7 +2369,13 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
     ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
+    ink_env.topics.Topics.topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+      :=
+      topics (E := E) (B := B);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_env_topics_Topics_for_erc20_erc20___ink_EventBase.
@@ -2508,7 +2540,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Transfer.
@@ -2649,7 +2686,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Approval.
@@ -2711,7 +2753,13 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
     ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
+    ink_env.topics.Topics.topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+      :=
+      topics (E := E) (B := B);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Transfer.
@@ -2771,7 +2819,13 @@ Module Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
   
   Global Instance I : ink_env.topics.Topics.Trait Self := {
     ink_env.topics.Topics.RemainingTopics := RemainingTopics;
-    ink_env.topics.Topics.topics `{H' : State.Trait} := topics;
+    ink_env.topics.Topics.topics
+      `{H' : State.Trait}
+      {E B : Set}
+      `{ink_env.types.Environment.Trait E}
+      `{ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
+      :=
+      topics (E := E) (B := B);
   }.
   Global Hint Resolve I : core.
 End Impl_ink_env_topics_Topics_for_erc20_erc20_Approval.
@@ -2835,8 +2889,8 @@ Module
   Global Instance I
     : ink.reflect.dispatch.DispatchableConstructorInfo.Trait Self := {
     ink.reflect.dispatch.DispatchableConstructorInfo.Input := Input;
-    ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableConstructorInfo.Output := Output;
+    ink.reflect.dispatch.DispatchableConstructorInfo.Storage := Storage;
     ink.reflect.dispatch.DispatchableConstructorInfo.Error := Error;
     ink.reflect.dispatch.DispatchableConstructorInfo.IS_RESULT
       `{H' : State.Trait}
@@ -2915,15 +2969,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -2987,15 +3041,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3062,15 +3116,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3137,15 +3191,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3209,15 +3263,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3286,15 +3340,15 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
     ink.reflect.dispatch.DispatchableMessageInfo.CALLABLE `{H' : State.Trait}
       :=
       CALLABLE;
-    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
-      :=
-      MUTATES;
-    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
-      :=
-      PAYABLE;
     ink.reflect.dispatch.DispatchableMessageInfo.SELECTOR `{H' : State.Trait}
       :=
       SELECTOR;
+    ink.reflect.dispatch.DispatchableMessageInfo.PAYABLE `{H' : State.Trait}
+      :=
+      PAYABLE;
+    ink.reflect.dispatch.DispatchableMessageInfo.MUTATES `{H' : State.Trait}
+      :=
+      MUTATES;
     ink.reflect.dispatch.DispatchableMessageInfo.LABEL `{H' : State.Trait}
       :=
       LABEL;
@@ -3377,9 +3431,12 @@ Module
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch `{H' : State.Trait}
+    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       :=
-      decode_dispatch;
+      decode_dispatch (I := I);
   }.
   Global Hint Resolve I : core.
 End
@@ -3417,7 +3474,12 @@ Module
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
+      :=
+      decode (I := I);
   }.
   Global Hint Resolve I : core.
 End
@@ -3733,9 +3795,12 @@ Module
   }.
   
   Global Instance I : ink.reflect.dispatch.DecodeDispatch.Trait Self := {
-    ink.reflect.dispatch.DecodeDispatch.decode_dispatch `{H' : State.Trait}
+    ink.reflect.dispatch.DecodeDispatch.decode_dispatch
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
       :=
-      decode_dispatch;
+      decode_dispatch (I := I);
   }.
   Global Hint Resolve I : core.
 End
@@ -3801,7 +3866,12 @@ Module
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {I : Set}
+      `{parity_scale_codec.codec.Input.Trait I}
+      :=
+      decode (I := I);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_____ink_MessageDecoder.
@@ -4813,7 +4883,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___CallBuilder.
@@ -4839,7 +4914,12 @@ Module Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} := hash;
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_erc20_erc20___CallBuilder.
@@ -5509,7 +5589,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Erc20Ref.
@@ -5535,7 +5620,12 @@ Module Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} := hash;
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_erc20_erc20_Erc20Ref.
@@ -7134,7 +7224,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.

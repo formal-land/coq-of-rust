@@ -80,12 +80,19 @@ Module storage.
       }.
       
       Global Instance I' : ink_storage_traits.storage.Storable.Trait Self := {
-        ink_storage_traits.storage.Storable.encode `{H' : State.Trait}
+        ink_storage_traits.storage.Storable.encode
+          `{H' : State.Trait}
+          {T : Set}
+          `{parity_scale_codec.codec.Output.Trait T}
+          `{core.marker.Sized.Trait T}
           :=
-          encode;
-        ink_storage_traits.storage.Storable.decode `{H' : State.Trait}
+          encode (T := T);
+        ink_storage_traits.storage.Storable.decode
+          `{H' : State.Trait}
+          {I : Set}
+          `{parity_scale_codec.codec.Input.Trait I}
           :=
-          decode;
+          decode (I := I);
       }.
     End Impl_ink_storage_traits_storage_Storable_for_P. *)
     Global Hint Resolve I' : core.
@@ -1691,8 +1698,19 @@ End Storable.
     }.
     
     Global Instance I' : ink_storage_traits.storage.Storable.Trait Self := {
-      ink_storage_traits.storage.Storable.encode `{H' : State.Trait} := encode;
-      ink_storage_traits.storage.Storable.decode `{H' : State.Trait} := decode;
+      ink_storage_traits.storage.Storable.encode
+        `{H' : State.Trait}
+        {T : Set}
+        `{parity_scale_codec.codec.Output.Trait T}
+        `{core.marker.Sized.Trait T}
+        :=
+        encode (T := T);
+      ink_storage_traits.storage.Storable.decode
+        `{H' : State.Trait}
+        {I : Set}
+        `{parity_scale_codec.codec.Input.Trait I}
+        :=
+        decode (I := I);
     }.
   End Impl_ink_storage_traits_storage_Storable_for_P. *)
   Global Hint Resolve I' : core.

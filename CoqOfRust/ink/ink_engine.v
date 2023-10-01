@@ -192,7 +192,12 @@ Module types.
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -378,7 +383,12 @@ Module types.
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_engine_types_Key.
@@ -935,7 +945,12 @@ Module chain_extension.
     }.
     
     Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+      core.hash.Hash.hash
+        `{H' : State.Trait}
+        {__H : Set}
+        `{core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
     }.
     Global Hint Resolve I : core.
   End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -1803,7 +1818,12 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_engine_chain_extensio
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_engine_chain_extension_ExtensionId. *)
@@ -1922,7 +1942,12 @@ Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
@@ -2308,7 +2333,12 @@ Module Impl_core_hash_Hash_for_ink_engine_types_AccountId.
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
@@ -2491,7 +2521,12 @@ Module Impl_core_hash_Hash_for_ink_engine_types_Key.
   }.
   
   Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);
+    core.hash.Hash.hash
+      `{H' : State.Trait}
+      {__H : Set}
+      `{core.hash.Hasher.Trait __H}
+      :=
+      hash (__H := __H);
   }.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_ink_engine_types_Key.

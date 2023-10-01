@@ -959,7 +959,12 @@ Module
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
@@ -1077,8 +1082,8 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     }.
     
     Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
-      scale_decode.visitor.Visitor.Value := Value;
       scale_decode.visitor.Visitor.Error := Error;
+      scale_decode.visitor.Visitor.Value := Value;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   Global Hint Resolve I : core.
@@ -1253,7 +1258,12 @@ Module
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
   Global Hint Resolve I : core.
@@ -1391,8 +1401,8 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     }.
     
     Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
-      scale_decode.visitor.Visitor.Value := Value;
       scale_decode.visitor.Visitor.Error := Error;
+      scale_decode.visitor.Visitor.Value := Value;
     }.
   End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
   Global Hint Resolve I : core.
@@ -2977,7 +2987,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
@@ -3072,7 +3087,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    serde.ser.Serialize.serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S}
+      :=
+      serialize (__S := __S);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Weight.
@@ -3093,7 +3113,12 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize `{H' : State.Trait} := deserialize;
+    serde.de.Deserialize.deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D}
+      :=
+      deserialize (__D := __D);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
@@ -3171,7 +3196,12 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
   }.
   
   Global Instance I : serde.de.Deserialize.Trait Self := {
-    serde.de.Deserialize.deserialize `{H' : State.Trait} := deserialize;
+    serde.de.Deserialize.deserialize
+      `{H' : State.Trait}
+      {__D : Set}
+      `{serde.de.Deserializer.Trait __D}
+      :=
+      deserialize (__D := __D);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
@@ -3415,7 +3445,12 @@ Module
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
@@ -3572,7 +3607,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   Global Hint Resolve I : core.
@@ -3750,7 +3790,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   Global Hint Resolve I : core.
@@ -3974,7 +4019,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    serde.ser.Serialize.serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S}
+      :=
+      serialize (__S := __S);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Determinism.
@@ -3999,7 +4049,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
   }.
   
   Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-    parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+    parity_scale_codec.codec.Decode.decode
+      `{H' : State.Trait}
+      {__CodecInputEdqy : Set}
+      `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+      :=
+      decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Determinism.
@@ -4192,7 +4247,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
     }.
     
     Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
-      parity_scale_codec.codec.Decode.decode `{H' : State.Trait} := decode;
+      parity_scale_codec.codec.Decode.decode
+        `{H' : State.Trait}
+        {__CodecInputEdqy : Set}
+        `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
+        :=
+        decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
   End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve I : core.
@@ -4275,7 +4335,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
-      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+      serde.ser.Serialize.serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
   Global Hint Resolve I : core.
@@ -4354,7 +4419,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
-      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+      serde.ser.Serialize.serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
   Global Hint Resolve I : core.
@@ -4433,7 +4503,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
     }.
     
     Global Instance I : serde.ser.Serialize.Trait Self := {
-      serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+      serde.ser.Serialize.serialize
+        `{H' : State.Trait}
+        {__S : Set}
+        `{serde.ser.Serializer.Trait __S}
+        :=
+        serialize (__S := __S);
     }.
   End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
   Global Hint Resolve I : core.
@@ -4504,7 +4579,12 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
   }.
   
   Global Instance I : serde.ser.Serialize.Trait Self := {
-    serde.ser.Serialize.serialize `{H' : State.Trait} := serialize;
+    serde.ser.Serialize.serialize
+      `{H' : State.Trait}
+      {__S : Set}
+      `{serde.ser.Serializer.Trait __S}
+      :=
+      serialize (__S := __S);
   }.
   Global Hint Resolve I : core.
 End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
@@ -4610,11 +4690,11 @@ Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
   Global Instance I : subxt.config.Config.Trait Self := {
     subxt.config.Config.Index := Index;
     subxt.config.Config.Hash := Hash;
+    subxt.config.Config.Hasher := Hasher;
     subxt.config.Config.AccountId := AccountId;
     subxt.config.Config.Address := Address;
-    subxt.config.Config.Signature := Signature;
-    subxt.config.Config.Hasher := Hasher;
     subxt.config.Config.Header := Header;
+    subxt.config.Config.Signature := Signature;
     subxt.config.Config.ExtrinsicParams := ExtrinsicParams;
   }.
   Global Hint Resolve I : core.

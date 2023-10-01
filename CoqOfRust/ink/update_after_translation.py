@@ -126,12 +126,6 @@ Definition Error := Error.t.
         "",
     )
 
-    content = sub_at_least_once(
-        "core.hash.Hash.hash `{H' : State.Trait} := hash;",
-        "core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);",
-        content,
-    )
-
     content = ignore_module_names(
         [
             "Impl_core_iter_traits_collect_IntoIterator_for_ink_engine_test_api_RecordedDebugMessages",
@@ -369,12 +363,6 @@ def update_ink_primitives():
 Require CoqOfRust.ink.parity_scale_codec.
 Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.scale_info.""",
-        content,
-    )
-
-    content = sub_at_least_once(
-        "core.hash.Hash.hash `{H' : State.Trait} := hash;",
-        "core.hash.Hash.hash `{H' : State.Trait} (__H : Set) `{H' : core.hash.Hasher.Trait __H} := hash (__H := __H);",
         content,
     )
 
