@@ -7,7 +7,7 @@ Module Food.
   | Carrot
   | Potato.
 End Food.
-Definition Food := Food.t.
+Definition Food : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self := combinators_map.Food.

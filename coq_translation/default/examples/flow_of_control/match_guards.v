@@ -6,7 +6,7 @@ Module Temperature.
   | Celsius (_ : i32)
   | Fahrenheit (_ : i32).
 End Temperature.
-Definition Temperature := Temperature.t.
+Definition Temperature : Set := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=

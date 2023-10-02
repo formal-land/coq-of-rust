@@ -17,7 +17,7 @@ Module key.
     | StructNameIsEmpty
     | FieldNameIsEmpty.
   End Error.
-  Definition Error := Error.t.
+  Definition Error : Set := Error.t.
   
   Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
     Definition Self := ink_primitives.key.Error.
@@ -104,7 +104,7 @@ Module Error.
   | StructNameIsEmpty
   | FieldNameIsEmpty.
 End Error.
-Definition Error := Error.t.
+Definition Error : Set := Error.t.
 
 Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
   Definition Self := ink_primitives.key.Error.
@@ -2069,7 +2069,7 @@ Module LangError.
   Inductive t : Set :=
   | CouldNotReadInput.
 End LangError.
-Definition LangError := LangError.t.
+Definition LangError : Set := LangError.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
   Definition Self := ink_primitives.LangError.

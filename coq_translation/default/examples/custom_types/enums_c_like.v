@@ -7,7 +7,7 @@ Module Number.
   | One
   | Two.
 End Number.
-Definition Number := Number.t.
+Definition Number : Set := Number.t.
 
 Module Color.
   Inductive t : Set :=
@@ -15,7 +15,7 @@ Module Color.
   | Green
   | Blue.
 End Color.
-Definition Color := Color.t.
+Definition Color : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=

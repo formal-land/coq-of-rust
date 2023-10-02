@@ -104,7 +104,7 @@ Module Either.
   | Num (_ : i32)
   | Ref (_ : ref i32).
 End Either.
-Definition Either := Either.t.
+Definition Either : Set := Either.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Definition Self := scoping_rules_lifetimes_structs.Either.

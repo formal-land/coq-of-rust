@@ -238,7 +238,7 @@ Module erc20.
     | Transfer (_ : erc20.erc20.Transfer)
     | Approval (_ : erc20.erc20.Approval).
   End __ink_EventBase.
-  Definition __ink_EventBase := __ink_EventBase.t.
+  Definition __ink_EventBase : Set := __ink_EventBase.t.
   
   Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
     Definition Self := erc20.erc20.Transfer.
@@ -1404,7 +1404,7 @@ Module erc20.
     | InsufficientBalance
     | InsufficientAllowance.
   End Error.
-  Definition Error := Error.t.
+  Definition Error : Set := Error.t.
   
   Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
     Definition Self := erc20.erc20.Error.
@@ -2094,7 +2094,7 @@ Module __ink_EventBase.
   | Transfer (_ : erc20.erc20.Transfer)
   | Approval (_ : erc20.erc20.Approval).
 End __ink_EventBase.
-Definition __ink_EventBase := __ink_EventBase.t.
+Definition __ink_EventBase : Set := __ink_EventBase.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
   Definition Self := erc20.erc20.__ink_EventBase.
@@ -2309,7 +2309,8 @@ Module __ink_UndefinedAmountOfTopics.
   Inductive t : Set :=
   .
 End __ink_UndefinedAmountOfTopics.
-Definition __ink_UndefinedAmountOfTopics := __ink_UndefinedAmountOfTopics.t.
+Definition __ink_UndefinedAmountOfTopics : Set :=
+  __ink_UndefinedAmountOfTopics.t.
 
 Module
   Impl_ink_env_topics_EventTopicsAmount_for_erc20_erc20_____ink_UndefinedAmountOfTopics.
@@ -3365,7 +3366,7 @@ Module __ink_ConstructorDecoder.
       ink.reflect.dispatch.DispatchableConstructorInfo.Input
         (Self := erc20.erc20.Erc20)).
 End __ink_ConstructorDecoder.
-Definition __ink_ConstructorDecoder := __ink_ConstructorDecoder.t.
+Definition __ink_ConstructorDecoder : Set := __ink_ConstructorDecoder.t.
 
 Module
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
@@ -3624,7 +3625,7 @@ Module __ink_MessageDecoder.
       ink.reflect.dispatch.DispatchableMessageInfo.Input
         (Self := erc20.erc20.Erc20)).
 End __ink_MessageDecoder.
-Definition __ink_MessageDecoder := __ink_MessageDecoder.t.
+Definition __ink_MessageDecoder : Set := __ink_MessageDecoder.t.
 
 Module
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
@@ -6971,7 +6972,7 @@ Module Error.
   | InsufficientBalance
   | InsufficientAllowance.
 End Error.
-Definition Error := Error.t.
+Definition Error : Set := Error.t.
 
 Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   Definition Self := erc20.erc20.Error.

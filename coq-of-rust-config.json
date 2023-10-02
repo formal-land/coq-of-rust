@@ -54,6 +54,13 @@
       }
     },
     "ink_e2e": {
+      "top_level": {
+        "xts": { "move": "up", "before": "client" }
+      },
+      "top_level::xts": {
+        "Impl_$crate::clone::Clone_for_Weight": { "move": "up", "before": "Impl_$crate::marker::Copy_for_Weight" },
+        "Impl_$crate::cmp::PartialEq_for_Weight": { "move": "up", "before": "Impl_$crate::cmp::Eq_for_Weight" }
+      },
       "top_level::client": {
         "CallDryRunResult": { "move": "up", "before": "CallResult" }
       }

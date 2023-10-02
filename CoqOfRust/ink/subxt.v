@@ -3,7 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* TODO: Implement the following items to satisfy the dependency for e2e/env file
 - [?] blocks.block_types.ExtrinsicEvents
-- [?] error.dispatch_error.DispatchError
 - [?] error.Error
 - [?] config.Config
 - [x] config.polkadot.PolkadotExtrinsicParams
@@ -200,42 +199,48 @@ Module error.
   End Error.
   Definition Error := Error.t.
 
-  (* NOTE: Stub for DispatchError *)
-  (* 
-  pub enum DispatchError {
-      Other,
-      CannotLookup,
-      BadOrigin,
-      Module(ModuleError),
-      ConsumerRemaining,
-      NoProviders,
-      TooManyConsumers,
-      Token(TokenError),
-      Arithmetic(ArithmeticError),
-      Transactional(TransactionalError),
-      Exhausted,
-      Corruption,
-      Unavailable,
-  }
-  *)
-  Module Dispatch_error.
-    Inductive t : Set := 
-    | Other
-    | CannotLookup
-    | BadOrigin
-    | Module
-    | ConsumerRemaining
-    | NoProviders
-    | TooManyConsumers
-    | Token
-    | Arithmetic
-    | Transactional
-    | Exhausted
-    | Corruption
-    | Unavailable
-    .
-  End Dispatch_error.
-  Definition Dispatch_error := Dispatch_error.t.
+  Module dispatch_error.
+    Parameter ModuleError : Set.
+    Parameter TokenError : Set.
+    Parameter ArithmeticError : Set.
+    Parameter TransactionalError : Set.
+
+    (* 
+    pub enum DispatchError {
+        Other,
+        CannotLookup,
+        BadOrigin,
+        Module(ModuleError),
+        ConsumerRemaining,
+        NoProviders,
+        TooManyConsumers,
+        Token(TokenError),
+        Arithmetic(ArithmeticError),
+        Transactional(TransactionalError),
+        Exhausted,
+        Corruption,
+        Unavailable,
+    }
+    *)
+    Module DispatchError.
+      Inductive t : Set := 
+      | Other
+      | CannotLookup
+      | BadOrigin
+      | Module : ModuleError -> t
+      | ConsumerRemaining
+      | NoProviders
+      | TooManyConsumers
+      | Token : TokenError -> t
+      | Arithmetic : ArithmeticError -> t
+      | Transactional : TransactionalError -> t
+      | Exhausted
+      | Corruption
+      | Unavailable
+      .
+    End DispatchError.
+    Definition DispatchError := DispatchError.t.
+  End dispatch_error.
 End error.
 
 Module client.

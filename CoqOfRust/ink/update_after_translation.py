@@ -105,8 +105,8 @@ def update_ink_engine():
 Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
-    content = content.replace(
-        """
+    content = sub_at_least_once(
+        re.escape("""
 Module Error.
   Inductive t : Set :=
   | CalleeTrapped
@@ -121,9 +121,10 @@ Module Error.
   | EcdsaRecoveryFailed
   | Unknown.
 End Error.
-Definition Error := Error.t.
-""",
+Definition Error : Set := Error.t.
+"""),
         "",
+        content,
     )
 
     content = ignore_module_names(
@@ -353,6 +354,24 @@ Require CoqOfRust.ink.subxt.""",
         re.escape("Definition Self := ink_e2e.client.CallDryRunResult E V."),
         """Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.CallDryRunResult E V.""",
+        content,
+    )
+
+    content = ignore_module_names(
+        [
+            "Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E",
+            "Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E",
+            "Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E",
+            "Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E",
+            "Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E",
+        ],
         content,
     )
 

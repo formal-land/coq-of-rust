@@ -128,6 +128,8 @@ enum TopLevelItem {
     },
     TypeEnum {
         name: String,
+        ty_params: Vec<(String, Option<Box<CoqType>>)>,
+        predicates: Vec<WherePredicate>,
         variants: Vec<(String, VariantItem)>,
     },
     TypeStructStruct(TypeStructStruct),
@@ -407,34 +409,42 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             ty_params: get_ty_params_names(env, generics),
         }],
         ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
-        ItemKind::Enum(enum_def, _) => vec![TopLevelItem::TypeEnum {
-            name,
-            variants: enum_def
-                .variants
-                .iter()
-                .map(|variant| {
-                    let name = variant.ident.name.to_string();
-                    let fields = match &variant.data {
-                        VariantData::Struct(fields, _) => {
-                            let fields = fields
-                                .iter()
-                                .map(|field| (field.ident.to_string(), compile_type(env, field.ty)))
-                                .collect();
-                            VariantItem::Struct { fields }
-                        }
-                        VariantData::Tuple(fields, _, _) => {
-                            let tys = fields
-                                .iter()
-                                .map(|field| compile_type(env, field.ty))
-                                .collect();
-                            VariantItem::Tuple { tys }
-                        }
-                        VariantData::Unit(_, _) => VariantItem::Tuple { tys: vec![] },
-                    };
-                    (name, fields)
-                })
-                .collect(),
-        }],
+        ItemKind::Enum(enum_def, generics) => {
+            let ty_params = get_ty_params(env, generics);
+            let predicates = get_where_predicates(tcx, env, generics);
+            vec![TopLevelItem::TypeEnum {
+                name,
+                ty_params,
+                predicates,
+                variants: enum_def
+                    .variants
+                    .iter()
+                    .map(|variant| {
+                        let name = variant.ident.name.to_string();
+                        let fields = match &variant.data {
+                            VariantData::Struct(fields, _) => {
+                                let fields = fields
+                                    .iter()
+                                    .map(|field| {
+                                        (field.ident.to_string(), compile_type(env, field.ty))
+                                    })
+                                    .collect();
+                                VariantItem::Struct { fields }
+                            }
+                            VariantData::Tuple(fields, _, _) => {
+                                let tys = fields
+                                    .iter()
+                                    .map(|field| compile_type(env, field.ty))
+                                    .collect();
+                                VariantItem::Tuple { tys }
+                            }
+                            VariantData::Unit(_, _) => VariantItem::Tuple { tys: vec![] },
+                        };
+                        (name, fields)
+                    })
+                    .collect(),
+            }]
+        }
         ItemKind::Struct(body, generics) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let ty_params = get_ty_params(env, generics);
@@ -1781,125 +1791,165 @@ impl TopLevelItem {
                 ty.to_doc(false),
                 text("."),
             ]),
-            TopLevelItem::TypeEnum { name, variants } => group([
-                nest([text("Module"), line(), text(name), text(".")]),
-                nest([
-                    hardline(),
-                    concat(variants.iter().map(|(name, fields)| {
-                        match fields {
-                            VariantItem::Tuple { .. } => nil(),
-                            VariantItem::Struct { fields } => concat([
-                                coq::Module::new(
-                                    name,
-                                    coq::TopLevel::locally_unset_primitive_projections(&[
-                                        coq::TopLevelItem::Code(concat([
-                                            nest([
-                                                text("Record"),
-                                                line(),
-                                                text("t"),
-                                                line(),
-                                                text(":"),
-                                                line(),
-                                                text("Set"),
-                                                line(),
-                                                text(":="),
-                                                line(),
-                                                text("{"),
-                                            ]),
-                                            if fields.is_empty() {
-                                                text(" ")
-                                            } else {
-                                                concat([
-                                                    nest([
-                                                        hardline(),
-                                                        intersperse(
-                                                            fields.iter().map(|(name, ty)| {
-                                                                nest([
-                                                                    text(name),
-                                                                    line(),
-                                                                    text(":"),
-                                                                    line(),
-                                                                    ty.to_doc(false),
-                                                                    text(";"),
+            TopLevelItem::TypeEnum { name, ty_params, predicates, variants } => group([
+                coq::TopLevelItem::Module(coq::Module::new(
+                    name,
+                    coq::TopLevel::add_context_in_section_if_necessary(
+                        name,
+                        &ty_params.iter().map(|(name, _)| name.clone()).collect::<Vec<_>>(),
+                        &coq::TopLevel::concat(&[
+                            coq::TopLevel::new(&if predicates.is_empty() {
+                                vec![]
+                            } else {
+                                vec![coq::TopLevelItem::Context(coq::Context::new(
+                                    &predicates
+                                        .iter()
+                                        .map(|predicate| predicate.to_coq())
+                                        .collect::<Vec<_>>(),
+                                ))]
+                            }),
+                            coq::TopLevel::new(&[coq::TopLevelItem::Code(
+                                group([
+                                    concat(variants.iter().map(|(name, fields)| {
+                                        match fields {
+                                            VariantItem::Tuple { .. } => nil(),
+                                            VariantItem::Struct { fields } => concat([
+                                                coq::Module::new(
+                                                    name,
+                                                    coq::TopLevel::locally_unset_primitive_projections(&[
+                                                        coq::TopLevelItem::Code(concat([
+                                                            nest([
+                                                                text("Record"),
+                                                                line(),
+                                                                text("t"),
+                                                                line(),
+                                                                text(":"),
+                                                                line(),
+                                                                text("Set"),
+                                                                line(),
+                                                                text(":="),
+                                                                line(),
+                                                                text("{"),
+                                                            ]),
+                                                            if fields.is_empty() {
+                                                                text(" ")
+                                                            } else {
+                                                                concat([
+                                                                    nest([
+                                                                        hardline(),
+                                                                        intersperse(
+                                                                            fields.iter().map(|(name, ty)| {
+                                                                                nest([
+                                                                                    text(name),
+                                                                                    line(),
+                                                                                    text(":"),
+                                                                                    line(),
+                                                                                    ty.to_doc(false),
+                                                                                    text(";"),
+                                                                                ])
+                                                                            }),
+                                                                            [hardline()],
+                                                                        ),
+                                                                    ]),
+                                                                    hardline(),
                                                                 ])
-                                                            }),
-                                                            [hardline()],
-                                                        ),
+                                                            },
+                                                            text("}."),
+                                                        ])),
                                                     ]),
-                                                    hardline(),
-                                                ])
-                                            },
-                                            text("}."),
-                                        ])),
-                                    ]),
-                                )
-                                .to_doc(),
-                                hardline(),
-                                hardline(),
-                            ]),
-                        }
-                    })),
-                    nest([
-                        text("Inductive"),
-                        line(),
-                        text("t"),
-                        line(),
-                        text(":"),
-                        line(),
-                        text("Set"),
-                        line(),
-                        text(":="),
-                    ]),
-                    hardline(),
-                    intersperse(
-                        variants.iter().map(|(name, fields)| {
-                            nest([
-                                text("|"),
-                                line(),
-                                text(name),
-                                match fields {
-                                    VariantItem::Struct { .. } => concat([
-                                        line(),
-                                        nest([
-                                            text("(_ :"),
-                                            line(),
-                                            text(format!("{name}.t")),
-                                            text(")"),
-                                        ]),
-                                    ]),
-                                    VariantItem::Tuple { tys } => concat(tys.iter().map(|ty| {
-                                        concat([
-                                            line(),
-                                            nest([
-                                                text("(_"),
-                                                line(),
-                                                text(":"),
-                                                line(),
-                                                ty.to_doc(false),
-                                                text(")"),
+                                                )
+                                                .to_doc(),
+                                                hardline(),
+                                                hardline(),
                                             ]),
-                                        ])
+                                        }
                                     })),
-                                },
+                                    nest([
+                                        text("Inductive"),
+                                        line(),
+                                        text("t"),
+                                        line(),
+                                        text(":"),
+                                        line(),
+                                        text("Set"),
+                                        line(),
+                                        text(":="),
+                                    ]),
+                                    hardline(),
+                                    intersperse(
+                                        variants.iter().map(|(name, fields)| {
+                                            nest([
+                                                text("|"),
+                                                line(),
+                                                text(name),
+                                                match fields {
+                                                    VariantItem::Struct { .. } => concat([
+                                                        line(),
+                                                        nest([
+                                                            text("(_ :"),
+                                                            line(),
+                                                            text(format!("{name}.t")),
+                                                            text(")"),
+                                                        ]),
+                                                    ]),
+                                                    VariantItem::Tuple { tys } => concat(tys.iter().map(|ty| {
+                                                        concat([
+                                                            line(),
+                                                            nest([
+                                                                text("(_"),
+                                                                line(),
+                                                                text(":"),
+                                                                line(),
+                                                                ty.to_doc(false),
+                                                                text(")"),
+                                                            ]),
+                                                        ])
+                                                    })),
+                                                },
+                                            ])
+                                        }),
+                                        [line()],
+                                    ),
+                                    text("."),
+                                ]),
+                            ),
                             ])
-                        }),
-                        [line()],
+                        ]),
                     ),
-                    text("."),
-                ]),
+                )).to_doc(),
                 hardline(),
-                nest([text("End"), line(), text(name), text(".")]),
-                hardline(),
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":="),
-                    line(),
-                    text(name),
-                    text(".t."),
-                ]),
+                coq::TopLevelItem::Definition(coq::Definition::new(
+                    name,
+                    &coq::DefinitionKind::Alias {
+                        args:
+                            vec![
+                                if ty_params.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![coq::ArgDecl::of_ty_params(
+                                        &ty_params.iter().map(|(name, _)| name.clone()).collect::<Vec<_>>(),
+                                        coq::ArgSpecKind::Explicit,
+                                    )]
+                                },
+                                predicates
+                                    .iter()
+                                    .map(|predicate| predicate.to_coq())
+                                    .collect::<Vec<_>>()
+                            ].concat(),
+                        ty: Some(coq::Expression::just_name("Set")),
+                        body:
+                            coq::Expression::Variable {
+                                ident: Path::new(&[name, &"t".to_string()]),
+                                no_implicit: false,
+                        }
+                        .apply_many_args(
+                            &ty_params
+                                .iter()
+                                .map(|(name, _)| (Some(name.clone()), coq::Expression::just_name(name)))
+                                .collect::<Vec<_>>(),
+                        ),
+                    },
+                )).to_doc(),
             ]),
             TopLevelItem::TypeStructStruct(tss) => tss.to_doc(),
             TopLevelItem::TypeStructTuple {

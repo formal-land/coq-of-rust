@@ -399,7 +399,7 @@ Module types.
     | UnexpectedUserAccount
     | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
-  Definition AccountError := AccountError.t.
+  Definition AccountError : Set := AccountError.t.
   
   Module Impl_core_clone_Clone_for_ink_engine_types_AccountError.
     Definition Self := ink_engine.types.AccountError.
@@ -1117,7 +1117,7 @@ Module ext.
     | EcdsaRecoveryFailed
     | Unknown.
   End Error.
-  Definition Error := Error.t.
+  Definition Error : Set := Error.t.
   
   Module Impl_core_fmt_Debug_for_ink_engine_ext_Error.
     Definition Self := ink_engine.ext.Error.
@@ -2537,7 +2537,7 @@ Module AccountError.
   | UnexpectedUserAccount
   | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
-Definition AccountError := AccountError.t.
+Definition AccountError : Set := AccountError.t.
 
 Module Impl_core_clone_Clone_for_ink_engine_types_AccountError.
   Definition Self := ink_engine.types.AccountError.
@@ -2652,7 +2652,7 @@ Module Error.
   | UninitializedExecutionContext
   | UnregisteredChainExtension.
 End Error.
-Definition Error := Error.t.
+Definition Error : Set := Error.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_Error.
   Definition Self := ink_engine.Error.

@@ -252,13 +252,13 @@ Module types.
     Inductive t : Set :=
     .
   End NoChainExtension.
-  Definition NoChainExtension := NoChainExtension.t.
+  Definition NoChainExtension : Set := NoChainExtension.t.
   
   Module DefaultEnvironment.
     Inductive t : Set :=
     .
   End DefaultEnvironment.
-  Definition DefaultEnvironment := DefaultEnvironment.t.
+  Definition DefaultEnvironment : Set := DefaultEnvironment.t.
   
   Definition Balance : Set := u128.
   
@@ -422,13 +422,13 @@ Module NoChainExtension.
   Inductive t : Set :=
   .
 End NoChainExtension.
-Definition NoChainExtension := NoChainExtension.t.
+Definition NoChainExtension : Set := NoChainExtension.t.
 
 Module DefaultEnvironment.
   Inductive t : Set :=
   .
 End DefaultEnvironment.
-Definition DefaultEnvironment := DefaultEnvironment.t.
+Definition DefaultEnvironment : Set := DefaultEnvironment.t.
 
 Definition Balance : Set := u128.
 
@@ -653,7 +653,7 @@ Module call.
         Inductive t : Set :=
         .
       End Salt.
-      Definition Salt := Salt.t.
+      Definition Salt : Set := Salt.t.
     End state.
     
     Module FromAccountId.
@@ -926,7 +926,7 @@ Module engine.
       | UnexpectedUserAccount
       | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
     End AccountError.
-    Definition AccountError := AccountError.t.
+    Definition AccountError : Set := AccountError.t.
     
     Module OffChainError.
       Inductive t : Set :=
@@ -935,7 +935,7 @@ Module engine.
       | UninitializedExecutionContext
       | UnregisteredChainExtension.
     End OffChainError.
-    Definition OffChainError := OffChainError.t.
+    Definition OffChainError : Set := OffChainError.t.
   End off_chain.
 End engine.
 
@@ -981,25 +981,25 @@ Module hash.
     Inductive t : Set :=
     .
   End Sha2x256.
-  Definition Sha2x256 := Sha2x256.t.
+  Definition Sha2x256 : Set := Sha2x256.t.
   
   Module Keccak256.
     Inductive t : Set :=
     .
   End Keccak256.
-  Definition Keccak256 := Keccak256.t.
+  Definition Keccak256 : Set := Keccak256.t.
   
   Module Blake2x256.
     Inductive t : Set :=
     .
   End Blake2x256.
-  Definition Blake2x256 := Blake2x256.t.
+  Definition Blake2x256 : Set := Blake2x256.t.
   
   Module Blake2x128.
     Inductive t : Set :=
     .
   End Blake2x128.
-  Definition Blake2x128 := Blake2x128.t.
+  Definition Blake2x128 : Set := Blake2x128.t.
 End hash.
 
 Module topics.
@@ -1069,19 +1069,19 @@ Module topics.
       Inductive t : Set :=
       .
     End Uninit.
-    Definition Uninit := Uninit.t.
+    Definition Uninit : Set := Uninit.t.
     
     Module HasRemainingTopics.
       Inductive t : Set :=
       .
     End HasRemainingTopics.
-    Definition HasRemainingTopics := HasRemainingTopics.t.
+    Definition HasRemainingTopics : Set := HasRemainingTopics.t.
     
     Module NoRemainingTopics.
       Inductive t : Set :=
       .
     End NoRemainingTopics.
-    Definition NoRemainingTopics := NoRemainingTopics.t.
+    Definition NoRemainingTopics : Set := NoRemainingTopics.t.
   End state.
   
   Module SomeRemainingTopics.
@@ -1181,7 +1181,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     | CallRuntimeFailed
     | EcdsaRecoveryFailed.
   End Error.
-  Definition Error := Error.t.
+  Definition Error : Set := Error.t.
   
   Definition Result (T : Set) : Set :=
     core.result.Result
@@ -2920,7 +2920,7 @@ Module Error.
   | CallRuntimeFailed
   | EcdsaRecoveryFailed.
 End Error.
-Definition Error := Error.t.
+Definition Error : Set := Error.t.
 
 Definition Result (T : Set) : Set :=
   core.result.Result
@@ -4164,7 +4164,7 @@ Module create_builder.
       Inductive t : Set :=
       .
     End Salt.
-    Definition Salt := Salt.t.
+    Definition Salt : Set := Salt.t.
   End state.
   
   Module FromAccountId.
@@ -4371,14 +4371,14 @@ Module state.
     Inductive t : Set :=
     .
   End Salt.
-  Definition Salt := Salt.t.
+  Definition Salt : Set := Salt.t.
 End state.
 
 Module Salt.
   Inductive t : Set :=
   .
 End Salt.
-Definition Salt := Salt.t.
+Definition Salt : Set := Salt.t.
 
 Module FromAccountId.
   Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
@@ -4831,7 +4831,7 @@ Module chain_extension.
       Inductive t : Set :=
       .
     End IgnoreErrorCode.
-    Definition IgnoreErrorCode := IgnoreErrorCode.t.
+    Definition IgnoreErrorCode : Set := IgnoreErrorCode.t.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
@@ -4928,7 +4928,7 @@ Module Wrap_state_1.
       Inductive t : Set :=
       .
     End IgnoreErrorCode.
-    Definition IgnoreErrorCode := IgnoreErrorCode.t.
+    Definition IgnoreErrorCode : Set := IgnoreErrorCode.t.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
@@ -4957,7 +4957,7 @@ Module IgnoreErrorCode.
   Inductive t : Set :=
   .
 End IgnoreErrorCode.
-Definition IgnoreErrorCode := IgnoreErrorCode.t.
+Definition IgnoreErrorCode : Set := IgnoreErrorCode.t.
 
 Module HandleErrorCode.
   Section HandleErrorCode.
@@ -5096,7 +5096,7 @@ Module off_chain.
     | UnexpectedUserAccount
     | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
-  Definition AccountError := AccountError.t.
+  Definition AccountError : Set := AccountError.t.
   
   Module OffChainError.
     Inductive t : Set :=
@@ -5105,7 +5105,7 @@ Module off_chain.
     | UninitializedExecutionContext
     | UnregisteredChainExtension.
   End OffChainError.
-  Definition OffChainError := OffChainError.t.
+  Definition OffChainError : Set := OffChainError.t.
 End off_chain.
 
 Module call_data.
@@ -5207,7 +5207,7 @@ Module OffChainError.
   | UninitializedExecutionContext
   | UnregisteredChainExtension.
 End OffChainError.
-Definition OffChainError := OffChainError.t.
+Definition OffChainError : Set := OffChainError.t.
 
 Module AccountError.
   Inductive t : Set :=
@@ -5215,7 +5215,7 @@ Module AccountError.
   | UnexpectedUserAccount
   | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
-Definition AccountError := AccountError.t.
+Definition AccountError : Set := AccountError.t.
 
 Module HashOutput.
   Class Trait (Self : Set) `{ink_env.hash.private.Sealed.Trait Self} : Type := {
@@ -5248,25 +5248,25 @@ Module Sha2x256.
   Inductive t : Set :=
   .
 End Sha2x256.
-Definition Sha2x256 := Sha2x256.t.
+Definition Sha2x256 : Set := Sha2x256.t.
 
 Module Keccak256.
   Inductive t : Set :=
   .
 End Keccak256.
-Definition Keccak256 := Keccak256.t.
+Definition Keccak256 : Set := Keccak256.t.
 
 Module Blake2x256.
   Inductive t : Set :=
   .
 End Blake2x256.
-Definition Blake2x256 := Blake2x256.t.
+Definition Blake2x256 : Set := Blake2x256.t.
 
 Module Blake2x128.
   Inductive t : Set :=
   .
 End Blake2x128.
-Definition Blake2x128 := Blake2x128.t.
+Definition Blake2x128 : Set := Blake2x128.t.
 
 Module Wrap_private_1.
   Module private.
@@ -5328,19 +5328,19 @@ Module Wrap_state_2.
       Inductive t : Set :=
       .
     End Uninit.
-    Definition Uninit := Uninit.t.
+    Definition Uninit : Set := Uninit.t.
     
     Module HasRemainingTopics.
       Inductive t : Set :=
       .
     End HasRemainingTopics.
-    Definition HasRemainingTopics := HasRemainingTopics.t.
+    Definition HasRemainingTopics : Set := HasRemainingTopics.t.
     
     Module NoRemainingTopics.
       Inductive t : Set :=
       .
     End NoRemainingTopics.
-    Definition NoRemainingTopics := NoRemainingTopics.t.
+    Definition NoRemainingTopics : Set := NoRemainingTopics.t.
   End state.
 End Wrap_state_2.
 Import Wrap_state_2.
@@ -5349,19 +5349,19 @@ Module Uninit.
   Inductive t : Set :=
   .
 End Uninit.
-Definition Uninit := Uninit.t.
+Definition Uninit : Set := Uninit.t.
 
 Module HasRemainingTopics.
   Inductive t : Set :=
   .
 End HasRemainingTopics.
-Definition HasRemainingTopics := HasRemainingTopics.t.
+Definition HasRemainingTopics : Set := HasRemainingTopics.t.
 
 Module NoRemainingTopics.
   Inductive t : Set :=
   .
 End NoRemainingTopics.
-Definition NoRemainingTopics := NoRemainingTopics.t.
+Definition NoRemainingTopics : Set := NoRemainingTopics.t.
 
 Module SomeRemainingTopics.
   Class Trait (Self : Set) : Type := {

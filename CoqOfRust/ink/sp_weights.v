@@ -8,3 +8,7 @@ Module Weight.
 End Weight.
 Global Set Primitive Projections.
 Definition Weight := Weight.t.
+
+Module weight_v2.
+  Parameter Weight : Set.
+End weight_v2.

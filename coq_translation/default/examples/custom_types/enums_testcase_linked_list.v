@@ -11,7 +11,7 @@ Module List.
       alloc.boxed.Box enums_testcase_linked_list.List alloc.boxed.Box.Default.A)
   | Nil.
 End List.
-Definition List := List.t.
+Definition List : Set := List.t.
 
 Module Impl_enums_testcase_linked_list_List.
   Definition Self := enums_testcase_linked_list.List.
