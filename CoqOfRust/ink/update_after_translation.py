@@ -306,10 +306,38 @@ def update_ink_e2e_macro():
         pattern,
         pattern
         + """
+Require CoqOfRust.ink.ink_ir.
 Require CoqOfRust.ink.proc_macro.
 Require CoqOfRust.ink.syn.""",
         content,
     )
+
+    content = ignore_module_names(
+        [
+            "Impl_core_fmt_Debug_for_ink_e2e_macro_codegen_ContractManifests",
+        ],
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("""M (H := H') unit.
+
+Module InkE2ETest."""),
+        """M (H := H') unit.
+
+(* Module InkE2ETest.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("""Definition InkE2ETest : Set := InkE2ETest.t.
+
+Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest."""),
+        """Definition InkE2ETest : Set := InkE2ETest.t. *)
+
+Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.""",
+        content,
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 

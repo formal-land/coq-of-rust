@@ -53,6 +53,15 @@
         "private": { "move": "up", "before": "IsResultType" }
       }
     },
+    "ink_e2e_macro": {
+      "top_level": {
+        "ir": { "move": "up", "before": "codegen" },
+        "config": { "move": "up", "before": "codegen" }
+      },
+      "top_level::ir": {
+        "E2EFn": { "move": "up", "before": "InkE2ETest" }
+      }
+    },
     "ink_engine": {
       "top_level": {
         "database": { "move": "up", "before": "ext" },

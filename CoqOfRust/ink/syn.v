@@ -1,6 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module error.
+  Parameter Error : Set.
+
   Parameter Result : Set -> Set.
 End error.
 
