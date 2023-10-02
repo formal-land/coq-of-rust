@@ -1,6 +1,5 @@
 (* Written by hand *)
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.ink.alloc.
 Require Import CoqOfRust.ink.scale_info.
 
 Parameter PortableField : Set.

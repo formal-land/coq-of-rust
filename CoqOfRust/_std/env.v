@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.ffi.
+Require CoqOfRust._std.ffi.
 
 (* ********MODULES******** *)
 (*
@@ -80,7 +80,7 @@ pub enum VarError {
 Module VarError.
   Inductive t : Set := 
   | NotPresent : t
-  | NotUnicode : OsString -> t
+  | NotUnicode : ffi.os_str.OsString -> t
   .
 End VarError.
 Definition VarError := VarError.t.

@@ -2,7 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.num_traits.
 
-Require CoqOfRust.ink.alloc.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.
@@ -151,7 +150,7 @@ Module types.
           `(ink_env.types.CodecAsType.Trait AccountId)
           `(core.clone.Clone.Trait AccountId)
           `(core.cmp.PartialEq.Trait AccountId
-              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+              (Rhs := core.cmp.PartialEq.Default.Rhs AccountId))
           `(core.cmp.Eq.Trait AccountId)
           `(core.cmp.Ord.Trait AccountId)
           `(core.convert.AsRef.Trait AccountId (T := Slice u8))
@@ -166,7 +165,7 @@ Module types.
           `(core.marker.Copy.Trait Balance)
           `(core.clone.Clone.Trait Balance)
           `(core.cmp.PartialEq.Trait Balance
-              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Balance))
           `(core.cmp.Eq.Trait Balance)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
           `(ink_env.types.FromLittleEndian.Trait Balance),
@@ -181,7 +180,7 @@ Module types.
           `(core.clone.Clone.Trait Hash)
           `(ink_primitives.types.Clear.Trait Hash)
           `(core.cmp.PartialEq.Trait Hash
-              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Hash))
           `(core.cmp.Eq.Trait Hash)
           `(core.cmp.Ord.Trait Hash)
           `(core.convert.AsRef.Trait Hash (T := Slice u8))
@@ -196,7 +195,7 @@ Module types.
           `(core.marker.Copy.Trait Timestamp)
           `(core.clone.Clone.Trait Timestamp)
           `(core.cmp.PartialEq.Trait Timestamp
-              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+              (Rhs := core.cmp.PartialEq.Default.Rhs Timestamp))
           `(core.cmp.Eq.Trait Timestamp)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
           `(ink_env.types.FromLittleEndian.Trait Timestamp),
@@ -210,7 +209,7 @@ Module types.
           `(core.marker.Copy.Trait BlockNumber)
           `(core.clone.Clone.Trait BlockNumber)
           `(core.cmp.PartialEq.Trait BlockNumber
-              (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+              (Rhs := core.cmp.PartialEq.Default.Rhs BlockNumber))
           `(core.cmp.Eq.Trait BlockNumber)
           `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
           `(ink_env.types.FromLittleEndian.Trait BlockNumber),
@@ -321,7 +320,7 @@ Module Environment.
         `(ink_env.types.CodecAsType.Trait AccountId)
         `(core.clone.Clone.Trait AccountId)
         `(core.cmp.PartialEq.Trait AccountId
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+            (Rhs := core.cmp.PartialEq.Default.Rhs AccountId))
         `(core.cmp.Eq.Trait AccountId)
         `(core.cmp.Ord.Trait AccountId)
         `(core.convert.AsRef.Trait AccountId (T := Slice u8))
@@ -336,7 +335,7 @@ Module Environment.
         `(core.marker.Copy.Trait Balance)
         `(core.clone.Clone.Trait Balance)
         `(core.cmp.PartialEq.Trait Balance
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+            (Rhs := core.cmp.PartialEq.Default.Rhs Balance))
         `(core.cmp.Eq.Trait Balance)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Balance)
         `(ink_env.types.FromLittleEndian.Trait Balance),
@@ -351,7 +350,7 @@ Module Environment.
         `(core.clone.Clone.Trait Hash)
         `(ink_primitives.types.Clear.Trait Hash)
         `(core.cmp.PartialEq.Trait Hash
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+            (Rhs := core.cmp.PartialEq.Default.Rhs Hash))
         `(core.cmp.Eq.Trait Hash)
         `(core.cmp.Ord.Trait Hash)
         `(core.convert.AsRef.Trait Hash (T := Slice u8))
@@ -366,7 +365,7 @@ Module Environment.
         `(core.marker.Copy.Trait Timestamp)
         `(core.clone.Clone.Trait Timestamp)
         `(core.cmp.PartialEq.Trait Timestamp
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+            (Rhs := core.cmp.PartialEq.Default.Rhs Timestamp))
         `(core.cmp.Eq.Trait Timestamp)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait Timestamp)
         `(ink_env.types.FromLittleEndian.Trait Timestamp),
@@ -380,7 +379,7 @@ Module Environment.
         `(core.marker.Copy.Trait BlockNumber)
         `(core.clone.Clone.Trait BlockNumber)
         `(core.cmp.PartialEq.Trait BlockNumber
-            (Rhs := core.cmp.PartialEq.Default.Rhs Self))
+            (Rhs := core.cmp.PartialEq.Default.Rhs BlockNumber))
         `(core.cmp.Eq.Trait BlockNumber)
         `(ink_env.arithmetic.AtLeast32BitUnsigned.Trait BlockNumber)
         `(ink_env.types.FromLittleEndian.Trait BlockNumber),

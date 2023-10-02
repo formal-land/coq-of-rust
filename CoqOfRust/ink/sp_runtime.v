@@ -40,3 +40,9 @@ Module DispatchError.
   .
 End DispatchError.
 Definition DispatchError := DispatchError.t.
+
+Module multiaddress.
+  Parameter MultiAddress : Set -> Set -> Set.
+End multiaddress.
+
+Parameter MultiSignature : Set.

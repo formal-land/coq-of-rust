@@ -15,6 +15,7 @@ End PrintInOption.
 Module Impl_generics_where_clauses_PrintInOption_for_T.
   Section Impl_generics_where_clauses_PrintInOption_for_T.
     Context {T : Set}.
+    Context `{core.fmt.Debug.Trait (core.option.Option T)}.
     Definition Self := T.
     
     Definition print_in_option

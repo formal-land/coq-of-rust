@@ -162,9 +162,10 @@ enum TopLevelItem {
     },
     TraitImpl {
         generic_tys: Vec<String>,
-        ty_params: Vec<Box<TraitTyParamValue>>,
+        predicates: Vec<WherePredicate>,
         self_ty: Box<CoqType>,
         of_trait: Path,
+        trait_ty_params: Vec<Box<TraitTyParamValue>>,
         items: Vec<(ImplItem, bool)>,
         has_predicates_on_assoc_ty: bool,
     },
@@ -511,6 +512,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
         }) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let generic_tys = get_ty_params_names(env, generics);
+            let predicates = get_where_predicates(tcx, env, generics);
             let self_ty = compile_type(env, self_ty);
             let entry = env.impl_counter.entry(*self_ty.clone());
             let counter = *entry.and_modify(|counter| *counter += 1).or_insert(1);
@@ -556,13 +558,18 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         .collect();
 
                     // Get the generics for the trait
-                    let generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
+                    let trait_generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
 
                     vec![TopLevelItem::TraitImpl {
                         generic_tys,
-                        ty_params: get_ty_params_with_default_status(env, generics, trait_ref.path),
+                        predicates,
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
+                        trait_ty_params: get_ty_params_with_default_status(
+                            env,
+                            trait_generics,
+                            trait_ref.path,
+                        ),
                         items: items_with_default_status,
                         has_predicates_on_assoc_ty,
                     }]
@@ -1116,16 +1123,18 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
         },
         TopLevelItem::TraitImpl {
             generic_tys,
-            ty_params,
+            predicates,
             self_ty,
             of_trait,
+            trait_ty_params,
             items,
             has_predicates_on_assoc_ty,
         } => TopLevelItem::TraitImpl {
             generic_tys,
-            ty_params,
+            predicates,
             self_ty,
             of_trait,
+            trait_ty_params,
             items: items
                 .into_iter()
                 .map(|(item, has_no_default)| (mt_impl_item(item), has_no_default))
@@ -1657,7 +1666,7 @@ impl TraitBound {
                                     text(".Default."),
                                     text(name),
                                 ]))
-                                .apply(&coq::Expression::just_name("Self")),
+                                .apply(&self_ty),
                             ),
                         })
                         .collect(),
@@ -2361,9 +2370,10 @@ impl TopLevelItem {
             .to_doc(),
             TopLevelItem::TraitImpl {
                 generic_tys,
-                ty_params,
+                predicates,
                 self_ty,
                 of_trait,
+                trait_ty_params,
                 items,
                 has_predicates_on_assoc_ty,
             } => {
@@ -2375,6 +2385,16 @@ impl TopLevelItem {
                             &module_name,
                             generic_tys,
                             &coq::TopLevel::new(&[
+                                if predicates.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![coq::TopLevelItem::Context(coq::Context::new(
+                                        &predicates
+                                            .iter()
+                                            .map(|predicate| predicate.to_coq())
+                                            .collect::<Vec<_>>(),
+                                    ))]
+                                },
                                 vec![
                                     coq::TopLevelItem::Definition(coq::Definition::new(
                                         "Self",
@@ -2384,8 +2404,8 @@ impl TopLevelItem {
                                             body: self_ty.to_coq(),
                                         },
                                     )),
-                                    coq::TopLevelItem::Line,
                                 ],
+                                vec![coq::TopLevelItem::Line],
                                 items
                                     .iter()
                                     .map(|(item, _)| {
@@ -2408,7 +2428,7 @@ impl TopLevelItem {
                                     }
                                     .apply(&coq::Expression::just_name("Self"))
                                     .apply_many_args(
-                                        &ty_params
+                                        &trait_ty_params
                                             .iter()
                                             .map(|ty_param| {
                                                 let ty_param = *ty_param.clone();
@@ -2835,12 +2855,9 @@ impl TopLevel {
                     // if item is DeriveDebug, get struct's fields
                     match item {
                         TopLevelItem::TraitImpl {
-                            generic_tys: _,
-                            ty_params: _,
                             self_ty,
                             of_trait,
-                            items: _,
-                            has_predicates_on_assoc_ty: _,
+                            ..
                         } =>
                         // if item is DeriveDebug we are getting missing datatypes for Struct, and
                         // printing DoubleColon instance for fmt function

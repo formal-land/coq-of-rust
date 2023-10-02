@@ -39,6 +39,9 @@ End
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     Context {A B : Set}.
+    Context
+      `{core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
+      `{core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
     Definition Self := generics_phantom_type.PhantomTuple A B.
     
     Definition eq
@@ -108,6 +111,9 @@ End
 Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     Context {A B : Set}.
+    Context
+      `{core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
+      `{core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
     Definition Self := generics_phantom_type.PhantomStruct A B.
     
     Definition eq

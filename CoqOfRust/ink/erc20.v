@@ -1636,6 +1636,7 @@ Definition Erc20 : Set := Erc20.t.
 Module Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
   Section Impl_ink_storage_traits_storage_StorableHint_for_erc20_erc20_Erc20.
     Context {__ink_generic_salt : Set}.
+    Context `{ink_storage_traits.storage.StorageKey.Trait __ink_generic_salt}.
     Definition Self := erc20.erc20.Erc20.
     
     Definition Type : Set := erc20.erc20.Erc20.
@@ -5846,6 +5847,7 @@ Module
   Section
     Impl_ink_env_call_create_builder_ConstructorReturnType_for_core_result_Result_erc20_erc20_Erc20_E.
     Context {E : Set}.
+    Context `{parity_scale_codec.codec.Decode.Trait E}.
     Definition Self := core.result.Result erc20.erc20.Erc20 E.
     
     Definition IS_RESULT `{H' : State.Trait} := Pure true.

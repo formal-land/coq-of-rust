@@ -153,7 +153,6 @@ def update_ink_env():
         + """
 Require CoqOfRust.num_traits.
 
-Require CoqOfRust.ink.alloc.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.
@@ -309,6 +308,10 @@ def update_ink_e2e():
         + """
 Require CoqOfRust.ink.ink_env.
 Require CoqOfRust.ink.pallet_contracts_primitives.
+Require CoqOfRust.ink.primitive_types.
+Require CoqOfRust.ink.serde.
+Require CoqOfRust.ink.sp_core.
+Require CoqOfRust.ink.sp_keyring.
 Require CoqOfRust.ink.subxt.""",
         content,
     )
@@ -359,18 +362,42 @@ Require CoqOfRust.ink.subxt.""",
 
     content = ignore_module_names(
         [
-            "Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E",
-            "Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E",
-            "Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E",
-            "Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E",
             "Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E",
             "Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E",
             "Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E",
             "Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E",
+            "Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E",
             "Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E",
             "Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E",
             "Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E",
             "Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R",
+            "Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight",
+            "Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor",
+            "Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field",
+            "Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_Code",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code",
         ],
         content,
     )

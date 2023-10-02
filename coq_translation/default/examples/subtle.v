@@ -370,6 +370,7 @@ End ConstantTimeEq.
 Module Impl_subtle_ConstantTimeEq_for_Slice_T.
   Section Impl_subtle_ConstantTimeEq_for_Slice_T.
     Context {T : Set}.
+    Context `{subtle.ConstantTimeEq.Trait T}.
     Definition Self := Slice T.
     
     Definition ct_eq
@@ -1428,6 +1429,9 @@ End ConditionallyNegatable.
 Module Impl_subtle_ConditionallyNegatable_for_T.
   Section Impl_subtle_ConditionallyNegatable_for_T.
     Context {T : Set}.
+    Context
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.arith.Neg.Trait (ref T)}.
     Definition Self := T.
     
     Definition conditional_negate
@@ -1482,6 +1486,7 @@ Definition CtOption (T : Set) : Set := CtOption.t (T := T).
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   Section Impl_core_clone_Clone_for_subtle_CtOption_T.
     Context {T : Set}.
+    Context `{core.clone.Clone.Trait T}.
     Definition Self := subtle.CtOption T.
     
     Definition clone
@@ -1506,6 +1511,7 @@ End Impl_core_clone_Clone_for_subtle_CtOption_T.
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
   Section Impl_core_marker_Copy_for_subtle_CtOption_T.
     Context {T : Set}.
+    Context `{core.marker.Copy.Trait T}.
     Definition Self := subtle.CtOption T.
     
     Global Instance I : core.marker.Copy.Trait Self := {
@@ -1517,6 +1523,7 @@ End Impl_core_marker_Copy_for_subtle_CtOption_T.
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
     Context {T : Set}.
+    Context `{core.fmt.Debug.Trait T}.
     Definition Self := subtle.CtOption T.
     
     Definition fmt
@@ -1800,6 +1807,7 @@ End Impl_subtle_CtOption_T_4.
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     Context {T : Set}.
+    Context `{subtle.ConditionallySelectable.Trait T}.
     Definition Self := subtle.CtOption T.
     
     Definition conditional_select
@@ -1837,6 +1845,7 @@ End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     Context {T : Set}.
+    Context `{subtle.ConstantTimeEq.Trait T}.
     Definition Self := subtle.CtOption T.
     
     Definition ct_eq

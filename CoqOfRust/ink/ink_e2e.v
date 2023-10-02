@@ -2,6 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.ink_env.
 Require CoqOfRust.ink.pallet_contracts_primitives.
+Require CoqOfRust.ink.primitive_types.
+Require CoqOfRust.ink.serde.
+Require CoqOfRust.ink.sp_core.
+Require CoqOfRust.ink.sp_keyring.
 Require CoqOfRust.ink.subxt.
 
 Module builders.
@@ -335,9 +339,14 @@ Module xts.
       : Set :=
     InstantiateWithCode.t (E := E).
   
-  (* Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
-    (* Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+  Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
       Context {E : Set}.
+      Context
+        `{core.fmt.Debug.Trait E}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait E::type["Balance"]}
+        `{core.fmt.Debug.Trait E::type["Balance"]}.
       Definition Self := ink_e2e.xts.InstantiateWithCode E.
       
       Parameter fmt :
@@ -353,13 +362,15 @@ Module xts.
       Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
       }.
-    End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E. *)
+    End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
     Global Hint Resolve I : core.
-  End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E. *)
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   
-  (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
-    (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+  Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+    Section
+      Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.xts.InstantiateWithCode E.
       
       Parameter encode_as_type_to :
@@ -380,13 +391,15 @@ Module xts.
           :=
           encode_as_type_to;
       }.
-    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E. *)
+    End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
     Global Hint Resolve I : core.
-  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E. *)
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   
-  (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
-    (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+  Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+    Section
+      Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.xts.InstantiateWithCode E.
       
       Parameter encode_as_fields_to :
@@ -407,9 +420,9 @@ Module xts.
           :=
           encode_as_fields_to;
       }.
-    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E. *)
+    End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
     Global Hint Resolve I : core.
-  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E. *)
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   
   Module Call.
     Section Call.
@@ -465,6 +478,12 @@ Module xts.
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
       Context {E : Set}.
+      Context
+        `{core.fmt.Debug.Trait E}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait E::type["AccountId"]}
+        `{core.fmt.Debug.Trait E::type["Balance"]}
+        `{core.fmt.Debug.Trait E::type["Balance"]}.
       Definition Self := ink_e2e.xts.Call E.
       
       Parameter fmt :
@@ -487,6 +506,7 @@ Module xts.
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.xts.Call E.
       
       Parameter encode_as_type_to :
@@ -514,6 +534,7 @@ Module xts.
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.xts.Call E.
       
       Parameter encode_as_fields_to :
@@ -575,6 +596,13 @@ Module xts.
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
       Context {E C : Set}.
+      Context
+        `{core.fmt.Debug.Trait E}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait C}
+        `{subxt.config.Config.Trait C}
+        `{core.fmt.Debug.Trait C::type["Address"]}
+        `{core.fmt.Debug.Trait E::type["Balance"]}.
       Definition Self := ink_e2e.xts.Transfer E C.
       
       Parameter fmt :
@@ -597,6 +625,9 @@ Module xts.
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
       Context {E C : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{subxt.config.Config.Trait C}.
       Definition Self := ink_e2e.xts.Transfer E C.
       
       Parameter encode_as_type_to :
@@ -624,6 +655,9 @@ Module xts.
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
       Context {E C : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{subxt.config.Config.Trait C}.
       Definition Self := ink_e2e.xts.Transfer E C.
       
       Parameter encode_as_fields_to :
@@ -817,6 +851,10 @@ Module xts.
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
       Context {E : Set}.
+      Context
+        `{core.fmt.Debug.Trait E}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait E::type["Balance"]}.
       Definition Self := ink_e2e.xts.UploadCode E.
       
       Parameter fmt :
@@ -839,6 +877,7 @@ Module xts.
   Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
     Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.xts.UploadCode E.
       
       Parameter encode_as_type_to :
@@ -866,6 +905,7 @@ Module xts.
   Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
     Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.xts.UploadCode E.
       
       Parameter encode_as_fields_to :
@@ -1032,6 +1072,11 @@ Module client.
       Context {C E : Set}.
       Context
         `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+        `{core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
+      Context
+        `{subxt.config.Config.Trait C}
         `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.UploadResult C E.
       
@@ -1055,6 +1100,13 @@ Module client.
   Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{core.fmt.Debug.Trait C::type["AccountId"]}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait
+              (ink_env.types.Environment.AccountId (Self := E))}
+        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
       Context
         `{subxt.config.Config.Trait C}
         `{ink_env.types.Environment.Trait E}.
@@ -1150,6 +1202,13 @@ Module client.
       Context {C E V : Set}.
       Context
         `{subxt.config.Config.Trait C}
+        `{core.fmt.Debug.Trait C}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait E}
+        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+        `{core.fmt.Debug.Trait V}.
+      Context
+        `{subxt.config.Config.Trait C}
         `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.CallResult C E V.
       
@@ -1173,6 +1232,11 @@ Module client.
   Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
     Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
       Context {E V : Set}.
+      Context
+        `{core.fmt.Debug.Trait E}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait V}
+        `{core.fmt.Debug.Trait E::type["Balance"]}.
       Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.CallDryRunResult E V.
       
@@ -1234,9 +1298,13 @@ Module client.
       : Set :=
     Error.t (C := C) (E := E).
   
-  (* Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-    (* Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+  Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+    Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
       Context {C E : Set}.
+      Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
       Definition Self := ink_e2e.client.Error C E.
       
       Parameter fmt :
@@ -1252,13 +1320,18 @@ Module client.
       Global Instance I : core.fmt.Debug.Trait Self := {
         core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
       }.
-    End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E. *)
+    End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
     Global Hint Resolve I : core.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E. *)
+  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   
   (* Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
       Context {E : Set}.
+      Context
+        `{core.fmt.Debug.Trait E}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait E::type["AccountId"]}
+        `{core.fmt.Debug.Trait E::type["AccountId"]}.
       Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
       
       Parameter fmt :
@@ -1281,6 +1354,9 @@ Module client.
   (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
       Context {E : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{scale_encode.EncodeAsType.Trait E}.
       Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
       
       Parameter encode_as_type_to :
@@ -1308,6 +1384,9 @@ Module client.
   (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
       Context {E : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{scale_encode.EncodeAsType.Trait E}.
       Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
       
       Parameter encode_as_fields_to :
@@ -1335,6 +1414,7 @@ Module client.
   (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
     (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
       
       Definition PALLET `{H' : State.Trait} := Pure "Contracts".
@@ -1362,6 +1442,10 @@ Module client.
   (* Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
       Context {E : Set}.
+      Context
+        `{core.fmt.Debug.Trait E}
+        `{ink_env.types.Environment.Trait E}
+        `{core.fmt.Debug.Trait E::type["Hash"]}.
       Definition Self := ink_e2e.client.CodeStoredEvent E.
       
       Parameter fmt :
@@ -1384,6 +1468,9 @@ Module client.
   (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
       Context {E : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{scale_encode.EncodeAsType.Trait E}.
       Definition Self := ink_e2e.client.CodeStoredEvent E.
       
       Parameter encode_as_type_to :
@@ -1411,6 +1498,9 @@ Module client.
   (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
       Context {E : Set}.
+      Context
+        `{ink_env.types.Environment.Trait E}
+        `{scale_encode.EncodeAsType.Trait E}.
       Definition Self := ink_e2e.client.CodeStoredEvent E.
       
       Parameter encode_as_fields_to :
@@ -1438,6 +1528,7 @@ Module client.
   (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
     (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
       Context {E : Set}.
+      Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.CodeStoredEvent E.
       
       Definition PALLET `{H' : State.Trait} := Pure "Contracts".
@@ -1602,6 +1693,11 @@ Module Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
     Context {C E : Set}.
     Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.Hash (Self := E))}.
+    Context
         `{subxt.config.Config.Trait C}
         `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.UploadResult C E.
@@ -1626,6 +1722,12 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_UploadResult_C_E.
 Module Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_InstantiationResult_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{core.fmt.Debug.Trait C::type["AccountId"]}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.AccountId (Self := E))}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
     Context
         `{subxt.config.Config.Trait C}
         `{ink_env.types.Environment.Trait E}.
@@ -1683,6 +1785,13 @@ Definition CallResult
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CallResult_C_E_V.
     Context {C E V : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{core.fmt.Debug.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait E}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
+      `{core.fmt.Debug.Trait V}.
     Context
         `{subxt.config.Config.Trait C}
         `{ink_env.types.Environment.Trait E}.
@@ -1742,6 +1851,11 @@ Definition CallDryRunResult
 Module Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
   Section Impl_core_fmt_Debug_for_ink_e2e_client_CallDryRunResult_E_V.
     Context {E V : Set}.
+    Context
+      `{core.fmt.Debug.Trait E}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait V}
+      `{core.fmt.Debug.Trait E::type["Balance"]}.
     Context `{ink_env.types.Environment.Trait E}.
       Definition Self := ink_e2e.client.CallDryRunResult E V.
     
@@ -1803,9 +1917,13 @@ Definition Error
     : Set :=
   Error.t (C := C) (E := E).
 
-(* Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
-  (* Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+Module Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
     Definition Self := ink_e2e.client.Error C E.
     
     Parameter fmt :
@@ -1821,13 +1939,18 @@ Definition Error
     Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
     }.
-  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E. *)
+  End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
   Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E. *)
+End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E.
 
 (* Module Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context
+      `{core.fmt.Debug.Trait E}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait E::type["AccountId"]}
+      `{core.fmt.Debug.Trait E::type["AccountId"]}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter fmt :
@@ -1847,11 +1970,15 @@ End Impl_core_fmt_Debug_for_ink_e2e_client_Error_C_E. *)
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
-Module
-  Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
-  Section
-    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+(* Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  (* Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Decode.Trait E::type["AccountId"]}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter decode :
@@ -1878,17 +2005,19 @@ Module
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
-  End
-    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+(* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter encode_to :
@@ -1910,17 +2039,19 @@ Module
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
-  Section
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Global Instance I
@@ -1928,17 +2059,14 @@ Module
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
-  End
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
-Module
-  Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
-  Section
-    Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+(* Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  (* Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Definition Visitor : Set := ink_e2e.client._.Visitor E.
@@ -1954,15 +2082,14 @@ Module
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor `{H' : State.Trait} := into_visitor;
     }.
-  End
-    Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E.
+End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
-Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
-  Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+(* Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  (* Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client._.Visitor E.
     
     Definition Error : Set := scale_decode.error.Error.
@@ -1997,15 +2124,14 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
-  End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
   Global Hint Resolve I : core.
-End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
 
-Module
-  Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
-  Section
-    Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+(* Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  (* Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter decode_as_fields :
@@ -2025,15 +2151,16 @@ Module
         :=
         decode_as_fields;
     }.
-  End
-    Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+  End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
+End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{scale_encode.EncodeAsType.Trait E}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter encode_as_type_to :
@@ -2061,6 +2188,9 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_
 (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{scale_encode.EncodeAsType.Trait E}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Parameter encode_as_fields_to :
@@ -2088,6 +2218,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEven
 (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
   (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client.ContractInstantiatedEvent E.
     
     Definition PALLET `{H' : State.Trait} := Pure "Contracts".
@@ -2115,6 +2246,10 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E
 (* Module Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context
+      `{core.fmt.Debug.Trait E}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait E::type["Hash"]}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Parameter fmt :
@@ -2134,11 +2269,13 @@ End Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E. *)
 
-Module
-  Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
-  Section
-    Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+(* Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+  (* Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Decode.Trait E::type["Hash"]}
+      `{parity_scale_codec.codec.Decode.Trait E::type["Hash"]}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Parameter decode :
@@ -2165,15 +2302,17 @@ Module
         :=
         decode (__CodecInputEdqy := __CodecInputEdqy);
     }.
-  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+  End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E.
+End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E. *)
 
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+(* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Parameter encode_to :
@@ -2223,15 +2362,17 @@ Module
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
-  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E. *)
 
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
-  Section
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Hash"]}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Global Instance I
@@ -2239,15 +2380,14 @@ Module
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
-  End
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E. *)
 
-Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
-  Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+(* Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+  (* Section Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Definition Visitor : Set := ink_e2e.client._.Visitor E.
@@ -2263,13 +2403,14 @@ Module Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
       scale_decode.IntoVisitor.Visitor := Visitor;
       scale_decode.IntoVisitor.into_visitor `{H' : State.Trait} := into_visitor;
     }.
-  End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+  End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve I : core.
-End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E.
+End Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E. *)
 
-Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
-  Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+(* Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  (* Section Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client._.Visitor E.
     
     Definition Error : Set := scale_decode.error.Error.
@@ -2304,13 +2445,14 @@ Module Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
       scale_decode.visitor.Visitor.Error := Error;
       scale_decode.visitor.Visitor.Value := Value;
     }.
-  End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+  End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
   Global Hint Resolve I : core.
-End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E.
+End Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E. *)
 
-Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
-  Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+(* Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+  (* Section Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Parameter decode_as_fields :
@@ -2330,13 +2472,16 @@ Module Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
         :=
         decode_as_fields;
     }.
-  End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+  End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
   Global Hint Resolve I : core.
-End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
+End Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
 
 (* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{scale_encode.EncodeAsType.Trait E}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Parameter encode_as_type_to :
@@ -2364,6 +2509,9 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E. *)
 (* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{scale_encode.EncodeAsType.Trait E}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Parameter encode_as_fields_to :
@@ -2391,6 +2539,7 @@ End Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E. *)
 (* Module Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
   (* Section Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.client.CodeStoredEvent E.
     
     Definition PALLET `{H' : State.Trait} := Pure "Contracts".
@@ -2674,9 +2823,10 @@ Module node_proc.
   Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
     TestNodeProcess.t (R := R).
   
-  Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
-    Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+  (* Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+    (* Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
       Context {R : Set}.
+      Context `{subxt.config.Config.Trait R}.
       Definition Self := ink_e2e.node_proc.TestNodeProcess R.
       
       Parameter drop :
@@ -2690,9 +2840,9 @@ Module node_proc.
       Global Instance I : core.ops.drop.Drop.Trait Self := {
         core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
       }.
-    End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+    End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
     Global Hint Resolve I : core.
-  End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+  End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
   
   Module TestNodeProcessBuilder.
     Section TestNodeProcessBuilder.
@@ -2764,9 +2914,10 @@ End TestNodeProcess.
 Definition TestNodeProcess (R : Set) `{subxt.config.Config.Trait R} : Set :=
   TestNodeProcess.t (R := R).
 
-Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
-  Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+(* Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+  (* Section Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
     Context {R : Set}.
+    Context `{subxt.config.Config.Trait R}.
     Definition Self := ink_e2e.node_proc.TestNodeProcess R.
     
     Parameter drop :
@@ -2780,9 +2931,9 @@ Module Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
     Global Instance I : core.ops.drop.Drop.Trait Self := {
       core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
     }.
-  End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+  End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
   Global Hint Resolve I : core.
-End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R.
+End Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R. *)
 
 Module TestNodeProcessBuilder.
   Section TestNodeProcessBuilder.
@@ -3019,8 +3170,7 @@ Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Weight.
 
-Module
-  Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
+(* Module Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
   
   Parameter max_encoded_len :
@@ -3040,8 +3190,7 @@ Module
       max_encoded_len;
   }.
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight.
+End Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight. *)
 
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
@@ -3145,7 +3294,7 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
   Global Hint Resolve I : core.
 End Impl_serde_de_Deserialize_for_ink_e2e_xts_Weight.
 
-Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
+(* Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
   Definition Self := ink_e2e.xts._.deserialize.__FieldVisitor.
   
   Definition Value : Set := ink_e2e.xts._.deserialize.__Field.
@@ -3200,9 +3349,9 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
     serde.de.Visitor.expecting `{H' : State.Trait} := expecting;
   }.
   Global Hint Resolve I : core.
-End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor.
+End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor. *)
 
-Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
+(* Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
   Definition Self := ink_e2e.xts._.deserialize.__Field.
   
   Parameter deserialize :
@@ -3226,9 +3375,9 @@ Module Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
       deserialize (__D := __D);
   }.
   Global Hint Resolve I : core.
-End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field.
+End Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field. *)
 
-Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
+(* Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
   Definition Self := ink_e2e.xts._.deserialize.__Visitor.
   
   Definition Value : Set := ink_e2e.xts.Weight.
@@ -3271,7 +3420,7 @@ Module Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
     serde.de.Visitor.expecting `{H' : State.Trait} := expecting;
   }.
   Global Hint Resolve I : core.
-End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor.
+End Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor. *)
 
 Module Impl_core_convert_From_for_ink_e2e_xts_Weight.
   Definition Self := ink_e2e.xts.Weight.
@@ -3372,9 +3521,14 @@ Definition InstantiateWithCode
     : Set :=
   InstantiateWithCode.t (E := E).
 
-(* Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
-  (* Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+Module Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
     Context {E : Set}.
+    Context
+      `{core.fmt.Debug.Trait E}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait E::type["Balance"]}
+      `{core.fmt.Debug.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter fmt :
@@ -3390,15 +3544,22 @@ Definition InstantiateWithCode
     Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
     }.
-  End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E. *)
+  End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve I : core.
-End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E. *)
+End Impl_core_fmt_Debug_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module
   Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
   Section
     Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_InstantiateWithCode_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter encode_to :
@@ -3430,6 +3591,13 @@ Module
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_InstantiateWithCode_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Global Instance I
@@ -3448,6 +3616,13 @@ Module
   Section
     Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Decode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Decode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter decode :
@@ -3479,9 +3654,10 @@ Module
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
 
-(* Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
-  (* Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter encode_as_type_to :
@@ -3502,13 +3678,15 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_InstantiateWithCode_E.
         :=
         encode_as_type_to;
     }.
-  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E. *)
+  End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve I : core.
-End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E. *)
+End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E.
 
-(* Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
-  (* Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
+  Section
+    Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.xts.InstantiateWithCode E.
     
     Parameter encode_as_fields_to :
@@ -3529,9 +3707,9 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_InstantiateWithCode_E. *)
         :=
         encode_as_fields_to;
     }.
-  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E. *)
+  End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
   Global Hint Resolve I : core.
-End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E. *)
+End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_InstantiateWithCode_E.
 
 Module Call.
   Section Call.
@@ -3587,6 +3765,12 @@ Definition Call (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
     Context {E : Set}.
+    Context
+      `{core.fmt.Debug.Trait E}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait E::type["AccountId"]}
+      `{core.fmt.Debug.Trait E::type["Balance"]}
+      `{core.fmt.Debug.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Call E.
     
     Parameter fmt :
@@ -3609,6 +3793,17 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Call_E.
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Decode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      `{parity_scale_codec.codec.Decode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      `{parity_scale_codec.codec.Decode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Decode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Call E.
     
     Parameter decode :
@@ -3642,6 +3837,17 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Call_E.
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Call E.
     
     Parameter encode_to :
@@ -3670,6 +3876,17 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Call_E.
 Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
   Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.multi_address.MultiAddress E::type["AccountId"] unit)}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Call E.
     
     Global Instance I
@@ -3684,6 +3901,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Call_E.
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.xts.Call E.
     
     Parameter encode_as_type_to :
@@ -3711,6 +3929,7 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Call_E.
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Call_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.xts.Call E.
     
     Parameter encode_as_fields_to :
@@ -3770,6 +3989,13 @@ Definition Transfer
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
     Context {E C : Set}.
+    Context
+      `{core.fmt.Debug.Trait E}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait C}
+      `{subxt.config.Config.Trait C}
+      `{core.fmt.Debug.Trait C::type["Address"]}
+      `{core.fmt.Debug.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Parameter fmt :
@@ -3792,6 +4018,14 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_Transfer_E_C.
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
     Context {E C : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{subxt.config.Config.Trait C}
+      `{parity_scale_codec.codec.Decode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      `{parity_scale_codec.codec.Decode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Parameter decode :
@@ -3825,6 +4059,14 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_Transfer_E_C.
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Transfer_E_C.
     Context {E C : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{subxt.config.Config.Trait C}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Parameter encode_to :
@@ -3855,6 +4097,14 @@ Module
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
     Context {E C : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{subxt.config.Config.Trait C}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (subxt.utils.static_type.Static C::type["Address"])}
+      `{parity_scale_codec.compact.HasCompact.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Global Instance I
@@ -3870,6 +4120,7 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Transfer_E_C.
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
     Context {E C : Set}.
+    Context `{ink_env.types.Environment.Trait E} `{subxt.config.Config.Trait C}.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Parameter encode_as_type_to :
@@ -3897,6 +4148,7 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_Transfer_E_C.
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
     Context {E C : Set}.
+    Context `{ink_env.types.Environment.Trait E} `{subxt.config.Config.Trait C}.
     Definition Self := ink_e2e.xts.Transfer E C.
     
     Parameter encode_as_fields_to :
@@ -4182,6 +4434,10 @@ Definition UploadCode (E : Set) `{ink_env.types.Environment.Trait E} : Set :=
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
   Section Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
     Context {E : Set}.
+    Context
+      `{core.fmt.Debug.Trait E}
+      `{ink_env.types.Environment.Trait E}
+      `{core.fmt.Debug.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Parameter fmt :
@@ -4204,6 +4460,12 @@ End Impl_core_fmt_Debug_for_ink_e2e_xts_UploadCode_E.
 Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
   Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_UploadCode_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Parameter encode_to :
@@ -4234,6 +4496,12 @@ Module
   Section
     Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Global Instance I
@@ -4249,6 +4517,12 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_UploadCode_E.
 Module Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
   Section Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
     Context {E : Set}.
+    Context
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Decode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Decode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Parameter decode :
@@ -4282,6 +4556,7 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_e2e_xts_UploadCode_E.
 Module Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
   Section Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Parameter encode_as_type_to :
@@ -4309,6 +4584,7 @@ End Impl_scale_encode_EncodeAsType_for_ink_e2e_xts_UploadCode_E.
 Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   Section Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
     Context {E : Set}.
+    Context `{ink_env.types.Environment.Trait E}.
     Definition Self := ink_e2e.xts.UploadCode E.
     
     Parameter encode_as_fields_to :
@@ -4333,9 +4609,14 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_UploadCode_E.
 
-Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
-  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+(* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{serde.ser.Serialize.Trait C::type["AccountId"]}
+      `{serde.ser.Serialize.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
     
     Parameter serialize :
@@ -4363,15 +4644,24 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
         :=
         serialize (__S := __S);
     }.
-  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve I : core.
-End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
 
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+(* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
     
     Parameter encode_to :
@@ -4393,17 +4683,24 @@ Module
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
 
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
-  Section
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.RpcInstantiateRequest C E.
     
     Global Instance I
@@ -4411,15 +4708,18 @@ Module
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
-  End
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E. *)
 
-Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
-  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+(* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{serde.ser.Serialize.Trait E::type["Balance"]}
+      `{serde.ser.Serialize.Trait C::type["AccountId"]}.
     Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
     
     Parameter serialize :
@@ -4447,15 +4747,23 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
         :=
         serialize (__S := __S);
     }.
-  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve I : core.
-End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
 
-Module
-  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+(* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{serde.ser.Serialize.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
     
     Parameter encode_to :
@@ -4477,17 +4785,23 @@ Module
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
-  End
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
 
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
-  Section
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{serde.ser.Serialize.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.RpcCodeUploadRequest C E.
     
     Global Instance I
@@ -4495,15 +4809,19 @@ Module
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
-  End
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E. *)
 
-Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
-  Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+(* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+  (* Section Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{serde.ser.Serialize.Trait C::type["AccountId"]}
+      `{serde.ser.Serialize.Trait E::type["AccountId"]}
+      `{serde.ser.Serialize.Trait E::type["Balance"]}.
     Definition Self := ink_e2e.xts.RpcCallRequest C E.
     
     Parameter serialize :
@@ -4531,14 +4849,26 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
         :=
         serialize (__S := __S);
     }.
-  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+  End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve I : core.
-End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
-Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
-  Section
-    Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+(* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+  (* Section Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.RpcCallRequest C E.
     
     Parameter encode_to :
@@ -4560,15 +4890,26 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
     
     Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
     }.
-  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+  End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
-Module
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
-  Section
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+  (* Section Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
     Context {C E : Set}.
+    Context
+      `{subxt.config.Config.Trait C}
+      `{ink_env.types.Environment.Trait E}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait C::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["AccountId"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait E::type["Balance"]}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}
+      `{parity_scale_codec.codec.Encode.Trait
+            (core.option.Option E::type["Balance"])}.
     Definition Self := ink_e2e.xts.RpcCallRequest C E.
     
     Global Instance I
@@ -4576,13 +4917,11 @@ Module
           (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
         := {
     }.
-  End
-    Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+  End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
   Global Hint Resolve I : core.
-End
-  Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E. *)
 
-Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
+(* Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
   Parameter serialize :
@@ -4608,9 +4947,9 @@ Module Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
       serialize (__S := __S);
   }.
   Global Hint Resolve I : core.
-End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code.
+End Impl_serde_ser_Serialize_for_ink_e2e_xts_Code. *)
 
-Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
+(* Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
   Parameter encode_to :
@@ -4633,9 +4972,9 @@ Module Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
   Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
   }.
   Global Hint Resolve I : core.
-End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code.
+End Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code. *)
 
-Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
+(* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
   Definition Self := ink_e2e.xts.Code.
   
   Global Instance I
@@ -4644,7 +4983,7 @@ Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
       := {
   }.
   Global Hint Resolve I : core.
-End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code.
+End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code. *)
 
 Module ContractsApi.
   Section ContractsApi.

@@ -155,11 +155,13 @@ Global Instance Method_ne_u64 `{State.Trait} :
   Notation.Dot "ne" (T := u64 -> u64 -> M bool). Admitted.
 
 Require CoqOfRust.alloc.boxed.
+Require CoqOfRust.alloc.collections.
 Require CoqOfRust.alloc.string.
 Require CoqOfRust.alloc.vec.
 
 Module alloc.
   Export CoqOfRust.alloc.boxed.
+  Require CoqOfRust.alloc.collections.
   Export CoqOfRust.alloc.string.
   Export CoqOfRust.alloc.vec.
 End alloc.
