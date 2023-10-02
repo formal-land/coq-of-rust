@@ -297,6 +297,69 @@ End state__.""",
         f.write(content)
 
 
+def update_ink_e2e():
+    file_name = "ink_e2e.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = sub_at_least_once(
+        pattern,
+        pattern
+        + """
+Require CoqOfRust.ink.ink_env.
+Require CoqOfRust.ink.pallet_contracts_primitives.
+Require CoqOfRust.ink.subxt.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape(
+            "Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :="),
+        "Definition CreateBuilderPartial (E ContractRef Args R : Set) `{ink_env.types.Environment.Trait E} : Set :=",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape(
+            "Definition CallBuilderFinal (E Args RetType : Set) : Set :="),
+        "Definition CallBuilderFinal (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.UploadResult C E."),
+        """Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.UploadResult C E.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.InstantiationResult C E."),
+        """Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.InstantiationResult C E.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.CallResult C E V."),
+        """Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.CallResult C E V.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.CallDryRunResult E V."),
+        """Context `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.CallDryRunResult E V.""",
+        content,
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 def update_ink_e2e_macro():
     file_name = "ink_e2e_macro.v"
     with open(file_name, "r") as f:
@@ -631,6 +694,7 @@ Require CoqOfRust.ink.ink.""",
 
 update_ink()
 update_ink_allocator()
+update_ink_e2e()
 update_ink_e2e_macro()
 update_ink_engine()
 update_ink_env()

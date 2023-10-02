@@ -296,6 +296,7 @@ Module blocks.
       : Set := { }.
     End ExtrinsicEvents.
     Global Set Primitive Projections.
-    Definition ExtrinsicEvents := ExtrinsicEvents.t.
+    Definition ExtrinsicEvents (T : Set) `{subxt.config.Config.Trait T} : Set :=
+      ExtrinsicEvents.t T.
   End block_types.
 End blocks.

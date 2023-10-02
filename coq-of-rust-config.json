@@ -53,6 +53,11 @@
         "private": { "move": "up", "before": "IsResultType" }
       }
     },
+    "ink_e2e": {
+      "top_level::client": {
+        "CallDryRunResult": { "move": "up", "before": "CallResult" }
+      }
+    },
     "ink_e2e_macro": {
       "top_level": {
         "ir": { "move": "up", "before": "codegen" },
