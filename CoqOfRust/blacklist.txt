@@ -213,7 +213,6 @@ examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/returning_traits_with_dyn.v
 examples_axiomatized/traits/supertraits.v
 ink/erc20.v
-ink/ink_e2e.v
 _std/iter_type.v
 _std/iter.v
 _std/net.v

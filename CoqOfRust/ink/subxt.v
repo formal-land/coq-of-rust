@@ -87,7 +87,7 @@ Module config.
     }
     *)
     Module ExtrinsicParams.
-      Class Trait (Self : Set) `{core.fmt.Debug.Trait Self} (Hash : Set)
+      Class Trait (Self : Set) (*`{core.fmt.Debug.Trait Self}*) (Hash : Set)
         : Type := {
         OtherParams : Set;
 
@@ -105,7 +105,7 @@ Module config.
     forall
       (T E : Set)
       `{Config.Trait T}
-      `{extrinsic_params.ExtrinsicParams.Trait T T::type["Hash"]},
+      `{extrinsic_params.ExtrinsicParams.Trait E T::type["Hash"]},
     Set.
 
   Module polkadot.
@@ -126,6 +126,12 @@ Module config.
     (* pub type PolkadotExtrinsicParams<T> = BaseExtrinsicParams<T, PlainTip>; *)
     Definition PolkadotExtrinsicParams (T : Set) `{Config.Trait T} : Set
       := extrinsic_params.BaseExtrinsicParams T PlainTip.
+
+    Global Instance ExtrinsicParams_for_PolkadotExtrinsicParams
+      (T : Set) `{Config.Trait T} :
+      extrinsic_params.ExtrinsicParams.Trait (PolkadotExtrinsicParams T)
+        T::type["Hash"].
+    Admitted.
   End polkadot.
 
   Module substrate.
