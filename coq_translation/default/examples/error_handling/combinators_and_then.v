@@ -7,7 +7,7 @@ Module Food.
   | Steak
   | Sushi.
 End Food.
-Definition Food := Food.t.
+Definition Food : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self := combinators_and_then.Food.
@@ -41,7 +41,7 @@ Module Day.
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day := Day.t.
+Definition Day : Set := Day.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self := combinators_and_then.Day.

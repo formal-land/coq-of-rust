@@ -58,6 +58,21 @@ Module codec.
         Global Instance I : Codec.Trait S := {}.
       End Codec.
     End Codec.
-    
   End _Impl.
 End codec.
+
+Module encode_like.
+  Module EncodeLike.
+    Class Trait (Self : Set) {T : Set} : Set := {}.
+
+    Module Default.
+      Parameter T : Set -> Set.
+    End Default.
+  End EncodeLike.
+End encode_like.
+
+Module compact.
+  Module HasCompact.
+    Class Trait (Self : Set) : Set := {}.
+  End HasCompact.
+End compact.

@@ -6,14 +6,14 @@ Module Status.
   | Rich
   | Poor.
 End Status.
-Definition Status := Status.t.
+Definition Status : Set := Status.t.
 
 Module Work.
   Inductive t : Set :=
   | Civilian
   | Soldier.
 End Work.
-Definition Work := Work.t.
+Definition Work : Set := Work.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=

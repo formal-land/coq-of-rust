@@ -43,6 +43,7 @@ Module storage.
   (* Module Impl_ink_storage_traits_storage_Storable_for_P.
     (* Section Impl_ink_storage_traits_storage_Storable_for_P.
       Context {P : Set}.
+      Context `{parity_scale_codec.codec.Codec.Trait P}.
       Definition Self := P.
       
       Parameter encode :
@@ -362,6 +363,9 @@ Module impls.
     Section
       Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context
+        `{core.default.Default.Trait ParentKey}
+        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter default :
@@ -386,6 +390,9 @@ Module impls.
     Section
       Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context
+        `{core.clone.Clone.Trait ParentKey}
+        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter clone :
@@ -409,6 +416,9 @@ Module impls.
     Section
       Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context
+        `{core.marker.Copy.Trait ParentKey}
+        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Global Instance I' : core.marker.Copy.Trait Self := {
@@ -422,6 +432,7 @@ Module impls.
     Section
       Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Global Instance I' : core.marker.StructuralEq.Trait Self := {
@@ -437,6 +448,10 @@ Module impls.
     Section
       Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context
+        `{core.cmp.PartialEq.Trait ParentKey
+            (Rhs := core.cmp.PartialEq.Default.Rhs ParentKey)}
+        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter eq :
@@ -463,6 +478,9 @@ Module impls.
   Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context
+        `{core.cmp.Eq.Trait ParentKey}
+        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter assert_receiver_is_total_eq :
@@ -485,6 +503,7 @@ Module impls.
     Section
       Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
@@ -500,6 +519,10 @@ Module impls.
     Section
       Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context
+        `{core.cmp.PartialOrd.Trait ParentKey
+            (Rhs := core.cmp.PartialOrd.Default.Rhs ParentKey)}
+        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter partial_cmp :
@@ -527,6 +550,7 @@ Module impls.
   (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
     (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Definition
@@ -551,6 +575,7 @@ Module impls.
     Section
       Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
       Context {ParentKey : Set}.
+      Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
       
       Parameter fmt :
@@ -590,6 +615,7 @@ Module impls.
     Section
       Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context `{core.default.Default.Trait L} `{core.default.Default.Trait R}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter default :
@@ -611,6 +637,7 @@ Module impls.
   Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context `{core.clone.Clone.Trait L} `{core.clone.Clone.Trait R}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter clone :
@@ -632,6 +659,7 @@ Module impls.
   Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context `{core.marker.Copy.Trait L} `{core.marker.Copy.Trait R}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Global Instance I' : core.marker.Copy.Trait Self := {
@@ -659,6 +687,9 @@ Module impls.
     Section
       Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context
+        `{core.cmp.PartialEq.Trait L (Rhs := core.cmp.PartialEq.Default.Rhs L)}
+        `{core.cmp.PartialEq.Trait R (Rhs := core.cmp.PartialEq.Default.Rhs R)}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter eq :
@@ -699,6 +730,7 @@ Module impls.
   Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context `{core.cmp.Eq.Trait L} `{core.cmp.Eq.Trait R}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter assert_receiver_is_total_eq :
@@ -720,6 +752,11 @@ Module impls.
     Section
       Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context
+        `{core.cmp.PartialOrd.Trait L
+            (Rhs := core.cmp.PartialOrd.Default.Rhs L)}
+        `{core.cmp.PartialOrd.Trait R
+            (Rhs := core.cmp.PartialOrd.Default.Rhs R)}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter partial_cmp :
@@ -746,6 +783,7 @@ Module impls.
   Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context `{core.fmt.Debug.Trait L} `{core.fmt.Debug.Trait R}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Parameter fmt :
@@ -768,6 +806,11 @@ Module impls.
   (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
     (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
       Context {L R : Set}.
+      Context
+        `{ink_storage_traits.storage.StorageKey.Trait L}
+        `{ink_storage_traits.impls.KeyType.Trait L}
+        `{ink_storage_traits.storage.StorageKey.Trait R}
+        `{ink_storage_traits.impls.KeyType.Trait R}.
       Definition Self := ink_storage_traits.impls.ResolverKey L R.
       
       Definition
@@ -792,6 +835,14 @@ Module impls.
   (* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
     (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
       Context {T ParentKey : Set}.
+      Context
+        `{ink_storage_traits.storage.StorableHint.Trait T (Key := ParentKey)}
+        `{ink_storage_traits.impls.KeyType.Trait
+              (ink_storage_traits.storage.StorableHint.PreferredKey
+                (Self := T))}
+        `{ink_storage_traits.storage.StorableHint.Trait T
+            (Key := ink_storage_traits.impls.FinalKey T ParentKey)}
+        `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
       Definition Self := T.
       
       Definition Type : Set :=
@@ -813,6 +864,9 @@ Module impls.
   Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
     Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
       Context {P : Set}.
+      Context
+        `{parity_scale_codec.codec.Decode.Trait P}
+        `{parity_scale_codec.codec.Encode.Trait P}.
       Definition Self := P.
       
       Global Instance I'
@@ -825,6 +879,9 @@ Module impls.
   (* Module Impl_ink_storage_traits_storage_Packed_for_P.
     (* Section Impl_ink_storage_traits_storage_Packed_for_P.
       Context {P : Set}.
+      Context
+        `{parity_scale_codec.codec.Decode.Trait P}
+        `{parity_scale_codec.codec.Encode.Trait P}.
       Definition Self := P.
       
       Global Instance I' : ink_storage_traits.storage.Packed.Trait Self := {
@@ -836,6 +893,7 @@ Module impls.
   (* Module Impl_ink_storage_traits_storage_StorageKey_for_P.
     (* Section Impl_ink_storage_traits_storage_StorageKey_for_P.
       Context {P : Set}.
+      Context `{ink_storage_traits.storage.Packed.Trait P}.
       Definition Self := P.
       
       Definition KEY `{H' : State.Trait} := Pure 0.
@@ -855,6 +913,9 @@ Module impls.
   (* Module Impl_ink_storage_traits_storage_StorableHint_for_P.
     (* Section Impl_ink_storage_traits_storage_StorableHint_for_P.
       Context {P Key : Set}.
+      Context
+        `{ink_storage_traits.storage.Packed.Trait P}
+        `{ink_storage_traits.storage.StorageKey.Trait Key}.
       Definition Self := P.
       
       Definition Type : Set := P.
@@ -1073,6 +1134,11 @@ Module
   Section
     Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}
+      `{scale_info.TypeInfo.Trait (core.marker.PhantomData (ParentKey))}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}
+      `{scale_info.TypeInfo.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Definition Identity : Set := Self.
@@ -1099,6 +1165,9 @@ Module
   Section
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context
+      `{core.default.Default.Trait ParentKey}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter default :
@@ -1122,6 +1191,9 @@ Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_marker_Copy_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context
+      `{core.marker.Copy.Trait ParentKey}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Global Instance I' : core.marker.Copy.Trait Self := {
@@ -1134,6 +1206,9 @@ Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_clone_Clone_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context
+      `{core.clone.Clone.Trait ParentKey}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter clone :
@@ -1157,6 +1232,7 @@ Module
   Section
     Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Global Instance I' : core.marker.StructuralEq.Trait Self := {
@@ -1170,6 +1246,9 @@ End
 Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context
+      `{core.cmp.Eq.Trait ParentKey}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter assert_receiver_is_total_eq :
@@ -1192,6 +1271,7 @@ Module
   Section
     Impl_core_marker_StructuralPartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Global Instance I' : core.marker.StructuralPartialEq.Trait Self := {
@@ -1206,6 +1286,10 @@ Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section
     Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context
+      `{core.cmp.PartialEq.Trait ParentKey
+          (Rhs := core.cmp.PartialEq.Default.Rhs ParentKey)}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter eq :
@@ -1233,6 +1317,10 @@ Module
   Section
     Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context
+      `{core.cmp.PartialOrd.Trait ParentKey
+          (Rhs := core.cmp.PartialOrd.Default.Rhs ParentKey)}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter partial_cmp :
@@ -1259,6 +1347,7 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ManualKey_ParentKey.
 (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
   (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Definition
@@ -1282,6 +1371,7 @@ End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_Manu
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ManualKey_ParentKey.
     Context {ParentKey : Set}.
+    Context `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := ink_storage_traits.impls.ManualKey ParentKey.
     
     Parameter fmt :
@@ -1320,6 +1410,10 @@ Definition ResolverKey := @ResolverKey.t.
 Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context
+      `{scale_info.TypeInfo.Trait (core.marker.PhantomData (L * R))}
+      `{scale_info.TypeInfo.Trait L}
+      `{scale_info.TypeInfo.Trait R}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Definition Identity : Set := Self.
@@ -1345,6 +1439,7 @@ Module Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section
     Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context `{core.default.Default.Trait L} `{core.default.Default.Trait R}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter default :
@@ -1366,6 +1461,7 @@ End Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
 Module Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context `{core.marker.Copy.Trait L} `{core.marker.Copy.Trait R}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Global Instance I' : core.marker.Copy.Trait Self := {
@@ -1377,6 +1473,7 @@ End Impl_core_marker_Copy_for_ink_storage_traits_impls_ResolverKey_L_R.
 Module Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_clone_Clone_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context `{core.clone.Clone.Trait L} `{core.clone.Clone.Trait R}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter clone :
@@ -1412,6 +1509,9 @@ End
 Module Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_cmp_PartialEq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context
+      `{core.cmp.PartialEq.Trait L (Rhs := core.cmp.PartialEq.Default.Rhs L)}
+      `{core.cmp.PartialEq.Trait R (Rhs := core.cmp.PartialEq.Default.Rhs R)}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter eq :
@@ -1451,6 +1551,7 @@ End Impl_core_marker_StructuralEq_for_ink_storage_traits_impls_ResolverKey_L_R.
 Module Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context `{core.cmp.Eq.Trait L} `{core.cmp.Eq.Trait R}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter assert_receiver_is_total_eq :
@@ -1471,6 +1572,9 @@ End Impl_core_cmp_Eq_for_ink_storage_traits_impls_ResolverKey_L_R.
 Module Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context
+      `{core.cmp.PartialOrd.Trait L (Rhs := core.cmp.PartialOrd.Default.Rhs L)}
+      `{core.cmp.PartialOrd.Trait R (Rhs := core.cmp.PartialOrd.Default.Rhs R)}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter partial_cmp :
@@ -1497,6 +1601,7 @@ End Impl_core_cmp_PartialOrd_for_ink_storage_traits_impls_ResolverKey_L_R.
 Module Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context `{core.fmt.Debug.Trait L} `{core.fmt.Debug.Trait R}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Parameter fmt :
@@ -1519,6 +1624,11 @@ End Impl_core_fmt_Debug_for_ink_storage_traits_impls_ResolverKey_L_R.
 (* Module Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
   (* Section Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_ResolverKey_L_R.
     Context {L R : Set}.
+    Context
+      `{ink_storage_traits.storage.StorageKey.Trait L}
+      `{ink_storage_traits.impls.KeyType.Trait L}
+      `{ink_storage_traits.storage.StorageKey.Trait R}
+      `{ink_storage_traits.impls.KeyType.Trait R}.
     Definition Self := ink_storage_traits.impls.ResolverKey L R.
     
     Definition
@@ -1543,6 +1653,13 @@ End Impl_ink_storage_traits_storage_StorageKey_for_ink_storage_traits_impls_Reso
 (* Module Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
   (* Section Impl_ink_storage_traits_storage_AutoStorableHint_for_T.
     Context {T ParentKey : Set}.
+    Context
+      `{ink_storage_traits.storage.StorableHint.Trait T (Key := ParentKey)}
+      `{ink_storage_traits.impls.KeyType.Trait
+            (ink_storage_traits.storage.StorableHint.PreferredKey (Self := T))}
+      `{ink_storage_traits.storage.StorableHint.Trait T
+          (Key := ink_storage_traits.impls.FinalKey T ParentKey)}
+      `{ink_storage_traits.storage.StorageKey.Trait ParentKey}.
     Definition Self := T.
     
     Definition Type : Set :=
@@ -1564,6 +1681,9 @@ End Impl_ink_storage_traits_storage_AutoStorableHint_for_T. *)
 Module Impl_ink_storage_traits_storage_private_Sealed_for_P.
   Section Impl_ink_storage_traits_storage_private_Sealed_for_P.
     Context {P : Set}.
+    Context
+      `{parity_scale_codec.codec.Decode.Trait P}
+      `{parity_scale_codec.codec.Encode.Trait P}.
     Definition Self := P.
     
     Global Instance I'
@@ -1576,6 +1696,9 @@ End Impl_ink_storage_traits_storage_private_Sealed_for_P.
 (* Module Impl_ink_storage_traits_storage_Packed_for_P.
   (* Section Impl_ink_storage_traits_storage_Packed_for_P.
     Context {P : Set}.
+    Context
+      `{parity_scale_codec.codec.Decode.Trait P}
+      `{parity_scale_codec.codec.Encode.Trait P}.
     Definition Self := P.
     
     Global Instance I' : ink_storage_traits.storage.Packed.Trait Self := {
@@ -1587,6 +1710,7 @@ End Impl_ink_storage_traits_storage_Packed_for_P. *)
 (* Module Impl_ink_storage_traits_storage_StorageKey_for_P.
   (* Section Impl_ink_storage_traits_storage_StorageKey_for_P.
     Context {P : Set}.
+    Context `{ink_storage_traits.storage.Packed.Trait P}.
     Definition Self := P.
     
     Definition KEY `{H' : State.Trait} := Pure 0.
@@ -1606,6 +1730,9 @@ End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
 (* Module Impl_ink_storage_traits_storage_StorableHint_for_P.
   (* Section Impl_ink_storage_traits_storage_StorableHint_for_P.
     Context {P Key : Set}.
+    Context
+      `{ink_storage_traits.storage.Packed.Trait P}
+      `{ink_storage_traits.storage.StorageKey.Trait Key}.
     Definition Self := P.
     
     Definition Type : Set := P.
@@ -1662,6 +1789,7 @@ End Storable.
 (* Module Impl_ink_storage_traits_storage_Storable_for_P.
   (* Section Impl_ink_storage_traits_storage_Storable_for_P.
     Context {P : Set}.
+    Context `{parity_scale_codec.codec.Codec.Trait P}.
     Definition Self := P.
     
     Parameter encode :
@@ -2191,6 +2319,9 @@ Module layout.
     Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
       Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
         Context {T : Set}.
+        Context
+          `{ink_storage_traits.layout.StorageLayout.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self := list T.
         
         Parameter layout :
@@ -2220,6 +2351,7 @@ Module layout.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
         Context {T : Set}.
+        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
         Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
@@ -2251,6 +2383,7 @@ Module layout.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
         Context {T : Set}.
+        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
         Definition Self := core.option.Option T.
         
         Parameter layout :
@@ -2280,6 +2413,9 @@ Module layout.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
         Context {T E : Set}.
+        Context
+          `{ink_storage_traits.layout.StorageLayout.Trait T}
+          `{ink_storage_traits.layout.StorageLayout.Trait E}.
         Definition Self := core.result.Result T E.
         
         Parameter layout :
@@ -2310,6 +2446,9 @@ Module layout.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
         Context {T : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
@@ -2339,6 +2478,11 @@ Module layout.
     (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
       (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
         Context {K V : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait K}
+          `{ink_storage_traits.storage.Packed.Trait K}
+          `{scale_info.TypeInfo.Trait V}
+          `{ink_storage_traits.storage.Packed.Trait V}.
         Definition Self :=
           alloc.collections.btree.map.BTreeMap
             K
@@ -2370,6 +2514,9 @@ Module layout.
     (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
       (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
         Context {T : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self :=
           alloc.collections.btree.set.BTreeSet
             T
@@ -2400,6 +2547,9 @@ Module layout.
     (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
       (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
         Context {T : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self :=
           alloc.collections.vec_deque.VecDeque
             T
@@ -2806,6 +2956,9 @@ Module Wrap_impls_1.
     Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
       Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
         Context {T : Set}.
+        Context
+          `{ink_storage_traits.layout.StorageLayout.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self := list T.
         
         Parameter layout :
@@ -2835,6 +2988,7 @@ Module Wrap_impls_1.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
         Context {T : Set}.
+        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
         Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
         
         Parameter layout :
@@ -2866,6 +3020,7 @@ Module Wrap_impls_1.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
         Context {T : Set}.
+        Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
         Definition Self := core.option.Option T.
         
         Parameter layout :
@@ -2895,6 +3050,9 @@ Module Wrap_impls_1.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
         Context {T E : Set}.
+        Context
+          `{ink_storage_traits.layout.StorageLayout.Trait T}
+          `{ink_storage_traits.layout.StorageLayout.Trait E}.
         Definition Self := core.result.Result T E.
         
         Parameter layout :
@@ -2925,6 +3083,9 @@ Module Wrap_impls_1.
       Section
         Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
         Context {T : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
         
         Parameter layout :
@@ -2954,6 +3115,11 @@ Module Wrap_impls_1.
     (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
       (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
         Context {K V : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait K}
+          `{ink_storage_traits.storage.Packed.Trait K}
+          `{scale_info.TypeInfo.Trait V}
+          `{ink_storage_traits.storage.Packed.Trait V}.
         Definition Self :=
           alloc.collections.btree.map.BTreeMap
             K
@@ -2985,6 +3151,9 @@ Module Wrap_impls_1.
     (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
       (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
         Context {T : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self :=
           alloc.collections.btree.set.BTreeSet
             T
@@ -3015,6 +3184,9 @@ Module Wrap_impls_1.
     (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
       (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
         Context {T : Set}.
+        Context
+          `{scale_info.TypeInfo.Trait T}
+          `{ink_storage_traits.storage.Packed.Trait T}.
         Definition Self :=
           alloc.collections.vec_deque.VecDeque
             T
@@ -3403,6 +3575,7 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_i128.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
     Context {A : Set}.
+    Context `{ink_storage_traits.layout.StorageLayout.Trait A}.
     Definition Self := A.
     
     Parameter layout :
@@ -3428,6 +3601,9 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
     Context {A B : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}.
     Definition Self := A * B.
     
     Parameter layout :
@@ -3453,6 +3629,10 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
     Context {A B C : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}.
     Definition Self := (A * B) * C.
     
     Parameter layout :
@@ -3478,6 +3658,11 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
     Context {A B C D : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}
+      `{ink_storage_traits.layout.StorageLayout.Trait D}.
     Definition Self := ((A * B) * C) * D.
     
     Parameter layout :
@@ -3503,6 +3688,12 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
     Context {A B C D E : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}
+      `{ink_storage_traits.layout.StorageLayout.Trait D}
+      `{ink_storage_traits.layout.StorageLayout.Trait E}.
     Definition Self := (((A * B) * C) * D) * E.
     
     Parameter layout :
@@ -3528,6 +3719,13 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
     Context {A B C D E F : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}
+      `{ink_storage_traits.layout.StorageLayout.Trait D}
+      `{ink_storage_traits.layout.StorageLayout.Trait E}
+      `{ink_storage_traits.layout.StorageLayout.Trait F}.
     Definition Self := ((((A * B) * C) * D) * E) * F.
     
     Parameter layout :
@@ -3553,6 +3751,14 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_.
     Context {A B C D E F G : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}
+      `{ink_storage_traits.layout.StorageLayout.Trait D}
+      `{ink_storage_traits.layout.StorageLayout.Trait E}
+      `{ink_storage_traits.layout.StorageLayout.Trait F}
+      `{ink_storage_traits.layout.StorageLayout.Trait G}.
     Definition Self := (((((A * B) * C) * D) * E) * F) * G.
     
     Parameter layout :
@@ -3579,6 +3785,15 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_.
     Context {A B C D E F G H : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}
+      `{ink_storage_traits.layout.StorageLayout.Trait D}
+      `{ink_storage_traits.layout.StorageLayout.Trait E}
+      `{ink_storage_traits.layout.StorageLayout.Trait F}
+      `{ink_storage_traits.layout.StorageLayout.Trait G}
+      `{ink_storage_traits.layout.StorageLayout.Trait H}.
     Definition Self := ((((((A * B) * C) * D) * E) * F) * G) * H.
     
     Parameter layout :
@@ -3606,6 +3821,16 @@ Module
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_.
     Context {A B C D E F G H I : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}
+      `{ink_storage_traits.layout.StorageLayout.Trait D}
+      `{ink_storage_traits.layout.StorageLayout.Trait E}
+      `{ink_storage_traits.layout.StorageLayout.Trait F}
+      `{ink_storage_traits.layout.StorageLayout.Trait G}
+      `{ink_storage_traits.layout.StorageLayout.Trait H}
+      `{ink_storage_traits.layout.StorageLayout.Trait I}.
     Definition Self := (((((((A * B) * C) * D) * E) * F) * G) * H) * I.
     
     Parameter layout :
@@ -3633,6 +3858,17 @@ Module
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.
     Context {A B C D E F G H I J : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait A}
+      `{ink_storage_traits.layout.StorageLayout.Trait B}
+      `{ink_storage_traits.layout.StorageLayout.Trait C}
+      `{ink_storage_traits.layout.StorageLayout.Trait D}
+      `{ink_storage_traits.layout.StorageLayout.Trait E}
+      `{ink_storage_traits.layout.StorageLayout.Trait F}
+      `{ink_storage_traits.layout.StorageLayout.Trait G}
+      `{ink_storage_traits.layout.StorageLayout.Trait H}
+      `{ink_storage_traits.layout.StorageLayout.Trait I}
+      `{ink_storage_traits.layout.StorageLayout.Trait J}.
     Definition Self := ((((((((A * B) * C) * D) * E) * F) * G) * H) * I) * J.
     
     Parameter layout :
@@ -3659,6 +3895,9 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_Tuple_A_B_C_D_E_F_G_H_I_J_.
 Module Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_Array_T.
     Context {T : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait T}
+      `{ink_storage_traits.storage.Packed.Trait T}.
     Definition Self := list T.
     
     Parameter layout :
@@ -3686,6 +3925,7 @@ Module
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_boxed_Box_T_alloc_boxed_Box_Default_A.
     Context {T : Set}.
+    Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
     Definition Self := alloc.boxed.Box T alloc.boxed.Box.Default.A.
     
     Parameter layout :
@@ -3713,6 +3953,7 @@ End
 Module Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
   Section Impl_ink_storage_traits_layout_StorageLayout_for_core_option_Option_T.
     Context {T : Set}.
+    Context `{ink_storage_traits.layout.StorageLayout.Trait T}.
     Definition Self := core.option.Option T.
     
     Parameter layout :
@@ -3739,6 +3980,9 @@ Module Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_core_result_Result_T_E.
     Context {T E : Set}.
+    Context
+      `{ink_storage_traits.layout.StorageLayout.Trait T}
+      `{ink_storage_traits.layout.StorageLayout.Trait E}.
     Definition Self := core.result.Result T E.
     
     Parameter layout :
@@ -3766,6 +4010,9 @@ Module
   Section
     Impl_ink_storage_traits_layout_StorageLayout_for_alloc_vec_Vec_T_alloc_vec_Vec_Default_A.
     Context {T : Set}.
+    Context
+      `{scale_info.TypeInfo.Trait T}
+      `{ink_storage_traits.storage.Packed.Trait T}.
     Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
     
     Parameter layout :
@@ -3793,6 +4040,11 @@ End
 (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
   (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_collections_btree_map_BTreeMap_Default_A.
     Context {K V : Set}.
+    Context
+      `{scale_info.TypeInfo.Trait K}
+      `{ink_storage_traits.storage.Packed.Trait K}
+      `{scale_info.TypeInfo.Trait V}
+      `{ink_storage_traits.storage.Packed.Trait V}.
     Definition Self :=
       alloc.collections.btree.map.BTreeMap
         K
@@ -3822,6 +4074,9 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_map
 (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
   (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set_BTreeSet_T_alloc_collections_btree_set_BTreeSet_Default_A.
     Context {T : Set}.
+    Context
+      `{scale_info.TypeInfo.Trait T}
+      `{ink_storage_traits.storage.Packed.Trait T}.
     Definition Self :=
       alloc.collections.btree.set.BTreeSet
         T
@@ -3850,6 +4105,9 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set
 (* Module Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
   (* Section Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A.
     Context {T : Set}.
+    Context
+      `{scale_info.TypeInfo.Trait T}
+      `{ink_storage_traits.storage.Packed.Trait T}.
     Definition Self :=
       alloc.collections.vec_deque.VecDeque
         T

@@ -292,7 +292,7 @@ Module reflect.
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError := DispatchError.t.
+    Definition DispatchError : Set := DispatchError.t.
     
     Module ExecuteDispatchable.
       Class Trait (Self : Set) : Type := {
@@ -1848,7 +1848,7 @@ Module Wrap_dispatch_1.
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError := DispatchError.t.
+    Definition DispatchError : Set := DispatchError.t.
     
     Module ExecuteDispatchable.
       Class Trait (Self : Set) : Type := {
@@ -2138,7 +2138,7 @@ Module DispatchError.
   | CouldNotReadInput
   | PaidUnpayableMessage.
 End DispatchError.
-Definition DispatchError := DispatchError.t.
+Definition DispatchError : Set := DispatchError.t.
 
 Module DecodeDispatch.
   Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :

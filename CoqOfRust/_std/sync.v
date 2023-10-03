@@ -80,11 +80,13 @@ Parameter t : Set -> Set.
 End MutexGuard.
 Definition MutexGuard := MutexGuard.t.
 
-(* pub struct Once { /* private fields */ } *)
-Module Once.
-  Parameter t : Set.
-End Once.
-Definition Once := Once.t.
+Module once.
+  (* pub struct Once { /* private fields */ } *)
+  Module Once.
+    Parameter t : Set.
+  End Once.
+  Definition Once := Once.t.
+End once.
 
 (* pub struct OnceLock<T> { /* private fields */ } *)
 Module OnceLock.

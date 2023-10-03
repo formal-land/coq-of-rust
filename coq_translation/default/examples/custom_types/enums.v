@@ -18,7 +18,7 @@ Module WebEvent.
   | Paste (_ : alloc.string.String)
   | Click (_ : Click.t).
 End WebEvent.
-Definition WebEvent := WebEvent.t.
+Definition WebEvent : Set := WebEvent.t.
 
 Definition inspect
     `{H' : State.Trait}

@@ -5,7 +5,7 @@ Module Inch.
   Inductive t : Set :=
   .
 End Inch.
-Definition Inch := Inch.t.
+Definition Inch : Set := Inch.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -64,7 +64,7 @@ Module Mm.
   Inductive t : Set :=
   .
 End Mm.
-Definition Mm := Mm.t.
+Definition Mm : Set := Mm.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
@@ -144,6 +144,7 @@ Module
   Section
     Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
     Context {Unit : Set}.
+    Context `{core.fmt.Debug.Trait Unit}.
     Definition Self :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
@@ -176,6 +177,7 @@ Module
   Section
     Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
     Context {Unit : Set}.
+    Context `{core.clone.Clone.Trait Unit}.
     Definition Self :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     
@@ -210,6 +212,7 @@ Module
   Section
     Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
     Context {Unit : Set}.
+    Context `{core.marker.Copy.Trait Unit}.
     Definition Self :=
       generics_phantom_type_test_case_unit_clarification.Length Unit.
     

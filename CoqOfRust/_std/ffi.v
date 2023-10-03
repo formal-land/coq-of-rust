@@ -72,11 +72,13 @@ Module OsStr.
 End OsStr.
 Definition OsStr := OsStr.t.
 
-(* pub struct OsString { /* private fields */ } *)
-Module OsString.
-  Parameter t : Set.
-End OsString.
-Definition OsString := OsString.t.
+Module os_str.
+  (* pub struct OsString { /* private fields */ } *)
+  Module OsString.
+    Parameter t : Set.
+  End OsString.
+  Definition OsString := OsString.t.
+End os_str.
 
 (* ********ENUMS******** *)
 (*

@@ -105,8 +105,8 @@ def update_ink_engine():
 Require CoqOfRust.ink.parity_scale_codec.""",
         content,
     )
-    content = content.replace(
-        """
+    content = sub_at_least_once(
+        re.escape("""
 Module Error.
   Inductive t : Set :=
   | CalleeTrapped
@@ -121,9 +121,10 @@ Module Error.
   | EcdsaRecoveryFailed
   | Unknown.
 End Error.
-Definition Error := Error.t.
-""",
+Definition Error : Set := Error.t.
+"""),
         "",
+        content,
     )
 
     content = ignore_module_names(
@@ -152,7 +153,6 @@ def update_ink_env():
         + """
 Require CoqOfRust.num_traits.
 
-Require CoqOfRust.ink.alloc.
 Require CoqOfRust.ink.ink_primitives.
 Require CoqOfRust.ink.ink_storage_traits.
 Require CoqOfRust.ink.parity_scale_codec.
@@ -293,6 +293,115 @@ End state__.""",
 """,
             "",
         )
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
+def update_ink_e2e():
+    file_name = "ink_e2e.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+    pattern = "Require Import CoqOfRust.CoqOfRust."
+    content = sub_at_least_once(
+        pattern,
+        pattern
+        + """
+Require CoqOfRust.ink.ink_env.
+Require CoqOfRust.ink.pallet_contracts_primitives.
+Require CoqOfRust.ink.primitive_types.
+Require CoqOfRust.ink.serde.
+Require CoqOfRust.ink.sp_core.
+Require CoqOfRust.ink.sp_keyring.
+Require CoqOfRust.ink.subxt.""",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape(
+            "Definition CreateBuilderPartial (E ContractRef Args R : Set) : Set :="),
+        "Definition CreateBuilderPartial (E ContractRef Args R : Set) `{ink_env.types.Environment.Trait E} : Set :=",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape(
+            "Definition CallBuilderFinal (E Args RetType : Set) : Set :="),
+        "Definition CallBuilderFinal (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=",
+        content,
+    )
+
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.UploadResult C E."),
+        """Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.UploadResult C E.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.InstantiationResult C E."),
+        """Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.InstantiationResult C E.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.CallResult C E V."),
+        """Context
+        `{subxt.config.Config.Trait C}
+        `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.CallResult C E V.""",
+        content,
+    )
+    content = sub_at_least_once(
+        re.escape("Definition Self := ink_e2e.client.CallDryRunResult E V."),
+        """Context `{ink_env.types.Environment.Trait E}.
+      Definition Self := ink_e2e.client.CallDryRunResult E V.""",
+        content,
+    )
+
+    content = ignore_module_names(
+        [
+            "Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_encode_EncodeAsType_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_subxt_events_StaticEvent_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_decode_IntoVisitor_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_scale_decode_visitor_Visitor_for_ink_e2e_client___Visitor_E",
+            "Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_ContractInstantiatedEvent_E",
+            "Impl_core_fmt_Debug_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_encode_EncodeAsType_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_encode_EncodeAsFields_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_subxt_events_StaticEvent_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_parity_scale_codec_codec_Decode_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_decode_IntoVisitor_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_scale_decode_DecodeAsFields_for_ink_e2e_client_CodeStoredEvent_E",
+            "Impl_core_ops_drop_Drop_for_ink_e2e_node_proc_TestNodeProcess_R",
+            "Impl_parity_scale_codec_max_encoded_len_MaxEncodedLen_for_ink_e2e_xts_Weight",
+            "Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___FieldVisitor",
+            "Impl_serde_de_Deserialize_for_ink_e2e_xts___deserialize___Field",
+            "Impl_serde_de_Visitor_for_ink_e2e_xts___deserialize___Visitor",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcInstantiateRequest_C_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcInstantiateRequest_C_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcInstantiateRequest_C_E",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCodeUploadRequest_C_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCodeUploadRequest_C_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCodeUploadRequest_C_E",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_RpcCallRequest_C_E",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_RpcCallRequest_C_E",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_RpcCallRequest_C_E",
+            "Impl_serde_ser_Serialize_for_ink_e2e_xts_Code",
+            "Impl_parity_scale_codec_codec_Encode_for_ink_e2e_xts_Code",
+            "Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_e2e_xts_Code",
+        ],
+        content,
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 
@@ -631,6 +740,7 @@ Require CoqOfRust.ink.ink.""",
 
 update_ink()
 update_ink_allocator()
+update_ink_e2e()
 update_ink_e2e_macro()
 update_ink_engine()
 update_ink_env()

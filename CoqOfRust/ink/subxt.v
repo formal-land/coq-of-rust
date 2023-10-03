@@ -3,15 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* TODO: Implement the following items to satisfy the dependency for e2e/env file
 - [?] blocks.block_types.ExtrinsicEvents
-- [?] error.dispatch_error.DispatchError
 - [?] error.Error
 - [?] config.Config
 - [x] config.polkadot.PolkadotExtrinsicParams
 - [?] config.WithExtrinsicParams
-- [x] tx.signer.pair_signer.PairSigner
-- [x] client.online_client.OnlineClient
 - [x] utils.multi_address.MultiAddress
-- [x] utils.static_type.Static
 *)
 
 (* 
@@ -91,7 +87,7 @@ Module config.
     }
     *)
     Module ExtrinsicParams.
-      Class Trait (Self : Set) `{core.fmt.Debug.Trait Self} (Hash : Set)
+      Class Trait (Self : Set) (*`{core.fmt.Debug.Trait Self}*) (Hash : Set)
         : Type := {
         OtherParams : Set;
 
@@ -105,16 +101,12 @@ Module config.
   End extrinsic_params.
 
   (* pub struct WithExtrinsicParams<T: Config, E: ExtrinsicParams<T::Hash>> { /* private fields */ } *)
-  Unset Primitive Projections.
-  Module WithExtrinsicParams.
-    Record t (T E : Set) 
+  Parameter WithExtrinsicParams :
+    forall
+      (T E : Set)
       `{Config.Trait T}
-      (* TODO: Is this the correct way to translate the type param..? *)
-      `{extrinsic_params.ExtrinsicParams.Trait T T::type["Hash"]}
-    : Set := { }.
-  End WithExtrinsicParams.
-  Global Set Primitive Projections.
-  Definition WithExtrinsicParams := WithExtrinsicParams.t.
+      `{extrinsic_params.ExtrinsicParams.Trait E T::type["Hash"]},
+    Set.
 
   Module polkadot.
     (* pub struct PlainTip { /* private fields */ } *)
@@ -134,8 +126,21 @@ Module config.
     (* pub type PolkadotExtrinsicParams<T> = BaseExtrinsicParams<T, PlainTip>; *)
     Definition PolkadotExtrinsicParams (T : Set) `{Config.Trait T} : Set
       := extrinsic_params.BaseExtrinsicParams T PlainTip.
+
+    Global Instance ExtrinsicParams_for_PolkadotExtrinsicParams
+      (T : Set) `{Config.Trait T} :
+      extrinsic_params.ExtrinsicParams.Trait (PolkadotExtrinsicParams T)
+        T::type["Hash"].
+    Admitted.
   End polkadot.
-  
+
+  Module substrate.
+    Parameter BlakeTwo256 : Set.
+
+    Parameter SubstrateHeader : Set -> Set -> Set.
+
+    Parameter SubstrateExtrinsicParams : Set -> Set.
+  End substrate.
 End config.
 
 Module tx.
@@ -156,7 +161,18 @@ Module tx.
       sign : ref Self -> ref (Slice u8) -> T::type["Signature"];
     }.
   End Signer.
-  
+
+  Module signer.
+    Module pair_signer.
+      (*
+      pub struct PairSigner<T: Config, Pair> {
+          account_id: T::AccountId,
+          signer: Pair,
+      }
+      *)
+      Parameter PairSigner : Set -> Set -> Set.
+    End pair_signer.
+  End signer.
 End tx.
 
 
@@ -200,52 +216,55 @@ Module error.
   End Error.
   Definition Error := Error.t.
 
-  (* NOTE: Stub for DispatchError *)
-  (* 
-  pub enum DispatchError {
-      Other,
-      CannotLookup,
-      BadOrigin,
-      Module(ModuleError),
-      ConsumerRemaining,
-      NoProviders,
-      TooManyConsumers,
-      Token(TokenError),
-      Arithmetic(ArithmeticError),
-      Transactional(TransactionalError),
-      Exhausted,
-      Corruption,
-      Unavailable,
-  }
-  *)
-  Module Dispatch_error.
-    Inductive t : Set := 
-    | Other
-    | CannotLookup
-    | BadOrigin
-    | Module
-    | ConsumerRemaining
-    | NoProviders
-    | TooManyConsumers
-    | Token
-    | Arithmetic
-    | Transactional
-    | Exhausted
-    | Corruption
-    | Unavailable
-    .
-  End Dispatch_error.
-  Definition Dispatch_error := Dispatch_error.t.
+  Module dispatch_error.
+    Parameter ModuleError : Set.
+    Parameter TokenError : Set.
+    Parameter ArithmeticError : Set.
+    Parameter TransactionalError : Set.
+
+    (* 
+    pub enum DispatchError {
+        Other,
+        CannotLookup,
+        BadOrigin,
+        Module(ModuleError),
+        ConsumerRemaining,
+        NoProviders,
+        TooManyConsumers,
+        Token(TokenError),
+        Arithmetic(ArithmeticError),
+        Transactional(TransactionalError),
+        Exhausted,
+        Corruption,
+        Unavailable,
+    }
+    *)
+    Module DispatchError.
+      Inductive t : Set := 
+      | Other
+      | CannotLookup
+      | BadOrigin
+      | Module : ModuleError -> t
+      | ConsumerRemaining
+      | NoProviders
+      | TooManyConsumers
+      | Token : TokenError -> t
+      | Arithmetic : ArithmeticError -> t
+      | Transactional : TransactionalError -> t
+      | Exhausted
+      | Corruption
+      | Unavailable
+      .
+    End DispatchError.
+    Definition DispatchError := DispatchError.t.
+  End dispatch_error.
 End error.
 
 Module client.
-  (* pub struct OnlineClient<T: Config> { /* private fields */ } *)
-  Unset Primitive Projections.
-  Module OnlineClient.
-    Record t : Set := { }.
-  End OnlineClient.
-  Global Set Primitive Projections.
-  Definition OnlineClient := OnlineClient.t.
+  Module online_client.
+    (* pub struct OnlineClient<T: Config> { /* private fields */ } *)
+    Parameter OnlineClient : Set -> Set.
+  End online_client.
 End client.
 
 Module utils.
@@ -270,7 +289,9 @@ Module utils.
       .
     End MultiAddress.
     Definition MultiAddress := MultiAddress.t.
+  End multi_address.
 
+  Module static_type.
     (* pub struct Static<T>(pub T); *)
     Unset Primitive Projections.
     Module Static.
@@ -280,7 +301,11 @@ Module utils.
     End Static.
     Global Set Primitive Projections.
     Definition Static := Static.t.
-  End multi_address.
+  End static_type.
+
+  Module account_id.
+    Parameter AccountId32 : Set.
+  End account_id.
 End utils.
 
 
@@ -296,6 +321,7 @@ Module blocks.
       : Set := { }.
     End ExtrinsicEvents.
     Global Set Primitive Projections.
-    Definition ExtrinsicEvents := ExtrinsicEvents.t.
+    Definition ExtrinsicEvents (T : Set) `{subxt.config.Config.Trait T} : Set :=
+      ExtrinsicEvents.t T.
   End block_types.
 End blocks.

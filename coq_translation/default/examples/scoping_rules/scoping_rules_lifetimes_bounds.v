@@ -20,6 +20,7 @@ Definition Ref := @Ref.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
     Context {T : Set}.
+    Context `{core.fmt.Debug.Trait T}.
     Definition Self := scoping_rules_lifetimes_bounds.Ref T.
     
     Definition fmt
