@@ -33,7 +33,6 @@ examples/error_handling/unpacking_options_and_defaults_via_or_else.v
 examples/error_handling/unpacking_options_and_defaults_via_or.v
 examples/error_handling/unpacking_options_via_question_mark.v
 examples/error_handling/wrapping_errors.v
-examples/expressions/blocks.v
 examples/flow_of_control/loop_returning_from_loops.v
 examples/flow_of_control/match_destructuring_arrays_slices.v
 examples/flow_of_control/match_destructuring_tuples.v
@@ -54,7 +53,6 @@ examples/functions/functions_closures_type_anonymity_define.v
 examples/functions/functions_closures.v
 examples/functions/functions.v
 examples/functions/higher_order_functions.v
-examples/generics/generics_associated_types_problem.v
 examples/generics/generics_bounds.v
 examples/generics/generics_implementation.v
 examples/generics/generics_multiple_bounds.v
@@ -123,7 +121,6 @@ examples/traits/iterators.v
 examples/traits/returning_traits_with_dyn.v
 examples/traits/supertraits.v
 examples/traits/traits.v
-examples/types/inference.v
 examples/unsafe_operations/calling_unsafe_functions.v
 examples/unsafe_operations/inline_assembly_clobbered_registers.v
 examples/unsafe_operations/inline_assembly_explicit_register_operands.v
