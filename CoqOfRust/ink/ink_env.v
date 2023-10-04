@@ -140,6 +140,22 @@ Module types.
   End CodecAsType.
   
   Module Environment.
+    Print parity_scale_codec.codec.Codec.Trait.
+
+    Class Boxed_Codec (Self : Set) : Type := {
+      Encode :: parity_scale_codec.codec.Encode.Trait Self;
+      Decode :: parity_scale_codec.codec.Decode.Trait Self;
+      Main :: parity_scale_codec.codec.Codec.Trait Self;
+    }.
+
+    Global Instance Boxed_Codec_from_Codec (Self : Set)
+      `{parity_scale_codec.codec.Codec.Trait Self} :
+      Boxed_Codec Self := {
+      Encode := _;
+      Decode := _;
+      Main := _;
+    }.
+
     Class Trait (Self : Set) : Type := {
       MAX_EVENT_TOPICS `{H' : State.Trait} : usize;
       AccountId : Set;
@@ -156,6 +172,7 @@ Module types.
           `(core.convert.AsRef.Trait AccountId (T := Slice u8))
           `(core.convert.AsMut.Trait AccountId (T := Slice u8)),
         unit;
+      AccountId_is_Codec :: Boxed_Codec AccountId;
       Balance : Set;
       _
         :
@@ -216,14 +233,26 @@ Module types.
         unit;
       ChainExtension : Set;
     }.
-    
-    Global Instance Method_MAX_EVENT_TOPICS `{H' : State.Trait} `(Trait)
-      : Notation.Dot "MAX_EVENT_TOPICS" := {
-      Notation.dot := MAX_EVENT_TOPICS;
-    }.
+
+    Definition fn_requiring_encode (T : Set)
+      `{parity_scale_codec.codec.Encode.Trait T} :
+      unit :=
+      tt.
+
     Global Instance Method_AccountId `(Trait)
       : Notation.DoubleColonType Self "AccountId" := {
       Notation.double_colon_type := AccountId;
+    }.
+
+    Definition calling_fn (Env : Set) `{Trait Env} : unit :=
+      fn_requiring_encode (Env::type["AccountId"]).
+    
+    Set Printing All.
+    Print calling_fn.
+
+    Global Instance Method_MAX_EVENT_TOPICS `{H' : State.Trait} `(Trait)
+      : Notation.Dot "MAX_EVENT_TOPICS" := {
+      Notation.dot := MAX_EVENT_TOPICS;
     }.
     Global Instance Method_Balance `(Trait)
       : Notation.DoubleColonType Self "Balance" := {
@@ -449,7 +478,21 @@ Module contract.
       Notation.double_colon_type := Env;
     }.
   End ContractEnv.
-  
+
+  Print ContractEnv.Trait.
+
+  Module ContractEnvBis.
+    Class Trait (Self : Set) : Type := {
+      Env : Set;
+      Environment_for_Env :: ink_env.types.Environment.Trait Env;
+    }.
+    
+    Global Instance Method_Env `(Trait)
+      : Notation.DoubleColonType Self "Env" := {
+      Notation.double_colon_type := Env;
+    }.
+  End ContractEnvBis.
+
   Module ContractReference.
     Class Trait (Self : Set) : Type := {
       Type_ : Set;
