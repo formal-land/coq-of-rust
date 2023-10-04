@@ -13,6 +13,9 @@ struct Translate {
     /// Axiomatize the definitions
     #[arg(long, value_name = "axiomatize", default_value_t = false)]
     axiomatize: bool,
+    /// Axiomatize the definitions with everything as public
+    #[arg(long, value_name = "axiomatize_public", default_value_t = false)]
+    axiomatize_public: bool,
     /// Generate the "reorder" section of the configuration file
     #[arg(long, value_name = "generate_reorder", default_value_t = false)]
     generate_reorder: bool,
@@ -61,6 +64,7 @@ fn main() {
                 path: t.path,
                 output: t.output_path,
                 axiomatize: t.axiomatize,
+                axiomatize_public: t.axiomatize_public,
                 generate_reorder: t.generate_reorder,
                 configuration_file: t.configuration_file,
             });

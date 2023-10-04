@@ -33,7 +33,7 @@ jobs:
         python run_tests.py --output-path ./coq_translation/default/
     - name: Translate Rust examples (axiomatized)
       run: |
-        python run_tests.py --axiomatize --output-path ./coq_translation/axiomatized/
+        python run_tests.py --axiomatize --axiomatize-public --output-path ./coq_translation/axiomatized/
     - name: Translate Ink! library
       run: |
         cd CoqOfRust

@@ -83,3 +83,8 @@ Parameter sqrt :
 Parameter ln :
     forall `{H' : State.Trait},
     f64 -> M (H := H') result.checked.MathResult.
+
+Parameter op : forall `{H' : State.Trait}, f64 -> f64 -> M (H := H') f64.
+
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : forall `{H' : State.Trait}, M (H := H') unit.

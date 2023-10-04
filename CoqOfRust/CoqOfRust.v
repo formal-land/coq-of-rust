@@ -196,6 +196,7 @@ Require CoqOfRust.core.hash.
 Require CoqOfRust.core.iter.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.mem.
+Require CoqOfRust.core.num.
 Require CoqOfRust.core.option.
 Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.result.
@@ -216,6 +217,7 @@ Module core.
   Export CoqOfRust.core.iter.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.mem.
+  Export CoqOfRust.core.num.
   Export CoqOfRust.core.option.
   Export CoqOfRust.core.primitive.
   Export CoqOfRust.core.result.
@@ -815,7 +817,6 @@ Require CoqOfRust._std.io.
 (* Require CoqOfRust._std.iter. *)
 (* Require Import CoqOfRust._std.iter_type. *)
 (* Require Import CoqOfRust._std.net. *)
-Require Import CoqOfRust._std.num.
 Require Import CoqOfRust._std.ops.
 (* Require Import CoqOfRust._std.os. *)
 Require Import CoqOfRust._std.panic.
@@ -854,7 +855,6 @@ Module std.
   Module io := _std.io.
   (* Module iter := _std.iter. *)
   (* Module net := _std.net. *)
-  Module num := _std.num.
   Module ops := _std.ops.
   (* Module os := _std.os. *)
   Module panic := _std.panic.

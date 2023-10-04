@@ -12,6 +12,7 @@ pub(crate) struct Env<'a> {
     pub(crate) impl_counter: HashMap<CoqType, u64>,
     pub(crate) tcx: TyCtxt<'a>,
     pub(crate) axiomatize: bool,
+    pub(crate) axiomatize_public: bool,
     /// path of the file being compiled
     pub(crate) file: String,
     /// accumulate the reordering for printing,

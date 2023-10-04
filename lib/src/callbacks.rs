@@ -25,6 +25,7 @@ impl Callbacks for ToCoq {
         queries: &'tcx Queries<'tcx>,
     ) -> Compilation {
         let axiomatize = self.opts.axiomatize;
+        let axiomatize_public = self.opts.axiomatize_public;
         let configuration_file = self.opts.configuration_file.clone();
         queries.global_ctxt().unwrap();
 
@@ -38,6 +39,7 @@ impl Callbacks for ToCoq {
                     &ctxt,
                     TopLevelOptions {
                         axiomatize,
+                        axiomatize_public,
                         configuration_file,
                         filename: current_crate_name_string,
                         generate_reorder: self.opts.generate_reorder,

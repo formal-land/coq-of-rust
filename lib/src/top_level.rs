@@ -24,6 +24,7 @@ pub(crate) struct TopLevelOptions {
     pub(crate) configuration_file: String,
     pub(crate) filename: String,
     pub(crate) axiomatize: bool,
+    pub(crate) axiomatize_public: bool,
     pub(crate) generate_reorder: bool,
 }
 
@@ -323,7 +324,7 @@ fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
 ///   hir environment [hir]
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
     let name = to_valid_coq_name(item.ident.name.to_string());
-    if env.axiomatize {
+    if env.axiomatize && !env.axiomatize_public {
         let is_public = is_top_level_item_public(tcx, env, item);
         if !is_public {
             // Do not generate anything if the item is not public and we are
@@ -943,6 +944,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         impl_counter: HashMap::new(),
         tcx: *tcx,
         axiomatize: opts.axiomatize,
+        axiomatize_public: opts.axiomatize_public,
         file: opts.filename,
         reorder_map: HashMap::new(),
         configuration: get_configuration(&opts.configuration_file),
