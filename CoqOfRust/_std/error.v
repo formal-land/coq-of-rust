@@ -1,9 +1,9 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.core.any.
-Require Import CoqOfRust._std.fmt.
-Require Import CoqOfRust.core.option.
-Require Import CoqOfRust.alloc.boxed.
+Require CoqOfRust.alloc.boxed.
+Require CoqOfRust.core.any.
+Require CoqOfRust.core.fmt.
+Require CoqOfRust.core.option.
 
 (* ********TRAITS******** *)
 (* 
@@ -21,15 +21,15 @@ pub trait Error: Debug + Display {
 Module Error.
   Unset Primitive Projections.
   Class Trait (Self : Set) 
-    `{Debug.Trait Self}
-    `{Display.Trait Self}
+    `{fmt.Debug.Trait Self}
+    `{fmt.Display.Trait Self}
   : Set := {
     (* BUGGED: How to translate this function? *)
     (* source : ref Self -> Option (???) *)
     description : ref Self -> ref str;
     (* BUGGED: What is this dyn? *)
     (* cause : ref Self -> Option ((ref dyn) Error); *)
-    provide : ref Self -> mut_ref Demand -> unit;
+    provide : ref Self -> mut_ref any.Demand -> unit;
   }.
   Global Set Primitive Projections.
 End Error.
@@ -42,6 +42,11 @@ End Error.
 (* pub struct Report<E = Box<dyn Error>> { /* private fields */ } *)
 Module Report.
   Parameter t : forall (E : Set), Set.
+
+  Module Default.
+    Parameter dyn_Error : Set.
+
+    Definition E : Set := boxed.Box dyn_Error boxed.Box.Default.A.
+  End Default.
 End Report.
-Definition Report (E : option Set) : Set :=
-  Report.t (defaultType E (Box Error Box.Default.A)).
+Definition Report : Set -> Set := Report.t.
