@@ -99,23 +99,25 @@ Module NonZeroUsize.
 End NonZeroUsize.
 Definition NonZeroUsize := NonZeroUsize.t.
 
-(* pub struct ParseFloatError { /* private fields */ } *)
-Module ParseFloatError.
-  Parameter t : Set.
-End ParseFloatError.
-Definition ParseFloatError := ParseFloatError.t.
+Module error.
+  (* pub struct ParseFloatError { /* private fields */ } *)
+  Module ParseFloatError.
+    Parameter t : Set.
+  End ParseFloatError.
+  Definition ParseFloatError := ParseFloatError.t.
 
-(* pub struct ParseIntError { /* private fields */ } *)
-Module ParseIntError.
-  Parameter t : Set.
-End ParseIntError.
-Definition ParseIntError := ParseIntError.t.
+  (* pub struct ParseIntError { /* private fields */ } *)
+  Module ParseIntError.
+    Parameter t : Set.
+  End ParseIntError.
+  Definition ParseIntError := ParseIntError.t.
 
-(* pub struct TryFromIntError(_); *)
-Module TryFromIntError.
-  Parameter t : Set.
-End TryFromIntError.
-Definition TryFromIntError := TryFromIntError.t.
+  (* pub struct TryFromIntError(_); *)
+  Module TryFromIntError.
+    Parameter t : Set.
+  End TryFromIntError.
+  Definition TryFromIntError := TryFromIntError.t.
+End error.
 
 (* pub struct Wrapping<T>(pub T); *)
 Module Wrapping.

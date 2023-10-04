@@ -1,0 +1,18 @@
+warning: Guards on match branches are not supported.
+  --> examples/flow_of_control/match_guards.rs:11:9
+   |
+11 |         Temperature::Celsius(t) if t > 30 => println!("{}C is above 30 Celsius", t),
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: Use standalone `if` statements instead.
+
+warning: Guards on match branches are not supported.
+  --> examples/flow_of_control/match_guards.rs:15:9
+   |
+15 |         Temperature::Fahrenheit(t) if t > 86 => println!("{}F is above 86 Fahrenheit", t),
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: Use standalone `if` statements instead.
+
+warning: 2 warnings emitted
+

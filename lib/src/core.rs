@@ -10,6 +10,7 @@ pub struct CliOptions {
     pub path: path::PathBuf,
     pub output: path::PathBuf,
     pub axiomatize: bool,
+    pub axiomatize_public: bool,
     pub generate_reorder: bool,
     pub configuration_file: String,
 }
@@ -118,6 +119,7 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
                     &ctxt,
                     TopLevelOptions {
                         axiomatize: opts.axiomatize,
+                        axiomatize_public: opts.axiomatize_public,
                         configuration_file: opts.configuration_file.clone(),
                         filename: filename.as_os_str().to_str().unwrap().to_string(),
                         generate_reorder,

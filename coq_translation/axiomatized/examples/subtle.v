@@ -56,6 +56,19 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
+Module Impl_subtle_Choice_4.
+  Definition Self := subtle.Choice.
+  
+  Parameter unwrap_u8 :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') u8.
+  
+  Global Instance Method_unwrap_u8 `{H' : State.Trait} :
+    Notation.Dot "unwrap_u8" := {
+    Notation.dot := unwrap_u8;
+  }.
+End Impl_subtle_Choice_4.
+
 Module Impl_core_convert_From_for_bool.
   Definition Self := bool.
   
@@ -226,6 +239,8 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
+
+Parameter black_box : forall `{H' : State.Trait}, u8 -> M (H := H') u8.
 
 Module Impl_core_convert_From_for_subtle_Choice.
   Definition Self := subtle.Choice.
@@ -964,6 +979,134 @@ Module Impl_core_convert_From_for_core_option_Option_T.
   End Impl_core_convert_From_for_core_option_Option_T.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_core_option_Option_T.
+
+Module Impl_subtle_CtOption_T_4.
+  Definition Self := subtle.CtOption T.
+  
+  Parameter new :
+      forall `{H' : State.Trait},
+      T -> subtle.Choice -> M (H := H') (subtle.CtOption T).
+  
+  Global Instance AssociatedFunction_new `{H' : State.Trait} :
+    Notation.DoubleColon Self "new" := {
+    Notation.double_colon := new;
+  }.
+  
+  Parameter expect :
+      forall `{H' : State.Trait},
+      Self -> (ref str) -> M (H := H') T.
+  
+  Global Instance Method_expect `{H' : State.Trait} : Notation.Dot "expect" := {
+    Notation.dot := expect;
+  }.
+  
+  Parameter unwrap : forall `{H' : State.Trait}, Self -> M (H := H') T.
+  
+  Global Instance Method_unwrap `{H' : State.Trait} : Notation.Dot "unwrap" := {
+    Notation.dot := unwrap;
+  }.
+  
+  Parameter unwrap_or :
+      forall `{H' : State.Trait} `{subtle.ConditionallySelectable.Trait T},
+      Self -> T -> M (H := H') T.
+  
+  Global Instance Method_unwrap_or
+      `{H' : State.Trait}
+      `{subtle.ConditionallySelectable.Trait T} :
+    Notation.Dot "unwrap_or" := {
+    Notation.dot := unwrap_or;
+  }.
+  
+  Parameter unwrap_or_else :
+      forall
+        `{H' : State.Trait}
+        {F : Set}
+        `{subtle.ConditionallySelectable.Trait T}
+        `{core.ops.function.FnOnce.Trait F (Args := unit)},
+      Self -> F -> M (H := H') T.
+  
+  Global Instance Method_unwrap_or_else
+      `{H' : State.Trait}
+      {F : Set}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)} :
+    Notation.Dot "unwrap_or_else" := {
+    Notation.dot := unwrap_or_else (F := F);
+  }.
+  
+  Parameter is_some :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') subtle.Choice.
+  
+  Global Instance Method_is_some `{H' : State.Trait} :
+    Notation.Dot "is_some" := {
+    Notation.dot := is_some;
+  }.
+  
+  Parameter is_none :
+      forall `{H' : State.Trait},
+      (ref Self) -> M (H := H') subtle.Choice.
+  
+  Global Instance Method_is_none `{H' : State.Trait} :
+    Notation.Dot "is_none" := {
+    Notation.dot := is_none;
+  }.
+  
+  Parameter map :
+      forall
+        `{H' : State.Trait}
+        {U F : Set}
+        `{core.default.Default.Trait T}
+        `{subtle.ConditionallySelectable.Trait T}
+        `{core.ops.function.FnOnce.Trait F (Args := T)},
+      Self -> F -> M (H := H') (subtle.CtOption U).
+  
+  Global Instance Method_map
+      `{H' : State.Trait}
+      {U F : Set}
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := T)} :
+    Notation.Dot "map" := {
+    Notation.dot := map (U := U) (F := F);
+  }.
+  
+  Parameter and_then :
+      forall
+        `{H' : State.Trait}
+        {U F : Set}
+        `{core.default.Default.Trait T}
+        `{subtle.ConditionallySelectable.Trait T}
+        `{core.ops.function.FnOnce.Trait F (Args := T)},
+      Self -> F -> M (H := H') (subtle.CtOption U).
+  
+  Global Instance Method_and_then
+      `{H' : State.Trait}
+      {U F : Set}
+      `{core.default.Default.Trait T}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := T)} :
+    Notation.Dot "and_then" := {
+    Notation.dot := and_then (U := U) (F := F);
+  }.
+  
+  Parameter or_else :
+      forall
+        `{H' : State.Trait}
+        {F : Set}
+        `{subtle.ConditionallySelectable.Trait T}
+        `{core.ops.function.FnOnce.Trait F (Args := unit)},
+      Self -> F -> M (H := H') (subtle.CtOption T).
+  
+  Global Instance Method_or_else
+      `{H' : State.Trait}
+      {F : Set}
+      `{subtle.ConditionallySelectable.Trait T}
+      `{core.ops.function.FnOnce.Trait F (Args := unit)} :
+    Notation.Dot "or_else" := {
+    Notation.dot := or_else (F := F);
+  }.
+End Impl_subtle_CtOption_T_4.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
