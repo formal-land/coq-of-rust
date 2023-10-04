@@ -161,7 +161,7 @@ Require CoqOfRust.alloc.vec.
 
 Module alloc.
   Export CoqOfRust.alloc.boxed.
-  Require CoqOfRust.alloc.collections.
+  Export CoqOfRust.alloc.collections.
   Export CoqOfRust.alloc.string.
   Export CoqOfRust.alloc.vec.
 End alloc.
@@ -191,6 +191,7 @@ Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
+Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.hash.
 Require CoqOfRust.core.iter.
 Require CoqOfRust.core.marker.
@@ -210,6 +211,7 @@ Module core.
   Export CoqOfRust.core.cmp.
   Export CoqOfRust.core.convert.
   Export CoqOfRust.core.default.
+  Export CoqOfRust.core.fmt.
   Export CoqOfRust.core.hash.
   Export CoqOfRust.core.iter.
   Export CoqOfRust.core.marker.
@@ -217,294 +219,6 @@ Module core.
   Export CoqOfRust.core.option.
   Export CoqOfRust.core.primitive.
   Export CoqOfRust.core.result.
-
-  Module fmt.
-    Parameter Alignment : Set.
-
-    Parameter Error : Set.
-
-    Definition Result : Set := result.Result unit Error.
-
-    Module Arguments.
-      Parameter t : Set.
-    End Arguments.
-    Definition Arguments := Arguments.t.
-
-    Module Write.
-      Class Trait (Self : Set) : Set := {
-        write_str `{State.Trait} : mut_ref Self -> ref str -> M Result;
-        write_char `{State.Trait} : mut_ref Self -> char -> M Result;
-        write_fmt `{State.Trait} : mut_ref Self -> Arguments -> M Result;
-      }.
-
-      Global Instance Method_write_str `{State.Trait} `(Trait) : Notation.Dot "write_str" := {
-        Notation.dot := write_str;
-      }.
-      Global Instance Method_write_char `{State.Trait} `(Trait) : Notation.Dot "write_char" := {
-        Notation.dot := write_char;
-      }.
-      Global Instance Method_write_fmt `{State.Trait} `(Trait) : Notation.Dot "write_fmt" := {
-        Notation.dot := write_fmt;
-      }.
-    End Write.
-
-    Module Formatter.
-      Parameter t : Set.
-    End Formatter.
-    Definition Formatter := Formatter.t.
-
-    Module DebugTuple.
-      Parameter t : Set.
-    End DebugTuple.
-    Definition DebugTuple := DebugTuple.t.
-
-    Module Display.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End Display.
-
-    Module Debug.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End Debug.
-
-    Module ImplDebugTuple.
-      Definition Self := DebugTuple.
-
-      (** field(&mut self, value: &dyn Debug) -> &mut DebugTuple<'a, 'b> *)
-      Parameter field :
-        forall `{State.Trait} {T : Set} `{Debug.Trait T},
-          mut_ref Self -> ref T -> M (mut_ref DebugTuple).
-
-      Global Instance Method_field `{State.Trait} {T : Set} `{Debug.Trait T} :
-        Notation.Dot "field" := {
-        Notation.dot := field;
-      }.
-
-      (** finish(&mut self) -> Result<(), Error> *)
-      Parameter finish : forall `{State.Trait}, mut_ref Self -> M Result.
-
-      Global Instance Method_finish `{State.Trait} :
-        Notation.Dot "finish" := {
-        Notation.dot := finish;
-      }.
-    End ImplDebugTuple.
-
-    Module ImplFormatter.
-      Definition Self := Formatter.
-
-      Parameter new : forall `{State.Trait} {W : Set} `{Write.Trait W},
-        mut_ref W -> M Formatter.
-
-      Global Instance Formatter_new `{State.Trait} {W : Set} `{Write.Trait W} :
-        Notation.DoubleColon Formatter "new" := {
-        Notation.double_colon := new;
-      }.
-
-      (*
-      pub(super) fn debug_tuple_new<'a, 'b>(
-          fmt: &'a mut fmt::Formatter<'b>,
-          name: &str,
-      ) -> DebugTuple<'a, 'b> {
-          let result = fmt.write_str(name);
-          DebugTuple { fmt, result, fields: 0, empty_name: name.is_empty() }
-      }
-      *)
-      Parameter debug_tuple_new :
-        forall `{State.Trait} (fmt : mut_ref Formatter) (name : ref str),
-          M DebugTuple.
-
-      Global Instance Method_debug_tuple `{State.Trait} :
-        Notation.Dot "debug_tuple_new" := {
-        Notation.dot := debug_tuple_new;
-      }.
-
-      (*
-      pub fn debug_tuple_field1_finish<'b>(&'b mut self, name: &str, value1: &dyn Debug) -> Result {
-          let mut builder = builders::debug_tuple_new(self, name);
-          builder.field(value1);
-          builder.finish()
-      }
-      *)
-      Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
-        `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :
-        M core.fmt.Result :=
-        let* dt := f.["debug_tuple_new"] x in
-        let* fld := dt.["field"] y in
-        fld.["finish"].
-
-      Global Instance Formatter_debug_tuple_field1_finish `{State.Trait}
-        {T : Set} `{core.fmt.Debug.Trait T} :
-        Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
-        Notation.double_colon := debug_tuple_field1_finish (T := T);
-      }.
-    End ImplFormatter.
-
-    Module Octal.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End Octal.
-
-    Module LowerHex.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End LowerHex.
-
-    Module UpperHex.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End UpperHex.
-
-    Module Pointer.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End Pointer.
-
-    Module Binary.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End Binary.
-
-    Module LowerExp.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End LowerExp.
-
-    Module UpperExp.
-      Class Trait (Self : Set) : Set := {
-        fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
-      }.
-    End UpperExp.
-
-    Module ArgumentV1.
-      Parameter t : Set.
-    End ArgumentV1.
-    Definition ArgumentV1 := ArgumentV1.t.
-
-    Module ImplArgumentV1.
-      Definition Self := ArgumentV1.
-
-      Parameter new :
-        forall `{State.Trait} {T : Set},
-        ref T -> (ref T -> mut_ref Formatter -> M Result) -> M Self.
-
-      Global Instance ArgumentV1_new `{State.Trait} {T : Set} :
-        Notation.DoubleColon ArgumentV1 "new" := {
-        Notation.double_colon := new (T := T);
-      }.
-
-      Parameter new_display :
-        forall `{State.Trait} {T : Set} `{Display.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_display
-        `{State.Trait} {T : Set} `{Display.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_display" := {
-        Notation.double_colon := new_display (T := T);
-      }.
-
-      Parameter new_debug :
-        forall `{State.Trait} {T : Set} `{Debug.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_debug
-        `{State.Trait} {T : Set} `{Debug.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_debug" := {
-        Notation.double_colon := new_debug (T := T);
-      }.
-
-      Parameter new_octal :
-        forall `{State.Trait} {T : Set} `{Octal.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_octal
-        `{State.Trait} {T : Set} `{Octal.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_octal" := {
-        Notation.double_colon := new_octal (T := T);
-      }.
-
-      Parameter new_lower_hex :
-        forall `{State.Trait} {T : Set} `{LowerHex.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_lower_hex
-        `{State.Trait} {T : Set} `{LowerHex.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_lower_hex" := {
-        Notation.double_colon := new_lower_hex (T := T);
-      }.
-
-      Parameter new_upper_hex :
-        forall `{State.Trait} {T : Set} `{UpperHex.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_upper_hex
-        `{State.Trait} {T : Set} `{UpperHex.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_upper_hex" := {
-        Notation.double_colon := new_upper_hex (T := T);
-      }.
-
-      Parameter new_pointer :
-        forall `{State.Trait} {T : Set} `{Pointer.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_pointer
-        `{State.Trait} {T : Set} `{Pointer.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_pointer" := {
-        Notation.double_colon := new_pointer (T := T);
-      }.
-
-      Parameter new_binary :
-        forall `{State.Trait} {T : Set} `{Binary.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_binary
-        `{State.Trait} {T : Set} `{Binary.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_binary" := {
-        Notation.double_colon := new_binary (T := T);
-      }.
-
-      Parameter new_lower_exp :
-        forall `{State.Trait} {T : Set} `{LowerExp.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_lower_exp
-        `{State.Trait} {T : Set} `{LowerExp.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_lower_exp" := {
-        Notation.double_colon := new_lower_exp (T := T);
-      }.
-
-      Parameter new_upper_exp :
-        forall `{State.Trait} {T : Set} `{UpperExp.Trait T}, ref T -> M Self.
-
-      Global Instance ArgumentV1_new_upper_exp
-        `{State.Trait} {T : Set} `{UpperExp.Trait T} :
-        Notation.DoubleColon ArgumentV1 "new_upper_exp" := {
-        Notation.double_colon := new_upper_exp (T := T);
-      }.
-    End ImplArgumentV1.
-
-    Module ImplArguments.
-      Parameter new_const :
-        forall `{State.Trait}, ref (list (ref str)) -> M Arguments.
-
-      Global Instance Arguments_new_const `{State.Trait} :
-        Notation.DoubleColon Arguments "new_const" := {
-        Notation.double_colon := new_const;
-      }.
-
-      Parameter new_v1 :
-        forall `{State.Trait},
-          ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
-
-      Global Instance Arguments_new_v1 `{State.Trait} :
-        Notation.DoubleColon Arguments "new_v1" := {
-        Notation.double_colon := new_v1;
-      }.
-    End ImplArguments.
-
-    Global Instance Write_for_Formatter : Write.Trait Formatter.
-    Admitted.
-  End fmt.
 
   Module panic.
     Export CoqOfRust.core.panic.unwind_safe.
@@ -1093,7 +807,6 @@ Require CoqOfRust._std.collections.
 Require CoqOfRust._std.env.
 Require CoqOfRust._std.error.
 Require CoqOfRust._std.ffi.
-Require CoqOfRust._std.fmt.
 Require CoqOfRust._std.fs.
 Require CoqOfRust._std.future.
 Require CoqOfRust._std.hint.
@@ -1134,7 +847,6 @@ Module std.
   Module env := _std.env.
   Module error := _std.error.
   Module ffi := _std.ffi.
-  Module fmt := _std.fmt.
   Module fs := _std.fs.
   Module future := _std.future.
   Module hint := _std.hint.
@@ -1371,139 +1083,6 @@ Module Parse_Instances.
     Notation.Dot "parse" (T := string -> M bool).
   Admitted.
 End Parse_Instances.
-
-Module _crate.
-  Module intrinsics.
-    Parameter discriminant_value : forall {A : Set}, ref A -> u128.
-  End intrinsics.
-
-  Module marker.
-    Module Copy.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
-      }.
-      Global Set Primitive Projections.
-    End Copy.
-
-    Module StructuralEq.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
-      }.
-      Global Set Primitive Projections.
-    End StructuralEq.
-
-    Module StructuralPartialEq.
-      Unset Primitive Projections.
-      Class Trait (Self : Set) : Set := {
-      }.
-      Global Set Primitive Projections.
-    End StructuralPartialEq.
-  End marker.
-
-  Module clone.
-    Module Clone.
-      Class Trait (Self : Set) : Set := {
-        clone `{State.Trait} : ref Self -> M Self;
-      }.
-    End Clone.
-  End clone.
-
-  Module cmp.
-    Module Eq.
-      Class Trait (Self : Set) : Set := {
-        assert_receiver_is_total_eq `{State.Trait} : ref Self -> M unit;
-      }.
-    End Eq.
-  End cmp.
-
-  Module fmt := core.fmt.
-
-  Module hash := core.hash.
-
-  Module log.
-    Parameter sol_log : forall `{State.Trait}, str -> M unit.
-  End log.
-
-  Module panicking.
-    Parameter panic : forall `{State.Trait}, alloc.string.String -> M unit.
-  End panicking.
-End _crate.
-
-Module num_derive.
-  Module FromPrimitive.
-  End FromPrimitive.
-End num_derive.
-
-Module solana_program.
-  Module decode_error.
-    Module DecodeError.
-      Class Class (E : Set) (Self : Set) : Set := {
-        type_of `{State.Trait} : unit -> M (ref str);
-      }.
-    End DecodeError.
-  End decode_error.
-
-  Module msg.
-  End msg.
-
-  Module program_error.
-    Module PrintProgramError.
-      Class Class (Self : Set) : Set := {
-        print `{State.Trait} : ref Self -> M unit;
-      }.
-    End PrintProgramError.
-
-    Module ProgramError.
-      Inductive t : Set :=
-      | Custom (_ : u32)
-      | InvalidArgument
-      | InvalidInstructionData
-      | InvalidAccountData
-      | AccountDataTooSmall
-      | InsufficientFunds
-      | IncorrectProgramId
-      | MissingRequiredSignature
-      | AccountAlreadyInitialized
-      | UninitializedAccount
-      | NotEnoughAccountKeys
-      | AccountBorrowFailed
-      | MaxSeedLengthExceeded
-      | InvalidSeeds
-      | BorshIoError (_ : alloc.string.String)
-      | AccountNotRentExempt
-      | UnsupportedSysvar
-      | IllegalOwner
-      | MaxAccountsDataSizeExceeded
-      | InvalidRealloc.
-    End ProgramError.
-    Definition ProgramError := ProgramError.t.
-  End program_error.
-End solana_program.
-
-Module thiserror.
-  Module Error.
-  End Error.
-End thiserror.
-
-Parameter _num_traits : Set.
-Module _num_traits.
-  Module FromPrimitive.
-    Class Class (Self : Set) : Set := {
-      from_i64 `{State.Trait} : i64 -> M (option Self);
-      from_u64 `{State.Trait} : u64 -> M (option Self);
-    }.
-  End FromPrimitive.
-End _num_traits.
-
-Module crate.
-  Parameter check_program_account : forall `{State.Trait}, unit -> M unit.
-End crate.
-
-Module rand.
-  Parameter thread_rng : unit -> Set.
-  Module Rng.
-  End Rng.
-End rand.
 
 (** For now we assume that all types implement [to_owned] and that this is the
     identity function. *)

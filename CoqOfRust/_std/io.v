@@ -1,8 +1,8 @@
 Require Import CoqOfRust.Monad.
-
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.fmt.
-Require Import CoqOfRust.alloc.vec.
+
+Require CoqOfRust.alloc.vec.
+Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.result_types.
 
 (* ********STRUCTS******** *)
@@ -90,7 +90,7 @@ Module Write.
     is_write_vectored : mut_ref Self -> bool;
     write_all : mut_ref Self -> ref (slice u8) -> Result unit;
     write_all_vectored : mut_ref Self -> mut_ref (slice IoSlice) -> Result unit;
-    write_fmt : mut_ref Self -> Arguments -> Result unit;
+    write_fmt : mut_ref Self -> fmt.Arguments -> Result unit;
     by_ref : mut_ref Self -> mut_ref Self;
   }.
 End Write.
@@ -416,7 +416,7 @@ Module BufRead.
     consume : mut_ref Self -> usize -> unit;
     has_data_left : mut_ref Self -> Result bool;
     read_until :
-      mut_ref Self -> u8 -> mut_ref (Vec u8 Vec.Default.A) -> Result usize;
+      mut_ref Self -> u8 -> mut_ref (vec.Vec u8 vec.Vec.Default.A) -> Result usize;
     read_line : mut_ref Self -> mut_ref String -> Result usize;
     split : Self -> u8 -> Split Self;
     lines : mut_ref Self -> Lines Self;
