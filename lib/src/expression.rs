@@ -952,7 +952,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             };
             Expr::Call { func, args }
         }
-        ExprKind::InlineAsm(_) => Expr::LocalVar("InlineAsm".to_string()),
+        ExprKind::InlineAsm(_) => Expr::LocalVar("InlineAssembly".to_string()),
         ExprKind::Struct(qpath, fields, base) => {
             let path = crate::path::compile_qpath(env, qpath);
             let fields = fields

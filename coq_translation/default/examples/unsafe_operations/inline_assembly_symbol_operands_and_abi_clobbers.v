@@ -19,5 +19,5 @@ Definition foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
 
 Definition call_foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
   let result := tt in
-  let _ := InlineAsm in
+  let _ := InlineAssembly in
   Pure result.

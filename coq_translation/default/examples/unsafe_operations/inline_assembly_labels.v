@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let a := 0 in
   let _ :=
-    let _ := InlineAsm in
+    let _ := InlineAssembly in
     tt in
   let* _ :=
     match (addr_of a, addr_of 5) with

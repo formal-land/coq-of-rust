@@ -6,7 +6,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let a : u64 := 4 in
   let b : u64 := 4 in
   let _ :=
-    let _ := InlineAsm in
+    let _ := InlineAssembly in
     tt in
   let* _ :=
     match (addr_of a, addr_of 8) with

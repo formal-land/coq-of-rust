@@ -8,7 +8,7 @@ Definition mul `{H' : State.Trait} (a : u64) (b : u64) : M (H := H') u128 :=
   let lo : u64 := tt in
   let hi : u64 := tt in
   let _ :=
-    let _ := InlineAsm in
+    let _ := InlineAssembly in
     tt in
   let* α0 := (cast hi u128).["shl"] 64 in
   α0.["add"] (cast lo u128).

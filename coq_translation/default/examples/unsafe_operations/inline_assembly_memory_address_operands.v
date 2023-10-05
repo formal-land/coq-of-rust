@@ -8,5 +8,5 @@ Definition load_fpu_control_word
     `{H' : State.Trait}
     (control : u16)
     : M (H := H') unit :=
-  let _ := InlineAsm in
+  let _ := InlineAssembly in
   Pure tt.
