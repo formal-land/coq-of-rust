@@ -95,3 +95,10 @@ Parameter size_of_val :
 (*
 [ ] MaybeUninit
 *)
+
+(* pub fn drop<T>(_x: T) *)
+Parameter drop :
+  forall `{H : State.Trait} {T : Set},
+  T ->
+  M (H := H) unit.
+
