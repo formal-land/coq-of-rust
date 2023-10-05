@@ -1119,19 +1119,25 @@ impl Expr {
                     ),
                 ]),
             ),
-            Expr::Lambda { args, body } => paren(
-                with_paren,
-                nest([
-                    nest([
-                        text("fun"),
-                        line(),
-                        intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
-                        text(" =>"),
-                    ]),
-                    line(),
-                    body.to_doc(false),
-                ]),
-            ),
+            Expr::Lambda { args, body } => {
+                if args.is_empty() {
+                    body.to_doc(with_paren)
+                } else {
+                    paren(
+                        with_paren,
+                        nest([
+                            nest([
+                                text("fun"),
+                                line(),
+                                intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                                text(" =>"),
+                            ]),
+                            line(),
+                            body.to_doc(false),
+                        ]),
+                    )
+                }
+            }
             Expr::Cast { expr, ty } => paren(
                 with_paren,
                 nest([

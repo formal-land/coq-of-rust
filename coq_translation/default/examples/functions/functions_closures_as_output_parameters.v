@@ -4,46 +4,43 @@ Require Import CoqOfRust.CoqOfRust.
 Definition create_fn `{H' : State.Trait} : M (H := H') _ (* OpaqueTy *) :=
   let* text := "Fn".["to_owned"] in
   Pure
-    (fun  =>
-      let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of text) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "This is a: "; "
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of text) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "This is a: "; "
 " ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt).
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt.
 
 Error OpaqueTy.
 
 Definition create_fnmut `{H' : State.Trait} : M (H := H') _ (* OpaqueTy *) :=
   let* text := "FnMut".["to_owned"] in
   Pure
-    (fun  =>
-      let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of text) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "This is a: "; "
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of text) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "This is a: "; "
 " ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt).
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt.
 
 Definition create_fnonce `{H' : State.Trait} : M (H := H') _ (* OpaqueTy *) :=
   let* text := "FnOnce".["to_owned"] in
   Pure
-    (fun  =>
-      let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of text) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "This is a: "; "
+    let* _ :=
+      let* α0 := format_argument::["new_display"] (addr_of text) in
+      let* α1 :=
+        format_arguments::["new_v1"]
+          (addr_of [ "This is a: "; "
 " ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt).
+          (addr_of [ α0 ]) in
+      std.io.stdio._print α1 in
+    Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=

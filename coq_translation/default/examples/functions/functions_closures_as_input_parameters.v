@@ -23,38 +23,37 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let greeting := "hello" in
   let* farewell := "goodbye".["to_owned"] in
   let diary :=
-    fun  =>
+    let* _ :=
       let* _ :=
-        let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of greeting) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "I said "; ".
+        let* α0 := format_argument::["new_display"] (addr_of greeting) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "I said "; ".
 " ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
-        Pure tt in
-      let* _ := farewell.["push_str"] "!!!" in
-      let* _ :=
-        let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of farewell) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Then I screamed "; ".
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
-        Pure tt in
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Now I can sleep. zzzzz
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      let* _ := core.mem.drop farewell in
+            (addr_of [ α0 ]) in
+        std.io.stdio._print α1 in
       Pure tt in
+    let* _ := farewell.["push_str"] "!!!" in
+    let* _ :=
+      let* _ :=
+        let* α0 := format_argument::["new_display"] (addr_of farewell) in
+        let* α1 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "Then I screamed "; ".
+" ])
+            (addr_of [ α0 ]) in
+        std.io.stdio._print α1 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "Now I can sleep. zzzzz
+" ]) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    let* _ := core.mem.drop farewell in
+    Pure tt in
   let* _ := functions_closures_as_input_parameters.apply diary in
   let double := fun x => 2.["mul"] x in
   let* _ :=

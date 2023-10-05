@@ -18,19 +18,17 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             let* apple := (alloc.sync.Arc _)::["clone"] (addr_of apple) in
             let* _ :=
               std.thread.spawn
-                (fun  =>
+                let* _ :=
                   let* _ :=
-                    let* _ :=
-                      let* α0 :=
-                        format_argument::["new_debug"] (addr_of apple) in
-                      let* α1 :=
-                        format_arguments::["new_v1"]
-                          (addr_of [ ""; "
+                    let* α0 := format_argument::["new_debug"] (addr_of apple) in
+                    let* α1 :=
+                      format_arguments::["new_v1"]
+                        (addr_of [ ""; "
 " ])
-                          (addr_of [ α0 ]) in
-                      std.io.stdio._print α1 in
-                    Pure tt in
-                  Pure tt) in
+                        (addr_of [ α0 ]) in
+                    std.io.stdio._print α1 in
+                  Pure tt in
+                Pure tt in
             Pure tt
           end in
         Pure tt)

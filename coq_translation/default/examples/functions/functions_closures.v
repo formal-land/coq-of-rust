@@ -28,7 +28,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           (addr_of [ α1 ]) in
       std.io.stdio._print α2 in
     Pure tt in
-  let one := fun  => Pure 1 in
+  let one := Pure 1 in
   let* _ :=
     let* _ :=
       let* α0 := one in

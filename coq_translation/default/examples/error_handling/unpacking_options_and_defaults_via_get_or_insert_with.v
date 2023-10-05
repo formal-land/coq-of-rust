@@ -55,16 +55,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         unpacking_options_and_defaults_via_get_or_insert_with.Fruit :=
     core.option.Option.None in
   let get_lemon_as_fallback :=
-    fun  =>
+    let* _ :=
       let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Providing lemon as fallback
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "Providing lemon as fallback
 " ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
   let* first_available_fruit :=
     my_fruit.["get_or_insert_with"] get_lemon_as_fallback in
   let* _ :=
