@@ -49,31 +49,29 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       core.option.Option unpacking_options_and_defaults_via_or_else.Fruit :=
     core.option.Option.None in
   let get_kiwi_as_fallback :=
-    fun  =>
+    let* _ :=
       let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Providing kiwi as fallback
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "Providing kiwi as fallback
 " ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure
+      (core.option.Option.Some
+        unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
   let get_lemon_as_fallback :=
-    fun  =>
+    let* _ :=
       let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Providing lemon as fallback
+        let* α0 :=
+          format_arguments::["new_const"]
+            (addr_of [ "Providing lemon as fallback
 " ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
+        std.io.stdio._print α0 in
+      Pure tt in
+    Pure
+      (core.option.Option.Some
+        unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
   let* first_available_fruit :=
     let* α0 := no_fruit.["or_else"] get_kiwi_as_fallback in
     α0.["or_else"] get_lemon_as_fallback in

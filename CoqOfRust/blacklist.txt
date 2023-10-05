@@ -50,7 +50,6 @@ examples/functions/functions_closures_forced_capturing_with_move.v
 examples/functions/functions_closures_input_functions.v
 examples/functions/functions_closures_type_anonymity_define_and_use.v
 examples/functions/functions_closures_type_anonymity_define.v
-examples/functions/functions_closures.v
 examples/functions/functions.v
 examples/functions/higher_order_functions.v
 examples/generics/generics_bounds.v

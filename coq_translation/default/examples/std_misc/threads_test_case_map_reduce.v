@@ -40,29 +40,27 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             let* _ :=
               let* α0 :=
                 std.thread.spawn
-                  (fun  =>
-                    let* result :=
-                      let* α0 := data_segment.["chars"] in
-                      let* α1 :=
-                        α0.["map"]
-                          (fun c =>
-                            let* α0 := c.["to_digit"] 10 in
-                            α0.["expect"] "should be a digit") in
-                      α1.["sum"] in
+                  let* result :=
+                    let* α0 := data_segment.["chars"] in
+                    let* α1 :=
+                      α0.["map"]
+                        (fun c =>
+                          let* α0 := c.["to_digit"] 10 in
+                          α0.["expect"] "should be a digit") in
+                    α1.["sum"] in
+                  let* _ :=
                     let* _ :=
-                      let* _ :=
-                        let* α0 :=
-                          format_argument::["new_display"] (addr_of i) in
-                        let* α1 :=
-                          format_argument::["new_display"] (addr_of result) in
-                        let* α2 :=
-                          format_arguments::["new_v1"]
-                            (addr_of [ "processed segment "; ", result="; "
+                      let* α0 := format_argument::["new_display"] (addr_of i) in
+                      let* α1 :=
+                        format_argument::["new_display"] (addr_of result) in
+                      let* α2 :=
+                        format_arguments::["new_v1"]
+                          (addr_of [ "processed segment "; ", result="; "
 " ])
-                            (addr_of [ α0; α1 ]) in
-                        std.io.stdio._print α2 in
-                      Pure tt in
-                    Pure result) in
+                          (addr_of [ α0; α1 ]) in
+                      std.io.stdio._print α2 in
+                    Pure tt in
+                  Pure result in
               children.["push"] α0 in
             Pure tt
           end in

@@ -21,19 +21,17 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             let* _ :=
               let* α0 :=
                 std.thread.spawn
-                  (fun  =>
+                  let* _ :=
                     let* _ :=
-                      let* _ :=
-                        let* α0 :=
-                          format_argument::["new_display"] (addr_of i) in
-                        let* α1 :=
-                          format_arguments::["new_v1"]
-                            (addr_of [ "this is thread number "; "
+                      let* α0 := format_argument::["new_display"] (addr_of i) in
+                      let* α1 :=
+                        format_arguments::["new_v1"]
+                          (addr_of [ "this is thread number "; "
 " ])
-                            (addr_of [ α0 ]) in
-                        std.io.stdio._print α1 in
-                      Pure tt in
-                    Pure tt) in
+                          (addr_of [ α0 ]) in
+                      std.io.stdio._print α1 in
+                    Pure tt in
+                  Pure tt in
               children.["push"] α0 in
             Pure tt
           end in

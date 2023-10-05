@@ -86,8 +86,7 @@ Definition double_first
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M (H := H') (boxing_errors.Result i32) :=
   let* α0 := vec.["first"] in
-  let* α1 :=
-    α0.["ok_or_else"] (fun  => boxing_errors.EmptyVec.Build.["into"]) in
+  let* α1 := α0.["ok_or_else"] boxing_errors.EmptyVec.Build.["into"] in
   α1.["and_then"]
     (fun s =>
       let* α0 := s.["parse"] : M i32 in

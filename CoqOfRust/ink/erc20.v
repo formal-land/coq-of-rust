@@ -2179,57 +2179,52 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
     | __codec_x_edqy =>
       let* _ :=
         let* α0 :=
-          (fun  =>
-              let* __codec_res_edqy :=
-                (parity_scale_codec.codec.Decode.decode
-                    (Self := erc20.erc20.Transfer))
-                  __codec_input_edqy in
-              let* α0 :=
-                match __codec_res_edqy with
-                | core.result.Result.Err e =>
-                  let* α0 :=
-                    e.["chain"]
-                      "Could not decode `__ink_EventBase::Transfer.0`" in
-                  Return (core.result.Result.Err α0)
-                | core.result.Result.Ok __codec_res_edqy =>
-                  Pure __codec_res_edqy
-                end in
-              Pure
-                (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Transfer α0))) in
+          let* __codec_res_edqy :=
+              (parity_scale_codec.codec.Decode.decode
+                  (Self := erc20.erc20.Transfer))
+                __codec_input_edqy in
+            let* α0 :=
+              match __codec_res_edqy with
+              | core.result.Result.Err e =>
+                let* α0 :=
+                  e.["chain"]
+                    "Could not decode `__ink_EventBase::Transfer.0`" in
+                Return (core.result.Result.Err α0)
+              | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
+              end in
+            Pure
+              (core.result.Result.Ok
+                (erc20.erc20.__ink_EventBase.Transfer α0)) in
         Return α0 in
       Pure tt
     | __codec_x_edqy =>
       let* _ :=
         let* α0 :=
-          (fun  =>
-              let* __codec_res_edqy :=
-                (parity_scale_codec.codec.Decode.decode
-                    (Self := erc20.erc20.Approval))
-                  __codec_input_edqy in
-              let* α0 :=
-                match __codec_res_edqy with
-                | core.result.Result.Err e =>
-                  let* α0 :=
-                    e.["chain"]
-                      "Could not decode `__ink_EventBase::Approval.0`" in
-                  Return (core.result.Result.Err α0)
-                | core.result.Result.Ok __codec_res_edqy =>
-                  Pure __codec_res_edqy
-                end in
-              Pure
-                (core.result.Result.Ok
-                  (erc20.erc20.__ink_EventBase.Approval α0))) in
+          let* __codec_res_edqy :=
+              (parity_scale_codec.codec.Decode.decode
+                  (Self := erc20.erc20.Approval))
+                __codec_input_edqy in
+            let* α0 :=
+              match __codec_res_edqy with
+              | core.result.Result.Err e =>
+                let* α0 :=
+                  e.["chain"]
+                    "Could not decode `__ink_EventBase::Approval.0`" in
+                Return (core.result.Result.Err α0)
+              | core.result.Result.Ok __codec_res_edqy => Pure __codec_res_edqy
+              end in
+            Pure
+              (core.result.Result.Ok
+                (erc20.erc20.__ink_EventBase.Approval α0)) in
         Return α0 in
       Pure tt
     | _ =>
       let* _ :=
         let* α0 :=
-          (fun  =>
-              let* α0 :=
-                (core.convert.Into.into (Self := _))
-                  "Could not decode `__ink_EventBase`, variant doesn't exist" in
-              Pure (core.result.Result.Err α0)) in
+          let* α0 :=
+              (core.convert.Into.into (Self := _))
+                "Could not decode `__ink_EventBase`, variant doesn't exist" in
+            Pure (core.result.Result.Err α0) in
         Return α0 in
       Pure tt
     end.
@@ -7191,29 +7186,23 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
     | __codec_x_edqy =>
       let* _ :=
         let* α0 :=
-          (fun  =>
-              Pure
-                (core.result.Result.Ok
-                  erc20.erc20.Error.InsufficientBalance)) in
+          Pure (core.result.Result.Ok erc20.erc20.Error.InsufficientBalance) in
         Return α0 in
       Pure tt
     | __codec_x_edqy =>
       let* _ :=
         let* α0 :=
-          (fun  =>
-              Pure
-                (core.result.Result.Ok
-                  erc20.erc20.Error.InsufficientAllowance)) in
+          Pure
+              (core.result.Result.Ok erc20.erc20.Error.InsufficientAllowance) in
         Return α0 in
       Pure tt
     | _ =>
       let* _ :=
         let* α0 :=
-          (fun  =>
-              let* α0 :=
-                (core.convert.Into.into (Self := _))
-                  "Could not decode `Error`, variant doesn't exist" in
-              Pure (core.result.Result.Err α0)) in
+          let* α0 :=
+              (core.convert.Into.into (Self := _))
+                "Could not decode `Error`, variant doesn't exist" in
+            Pure (core.result.Result.Err α0) in
         Return α0 in
       Pure tt
     end.
