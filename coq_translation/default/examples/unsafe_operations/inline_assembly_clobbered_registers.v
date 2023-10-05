@@ -5,7 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* name_buf := repeat 0 in
   let _ :=
-    let _ := InlineAsm in
+    let _ := InlineAssembly in
     tt in
   let* name :=
     let* α0 := core.str.converts.from_utf8 (addr_of name_buf) in

@@ -115,6 +115,9 @@ Definition mut_ref : Set -> Set := ref.
 
 Parameter eqb : forall {A : Set}, A -> A -> bool.
 
+(** We replace assembly blocks by a value of type unit. *)
+Parameter InlineAssembly : unit.
+
 (** The functions on [Z] should eventually be replaced by functions on the
     corresponding integer types. *)
 Global Instance Method_Z_abs `{State.Trait} : Notation.Dot "abs" := {
