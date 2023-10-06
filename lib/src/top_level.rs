@@ -2534,6 +2534,28 @@ impl TypeStructStruct {
         // making fields immutable, just in case
         let fields = fields;
 
+        // List of parameters with default values
+        let params_with_default = ty_params
+            .iter()
+            .filter_map(|(ty, default)| {
+                if default.is_some() {
+                    Some(coq::TopLevelItem::Definition(coq::Definition::new(
+                        ty,
+                        &coq::DefinitionKind::Alias {
+                            args: vec![],
+                            ty: None,
+                            body: coq::Expression::Code(nest([default
+                                .clone()
+                                .unwrap()
+                                .to_doc(false)])),
+                        },
+                    )))
+                } else {
+                    None
+                }
+            })
+            .collect::<Vec<_>>();
+
         coq::TopLevel::new(
             &[
                 if *is_dead_code {
@@ -2775,6 +2797,15 @@ impl TypeStructStruct {
                                         })
                                         .collect::<Vec<_>>(),
                                 ),
+                                coq::TopLevel::new(&if params_with_default.is_empty() {
+                                    vec![]
+                                } else {
+                                    vec![
+                                      coq::TopLevelItem::Module(coq::Module::new(
+                                        "Default", coq::TopLevel::new(&params_with_default)
+                                      ))
+                                    ]
+                                }),
                             ]),
                         ),
                     )),
