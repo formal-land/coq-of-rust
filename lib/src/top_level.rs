@@ -2537,22 +2537,16 @@ impl TypeStructStruct {
         // List of parameters with default values
         let params_with_default = ty_params
             .iter()
-            .filter_map(|(ty, default)| {
-                if default.is_some() {
-                    Some(coq::TopLevelItem::Definition(coq::Definition::new(
-                        ty,
-                        &coq::DefinitionKind::Alias {
-                            args: vec![],
-                            ty: None,
-                            body: coq::Expression::Code(nest([default
-                                .clone()
-                                .unwrap()
-                                .to_doc(false)])),
-                        },
-                    )))
-                } else {
-                    None
-                }
+            .filter_map(|(ty, default)| match default {
+                Some(d) => Some(coq::TopLevelItem::Definition(coq::Definition::new(
+                    ty,
+                    &coq::DefinitionKind::Alias {
+                        args: vec![],
+                        ty: None,
+                        body: coq::Expression::Code(nest([d.to_doc(false)])),
+                    },
+                ))),
+                None => None,
             })
             .collect::<Vec<_>>();
 
