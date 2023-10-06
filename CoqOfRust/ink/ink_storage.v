@@ -23,10 +23,10 @@ Module lazy.
         Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
           Notation.double_colon '(Build_t x0) := x0;
         }.
-        Module Default.
-          Definition KeyType := ink_storage_traits.impls.AutoKey.
-        End Default.
       End Mapping.
+      Module Default.
+        Definition KeyType := ink_storage_traits.impls.AutoKey.
+      End Default.
     End Mapping.
     Definition Mapping
         (K V KeyType : Set)
@@ -52,10 +52,10 @@ Module lazy.
       Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon '(Build_t x0) := x0;
       }.
-      Module Default.
-        Definition KeyType := ink_storage_traits.impls.AutoKey.
-      End Default.
     End Lazy.
+    Module Default.
+      Definition KeyType := ink_storage_traits.impls.AutoKey.
+    End Default.
   End Lazy.
   Definition Lazy
       (V KeyType : Set)
@@ -83,10 +83,10 @@ Module mapping.
       Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon '(Build_t x0) := x0;
       }.
-      Module Default.
-        Definition KeyType := ink_storage_traits.impls.AutoKey.
-      End Default.
     End Mapping.
+    Module Default.
+      Definition KeyType := ink_storage_traits.impls.AutoKey.
+    End Default.
   End Mapping.
   Definition Mapping
       (K V KeyType : Set)
@@ -114,10 +114,10 @@ Module Mapping.
     Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
       Notation.double_colon '(Build_t x0) := x0;
     }.
-    Module Default.
-      Definition KeyType := ink_storage_traits.impls.AutoKey.
-    End Default.
   End Mapping.
+  Module Default.
+    Definition KeyType := ink_storage_traits.impls.AutoKey.
+  End Default.
 End Mapping.
 Definition Mapping
     (K V KeyType : Set)
@@ -142,10 +142,10 @@ Module Lazy.
     Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
       Notation.double_colon '(Build_t x0) := x0;
     }.
-    Module Default.
-      Definition KeyType := ink_storage_traits.impls.AutoKey.
-    End Default.
   End Lazy.
+  Module Default.
+    Definition KeyType := ink_storage_traits.impls.AutoKey.
+  End Default.
 End Lazy.
 Definition Lazy
     (V KeyType : Set)
