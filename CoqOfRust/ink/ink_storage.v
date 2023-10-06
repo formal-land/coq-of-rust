@@ -24,6 +24,9 @@ Module lazy.
           Notation.double_colon '(Build_t x0) := x0;
         }.
       End Mapping.
+      Module Default.
+        Definition KeyType := ink_storage_traits.impls.AutoKey.
+      End Default.
     End Mapping.
     Definition Mapping
         (K V KeyType : Set)
@@ -50,6 +53,9 @@ Module lazy.
         Notation.double_colon '(Build_t x0) := x0;
       }.
     End Lazy.
+    Module Default.
+      Definition KeyType := ink_storage_traits.impls.AutoKey.
+    End Default.
   End Lazy.
   Definition Lazy
       (V KeyType : Set)
@@ -78,6 +84,9 @@ Module mapping.
         Notation.double_colon '(Build_t x0) := x0;
       }.
     End Mapping.
+    Module Default.
+      Definition KeyType := ink_storage_traits.impls.AutoKey.
+    End Default.
   End Mapping.
   Definition Mapping
       (K V KeyType : Set)
@@ -106,6 +115,9 @@ Module Mapping.
       Notation.double_colon '(Build_t x0) := x0;
     }.
   End Mapping.
+  Module Default.
+    Definition KeyType := ink_storage_traits.impls.AutoKey.
+  End Default.
 End Mapping.
 Definition Mapping
     (K V KeyType : Set)
@@ -131,6 +143,9 @@ Module Lazy.
       Notation.double_colon '(Build_t x0) := x0;
     }.
   End Lazy.
+  Module Default.
+    Definition KeyType := ink_storage_traits.impls.AutoKey.
+  End Default.
 End Lazy.
 Definition Lazy
     (V KeyType : Set)
