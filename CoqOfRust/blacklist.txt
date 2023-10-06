@@ -78,7 +78,6 @@ examples/scoping_rules/scoping_rules_lifetimes_bounds.v
 examples/scoping_rules/scoping_rules_lifetimes_structs.v
 examples/scoping_rules/scoping_rules_lifetimes_traits.v
 examples/scoping_rules/scoping_rules_ownership_and_rules_partial_moves.v
-examples/scoping_rules/scoping_rules_raii_desctructor.v
 examples/std_library_types/arc.v
 examples/std_library_types/box_stack_heap.v
 examples/std_library_types/hash_map_alternate_or_custom_key_types.v
