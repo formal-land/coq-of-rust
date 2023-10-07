@@ -31,10 +31,11 @@ Section Impl_Result.
   Context {T E : Set}.
 
   Definition Self : Set := Result T E.
+  Arguments Self /.
 
   Parameter expect :
     forall `{H : State.Trait},
-    Self -> string -> M (H := H) T.
+    Self -> ref str -> M (H := H) T.
 
   Global Instance Method_expect `{State.Trait} :
     Notation.Dot "expect" := {|

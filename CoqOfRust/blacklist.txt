@@ -1,9 +1,9 @@
-examples/cargo/concurrent_tests.v
-examples/custom_types/enums_c_like.v
-examples/custom_types/enums_testcase_linked_list.v
-examples/custom_types/enums_type_aliases_v1.v
-examples/custom_types/enums_type_aliases_v2.v
-examples/custom_types/structures.v
+# examples/cargo/concurrent_tests.v
+# examples/custom_types/enums_c_like.v
+# examples/custom_types/enums_testcase_linked_list.v
+# examples/custom_types/enums_type_aliases_v1.v
+# examples/custom_types/enums_type_aliases_v2.v
+# examples/custom_types/structures.v
 examples/error_handling/aliases_for_result.v
 examples/error_handling/boxing_errors.v
 examples/error_handling/combinators_and_then.v
@@ -110,7 +110,7 @@ examples/std_misc/threads_test_case_map_reduce.v
 examples/std_misc/threads.v
 examples/subtle.v
 examples/testing/documentation_testing.v
-examples/traits/clone.v
+# examples/traits/clone.v
 examples/traits/derive.v
 examples/traits/hash.v
 examples/traits/impl_trait_as_return_type.v
