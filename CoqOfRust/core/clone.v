@@ -25,4 +25,8 @@ Module Clone.
   Module Impl_Clone_for_str.
     Global Instance I : Trait str. Admitted.
   End Impl_Clone_for_str.
+
+  Module Impl_Clone_for_Z.
+    Global Instance I : Trait Z. Admitted.
+  End Impl_Clone_for_Z.
 End Clone.

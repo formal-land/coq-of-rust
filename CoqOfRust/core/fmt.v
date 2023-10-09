@@ -136,6 +136,26 @@ Module ImplFormatter.
     Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" := {
     Notation.double_colon := debug_tuple_field1_finish (T := T);
   }.
+
+  (*
+  pub fn debug_tuple_field2_finish<'b>(
+      &'b mut self,
+      name: &str,
+      value1: &dyn Debug,
+      value2: &dyn Debug
+  ) -> Result
+  *)
+  Parameter debug_tuple_field2_finish :
+    forall `{State.Trait} {T1 T2 : Set}
+      `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2},
+    mut_ref Formatter -> ref str -> ref T1 -> ref T2 ->
+    M Result.
+
+  Global Instance Formatter_debug_tuple_field2_finish `{State.Trait}
+    {T1 T2 : Set} `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2} :
+    Notation.DoubleColon core.fmt.Formatter "debug_tuple_field2_finish" := {
+    Notation.double_colon := debug_tuple_field2_finish (T1 := T1) (T2 := T2);
+  }.
 End ImplFormatter.
 
 Module Octal.
