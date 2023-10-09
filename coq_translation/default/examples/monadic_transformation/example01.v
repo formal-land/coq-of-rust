@@ -5,10 +5,9 @@ Definition id `{H' : State.Trait} (x : u64) : M (H := H') u64 := Pure x.
 
 Definition tri
     `{H' : State.Trait}
-    (a : u64)
-    (b : u64)
-    (c : u64)
+    (arguments : (u64 * u64) * u64)
     : M (H := H') unit :=
+  let '(a, b, c) := arguments in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

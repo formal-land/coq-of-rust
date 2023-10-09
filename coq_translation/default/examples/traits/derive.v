@@ -27,9 +27,9 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
   
   Definition eq
       `{H' : State.Trait}
-      (self : ref Self)
-      (other : ref derive.Centimeters)
+      (arguments : (ref Self) * (ref derive.Centimeters))
       : M (H := H') bool :=
+    let '(self, other) := arguments in
     (self.[0]).["eq"] (other.[0]).
   
   Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
@@ -49,9 +49,9 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
   
   Definition partial_cmp
       `{H' : State.Trait}
-      (self : ref Self)
-      (other : ref derive.Centimeters)
+      (arguments : (ref Self) * (ref derive.Centimeters))
       : M (H := H') (core.option.Option core.cmp.Ordering) :=
+    let '(self, other) := arguments in
     core.cmp.PartialOrd.partial_cmp (addr_of (self.[0])) (addr_of (other.[0])).
   
   Global Instance Method_partial_cmp `{H' : State.Trait} :
@@ -86,9 +86,9 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Inches"

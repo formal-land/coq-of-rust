@@ -6,9 +6,9 @@ Definition AliasedResult (T : Set) : Set :=
 
 Definition multiply
     `{H' : State.Trait}
-    (first_number_str : ref str)
-    (second_number_str : ref str)
+    (arguments : (ref str) * (ref str))
     : M (H := H') (aliases_for_result.AliasedResult i32) :=
+  let '(first_number_str, second_number_str) := arguments in
   let* α0 := first_number_str.["parse"] : M i32 in
   α0.["and_then"]
     (fun first_number =>

@@ -14,9 +14,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 :=
       match self with
       | combinators_and_then.Food.CordonBleu => Pure "CordonBleu"
@@ -48,9 +48,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 :=
       match self with
       | combinators_and_then.Day.Monday => Pure "Monday"
@@ -111,9 +111,9 @@ Definition cookable_v2
 
 Definition eat
     `{H' : State.Trait}
-    (food : combinators_and_then.Food)
-    (day : combinators_and_then.Day)
+    (arguments : combinators_and_then.Food * combinators_and_then.Day)
     : M (H := H') unit :=
+  let '(food, day) := arguments in
   let* α0 := combinators_and_then.cookable_v2 food in
   match α0 with
   | core.option.Option.Some food =>

@@ -67,8 +67,9 @@ Module StringType.
     from `{State.Trait} := from;
   }.
 
- Global Instance Method_from : Notation.DoubleColon String "from" := {
-    Notation.double_colon `{State.Trait} := from;
+ Global Instance Method_from `{State.Trait} :
+    Notation.DoubleColon String "from" := {
+    Notation.double_colon := from;
   }.
 
  (* @TODO add more methods from (Struct std::string::String) *)

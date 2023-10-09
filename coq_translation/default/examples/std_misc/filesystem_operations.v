@@ -23,9 +23,9 @@ Definition cat
 
 Definition echo
     `{H' : State.Trait}
-    (s : ref str)
-    (path : ref std.path.Path)
+    (arguments : (ref str) * (ref std.path.Path))
     : M (H := H') (std.io.error.Result unit) :=
+  let '(s, path) := arguments in
   let* f :=
     let* α0 := std.fs.File::["create"] path in
     let* α1 := α0.["branch"] in

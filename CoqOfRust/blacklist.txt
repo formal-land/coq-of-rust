@@ -110,7 +110,7 @@ examples/std_misc/threads_test_case_map_reduce.v
 examples/std_misc/threads.v
 examples/subtle.v
 examples/testing/documentation_testing.v
-examples/traits/clone.v
+# examples/traits/clone.v
 examples/traits/derive.v
 examples/traits/hash.v
 examples/traits/impl_trait_as_return_type.v

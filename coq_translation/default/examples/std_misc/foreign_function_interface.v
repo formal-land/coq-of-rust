@@ -99,18 +99,17 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Definition Self := foreign_function_interface.Complex.
   
   Parameter struct_parameter_for_fmt :
-      core.fmt.Formatter ->
-        string -> string -> f32 -> string -> f32 -> M (H := H') core.fmt.Result.
+      string -> string -> f32 -> string -> f32 -> M (H := H') core.fmt.Result.
   
   Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
-    core.fmt.Formatter "struct_parameter_for_fmt" := {
+     "struct_parameter_for_fmt" := {
     Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 := self.["im"].["lt"] 0 (* 0. *) in
     if (α0 : bool) then
       let* α0 := format_argument::["new_display"] (addr_of self.["re"]) in

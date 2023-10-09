@@ -29,9 +29,9 @@ Module Impl_generics_traits_DoubleDrop_for_U.
     
     Definition double_drop
         `{H' : State.Trait}
-        (self : Self)
-        (Pattern : T)
+        (arguments : Self * T)
         : M (H := H') unit :=
+      let '(self, Pattern) := arguments in
       Pure tt.
     
     Global Instance Method_double_drop `{H' : State.Trait} :

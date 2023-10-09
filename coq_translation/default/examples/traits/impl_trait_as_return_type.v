@@ -3,8 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition combine_vecs_explicit_return_type
     `{H' : State.Trait}
-    (v : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
-    (u : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
+    (arguments
+      :
+      (alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
+      *
+      (alloc.vec.Vec i32 alloc.vec.Vec.Default.A))
     :
       M (H := H')
         (core.iter.adapters.cycle.Cycle
@@ -15,6 +18,7 @@ Definition combine_vecs_explicit_return_type
             (alloc.vec.into_iter.IntoIter
               i32
               alloc.vec.into_iter.IntoIter.Default.A))) :=
+  let '(v, u) := arguments in
   let* α0 := v.["into_iter"] in
   let* α1 := u.["into_iter"] in
   let* α2 := α0.["chain"] α1 in
@@ -22,9 +26,13 @@ Definition combine_vecs_explicit_return_type
 
 Definition combine_vecs
     `{H' : State.Trait}
-    (v : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
-    (u : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
+    (arguments
+      :
+      (alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
+      *
+      (alloc.vec.Vec i32 alloc.vec.Vec.Default.A))
     : M (H := H') _ (* OpaqueTy *) :=
+  let '(v, u) := arguments in
   let* α0 := v.["into_iter"] in
   let* α1 := u.["into_iter"] in
   let* α2 := α0.["chain"] α1 in

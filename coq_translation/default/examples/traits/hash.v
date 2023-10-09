@@ -38,9 +38,9 @@ Module Impl_core_hash_Hash_for_hash_Person.
       `{H' : State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H}
-      (self : ref Self)
-      (state : mut_ref __H)
+      (arguments : (ref Self) * (mut_ref __H))
       : M (H := H') unit :=
+    let '(self, state) := arguments in
     let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
     let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
     core.hash.Hash.hash (addr_of self.["phone"]) state.

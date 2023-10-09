@@ -136,9 +136,9 @@ End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
 Definition depends_on_trait_impl
     `{H' : State.Trait}
-    (u : u32)
-    (b : bool)
+    (arguments : u32 * bool)
     : M (H := H') unit :=
+  let '(u, b) := arguments in
   let* _ := (functions_order.OtherType.Build_t b).["some_trait_foo"] in
   let* _ := (functions_order.SomeType.Build_t u).["some_trait_foo"] in
   Pure tt.

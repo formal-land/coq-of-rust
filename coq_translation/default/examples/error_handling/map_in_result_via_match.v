@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
     `{H' : State.Trait}
-    (first_number_str : ref str)
-    (second_number_str : ref str)
+    (arguments : (ref str) * (ref str))
     : M (H := H') (core.result.Result i32 core.num.error.ParseIntError) :=
+  let '(first_number_str, second_number_str) := arguments in
   let* α0 := first_number_str.["parse"] : M i32 in
   match α0 with
   | core.result.Result.Ok first_number =>

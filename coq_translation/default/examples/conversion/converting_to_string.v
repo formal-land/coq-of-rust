@@ -22,9 +22,9 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 := format_argument::["new_display"] (addr_of self.["radius"]) in
     let* α1 :=
       format_arguments::["new_v1"]

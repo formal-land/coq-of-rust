@@ -8,9 +8,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
 
 Definition is_divisible_by
     `{H' : State.Trait}
-    (lhs : u32)
-    (rhs : u32)
+    (arguments : u32 * u32)
     : M (H := H') bool :=
+  let '(lhs, rhs) := arguments in
   let* _ :=
     let* α0 := rhs.["eq"] 0 in
     if (α0 : bool) then

@@ -29,19 +29,18 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
   Definition Self := box_stack_heap.Point.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Parameter debug_struct_field2_finish :
-      core.fmt.Formatter ->
-        string -> string -> f64 -> string -> f64 -> M (H := H') core.fmt.Result.
+  Parameter struct_parameter_for_fmt :
+      string -> string -> f64 -> string -> f64 -> M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field2_finish" := {
-    Notation.double_colon := debug_struct_field2_finish; }.
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+     "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Point"

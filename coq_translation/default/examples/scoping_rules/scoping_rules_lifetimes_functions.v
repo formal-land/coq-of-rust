@@ -22,9 +22,9 @@ Definition add_one `{H' : State.Trait} (x : mut_ref i32) : M (H := H') unit :=
 
 Definition print_multi
     `{H' : State.Trait}
-    (x : ref i32)
-    (y : ref i32)
+    (arguments : (ref i32) * (ref i32))
     : M (H := H') unit :=
+  let '(x, y) := arguments in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of x) in
@@ -40,9 +40,9 @@ Definition print_multi
 
 Definition pass_x
     `{H' : State.Trait}
-    (x : ref i32)
-    (arg : ref i32)
+    (arguments : (ref i32) * (ref i32))
     : M (H := H') (ref i32) :=
+  let '(x, arg) := arguments in
   Pure x.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

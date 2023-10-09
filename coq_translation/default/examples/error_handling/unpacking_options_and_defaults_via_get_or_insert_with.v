@@ -18,9 +18,9 @@ Module
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 :=
       match self with
       | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple =>

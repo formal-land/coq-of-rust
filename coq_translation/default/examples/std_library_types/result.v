@@ -15,9 +15,9 @@ Module checked.
     
     Definition fmt
         `{H' : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
+        (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
         : M (H := H') core.fmt.Result :=
+      let '(self, f) := arguments in
       let* α0 :=
         match self with
         | result.checked.MathError.DivisionByZero => Pure "DivisionByZero"
@@ -43,9 +43,9 @@ Module checked.
   
   Definition div
       `{H' : State.Trait}
-      (x : f64)
-      (y : f64)
+      (arguments : f64 * f64)
       : M (H := H') result.checked.MathResult :=
+    let '(x, y) := arguments in
     let* α0 := y.["eq"] 0 (* 0.0 *) in
     if (α0 : bool) then
       Pure (core.result.Result.Err result.checked.MathError.DivisionByZero)
@@ -90,9 +90,9 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 :=
       match self with
       | result.checked.MathError.DivisionByZero => Pure "DivisionByZero"
@@ -116,9 +116,9 @@ Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
 
 Definition div
     `{H' : State.Trait}
-    (x : f64)
-    (y : f64)
+    (arguments : f64 * f64)
     : M (H := H') result.checked.MathResult :=
+  let '(x, y) := arguments in
   let* α0 := y.["eq"] 0 (* 0.0 *) in
   if (α0 : bool) then
     Pure (core.result.Result.Err result.checked.MathError.DivisionByZero)
@@ -148,7 +148,8 @@ Definition ln
     let* α0 := x.["ln"] in
     Pure (core.result.Result.Ok α0).
 
-Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') f64 :=
+Definition op `{H' : State.Trait} (arguments : f64 * f64) : M (H := H') f64 :=
+  let '(x, y) := arguments in
   let* α0 := result.checked.div x y in
   match α0 with
   | core.result.Result.Err why =>

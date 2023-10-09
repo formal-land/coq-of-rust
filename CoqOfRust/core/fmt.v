@@ -27,10 +27,10 @@ End Arguments.
 Definition Arguments := Arguments.t.
 
 Module Write.
-  Class Trait (Self : Set) : Set := {
-    write_str `{State.Trait} : mut_ref Self -> ref str -> M Result;
-    write_char `{State.Trait} : mut_ref Self -> char -> M Result;
-    write_fmt `{State.Trait} : mut_ref Self -> Arguments -> M Result;
+  Class Trait `{State.Trait} (Self : Set) : Set := {
+    write_str : mut_ref Self -> ref str -> M Result;
+    write_char : mut_ref Self -> char -> M Result;
+    write_fmt : mut_ref Self -> Arguments -> M Result;
   }.
 
   Global Instance Method_write_str `{State.Trait} `(Trait) : Notation.Dot "write_str" := {
@@ -62,7 +62,7 @@ End Display.
 
 Module Debug.
   Class Trait (Self : Set) : Set := {
-    fmt `{State.Trait} : ref Self -> mut_ref Formatter -> M Result;
+    fmt `{State.Trait} : ref Self * mut_ref Formatter -> M Result;
   }.
 End Debug.
 
@@ -124,12 +124,10 @@ Module ImplFormatter.
       builder.finish()
   }
   *)
-  Definition debug_tuple_field1_finish `{State.Trait} {T : Set}
-    `{core.fmt.Debug.Trait T} (f : core.fmt.Formatter) (x : ref str) (y : T) :
-    M core.fmt.Result :=
-    let* dt := f.["debug_tuple_new"] x in
-    let* fld := dt.["field"] y in
-    fld.["finish"].
+  Parameter debug_tuple_field1_finish :
+    forall `{State.Trait} {T : Set} `{core.fmt.Debug.Trait T},
+    core.fmt.Formatter * ref str * T ->
+    M core.fmt.Result.
 
   Global Instance Formatter_debug_tuple_field1_finish `{State.Trait}
     {T : Set} `{core.fmt.Debug.Trait T} :
@@ -148,7 +146,7 @@ Module ImplFormatter.
   Parameter debug_tuple_field2_finish :
     forall `{State.Trait} {T1 T2 : Set}
       `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2},
-    mut_ref Formatter -> ref str -> ref T1 -> ref T2 ->
+    mut_ref Formatter * ref str * ref T1 * ref T2 ->
     M Result.
 
   Global Instance Formatter_debug_tuple_field2_finish `{State.Trait}
@@ -210,7 +208,7 @@ Module ImplArgumentV1.
 
   Parameter new :
     forall `{State.Trait} {T : Set},
-    ref T -> (ref T -> mut_ref Formatter -> M Result) -> M Self.
+    ref T * (ref T -> mut_ref Formatter -> M Result) -> M Self.
 
   Global Instance ArgumentV1_new `{State.Trait} {T : Set} :
     Notation.DoubleColon ArgumentV1 "new" := {
@@ -310,7 +308,7 @@ Module ImplArguments.
 
   Parameter new_v1 :
     forall `{State.Trait},
-      ref (list (ref str)) -> ref (list ArgumentV1) -> M Arguments.
+    ref (list (ref str)) * ref (list ArgumentV1) -> M Arguments.
 
   Global Instance Arguments_new_v1 `{State.Trait} :
     Notation.DoubleColon Arguments "new_v1" := {
@@ -318,5 +316,5 @@ Module ImplArguments.
   }.
 End ImplArguments.
 
-Global Instance Write_for_Formatter : Write.Trait Formatter.
+Global Instance Write_for_Formatter `{State.Trait} : Write.Trait Formatter.
 Admitted.

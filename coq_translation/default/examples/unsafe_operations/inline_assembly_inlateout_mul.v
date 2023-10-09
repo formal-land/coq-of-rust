@@ -4,7 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
 
-Definition mul `{H' : State.Trait} (a : u64) (b : u64) : M (H := H') u128 :=
+Definition mul `{H' : State.Trait} (arguments : u64 * u64) : M (H := H') u128 :=
+  let '(a, b) := arguments in
   let lo : u64 := tt in
   let hi : u64 := tt in
   let _ :=

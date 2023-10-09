@@ -125,6 +125,7 @@ Section Impl_Vec.
 
   Parameter new :
     forall `{H : State.Trait},
+    unit ->
     M (H := H) Self.
 
   Global Instance AssociatedFunction_new `{State.Trait} :

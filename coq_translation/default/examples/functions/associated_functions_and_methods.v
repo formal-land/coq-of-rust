@@ -43,9 +43,9 @@ Module Impl_associated_functions_and_methods_Point.
   
   Definition new
       `{H' : State.Trait}
-      (x : f64)
-      (y : f64)
+      (arguments : f64 * f64)
       : M (H := H') associated_functions_and_methods.Point :=
+    let '(x, y) := arguments in
     Pure
       {|
         associated_functions_and_methods.Point.x := x;
@@ -146,10 +146,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Definition translate
       `{H' : State.Trait}
-      (self : mut_ref Self)
-      (x : f64)
-      (y : f64)
+      (arguments : ((mut_ref Self) * f64) * f64)
       : M (H := H') unit :=
+    let '(self, x, y) := arguments in
     let* _ := self.["p1"].["x"].["add_assign"] x in
     let* _ := self.["p2"].["x"].["add_assign"] x in
     let* _ := self.["p1"].["y"].["add_assign"] y in

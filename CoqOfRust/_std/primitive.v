@@ -22,9 +22,9 @@ Require Import CoqOfRust.lib.lib.
 *)
 
 Module Impl_f32.
-  Parameter NAN : f32.
+  Parameter NAN : forall `{State.Trait}, unit -> M f32.
 
-  Global Instance AssociatedFunction_NAN :
+  Global Instance AssociatedFunction_NAN `{State.Trait} :
     Notation.DoubleColon f32 "NAN" := {
     Notation.double_colon := NAN;
   }.

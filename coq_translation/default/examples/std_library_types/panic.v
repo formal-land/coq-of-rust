@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition division
     `{H' : State.Trait}
-    (dividend : i32)
-    (divisor : i32)
+    (arguments : i32 * i32)
     : M (H := H') i32 :=
+  let '(dividend, divisor) := arguments in
   let* α0 := divisor.["eq"] 0 in
   if (α0 : bool) then
     let* _ := std.panicking.begin_panic "division by zero" in

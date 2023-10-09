@@ -46,9 +46,11 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     
     Definition eq
         `{H' : State.Trait}
-        (self : ref Self)
-        (other : ref (generics_phantom_type.PhantomTuple A B))
+        (arguments
+          :
+          (ref Self) * (ref (generics_phantom_type.PhantomTuple A B)))
         : M (H := H') bool :=
+      let '(self, other) := arguments in
       let* α0 := (self.[0]).["eq"] (other.[0]) in
       let* α1 := (self.[1]).["eq"] (other.[1]) in
       α0.["andb"] α1.
@@ -118,9 +120,11 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     
     Definition eq
         `{H' : State.Trait}
-        (self : ref Self)
-        (other : ref (generics_phantom_type.PhantomStruct A B))
+        (arguments
+          :
+          (ref Self) * (ref (generics_phantom_type.PhantomStruct A B)))
         : M (H := H') bool :=
+      let '(self, other) := arguments in
       let* α0 := self.["first"].["eq"] other.["first"] in
       let* α1 := self.["phantom"].["eq"] other.["phantom"] in
       α0.["andb"] α1.

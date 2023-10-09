@@ -28,11 +28,12 @@ Module Notation.
   (** A class to represent associated functions (the notation [e1::e2]). The
       kind might be [Set] functions associated to a type, or [Set -> Set] for
       functions associated to a trait. *)
-  Class DoubleColon {Kind : Type} (type : Kind) (name : string) {T : Set} :
+  Class DoubleColon `{State.Trait} {Kind : Type} (type : Kind) (name : string)
+    {Argument Result : Set} :
     Set := {
-    double_colon : T;
+    double_colon : Argument -> M Result;
   }.
-  Arguments double_colon {Kind} type name {T DoubleColon}.
+  Arguments double_colon {_ _ H} {Kind} type name {Argument Result DoubleColon}.
 
   (* A class to represent types in a trait. *)
   Class DoubleColonType {Kind : Type} (type : Kind) (name : string) : Type := {
@@ -49,12 +50,12 @@ Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
   (at level 0).
 
 (** A method is also an associated function for its type. *)
-Global Instance AssociatedFunctionFromMethod
+(* Global Instance AssociatedFunctionFromMethod
   (type : Set) (name : string) (T : Set)
   `(Notation.Dot (Kind := string) name (T := type -> T)) :
   Notation.DoubleColon type name (T := type -> T) := {
   Notation.double_colon := Notation.dot name;
-}.
+}. *)
 
 Definition defaultType (T : option Set) (Default : Set) : Set :=
   match T with

@@ -28,9 +28,9 @@ Module Impl_enums_testcase_linked_list_List.
   
   Definition prepend
       `{H' : State.Trait}
-      (self : Self)
-      (elem : u32)
+      (arguments : Self * u32)
       : M (H := H') enums_testcase_linked_list.List :=
+    let '(self, elem) := arguments in
     let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
   

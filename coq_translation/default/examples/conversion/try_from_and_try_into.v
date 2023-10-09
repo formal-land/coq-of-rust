@@ -19,9 +19,9 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "EvenNumber"
@@ -51,9 +51,9 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   
   Definition eq
       `{H' : State.Trait}
-      (self : ref Self)
-      (other : ref try_from_and_try_into.EvenNumber)
+      (arguments : (ref Self) * (ref try_from_and_try_into.EvenNumber))
       : M (H := H') bool :=
+    let '(self, other) := arguments in
     (self.[0]).["eq"] (other.[0]).
   
   Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {

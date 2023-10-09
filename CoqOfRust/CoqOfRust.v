@@ -69,10 +69,10 @@ Notation "e1 ::type[ e2 ]" := (Notation.double_colon_type e1 e2)
   (at level 0).
 
 (** A method is also an associated function for its type. *)
-Global Instance AssociatedFunctionFromMethod
-  (type : Set) (name : string) (T : Set)
-  `(Notation.Dot (Kind := string) name (T := type -> T)) :
-  Notation.DoubleColon type name (T := type -> T) := {
+Global Instance AssociatedFunctionFromMethod `{State.Trait}
+  (Self : Set) (name : string) (Argument Result : Set)
+  `(Notation.Dot (Kind := string) name (T := Self * Argument -> M Result)) :
+  Notation.DoubleColon Self name (Argument := Self * Argument) (Result := Result) := {
   Notation.double_colon := Notation.dot name;
 }.
 
@@ -567,8 +567,10 @@ Module Impl_Debug_for_Result.
     Context `{core.fmt.Debug.Trait E}.
 
     Parameter fmt :
-      forall `{State.Trait}, ref (core.result.Result T E) ->
-        mut_ref core.fmt.Formatter -> M core.fmt.Result.
+      forall `{State.Trait},
+      ref (core.result.Result T E) *
+      mut_ref core.fmt.Formatter ->
+      M core.fmt.Result.
 
     Global Instance I : core.fmt.Debug.Trait (core.result.Result T E) := {
       fmt `{State.Trait} := fmt;
@@ -582,7 +584,7 @@ Module Impl_RangeInclusive.
 
   Definition Self := RangeInclusive Idx.
 
-  Parameter new : forall `{State.Trait}, Idx -> Idx -> M Self.
+  Parameter new : forall `{State.Trait}, Idx * Idx -> M Self.
 
   Global Instance RangeInclusive_new `{State.Trait} :
     Notation.DoubleColon RangeInclusive "new" := {
@@ -618,17 +620,16 @@ Module Impl_Slice.
     Context {T : Set}.
     Definition Self := Slice T.
 
-    Definition into_vec `{State.Trait}
-      {A : Set} `{alloc.Allocator.Trait A}
-      (self : ref Self) (alloc : A) :
+    Parameter into_vec :
+      forall `{State.Trait} {A : Set} `{alloc.Allocator.Trait A},
+      ref Self * A ->
       M (alloc.vec.Vec T alloc.vec.Vec.Default.A).
-    Admitted.
 
     Global Instance Method_into_vec `{State.Trait}
       (* {A : Set} `{(* core. *) alloc.Allocator.Trait A} *) :
       Notation.DoubleColon (Slice T) "into_vec" := {
-        Notation.double_colon (self : ref Self) (* (alloc : A) *) :=
-          into_vec self (* alloc *);
+        Notation.double_colon (* (alloc : A) *) :=
+          into_vec (* alloc *);
       }.
 
     Global Instance Method_into_vec_box `{State.Trait}

@@ -47,10 +47,9 @@ Module
   
   Definition contains
       `{H' : State.Trait}
-      (self : ref Self)
-      (number_1 : ref i32)
-      (number_2 : ref i32)
+      (arguments : ((ref Self) * (ref i32)) * (ref i32))
       : M (H := H') bool :=
+    let '(self, number_1, number_2) := arguments in
     let* α0 := (addr_of (self.[0])).["eq"] number_1 in
     let* α1 := (addr_of (self.[1])).["eq"] number_2 in
     α0.["andb"] α1.

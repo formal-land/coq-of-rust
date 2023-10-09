@@ -13,9 +13,9 @@ Module
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.intrinsics.unreachable.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
@@ -72,9 +72,9 @@ Module
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.intrinsics.unreachable.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
@@ -150,9 +150,9 @@ Module
     
     Definition fmt
         `{H' : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
+        (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
         : M (H := H') core.fmt.Result :=
+      let '(self, f) := arguments in
       core.fmt.Formatter::["debug_tuple_field2_finish"]
         f
         "Length"
@@ -237,11 +237,15 @@ Module
     
     Definition add
         `{H' : State.Trait}
-        (self : Self)
-        (rhs : generics_phantom_type_test_case_unit_clarification.Length Unit)
+        (arguments
+          :
+          Self
+          *
+          (generics_phantom_type_test_case_unit_clarification.Length Unit))
         :
           M (H := H')
             (generics_phantom_type_test_case_unit_clarification.Length Unit) :=
+      let '(self, rhs) := arguments in
       let* α0 := (self.[0]).["add"] (rhs.[0]) in
       Pure
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t

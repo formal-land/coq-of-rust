@@ -14,9 +14,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 :=
       match self with
       | combinators_map.Food.Apple => Pure "Apple"
@@ -53,9 +53,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Peeled"
@@ -89,9 +89,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Chopped"
@@ -125,9 +125,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_tuple_field1_finish"]
       f
       "Cooked"

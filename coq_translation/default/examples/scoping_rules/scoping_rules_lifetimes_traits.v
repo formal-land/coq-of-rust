@@ -20,19 +20,18 @@ Definition Borrowed : Set := Borrowed.t.
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Definition Self := scoping_rules_lifetimes_traits.Borrowed.
   
-  Parameter debug_struct_field1_finish :
-      core.fmt.Formatter ->
-        string -> string -> StaticRef_i32 -> M (H := H') core.fmt.Result.
+  Parameter struct_parameter_for_fmt :
+      string -> string -> StaticRef_i32 -> M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field1_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field1_finish" := {
-    Notation.double_colon := debug_struct_field1_finish; }.
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+     "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_struct_field1_finish"]
       f
       "Borrowed"

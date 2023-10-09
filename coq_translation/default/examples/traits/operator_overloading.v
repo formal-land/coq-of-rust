@@ -21,9 +21,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["write_str"] f "FooBar".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
@@ -46,9 +46,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["write_str"] f "BarFoo".
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
@@ -68,9 +68,9 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
   
   Definition add
       `{H' : State.Trait}
-      (self : Self)
-      (_rhs : operator_overloading.Bar)
+      (arguments : Self * operator_overloading.Bar)
       : M (H := H') operator_overloading.FooBar :=
+    let '(self, _rhs) := arguments in
     let* _ :=
       let* _ :=
         let* α0 :=
@@ -100,9 +100,9 @@ Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
   
   Definition add
       `{H' : State.Trait}
-      (self : Self)
-      (_rhs : operator_overloading.Foo)
+      (arguments : Self * operator_overloading.Foo)
       : M (H := H') operator_overloading.BarFoo :=
+    let '(self, _rhs) := arguments in
     let* _ :=
       let* _ :=
         let* α0 :=

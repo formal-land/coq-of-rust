@@ -11,10 +11,11 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "Unit".
+      axiom.
+    (* let '(self, f) := arguments in
+    core.fmt.Formatter::["write_str"] (f, "Unit"). *)
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -91,21 +92,45 @@ Module Impl_core_clone_Clone_for_clone_Pair.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
+Module Notation.
+  Class TripleColon `{State.Trait} (type : Set) (name : string)
+    {Argument Result : Set} :
+    Set := {
+    triple_colon : Argument -> M Result;
+  }.
+  Arguments triple_colon {_ _ H} type name {Argument Result TripleColon}.
+End Notation.
+
+Notation "e1 :::[ e2 ]" := (Notation.triple_colon e1 e2)
+  (at level 0).
+
+Global Instance Formatter_debug_tuple_field2_finish `{State.Trait}
+    {T1 T2 : Set} `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2} :
+    Notation.TripleColon core.fmt.Formatter "debug_tuple_field2_finish" := {
+  Notation.triple_colon :=
+    core.fmt.ImplFormatter.debug_tuple_field2_finish (T1 := T1) (T2 := T2);
+}.
+
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self := clone.Pair.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field2_finish"]
-      f
-      "Pair"
-      (addr_of (self.[0]))
-      (addr_of (addr_of (self.[1]))).
+    let '(self, f) := arguments in
+    let zero := self.[0] in
+    let one := self.[1] in
+    core.fmt.Formatter::["debug_tuple_field2_finish"] (
+      f,
+      "Pair",
+      addr_of (self.[0]),
+      addr_of (self.[1])
+      (* (addr_of (self.[0])),
+      (addr_of (addr_of (self.[1]))) *)
+    ).
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  (* Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
@@ -176,4 +201,4 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
-  Pure tt.
+  Pure tt. *)

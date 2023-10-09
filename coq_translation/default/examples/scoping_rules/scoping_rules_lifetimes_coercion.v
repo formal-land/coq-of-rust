@@ -3,16 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
     `{H' : State.Trait}
-    (first : ref i32)
-    (second : ref i32)
+    (arguments : (ref i32) * (ref i32))
     : M (H := H') i32 :=
+  let '(first, second) := arguments in
   first.["mul"] second.
 
 Definition choose_first
     `{H' : State.Trait}
-    (first : ref i32)
-    (arg : ref i32)
+    (arguments : (ref i32) * (ref i32))
     : M (H := H') (ref i32) :=
+  let '(first, arg) := arguments in
   Pure first.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

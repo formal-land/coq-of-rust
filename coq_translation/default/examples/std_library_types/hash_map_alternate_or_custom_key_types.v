@@ -40,9 +40,11 @@ Module
   
   Definition eq
       `{H' : State.Trait}
-      (self : ref Self)
-      (other : ref hash_map_alternate_or_custom_key_types.Account)
+      (arguments
+        :
+        (ref Self) * (ref hash_map_alternate_or_custom_key_types.Account))
       : M (H := H') bool :=
+    let '(self, other) := arguments in
     let* α0 := self.["username"].["eq"] other.["username"] in
     let* α1 := self.["password"].["eq"] other.["password"] in
     α0.["andb"] α1.
@@ -97,9 +99,9 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
       `{H' : State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H}
-      (self : ref Self)
-      (state : mut_ref __H)
+      (arguments : (ref Self) * (mut_ref __H))
       : M (H := H') unit :=
+    let '(self, state) := arguments in
     let* _ := core.hash.Hash.hash (addr_of self.["username"]) state in
     core.hash.Hash.hash (addr_of self.["password"]) state.
   
@@ -153,10 +155,13 @@ Definition Accounts : Set :=
 
 Definition try_logon
     `{H' : State.Trait}
-    (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
-    (username : ref str)
-    (password : ref str)
+    (arguments
+      :
+      ((ref hash_map_alternate_or_custom_key_types.Accounts) * (ref str))
+      *
+      (ref str))
     : M (H := H') unit :=
+  let '(accounts, username, password) := arguments in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_display"] (addr_of username) in

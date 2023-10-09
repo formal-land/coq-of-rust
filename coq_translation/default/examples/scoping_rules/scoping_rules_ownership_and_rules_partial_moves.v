@@ -79,24 +79,23 @@ Module
   Definition Self :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
-  Parameter debug_struct_field2_finish :
-      core.fmt.Formatter ->
-        string ->
+  Parameter struct_parameter_for_fmt :
+      string ->
           string ->
           alloc_string_String ->
           string ->
           alloc_boxed_Box_u8_alloc_boxed_Box_Default_A ->
           M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field2_finish" := {
-    Notation.double_colon := debug_struct_field2_finish; }.
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+     "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     core.fmt.Formatter::["debug_struct_field2_finish"]
       f
       "Person"

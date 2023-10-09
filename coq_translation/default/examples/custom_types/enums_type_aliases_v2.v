@@ -15,10 +15,9 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   
   Definition run
       `{H' : State.Trait}
-      (self : ref Self)
-      (x : i32)
-      (y : i32)
+      (arguments : ((ref Self) * i32) * i32)
       : M (H := H') i32 :=
+    let '(self, x, y) := arguments in
     match self with
     | Add => x.["add"] y
     | Subtract => x.["sub"] y

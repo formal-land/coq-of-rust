@@ -120,13 +120,13 @@ pub trait TryFrom<T>: Sized {
 Module TryFrom.
   Class Trait (Self : Set) {T : Set} : Type := {
     Error : Set;
-
     try_from `{State.Trait} : T -> M (Result Self Error);
   }.
 
-  Global Instance AssociatedFunction_try_from {Self : Set} `{Trait Self} :
+  Global Instance AssociatedFunction_try_from
+    `{State.Trait} {Self : Set} `{Trait Self} :
     Notation.DoubleColon Self "try_from" := {
-    Notation.double_colon `{State.Trait} := try_from;
+    Notation.double_colon := try_from;
   }.
 End TryFrom.
 

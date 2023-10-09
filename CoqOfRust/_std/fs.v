@@ -66,7 +66,7 @@ Definition OpenOptions : Set := OpenOptions.t.
 Module Impl_OpenOptions.
   Definition Self := OpenOptions.
 
-  Parameter new : forall `{H : State.Trait}, M (H := H) Self.
+  Parameter new : forall `{H : State.Trait}, unit -> M (H := H) Self.
 
   Global Instance AssociatedFunction_new `{H : State.Trait} :
     Notation.DoubleColon Self "new" := {

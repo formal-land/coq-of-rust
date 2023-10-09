@@ -16,9 +16,9 @@ Module checked.
     
     Definition fmt
         `{H' : State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
+        (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
         : M (H := H') core.fmt.Result :=
+      let '(self, f) := arguments in
       let* α0 :=
         match self with
         | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
@@ -50,9 +50,9 @@ Module checked.
   
   Definition div
       `{H' : State.Trait}
-      (x : f64)
-      (y : f64)
+      (arguments : f64 * f64)
       : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
+    let '(x, y) := arguments in
     let* α0 := y.["eq"] 0 (* 0.0 *) in
     if (α0 : bool) then
       Pure
@@ -90,9 +90,9 @@ Module checked.
   
   Definition op_
       `{H' : State.Trait}
-      (x : f64)
-      (y : f64)
+      (arguments : f64 * f64)
       : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
+    let '(x, y) := arguments in
     let* ratio :=
       let* α0 := result_chaining_with_question_mark.checked.div x y in
       let* α1 := α0.["branch"] in
@@ -113,7 +113,11 @@ Module checked.
       end in
     result_chaining_with_question_mark.checked.sqrt ln.
   
-  Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') unit :=
+  Definition op
+      `{H' : State.Trait}
+      (arguments : f64 * f64)
+      : M (H := H') unit :=
+    let '(x, y) := arguments in
     let* α0 := result_chaining_with_question_mark.checked.op_ x y in
     match α0 with
     | core.result.Result.Err why =>
@@ -156,9 +160,9 @@ Module
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 :=
       match self with
       | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
@@ -190,9 +194,9 @@ Definition MathResult : Set :=
 
 Definition div
     `{H' : State.Trait}
-    (x : f64)
-    (y : f64)
+    (arguments : f64 * f64)
     : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
+  let '(x, y) := arguments in
   let* α0 := y.["eq"] 0 (* 0.0 *) in
   if (α0 : bool) then
     Pure
@@ -230,9 +234,9 @@ Definition ln
 
 Definition op_
     `{H' : State.Trait}
-    (x : f64)
-    (y : f64)
+    (arguments : f64 * f64)
     : M (H := H') result_chaining_with_question_mark.checked.MathResult :=
+  let '(x, y) := arguments in
   let* ratio :=
     let* α0 := result_chaining_with_question_mark.checked.div x y in
     let* α1 := α0.["branch"] in
@@ -253,7 +257,8 @@ Definition op_
     end in
   result_chaining_with_question_mark.checked.sqrt ln.
 
-Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') unit :=
+Definition op `{H' : State.Trait} (arguments : f64 * f64) : M (H := H') unit :=
+  let '(x, y) := arguments in
   let* α0 := result_chaining_with_question_mark.checked.op_ x y in
   match α0 with
   | core.result.Result.Err why =>

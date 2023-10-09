@@ -16,9 +16,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     match self with
     | wrapping_errors.DoubleError.EmptyVec =>
       core.fmt.Formatter::["write_str"] f "EmptyVec"
@@ -44,9 +44,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   
   Definition fmt
       `{H' : State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
+      (arguments : (ref Self) * (mut_ref core.fmt.Formatter))
       : M (H := H') core.fmt.Result :=
+    let '(self, f) := arguments in
     let* α0 := self.["deref"] in
     match α0 with
     | wrapping_errors.DoubleError.EmptyVec =>

@@ -4,6 +4,7 @@ use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
+use crate::pattern::*;
 use crate::render::*;
 use crate::reorder::*;
 use crate::ty::*;
@@ -225,10 +226,38 @@ fn compile_fn_sig_and_body(
     default: &str,
 ) -> FnSigAndBody {
     let decl = fn_sig_and_body.fn_sig.decl;
+    let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
+    let body = compile_function_body(env, fn_sig_and_body.body);
+    let (args, body) = if args.len() >= 2 {
+        let arguments_name = "arguments".to_string();
+        let outer_args = vec![(
+            arguments_name.clone(),
+            Box::new(CoqType::Tuple(
+                args.clone().into_iter().map(|(_, ty)| ty).collect(),
+            )),
+        )];
+        let body = match body {
+            None => body,
+            Some(body) => Some(Box::new(Expr::Block(Box::new(Stmt::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Tuple(
+                    args.iter()
+                        .map(|(name, _)| Pattern::Variable(name.clone()))
+                        .collect(),
+                )),
+                ty: None,
+                init: Box::new(Expr::LocalVar(arguments_name)),
+                body: Box::new(Stmt::Expr(body)),
+            })))),
+        };
+        (outer_args, body)
+    } else {
+        (args, body)
+    };
     FnSigAndBody {
-        args: get_args(env, fn_sig_and_body.body, decl.inputs, default),
+        args,
         ret_ty: compile_fn_ret_ty(env, &decl.output),
-        body: compile_function_body(env, fn_sig_and_body.body),
+        body,
     }
 }
 

@@ -35,9 +35,9 @@ Definition compare_types
     {T U : Set}
     `{core.fmt.Debug.Trait T}
     `{core.fmt.Debug.Trait U}
-    (t : ref T)
-    (u : ref U)
+    (arguments : (ref T) * (ref U))
     : M (H := H') unit :=
+  let '(t, u) := arguments in
   let* _ :=
     let* _ :=
       let* α0 := format_argument::["new_debug"] (addr_of t) in

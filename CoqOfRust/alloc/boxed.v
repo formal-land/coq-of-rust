@@ -1,6 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.core.alloc.
+Require Import CoqOfRust.core.fmt.
 
 (* ********STRUCTS******** *)
 (* 
@@ -31,3 +32,7 @@ Global Instance Method_Box_new `{State.Trait} {T : Set} :
   Notation.DoubleColon (Box T core.alloc.Global) "new" := {
   Notation.double_colon (x : T) := new x;
 }.
+
+Global Instance Debug_for_Box `{State.Trait} {T A : Set} `{Debug.Trait T} :
+  Debug.Trait (Box T A).
+Admitted.
