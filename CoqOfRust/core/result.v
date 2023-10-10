@@ -10,6 +10,7 @@ Module Iter := Iter.
 Module IterMut := IterMut.
 Module Result := Result.
 Module Impl_PartialEq_for_Result := Impl_PartialEq_for_Result.
+Module Impl_Result := Impl_Result.
 
 Definition IntoIter := IntoIter.t.
 Definition Iter := Iter.t.

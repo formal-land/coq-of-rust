@@ -70,7 +70,7 @@ Module Pair.
 End Pair.
 Definition Pair := @Pair.t.
 
-Module Impl_core_clone_Clone_for_clone_Pair.
+(* Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self := clone.Pair.
   
   Definition clone
@@ -89,7 +89,30 @@ Module Impl_core_clone_Clone_for_clone_Pair.
     core.clone.Clone.clone `{H' : State.Trait} := clone;
   }.
   Global Hint Resolve I : core.
-End Impl_core_clone_Clone_for_clone_Pair.
+End Impl_core_clone_Clone_for_clone_Pair. *)
+
+Parameter debug_tuple_field2_finish :
+  forall `{State.Trait} {T1 T2 : Set}
+    `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2},
+  mut_ref core.fmt.Formatter * ref str * T1 * T2 ->
+  M core.fmt.Result.
+
+Module New_static.
+  Class Class `{State.Trait} (Base : Set) (name : string)
+      {Argument Result : Set} : Set := {
+    field : Argument -> M Result;
+  }.
+  Check field.
+
+  Global Instance I `{State.Trait} (T1 T2 : Set)
+      `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2} :
+      Class core.fmt.Formatter "debug_tuple_field2_finish" := {
+    field := debug_tuple_field2_finish (T1 := T2) (T2 := T2);
+  }.
+End New_static.
+
+Module Old_static.
+End Old_static.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
   Definition Self := clone.Pair.
@@ -99,11 +122,14 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field2_finish"]
-      f
-      "Pair"
-      (addr_of (self.[0]))
-      (addr_of (addr_of (self.[1]))).
+    (* core.fmt.Formatter::["debug_tuple_field2_finish"] *)
+    New_static.field
+        (Base := core.fmt.Formatter) (name := "debug_tuple_field2_finish") (
+      f,
+      "Pair",
+      (addr_of (self.[0])),
+      (addr_of (addr_of (self.[1])))
+    ).
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -115,7 +141,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
-(* #[allow(dead_code)] - function was ignored by the compiler *)
+(* #[allow(dead_code)] - function was ignored by the compiler
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let unit := clone.Unit.Build in
   let copied_unit := unit in
@@ -176,4 +202,4 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           (addr_of [ α0 ]) in
       std.io.stdio._print α1 in
     Pure tt in
-  Pure tt.
+  Pure tt. *)
