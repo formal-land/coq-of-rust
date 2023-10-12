@@ -1247,6 +1247,8 @@ impl FunDefinition {
         let FnSigAndBody { args, ret_ty, body } =
             &compile_fn_sig_and_body(env, fn_sig_and_body, default);
 
+        // The fold function will pass in and pass out the generator because I don't figure out
+        // another way to update the generator
         let (dyn_name_gen, args) = args.iter().fold((dyn_name_gen, vec![]), |l, (string, ty)| {
             let (gen, result) = l;
             let (gen, new_ty) = make_dyn_parm(gen, ty.clone());
@@ -1273,6 +1275,8 @@ impl FunDefinition {
             dyn_name_gen.get_predicates(),
         ]
         .concat();
+
+        eprintln!("{:?}", signature_and_body);
 
         FunDefinition {
             name: name.to_owned(),
