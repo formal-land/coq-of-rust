@@ -57,7 +57,9 @@ End CompSciStudent.
 
 Definition comp_sci_student_greeting
     `{H' : State.Trait}
-    (student : ref _ (* dyn *))
+    {DynT : Set}
+    `{supertraits.CompSciStudent.Trait DynT}
+    (student : ref DynT)
     : M (H := H') alloc.string.String :=
   let* res :=
     let* α0 := student.["name"] in

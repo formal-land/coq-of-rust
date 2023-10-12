@@ -1151,6 +1151,87 @@ pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
     TopLevel(top_level.0.into_iter().map(mt_top_level_item).collect())
 }
 
+#[derive(Debug)]
+pub(crate) struct DynNameGen {
+    name: String,
+    // Resources to be translated into a list of `WherePredicates`.
+    // Traits' paths along with their dynnamic type names
+    predicates: Vec<(Path, String)>,
+}
+
+impl DynNameGen {
+    // TODO:
+    // 1. maybe put the `make_dyn_parm` into DynNameGen for better efficiency
+    // 2. maybe fix redundant clones
+    pub(crate) fn new(name: String) -> Self {
+        DynNameGen {
+            name: name,
+            predicates: vec![],
+        }
+    }
+
+    fn next(&self, path: Path) -> (String, Self) {
+        // Get the next character
+        let next_letter = self
+            .name
+            .chars()
+            .map(|c| (c as u8 + 1u8) as char)
+            .collect::<String>();
+        let next_name = format!("Dyn{}", self.name);
+        // Collect the current path to be associated
+        let predicates = vec![self.predicates.clone(), vec![(path, next_name.clone())]].concat();
+
+        (
+            next_name,
+            DynNameGen {
+                name: next_letter,
+                predicates: predicates,
+            },
+        )
+    }
+
+    fn get_predicates(&self) -> Vec<WherePredicate> {
+        self.predicates
+            .iter()
+            .map(|(path, dyn_name)| WherePredicate {
+                bound: TraitBound {
+                    name: path.clone(),
+                    ty_params: vec![],
+                },
+                ty: Box::new(CoqType::Var(Box::new(Path::local(dyn_name.to_string())))),
+            })
+            .collect()
+    }
+
+    fn get_type_parm_list(&self) -> Vec<String> {
+        self.predicates
+            .iter()
+            .map(|(_, dyn_name)| dyn_name.clone())
+            .collect()
+    }
+}
+
+fn make_dyn_parm(dy_gen: DynNameGen, arg: Box<CoqType>) -> (DynNameGen, Box<CoqType>) {
+    if let CoqType::Ref(arg2, mutability) = *arg {
+        let (dy_gen, ct) = make_dyn_parm(dy_gen, arg2);
+        (dy_gen, Box::new(CoqType::Ref(ct, mutability)))
+    } else if let CoqType::Dyn(path) = *arg {
+        // We suppose `dyn` is only associated with one trait so we can directly extract the first element
+        if let Some(path) = path.first() {
+            let (dy_name, dy_gen) = dy_gen.next(path.clone());
+            (
+                dy_gen,
+                Box::new(CoqType::Var(Box::new(Path::local(dy_name.clone())))),
+            )
+        } else {
+            // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
+            (dy_gen, Box::new(CoqType::Dyn(path)))
+        }
+    } else {
+        (dy_gen, arg)
+    }
+}
+
 impl FunDefinition {
     /// compiles a given function
     fn compile(
@@ -1162,11 +1243,42 @@ impl FunDefinition {
         is_dead_code: bool,
     ) -> Self {
         let tcx = env.tcx;
+        let dyn_name_gen = DynNameGen::new("T".to_string());
+        let FnSigAndBody { args, ret_ty, body } =
+            &compile_fn_sig_and_body(env, fn_sig_and_body, default);
+
+        let (dyn_name_gen, args) = args.iter().fold((dyn_name_gen, vec![]), |l, (string, ty)| {
+            let (gen, result) = l;
+            let (gen, new_ty) = make_dyn_parm(gen, ty.clone());
+            // Return the generator for next fold, along with
+            // the result concatenating with the new CoqType object
+            (
+                gen,
+                vec![result, vec![(string.to_owned(), new_ty)]].concat(),
+            )
+        });
+
+        let signature_and_body = FnSigAndBody {
+            args,
+            ret_ty: ret_ty.to_owned(),
+            body: body.to_owned(),
+        };
+        let ty_params = vec![
+            get_ty_params_names(env, generics),
+            dyn_name_gen.get_type_parm_list(),
+        ]
+        .concat();
+        let where_predicates = vec![
+            get_where_predicates(&tcx, env, generics),
+            dyn_name_gen.get_predicates(),
+        ]
+        .concat();
+
         FunDefinition {
             name: name.to_owned(),
-            ty_params: get_ty_params_names(env, generics),
-            where_predicates: get_where_predicates(&tcx, env, generics),
-            signature_and_body: compile_fn_sig_and_body(env, fn_sig_and_body, default),
+            ty_params,
+            where_predicates,
+            signature_and_body,
             is_dead_code,
         }
     }
