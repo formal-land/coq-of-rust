@@ -1177,12 +1177,12 @@ impl DynNameGen {
             .chars()
             .map(|c| (c as u8 + 1u8) as char)
             .collect::<String>();
-        let next_name = format!("Dyn{}", self.name);
+        let full_name = format!("Dyn{}", self.name);
         // Collect the current path to be associated
-        let predicates = vec![self.predicates.clone(), vec![(path, next_name.clone())]].concat();
+        let predicates = vec![self.predicates.clone(), vec![(path, full_name.clone())]].concat();
 
         (
-            next_name,
+            full_name,
             DynNameGen {
                 name: next_letter,
                 predicates,
@@ -1212,8 +1212,8 @@ impl DynNameGen {
 }
 
 fn make_dyn_parm(dy_gen: DynNameGen, arg: Box<CoqType>) -> (DynNameGen, Box<CoqType>) {
-    if let CoqType::Ref(arg2, mutability) = *arg {
-        let (dy_gen, ct) = make_dyn_parm(dy_gen, arg2);
+    if let CoqType::Ref(arg, mutability) = *arg {
+        let (dy_gen, ct) = make_dyn_parm(dy_gen, arg);
         (dy_gen, Box::new(CoqType::Ref(ct, mutability)))
     } else if let CoqType::Dyn(path) = *arg {
         // We suppose `dyn` is only associated with one trait so we can directly extract the first element
@@ -1249,14 +1249,14 @@ impl FunDefinition {
 
         // The fold function will pass in and pass out the generator because I don't figure out
         // another way to update the generator
-        let (dyn_name_gen, args) = args.iter().fold((dyn_name_gen, vec![]), |l, (string, ty)| {
-            let (gen, result) = l;
-            let (gen, new_ty) = make_dyn_parm(gen, ty.clone());
+        let (dyn_name_gen, args) = args.iter().fold((dyn_name_gen, vec![]), |result, (string, ty)| {
+            let (gen, result) = result;
+            let (gen, ty) = make_dyn_parm(gen, ty.clone());
             // Return the generator for next fold, along with
             // the result concatenating with the new CoqType object
             (
                 gen,
-                vec![result, vec![(string.to_owned(), new_ty)]].concat(),
+                vec![result, vec![(string.to_owned(), ty)]].concat(),
             )
         });
 
