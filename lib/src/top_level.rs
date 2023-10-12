@@ -1276,8 +1276,6 @@ impl FunDefinition {
         ]
         .concat();
 
-        eprintln!("{:?}", signature_and_body);
-
         FunDefinition {
             name: name.to_owned(),
             ty_params,
