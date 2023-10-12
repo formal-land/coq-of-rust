@@ -1165,7 +1165,7 @@ impl DynNameGen {
     // 2. maybe fix redundant clones
     pub(crate) fn new(name: String) -> Self {
         DynNameGen {
-            name: name,
+            name,
             predicates: vec![],
         }
     }
@@ -1185,7 +1185,7 @@ impl DynNameGen {
             next_name,
             DynNameGen {
                 name: next_letter,
-                predicates: predicates,
+                predicates,
             },
         )
     }
@@ -1221,7 +1221,7 @@ fn make_dyn_parm(dy_gen: DynNameGen, arg: Box<CoqType>) -> (DynNameGen, Box<CoqT
             let (dy_name, dy_gen) = dy_gen.next(path.clone());
             (
                 dy_gen,
-                Box::new(CoqType::Var(Box::new(Path::local(dy_name.clone())))),
+                Box::new(CoqType::Var(Box::new(Path::local(dy_name)))),
             )
         } else {
             // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
