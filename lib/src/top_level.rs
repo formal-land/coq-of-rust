@@ -1249,16 +1249,15 @@ impl FunDefinition {
 
         // The fold function will pass in and pass out the generator because I don't figure out
         // another way to update the generator
-        let (dyn_name_gen, args) = args.iter().fold((dyn_name_gen, vec![]), |result, (string, ty)| {
-            let (gen, result) = result;
-            let (gen, ty) = make_dyn_parm(gen, ty.clone());
-            // Return the generator for next fold, along with
-            // the result concatenating with the new CoqType object
-            (
-                gen,
-                vec![result, vec![(string.to_owned(), ty)]].concat(),
-            )
-        });
+        let (dyn_name_gen, args) =
+            args.iter()
+                .fold((dyn_name_gen, vec![]), |result, (string, ty)| {
+                    let (gen, result) = result;
+                    let (gen, ty) = make_dyn_parm(gen, ty.clone());
+                    // Return the generator for next fold, along with
+                    // the result concatenating with the new CoqType object
+                    (gen, vec![result, vec![(string.to_owned(), ty)]].concat())
+                });
 
         let signature_and_body = FnSigAndBody {
             args,
