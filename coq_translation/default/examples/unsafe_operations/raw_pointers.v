@@ -3,13 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let raw_p : ref u32 := addr_of 10 in
+  let* raw_p :=
+    let* α0 := borrow 10 u32 in
+    let* α1 := deref α0 u32 in
+    addr_of α1 in
   let* _ :=
-    let* α0 := raw_p.["deref"] in
-    let* α1 := α0.["eq"] 10 in
-    let* α2 := α1.["not"] in
-    if (α2 : bool) then
-      core.panicking.panic "assertion failed: *raw_p == 10"
+    let* α0 := deref raw_p u32 in
+    let* α1 := eq α0 10 in
+    let* α2 := not α1 in
+    let* α3 := use α2 in
+    if (α3 : bool) then
+      let* α0 := core.panicking.panic "assertion failed: *raw_p == 10" in
+      never_to_any α0
     else
       Pure tt in
   Pure tt.

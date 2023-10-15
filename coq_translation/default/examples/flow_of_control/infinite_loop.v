@@ -6,46 +6,66 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let count := 0 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "Let's count until infinity!
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ "Let's count until infinity!
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   loop
-    (let* _ := count.["add_assign"] 1 in
+    (let* _ := assign_op add count 1 in
     let* _ :=
-      let* α0 := count.["eq"] 3 in
-      if (α0 : bool) then
+      let* α0 := eq count 3 in
+      let* α1 := use α0 in
+      if (α1 : bool) then
         let* _ :=
           let* _ :=
-            let* α0 := format_arguments::["new_const"] (addr_of [ "three
-" ]) in
-            std.io.stdio._print α0 in
+            let* α0 := borrow [ "three
+" ] (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
           Pure tt in
         let* _ := Continue in
-        Pure tt
+        never_to_any tt
       else
         Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of count) in
-        let* α1 :=
-          format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow count u32 in
+        let* α5 := deref α4 u32 in
+        let* α6 := borrow α5 u32 in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt in
-    let* α0 := count.["eq"] 5 in
-    if (α0 : bool) then
+    let* α0 := eq count 5 in
+    let* α1 := use α0 in
+    if (α1 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "OK, that's enough
-" ]) in
-          std.io.stdio._print α0 in
+          let* α0 := borrow [ "OK, that's enough
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
         Pure tt in
       let* _ := Break in
-      Pure tt
+      never_to_any tt
     else
       Pure tt).

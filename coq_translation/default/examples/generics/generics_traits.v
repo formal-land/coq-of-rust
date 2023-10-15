@@ -48,7 +48,7 @@ End Impl_generics_traits_DoubleDrop_for_U.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let empty := generics_traits.Empty.Build in
-  let null := generics_traits.Null.Build in
-  let* _ := empty.["double_drop"] null in
+  let empty := generics_traits.Empty.Build_t tt in
+  let null := generics_traits.Null.Build_t tt in
+  let* _ := generics_traits.DoubleDrop.double_drop empty null in
   Pure tt.

@@ -22,12 +22,12 @@ Module Person.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Person.
-Definition Person : Set := Person.t.
+Definition Person : Set := ⟅Person.t⟆.
 
 Module Impl_core_fmt_Debug_for_structures_Person.
   Definition Self := structures.Person.
   
-  Parameter debug_struct_field2_finish :
+  Parameter struct_parameter_for_fmt :
       core.fmt.Formatter ->
         string ->
           string ->
@@ -36,22 +36,35 @@ Module Impl_core_fmt_Debug_for_structures_Person.
           u8 ->
           M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field2_finish" := {
-    Notation.double_colon := debug_struct_field2_finish; }.
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+    core.fmt.Formatter "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
       `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Person"
-      "name"
-      (addr_of self.["name"])
-      "age"
-      (addr_of (addr_of self.["age"])).
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref "Person" str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref "name" str in
+    let* α5 := borrow α4 str in
+    let* α6 := deref self structures.Person in
+    let* α7 := borrow α6.["name"] alloc.string.String in
+    let* α8 := deref α7 alloc.string.String in
+    let* α9 := borrow α8 alloc.string.String in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    let* α11 := deref "age" str in
+    let* α12 := borrow α11 str in
+    let* α13 := deref self structures.Person in
+    let* α14 := borrow α13.["age"] u8 in
+    let* α15 := borrow α14 (ref u8) in
+    let* α16 := deref α15 (ref u8) in
+    let* α17 := borrow α16 (ref u8) in
+    let* α18 := pointer_coercion "Unsize" α17 in
+    core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α10 α12 α18.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -106,7 +119,7 @@ Module Point.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point : Set := Point.t.
+Definition Point : Set := ⟅Point.t⟆.
 
 Module Rectangle.
   Unset Primitive Projections.
@@ -130,49 +143,80 @@ Module Rectangle.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := Rectangle.t.
+Definition Rectangle : Set := ⟅Rectangle.t⟆.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* name := alloc.string.String::["from"] "Peter" in
+  let* name := core.convert.From.from "Peter" in
   let age := 27 in
   let peter :=
     {| structures.Person.name := name; structures.Person.age := age; |} in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of peter) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow peter structures.Person in
+      let* α5 := deref α4 structures.Person in
+      let* α6 := borrow α5 structures.Person in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
-  let point : structures.Point :=
+  let point :=
     {| structures.Point.x := 10 (* 10.3 *); structures.Point.y := 0 (* 0.4 *);
     |} in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of point.["x"]) in
-      let* α1 := format_argument::["new_display"] (addr_of point.["y"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "point coordinates: ("; ", "; ")
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow [ "point coordinates: ("; ", "; ")
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow point.["x"] f32 in
+      let* α5 := deref α4 f32 in
+      let* α6 := borrow α5 f32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow point.["y"] f32 in
+      let* α9 := deref α8 f32 in
+      let* α10 := borrow α9 f32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
-  let bottom_right := {| structures.Point.x := 5 (* 5.2 *); |} with point in
+  let bottom_right := {| structures.Point.x := 5 (* 5.2 *); |} in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of bottom_right.["x"]) in
-      let* α1 :=
-        format_argument::["new_display"] (addr_of bottom_right.["y"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "second point: ("; ", "; ")
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "second point: ("; ", "; ")
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow bottom_right.["x"] f32 in
+      let* α5 := deref α4 f32 in
+      let* α6 := borrow α5 f32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow bottom_right.["y"] f32 in
+      let* α9 := deref α8 f32 in
+      let* α10 := borrow α9 f32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let '{| structures.Point.x := left_edge; structures.Point.y := top_edge; |} :=
     point in
@@ -182,29 +226,51 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         {| structures.Point.x := left_edge; structures.Point.y := top_edge; |};
       structures.Rectangle.bottom_right := bottom_right;
     |} in
-  let _unit := structures.Unit.Build in
+  let _unit := structures.Unit.Build_t tt in
   let pair := structures.Pair.Build_t 1 0 (* 0.1 *) in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of (pair.[0])) in
-      let* α1 := format_argument::["new_debug"] (addr_of (pair.[1])) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "pair contains "; " and "; "
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "pair contains "; " and "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow pair.["0"] i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow pair.["1"] f32 in
+      let* α9 := deref α8 f32 in
+      let* α10 := borrow α9 f32 in
+      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let 'structures.Pair.Build_t integer decimal := pair in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of integer) in
-      let* α1 := format_argument::["new_debug"] (addr_of decimal) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "pair contains "; " and "; "
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "pair contains "; " and "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow integer i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow decimal f32 in
+      let* α9 := deref α8 f32 in
+      let* α10 := borrow α9 f32 in
+      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   Pure tt.

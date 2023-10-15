@@ -15,7 +15,7 @@ Module Foo.
     Notation.double_colon '(Build_t x0) := x0;
   }.
 End Foo.
-Definition Foo : Set := Foo.t.
+Definition Foo : Set := ⟅Foo.t⟆.
 
 Module Bar.
   Unset Primitive Projections.
@@ -31,7 +31,7 @@ Module Bar.
     Notation.double_colon '(Build_t x0) := x0;
   }.
 End Bar.
-Definition Bar : Set := Bar.t.
+Definition Bar : Set := ⟅Bar.t⟆.
 
 Module BarTrait.
   Class Trait (Self : Set) : Type := {

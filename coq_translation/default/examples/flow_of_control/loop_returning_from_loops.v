@@ -6,31 +6,41 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let counter := 0 in
   let* result :=
     loop
-      (let* _ := counter.["add_assign"] 1 in
-      let* α0 := counter.["eq"] 10 in
-      if (α0 : bool) then
+      (let* _ := assign_op add counter 1 in
+      let* α0 := eq counter 10 in
+      let* α1 := use α0 in
+      if (α1 : bool) then
         let* _ := Break in
-        Pure tt
+        never_to_any tt
       else
         Pure tt) in
   let* _ :=
-    match (addr_of result, addr_of 20) with
+    let* α0 := borrow result i32 in
+    let* α1 := borrow 20 i32 in
+    match (α0, α1) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val i32 in
+      let* α1 := deref right_val i32 in
+      let* α2 := eq α0 α1 in
+      let* α3 := not α2 in
+      let* α4 := use α3 in
+      if (α4 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val i32 in
+          let* α1 := borrow α0 i32 in
+          let* α2 := deref α1 i32 in
+          let* α3 := borrow α2 i32 in
+          let* α4 := deref right_val i32 in
+          let* α5 := borrow α4 i32 in
+          let* α6 := deref α5 i32 in
+          let* α7 := borrow α6 i32 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in

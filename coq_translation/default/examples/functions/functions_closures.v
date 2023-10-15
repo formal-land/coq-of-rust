@@ -4,40 +4,67 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let outer_var := 42 in
-  let closure_annotated := fun i => i.["add"] outer_var in
-  let closure_inferred := fun i => i.["add"] outer_var in
+  let closure_annotated := add i outer_var in
+  let closure_inferred := add i outer_var in
   let* _ :=
     let* _ :=
-      let* α0 := closure_annotated 1 in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "closure_annotated: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "closure_annotated: "; "
+" ] in
+      let* α1 := deref (list (ref str)) α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow closure_annotated in
+      let* α5 := core.ops.function.Fn.call α4 (1) in
+      let* α6 := borrow α5 in
+      let* α7 := deref i32 α6 in
+      let* α8 := borrow α7 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] in
+      let* α11 := deref (list core.fmt.rt.Argument) α10 in
+      let* α12 := borrow α11 in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := closure_inferred 1 in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "closure_inferred: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "closure_inferred: "; "
+" ] in
+      let* α1 := deref (list (ref str)) α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow closure_inferred in
+      let* α5 := core.ops.function.Fn.call α4 (1) in
+      let* α6 := borrow α5 in
+      let* α7 := deref i32 α6 in
+      let* α8 := borrow α7 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] in
+      let* α11 := deref (list core.fmt.rt.Argument) α10 in
+      let* α12 := borrow α11 in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let one := Pure 1 in
   let* _ :=
     let* _ :=
-      let* α0 := one in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "closure returning one: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "closure returning one: "; "
+" ] in
+      let* α1 := deref (list (ref str)) α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow one in
+      let* α5 := core.ops.function.Fn.call α4 tt in
+      let* α6 := borrow α5 in
+      let* α7 := deref i32 α6 in
+      let* α8 := borrow α7 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] in
+      let* α11 := deref (list core.fmt.rt.Argument) α10 in
+      let* α12 := borrow α11 in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   Pure tt.

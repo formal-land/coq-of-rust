@@ -6,48 +6,76 @@ Definition LANGUAGE `{H' : State.Trait} : ref str := run (Pure "Rust").
 Definition THRESHOLD `{H' : State.Trait} : i32 := run (Pure 10).
 
 Definition is_big `{H' : State.Trait} (n : i32) : M (H := H') bool :=
-  n.["gt"] constants.THRESHOLD.
+  gt n constants.THRESHOLD.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let n := 16 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of constants.LANGUAGE) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "This is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "This is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := deref constants.LANGUAGE (ref str) in
+      let* α5 := borrow α4 (ref str) in
+      let* α6 := deref α5 (ref str) in
+      let* α7 := borrow α6 (ref str) in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of constants.THRESHOLD) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "The threshold is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "The threshold is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow constants.THRESHOLD i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
-      let* α1 := constants.is_big n in
-      let* α2 :=
-        if (α1 : bool) then
+      let* α0 := borrow [ ""; " is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow n i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := constants.is_big n in
+      let* α9 := use α8 in
+      let* α10 :=
+        if (α9 : bool) then
           Pure "big"
         else
-          Pure "small" in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; " is "; "
-" ])
-          (addr_of [ α0; α3 ]) in
-      std.io.stdio._print α4 in
+          let* α0 := deref "small" str in
+          borrow α0 str in
+      let* α11 := borrow α10 (ref str) in
+      let* α12 := deref α11 (ref str) in
+      let* α13 := borrow α12 (ref str) in
+      let* α14 := core.fmt.rt.Argument::["new_display"] α13 in
+      let* α15 := borrow [ α7; α14 ] (list core.fmt.rt.Argument) in
+      let* α16 := deref α15 (list core.fmt.rt.Argument) in
+      let* α17 := borrow α16 (list core.fmt.rt.Argument) in
+      let* α18 := pointer_coercion "Unsize" α17 in
+      let* α19 := core.fmt.Arguments::["new_v1"] α3 α18 in
+      std.io.stdio._print α19 in
     Pure tt in
   Pure tt.

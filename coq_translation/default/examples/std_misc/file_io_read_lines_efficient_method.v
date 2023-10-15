@@ -4,37 +4,64 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
-  match α0 with
-  | core.result.Result.Ok lines =>
-    let* α0 := lines.["into_iter"] in
-    match α0 with
-    | iter =>
-      loop
-        (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
-          match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some line =>
-            match line with
-            | core.result.Result.Ok ip =>
-              let* _ :=
+  let* α1 := let_if core.result.Result lines := α0 in
+  if (α1 : bool) then
+    let* α0 := core.iter.traits.collect.IntoIterator.into_iter lines in
+    let* α1 :=
+      match α0 with
+      | iter =>
+        loop
+          (let* _ :=
+            let* α0 :=
+              borrow_mut
+                iter
+                (std.io.Lines
+                  (std.io.buffered.bufreader.BufReader std.fs.File)) in
+            let* α1 :=
+              deref
+                α0
+                (std.io.Lines
+                  (std.io.buffered.bufreader.BufReader std.fs.File)) in
+            let* α2 :=
+              borrow_mut
+                α1
+                (std.io.Lines
+                  (std.io.buffered.bufreader.BufReader std.fs.File)) in
+            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            match α3 with
+            | core.option.Option  =>
+              let* α0 := Break in
+              never_to_any α0
+            | core.option.Option line =>
+              let* α0 := let_if core.result.Result ip := line in
+              if (α0 : bool) then
                 let* _ :=
-                  let* α0 := format_argument::["new_display"] (addr_of ip) in
-                  let* α1 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ ""; "
-" ])
-                      (addr_of [ α0 ]) in
-                  std.io.stdio._print α1 in
-                Pure tt in
-              Pure tt
-            | _ => Pure tt
-            end
-          end in
-        Pure tt)
-    end
-  | _ => Pure tt
-  end.
+                  let* _ :=
+                    let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+                    let* α1 := deref α0 (list (ref str)) in
+                    let* α2 := borrow α1 (list (ref str)) in
+                    let* α3 := pointer_coercion "Unsize" α2 in
+                    let* α4 := borrow ip alloc.string.String in
+                    let* α5 := deref α4 alloc.string.String in
+                    let* α6 := borrow α5 alloc.string.String in
+                    let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+                    let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+                    let* α9 := deref α8 (list core.fmt.rt.Argument) in
+                    let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+                    let* α11 := pointer_coercion "Unsize" α10 in
+                    let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+                    std.io.stdio._print α12 in
+                  Pure tt in
+                Pure tt
+              else
+                Pure tt
+            end in
+          Pure tt)
+      end in
+    use α1
+  else
+    Pure tt.
 
 Definition read_lines
     `{H' : State.Trait}
@@ -47,13 +74,14 @@ Definition read_lines
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
-    let* α1 := α0.["branch"] in
+    let* α1 := core.ops.try_trait.Try.branch α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
-      Return α0
-    | LanguageItem.Continue val => Pure val
+    | core.ops.control_flow.ControlFlow residual =>
+      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α1 := Return α0 in
+      never_to_any α1
+    | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* α0 := (std.io.buffered.bufreader.BufReader _)::["new"] file in
-  let* α1 := α0.["lines"] in
+  let* α1 := std.io.BufRead.lines α0 in
   Pure (core.result.Result.Ok α1).

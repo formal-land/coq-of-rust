@@ -1,0 +1,9 @@
+thread 'rustc' panicked at 'type Closure(
+    DefId(0:6 ~ functions_closures[d419]::main::{closure#2}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> i32,
+        (),
+    ],
+) not yet handled', lib/src/thir_ty.rs:59:14
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

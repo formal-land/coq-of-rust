@@ -20,7 +20,7 @@ Module pattern.
 
   (* pub struct CharArraySearcher<'a, const N: usize>(_); *)
   Module CharArraySearcher.
-    Parameter t : usize -> Set.
+    Parameter t : Z -> Set.
   End CharArraySearcher.
   Definition CharArraySearcher := CharArraySearcher.t.
 
@@ -67,13 +67,14 @@ Module pattern.
   }
   *)
   Module SearchStep.
-    Inductive t : Set := 
+    Inductive t `{State.Trait} : Set := 
     | Match: usize -> usize -> t
     | Reject: usize -> usize -> t
     | Done : t
     .
   End SearchStep.
-  Definition SearchStep := SearchStep.t.
+  Definition SearchStep `{State.Trait} : Set :=
+    val SearchStep.t.
 
   (* ********TRAITS******** *)
   (*
@@ -95,7 +96,7 @@ Module pattern.
   }
   *)
   Module Searcher.
-    Class Trait (Self : Set) : Set := { 
+    Class Trait `{State.Trait} (Self : Set) : Set := { 
       haystack : ref Self -> ref str;
       next : mut_ref Self -> SearchStep;
       next_match : mut_ref Self -> Option (usize * usize);
@@ -114,7 +115,7 @@ Module pattern.
   }
   *)
   Module ReverseSearcher.
-    Class Trait (Self : Set) 
+    Class Trait `{State.Trait} (Self : Set) 
       `{Searcher.Trait Self} : Set := { 
         next_back : mut_ref Self -> SearchStep;
         next_match_back : mut_ref Self -> Option (usize * usize);
@@ -141,7 +142,7 @@ Module pattern.
   }
   *)
   Module Pattern.
-    Class Trait (Self Searcher : Set) : Set := { 
+    Class Trait `{State.Trait} (Self Searcher : Set) : Set := { 
       Searcher := Searcher;
 
       into_searcher : Self -> ref str -> Searcher;
@@ -156,7 +157,7 @@ Module pattern.
   (* pub trait DoubleEndedSearcher<'a>: ReverseSearcher<'a> { } *)
   Module DoubleEndedSearcher.
     Unset Primitive Projections.
-    Class Trait (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
+    Class Trait `{State.Trait} (Self : Set) `{ReverseSearcher.Trait Self} : Set := { }.
     Set Primitive Projections.
   End DoubleEndedSearcher.
   
@@ -405,7 +406,7 @@ pub trait FromStr: Sized {
 }
 *)
 Module FromStr.
-  Class Trait (Self Err : Set) : Set := { 
+  Class Trait `{State.Trait} (Self Err : Set) : Set := { 
     Err := Err;
     from_str : ref str -> Result Self Err;
   }.

@@ -15,20 +15,20 @@ Definition combine_vecs_explicit_return_type
             (alloc.vec.into_iter.IntoIter
               i32
               alloc.vec.into_iter.IntoIter.Default.A))) :=
-  let* α0 := v.["into_iter"] in
-  let* α1 := u.["into_iter"] in
-  let* α2 := α0.["chain"] α1 in
-  α2.["cycle"].
+  let* α0 := core.iter.traits.collect.IntoIterator.into_iter v in
+  let* α1 := core.iter.traits.collect.IntoIterator.into_iter u in
+  let* α2 := core.iter.traits.iterator.Iterator.chain α0 α1 in
+  core.iter.traits.iterator.Iterator.cycle α2.
 
 Definition combine_vecs
     `{H' : State.Trait}
     (v : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     (u : alloc.vec.Vec i32 alloc.vec.Vec.Default.A)
     : M (H := H') _ (* OpaqueTy *) :=
-  let* α0 := v.["into_iter"] in
-  let* α1 := u.["into_iter"] in
-  let* α2 := α0.["chain"] α1 in
-  α2.["cycle"].
+  let* α0 := core.iter.traits.collect.IntoIterator.into_iter v in
+  let* α1 := core.iter.traits.collect.IntoIterator.into_iter u in
+  let* α2 := core.iter.traits.iterator.Iterator.chain α0 α1 in
+  core.iter.traits.iterator.Iterator.cycle α2.
 
 Error OpaqueTy.
 
@@ -37,126 +37,192 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* v1 :=
     let* α0 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α1 := pointer_coercion "Unsize" α0 in
+    (Slice _)::["into_vec"] α1 in
   let* v2 :=
     let* α0 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 4; 5 ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α1 := pointer_coercion "Unsize" α0 in
+    (Slice _)::["into_vec"] α1 in
   let* v3 := impl_trait_as_return_type.combine_vecs v1 v2 in
   let* _ :=
-    let* α0 := v3.["next"] in
-    match (addr_of (core.option.Option.Some 1), addr_of α0) with
+    let* α0 := borrow (core.option.Option.Some 1) in
+    let* α1 := borrow_mut v3 in
+    let* α2 := core.iter.traits.iterator.Iterator.next α1 in
+    let* α3 := borrow α2 in
+    match (α0, α3) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val in
+      let* α1 := borrow α0 in
+      let* α2 := deref right_val in
+      let* α3 := borrow α2 in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val in
+          let* α1 := borrow α0 in
+          let* α2 := deref α1 in
+          let* α3 := borrow α2 in
+          let* α4 := deref right_val in
+          let* α5 := borrow α4 in
+          let* α6 := deref α5 in
+          let* α7 := borrow α6 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in
   let* _ :=
-    let* α0 := v3.["next"] in
-    match (addr_of (core.option.Option.Some 2), addr_of α0) with
+    let* α0 := borrow (core.option.Option.Some 2) in
+    let* α1 := borrow_mut v3 in
+    let* α2 := core.iter.traits.iterator.Iterator.next α1 in
+    let* α3 := borrow α2 in
+    match (α0, α3) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val in
+      let* α1 := borrow α0 in
+      let* α2 := deref right_val in
+      let* α3 := borrow α2 in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val in
+          let* α1 := borrow α0 in
+          let* α2 := deref α1 in
+          let* α3 := borrow α2 in
+          let* α4 := deref right_val in
+          let* α5 := borrow α4 in
+          let* α6 := deref α5 in
+          let* α7 := borrow α6 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in
   let* _ :=
-    let* α0 := v3.["next"] in
-    match (addr_of (core.option.Option.Some 3), addr_of α0) with
+    let* α0 := borrow (core.option.Option.Some 3) in
+    let* α1 := borrow_mut v3 in
+    let* α2 := core.iter.traits.iterator.Iterator.next α1 in
+    let* α3 := borrow α2 in
+    match (α0, α3) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val in
+      let* α1 := borrow α0 in
+      let* α2 := deref right_val in
+      let* α3 := borrow α2 in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val in
+          let* α1 := borrow α0 in
+          let* α2 := deref α1 in
+          let* α3 := borrow α2 in
+          let* α4 := deref right_val in
+          let* α5 := borrow α4 in
+          let* α6 := deref α5 in
+          let* α7 := borrow α6 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in
   let* _ :=
-    let* α0 := v3.["next"] in
-    match (addr_of (core.option.Option.Some 4), addr_of α0) with
+    let* α0 := borrow (core.option.Option.Some 4) in
+    let* α1 := borrow_mut v3 in
+    let* α2 := core.iter.traits.iterator.Iterator.next α1 in
+    let* α3 := borrow α2 in
+    match (α0, α3) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val in
+      let* α1 := borrow α0 in
+      let* α2 := deref right_val in
+      let* α3 := borrow α2 in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val in
+          let* α1 := borrow α0 in
+          let* α2 := deref α1 in
+          let* α3 := borrow α2 in
+          let* α4 := deref right_val in
+          let* α5 := borrow α4 in
+          let* α6 := deref α5 in
+          let* α7 := borrow α6 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in
   let* _ :=
-    let* α0 := v3.["next"] in
-    match (addr_of (core.option.Option.Some 5), addr_of α0) with
+    let* α0 := borrow (core.option.Option.Some 5) in
+    let* α1 := borrow_mut v3 in
+    let* α2 := core.iter.traits.iterator.Iterator.next α1 in
+    let* α3 := borrow α2 in
+    match (α0, α3) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val in
+      let* α1 := borrow α0 in
+      let* α2 := deref right_val in
+      let* α3 := borrow α2 in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val in
+          let* α1 := borrow α0 in
+          let* α2 := deref α1 in
+          let* α3 := borrow α2 in
+          let* α4 := deref right_val in
+          let* α5 := borrow α4 in
+          let* α6 := deref α5 in
+          let* α7 := borrow α6 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in
   let* _ :=
     let* _ :=
-      let* α0 := format_arguments::["new_const"] (addr_of [ "all done
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ "all done
+" ] in
+      let* α1 := deref α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   Pure tt.

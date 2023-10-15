@@ -41,7 +41,7 @@ End File.
 Definition File := File.t.
 
 Module Impl_Write_for_File.
-  Global Instance I : _std.io.Write.Trait File.
+  Global Instance I `{State.Trait} : _std.io.Write.Trait File.
   Admitted.
 End Impl_Write_for_File.
 

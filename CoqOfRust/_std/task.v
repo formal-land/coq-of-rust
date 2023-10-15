@@ -69,7 +69,7 @@ pub trait Wake {
 }
 *)
 Module Wake.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     wake : Arc Self -> unit;
 
     wake_by_ref : ref (Arc Self) -> unit;

@@ -16,7 +16,9 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
   Definition area `{H' : State.Trait} (self : ref Self) : M (H := H') f64 :=
-    self.["length"].["mul"] self.["height"].
+    let* α0 := deref self generics_bounds.Rectangle in
+    let* α1 := deref self generics_bounds.Rectangle in
+    mul α0.["length"] α1.["height"].
   
   Global Instance Method_area `{H' : State.Trait} : Notation.Dot "area" := {
     Notation.dot := area;
@@ -49,31 +51,44 @@ Module Rectangle.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Rectangle.
-Definition Rectangle : Set := Rectangle.t.
+Definition Rectangle : Set := ⟅Rectangle.t⟆.
 
 Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Definition Self := generics_bounds.Rectangle.
   
-  Parameter debug_struct_field2_finish :
+  Parameter struct_parameter_for_fmt :
       core.fmt.Formatter ->
         string -> string -> f64 -> string -> f64 -> M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field2_finish" := {
-    Notation.double_colon := debug_struct_field2_finish; }.
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+    core.fmt.Formatter "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
       `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "Rectangle"
-      "length"
-      (addr_of self.["length"])
-      "height"
-      (addr_of (addr_of self.["height"])).
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref "Rectangle" str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref "length" str in
+    let* α5 := borrow α4 str in
+    let* α6 := deref self generics_bounds.Rectangle in
+    let* α7 := borrow α6.["length"] f64 in
+    let* α8 := deref α7 f64 in
+    let* α9 := borrow α8 f64 in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    let* α11 := deref "height" str in
+    let* α12 := borrow α11 str in
+    let* α13 := deref self generics_bounds.Rectangle in
+    let* α14 := borrow α13.["height"] f64 in
+    let* α15 := borrow α14 (ref f64) in
+    let* α16 := deref α15 (ref f64) in
+    let* α17 := borrow α16 (ref f64) in
+    let* α18 := pointer_coercion "Unsize" α17 in
+    core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α10 α12 α18.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -107,7 +122,7 @@ Module Triangle.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Triangle.
-Definition Triangle : Set := Triangle.t.
+Definition Triangle : Set := ⟅Triangle.t⟆.
 
 Definition print_debug
     `{H' : State.Trait}
@@ -117,11 +132,21 @@ Definition print_debug
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t (ref _) in
+      let* α5 := deref α4 (ref _) in
+      let* α6 := borrow α5 (ref _) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
@@ -131,7 +156,9 @@ Definition area
     `{generics_bounds.HasArea.Trait T}
     (t : ref T)
     : M (H := H') f64 :=
-  t.["area"].
+  let* α0 := deref t _ in
+  let* α1 := borrow α0 _ in
+  generics_bounds.HasArea.area α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
@@ -145,16 +172,29 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       generics_bounds.Triangle.length := 3 (* 3.0 *);
       generics_bounds.Triangle.height := 4 (* 4.0 *);
     |} in
-  let* _ := generics_bounds.print_debug (addr_of rectangle) in
+  let* _ :=
+    let* α0 := borrow rectangle generics_bounds.Rectangle in
+    let* α1 := deref α0 generics_bounds.Rectangle in
+    let* α2 := borrow α1 generics_bounds.Rectangle in
+    generics_bounds.print_debug α2 in
   let* _ :=
     let* _ :=
-      let* α0 := rectangle.["area"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Area: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "Area: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow rectangle generics_bounds.Rectangle in
+      let* α5 := generics_bounds.HasArea.area α4 in
+      let* α6 := borrow α5 f64 in
+      let* α7 := deref α6 f64 in
+      let* α8 := borrow α7 f64 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   Pure tt.

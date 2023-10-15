@@ -5,6 +5,6 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let x := 5 in
   let _ := x in
-  let* _ := x.["add"] 1 in
+  let* _ := add x 1 in
   let _ := 15 in
   Pure tt.

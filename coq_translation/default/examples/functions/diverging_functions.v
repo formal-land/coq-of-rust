@@ -5,5 +5,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
 
 Definition foo `{H' : State.Trait} : M (H := H') Empty_set :=
-  let* _ := std.panicking.begin_panic "This call never returns." in
-  Pure tt.
+  let* _ :=
+    let* α0 := std.panicking.begin_panic "This call never returns." in
+    never_to_any α0 in
+  never_to_any tt.

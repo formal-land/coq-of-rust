@@ -23,10 +23,10 @@ Module Clone.
   }.
 
   Module Impl_Clone_for_str.
-    Global Instance I : Trait str. Admitted.
+    Global Instance I `{State.Trait} : Trait str. Admitted.
   End Impl_Clone_for_str.
 
   Module Impl_Clone_for_Z.
-    Global Instance I : Trait Z. Admitted.
+    Global Instance I `{State.Trait} : Trait Z. Admitted.
   End Impl_Clone_for_Z.
 End Clone.

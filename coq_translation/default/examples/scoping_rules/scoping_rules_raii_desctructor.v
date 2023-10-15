@@ -15,11 +15,13 @@ Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
       : M (H := H') unit :=
     let* _ :=
       let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "ToDrop is being dropped
-" ]) in
-        std.io.stdio._print α0 in
+        let* α0 := borrow [ "ToDrop is being dropped
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
       Pure tt in
     Pure tt.
   
@@ -35,12 +37,15 @@ End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := scoping_rules_raii_desctructor.ToDrop.Build in
+  let x := scoping_rules_raii_desctructor.ToDrop.Build_t tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Made a ToDrop!
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ "Made a ToDrop!
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   Pure tt.

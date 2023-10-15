@@ -5,10 +5,12 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
 
 Definition mul `{H' : State.Trait} (a : u64) (b : u64) : M (H := H') u128 :=
-  let lo : u64 := tt in
-  let hi : u64 := tt in
+  let lo := tt in
+  let hi := tt in
   let _ :=
     let _ := InlineAssembly in
     tt in
-  let* α0 := (cast hi u128).["shl"] 64 in
-  α0.["add"] (cast lo u128).
+  let* α0 := cast hi in
+  let* α1 := shl α0 64 in
+  let* α2 := cast lo in
+  add α1 α2.

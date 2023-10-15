@@ -7,29 +7,45 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let x := 2 in
     let* _ :=
-      let* α0 := x.["mul"] x in
+      let* α0 := mul x x in
       assign a_binding α0 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of a_binding) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "a binding: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "a binding: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow a_binding i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let another_binding := tt in
   let* _ := assign another_binding 1 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of another_binding) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "another binding: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "another binding: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow another_binding i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.

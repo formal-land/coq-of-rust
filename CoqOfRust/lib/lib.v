@@ -73,31 +73,35 @@ Notation "e1 ;; e2" := (sequence e1 e2)
 
 Parameter assign : forall {A : Set}, A -> A -> unit.
 
-Definition u8 : Set := Z.
-Definition u16 : Set := Z.
-Definition u32 : Set := Z.
-Definition u64 : Set := Z.
-Definition u128 : Set := Z.
-Definition usize : Set := Z.
+Definition u8 `{State.Trait} : Set := val Z.
+Definition u16 `{State.Trait} : Set := val Z.
+Definition u32 `{State.Trait} : Set := val Z.
+Definition u64 `{State.Trait} : Set := val Z.
+Definition u128 `{State.Trait} : Set := val Z.
+Definition usize `{State.Trait} : Set := val Z.
 
-Definition i8 : Set := Z.
-Definition i16 : Set := Z.
-Definition i32 : Set := Z.
-Definition i64 : Set := Z.
-Definition i128 : Set := Z.
-Definition isize : Set := Z.
+Definition i8 `{State.Trait} : Set := val Z.
+Definition i16 `{State.Trait} : Set := val Z.
+Definition i32 `{State.Trait} : Set := val Z.
+Definition i64 `{State.Trait} : Set := val Z.
+Definition i128 `{State.Trait} : Set := val Z.
+Definition isize `{State.Trait} : Set := val Z.
 
 (* We approximate floating point numbers with integers *)
-Definition f32 : Set := Z.
-Definition f64 : Set := Z.
+Definition f32 `{State.Trait} : Set := val Z.
+Definition f64 `{State.Trait} : Set := val Z.
 
-Definition str : Set := string.
-Definition char : Set := ascii.
-Definition String : Set := string.
+Definition str `{State.Trait} : Set := val string.
+Definition char `{State.Trait} : Set := val ascii.
+Parameter String : forall `{State.Trait}, Set.
 
-Definition ref (A : Set) : Set := A.
-Definition mut_ref : Set -> Set := ref.
+Definition ref `{State.Trait} (A : Set) : Set := val A.
+Definition mut_ref `{State.Trait} (A : Set) : Set := val A.
 
 Parameter eqb : forall {A : Set}, A -> A -> bool.
 
 Definition slice (A : Set) : Set := list A.
+Definition array (A : Set) : Set := list A.
+
+Definition mk_str `{State.Trait} (s : string) : ref str :=
+  StateMonad.Ref.Immutable (StateMonad.Ref.Immutable s).

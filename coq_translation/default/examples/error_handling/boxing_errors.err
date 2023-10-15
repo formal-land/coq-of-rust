@@ -1,0 +1,13 @@
+thread 'rustc' panicked at 'type Dynamic(
+    [
+        Binder(
+            Trait(
+                std::error::Error,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled', lib/src/thir_ty.rs:59:14
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

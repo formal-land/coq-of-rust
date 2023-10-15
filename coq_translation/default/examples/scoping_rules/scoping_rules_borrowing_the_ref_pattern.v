@@ -22,7 +22,7 @@ Module Point.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Point.
-Definition Point : Set := Point.t.
+Definition Point : Set := ⟅Point.t⟆.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
   Definition Self := scoping_rules_borrowing_the_ref_pattern.Point.
@@ -31,8 +31,8 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') scoping_rules_borrowing_the_ref_pattern.Point :=
-    let _ : core.clone.AssertParamIsClone i32 := tt in
-    self.["deref"].
+    let _ := tt in
+    deref self scoping_rules_borrowing_the_ref_pattern.Point.
   
   Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -56,19 +56,27 @@ End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let c := "Q"%char in
   let ref_c1 := c in
-  let ref_c2 := addr_of c in
+  let* ref_c2 := borrow c char in
   let* _ :=
     let* _ :=
-      let* α0 := ref_c1.["deref"] in
-      let* α1 := ref_c2.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "ref_c1 equals ref_c2: "; "
-" ])
-          (addr_of [ α3 ]) in
-      std.io.stdio._print α4 in
+      let* α0 := borrow [ "ref_c1 equals ref_c2: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := deref ref_c1 char in
+      let* α5 := deref ref_c2 char in
+      let* α6 := eq α4 α5 in
+      let* α7 := borrow α6 bool in
+      let* α8 := deref α7 bool in
+      let* α9 := borrow α8 bool in
+      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
+      let* α12 := deref α11 (list core.fmt.rt.Argument) in
+      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
+      let* α14 := pointer_coercion "Unsize" α13 in
+      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+      std.io.stdio._print α15 in
     Pure tt in
   let point :=
     {|
@@ -82,7 +90,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           scoping_rules_borrowing_the_ref_pattern.Point.y := _;
         |} :=
       point in
-    ref_to_x.["deref"] in
+    deref ref_to_x i32 in
   let mutable_point := point in
   let* _ :=
     let
@@ -92,50 +100,79 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         |} :=
       mutable_point in
     let* _ :=
-      let* α0 := mut_ref_to_y.["deref"] in
+      let* α0 := deref mut_ref_to_y i32 in
       assign α0 1 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of point.["x"]) in
-      let* α1 := format_argument::["new_display"] (addr_of point.["y"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "point is ("; ", "; ")
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "point is ("; ", "; ")
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow point.["x"] i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow point.["y"] i32 in
+      let* α9 := deref α8 i32 in
+      let* α10 := borrow α9 i32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_argument::["new_display"] (addr_of mutable_point.["x"]) in
-      let* α1 :=
-        format_argument::["new_display"] (addr_of mutable_point.["y"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "mutable_point is ("; ", "; ")
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "mutable_point is ("; ", "; ")
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow mutable_point.["x"] i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow mutable_point.["y"] i32 in
+      let* α9 := deref α8 i32 in
+      let* α10 := borrow α9 i32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let* mutable_tuple :=
-    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 5 in
+    let* α0 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 5 in
     Pure (α0, 3) in
   let* _ :=
     let '(_, last) := mutable_tuple in
     let* _ :=
-      let* α0 := last.["deref"] in
+      let* α0 := deref last u32 in
       assign α0 2 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of mutable_tuple) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "tuple is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "tuple is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow mutable_tuple ((alloc.boxed.Box u32 alloc.alloc.Global) * u32) in
+      let* α5 := deref α4 ((alloc.boxed.Box u32 alloc.alloc.Global) * u32) in
+      let* α6 := borrow α5 ((alloc.boxed.Box u32 alloc.alloc.Global) * u32) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.

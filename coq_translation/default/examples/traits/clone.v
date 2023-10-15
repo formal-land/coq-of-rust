@@ -177,3 +177,85 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α1 in
     Pure tt in
   Pure tt.
+
+Module Speak.
+  Class Trait (Self : Set) {T : Set} : Type := {
+    speak `{H' : State.Trait} : (ref Self) -> M (H := H') unit;
+  }.
+  
+  Global Instance Method_speak `{H' : State.Trait} `(Trait)
+    : Notation.Dot "speak" := {
+    Notation.dot := speak;
+  }.
+End Speak.
+
+Module Impl_clone_Speak_for_Tuple_A_bool_.
+  Section Impl_clone_Speak_for_Tuple_A_bool_.
+    Context {A : Set}.
+    Context `{clone.Speak.Trait A (T := alloc.string.String)}.
+    Definition Self := A * bool.
+    
+    Definition speak `{H' : State.Trait} (self : ref Self) : M (H := H') unit :=
+      let* _ := (self.[0]).["speak"] in
+      let* _ :=
+        let* _ :=
+          let* α0 := format_argument::["new_debug"] (addr_of (self.[1])) in
+          let* α1 :=
+            format_arguments::["new_v1"]
+              (addr_of [ "bool: "; "
+" ])
+              (addr_of [ α0 ]) in
+          std.io.stdio._print α1 in
+        Pure tt in
+      Pure tt.
+    
+    Global Instance Method_speak `{H' : State.Trait} : Notation.Dot "speak" := {
+      Notation.dot := speak;
+    }.
+    
+    Global Instance I : clone.Speak.Trait Self (T := alloc.string.String) := {
+      clone.Speak.speak `{H' : State.Trait} := speak;
+    }.
+  End Impl_clone_Speak_for_Tuple_A_bool_.
+  Global Hint Resolve I : core.
+End Impl_clone_Speak_for_Tuple_A_bool_.
+
+Module Impl_clone_Speak_for_i32.
+  Definition Self := i32.
+  
+  Definition speak `{H' : State.Trait} (self : ref Self) : M (H := H') unit :=
+    let* _ :=
+      let* _ :=
+        let* α0 := self.["deref"] in
+        let* α1 := format_argument::["new_display"] (addr_of α0) in
+        let* α2 :=
+          format_arguments::["new_v1"]
+            (addr_of [ "i32: "; "
+" ])
+            (addr_of [ α1 ]) in
+        std.io.stdio._print α2 in
+      Pure tt in
+    Pure tt.
+  
+  Global Instance Method_speak `{H' : State.Trait} : Notation.Dot "speak" := {
+    Notation.dot := speak;
+  }.
+  
+  Global Instance I : clone.Speak.Trait Self (T := alloc.string.String) := {
+    clone.Speak.speak `{H' : State.Trait} := speak;
+  }.
+  Global Hint Resolve I : core.
+End Impl_clone_Speak_for_i32.
+
+Definition gre
+    `{H' : State.Trait}
+    {A : Set}
+    `{clone.Speak.Trait A (T := alloc.string.String)}
+    (x : A)
+    : M (H := H') unit :=
+  let* _ := (x, true).["speak"] in
+  Pure tt.
+
+Definition arg `{H' : State.Trait} (x : i32) : M (H := H') unit :=
+  let* _ := (x, true).["speak"] in
+  Pure tt.

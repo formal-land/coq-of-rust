@@ -10,5 +10,5 @@ Definition apply
     `{core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M (H := H') unit :=
-  let* _ := f in
+  let* _ := core.ops.function.FnOnce.call_once f tt in
   Pure tt.

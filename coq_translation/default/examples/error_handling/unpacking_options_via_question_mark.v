@@ -15,7 +15,7 @@ Module Person.
     Notation.double_colon '(Build_t x0) := x0;
   }.
 End Person.
-Definition Person : Set := Person.t.
+Definition Person : Set := ⟅Person.t⟆.
 
 Module Job.
   Unset Primitive Projections.
@@ -34,7 +34,7 @@ Module Job.
     Notation.double_colon '(Build_t x0) := x0;
   }.
 End Job.
-Definition Job : Set := Job.t.
+Definition Job : Set := ⟅Job.t⟆.
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
   Definition Self := unpacking_options_via_question_mark.Job.
@@ -43,13 +43,8 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') unpacking_options_via_question_mark.Job :=
-    let
-        _ :
-        core.clone.AssertParamIsClone
-          (core.option.Option
-            unpacking_options_via_question_mark.PhoneNumber) :=
-      tt in
-    self.["deref"].
+    let _ := tt in
+    deref self unpacking_options_via_question_mark.Job.
   
   Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -90,7 +85,7 @@ Module PhoneNumber.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End PhoneNumber.
-Definition PhoneNumber : Set := PhoneNumber.t.
+Definition PhoneNumber : Set := ⟅PhoneNumber.t⟆.
 
 Module
   Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -100,9 +95,9 @@ Module
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') unpacking_options_via_question_mark.PhoneNumber :=
-    let _ : core.clone.AssertParamIsClone (core.option.Option u8) := tt in
-    let _ : core.clone.AssertParamIsClone u32 := tt in
-    self.["deref"].
+    let _ := tt in
+    let _ := tt in
+    deref self unpacking_options_via_question_mark.PhoneNumber.
   
   Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -130,23 +125,26 @@ Module Impl_unpacking_options_via_question_mark_Person.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') (core.option.Option u8) :=
-    let* α0 := self.["job"].["branch"] in
-    let* α1 :=
-      match α0 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
-        Return α0
-      | LanguageItem.Continue val => Pure val
+    let* α0 := deref self unpacking_options_via_question_mark.Person in
+    let* α1 := core.ops.try_trait.Try.branch α0.["job"] in
+    let* α2 :=
+      match α1 with
+      | core.ops.control_flow.ControlFlow residual =>
+        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+        let* α1 := Return α0 in
+        never_to_any α1
+      | core.ops.control_flow.ControlFlow val => Pure val
       end in
-    let* α2 := α1.["phone_number"].["branch"] in
-    let* α3 :=
-      match α2 with
-      | LanguageItem.Break residual =>
-        let* α0 := residual.["from_residual"] in
-        Return α0
-      | LanguageItem.Continue val => Pure val
+    let* α3 := core.ops.try_trait.Try.branch α2.["phone_number"] in
+    let* α4 :=
+      match α3 with
+      | core.ops.control_flow.ControlFlow residual =>
+        let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+        let* α1 := Return α0 in
+        never_to_any α1
+      | core.ops.control_flow.ControlFlow val => Pure val
       end in
-    Pure α3.["area_code"].
+    Pure α4.["area_code"].
   
   Global Instance Method_work_phone_area_code `{H' : State.Trait} :
     Notation.Dot "work_phone_area_code" := {
@@ -172,24 +170,37 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           |};
     |} in
   let* _ :=
-    let* α0 := p.["work_phone_area_code"] in
-    match (addr_of α0, addr_of (core.option.Option.Some 61)) with
+    let* α0 := borrow p unpacking_options_via_question_mark.Person in
+    let* α1 :=
+      unpacking_options_via_question_mark.Person::["work_phone_area_code"] α0 in
+    let* α2 := borrow α1 (core.option.Option u8) in
+    let* α3 := borrow (core.option.Option.Some 61) (core.option.Option u8) in
+    match (α2, α3) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val (core.option.Option u8) in
+      let* α1 := borrow α0 (core.option.Option u8) in
+      let* α2 := deref right_val (core.option.Option u8) in
+      let* α3 := borrow α2 (core.option.Option u8) in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val (core.option.Option u8) in
+          let* α1 := borrow α0 (core.option.Option u8) in
+          let* α2 := deref α1 (core.option.Option u8) in
+          let* α3 := borrow α2 (core.option.Option u8) in
+          let* α4 := deref right_val (core.option.Option u8) in
+          let* α5 := borrow α4 (core.option.Option u8) in
+          let* α6 := deref α5 (core.option.Option u8) in
+          let* α7 := borrow α6 (core.option.Option u8) in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in

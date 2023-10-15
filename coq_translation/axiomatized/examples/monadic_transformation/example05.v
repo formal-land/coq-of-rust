@@ -19,9 +19,8 @@ Module Impl_example05_Foo.
   
   Parameter plus1 : forall `{H' : State.Trait}, Self -> M (H := H') u32.
   
-  Global Instance AssociatedFunction_plus1 `{H' : State.Trait} :
-    Notation.DoubleColon Self "plus1" := {
-    Notation.double_colon := plus1;
+  Global Instance Method_plus1 `{H' : State.Trait} : Notation.Dot "plus1" := {
+    Notation.dot := plus1;
   }.
 End Impl_example05_Foo.
 

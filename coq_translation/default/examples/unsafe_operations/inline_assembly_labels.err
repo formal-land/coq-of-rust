@@ -1,0 +1,22 @@
+warning: formatting may not be suitable for sub-register argument
+  --> examples/unsafe_operations/inline_assembly_labels.rs:8:18
+   |
+8  |             "mov {0}, 10",
+   |                  ^^^
+9  |             "2:",
+10 |             "sub {0}, 1",
+   |                  ^^^
+11 |             "cmp {0}, 3",
+   |                  ^^^
+...
+15 |             "add {0}, 2",
+   |                  ^^^
+16 |             out(reg) a
+   |                      - for this argument
+   |
+   = help: use `{0:e}` to have the register formatted as `eax`
+   = help: or use `{0:r}` to keep the default formatting of `rax`
+   = note: `#[warn(asm_sub_register)]` on by default
+
+warning: 1 warning emitted
+

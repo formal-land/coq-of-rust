@@ -28,10 +28,17 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
         : M (H := H') core.fmt.Result :=
-      core.fmt.Formatter::["debug_tuple_field1_finish"]
-        f
-        "Ref"
-        (addr_of (addr_of (self.[0]))).
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref "Ref" str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref self (scoping_rules_lifetimes_bounds.Ref _) in
+      let* α5 := borrow α4.["0"] (ref _) in
+      let* α6 := borrow α5 (ref (ref _)) in
+      let* α7 := deref α6 (ref (ref _)) in
+      let* α8 := borrow α7 (ref (ref _)) in
+      let* α9 := pointer_coercion "Unsize" α8 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α9.
     
     Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
@@ -52,13 +59,21 @@ Definition print
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "`print`: t is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "`print`: t is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t _ in
+      let* α5 := deref α4 _ in
+      let* α6 := borrow α5 _ in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
@@ -70,20 +85,36 @@ Definition print_ref
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of t) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "`print_ref`: t is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "`print_ref`: t is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow t (ref _) in
+      let* α5 := deref α4 (ref _) in
+      let* α6 := borrow α5 (ref _) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let x := 7 in
-  let ref_x := scoping_rules_lifetimes_bounds.Ref.Build_t (addr_of x) in
-  let* _ := scoping_rules_lifetimes_bounds.print_ref (addr_of ref_x) in
+  let* ref_x :=
+    let* α0 := borrow x i32 in
+    let* α1 := deref α0 i32 in
+    let* α2 := borrow α1 i32 in
+    Pure (scoping_rules_lifetimes_bounds.Ref.Build_t α2) in
+  let* _ :=
+    let* α0 := borrow ref_x (scoping_rules_lifetimes_bounds.Ref i32) in
+    let* α1 := deref α0 (scoping_rules_lifetimes_bounds.Ref i32) in
+    let* α2 := borrow α1 (scoping_rules_lifetimes_bounds.Ref i32) in
+    scoping_rules_lifetimes_bounds.print_ref α2 in
   let* _ := scoping_rules_lifetimes_bounds.print ref_x in
   Pure tt.

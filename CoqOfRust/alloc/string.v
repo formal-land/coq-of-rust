@@ -37,9 +37,9 @@ Definition FromUtf16Error := FromUtf16Error.t.
 
 (* pub struct String { /* private fields */ } *)
 Module String.
-  Definition t : Set := str.
+  Definition t `{State.Trait} : Set := str.
 End String.
-Definition String := String.t.
+Definition String `{State.Trait} := String.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -59,16 +59,19 @@ End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)
 Module StringType.
-  Definition from `{State.Trait} (str_from: str) : M str := Pure str_from.
+  Definition from `{State.Trait} (str_from: str) : M str :=
+    Pure str_from.
 
   (* The String type (Struct std::string::String) and it's methods  *)
   (* Converts a &str into a String. *)
-  Global Instance FromStr : From.Trait str (T := str) := {
-    from `{State.Trait} := from;
+  Global Instance FromStr `{State.Trait} :
+      core.convert.From.Trait str (T := str) := {
+    from := from;
   }.
 
- Global Instance Method_from : Notation.DoubleColon String "from" := {
-    Notation.double_colon `{State.Trait} := from;
+  Global Instance Method_from `{State.Trait} :
+      Notation.DoubleColon String "from" := {
+    Notation.double_colon := from;
   }.
 
  (* @TODO add more methods from (Struct std::string::String) *)

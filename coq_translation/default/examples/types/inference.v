@@ -4,14 +4,26 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let elem := 5 in
-  let* vec := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
-  let* _ := vec.["push"] elem in
+  let* vec := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
+  let* _ :=
+    let* α0 := borrow_mut vec (alloc.vec.Vec u8 alloc.alloc.Global) in
+    (alloc.vec.Vec _ _)::["push"] α0 elem in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of vec) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow vec (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α5 := deref α4 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α6 := borrow α5 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.

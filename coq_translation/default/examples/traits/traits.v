@@ -49,16 +49,31 @@ Module Animal.
       :=
       (let* _ :=
         let* _ :=
-          let* α0 := self.["name"] in
-          let* α1 := format_argument::["new_display"] (addr_of α0) in
-          let* α2 := self.["noise"] in
-          let* α3 := format_argument::["new_display"] (addr_of α2) in
-          let* α4 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; " says "; "
-" ])
-              (addr_of [ α1; α3 ]) in
-          std.io.stdio._print α4 in
+          let* α0 := borrow [ ""; " says "; "
+" ] in
+          let* α1 := deref α0 in
+          let* α2 := borrow α1 in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := deref self in
+          let* α5 := borrow α4 in
+          let* α6 := traits.Animal.name α5 in
+          let* α7 := borrow α6 in
+          let* α8 := deref α7 in
+          let* α9 := borrow α8 in
+          let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+          let* α11 := deref self in
+          let* α12 := borrow α11 in
+          let* α13 := traits.Animal.noise α12 in
+          let* α14 := borrow α13 in
+          let* α15 := deref α14 in
+          let* α16 := borrow α15 in
+          let* α17 := core.fmt.rt.Argument::["new_display"] α16 in
+          let* α18 := borrow [ α10; α17 ] in
+          let* α19 := deref α18 in
+          let* α20 := borrow α19 in
+          let* α21 := pointer_coercion "Unsize" α20 in
+          let* α22 := core.fmt.Arguments::["new_v1"] α3 α21 in
+          std.io.stdio._print α22 in
         Pure tt in
       Pure tt
       : M (H := H') unit);
@@ -72,7 +87,8 @@ Module Impl_traits_Sheep.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') bool :=
-    Pure self.["naked"].
+    let* α0 := deref self in
+    Pure α0.["naked"].
   
   Global Instance Method_is_naked `{H' : State.Trait} :
     Notation.Dot "is_naked" := {
@@ -98,7 +114,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') (ref str) :=
-    Pure self.["name"].
+    let* α0 := deref self in
+    Pure α0.["name"].
   
   Global Instance Method_name `{H' : State.Trait} : Notation.Dot "name" := {
     Notation.dot := name;
@@ -108,8 +125,11 @@ Module Impl_traits_Animal_for_traits_Sheep.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') (ref str) :=
-    let* α0 := self.["is_naked"] in
-    if (α0 : bool) then
+    let* α0 := deref self in
+    let* α1 := borrow α0 in
+    let* α2 := traits.Sheep::["is_naked"] α1 in
+    let* α3 := use α2 in
+    if (α3 : bool) then
       Pure "baaaaah?"
     else
       Pure "baaaaah!".
@@ -121,15 +141,29 @@ Module Impl_traits_Animal_for_traits_Sheep.
   Definition talk `{H' : State.Trait} (self : ref Self) : M (H := H') unit :=
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
-        let* α1 := self.["noise"] in
-        let* α2 := format_argument::["new_display"] (addr_of α1) in
-        let* α3 :=
-          format_arguments::["new_v1"]
-            (addr_of [ ""; " pauses briefly... "; "
-" ])
-            (addr_of [ α0; α2 ]) in
-        std.io.stdio._print α3 in
+        let* α0 := borrow [ ""; " pauses briefly... "; "
+" ] in
+        let* α1 := deref α0 in
+        let* α2 := borrow α1 in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := deref self in
+        let* α5 := borrow α4.["name"] in
+        let* α6 := deref α5 in
+        let* α7 := borrow α6 in
+        let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+        let* α9 := deref self in
+        let* α10 := borrow α9 in
+        let* α11 := traits.Animal.noise α10 in
+        let* α12 := borrow α11 in
+        let* α13 := deref α12 in
+        let* α14 := borrow α13 in
+        let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+        let* α16 := borrow [ α8; α15 ] in
+        let* α17 := deref α16 in
+        let* α18 := borrow α17 in
+        let* α19 := pointer_coercion "Unsize" α18 in
+        let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+        std.io.stdio._print α20 in
       Pure tt in
     Pure tt.
   
@@ -152,32 +186,56 @@ Module Impl_traits_Sheep_3.
       `{H' : State.Trait}
       (self : mut_ref Self)
       : M (H := H') unit :=
-    let* α0 := self.["is_naked"] in
-    if (α0 : bool) then
+    let* α0 := deref self in
+    let* α1 := borrow α0 in
+    let* α2 := traits.Sheep::["is_naked"] α1 in
+    let* α3 := use α2 in
+    if (α3 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := self.["name"] in
-          let* α1 := format_argument::["new_display"] (addr_of α0) in
-          let* α2 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; " is already naked...
-" ])
-              (addr_of [ α1 ]) in
-          std.io.stdio._print α2 in
+          let* α0 := borrow [ ""; " is already naked...
+" ] in
+          let* α1 := deref α0 in
+          let* α2 := borrow α1 in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := deref self in
+          let* α5 := borrow α4 in
+          let* α6 := traits.Animal.name α5 in
+          let* α7 := borrow α6 in
+          let* α8 := deref α7 in
+          let* α9 := borrow α8 in
+          let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+          let* α11 := borrow [ α10 ] in
+          let* α12 := deref α11 in
+          let* α13 := borrow α12 in
+          let* α14 := pointer_coercion "Unsize" α13 in
+          let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+          std.io.stdio._print α15 in
         Pure tt in
       Pure tt
     else
       let* _ :=
         let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; " gets a haircut!
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
+          let* α0 := borrow [ ""; " gets a haircut!
+" ] in
+          let* α1 := deref α0 in
+          let* α2 := borrow α1 in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := deref self in
+          let* α5 := borrow α4.["name"] in
+          let* α6 := deref α5 in
+          let* α7 := borrow α6 in
+          let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+          let* α9 := borrow [ α8 ] in
+          let* α10 := deref α9 in
+          let* α11 := borrow α10 in
+          let* α12 := pointer_coercion "Unsize" α11 in
+          let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+          std.io.stdio._print α13 in
         Pure tt in
-      let* _ := assign self.["naked"] true in
+      let* _ :=
+        let* α0 := deref self in
+        assign α0.["naked"] true in
       Pure tt.
   
   Global Instance Method_shear `{H' : State.Trait} : Notation.Dot "shear" := {
@@ -187,10 +245,14 @@ End Impl_traits_Sheep_3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* dolly :=
-    let* α0 := traits.Animal.new "Dolly" in
-    Pure (α0 : traits.Sheep) in
-  let* _ := dolly.["talk"] in
-  let* _ := dolly.["shear"] in
-  let* _ := dolly.["talk"] in
+  let* dolly := traits.Animal.new "Dolly" in
+  let* _ :=
+    let* α0 := borrow dolly in
+    traits.Animal.talk α0 in
+  let* _ :=
+    let* α0 := borrow_mut dolly in
+    traits.Sheep::["shear"] α0 in
+  let* _ :=
+    let* α0 := borrow dolly in
+    traits.Animal.talk α0 in
   Pure tt.

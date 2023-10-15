@@ -7,59 +7,84 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* α0 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
         [ 1; 9; 3; 3; 13; 2 ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α1 := pointer_coercion "Unsize" α0 in
+    (Slice _)::["into_vec"] α1 in
   let* index_of_first_even_number :=
-    let* α0 := vec.["iter"] in
-    α0.["position"]
-      (fun x =>
-        let* α0 := x.["rem"] 2 in
-        α0.["eq"] 0) in
+    let* α0 := borrow vec in
+    let* α1 := core.ops.deref.Deref.deref α0 in
+    let* α2 := deref (Slice i32) α1 in
+    let* α3 := borrow α2 in
+    let* α4 := (Slice _)::["iter"] α3 in
+    let* α5 := borrow_mut α4 in
+    core.iter.traits.iterator.Iterator.position
+      α5
+      let* α0 := rem x 2 in
+      eq α0 0 in
   let* _ :=
-    match
-      (addr_of index_of_first_even_number, addr_of (core.option.Option.Some 5))
-    with
+    let* α0 := borrow index_of_first_even_number in
+    let* α1 := borrow (core.option.Option.Some 5) in
+    match (α0, α1) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref (core.option.Option usize) left_val in
+      let* α1 := borrow α0 in
+      let* α2 := deref (core.option.Option usize) right_val in
+      let* α3 := borrow α2 in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref (core.option.Option usize) left_val in
+          let* α1 := borrow α0 in
+          let* α2 := deref (core.option.Option usize) α1 in
+          let* α3 := borrow α2 in
+          let* α4 := deref (core.option.Option usize) right_val in
+          let* α5 := borrow α4 in
+          let* α6 := deref (core.option.Option usize) α5 in
+          let* α7 := borrow α6 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in
   let* index_of_first_negative_number :=
-    let* α0 := vec.["into_iter"] in
-    α0.["position"] (fun x => x.["lt"] 0) in
+    let* α0 := core.iter.traits.collect.IntoIterator.into_iter vec in
+    let* α1 := borrow_mut α0 in
+    core.iter.traits.iterator.Iterator.position α1 lt x 0 in
   let* _ :=
-    match
-      (addr_of index_of_first_negative_number, addr_of core.option.Option.None)
-    with
+    let* α0 := borrow index_of_first_negative_number in
+    let* α1 := borrow (core.option.Option.None tt) in
+    match (α0, α1) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref (core.option.Option usize) left_val in
+      let* α1 := borrow α0 in
+      let* α2 := deref (core.option.Option usize) right_val in
+      let* α3 := borrow α2 in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref (core.option.Option usize) left_val in
+          let* α1 := borrow α0 in
+          let* α2 := deref (core.option.Option usize) α1 in
+          let* α3 := borrow α2 in
+          let* α4 := deref (core.option.Option usize) right_val in
+          let* α5 := borrow α4 in
+          let* α6 := deref (core.option.Option usize) α5 in
+          let* α7 := borrow α6 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in

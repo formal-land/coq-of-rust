@@ -101,3 +101,59 @@ End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+
+Module Speak.
+  Class Trait (Self : Set) {T : Set} : Type := {
+    speak `{H' : State.Trait} : (ref Self) -> M (H := H') unit;
+  }.
+  
+  Global Instance Method_speak `{H' : State.Trait} `(Trait)
+    : Notation.Dot "speak" := {
+    Notation.dot := speak;
+  }.
+End Speak.
+
+Module Impl_clone_Speak_for_Tuple_A_bool_.
+  Section Impl_clone_Speak_for_Tuple_A_bool_.
+    Context {A : Set}.
+    Context `{clone.Speak.Trait A (T := alloc.string.String)}.
+    Definition Self := A * bool.
+    
+    Parameter speak :
+        forall `{H' : State.Trait},
+        (ref Self) -> M (H := H') unit.
+    
+    Global Instance Method_speak `{H' : State.Trait} : Notation.Dot "speak" := {
+      Notation.dot := speak;
+    }.
+    
+    Global Instance I : clone.Speak.Trait Self (T := alloc.string.String) := {
+      clone.Speak.speak `{H' : State.Trait} := speak;
+    }.
+  End Impl_clone_Speak_for_Tuple_A_bool_.
+  Global Hint Resolve I : core.
+End Impl_clone_Speak_for_Tuple_A_bool_.
+
+Module Impl_clone_Speak_for_i32.
+  Definition Self := i32.
+  
+  Parameter speak : forall `{H' : State.Trait}, (ref Self) -> M (H := H') unit.
+  
+  Global Instance Method_speak `{H' : State.Trait} : Notation.Dot "speak" := {
+    Notation.dot := speak;
+  }.
+  
+  Global Instance I : clone.Speak.Trait Self (T := alloc.string.String) := {
+    clone.Speak.speak `{H' : State.Trait} := speak;
+  }.
+  Global Hint Resolve I : core.
+End Impl_clone_Speak_for_i32.
+
+Parameter gre :
+    forall
+      `{H' : State.Trait}
+      {A : Set}
+      `{clone.Speak.Trait A (T := alloc.string.String)},
+    A -> M (H := H') unit.
+
+Parameter arg : forall `{H' : State.Trait}, i32 -> M (H := H') unit.

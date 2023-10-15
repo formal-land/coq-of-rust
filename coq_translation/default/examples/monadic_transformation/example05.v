@@ -17,17 +17,16 @@ Definition Foo := @Foo.t.
 Module Impl_example05_Foo.
   Definition Self := example05.Foo.
   
-  Definition plus1 `{H' : State.Trait} (s : Self) : M (H := H') u32 :=
-    (s.[0]).["add"] 1.
+  Definition plus1 `{H' : State.Trait} (self : Self) : M (H := H') u32 :=
+    add self.["0"] 1.
   
-  Global Instance AssociatedFunction_plus1 `{H' : State.Trait} :
-    Notation.DoubleColon Self "plus1" := {
-    Notation.double_colon := plus1;
+  Global Instance Method_plus1 `{H' : State.Trait} : Notation.Dot "plus1" := {
+    Notation.dot := plus1;
   }.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let foo := example05.Foo.Build_t 0 in
-  let _ := foo.["plus1"] in
+  let* _ := example05.Foo::["plus1"] foo in
   Pure tt.

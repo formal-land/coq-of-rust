@@ -7,13 +7,22 @@ Definition eat_box_i32
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of boxed_i32) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Destroying box that contains "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 :=
+        borrow [ "Destroying box that contains "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow boxed_i32 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α5 := deref α4 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α6 := borrow α5 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
@@ -23,25 +32,49 @@ Definition borrow_i32
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of borrowed_i32) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "This int is: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "This int is: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow borrowed_i32 (ref i32) in
+      let* α5 := deref α4 (ref i32) in
+      let* α6 := borrow α5 (ref i32) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* boxed_i32 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 5 in
+  let* boxed_i32 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 5 in
   let stacked_i32 := 6 in
-  let* _ := scoping_rules_borrowing.borrow_i32 (addr_of boxed_i32) in
-  let* _ := scoping_rules_borrowing.borrow_i32 (addr_of stacked_i32) in
   let* _ :=
-    let _ref_to_i32 : ref i32 := addr_of boxed_i32 in
-    let* _ := scoping_rules_borrowing.borrow_i32 _ref_to_i32 in
+    let* α0 := borrow boxed_i32 (alloc.boxed.Box i32 alloc.alloc.Global) in
+    let* α1 := deref α0 (alloc.boxed.Box i32 alloc.alloc.Global) in
+    let* α2 := deref α1 i32 in
+    let* α3 := borrow α2 i32 in
+    scoping_rules_borrowing.borrow_i32 α3 in
+  let* _ :=
+    let* α0 := borrow stacked_i32 i32 in
+    let* α1 := deref α0 i32 in
+    let* α2 := borrow α1 i32 in
+    scoping_rules_borrowing.borrow_i32 α2 in
+  let* _ :=
+    let* _ref_to_i32 :=
+      let* α0 := borrow boxed_i32 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α1 := deref α0 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α2 := deref α1 i32 in
+      borrow α2 i32 in
+    let* _ :=
+      let* α0 := deref _ref_to_i32 i32 in
+      let* α1 := borrow α0 i32 in
+      scoping_rules_borrowing.borrow_i32 α1 in
     Pure tt in
   let* _ := scoping_rules_borrowing.eat_box_i32 boxed_i32 in
   Pure tt.

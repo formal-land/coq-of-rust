@@ -1,0 +1,21 @@
+error[E0107]: method takes 0 generic arguments but 1 generic argument was supplied
+  --> examples/conversion/into.rs:14:7
+   |
+14 |     5.into::<Number>();
+   |       ^^^^ expected 0 generic arguments
+   |
+help: consider moving this generic argument to the `Into` trait, which takes up to 1 argument
+   |
+14 |     std::convert::Into::<Number>::into(5);
+   |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+help: remove these generics
+   |
+14 -     5.into::<Number>();
+14 +     5.into();
+   |
+
+thread 'rustc' panicked at 'thir failed to compile', lib/src/top_level.rs:674:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0107`.

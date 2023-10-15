@@ -19,6 +19,7 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::iter::repeat;
 use std::string::ToString;
+use std::vec;
 
 pub(crate) struct TopLevelOptions {
     pub(crate) configuration_file: String,
@@ -194,20 +195,6 @@ fn emit_warning_with_note(env: &Env, span: &rustc_span::Span, warning_msg: &str,
         .emit();
 }
 
-/// returns Some(item) if the condition is satisfied
-fn give_if<T>(item: T, condition: bool) -> Option<T> {
-    if condition {
-        Some(item)
-    } else {
-        None
-    }
-}
-
-/// returns Some(item) if the condition is not satisfied
-fn give_if_not<T>(item: T, condition: bool) -> Option<T> {
-    give_if(item, !condition)
-}
-
 impl ImplItem {
     fn name(&self) -> String {
         match self {
@@ -322,6 +309,7 @@ fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
 /// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
+// @TODO: the argument `tcx` is included in `env` and should thus be removed
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
     let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize && !env.axiomatize_public {
@@ -366,6 +354,14 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 return vec![];
             }
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            // let local_def_id = body_id.hir_id.owner.def_id;
+            // let thir = tcx.thir_body(local_def_id);
+            // println!("{name}:\n\n{thir:#?}\n\n\n\n");
+            // let Ok((thir, expr_id)) = thir else {
+            //     panic!("thir failed to compile for {name}");
+            // };
+            // let thir = thir.steal();
+            // crate::thir_expression::compile_expr(env, &thir, &expr_id);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition(FunDefinition::compile(
                 env,
@@ -672,7 +668,20 @@ fn get_body<'a>(tcx: &'a TyCtxt, body_id: &rustc_hir::BodyId) -> &'a rustc_hir::
 
 // compiles the body of a function
 fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Expr>> {
-    give_if_not(Box::new(compile_expr(env, body.value)), env.axiomatize)
+    let local_def_id = body.value.hir_id.owner.def_id;
+    let thir = env.tcx.thir_body(local_def_id);
+    let Ok((thir, expr_id)) = thir else {
+        panic!("thir failed to compile");
+    };
+    let thir = thir.steal();
+    if env.axiomatize {
+        None
+    } else {
+        // Some(Box::new(compile_expr(env, body.value)))
+        Some(Box::new(crate::thir_expression::compile_expr(
+            env, &thir, &expr_id,
+        )))
+    }
 }
 
 /// returns a list of pairs of argument names and their types
@@ -1147,7 +1156,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
     }
 }
 
-pub fn mt_top_level(top_level: TopLevel) -> TopLevel {
+fn mt_top_level(top_level: TopLevel) -> TopLevel {
     TopLevel(top_level.0.into_iter().map(mt_top_level_item).collect())
 }
 
@@ -2951,7 +2960,7 @@ impl TypeStructStruct {
                                         )
                                     })
                                     .collect::<Vec<_>>(),
-                            ),
+                            ).in_ref(),
                         },
                     )),
                 ],

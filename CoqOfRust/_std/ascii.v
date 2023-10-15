@@ -28,7 +28,7 @@ pub trait AsciiExt {
 }
 *)
 Module AsciiExt.
-  Class Trait (Self : Set) (Owned : Set): Set := {
+  Class Trait `{State.Trait} (Self : Set) (Owned : Set): Set := {
     Owned := Owned;
 
     is_ascii : ref Self -> bool;

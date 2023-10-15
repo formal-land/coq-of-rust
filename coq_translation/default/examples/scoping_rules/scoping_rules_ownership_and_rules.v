@@ -7,13 +7,22 @@ Definition destroy_box
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of c) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Destroying a box that contains "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 :=
+        borrow [ "Destroying a box that contains "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow c (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α5 := deref α4 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α6 := borrow α5 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
@@ -23,25 +32,44 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let y := x in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of x) in
-      let* α1 := format_argument::["new_display"] (addr_of y) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "x is "; ", and y is "; "
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "x is "; ", and y is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow x u32 in
+      let* α5 := deref α4 u32 in
+      let* α6 := borrow α5 u32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow y u32 in
+      let* α9 := deref α8 u32 in
+      let* α10 := borrow α9 u32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
-  let* a := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 5 in
+  let* a := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 5 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of a) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "a contains: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "a contains: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow a (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α5 := deref α4 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α6 := borrow α5 (alloc.boxed.Box i32 alloc.alloc.Global) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let b := a in
   let* _ := scoping_rules_ownership_and_rules.destroy_box b in

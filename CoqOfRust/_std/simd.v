@@ -312,9 +312,9 @@ End SupportedLaneCount.
 
 (* pub struct LaneCount<const LANES: usize>; *)
 Module LaneCount.
-  Parameter t : forall (LANES : usize), Set.
+  Parameter t : forall (LANES : Z) `{State.Trait}, Set.
 End LaneCount.
-Definition LaneCount := LaneCount.t.
+Definition LaneCount (LANES : Z) `{State.Trait} := LaneCount.t LANES.
 
 (* 
 pub struct Simd<T, const LANES: usize>(_)
@@ -323,12 +323,14 @@ where
          LaneCount<LANES>: SupportedLaneCount;
 *)
 Module Simd.
-  Parameter t : forall (T : Set) (LANES : usize) 
+  Parameter t : forall (T : Set) (LANES : Z)
+    `{State.Trait}
     `{SimdElement.Trait T}
     `{SupportedLaneCount.Trait (LaneCount LANES)},
     Set.
 End Simd.
-Definition Simd (T : Set) (LANES : usize)
+Definition Simd (T : Set) (LANES : Z)
+  `{State.Trait}
   `{SimdElement.Trait T}
   `{SupportedLaneCount.Trait (LaneCount LANES)}
   : Set :=
@@ -346,7 +348,7 @@ pub trait Swizzle<const INPUT_LANES: usize, const OUTPUT_LANES: usize> {
 }
 *)
 Module Swizzle.
-  Class Trait (Self : Set) (INPUT_LANES OUTPUT_LANES : usize) : Set := { 
+  Class Trait (Self : Set) (INPUT_LANES OUTPUT_LANES : Z) `{State.Trait} : Set := {
   (* Bugged: how to define INDEX? *)
   (* I think this kind of const is supposed to be used by implementations that needs to use this trait *)
   swizzle (T : Set) 
@@ -372,7 +374,7 @@ pub trait Swizzle2<const INPUT_LANES: usize, const OUTPUT_LANES: usize> {
 }
 *)
 Module Swizzle2.
-  Class Trait (Self : Set) (INPUT_LANES OUTPUT_LANES : usize) : Set := { 
+  Class Trait (Self : Set) (INPUT_LANES OUTPUT_LANES : Z) `{State.Trait} : Set := {
     (* BUGGED: how to define INDEX? *)
 
     swizzle2 (T : Set) 
@@ -418,7 +420,8 @@ where
          LaneCount<LANES>: SupportedLaneCount;
 *)
 Module Mask.
-  Parameter t : forall (T : Set) (LANES : usize)
+  Parameter t : forall (T : Set) (LANES : Z)
+    `{State.Trait}
     `{MaskElement.Trait T}
     `{SupportedLaneCount.Trait (LaneCount LANES)},
     Set.
@@ -437,12 +440,12 @@ pub enum Which {
 }
 *)
 Module Which.
-  Inductive t : Set := 
+  Inductive t `{State.Trait} : Set := 
   | First : usize -> t
   | Second : usize -> t
   .
 End Which.
-Definition Which := Which.t.
+Definition Which `{State.Trait} := Which.t.
 
 
 (* ********TYPE DEFINITIONS******** *)

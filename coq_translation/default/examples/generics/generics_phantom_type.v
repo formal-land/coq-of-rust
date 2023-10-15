@@ -49,9 +49,17 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
         (self : ref Self)
         (other : ref (generics_phantom_type.PhantomTuple A B))
         : M (H := H') bool :=
-      let* α0 := (self.[0]).["eq"] (other.[0]) in
-      let* α1 := (self.[1]).["eq"] (other.[1]) in
-      α0.["andb"] α1.
+      let* α0 := deref self (generics_phantom_type.PhantomTuple _ _) in
+      let* α1 := borrow α0.["0"] _ in
+      let* α2 := deref other (generics_phantom_type.PhantomTuple _ _) in
+      let* α3 := borrow α2.["0"] _ in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := deref self (generics_phantom_type.PhantomTuple _ _) in
+      let* α6 := borrow α5.["1"] (core.marker.PhantomData _) in
+      let* α7 := deref other (generics_phantom_type.PhantomTuple _ _) in
+      let* α8 := borrow α7.["1"] (core.marker.PhantomData _) in
+      let* α9 := core.cmp.PartialEq.eq α6 α8 in
+      and α4 α9.
     
     Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -91,7 +99,8 @@ Module PhantomStruct.
     }.
   End PhantomStruct.
 End PhantomStruct.
-Definition PhantomStruct (A B : Set) : Set := PhantomStruct.t (A := A) (B := B).
+Definition PhantomStruct (A B : Set) : Set :=
+  ⟅PhantomStruct.t (A := A) (B := B)⟆.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -121,9 +130,17 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
         (self : ref Self)
         (other : ref (generics_phantom_type.PhantomStruct A B))
         : M (H := H') bool :=
-      let* α0 := self.["first"].["eq"] other.["first"] in
-      let* α1 := self.["phantom"].["eq"] other.["phantom"] in
-      α0.["andb"] α1.
+      let* α0 := deref self (generics_phantom_type.PhantomStruct _ _) in
+      let* α1 := borrow α0.["first"] _ in
+      let* α2 := deref other (generics_phantom_type.PhantomStruct _ _) in
+      let* α3 := borrow α2.["first"] _ in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := deref self (generics_phantom_type.PhantomStruct _ _) in
+      let* α6 := borrow α5.["phantom"] (core.marker.PhantomData _) in
+      let* α7 := deref other (generics_phantom_type.PhantomStruct _ _) in
+      let* α8 := borrow α7.["phantom"] (core.marker.PhantomData _) in
+      let* α9 := core.cmp.PartialEq.eq α6 α8 in
+      and α4 α9.
     
     Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
@@ -141,24 +158,24 @@ End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let _tuple1 : generics_phantom_type.PhantomTuple char f32 :=
+  let _tuple1 :=
     generics_phantom_type.PhantomTuple.Build_t
       "Q"%char
-      core.marker.PhantomData.Build in
-  let _tuple2 : generics_phantom_type.PhantomTuple char f64 :=
+      (core.marker.PhantomData.Build_t tt) in
+  let _tuple2 :=
     generics_phantom_type.PhantomTuple.Build_t
       "Q"%char
-      core.marker.PhantomData.Build in
-  let _struct1 : generics_phantom_type.PhantomStruct char f32 :=
+      (core.marker.PhantomData.Build_t tt) in
+  let _struct1 :=
     {|
       generics_phantom_type.PhantomStruct.first := "Q"%char;
       generics_phantom_type.PhantomStruct.phantom :=
-        core.marker.PhantomData.Build;
+        core.marker.PhantomData.Build_t tt;
     |} in
-  let _struct2 : generics_phantom_type.PhantomStruct char f64 :=
+  let _struct2 :=
     {|
       generics_phantom_type.PhantomStruct.first := "Q"%char;
       generics_phantom_type.PhantomStruct.phantom :=
-        core.marker.PhantomData.Build;
+        core.marker.PhantomData.Build_t tt;
     |} in
   Pure tt.

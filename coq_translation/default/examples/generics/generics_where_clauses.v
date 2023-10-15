@@ -24,15 +24,22 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
         : M (H := H') unit :=
       let* _ :=
         let* _ :=
-          let* α0 :=
-            format_argument::["new_debug"]
-              (addr_of (core.option.Option.Some self)) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; "
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
+          let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 :=
+            borrow (core.option.Option.Some self) (core.option.Option _) in
+          let* α5 := deref α4 (core.option.Option _) in
+          let* α6 := borrow α5 (core.option.Option _) in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          std.io.stdio._print α12 in
         Pure tt in
       Pure tt.
     
@@ -55,6 +62,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* vec :=
     let* α0 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
-  let* _ := vec.["print_in_option"] in
+    let* α1 := pointer_coercion "Unsize" α0 in
+    (Slice _)::["into_vec"] α1 in
+  let* _ := generics_where_clauses.PrintInOption.print_in_option vec in
   Pure tt.

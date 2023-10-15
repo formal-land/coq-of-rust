@@ -12,71 +12,102 @@ Definition is_divisible_by
     (rhs : u32)
     : M (H := H') bool :=
   let* _ :=
-    let* α0 := rhs.["eq"] 0 in
-    if (α0 : bool) then
+    let* α0 := eq rhs 0 in
+    let* α1 := use α0 in
+    if (α1 : bool) then
       let* _ := Return false in
-      Pure tt
+      never_to_any tt
     else
       Pure tt in
-  let* α0 := lhs.["rem"] rhs in
-  α0.["eq"] 0.
+  let* α0 := rem lhs rhs in
+  eq α0 0.
 
 Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
   let* α0 := functions.is_divisible_by n 15 in
-  if (α0 : bool) then
+  let* α1 := use α0 in
+  if (α1 : bool) then
     let* _ :=
       let* _ :=
-        let* α0 := format_arguments::["new_const"] (addr_of [ "fizzbuzz
-" ]) in
-        std.io.stdio._print α0 in
+        let* α0 := borrow [ "fizzbuzz
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
       Pure tt in
     Pure tt
   else
     let* α0 := functions.is_divisible_by n 3 in
-    if (α0 : bool) then
+    let* α1 := use α0 in
+    if (α1 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := format_arguments::["new_const"] (addr_of [ "fizz
-" ]) in
-          std.io.stdio._print α0 in
+          let* α0 := borrow [ "fizz
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
         Pure tt in
       Pure tt
     else
       let* α0 := functions.is_divisible_by n 5 in
-      if (α0 : bool) then
+      let* α1 := use α0 in
+      if (α1 : bool) then
         let* _ :=
           let* _ :=
-            let* α0 := format_arguments::["new_const"] (addr_of [ "buzz
-" ]) in
-            std.io.stdio._print α0 in
+            let* α0 := borrow [ "buzz
+" ] (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._print α4 in
           Pure tt in
         Pure tt
       else
         let* _ :=
           let* _ :=
-            let* α0 := format_argument::["new_display"] (addr_of n) in
-            let* α1 :=
-              format_arguments::["new_v1"]
-                (addr_of [ ""; "
-" ])
-                (addr_of [ α0 ]) in
-            std.io.stdio._print α1 in
+            let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := borrow n u32 in
+            let* α5 := deref α4 u32 in
+            let* α6 := borrow α5 u32 in
+            let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+            let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+            let* α9 := deref α8 (list core.fmt.rt.Argument) in
+            let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+            let* α11 := pointer_coercion "Unsize" α10 in
+            let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+            std.io.stdio._print α12 in
           Pure tt in
         Pure tt.
 
 Definition fizzbuzz_to `{H' : State.Trait} (n : u32) : M (H := H') unit :=
-  let* α0 := std.ops.RangeInclusive::["new"] 1 n in
-  let* α1 := α0.["into_iter"] in
-  match α1 with
-  | iter =>
-    loop
-      (let* _ :=
-        let* α0 := (addr_of iter).["next"] in
-        match α0 with
-        | core.option.Option.None  => Break
-        | core.option.Option.Some n =>
-          let* _ := functions.fizzbuzz n in
-          Pure tt
-        end in
-      Pure tt)
-  end.
+  let* α0 := (core.ops.range.RangeInclusive _)::["new"] 1 n in
+  let* α1 := core.iter.traits.collect.IntoIterator.into_iter α0 in
+  let* α2 :=
+    match α1 with
+    | iter =>
+      loop
+        (let* _ :=
+          let* α0 := borrow_mut iter (core.ops.range.RangeInclusive u32) in
+          let* α1 := deref α0 (core.ops.range.RangeInclusive u32) in
+          let* α2 := borrow_mut α1 (core.ops.range.RangeInclusive u32) in
+          let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+          match α3 with
+          | core.option.Option  =>
+            let* α0 := Break in
+            never_to_any α0
+          | core.option.Option n =>
+            let* _ := functions.fizzbuzz n in
+            Pure tt
+          end in
+        Pure tt)
+    end in
+  use α2.

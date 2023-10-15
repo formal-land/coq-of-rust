@@ -14,7 +14,11 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["write_str"] f "DoubleError".
+    let* α0 := deref f in
+    let* α1 := borrow_mut α0 in
+    let* α2 := deref "DoubleError" in
+    let* α3 := borrow α2 in
+    core.fmt.Formatter::["write_str"] α1 α3.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -33,7 +37,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') defining_an_error_type.DoubleError :=
-    Pure defining_an_error_type.DoubleError.Build.
+    Pure (defining_an_error_type.DoubleError.Build_t tt).
   
   Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -56,10 +60,14 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    let* α0 :=
-      format_arguments::["new_const"]
-        (addr_of [ "invalid first item to double" ]) in
-    f.["write_fmt"] α0.
+    let* α0 := deref f in
+    let* α1 := borrow_mut α0 in
+    let* α2 := borrow [ "invalid first item to double" ] in
+    let* α3 := deref α2 in
+    let* α4 := borrow α3 in
+    let* α5 := pointer_coercion "Unsize" α4 in
+    let* α6 := core.fmt.Arguments::["new_const"] α5 in
+    core.fmt.Formatter::["write_fmt"] α1 α6.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -75,56 +83,92 @@ Definition double_first
     `{H' : State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     : M (H := H') (defining_an_error_type.Result i32) :=
-  let* α0 := vec.["first"] in
-  let* α1 := α0.["ok_or"] defining_an_error_type.DoubleError.Build in
-  α1.["and_then"]
-    (fun s =>
-      let* α0 := s.["parse"] : M i32 in
-      let* α1 :=
-        α0.["map_err"]
-          (fun _ => Pure defining_an_error_type.DoubleError.Build) in
-      α1.["map"] (fun i => 2.["mul"] i)).
+  let* α0 := borrow vec in
+  let* α1 := core.ops.deref.Deref.deref α0 in
+  let* α2 := deref α1 in
+  let* α3 := borrow α2 in
+  let* α4 := (Slice _)::["first"] α3 in
+  let* α5 :=
+    (core.option.Option _)::["ok_or"]
+      α4
+      (defining_an_error_type.DoubleError.Build_t tt) in
+  (core.result.Result _ _)::["and_then"]
+    α5
+    let* α0 := deref s in
+    let* α1 := deref α0 in
+    let* α2 := borrow α1 in
+    let* α3 := str::["parse"] α2 in
+    let* α4 :=
+      (core.result.Result _ _)::["map_err"]
+        α3
+        Pure (defining_an_error_type.DoubleError.Build_t tt) in
+    (core.result.Result _ _)::["map"] α4 mul 2 i.
 
 Definition print
     `{H' : State.Trait}
     (result : defining_an_error_type.Result i32)
     : M (H := H') unit :=
   match result with
-  | core.result.Result.Ok n =>
+  | core.result.Result n =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "The first doubled is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "The first doubled is "; "
+" ] in
+      let* α1 := deref α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow n in
+      let* α5 := deref α4 in
+      let* α6 := borrow α5 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] in
+      let* α9 := deref α8 in
+      let* α10 := borrow α9 in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
-  | core.result.Result.Err e =>
+  | core.result.Result e =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of e) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Error: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "Error: "; "
+" ] in
+      let* α1 := deref α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow e in
+      let* α5 := deref α4 in
+      let* α6 := borrow α5 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] in
+      let* α9 := deref α8 in
+      let* α10 := borrow α9 in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* numbers :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ "42"; "93"; "18" ] in
-    (Slice _)::["into_vec"] α0 in
-  let* empty := (alloc.vec.Vec _ alloc.vec.Vec.Default.A)::["new"] in
+    let* α0 := deref "93" in
+    let* α1 := borrow α0 in
+    let* α2 := deref "18" in
+    let* α3 := borrow α2 in
+    let* α4 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ "42"; α1; α3 ] in
+    let* α5 := pointer_coercion "Unsize" α4 in
+    (Slice _)::["into_vec"] α5 in
+  let* empty := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* strings :=
-    let* α0 :=
+    let* α0 := deref "93" in
+    let* α1 := borrow α0 in
+    let* α2 := deref "18" in
+    let* α3 := borrow α2 in
+    let* α4 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ "tofu"; "93"; "18" ] in
-    (Slice _)::["into_vec"] α0 in
+        [ "tofu"; α1; α3 ] in
+    let* α5 := pointer_coercion "Unsize" α4 in
+    (Slice _)::["into_vec"] α5 in
   let* _ :=
     let* α0 := defining_an_error_type.double_first numbers in
     defining_an_error_type.print α0 in

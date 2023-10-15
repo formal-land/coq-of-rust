@@ -30,7 +30,9 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       (self : ref Self)
       (other : ref derive.Centimeters)
       : M (H := H') bool :=
-    (self.[0]).["eq"] (other.[0]).
+    let* α0 := deref self derive.Centimeters in
+    let* α1 := deref other derive.Centimeters in
+    eq α0.["0"] α1.["0"].
   
   Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
@@ -52,7 +54,15 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
       (self : ref Self)
       (other : ref derive.Centimeters)
       : M (H := H') (core.option.Option core.cmp.Ordering) :=
-    core.cmp.PartialOrd.partial_cmp (addr_of (self.[0])) (addr_of (other.[0])).
+    let* α0 := deref self derive.Centimeters in
+    let* α1 := borrow α0.["0"] f64 in
+    let* α2 := deref α1 f64 in
+    let* α3 := borrow α2 f64 in
+    let* α4 := deref other derive.Centimeters in
+    let* α5 := borrow α4.["0"] f64 in
+    let* α6 := deref α5 f64 in
+    let* α7 := borrow α6 f64 in
+    core.cmp.PartialOrd.partial_cmp α3 α7.
   
   Global Instance Method_partial_cmp `{H' : State.Trait} :
     Notation.Dot "partial_cmp" := {
@@ -89,10 +99,17 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Inches"
-      (addr_of (addr_of (self.[0]))).
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref "Inches" str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref self derive.Inches in
+    let* α5 := borrow α4.["0"] i32 in
+    let* α6 := borrow α5 (ref i32) in
+    let* α7 := deref α6 (ref i32) in
+    let* α8 := borrow α7 (ref i32) in
+    let* α9 := pointer_coercion "Unsize" α8 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α9.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -112,8 +129,9 @@ Module Impl_derive_Inches_2.
       (self : ref Self)
       : M (H := H') derive.Centimeters :=
     let 'derive.Inches.Build_t inches := self in
-    let* α0 := (cast inches f64).["mul"] 3 (* 2.54 *) in
-    Pure (derive.Centimeters.Build_t α0).
+    let* α0 := cast inches in
+    let* α1 := mul α0 3 (* 2.54 *) in
+    Pure (derive.Centimeters.Build_t α1).
   
   Global Instance Method_to_centimeters `{H' : State.Trait} :
     Notation.Dot "to_centimeters" := {
@@ -140,30 +158,52 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let foot := derive.Inches.Build_t 12 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of foot) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "One foot equals "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "One foot equals "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow foot derive.Inches in
+      let* α5 := deref α4 derive.Inches in
+      let* α6 := borrow α5 derive.Inches in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let meter := derive.Centimeters.Build_t 100 (* 100.0 *) in
   let* cmp :=
-    let* α0 := foot.["to_centimeters"] in
-    let* α1 := α0.["lt"] meter in
-    if (α1 : bool) then
+    let* α0 := borrow foot derive.Inches in
+    let* α1 := derive.Inches::["to_centimeters"] α0 in
+    let* α2 := borrow α1 derive.Centimeters in
+    let* α3 := borrow meter derive.Centimeters in
+    let* α4 := core.cmp.PartialOrd.lt α2 α3 in
+    let* α5 := use α4 in
+    if (α5 : bool) then
       Pure "smaller"
     else
-      Pure "bigger" in
+      let* α0 := deref "bigger" str in
+      borrow α0 str in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of cmp) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "One foot is "; " than one meter.
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 :=
+        borrow [ "One foot is "; " than one meter.
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow cmp (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.

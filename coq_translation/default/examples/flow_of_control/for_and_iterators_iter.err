@@ -1,0 +1,15 @@
+thread 'rustc' panicked at 'pattern Pat {
+    ty: &str,
+    span: examples/flow_of_control/for_and_iterators_iter.rs:6:14: 6:22 (#0),
+    kind: Constant {
+        value: Val(
+            Slice {
+                data: ConstAllocation { .. },
+                start: 0,
+                end: 6,
+            },
+            &str,
+        ),
+    },
+} not implemented', lib/src/thir_pattern.rs:114:14
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

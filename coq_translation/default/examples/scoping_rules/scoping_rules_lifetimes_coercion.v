@@ -6,14 +6,15 @@ Definition multiply
     (first : ref i32)
     (second : ref i32)
     : M (H := H') i32 :=
-  first.["mul"] second.
+  core.ops.arith.Mul.mul first second.
 
 Definition choose_first
     `{H' : State.Trait}
     (first : ref i32)
     (arg : ref i32)
     : M (H := H') (ref i32) :=
-  Pure first.
+  let* α0 := deref first i32 in
+  borrow α0 i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
@@ -22,31 +23,53 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let second := 3 in
     let* _ :=
       let* _ :=
-        let* α0 :=
-          scoping_rules_lifetimes_coercion.multiply
-            (addr_of first)
-            (addr_of second) in
-        let* α1 := format_argument::["new_display"] (addr_of α0) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "The product is "; "
-" ])
-            (addr_of [ α1 ]) in
-        std.io.stdio._print α2 in
+        let* α0 := borrow [ "The product is "; "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow first i32 in
+        let* α5 := deref α4 i32 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := borrow second i32 in
+        let* α8 := deref α7 i32 in
+        let* α9 := borrow α8 i32 in
+        let* α10 := scoping_rules_lifetimes_coercion.multiply α6 α9 in
+        let* α11 := borrow α10 i32 in
+        let* α12 := deref α11 i32 in
+        let* α13 := borrow α12 i32 in
+        let* α14 := core.fmt.rt.Argument::["new_display"] α13 in
+        let* α15 := borrow [ α14 ] (list core.fmt.rt.Argument) in
+        let* α16 := deref α15 (list core.fmt.rt.Argument) in
+        let* α17 := borrow α16 (list core.fmt.rt.Argument) in
+        let* α18 := pointer_coercion "Unsize" α17 in
+        let* α19 := core.fmt.Arguments::["new_v1"] α3 α18 in
+        std.io.stdio._print α19 in
       Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 :=
-          scoping_rules_lifetimes_coercion.choose_first
-            (addr_of first)
-            (addr_of second) in
-        let* α1 := format_argument::["new_display"] (addr_of α0) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ ""; " is the first
-" ])
-            (addr_of [ α1 ]) in
-        std.io.stdio._print α2 in
+        let* α0 := borrow [ ""; " is the first
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow first i32 in
+        let* α5 := deref α4 i32 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := borrow second i32 in
+        let* α8 := deref α7 i32 in
+        let* α9 := borrow α8 i32 in
+        let* α10 := scoping_rules_lifetimes_coercion.choose_first α6 α9 in
+        let* α11 := borrow α10 (ref i32) in
+        let* α12 := deref α11 (ref i32) in
+        let* α13 := borrow α12 (ref i32) in
+        let* α14 := core.fmt.rt.Argument::["new_display"] α13 in
+        let* α15 := borrow [ α14 ] (list core.fmt.rt.Argument) in
+        let* α16 := deref α15 (list core.fmt.rt.Argument) in
+        let* α17 := borrow α16 (list core.fmt.rt.Argument) in
+        let* α18 := pointer_coercion "Unsize" α17 in
+        let* α19 := core.fmt.Arguments::["new_v1"] α3 α18 in
+        std.io.stdio._print α19 in
       Pure tt in
     Pure tt in
   Pure tt.

@@ -4,83 +4,120 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let number := core.option.Option.Some 7 in
-  let letter : core.option.Option i32 := core.option.Option.None in
-  let emoticon : core.option.Option i32 := core.option.Option.None in
+  let letter := core.option.Option.None tt in
+  let emoticon := core.option.Option.None tt in
   let* _ :=
-    match number with
-    | core.option.Option.Some i =>
+    let* α0 := let_if core.option.Option i := number in
+    if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := format_argument::["new_debug"] (addr_of i) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Matched "; "!
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
+          let* α0 := borrow [ "Matched "; "!
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow i i32 in
+          let* α5 := deref α4 i32 in
+          let* α6 := borrow α5 i32 in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          std.io.stdio._print α12 in
         Pure tt in
       Pure tt
-    | _ => Pure tt
-    end in
-  let* _ :=
-    match letter with
-    | core.option.Option.Some i =>
-      let* _ :=
-        let* _ :=
-          let* α0 := format_argument::["new_debug"] (addr_of i) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "Matched "; "!
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
-        Pure tt in
-      Pure tt
-    | _ =>
-      let* _ :=
-        let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Didn't match a number. Let's go with a letter!
-" ]) in
-          std.io.stdio._print α0 in
-        Pure tt in
-      Pure tt
-    end in
-  let i_like_letters := false in
-  match emoticon with
-  | core.option.Option.Some i =>
-    let* _ :=
-      let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of i) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Matched "; "!
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+    else
       Pure tt in
-    Pure tt
-  | _ =>
-    if (i_like_letters : bool) then
+  let* _ :=
+    let* α0 := let_if core.option.Option i := letter in
+    if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "Didn't match a number. Let's go with a letter!
-" ]) in
-          std.io.stdio._print α0 in
+          let* α0 := borrow [ "Matched "; "!
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow i i32 in
+          let* α5 := deref α4 i32 in
+          let* α6 := borrow α5 i32 in
+          let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          std.io.stdio._print α12 in
         Pure tt in
       Pure tt
     else
       let* _ :=
         let* _ :=
           let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of
-                [ "I don't like letters. Let's go with an emoticon :)!
-" ]) in
-          std.io.stdio._print α0 in
+            borrow
+              [ "Didn't match a number. Let's go with a letter!
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        Pure tt in
+      Pure tt in
+  let i_like_letters := false in
+  let* α0 := let_if core.option.Option i := emoticon in
+  if (α0 : bool) then
+    let* _ :=
+      let* _ :=
+        let* α0 := borrow [ "Matched "; "!
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow i i32 in
+        let* α5 := deref α4 i32 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
+      Pure tt in
+    Pure tt
+  else
+    let* α0 := use i_like_letters in
+    if (α0 : bool) then
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow
+              [ "Didn't match a number. Let's go with a letter!
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
         Pure tt in
       Pure tt
-  end.
+    else
+      let* _ :=
+        let* _ :=
+          let* α0 :=
+            borrow
+              [ "I don't like letters. Let's go with an emoticon :)!
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
+        Pure tt in
+      Pure tt.

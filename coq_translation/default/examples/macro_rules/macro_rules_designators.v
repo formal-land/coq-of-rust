@@ -4,26 +4,42 @@ Require Import CoqOfRust.CoqOfRust.
 Definition foo `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of "foo") in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "You called "; "()
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "You called "; "()
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow "foo" (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
 Definition bar `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of "bar") in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "You called "; "()
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "You called "; "()
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow "bar" (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
@@ -33,32 +49,52 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ := macro_rules_designators.bar in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of "1u32 + 1") in
-      let* α1 := 1.["add"] 1 in
-      let* α2 := format_argument::["new_debug"] (addr_of α1) in
-      let* α3 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; " = "; "
-" ])
-          (addr_of [ α0; α2 ]) in
-      std.io.stdio._print α3 in
+      let* α0 := borrow [ ""; " = "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow "1u32 + 1" (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := add 1 1 in
+      let* α9 := borrow α8 u32 in
+      let* α10 := deref α9 u32 in
+      let* α11 := borrow α10 u32 in
+      let* α12 := core.fmt.rt.Argument::["new_debug"] α11 in
+      let* α13 := borrow [ α7; α12 ] (list core.fmt.rt.Argument) in
+      let* α14 := deref α13 (list core.fmt.rt.Argument) in
+      let* α15 := borrow α14 (list core.fmt.rt.Argument) in
+      let* α16 := pointer_coercion "Unsize" α15 in
+      let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
+      std.io.stdio._print α17 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_argument::["new_debug"]
-          (addr_of "{ let x = 1u32; x * x + 2 * x - 1 }") in
+      let* α0 := borrow [ ""; " = "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow "{ let x = 1u32; x * x + 2 * x - 1 }" (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
       let x := 1 in
-      let* α0 := x.["mul"] x in
-      let* α1 := 2.["mul"] x in
-      let* α2 := α0.["add"] α1 in
-      let* α1 := α2.["sub"] 1 in
-      let* α2 := format_argument::["new_debug"] (addr_of α1) in
-      let* α3 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; " = "; "
-" ])
-          (addr_of [ α0; α2 ]) in
-      std.io.stdio._print α3 in
+      let* α0 := mul x x in
+      let* α1 := mul 2 x in
+      let* α2 := add α0 α1 in
+      let* α8 := sub α2 1 in
+      let* α9 := borrow α8 u32 in
+      let* α10 := deref α9 u32 in
+      let* α11 := borrow α10 u32 in
+      let* α12 := core.fmt.rt.Argument::["new_debug"] α11 in
+      let* α13 := borrow [ α7; α12 ] (list core.fmt.rt.Argument) in
+      let* α14 := deref α13 (list core.fmt.rt.Argument) in
+      let* α15 := borrow α14 (list core.fmt.rt.Argument) in
+      let* α16 := pointer_coercion "Unsize" α15 in
+      let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
+      std.io.stdio._print α17 in
     Pure tt in
   Pure tt.

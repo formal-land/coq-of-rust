@@ -69,31 +69,53 @@ Definition blue
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build in
-  let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build in
-  let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build in
+  let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build_t tt in
+  let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build_t tt in
+  let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build_t tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        generics_bounds_test_case_empty_bounds.red (addr_of cardinal) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "A cardinal is "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "A cardinal is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow cardinal generics_bounds_test_case_empty_bounds.Cardinal in
+      let* α5 := deref α4 generics_bounds_test_case_empty_bounds.Cardinal in
+      let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.Cardinal in
+      let* α7 := generics_bounds_test_case_empty_bounds.red α6 in
+      let* α8 := borrow α7 (ref str) in
+      let* α9 := deref α8 (ref str) in
+      let* α10 := borrow α9 (ref str) in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        generics_bounds_test_case_empty_bounds.blue (addr_of blue_jay) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "A blue jay is "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "A blue jay is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow blue_jay generics_bounds_test_case_empty_bounds.BlueJay in
+      let* α5 := deref α4 generics_bounds_test_case_empty_bounds.BlueJay in
+      let* α6 := borrow α5 generics_bounds_test_case_empty_bounds.BlueJay in
+      let* α7 := generics_bounds_test_case_empty_bounds.blue α6 in
+      let* α8 := borrow α7 (ref str) in
+      let* α9 := deref α8 (ref str) in
+      let* α10 := borrow α9 (ref str) in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   Pure tt.

@@ -69,11 +69,22 @@ Definition random_animal
     `{H' : State.Trait}
     (random_number : f64)
     : M (H := H') (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A) :=
-  let* α0 := random_number.["lt"] 1 (* 0.5 *) in
-  if (α0 : bool) then
-    (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] {|  |}
-  else
-    (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] {|  |}.
+  let* α0 := lt random_number 1 (* 0.5 *) in
+  let* α1 := use α0 in
+  let* α2 :=
+    if (α1 : bool) then
+      let* α0 :=
+        (alloc.boxed.Box _ alloc.alloc.Global)::["new"]
+          (returning_traits_with_dyn.Sheep.Build_t tt) in
+      let* α0 := pointer_coercion "Unsize" α0 in
+      pointer_coercion "Unsize" α0
+    else
+      let* α0 :=
+        (alloc.boxed.Box _ alloc.alloc.Global)::["new"]
+          (returning_traits_with_dyn.Cow.Build_t tt) in
+      pointer_coercion "Unsize" α0 in
+  let* α0 := pointer_coercion "Unsize" α2 in
+  pointer_coercion "Unsize" α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
@@ -81,13 +92,24 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* animal := returning_traits_with_dyn.random_animal random_number in
   let* _ :=
     let* _ :=
-      let* α0 := animal.["noise"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "You've randomly chosen an animal, and it says "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow [ "You've randomly chosen an animal, and it says "; "
+" ] in
+      let* α1 := deref α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := deref animal in
+      let* α5 := borrow α4 in
+      let* α6 := returning_traits_with_dyn.Animal.noise α5 in
+      let* α7 := borrow α6 in
+      let* α8 := deref α7 in
+      let* α9 := borrow α8 in
+      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+      let* α11 := borrow [ α10 ] in
+      let* α12 := deref α11 in
+      let* α13 := borrow α12 in
+      let* α14 := pointer_coercion "Unsize" α13 in
+      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+      std.io.stdio._print α15 in
     Pure tt in
   Pure tt.

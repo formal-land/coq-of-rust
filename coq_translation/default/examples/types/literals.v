@@ -10,57 +10,112 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let f := 1 (* 1.0 *) in
   let* _ :=
     let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of x) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "size of `x` in bytes: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "size of `x` in bytes: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow x u8 in
+      let* α5 := deref α4 u8 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := core.mem.size_of_val α6 in
+      let* α8 := borrow α7 usize in
+      let* α9 := deref α8 usize in
+      let* α10 := borrow α9 usize in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of y) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "size of `y` in bytes: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "size of `y` in bytes: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow y u32 in
+      let* α5 := deref α4 u32 in
+      let* α6 := borrow α5 u32 in
+      let* α7 := core.mem.size_of_val α6 in
+      let* α8 := borrow α7 usize in
+      let* α9 := deref α8 usize in
+      let* α10 := borrow α9 usize in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of z) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "size of `z` in bytes: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "size of `z` in bytes: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow z f32 in
+      let* α5 := deref α4 f32 in
+      let* α6 := borrow α5 f32 in
+      let* α7 := core.mem.size_of_val α6 in
+      let* α8 := borrow α7 usize in
+      let* α9 := deref α8 usize in
+      let* α10 := borrow α9 usize in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of i) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "size of `i` in bytes: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "size of `i` in bytes: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow i i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.mem.size_of_val α6 in
+      let* α8 := borrow α7 usize in
+      let* α9 := deref α8 usize in
+      let* α10 := borrow α9 usize in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := core.mem.size_of_val (addr_of f) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "size of `f` in bytes: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "size of `f` in bytes: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow f f64 in
+      let* α5 := deref α4 f64 in
+      let* α6 := borrow α5 f64 in
+      let* α7 := core.mem.size_of_val α6 in
+      let* α8 := borrow α7 usize in
+      let* α9 := deref α8 usize in
+      let* α10 := borrow α9 usize in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   Pure tt.

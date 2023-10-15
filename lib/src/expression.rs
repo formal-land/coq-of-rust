@@ -27,9 +27,9 @@ impl FreshVars {
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub struct MatchArm {
-    pat: Pattern,
-    body: Expr,
+pub(crate) struct MatchArm {
+    pub(crate) pat: Pattern,
+    pub(crate) body: Expr,
 }
 
 /// [LoopControlFlow] represents the expressions responsible for
@@ -54,7 +54,11 @@ pub(crate) enum Expr {
         ty: Box<CoqType>,
         func: String,
     },
-    Literal(LitKind),
+    Literal {
+        literal: LitKind,
+        neg: bool,
+    },
+    NonHirLiteral(rustc_middle::ty::ScalarInt),
     AddrOf(Box<Expr>),
     Call {
         func: Box<Expr>,
@@ -74,7 +78,7 @@ pub(crate) enum Expr {
         expr: Box<Expr>,
         ty: Box<CoqType>,
     },
-    Type {
+    TypeAnnotation {
         expr: Box<Expr>,
         ty: Box<CoqType>,
     },
@@ -85,7 +89,7 @@ pub(crate) enum Expr {
         elements: Vec<Expr>,
     },
     LetIf {
-        pat: Pattern,
+        pat: Box<Pattern>,
         init: Box<Expr>,
     },
     If {
@@ -95,7 +99,6 @@ pub(crate) enum Expr {
     },
     Loop {
         body: Box<Stmt>,
-        loop_source: String,
     },
     Match {
         scrutinee: Box<Expr>,
@@ -133,6 +136,10 @@ pub(crate) enum Expr {
     StructUnit {
         path: Path,
     },
+    /// Sometimes type expressions appear as parameter to special operators
+    Type(Box<CoqType>),
+    /// Useful for error messages or annotations
+    Message(String),
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
@@ -148,8 +155,8 @@ pub(crate) enum Stmt {
     },
 }
 
-fn compile_bin_op(bin_op: &BinOp) -> String {
-    match bin_op.node {
+pub(crate) fn compile_bin_op_kind(bin_op_kind: BinOpKind) -> String {
+    match bin_op_kind {
         BinOpKind::Add => "add".to_string(),
         BinOpKind::Sub => "sub".to_string(),
         BinOpKind::Mul => "mul".to_string(),
@@ -171,6 +178,10 @@ fn compile_bin_op(bin_op: &BinOp) -> String {
     }
 }
 
+fn compile_bin_op(bin_op: &BinOp) -> String {
+    compile_bin_op_kind(bin_op.node)
+}
+
 fn compile_assign_bin_op(bin_op: &BinOp) -> String {
     format!("{}_assign", compile_bin_op(bin_op))
 }
@@ -180,16 +191,6 @@ fn compile_un_op(un_op: &rustc_hir::UnOp) -> String {
         rustc_hir::UnOp::Deref => "deref".to_string(),
         rustc_hir::UnOp::Not => "not".to_string(),
         rustc_hir::UnOp::Neg => "neg".to_string(),
-    }
-}
-
-/// The function [compile_loop_source] converts a hir loop instruction to a
-/// string
-fn compile_loop_source(loop_source: &rustc_hir::LoopSource) -> String {
-    match loop_source {
-        rustc_hir::LoopSource::Loop => "loop".to_string(),
-        rustc_hir::LoopSource::While => "while".to_string(),
-        rustc_hir::LoopSource::ForLoop => "for".to_string(),
     }
 }
 
@@ -213,7 +214,7 @@ fn compile_qpath(env: &mut Env, qpath: &QPath) -> Expr {
 
 /// The Coq value [tt] (the inhabitant of the [unit] type) is used as default
 /// value
-fn tt() -> Expr {
+pub(crate) fn tt() -> Expr {
     Expr::LocalVar("tt".to_string())
 }
 
@@ -328,7 +329,8 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             fresh_vars,
         ),
         Expr::AssociatedFunction { .. } => (pure(expr), fresh_vars),
-        Expr::Literal(_) => (pure(expr), fresh_vars),
+        Expr::Literal { .. } => (pure(expr), fresh_vars),
+        Expr::NonHirLiteral { .. } => (pure(expr), fresh_vars),
         Expr::AddrOf(e) => monadic_let(fresh_vars, *e, |fresh_vars, e| {
             (pure(Expr::AddrOf(Box::new(e))), fresh_vars)
         }),
@@ -388,9 +390,9 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 fresh_vars,
             )
         }),
-        Expr::Type { expr, ty } => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
+        Expr::TypeAnnotation { expr, ty } => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
             (
-                pure(Expr::Type {
+                pure(Expr::TypeAnnotation {
                     expr: Box::new(expr),
                     ty,
                 }),
@@ -432,12 +434,11 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
                 fresh_vars,
             )
         }),
-        Expr::Loop { body, loop_source } => {
+        Expr::Loop { body, .. } => {
             let body = mt_stmt(*body);
             (
                 Stmt::Expr(Box::new(Expr::Loop {
                     body: Box::new(body),
-                    loop_source,
                 })),
                 fresh_vars,
             )
@@ -557,6 +558,8 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             }),
         ),
         Expr::StructUnit { .. } => (pure(expr), fresh_vars),
+        Expr::Type(_) => (pure(expr), fresh_vars),
+        Expr::Message(_) => (pure(expr), fresh_vars),
     }
 }
 
@@ -763,18 +766,21 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 generic_tys: vec![],
             }
         }
-        ExprKind::Lit(lit) => Expr::Literal(lit.node.clone()),
+        ExprKind::Lit(lit) => Expr::Literal {
+            literal: lit.node.clone(),
+            neg: false,
+        },
         ExprKind::Cast(expr, ty) => Expr::Cast {
             expr: Box::new(compile_expr(env, expr)),
             ty: compile_type(env, ty),
         },
-        ExprKind::Type(expr, ty) => Expr::Type {
+        ExprKind::Type(expr, ty) => Expr::TypeAnnotation {
             expr: Box::new(compile_expr(env, expr)),
             ty: compile_type(env, ty),
         },
         ExprKind::DropTemps(expr) => compile_expr(env, expr),
         ExprKind::Let(rustc_hir::Let { pat, init, .. }) => {
-            let pat = compile_pattern(env, pat);
+            let pat = Box::new(compile_pattern(env, pat));
             let init = Box::new(compile_expr(env, init));
             Expr::LetIf { pat, init }
         }
@@ -816,7 +822,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
             // we need to handle the case of "let" in "if let" here
             if let Expr::LetIf { pat, init } = *condition {
                 let success = MatchArm {
-                    pat,
+                    pat: *pat,
                     body: *success,
                 };
                 let failure = MatchArm {
@@ -842,7 +848,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                 }
             }
         }
-        ExprKind::Loop(block, label, loop_source, _) => {
+        ExprKind::Loop(block, label, _, _) => {
             if let Some(label) = label {
                 env.tcx
                     .sess
@@ -850,8 +856,7 @@ pub(crate) fn compile_expr(env: &mut Env, expr: &rustc_hir::Expr) -> Expr {
                     .emit();
             }
             let body = Box::new(compile_block(env, block));
-            let loop_source = compile_loop_source(loop_source);
-            Expr::Loop { body, loop_source }
+            Expr::Loop { body }
         }
         ExprKind::Match(scrutinee, arms, _) => {
             let scrutinee = Box::new(compile_expr(env, scrutinee));
@@ -1082,7 +1087,8 @@ impl Expr {
                 text(format!("\"{func}\"")),
                 text("]"),
             ]),
-            Expr::Literal(literal) => literal_to_doc(with_paren, literal),
+            Expr::Literal { literal, neg } => literal_to_doc(with_paren, literal, *neg),
+            Expr::NonHirLiteral(literal) => text(literal.to_string()),
             Expr::AddrOf(expr) => paren(
                 with_paren,
                 nest([text("addr_of"), line(), expr.to_doc(true)]),
@@ -1148,7 +1154,7 @@ impl Expr {
                     ty.to_doc(true),
                 ]),
             ),
-            Expr::Type { expr, ty } => nest([
+            Expr::TypeAnnotation { expr, ty } => nest([
                 text("("),
                 expr.to_doc(true),
                 line(),
@@ -1320,6 +1326,8 @@ impl Expr {
                 ]),
             ),
             Expr::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
+            Expr::Type(ty) => ty.to_doc(with_paren),
+            Expr::Message(message) => text(format!("\"{message}\"")),
         }
     }
 

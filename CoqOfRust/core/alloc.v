@@ -55,7 +55,7 @@ pub unsafe trait Allocator {
 }
 *)
 Module Allocator.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     (* fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError>; *)
     allocate : ref Self -> layout.Layout -> Result (NonNull (slice u8)) AllocError;
     
@@ -112,7 +112,7 @@ Module Allocator.
   }.
 End Allocator.
 
-Global Instance Allocator_for_Global : Allocator.Trait Global.
+Global Instance Allocator_for_Global `{State.Trait} : Allocator.Trait Global.
 Admitted.
 
 Module global.

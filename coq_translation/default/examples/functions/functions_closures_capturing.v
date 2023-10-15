@@ -3,51 +3,83 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* color := alloc.string.String::["from"] "green" in
+  let* color := core.convert.From.from "green" in
   let print :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of color) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "`color`: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "`color`: "; "
+" ] in
+      let* α1 := deref (list (ref str)) α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow color in
+      let* α5 := deref alloc.string.String α4 in
+      let* α6 := borrow α5 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] in
+      let* α9 := deref (list core.fmt.rt.Argument) α8 in
+      let* α10 := borrow α9 in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
-  let* _ := print in
-  let _reborrow := addr_of color in
-  let* _ := print in
+  let* _ :=
+    let* α0 := borrow print in
+    core.ops.function.Fn.call α0 tt in
+  let* _reborrow := borrow color in
+  let* _ :=
+    let* α0 := borrow print in
+    core.ops.function.Fn.call α0 tt in
   let _color_moved := color in
   let count := 0 in
   let inc :=
-    let* _ := count.["add_assign"] 1 in
+    let* _ := assign_op add count 1 in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of count) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "`count`: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 := borrow [ "`count`: "; "
+" ] in
+        let* α1 := deref (list (ref str)) α0 in
+        let* α2 := borrow α1 in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow count in
+        let* α5 := deref i32 α4 in
+        let* α6 := borrow α5 in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] in
+        let* α9 := deref (list core.fmt.rt.Argument) α8 in
+        let* α10 := borrow α9 in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt in
     Pure tt in
-  let* _ := inc in
-  let* _ := inc in
-  let _count_reborrowed := addr_of count in
-  let* movable := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 3 in
+  let* _ :=
+    let* α0 := borrow_mut inc in
+    core.ops.function.FnMut.call_mut α0 tt in
+  let* _ :=
+    let* α0 := borrow_mut inc in
+    core.ops.function.FnMut.call_mut α0 tt in
+  let* _count_reborrowed := borrow_mut count in
+  let* movable := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 3 in
   let consume :=
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of movable) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "`movable`: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 := borrow [ "`movable`: "; "
+" ] in
+        let* α1 := deref (list (ref str)) α0 in
+        let* α2 := borrow α1 in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow movable in
+        let* α5 := deref (alloc.boxed.Box i32 alloc.alloc.Global) α4 in
+        let* α6 := borrow α5 in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] in
+        let* α9 := deref (list core.fmt.rt.Argument) α8 in
+        let* α10 := borrow α9 in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt in
     let* _ := core.mem.drop movable in
     Pure tt in
-  let* _ := consume in
+  let* _ := core.ops.function.FnOnce.call_once consume tt in
   Pure tt.

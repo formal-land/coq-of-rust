@@ -17,13 +17,21 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    let* α0 :=
+    let* α0 := deref f in
+    let* α1 := borrow_mut α0 in
+    let* α2 :=
       match self with
-      | combinators_and_then.Food.CordonBleu => Pure "CordonBleu"
-      | combinators_and_then.Food.Steak => Pure "Steak"
-      | combinators_and_then.Food.Sushi => Pure "Sushi"
+      | combinators_and_then.Food  =>
+        let* α0 := deref "CordonBleu" in
+        borrow α0
+      | combinators_and_then.Food  =>
+        let* α0 := deref "Steak" in
+        borrow α0
+      | combinators_and_then.Food  =>
+        let* α0 := deref "Sushi" in
+        borrow α0
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] α1 α2.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -51,13 +59,21 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    let* α0 :=
+    let* α0 := deref f in
+    let* α1 := borrow_mut α0 in
+    let* α2 :=
       match self with
-      | combinators_and_then.Day.Monday => Pure "Monday"
-      | combinators_and_then.Day.Tuesday => Pure "Tuesday"
-      | combinators_and_then.Day.Wednesday => Pure "Wednesday"
+      | combinators_and_then.Day  =>
+        let* α0 := deref "Monday" in
+        borrow α0
+      | combinators_and_then.Day  =>
+        let* α0 := deref "Tuesday" in
+        borrow α0
+      | combinators_and_then.Day  =>
+        let* α0 := deref "Wednesday" in
+        borrow α0
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] α1 α2.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -74,7 +90,7 @@ Definition have_ingredients
     (food : combinators_and_then.Food)
     : M (H := H') (core.option.Option combinators_and_then.Food) :=
   match food with
-  | combinators_and_then.Food.Sushi => Pure core.option.Option.None
+  | combinators_and_then.Food  => Pure (core.option.Option.None tt)
   | _ => Pure (core.option.Option.Some food)
   end.
 
@@ -83,7 +99,7 @@ Definition have_recipe
     (food : combinators_and_then.Food)
     : M (H := H') (core.option.Option combinators_and_then.Food) :=
   match food with
-  | combinators_and_then.Food.CordonBleu => Pure core.option.Option.None
+  | combinators_and_then.Food  => Pure (core.option.Option.None tt)
   | _ => Pure (core.option.Option.Some food)
   end.
 
@@ -93,12 +109,12 @@ Definition cookable_v1
     : M (H := H') (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
   match α0 with
-  | core.option.Option.None => Pure core.option.Option.None
-  | core.option.Option.Some food =>
+  | core.option.Option  => Pure (core.option.Option.None tt)
+  | core.option.Option food =>
     let* α0 := combinators_and_then.have_ingredients food in
     match α0 with
-    | core.option.Option.None => Pure core.option.Option.None
-    | core.option.Option.Some food => Pure (core.option.Option.Some food)
+    | core.option.Option  => Pure (core.option.Option.None tt)
+    | core.option.Option food => Pure (core.option.Option.Some food)
     end
   end.
 
@@ -107,7 +123,7 @@ Definition cookable_v2
     (food : combinators_and_then.Food)
     : M (H := H') (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
-  α0.["and_then"] combinators_and_then.have_ingredients.
+  (core.option.Option _)::["and_then"] α0 combinators_and_then.have_ingredients.
 
 Definition eat
     `{H' : State.Trait}
@@ -116,37 +132,58 @@ Definition eat
     : M (H := H') unit :=
   let* α0 := combinators_and_then.cookable_v2 food in
   match α0 with
-  | core.option.Option.Some food =>
+  | core.option.Option food =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of day) in
-      let* α1 := format_argument::["new_debug"] (addr_of food) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Yay! On "; " we get to eat "; ".
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "Yay! On "; " we get to eat "; ".
+" ] in
+      let* α1 := deref α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow day in
+      let* α5 := deref α4 in
+      let* α6 := borrow α5 in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow food in
+      let* α9 := deref α8 in
+      let* α10 := borrow α9 in
+      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+      let* α12 := borrow [ α7; α11 ] in
+      let* α13 := deref α12 in
+      let* α14 := borrow α13 in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt
-  | core.option.Option.None =>
+  | core.option.Option  =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of day) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Oh no. We don't get to eat on "; "?
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "Oh no. We don't get to eat on "; "?
+" ] in
+      let* α1 := deref α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow day in
+      let* α5 := deref α4 in
+      let* α6 := borrow α5 in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] in
+      let* α9 := deref α8 in
+      let* α10 := borrow α9 in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let '(cordon_bleu, steak, sushi) :=
-    (combinators_and_then.Food.CordonBleu,
-      combinators_and_then.Food.Steak,
-      combinators_and_then.Food.Sushi) in
+    (combinators_and_then.Food.CordonBleu tt,
+      combinators_and_then.Food.Steak tt,
+      combinators_and_then.Food.Sushi tt) in
   let* _ :=
-    combinators_and_then.eat cordon_bleu combinators_and_then.Day.Monday in
-  let* _ := combinators_and_then.eat steak combinators_and_then.Day.Tuesday in
-  let* _ := combinators_and_then.eat sushi combinators_and_then.Day.Wednesday in
+    combinators_and_then.eat cordon_bleu (combinators_and_then.Day.Monday tt) in
+  let* _ :=
+    combinators_and_then.eat steak (combinators_and_then.Day.Tuesday tt) in
+  let* _ :=
+    combinators_and_then.eat sushi (combinators_and_then.Day.Wednesday tt) in
   Pure tt.

@@ -1,0 +1,26 @@
+error[E0308]: mismatched types
+ --> examples/types/casting.rs:8:23
+  |
+8 |     let integer: u8 = decimal;
+  |                  --   ^^^^^^^ expected `u8`, found `f32`
+  |                  |
+  |                  expected due to this
+
+error[E0604]: only `u8` can be cast as `char`, not `f32`
+  --> examples/types/casting.rs:17:21
+   |
+17 |     let character = decimal as char;
+   |                     ^^^^^^^^^^^^^^^ invalid cast
+   |
+help: try `char::from_u32` instead (via a `u32`)
+  --> examples/types/casting.rs:17:21
+   |
+17 |     let character = decimal as char;
+   |                     ^^^^^^^^^^^^^^^
+
+thread 'rustc' panicked at 'thir failed to compile', lib/src/top_level.rs:674:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: aborting due to 2 previous errors
+
+Some errors have detailed explanations: E0308, E0604.
+For more information about an error, try `rustc --explain E0308`.

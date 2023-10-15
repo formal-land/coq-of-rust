@@ -3,5 +3,5 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := addr_of 1 in
+  let* x := borrow 1 i32 in
   Pure tt.

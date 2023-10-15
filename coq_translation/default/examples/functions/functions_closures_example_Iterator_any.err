@@ -1,0 +1,23 @@
+error[E0277]: can't compare `&{integer}` with `{integer}`
+  --> examples/functions/functions_closures_example_Iterator_any.rs:24:62
+   |
+24 |     println!("2 in array2: {}", array2.into_iter().any(|x| x == 2));
+   |                                                              ^^ no implementation for `&{integer} == {integer}`
+   |
+   = help: the trait `std::cmp::PartialEq<{integer}>` is not implemented for `&{integer}`
+   = help: the following other types implement trait `std::cmp::PartialEq<Rhs>`:
+             f32
+             f64
+             i128
+             i16
+             i32
+             i64
+             i8
+             isize
+           and 6 others
+
+thread 'rustc' panicked at 'thir failed to compile', lib/src/top_level.rs:674:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0277`.

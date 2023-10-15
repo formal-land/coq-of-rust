@@ -25,60 +25,90 @@ Definition inspect
     (event : enums.WebEvent)
     : M (H := H') unit :=
   match event with
-  | enums.WebEvent.PageLoad =>
+  | enums.WebEvent  =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of
-            [
-              "page loaded, r" ++
-                String.String "233" ("f" ++ String.String "233" "
+        borrow
+          [
+            "page loaded, r" ++
+              String.String "233" ("f" ++ String.String "233" "
 ")
-            ]) in
-      std.io.stdio._print α0 in
+          ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt
-  | enums.WebEvent.PageUnload =>
+  | enums.WebEvent  =>
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "page unloaded
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ "page unloaded
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt
-  | enums.WebEvent.KeyPress c =>
+  | enums.WebEvent c =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of c) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "pressed '"; "'.
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "pressed '"; "'.
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow c char in
+      let* α5 := deref α4 char in
+      let* α6 := borrow α5 char in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
-  | enums.WebEvent.Paste s =>
+  | enums.WebEvent s =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of s) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "pasted ""; "".
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "pasted ""; "".
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow s alloc.string.String in
+      let* α5 := deref α4 alloc.string.String in
+      let* α6 := borrow α5 alloc.string.String in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
-  |
-      enums.WebEvent.Click
-      {| enums.WebEvent.Click.x := x; enums.WebEvent.Click.y := y;
-      |}
-      =>
+  | enums.WebEvent {| enums.WebEvent.x := x; enums.WebEvent.y := y; |} =>
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of x) in
-        let* α1 := format_argument::["new_display"] (addr_of y) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "clicked at x="; ", y="; ".
-" ])
-            (addr_of [ α0; α1 ]) in
-        std.io.stdio._print α2 in
+        let* α0 := borrow [ "clicked at x="; ", y="; ".
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow x i64 in
+        let* α5 := deref α4 i64 in
+        let* α6 := borrow α5 i64 in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow y i64 in
+        let* α9 := deref α8 i64 in
+        let* α10 := borrow α9 i64 in
+        let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+        let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+        let* α13 := deref α12 (list core.fmt.rt.Argument) in
+        let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+        let* α15 := pointer_coercion "Unsize" α14 in
+        let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+        std.io.stdio._print α16 in
       Pure tt in
     Pure tt
   end.
@@ -87,16 +117,18 @@ Definition inspect
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let pressed := enums.WebEvent.KeyPress "x"%char in
   let* pasted :=
-    let* α0 := "my text".["to_owned"] in
-    Pure (enums.WebEvent.Paste α0) in
+    let* α0 := deref "my text" str in
+    let* α1 := borrow α0 str in
+    let* α2 := alloc.borrow.ToOwned.to_owned α1 in
+    Pure (enums.WebEvent.Paste α2) in
   let click :=
     enums.WebEvent.Click
       {|
       enums.WebEvent.Click.x := 20;
       enums.WebEvent.Click.y := 80;
     |} in
-  let load := enums.WebEvent.PageLoad in
-  let unload := enums.WebEvent.PageUnload in
+  let load := enums.WebEvent.PageLoad tt in
+  let unload := enums.WebEvent.PageUnload tt in
   let* _ := enums.inspect pressed in
   let* _ := enums.inspect pasted in
   let* _ := enums.inspect click in

@@ -12,6 +12,8 @@ error[E0433]: failed to resolve: use of undeclared crate or module `rand`
 7 |     let secret_number = rand::thread_rng().gen_range(1..=100);
   |                         ^^^^ use of undeclared crate or module `rand`
 
+thread 'rustc' panicked at 'thir failed to compile', lib/src/top_level.rs:674:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 error: aborting due to 2 previous errors
 
 Some errors have detailed explanations: E0432, E0433.

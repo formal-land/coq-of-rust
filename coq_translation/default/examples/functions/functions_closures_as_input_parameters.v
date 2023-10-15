@@ -7,7 +7,7 @@ Definition apply
     `{core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M (H := H') unit :=
-  let* _ := f in
+  let* _ := core.ops.function.FnOnce.call_once f tt in
   Pure tt.
 
 Definition apply_to_3
@@ -16,55 +16,89 @@ Definition apply_to_3
     `{core.ops.function.Fn.Trait F (Args := i32)}
     (f : F)
     : M (H := H') i32 :=
-  f 3.
+  let* α0 := borrow f _ in
+  core.ops.function.Fn.call α0 (3).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let greeting := "hello" in
-  let* farewell := "goodbye".["to_owned"] in
+  let* farewell :=
+    let* α0 := deref "goodbye" str in
+    let* α1 := borrow α0 str in
+    alloc.borrow.ToOwned.to_owned α1 in
   let diary :=
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of greeting) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "I said "; ".
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
-      Pure tt in
-    let* _ := farewell.["push_str"] "!!!" in
-    let* _ :=
-      let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of farewell) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Then I screamed "; ".
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 := borrow [ "I said "; ".
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow greeting (ref str) in
+        let* α5 := deref α4 (ref str) in
+        let* α6 := borrow α5 (ref str) in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt in
     let* _ :=
+      let* α0 := borrow_mut farewell alloc.string.String in
+      let* α1 := deref "!!!" str in
+      let* α2 := borrow α1 str in
+      alloc.string.String::["push_str"] α0 α2 in
+    let* _ :=
       let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "Now I can sleep. zzzzz
-" ]) in
-        std.io.stdio._print α0 in
+        let* α0 := borrow [ "Then I screamed "; ".
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow farewell alloc.string.String in
+        let* α5 := deref α4 alloc.string.String in
+        let* α6 := borrow α5 alloc.string.String in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
+      Pure tt in
+    let* _ :=
+      let* _ :=
+        let* α0 := borrow [ "Now I can sleep. zzzzz
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
       Pure tt in
     let* _ := core.mem.drop farewell in
     Pure tt in
   let* _ := functions_closures_as_input_parameters.apply diary in
-  let double := fun x => 2.["mul"] x in
+  let double := mul 2 x in
   let* _ :=
     let* _ :=
-      let* α0 := functions_closures_as_input_parameters.apply_to_3 double in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "3 doubled: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "3 doubled: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := functions_closures_as_input_parameters.apply_to_3 double in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
     Pure tt in
   Pure tt.

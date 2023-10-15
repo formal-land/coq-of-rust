@@ -20,8 +20,8 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
       (y : i32)
       : M (H := H') i32 :=
     match self with
-    | Add => x.["add"] y
-    | Subtract => x.["sub"] y
+    | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  => add x y
+    | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers  => sub x y
     end.
   
   Global Instance Method_run `{H' : State.Trait} : Notation.Dot "run" := {

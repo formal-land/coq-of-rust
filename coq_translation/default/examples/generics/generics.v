@@ -37,9 +37,9 @@ Definition SingleGen := @SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let _s := generics.Single.Build_t generics.A.Build in
-  let _char : generics.SingleGen char := generics.SingleGen.Build_t "a"%char in
-  let _t := generics.SingleGen.Build_t generics.A.Build in
+  let _s := generics.Single.Build_t (generics.A.Build_t tt) in
+  let _char := generics.SingleGen.Build_t "a"%char in
+  let _t := generics.SingleGen.Build_t (generics.A.Build_t tt) in
   let _i32 := generics.SingleGen.Build_t 6 in
   let _char := generics.SingleGen.Build_t "a"%char in
   Pure tt.

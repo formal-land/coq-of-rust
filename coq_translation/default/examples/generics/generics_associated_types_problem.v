@@ -51,9 +51,17 @@ Module
       (number_1 : ref i32)
       (number_2 : ref i32)
       : M (H := H') bool :=
-    let* α0 := (addr_of (self.[0])).["eq"] number_1 in
-    let* α1 := (addr_of (self.[1])).["eq"] number_2 in
-    α0.["andb"] α1.
+    let* α0 := deref self generics_associated_types_problem.Container in
+    let* α1 := borrow α0.["0"] i32 in
+    let* α2 := borrow α1 (ref i32) in
+    let* α3 := borrow number_1 (ref i32) in
+    let* α4 := core.cmp.PartialEq.eq α2 α3 in
+    let* α5 := deref self generics_associated_types_problem.Container in
+    let* α6 := borrow α5.["1"] i32 in
+    let* α7 := borrow α6 (ref i32) in
+    let* α8 := borrow number_2 (ref i32) in
+    let* α9 := core.cmp.PartialEq.eq α7 α8 in
+    and α4 α9.
   
   Global Instance Method_contains `{H' : State.Trait} :
     Notation.Dot "contains" := {
@@ -61,14 +69,16 @@ Module
   }.
   
   Definition first `{H' : State.Trait} (self : ref Self) : M (H := H') i32 :=
-    Pure (self.[0]).
+    let* α0 := deref self generics_associated_types_problem.Container in
+    Pure α0.["0"].
   
   Global Instance Method_first `{H' : State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
   Definition last `{H' : State.Trait} (self : ref Self) : M (H := H') i32 :=
-    Pure (self.[1]).
+    let* α0 := deref self generics_associated_types_problem.Container in
+    Pure α0.["1"].
   
   Global Instance Method_last `{H' : State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
@@ -97,9 +107,13 @@ Definition difference
     `{generics_associated_types_problem.Contains.Trait C (A := A) (B := B)}
     (container : ref C)
     : M (H := H') i32 :=
-  let* α0 := container.["last"] in
-  let* α1 := container.["first"] in
-  α0.["sub"] α1.
+  let* α0 := deref container _ in
+  let* α1 := borrow α0 _ in
+  let* α2 := generics_associated_types_problem.Contains.last α1 in
+  let* α3 := deref container _ in
+  let* α4 := borrow α3 _ in
+  let* α5 := generics_associated_types_problem.Contains.first α4 in
+  sub α2 α5.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
@@ -110,50 +124,104 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_argument::["new_display"] (addr_of (addr_of number_1)) in
-      let* α1 :=
-        format_argument::["new_display"] (addr_of (addr_of number_2)) in
-      let* α2 := container.["contains"] (addr_of number_1) (addr_of number_2) in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Does container contain "; " and "; ": "; "
-" ])
-          (addr_of [ α0; α1; α3 ]) in
-      std.io.stdio._print α4 in
+        borrow
+          [ "Does container contain "; " and "; ": "; "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow number_1 i32 in
+      let* α5 := borrow α4 (ref i32) in
+      let* α6 := deref α5 (ref i32) in
+      let* α7 := borrow α6 (ref i32) in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow number_2 i32 in
+      let* α10 := borrow α9 (ref i32) in
+      let* α11 := deref α10 (ref i32) in
+      let* α12 := borrow α11 (ref i32) in
+      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
+      let* α14 :=
+        borrow container generics_associated_types_problem.Container in
+      let* α15 := borrow number_1 i32 in
+      let* α16 := deref α15 i32 in
+      let* α17 := borrow α16 i32 in
+      let* α18 := borrow number_2 i32 in
+      let* α19 := deref α18 i32 in
+      let* α20 := borrow α19 i32 in
+      let* α21 :=
+        generics_associated_types_problem.Contains.contains α14 α17 α20 in
+      let* α22 := borrow α21 bool in
+      let* α23 := deref α22 bool in
+      let* α24 := borrow α23 bool in
+      let* α25 := core.fmt.rt.Argument::["new_display"] α24 in
+      let* α26 := borrow [ α8; α13; α25 ] (list core.fmt.rt.Argument) in
+      let* α27 := deref α26 (list core.fmt.rt.Argument) in
+      let* α28 := borrow α27 (list core.fmt.rt.Argument) in
+      let* α29 := pointer_coercion "Unsize" α28 in
+      let* α30 := core.fmt.Arguments::["new_v1"] α3 α29 in
+      std.io.stdio._print α30 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := container.["first"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "First number: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "First number: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow container generics_associated_types_problem.Container in
+      let* α5 := generics_associated_types_problem.Contains.first α4 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := deref α6 i32 in
+      let* α8 := borrow α7 i32 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := container.["last"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Last number: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "Last number: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow container generics_associated_types_problem.Container in
+      let* α5 := generics_associated_types_problem.Contains.last α4 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := deref α6 i32 in
+      let* α8 := borrow α7 i32 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        generics_associated_types_problem.difference (addr_of container) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "The difference is: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ "The difference is: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow container generics_associated_types_problem.Container in
+      let* α5 := deref α4 generics_associated_types_problem.Container in
+      let* α6 := borrow α5 generics_associated_types_problem.Container in
+      let* α7 := generics_associated_types_problem.difference α6 in
+      let* α8 := borrow α7 i32 in
+      let* α9 := deref α8 i32 in
+      let* α10 := borrow α9 i32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   Pure tt.

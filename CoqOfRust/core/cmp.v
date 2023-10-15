@@ -52,7 +52,7 @@ Module PartialEq.
   }.
 
   Module Impl_PartialEq_for_str.
-    Global Instance I : Trait str (Rhs := Default.Rhs str). Admitted.
+    Global Instance I `{State.Trait} : Trait str (Rhs := Default.Rhs str). Admitted.
   End Impl_PartialEq_for_str.
 End PartialEq.
 
@@ -89,7 +89,7 @@ Module PartialOrd.
     Notation.dot := ge;
   }. *)
   Module Impl_PartialOrd_for_str.
-    Global Instance I : Trait str (Rhs := str). Admitted.
+    Global Instance I `{State.Trait} : Trait str (Rhs := str). Admitted.
   End Impl_PartialOrd_for_str.
 End PartialOrd.
 
@@ -103,7 +103,7 @@ Module Eq.
   Set Primitive Projections.
 
   Module Impl_Eq_for_str.
-    Global Instance I : Trait str := {}.
+    Global Instance I `{State.Trait} : Trait str := {}.
   End Impl_Eq_for_str.
 End Eq.
 
@@ -129,7 +129,7 @@ Module Ord.
   }.
 
   Module Impl_Ord_for_str.
-    Global Instance I : Trait str. Admitted.
+    Global Instance I `{State.Trait} : Trait str. Admitted.
   End Impl_Ord_for_str.
 End Ord.
 
@@ -161,7 +161,7 @@ Module Impls.
   }
   *)
   Module Impl_PartialEq_for_unit.
-    Definition eq `{State.Trait} (x y : unit) : M bool := Pure true.
+    Definition eq `{State.Trait} (x y : ref unit) : M bool := Pure true.
 
     Global Instance I :
       PartialEq.Trait unit (Rhs := PartialEq.Default.Rhs unit) := {

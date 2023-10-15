@@ -172,6 +172,7 @@ pub(crate) enum Expression<'a> {
     Record {
         fields: Vec<Field<'a>>,
     },
+    Ref(Box<Expression<'a>>),
     /// Set constant (the type of our types)
     Set,
     /// a dependent sum of types
@@ -843,6 +844,7 @@ impl<'a> Expression<'a> {
                 hardline(),
                 text("}"),
             ]),
+            Self::Ref(expr) => concat([text("⟅"), expr.to_doc(false), text("⟆")]),
             Self::Set => text("Set"),
             Self::SigmaType { args, image } => paren(
                 with_paren,
@@ -928,6 +930,10 @@ impl<'a> Expression<'a> {
             Some(product) => product,
             None => Expression::Unit,
         }
+    }
+
+    pub(crate) fn in_ref(&self) -> Self {
+        Expression::Ref(Box::new(self.to_owned()))
     }
 }
 

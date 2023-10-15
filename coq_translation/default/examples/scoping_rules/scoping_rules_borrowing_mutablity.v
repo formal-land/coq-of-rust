@@ -30,7 +30,7 @@ Module Book.
     Notation.double_colon '(Build_t _ _ x2) := x2;
   }.
 End Book.
-Definition Book : Set := Book.t.
+Definition Book : Set := ⟅Book.t⟆.
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self := scoping_rules_borrowing_mutablity.Book.
@@ -40,10 +40,10 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') scoping_rules_borrowing_mutablity.Book :=
-    let _ : core.clone.AssertParamIsClone (ref str) := tt in
-    let _ : core.clone.AssertParamIsClone (ref str) := tt in
-    let _ : core.clone.AssertParamIsClone u32 := tt in
-    self.["deref"].
+    let _ := tt in
+    let _ := tt in
+    let _ := tt in
+    deref self scoping_rules_borrowing_mutablity.Book.
   
   Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
@@ -69,14 +69,30 @@ Definition borrow_book
     : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
-      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "I immutably borrowed "; " - "; " edition
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow
+          [ "I immutably borrowed "; " - "; " edition
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α5 := borrow α4.["title"] (ref str) in
+      let* α6 := deref α5 (ref str) in
+      let* α7 := borrow α6 (ref str) in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α10 := borrow α9.["year"] u32 in
+      let* α11 := deref α10 u32 in
+      let* α12 := borrow α11 u32 in
+      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
+      let* α14 := borrow [ α8; α13 ] (list core.fmt.rt.Argument) in
+      let* α15 := deref α14 (list core.fmt.rt.Argument) in
+      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
+      let* α17 := pointer_coercion "Unsize" α16 in
+      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
+      std.io.stdio._print α18 in
     Pure tt in
   Pure tt.
 
@@ -84,17 +100,33 @@ Definition new_edition
     `{H' : State.Trait}
     (book : mut_ref scoping_rules_borrowing_mutablity.Book)
     : M (H := H') unit :=
-  let* _ := assign book.["year"] 2014 in
+  let* _ :=
+    let* α0 := deref book scoping_rules_borrowing_mutablity.Book in
+    assign α0.["year"] 2014 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
-      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "I mutably borrowed "; " - "; " edition
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow [ "I mutably borrowed "; " - "; " edition
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α5 := borrow α4.["title"] (ref str) in
+      let* α6 := deref α5 (ref str) in
+      let* α7 := borrow α6 (ref str) in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α10 := borrow α9.["year"] u32 in
+      let* α11 := deref α10 u32 in
+      let* α12 := borrow α11 u32 in
+      let* α13 := core.fmt.rt.Argument::["new_display"] α12 in
+      let* α14 := borrow [ α8; α13 ] (list core.fmt.rt.Argument) in
+      let* α15 := deref α14 (list core.fmt.rt.Argument) in
+      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
+      let* α17 := pointer_coercion "Unsize" α16 in
+      let* α18 := core.fmt.Arguments::["new_v1"] α3 α17 in
+      std.io.stdio._print α18 in
     Pure tt in
   Pure tt.
 
@@ -109,7 +141,18 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     |} in
   let mutabook := immutabook in
   let* _ :=
-    scoping_rules_borrowing_mutablity.borrow_book (addr_of immutabook) in
-  let* _ := scoping_rules_borrowing_mutablity.borrow_book (addr_of mutabook) in
-  let* _ := scoping_rules_borrowing_mutablity.new_edition (addr_of mutabook) in
+    let* α0 := borrow immutabook scoping_rules_borrowing_mutablity.Book in
+    let* α1 := deref α0 scoping_rules_borrowing_mutablity.Book in
+    let* α2 := borrow α1 scoping_rules_borrowing_mutablity.Book in
+    scoping_rules_borrowing_mutablity.borrow_book α2 in
+  let* _ :=
+    let* α0 := borrow mutabook scoping_rules_borrowing_mutablity.Book in
+    let* α1 := deref α0 scoping_rules_borrowing_mutablity.Book in
+    let* α2 := borrow α1 scoping_rules_borrowing_mutablity.Book in
+    scoping_rules_borrowing_mutablity.borrow_book α2 in
+  let* _ :=
+    let* α0 := borrow_mut mutabook scoping_rules_borrowing_mutablity.Book in
+    let* α1 := deref α0 scoping_rules_borrowing_mutablity.Book in
+    let* α2 := borrow_mut α1 scoping_rules_borrowing_mutablity.Book in
+    scoping_rules_borrowing_mutablity.new_edition α2 in
   Pure tt.

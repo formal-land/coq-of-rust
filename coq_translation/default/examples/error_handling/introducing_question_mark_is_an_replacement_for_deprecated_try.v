@@ -7,26 +7,30 @@ Definition multiply
     (second_number_str : ref str)
     : M (H := H') (core.result.Result i32 core.num.error.ParseIntError) :=
   let* first_number :=
-    let* α0 := first_number_str.["parse"] : M i32 in
-    match α0 with
-    | core.result.Result.Ok val => Pure val
-    | core.result.Result.Err err =>
+    let* α0 := deref first_number_str str in
+    let* α1 := borrow α0 str in
+    let* α2 := str::["parse"] α1 in
+    match α2 with
+    | core.result.Result val => Pure val
+    | core.result.Result err =>
       let* _ :=
         let* α0 := core.convert.From.from err in
         Return (core.result.Result.Err α0) in
-      Pure tt
+      never_to_any tt
     end in
   let* second_number :=
-    let* α0 := second_number_str.["parse"] : M i32 in
-    match α0 with
-    | core.result.Result.Ok val => Pure val
-    | core.result.Result.Err err =>
+    let* α0 := deref second_number_str str in
+    let* α1 := borrow α0 str in
+    let* α2 := str::["parse"] α1 in
+    match α2 with
+    | core.result.Result val => Pure val
+    | core.result.Result err =>
       let* _ :=
         let* α0 := core.convert.From.from err in
         Return (core.result.Result.Err α0) in
-      Pure tt
+      never_to_any tt
     end in
-  let* α0 := first_number.["mul"] second_number in
+  let* α0 := mul first_number second_number in
   Pure (core.result.Result.Ok α0).
 
 Definition print
@@ -34,40 +38,64 @@ Definition print
     (result : core.result.Result i32 core.num.error.ParseIntError)
     : M (H := H') unit :=
   match result with
-  | core.result.Result.Ok n =>
+  | core.result.Result n =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of n) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "n is "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "n is "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow n i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
-  | core.result.Result.Err e =>
+  | core.result.Result e =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of e) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Error: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "Error: "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow e core.num.error.ParseIntError in
+      let* α5 := deref α4 core.num.error.ParseIntError in
+      let* α6 := borrow α5 core.num.error.ParseIntError in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
-    let* α0 :=
+    let* α0 := deref "10" str in
+    let* α1 := borrow α0 str in
+    let* α2 := deref "2" str in
+    let* α3 := borrow α2 str in
+    let* α4 :=
       introducing_question_mark_is_an_replacement_for_deprecated_try.multiply
-        "10"
-        "2" in
-    introducing_question_mark_is_an_replacement_for_deprecated_try.print α0 in
+        α1
+        α3 in
+    introducing_question_mark_is_an_replacement_for_deprecated_try.print α4 in
   let* _ :=
-    let* α0 :=
+    let* α0 := deref "t" str in
+    let* α1 := borrow α0 str in
+    let* α2 := deref "2" str in
+    let* α3 := borrow α2 str in
+    let* α4 :=
       introducing_question_mark_is_an_replacement_for_deprecated_try.multiply
-        "t"
-        "2" in
-    introducing_question_mark_is_an_replacement_for_deprecated_try.print α0 in
+        α1
+        α3 in
+    introducing_question_mark_is_an_replacement_for_deprecated_try.print α4 in
   Pure tt.

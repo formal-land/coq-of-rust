@@ -3,29 +3,38 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let i : u64 := 3 in
-  let o : u64 := tt in
+  let i := 3 in
+  let o := tt in
   let _ :=
     let _ := InlineAssembly in
     tt in
   let* _ :=
-    match (addr_of o, addr_of 8) with
+    let* α0 := borrow o u64 in
+    let* α1 := borrow 8 u64 in
+    match (α0, α1) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val u64 in
+      let* α1 := deref right_val u64 in
+      let* α2 := eq α0 α1 in
+      let* α3 := not α2 in
+      let* α4 := use α3 in
+      if (α4 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val u64 in
+          let* α1 := borrow α0 u64 in
+          let* α2 := deref α1 u64 in
+          let* α3 := borrow α2 u64 in
+          let* α4 := deref right_val u64 in
+          let* α5 := borrow α4 u64 in
+          let* α6 := deref α5 u64 in
+          let* α7 := borrow α6 u64 in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in

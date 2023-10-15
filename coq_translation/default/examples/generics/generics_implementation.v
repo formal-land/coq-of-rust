@@ -15,7 +15,7 @@ Module Val.
     Notation.double_colon '(Build_t x0) := x0;
   }.
 End Val.
-Definition Val : Set := Val.t.
+Definition Val : Set := ⟅Val.t⟆.
 
 Module GenVal.
   Section GenVal.
@@ -34,7 +34,7 @@ Module GenVal.
     }.
   End GenVal.
 End GenVal.
-Definition GenVal (T : Set) : Set := GenVal.t (T := T).
+Definition GenVal (T : Set) : Set := ⟅GenVal.t (T := T)⟆.
 
 Module Impl_generics_implementation_Val.
   Definition Self := generics_implementation.Val.
@@ -43,7 +43,10 @@ Module Impl_generics_implementation_Val.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') (ref f64) :=
-    Pure (addr_of self.["val"]).
+    let* α0 := deref self generics_implementation.Val in
+    let* α1 := borrow α0.["val"] f64 in
+    let* α2 := deref α1 f64 in
+    borrow α2 f64.
   
   Global Instance Method_value `{H' : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -57,7 +60,10 @@ Module Impl_generics_implementation_GenVal_T.
       `{H' : State.Trait}
       (self : ref Self)
       : M (H := H') (ref T) :=
-    Pure (addr_of self.["gen_val"]).
+    let* α0 := deref self (generics_implementation.GenVal _) in
+    let* α1 := borrow α0.["gen_val"] _ in
+    let* α2 := deref α1 _ in
+    borrow α2 _.
   
   Global Instance Method_value `{H' : State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
@@ -70,15 +76,28 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let y := {| generics_implementation.GenVal.gen_val := 3; |} in
   let* _ :=
     let* _ :=
-      let* α0 := x.["value"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 := y.["value"] in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; ", "; "
-" ])
-          (addr_of [ α1; α3 ]) in
-      std.io.stdio._print α4 in
+      let* α0 := borrow [ ""; ", "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow x generics_implementation.Val in
+      let* α5 := generics_implementation.Val::["value"] α4 in
+      let* α6 := borrow α5 (ref f64) in
+      let* α7 := deref α6 (ref f64) in
+      let* α8 := borrow α7 (ref f64) in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow y (generics_implementation.GenVal i32) in
+      let* α11 := (generics_implementation.GenVal _)::["value"] α10 in
+      let* α12 := borrow α11 (ref i32) in
+      let* α13 := deref α12 (ref i32) in
+      let* α14 := borrow α13 (ref i32) in
+      let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+      let* α16 := borrow [ α9; α15 ] (list core.fmt.rt.Argument) in
+      let* α17 := deref α16 (list core.fmt.rt.Argument) in
+      let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+      let* α19 := pointer_coercion "Unsize" α18 in
+      let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+      std.io.stdio._print α20 in
     Pure tt in
   Pure tt.

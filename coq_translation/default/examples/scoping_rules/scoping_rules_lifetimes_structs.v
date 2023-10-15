@@ -22,10 +22,17 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Borrowed"
-      (addr_of (addr_of (self.[0]))).
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref "Borrowed" str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref self scoping_rules_lifetimes_structs.Borrowed in
+    let* α5 := borrow α4.["0"] (ref i32) in
+    let* α6 := borrow α5 (ref (ref i32)) in
+    let* α7 := deref α6 (ref (ref i32)) in
+    let* α8 := borrow α7 (ref (ref i32)) in
+    let* α9 := pointer_coercion "Unsize" α8 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α9.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -58,12 +65,12 @@ Module NamedBorrowed.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End NamedBorrowed.
-Definition NamedBorrowed : Set := NamedBorrowed.t.
+Definition NamedBorrowed : Set := ⟅NamedBorrowed.t⟆.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Definition Self := scoping_rules_lifetimes_structs.NamedBorrowed.
   
-  Parameter debug_struct_field2_finish :
+  Parameter struct_parameter_for_fmt :
       core.fmt.Formatter ->
         string ->
           string ->
@@ -72,22 +79,35 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
           StaticRef_i32 ->
           M (H := H') core.fmt.Result.
   
-  Global Instance Deb_debug_struct_field2_finish : Notation.DoubleColon
-    core.fmt.Formatter "debug_struct_field2_finish" := {
-    Notation.double_colon := debug_struct_field2_finish; }.
+  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
+    core.fmt.Formatter "struct_parameter_for_fmt" := {
+    Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
       `{H' : State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_struct_field2_finish"]
-      f
-      "NamedBorrowed"
-      "x"
-      (addr_of self.["x"])
-      "y"
-      (addr_of (addr_of self.["y"])).
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref "NamedBorrowed" str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref "x" str in
+    let* α5 := borrow α4 str in
+    let* α6 := deref self scoping_rules_lifetimes_structs.NamedBorrowed in
+    let* α7 := borrow α6.["x"] (ref i32) in
+    let* α8 := deref α7 (ref i32) in
+    let* α9 := borrow α8 (ref i32) in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    let* α11 := deref "y" str in
+    let* α12 := borrow α11 str in
+    let* α13 := deref self scoping_rules_lifetimes_structs.NamedBorrowed in
+    let* α14 := borrow α13.["y"] (ref i32) in
+    let* α15 := borrow α14 (ref (ref i32)) in
+    let* α16 := deref α15 (ref (ref i32)) in
+    let* α17 := borrow α16 (ref (ref i32)) in
+    let* α18 := pointer_coercion "Unsize" α17 in
+    core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α10 α12 α18.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
@@ -115,16 +135,26 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
       (f : mut_ref core.fmt.Formatter)
       : M (H := H') core.fmt.Result :=
     match self with
-    | scoping_rules_lifetimes_structs.Either.Num __self_0 =>
-      core.fmt.Formatter::["debug_tuple_field1_finish"]
-        f
-        "Num"
-        (addr_of __self_0)
-    | scoping_rules_lifetimes_structs.Either.Ref __self_0 =>
-      core.fmt.Formatter::["debug_tuple_field1_finish"]
-        f
-        "Ref"
-        (addr_of __self_0)
+    | scoping_rules_lifetimes_structs.Either __self_0 =>
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref "Num" str in
+      let* α3 := borrow α2 str in
+      let* α4 := borrow __self_0 (ref i32) in
+      let* α5 := deref α4 (ref i32) in
+      let* α6 := borrow α5 (ref i32) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α7
+    | scoping_rules_lifetimes_structs.Either __self_0 =>
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref "Ref" str in
+      let* α3 := borrow α2 str in
+      let* α4 := borrow __self_0 (ref (ref i32)) in
+      let* α5 := deref α4 (ref (ref i32)) in
+      let* α6 := borrow α5 (ref (ref i32)) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α7
     end.
   
   Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
@@ -141,52 +171,99 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let x := 18 in
   let y := 15 in
-  let single := scoping_rules_lifetimes_structs.Borrowed.Build_t (addr_of x) in
-  let double :=
-    {|
-      scoping_rules_lifetimes_structs.NamedBorrowed.x := addr_of x;
-      scoping_rules_lifetimes_structs.NamedBorrowed.y := addr_of y;
-    |} in
-  let reference := scoping_rules_lifetimes_structs.Either.Ref (addr_of x) in
+  let* single :=
+    let* α0 := borrow x i32 in
+    let* α1 := deref α0 i32 in
+    let* α2 := borrow α1 i32 in
+    Pure (scoping_rules_lifetimes_structs.Borrowed.Build_t α2) in
+  let* double :=
+    let* α0 := borrow x i32 in
+    let* α1 := deref α0 i32 in
+    let* α2 := borrow α1 i32 in
+    let* α3 := borrow y i32 in
+    let* α4 := deref α3 i32 in
+    let* α5 := borrow α4 i32 in
+    Pure
+      {|
+        scoping_rules_lifetimes_structs.NamedBorrowed.x := α2;
+        scoping_rules_lifetimes_structs.NamedBorrowed.y := α5;
+      |} in
+  let* reference :=
+    let* α0 := borrow x i32 in
+    let* α1 := deref α0 i32 in
+    let* α2 := borrow α1 i32 in
+    Pure (scoping_rules_lifetimes_structs.Either.Ref α2) in
   let number := scoping_rules_lifetimes_structs.Either.Num y in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of single) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "x is borrowed in "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "x is borrowed in "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow single scoping_rules_lifetimes_structs.Borrowed in
+      let* α5 := deref α4 scoping_rules_lifetimes_structs.Borrowed in
+      let* α6 := borrow α5 scoping_rules_lifetimes_structs.Borrowed in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of double) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "x and y are borrowed in "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "x and y are borrowed in "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow double scoping_rules_lifetimes_structs.NamedBorrowed in
+      let* α5 := deref α4 scoping_rules_lifetimes_structs.NamedBorrowed in
+      let* α6 := borrow α5 scoping_rules_lifetimes_structs.NamedBorrowed in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of reference) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "x is borrowed in "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "x is borrowed in "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow reference scoping_rules_lifetimes_structs.Either in
+      let* α5 := deref α4 scoping_rules_lifetimes_structs.Either in
+      let* α6 := borrow α5 scoping_rules_lifetimes_structs.Either in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of number) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "y is *not* borrowed in "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "y is *not* borrowed in "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow number scoping_rules_lifetimes_structs.Either in
+      let* α5 := deref α4 scoping_rules_lifetimes_structs.Either in
+      let* α6 := borrow α5 scoping_rules_lifetimes_structs.Either in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.

@@ -55,6 +55,7 @@ Notation "e (||)" :=
     only parsing).
 
 Require CoqOfRust.lib.lib.
+Export CoqOfRust.lib.lib.
 Export lib.Notations.
 Module Notation := CoqOfRust.lib.lib.Notation.
 
@@ -88,32 +89,9 @@ Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
 
 Parameter assign : forall `{State.Trait} {A : Set}, A -> A -> M unit.
 
-Definition usize : Set := Z.
-Definition isize : Set := Z.
-
-Definition u8 : Set := Z.
-Definition u16 : Set := Z.
-Definition u32 : Set := Z.
-Definition u64 : Set := Z.
-Definition u128 : Set := Z.
-
-Definition i8 : Set := Z.
-Definition i16 : Set := Z.
-Definition i32 : Set := Z.
-Definition i64 : Set := Z.
-Definition i128 : Set := Z.
-
-(* We approximate floating point numbers with integers *)
-Definition f32 : Set := Z.
-Definition f64 : Set := Z.
-
-Definition str : Set := string.
-Definition char : Set := ascii.
-
-Definition ref (A : Set) : Set := A.
-Definition mut_ref : Set -> Set := ref.
-
-Parameter eqb : forall {A : Set}, A -> A -> bool.
+Definition pointer_coercion `{State.Trait} {T : Set} (cast : string) (x : T) :
+    M T :=
+  Pure x.
 
 (** We replace assembly blocks by a value of type unit. *)
 Parameter InlineAssembly : unit.
@@ -272,7 +250,6 @@ Require Import CoqOfRust._std.panic.
 Require Import CoqOfRust._std.path.
 Require Import CoqOfRust._std.pin.
 Require Import CoqOfRust._std.prelude.
-Require Import CoqOfRust._std.primitive.
 Require Import CoqOfRust._std.process.
 Require Import CoqOfRust._std.ptr.
 Require Import CoqOfRust._std.rc.
@@ -310,7 +287,6 @@ Module std.
   Module path := _std.path.
   Module pin := _std.pin.
   Module prelude := _std.prelude.
-  Module primitive := _std.primitive.
   Module process := _std.process.
   Module ptr := _std.ptr.
   Module rc := _std.rc.
@@ -327,71 +303,72 @@ End std.
 
 Module hash_Instances.
   (** Hasher instance functions *)
-  Global Instance Hasher_Method_finish (T : Set) `{core.hash.Hasher.Trait T} :
+  Global Instance Hasher_Method_finish `{State.Trait}
+      (Self : Set) `{core.hash.Hasher.Trait Self} :
     Notation.Dot "finish" := {
-    Notation.dot (x : T) := core.hash.Hasher.finish x;
+    Notation.dot := core.hash.Hasher.finish (Self := Self);
   }.
 
   (** Hash instance functions *)
   Global Instance Hash_Method_hash
-    `{State.Trait} (T : Set) `{core.hash.Hasher.Trait} `{core.hash.Hash.Trait T} :
+    `{State.Trait} (Self : Set) `{core.hash.Hasher.Trait Self} `{core.hash.Hash.Trait Self} :
     Notation.Dot "hash" := {
-      Notation.dot (x : T) := core.hash.Hash.hash x;
+      Notation.dot := core.hash.Hash.hash (Self := Self);
   }.
 
   (** Hasher implementation for DefaultHasher *)
-  Global Instance DefaultHasher_Hasher :
+  Global Instance DefaultHasher_Hasher `{State.Trait} :
     core.hash.Hasher.Trait std.collections.hash.map.DefaultHasher. Admitted.
 
   (** Hash implementation for primitive types *)
   Global Instance Hash_for_unit : core.hash.Hash.Trait unit. Admitted.
   Global Instance Hash_for_bool : core.hash.Hash.Trait unit. Admitted.
-  Global Instance Hash_for_i32 : core.hash.Hash.Trait i32. Admitted.
-  Global Instance Hash_for_u32 : core.hash.Hash.Trait u32. Admitted.
-  Global Instance Hash_for_String : core.hash.Hash.Trait alloc.string.String. Admitted.
-  Global Instance Hash_for_i64 : core.hash.Hash.Trait i64. Admitted.
-  Global Instance Hash_for_u64 : core.hash.Hash.Trait u64. Admitted.
+  Global Instance Hash_for_i32 `{State.Trait} : core.hash.Hash.Trait i32. Admitted.
+  Global Instance Hash_for_u32 `{State.Trait} : core.hash.Hash.Trait u32. Admitted.
+  Global Instance Hash_for_String `{State.Trait} : core.hash.Hash.Trait alloc.string.String. Admitted.
+  Global Instance Hash_for_i64 `{State.Trait} : core.hash.Hash.Trait i64. Admitted.
+  Global Instance Hash_for_u64 `{State.Trait} : core.hash.Hash.Trait u64. Admitted.
 End hash_Instances.
 
 Module unit_Instances.
-  Global Instance IDisplay : core.fmt.Display.Trait unit.
+  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait unit.
   Admitted.
 
-  Global Instance IDebug : core.fmt.Debug.Trait unit.
+  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait unit.
   Admitted.
 End unit_Instances.
 
 Module bool_Instances.
-  Global Instance IDisplay : core.fmt.Display.Trait bool.
+  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait bool.
   Admitted.
 
-  Global Instance IDebug : core.fmt.Debug.Trait bool.
+  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait bool.
   Admitted.
 End bool_Instances.
 
 Module char_Instances.
-  Global Instance IDisplay : core.fmt.Display.Trait char.
+  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait char.
   Admitted.
 
-  Global Instance IDebug : core.fmt.Debug.Trait char.
+  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait char.
   Admitted.
 End char_Instances.
 
 Module str_Instances.
-  Global Instance IDisplay : core.fmt.Display.Trait str.
+  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait str.
   Admitted.
 
-  Global Instance IDebug : core.fmt.Debug.Trait str.
+  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait str.
   Admitted.
 End str_Instances.
 
-Module Z_Instances.
-  Global Instance IDisplay : core.fmt.Display.Trait Z.
+Module i32_Instances.
+  Global Instance IDisplay `{State.Trait} : core.fmt.Display.Trait i32.
   Admitted.
 
-  Global Instance IDebug : core.fmt.Debug.Trait Z.
+  Global Instance IDebug `{State.Trait} : core.fmt.Debug.Trait i32.
   Admitted.
-End Z_Instances.
+End i32_Instances.
 
 Module Debug_Tuple_Instances.
   Global Instance IDebug2 {A1 A2 : Set}
@@ -540,8 +517,6 @@ Global Instance Method_to_owned `{State.Trait} {A : Set} :
   Notation.dot (x : A) := Pure x;
 }.
 
-Definition addr_of {A : Set} (v : A) : ref A := v.
-
 (** A LangItem generated by the Rust compiler. *)
 Definition format_argument : Set := core.fmt.ArgumentV1.
 
@@ -557,7 +532,7 @@ Definition Slice := lib.slice.
  *)
 Global Instance Formatter_debug_tuple_field1_finish_for_i32 `{State.Trait} :
   Notation.DoubleColon core.fmt.Formatter "debug_tuple_field1_finish" :=
-    core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
+  core.fmt.ImplFormatter.Formatter_debug_tuple_field1_finish (T := i32).
 
 (* derived implementation of Debug for Result *)
 Module Impl_Debug_for_Result.
@@ -568,10 +543,12 @@ Module Impl_Debug_for_Result.
 
     Parameter fmt :
       forall `{State.Trait}, ref (core.result.Result T E) ->
-        mut_ref core.fmt.Formatter -> M core.fmt.Result.
+      mut_ref core.fmt.Formatter ->
+      M core.fmt.Result.
 
-    Global Instance I : core.fmt.Debug.Trait (core.result.Result T E) := {
-      fmt `{State.Trait} := fmt;
+    Global Instance I `{State.Trait} :
+        core.fmt.Debug.Trait (core.result.Result T E) := {
+      fmt := fmt;
     }.
   End Impl_Debug_for_Result.
 End Impl_Debug_for_Result.
@@ -928,3 +905,22 @@ Global Hint Resolve existT : core.
 
 (* a hint for eauto to automatically solve unit goals *)
 Global Hint Resolve tt : core.
+
+Definition deref `{State.Trait} {Self : Set}
+    (r : ref Self) (Target : Set)
+    `{core.ops.Deref.Trait Self (Target := Target)} :
+    M Target :=
+  let* ref_result := core.ops.Deref.deref r in
+  StateMonad.read ref_result.
+
+Definition borrow `{State.Trait} {Self : Set}
+    (v : Self) (Borrowed : Set)
+    `{core.borrow.Borrow.Trait Self Borrowed} :
+    M (ref Borrowed) :=
+  core.borrow.Borrow.borrow (StateMonad.Ref.Immutable v).
+
+Definition borrow_mut `{State.Trait} {Self : Set}
+    (v : Self) (Borrowed : Set)
+    `{core.borrow.BorrowMut.Trait Self Borrowed} :
+    M (mut_ref Borrowed) :=
+  core.borrow.BorrowMut.borrow_mut (StateMonad.Ref.Immutable v).

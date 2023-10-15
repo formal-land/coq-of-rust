@@ -104,11 +104,23 @@ fn string_to_doc(with_paren: bool, text: &str) -> RcDoc<()> {
     string_pieces_to_doc(with_paren, &pieces)
 }
 
-pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind) -> RcDoc<()> {
+fn apply_neg_to_literal(with_paren: bool, literal: RcDoc<()>, neg: bool) -> RcDoc<()> {
+    if neg {
+        paren(with_paren, nest([text("-"), line(), literal]))
+    } else {
+        literal
+    }
+}
+
+pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind, neg: bool) -> RcDoc<()> {
     match literal {
         LitKind::Str(s, _) => string_to_doc(with_paren, s.as_str()),
-        LitKind::Int(i, _) => RcDoc::text(format!("{i}")),
-        LitKind::Float(f, _) => RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
+        LitKind::Int(i, _) => apply_neg_to_literal(with_paren, RcDoc::text(format!("{i}")), neg),
+        LitKind::Float(f, _) => apply_neg_to_literal(
+            with_paren,
+            RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
+            neg,
+        ),
         LitKind::Bool(b) => RcDoc::text(format!("{b}")),
         LitKind::Char(c) => RcDoc::text(format!("\"{c}\"%char")),
         LitKind::Byte(b) => RcDoc::text(format!("{b}")),

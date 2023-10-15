@@ -6,26 +6,51 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let byte_escape := "I'm writing Rust!" in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of byte_escape) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "What are you doing? (\x3F means ?) "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 :=
+        borrow
+          [ "What are you doing? (\x3F means ?) "; "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow byte_escape (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let unicode_codepoint := String.String "29" "" in
   let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of unicode_codepoint) in
-      let* α1 := format_argument::["new_display"] (addr_of character_name) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Unicode character "; " (U+211D) is called "; "
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow
+          [ "Unicode character "; " (U+211D) is called "; "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow unicode_codepoint (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow character_name (ref str) in
+      let* α9 := deref α8 (ref str) in
+      let* α10 := borrow α9 (ref str) in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt in
   let long_string :=
     "String literals
@@ -33,10 +58,20 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                         The linebreak and indentation here -><- can be escaped too!" in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of long_string) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow long_string (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.

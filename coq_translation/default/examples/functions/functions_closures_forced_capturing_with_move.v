@@ -6,24 +6,58 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* haystack :=
     let* α0 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    (Slice _)::["into_vec"] α0 in
-  let contains := fun needle => haystack.["contains"] needle in
+    let* α1 := pointer_coercion "Unsize" α0 in
+    (Slice _)::["into_vec"] α1 in
+  let contains :=
+    let* α0 := borrow haystack in
+    let* α1 := core.ops.deref.Deref.deref α0 in
+    let* α2 := deref (Slice i32) α1 in
+    let* α3 := borrow α2 in
+    (Slice _)::["contains"] α3 needle in
   let* _ :=
     let* _ :=
-      let* α0 := contains (addr_of 1) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ ""; "
+" ] in
+      let* α1 := deref (list (ref str)) α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow contains in
+      let* α5 := borrow 1 in
+      let* α6 := deref i32 α5 in
+      let* α7 := borrow α6 in
+      let* α8 := core.ops.function.Fn.call α4 (α7) in
+      let* α9 := borrow α8 in
+      let* α10 := deref bool α9 in
+      let* α11 := borrow α10 in
+      let* α12 := core.fmt.rt.Argument::["new_display"] α11 in
+      let* α13 := borrow [ α12 ] in
+      let* α14 := deref (list core.fmt.rt.Argument) α13 in
+      let* α15 := borrow α14 in
+      let* α16 := pointer_coercion "Unsize" α15 in
+      let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
+      std.io.stdio._print α17 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := contains (addr_of 4) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ ""; "
+" ] in
+      let* α1 := deref (list (ref str)) α0 in
+      let* α2 := borrow α1 in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow contains in
+      let* α5 := borrow 4 in
+      let* α6 := deref i32 α5 in
+      let* α7 := borrow α6 in
+      let* α8 := core.ops.function.Fn.call α4 (α7) in
+      let* α9 := borrow α8 in
+      let* α10 := deref bool α9 in
+      let* α11 := borrow α10 in
+      let* α12 := core.fmt.rt.Argument::["new_display"] α11 in
+      let* α13 := borrow [ α12 ] in
+      let* α14 := deref (list core.fmt.rt.Argument) α13 in
+      let* α15 := borrow α14 in
+      let* α16 := pointer_coercion "Unsize" α15 in
+      let* α17 := core.fmt.Arguments::["new_v1"] α3 α16 in
+      std.io.stdio._print α17 in
     Pure tt in
   Pure tt.

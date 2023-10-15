@@ -1,0 +1,13 @@
+thread 'rustc' panicked at 'pattern Pat {
+    ty: u32,
+    span: examples/flow_of_control/if_let_match_enum_values.rs:32:29: 32:32 (#0),
+    kind: Constant {
+        value: Val(
+            Scalar(
+                0x00000064,
+            ),
+            u32,
+        ),
+    },
+} not implemented', lib/src/thir_pattern.rs:114:14
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

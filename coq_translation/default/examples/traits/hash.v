@@ -41,9 +41,29 @@ Module Impl_core_hash_Hash_for_hash_Person.
       (self : ref Self)
       (state : mut_ref __H)
       : M (H := H') unit :=
-    let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
-    let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
-    core.hash.Hash.hash (addr_of self.["phone"]) state.
+    let* _ :=
+      let* α0 := deref self in
+      let* α1 := borrow α0.["id"] in
+      let* α2 := deref α1 in
+      let* α3 := borrow α2 in
+      let* α4 := deref state in
+      let* α5 := borrow_mut α4 in
+      core.hash.Hash.hash α3 α5 in
+    let* _ :=
+      let* α0 := deref self in
+      let* α1 := borrow α0.["name"] in
+      let* α2 := deref α1 in
+      let* α3 := borrow α2 in
+      let* α4 := deref state in
+      let* α5 := borrow_mut α4 in
+      core.hash.Hash.hash α3 α5 in
+    let* α0 := deref self in
+    let* α1 := borrow α0.["phone"] in
+    let* α2 := deref α1 in
+    let* α3 := borrow α2 in
+    let* α4 := deref state in
+    let* α5 := borrow_mut α4 in
+    core.hash.Hash.hash α3 α5.
   
   Global Instance Method_hash
       `{H' : State.Trait}
@@ -71,35 +91,55 @@ Definition calculate_hash
     (t : ref T)
     : M (H := H') u64 :=
   let* s := std.collections.hash.map.DefaultHasher::["new"] in
-  let* _ := t.["hash"] (addr_of s) in
-  s.["finish"].
+  let* _ :=
+    let* α0 := deref t in
+    let* α1 := borrow α0 in
+    let* α2 := borrow_mut s in
+    let* α3 := deref α2 in
+    let* α4 := borrow_mut α3 in
+    core.hash.Hash.hash α1 α4 in
+  let* α0 := borrow s in
+  core.hash.Hasher.finish α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* person1 :=
-    let* α0 := "Janet".["to_string"] in
+    let* α0 := deref "Janet" in
+    let* α1 := borrow α0 in
+    let* α2 := alloc.string.ToString.to_string α1 in
     Pure
       {|
         hash.Person.id := 5;
-        hash.Person.name := α0;
+        hash.Person.name := α2;
         hash.Person.phone := 5556667777;
       |} in
   let* person2 :=
-    let* α0 := "Bob".["to_string"] in
+    let* α0 := deref "Bob" in
+    let* α1 := borrow α0 in
+    let* α2 := alloc.string.ToString.to_string α1 in
     Pure
       {|
         hash.Person.id := 5;
-        hash.Person.name := α0;
+        hash.Person.name := α2;
         hash.Person.phone := 5556667777;
       |} in
   let* _ :=
-    let* α0 := hash.calculate_hash (addr_of person1) in
-    let* α1 := hash.calculate_hash (addr_of person2) in
-    let* α2 := α0.["ne"] α1 in
-    let* α3 := α2.["not"] in
-    if (α3 : bool) then
-      core.panicking.panic
-        "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)"
+    let* α0 := borrow person1 in
+    let* α1 := deref α0 in
+    let* α2 := borrow α1 in
+    let* α3 := hash.calculate_hash α2 in
+    let* α4 := borrow person2 in
+    let* α5 := deref α4 in
+    let* α6 := borrow α5 in
+    let* α7 := hash.calculate_hash α6 in
+    let* α8 := ne α3 α7 in
+    let* α9 := not α8 in
+    let* α10 := use α9 in
+    if (α10 : bool) then
+      let* α0 :=
+        core.panicking.panic
+          "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)" in
+      never_to_any α0
     else
       Pure tt in
   Pure tt.

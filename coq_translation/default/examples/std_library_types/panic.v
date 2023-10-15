@@ -6,23 +6,28 @@ Definition division
     (dividend : i32)
     (divisor : i32)
     : M (H := H') i32 :=
-  let* α0 := divisor.["eq"] 0 in
-  if (α0 : bool) then
-    let* _ := std.panicking.begin_panic "division by zero" in
-    Pure tt
+  let* α0 := eq divisor 0 in
+  let* α1 := use α0 in
+  if (α1 : bool) then
+    let* _ :=
+      let* α0 := std.panicking.begin_panic "division by zero" in
+      never_to_any α0 in
+    never_to_any tt
   else
-    dividend.["div"] divisor.
+    div dividend divisor.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* _x := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] 0 in
+  let* _x := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 0 in
   let* _ := panic.division 3 0 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "This point won't be reached!
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ "This point won't be reached!
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   Pure tt.

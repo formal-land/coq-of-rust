@@ -5,33 +5,61 @@ Require Import CoqOfRust.CoqOfRust.
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* args :=
     let* α0 := std.env.args in
-    α0.["collect"] in
+    core.iter.traits.iterator.Iterator.collect α0 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of args[0]) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "My path is "; ".
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "My path is "; ".
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
+      let* α5 := core.ops.index.Index.index α4 0 in
+      let* α6 := deref α5 alloc.string.String in
+      let* α7 := borrow α6 alloc.string.String in
+      let* α8 := deref α7 alloc.string.String in
+      let* α9 := borrow α8 alloc.string.String in
+      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
+      let* α12 := deref α11 (list core.fmt.rt.Argument) in
+      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
+      let* α14 := pointer_coercion "Unsize" α13 in
+      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+      std.io.stdio._print α15 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := args.["len"] in
-      let* α1 := α0.["sub"] 1 in
-      let* α2 := format_argument::["new_debug"] (addr_of α1) in
-      let* α3 :=
-        format_argument::["new_debug"]
-          (addr_of
-            (addr_of
-              args[LanguageItem.RangeFrom {| LanguageItem.RangeFrom.start := 1;
-                |}])) in
+      let* α0 := borrow [ "I got "; " arguments: "; ".
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "I got "; " arguments: "; ".
-" ])
-          (addr_of [ α2; α3 ]) in
-      std.io.stdio._print α4 in
+        borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
+      let* α5 := (alloc.vec.Vec _ _)::["len"] α4 in
+      let* α6 := sub α5 1 in
+      let* α7 := borrow α6 usize in
+      let* α8 := deref α7 usize in
+      let* α9 := borrow α8 usize in
+      let* α10 := core.fmt.rt.Argument::["new_debug"] α9 in
+      let* α11 :=
+        borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
+      let* α12 :=
+        core.ops.index.Index.index
+          α11
+          {| core.ops.range.RangeFrom.start := 1; |} in
+      let* α13 := deref α12 (Slice alloc.string.String) in
+      let* α14 := borrow α13 (Slice alloc.string.String) in
+      let* α15 := borrow α14 (ref (Slice alloc.string.String)) in
+      let* α16 := deref α15 (ref (Slice alloc.string.String)) in
+      let* α17 := borrow α16 (ref (Slice alloc.string.String)) in
+      let* α18 := core.fmt.rt.Argument::["new_debug"] α17 in
+      let* α19 := borrow [ α10; α18 ] (list core.fmt.rt.Argument) in
+      let* α20 := deref α19 (list core.fmt.rt.Argument) in
+      let* α21 := borrow α20 (list core.fmt.rt.Argument) in
+      let* α22 := pointer_coercion "Unsize" α21 in
+      let* α23 := core.fmt.Arguments::["new_v1"] α3 α22 in
+      std.io.stdio._print α23 in
     Pure tt in
   Pure tt.
