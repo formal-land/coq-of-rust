@@ -56,8 +56,11 @@ Module CompSciStudent.
 End CompSciStudent.
 
 Parameter comp_sci_student_greeting :
-    forall `{H' : State.Trait},
-    (ref _ (* dyn *)) -> M (H := H') alloc.string.String.
+    forall
+      `{H' : State.Trait}
+      {DynT : Set}
+      `{supertraits.CompSciStudent.Trait DynT},
+    (ref DynT) -> M (H := H') alloc.string.String.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
