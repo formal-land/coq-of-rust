@@ -1,53 +1,34 @@
-thread 'rustc' panicked at 'pattern Pat {
-    ty: [i32; 3],
-    span: examples/flow_of_control/match_destructuring_arrays_slices.rs:7:9: 7:27 (#0),
-    kind: Array {
-        prefix: [
-            Pat {
-                ty: i32,
-                span: examples/flow_of_control/match_destructuring_arrays_slices.rs:7:10: 7:11 (#0),
-                kind: Constant {
-                    value: Val(
-                        Scalar(
-                            0x00000000,
-                        ),
-                        i32,
-                    ),
-                },
-            },
-            Pat {
-                ty: i32,
-                span: examples/flow_of_control/match_destructuring_arrays_slices.rs:7:13: 7:19 (#0),
-                kind: Binding {
-                    mutability: Not,
-                    name: "second",
-                    mode: ByValue,
-                    var: LocalVarId(
-                        HirId(DefId(0:3 ~ match_destructuring_arrays_slices[6a09]::main).14),
-                    ),
-                    ty: i32,
-                    subpattern: None,
-                    is_primary: true,
-                },
-            },
-            Pat {
-                ty: i32,
-                span: examples/flow_of_control/match_destructuring_arrays_slices.rs:7:21: 7:26 (#0),
-                kind: Binding {
-                    mutability: Not,
-                    name: "third",
-                    mode: ByValue,
-                    var: LocalVarId(
-                        HirId(DefId(0:3 ~ match_destructuring_arrays_slices[6a09]::main).15),
-                    ),
-                    ty: i32,
-                    subpattern: None,
-                    is_primary: true,
-                },
-            },
-        ],
-        slice: None,
-        suffix: [],
-    },
-} not implemented', lib/src/thir_pattern.rs:147:14
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: Constants in patterns are not yet supported.
+ --> examples/flow_of_control/match_destructuring_arrays_slices.rs:7:10
+  |
+7 |         [0, second, third] => println!("array[0] = 0, array[1] = {}, array[2] = {}", second, third),
+  |          ^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:10:10
+   |
+10 |         [1, _, third] => println!(
+   |          ^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:16:10
+   |
+16 |         [-1, second, ..] => println!(
+   |          ^^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:25:10
+   |
+25 |         [3, second, tail @ ..] => println!(
+   |          ^
+
+warning: Destructuring after slice patterns is not supported.
+  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:32:9
+   |
+32 |         [first, middle @ .., last] => println!(
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: Reverse the slice instead.
+
+warning: 5 warnings emitted
+

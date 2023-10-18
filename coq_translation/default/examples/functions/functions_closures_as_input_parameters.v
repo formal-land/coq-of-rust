@@ -2,34 +2,35 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
-    `{H' : State.Trait}
+    `{State.Trait}
     {F : Set}
     `{core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ := core.ops.function.FnOnce.call_once f tt in
   Pure tt.
 
 Definition apply_to_3
-    `{H' : State.Trait}
+    `{State.Trait}
     {F : Set}
     `{core.ops.function.Fn.Trait F (Args := i32)}
     (f : F)
-    : M (H := H') i32 :=
+    : M i32 :=
   let* α0 := borrow f _ in
-  core.ops.function.Fn.call α0 (3).
+  let* α1 := M.alloc 3 in
+  core.ops.function.Fn.call α0 (α1).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let greeting := "hello" in
+Definition main `{State.Trait} : M unit :=
+  let greeting := mk_str "hello" in
   let* farewell :=
-    let* α0 := deref "goodbye" str in
+    let* α0 := deref (mk_str "goodbye") str in
     let* α1 := borrow α0 str in
     alloc.borrow.ToOwned.to_owned α1 in
   let diary :=
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "I said "; ".
+        let* α0 := borrow [ mk_str "I said "; mk_str ".
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -47,12 +48,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
     let* _ :=
       let* α0 := borrow_mut farewell alloc.string.String in
-      let* α1 := deref "!!!" str in
+      let* α1 := deref (mk_str "!!!") str in
       let* α2 := borrow α1 str in
       alloc.string.String::["push_str"] α0 α2 in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "Then I screamed "; ".
+        let* α0 :=
+          borrow [ mk_str "Then I screamed "; mk_str ".
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -70,7 +72,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "Now I can sleep. zzzzz
+        let* α0 :=
+          borrow [ mk_str "Now I can sleep. zzzzz
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -81,10 +84,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ := core.mem.drop farewell in
     Pure tt in
   let* _ := functions_closures_as_input_parameters.apply diary in
-  let double := mul 2 x in
+  let double :=
+    let* α0 := M.alloc 2 in
+    mul α0 x in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "3 doubled: "; "
+      let* α0 := borrow [ mk_str "3 doubled: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

@@ -2,8 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* name_buf := repeat 0 12 in
+Definition main `{State.Trait} : M unit :=
+  let* name_buf :=
+    let* α0 := M.alloc 0 in
+    repeat α0 12 in
   let _ :=
     let _ := InlineAssembly in
     tt in
@@ -16,8 +18,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     (core.result.Result _ _)::["unwrap"] α4 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "CPU Manufacturer ID: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "CPU Manufacturer ID: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

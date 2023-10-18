@@ -2,9 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let data :=
-    "86967897737416471853297327050364959
+    mk_str
+      "86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
 38397966707106094172783238747669219
@@ -50,7 +51,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                 let* _ :=
                   let* α0 :=
                     borrow
-                      [ "data segment "; " is ""; ""
+                      [ mk_str "data segment "; mk_str " is ""; mk_str ""
 " ]
                       (list (ref str)) in
                   let* α1 := deref α0 (list (ref str)) in
@@ -87,17 +88,22 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                       let* α3 :=
                         core.iter.traits.iterator.Iterator.map
                           α2
-                          let* α0 := char::["to_digit"] c 10 in
-                          let* α1 := deref "should be a digit" str in
-                          let* α2 := borrow α1 str in
-                          (core.option.Option _)::["expect"] α0 α2 in
+                          let* α0 := M.alloc 10 in
+                          let* α1 := char::["to_digit"] c α0 in
+                          let* α2 := deref (mk_str "should be a digit") str in
+                          let* α3 := borrow α2 str in
+                          (core.option.Option _)::["expect"] α1 α3 in
                       core.iter.traits.iterator.Iterator.sum α3 in
                     let* _ :=
                       let* _ :=
                         let* α0 :=
                           borrow
-                            [ "processed segment "; ", result="; "
-" ]
+                            [
+                              mk_str "processed segment ";
+                              mk_str ", result=";
+                              mk_str "
+"
+                            ]
                             (list (ref str)) in
                         let* α1 := deref α0 (list (ref str)) in
                         let* α2 := borrow α1 (list (ref str)) in
@@ -135,7 +141,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     core.iter.traits.iterator.Iterator.sum α1 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Final sum result: "; "
+      let* α0 :=
+        borrow [ mk_str "Final sum result: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

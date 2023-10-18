@@ -3,32 +3,36 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Account.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     username : ref str;
     password : ref str;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_username `{State.Trait} : Notation.Dot "username" := {
+    Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
   }.
-  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_username `{State.Trait}
+    : Notation.DoubleColon t "username" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
   }.
-  Global Instance Get_password : Notation.Dot "password" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_password `{State.Trait} : Notation.Dot "password" := {
+    Notation.dot x := let* x := M.read x in Pure x.(password) : M _;
   }.
-  Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_password `{State.Trait}
+    : Notation.DoubleColon t "password" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(password) : M _;
   }.
 End Account.
-Definition Account : Set := ⟅Account.t⟆.
+Definition Account `{State.Trait} : Set := M.val (Account.t).
 
 Module
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self := hash_map_alternate_or_custom_key_types.Account.
+  Definition Self `{State.Trait} :=
+    hash_map_alternate_or_custom_key_types.Account.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.marker.StructuralPartialEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End
@@ -36,107 +40,114 @@ End
 
 Module
   Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self := hash_map_alternate_or_custom_key_types.Account.
+  Definition Self `{State.Trait} :=
+    hash_map_alternate_or_custom_key_types.Account.
   
   Definition eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref hash_map_alternate_or_custom_key_types.Account)
-      : M (H := H') bool :=
+      : M bool :=
     let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
-    let* α1 := borrow α0.["username"] (ref str) in
-    let* α2 := deref other hash_map_alternate_or_custom_key_types.Account in
-    let* α3 := borrow α2.["username"] (ref str) in
-    let* α4 := core.cmp.PartialEq.eq α1 α3 in
-    let* α5 := deref self hash_map_alternate_or_custom_key_types.Account in
-    let* α6 := borrow α5.["password"] (ref str) in
-    let* α7 := deref other hash_map_alternate_or_custom_key_types.Account in
-    let* α8 := borrow α7.["password"] (ref str) in
-    let* α9 := core.cmp.PartialEq.eq α6 α8 in
-    and α4 α9.
+    let* α1 := α0.["username"] in
+    let* α2 := borrow α1 (ref str) in
+    let* α3 := deref other hash_map_alternate_or_custom_key_types.Account in
+    let* α4 := α3.["username"] in
+    let* α5 := borrow α4 (ref str) in
+    let* α6 := core.cmp.PartialEq.eq α2 α5 in
+    let* α7 := deref self hash_map_alternate_or_custom_key_types.Account in
+    let* α8 := α7.["password"] in
+    let* α9 := borrow α8 (ref str) in
+    let* α10 := deref other hash_map_alternate_or_custom_key_types.Account in
+    let* α11 := α10.["password"] in
+    let* α12 := borrow α11 (ref str) in
+    let* α13 := core.cmp.PartialEq.eq α9 α12 in
+    and α6 α13.
   
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
       := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    core.cmp.PartialEq.eq := eq;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self := hash_map_alternate_or_custom_key_types.Account.
+  Definition Self `{State.Trait} :=
+    hash_map_alternate_or_custom_key_types.Account.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self := hash_map_alternate_or_custom_key_types.Account.
+  Definition Self `{State.Trait} :=
+    hash_map_alternate_or_custom_key_types.Account.
   
   Definition assert_receiver_is_total_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') unit :=
+      : M unit :=
     let _ := tt in
     let _ := tt in
     Pure tt.
   
-  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
   
-  Global Instance I : core.cmp.Eq.Trait Self := {
+  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self := hash_map_alternate_or_custom_key_types.Account.
+  Definition Self `{State.Trait} :=
+    hash_map_alternate_or_custom_key_types.Account.
   
   Definition hash
-      `{H' : State.Trait}
+      `{State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
-      : M (H := H') unit :=
+      : M unit :=
     let* _ :=
       let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
-      let* α1 := borrow α0.["username"] (ref str) in
-      let* α2 := deref α1 (ref str) in
-      let* α3 := borrow α2 (ref str) in
-      let* α4 := deref state _ in
-      let* α5 := borrow_mut α4 _ in
-      core.hash.Hash.hash α3 α5 in
+      let* α1 := α0.["username"] in
+      let* α2 := borrow α1 (ref str) in
+      let* α3 := deref α2 (ref str) in
+      let* α4 := borrow α3 (ref str) in
+      let* α5 := deref state _ in
+      let* α6 := borrow_mut α5 _ in
+      core.hash.Hash.hash α4 α6 in
     let* α0 := deref self hash_map_alternate_or_custom_key_types.Account in
-    let* α1 := borrow α0.["password"] (ref str) in
-    let* α2 := deref α1 (ref str) in
-    let* α3 := borrow α2 (ref str) in
-    let* α4 := deref state _ in
-    let* α5 := borrow_mut α4 _ in
-    core.hash.Hash.hash α3 α5.
+    let* α1 := α0.["password"] in
+    let* α2 := borrow α1 (ref str) in
+    let* α3 := deref α2 (ref str) in
+    let* α4 := borrow α3 (ref str) in
+    let* α5 := deref state _ in
+    let* α6 := borrow_mut α5 _ in
+    core.hash.Hash.hash α4 α6.
   
   Global Instance Method_hash
-      `{H' : State.Trait}
+      `{State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H} :
     Notation.Dot "hash" := {
     Notation.dot := hash (__H := __H);
   }.
   
-  Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash
-      `{H' : State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
+  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
+    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
       :=
       hash (__H := __H);
   }.
@@ -145,26 +156,28 @@ End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module AccountInfo.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     name : ref str;
     email : ref str;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_name `{State.Trait}
+    : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_email : Notation.Dot "email" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_email `{State.Trait} : Notation.Dot "email" := {
+    Notation.dot x := let* x := M.read x in Pure x.(email) : M _;
   }.
-  Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_email `{State.Trait}
+    : Notation.DoubleColon t "email" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(email) : M _;
   }.
 End AccountInfo.
-Definition AccountInfo : Set := ⟅AccountInfo.t⟆.
+Definition AccountInfo `{State.Trait} : Set := M.val (AccountInfo.t).
 
 Definition Accounts : Set :=
   std.collections.hash.map.HashMap
@@ -173,14 +186,14 @@ Definition Accounts : Set :=
     std.collections.hash.map.HashMap.Default.S.
 
 Definition try_logon
-    `{H' : State.Trait}
+    `{State.Trait}
     (accounts : ref hash_map_alternate_or_custom_key_types.Accounts)
     (username : ref str)
     (password : ref str)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Username: "; "
+      let* α0 := borrow [ mk_str "Username: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -198,7 +211,7 @@ Definition try_logon
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Password: "; "
+      let* α0 := borrow [ mk_str "Password: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -216,7 +229,7 @@ Definition try_logon
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Attempting logon...
+      let* α0 := borrow [ mk_str "Attempting logon...
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -229,7 +242,7 @@ Definition try_logon
     let* α1 := borrow α0 str in
     let* α2 := deref password str in
     let* α3 := borrow α2 str in
-    Pure
+    M.alloc
       {|
         hash_map_alternate_or_custom_key_types.Account.username := α1;
         hash_map_alternate_or_custom_key_types.Account.password := α3;
@@ -256,7 +269,7 @@ Definition try_logon
   | core.option.Option account_info =>
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "Successful logon!
+        let* α0 := borrow [ mk_str "Successful logon!
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -266,7 +279,7 @@ Definition try_logon
       Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "Name: "; "
+        let* α0 := borrow [ mk_str "Name: "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -275,20 +288,21 @@ Definition try_logon
           deref
             account_info
             hash_map_alternate_or_custom_key_types.AccountInfo in
-        let* α5 := borrow α4.["name"] (ref str) in
-        let* α6 := deref α5 (ref str) in
-        let* α7 := borrow α6 (ref str) in
-        let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-        let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-        let* α10 := deref α9 (list core.fmt.rt.Argument) in
-        let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-        let* α12 := pointer_coercion "Unsize" α11 in
-        let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-        std.io.stdio._print α13 in
+        let* α5 := α4.["name"] in
+        let* α6 := borrow α5 (ref str) in
+        let* α7 := deref α6 (ref str) in
+        let* α8 := borrow α7 (ref str) in
+        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
       Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "Email: "; "
+        let* α0 := borrow [ mk_str "Email: "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -297,21 +311,22 @@ Definition try_logon
           deref
             account_info
             hash_map_alternate_or_custom_key_types.AccountInfo in
-        let* α5 := borrow α4.["email"] (ref str) in
-        let* α6 := deref α5 (ref str) in
-        let* α7 := borrow α6 (ref str) in
-        let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-        let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-        let* α10 := deref α9 (list core.fmt.rt.Argument) in
-        let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-        let* α12 := pointer_coercion "Unsize" α11 in
-        let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-        std.io.stdio._print α13 in
+        let* α5 := α4.["email"] in
+        let* α6 := borrow α5 (ref str) in
+        let* α7 := deref α6 (ref str) in
+        let* α8 := borrow α7 (ref str) in
+        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
       Pure tt in
     Pure tt
   | _ =>
     let* _ :=
-      let* α0 := borrow [ "Login failed!
+      let* α0 := borrow [ mk_str "Login failed!
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -322,28 +337,28 @@ Definition try_logon
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* accounts :=
     (std.collections.hash.map.HashMap
           _
           _
           std.collections.hash.map.RandomState)::["new"] in
   let* account :=
-    let* α0 := deref "j.everyman" str in
+    let* α0 := deref (mk_str "j.everyman") str in
     let* α1 := borrow α0 str in
-    let* α2 := deref "password123" str in
+    let* α2 := deref (mk_str "password123") str in
     let* α3 := borrow α2 str in
-    Pure
+    M.alloc
       {|
         hash_map_alternate_or_custom_key_types.Account.username := α1;
         hash_map_alternate_or_custom_key_types.Account.password := α3;
       |} in
   let* account_info :=
-    let* α0 := deref "John Everyman" str in
+    let* α0 := deref (mk_str "John Everyman") str in
     let* α1 := borrow α0 str in
-    let* α2 := deref "j.everyman@email.com" str in
+    let* α2 := deref (mk_str "j.everyman@email.com") str in
     let* α3 := borrow α2 str in
-    Pure
+    M.alloc
       {|
         hash_map_alternate_or_custom_key_types.AccountInfo.name := α1;
         hash_map_alternate_or_custom_key_types.AccountInfo.email := α3;
@@ -382,9 +397,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           hash_map_alternate_or_custom_key_types.Account
           hash_map_alternate_or_custom_key_types.AccountInfo
           std.collections.hash.map.RandomState) in
-    let* α3 := deref "j.everyman" str in
+    let* α3 := deref (mk_str "j.everyman") str in
     let* α4 := borrow α3 str in
-    let* α5 := deref "psasword123" str in
+    let* α5 := deref (mk_str "psasword123") str in
     let* α6 := borrow α5 str in
     hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
   let* _ :=
@@ -409,9 +424,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           hash_map_alternate_or_custom_key_types.Account
           hash_map_alternate_or_custom_key_types.AccountInfo
           std.collections.hash.map.RandomState) in
-    let* α3 := deref "j.everyman" str in
+    let* α3 := deref (mk_str "j.everyman") str in
     let* α4 := borrow α3 str in
-    let* α5 := deref "password123" str in
+    let* α5 := deref (mk_str "password123") str in
     let* α6 := borrow α5 str in
     hash_map_alternate_or_custom_key_types.try_logon α2 α4 α6 in
   Pure tt.

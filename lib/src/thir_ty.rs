@@ -33,7 +33,7 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Box<CoqType>
         }
         // RawPtr(TypeAndMut<'tcx>),
         TyKind::Ref(_, ty, mutability) => {
-            let ty = compile_type(env, &ty);
+            let ty = compile_type(env, ty);
             Box::new(CoqType::Ref(ty, *mutability))
         }
         // Ref(Region<'tcx>, Ty<'tcx>, Mutability),

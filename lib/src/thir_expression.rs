@@ -196,7 +196,7 @@ pub(crate) fn compile_expr(
                 BorrowKind::Shared | BorrowKind::Shallow => "borrow".to_string(),
                 BorrowKind::Unique | BorrowKind::Mut { .. } => "borrow_mut".to_string(),
             };
-            let ty = Expr::Type(CoqType::remove_ref(compile_type(env, &expr.ty)));
+            let ty = Expr::Type(Box::new(CoqType::remove_ref(*compile_type(env, &expr.ty))));
             let arg = compile_expr(env, thir, arg);
             Expr::Call {
                 func: Box::new(Expr::LocalVar(func)),
@@ -279,11 +279,14 @@ pub(crate) fn compile_expr(
                     struct_or_variant,
                 }
             } else {
-                Expr::StructStruct {
-                    path,
-                    fields,
-                    base: None,
-                    struct_or_variant,
+                Expr::Call {
+                    func: Box::new(Expr::LocalVar("M.alloc".to_string())),
+                    args: vec![Expr::StructStruct {
+                        path,
+                        fields,
+                        base: None,
+                        struct_or_variant,
+                    }],
                 }
             }
         }

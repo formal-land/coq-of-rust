@@ -2,17 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* output :=
-    let* α0 := std.process.Command::["new"] "rustc" in
+    let* α0 := std.process.Command::["new"] (mk_str "rustc") in
     let* α1 := borrow_mut α0 std.process.Command in
-    let* α2 := std.process.Command::["arg"] α1 "--version" in
+    let* α2 := std.process.Command::["arg"] α1 (mk_str "--version") in
     let* α3 := deref α2 std.process.Command in
     let* α4 := borrow_mut α3 std.process.Command in
     let* α5 := std.process.Command::["output"] α4 in
     (core.result.Result _ _)::["unwrap_or_else"]
       α5
-      let* α0 := borrow [ "failed to execute process: " ] (list (ref str)) in
+      let* α0 :=
+        borrow [ mk_str "failed to execute process: " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -27,24 +28,27 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       let* α13 := core.panicking.panic_fmt α12 in
       never_to_any α13 in
-  let* α0 := borrow output.["status"] std.process.ExitStatus in
-  let* α1 := std.process.ExitStatus::["success"] α0 in
-  let* α2 := use α1 in
-  if (α2 : bool) then
+  let* α0 := output.["status"] in
+  let* α1 := borrow α0 std.process.ExitStatus in
+  let* α2 := std.process.ExitStatus::["success"] α1 in
+  let* α3 := use α2 in
+  if (α3 : bool) then
     let* s :=
-      let* α0 :=
-        borrow output.["stdout"] (alloc.vec.Vec u8 alloc.alloc.Global) in
-      let* α1 := deref α0 (alloc.vec.Vec u8 alloc.alloc.Global) in
-      let* α2 := borrow α1 (alloc.vec.Vec u8 alloc.alloc.Global) in
-      let* α3 := core.ops.deref.Deref.deref α2 in
-      let* α4 := deref α3 (Slice u8) in
-      let* α5 := borrow α4 (Slice u8) in
-      alloc.string.String::["from_utf8_lossy"] α5 in
+      let* α0 := output.["stdout"] in
+      let* α1 := borrow α0 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α2 := deref α1 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α3 := borrow α2 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α4 := core.ops.deref.Deref.deref α3 in
+      let* α5 := deref α4 (Slice u8) in
+      let* α6 := borrow α5 (Slice u8) in
+      alloc.string.String::["from_utf8_lossy"] α6 in
     let* _ :=
       let* _ :=
         let* α0 :=
-          borrow [ "rustc succeeded and stdout was:
-" ] (list (ref str)) in
+          borrow
+            [ mk_str "rustc succeeded and stdout was:
+" ]
+            (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
@@ -62,18 +66,18 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   else
     let* s :=
-      let* α0 :=
-        borrow output.["stderr"] (alloc.vec.Vec u8 alloc.alloc.Global) in
-      let* α1 := deref α0 (alloc.vec.Vec u8 alloc.alloc.Global) in
-      let* α2 := borrow α1 (alloc.vec.Vec u8 alloc.alloc.Global) in
-      let* α3 := core.ops.deref.Deref.deref α2 in
-      let* α4 := deref α3 (Slice u8) in
-      let* α5 := borrow α4 (Slice u8) in
-      alloc.string.String::["from_utf8_lossy"] α5 in
+      let* α0 := output.["stderr"] in
+      let* α1 := borrow α0 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α2 := deref α1 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α3 := borrow α2 (alloc.vec.Vec u8 alloc.alloc.Global) in
+      let* α4 := core.ops.deref.Deref.deref α3 in
+      let* α5 := deref α4 (Slice u8) in
+      let* α6 := borrow α5 (Slice u8) in
+      alloc.string.String::["from_utf8_lossy"] α6 in
     let* _ :=
       let* _ :=
         let* α0 :=
-          borrow [ "rustc failed and stderr was:
+          borrow [ mk_str "rustc failed and stderr was:
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in

@@ -3,66 +3,61 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
   Class Trait (Self : Set) : Type := {
-    get `{H' : State.Trait} : (ref Self) -> M (H := H') alloc.string.String;
+    get `{State.Trait} : (ref Self) -> M alloc.string.String;
   }.
   
-  Global Instance Method_get `{H' : State.Trait} `(Trait)
-    : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
     Notation.dot := get;
   }.
 End UsernameWidget.
 
 Module AgeWidget.
   Class Trait (Self : Set) : Type := {
-    get `{H' : State.Trait} : (ref Self) -> M (H := H') u8;
+    get `{State.Trait} : (ref Self) -> M u8;
   }.
   
-  Global Instance Method_get `{H' : State.Trait} `(Trait)
-    : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
     Notation.dot := get;
   }.
 End AgeWidget.
 
 Module Form.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     username : alloc.string.String;
     age : u8;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_username : Notation.Dot "username" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_username `{State.Trait} : Notation.Dot "username" := {
+    Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
   }.
-  Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_username `{State.Trait}
+    : Notation.DoubleColon t "username" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
   }.
-  Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_age `{State.Trait} : Notation.Dot "age" := {
+    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
   }.
-  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_age `{State.Trait} : Notation.DoubleColon t "age" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
   }.
 End Form.
-Definition Form : Set := Form.t.
+Definition Form `{State.Trait} : Set := M.val (Form.t).
 
 Module
   Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self := disambiguating_overlapping_traits.Form.
+  Definition Self `{State.Trait} := disambiguating_overlapping_traits.Form.
   
-  Parameter get :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') alloc.string.String.
+  Parameter get : forall `{State.Trait}, (ref Self) -> M alloc.string.String.
   
-  Global Instance Method_get `{H' : State.Trait} : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
-    disambiguating_overlapping_traits.UsernameWidget.get `{H' : State.Trait}
-      :=
-      get;
+    disambiguating_overlapping_traits.UsernameWidget.get := get;
   }.
   Global Hint Resolve I : core.
 End
@@ -70,21 +65,21 @@ End
 
 Module
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
-  Definition Self := disambiguating_overlapping_traits.Form.
+  Definition Self `{State.Trait} := disambiguating_overlapping_traits.Form.
   
-  Parameter get : forall `{H' : State.Trait}, (ref Self) -> M (H := H') u8.
+  Parameter get : forall `{State.Trait}, (ref Self) -> M u8.
   
-  Global Instance Method_get `{H' : State.Trait} : Notation.Dot "get" := {
+  Global Instance Method_get `{State.Trait} : Notation.Dot "get" := {
     Notation.dot := get;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : disambiguating_overlapping_traits.AgeWidget.Trait Self := {
-    disambiguating_overlapping_traits.AgeWidget.get `{H' : State.Trait} := get;
+    disambiguating_overlapping_traits.AgeWidget.get := get;
   }.
   Global Hint Resolve I : core.
 End
   Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

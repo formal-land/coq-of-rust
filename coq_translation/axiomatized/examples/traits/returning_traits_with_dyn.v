@@ -3,24 +3,24 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
   Unset Primitive Projections.
-  Record t : Set := { }.
+  Record t `{State.Trait} : Set := { }.
   Global Set Primitive Projections.
 End Sheep.
-Definition Sheep : Set := Sheep.t.
+Definition Sheep `{State.Trait} : Set := M.val (Sheep.t).
 
 Module Cow.
   Unset Primitive Projections.
-  Record t : Set := { }.
+  Record t `{State.Trait} : Set := { }.
   Global Set Primitive Projections.
 End Cow.
-Definition Cow : Set := Cow.t.
+Definition Cow `{State.Trait} : Set := M.val (Cow.t).
 
 Module Animal.
   Class Trait (Self : Set) : Type := {
-    noise `{H' : State.Trait} : (ref Self) -> M (H := H') (ref str);
+    noise `{State.Trait} : (ref Self) -> M (ref str);
   }.
   
-  Global Instance Method_noise `{H' : State.Trait} `(Trait)
+  Global Instance Method_noise `{State.Trait} `(Trait)
     : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
@@ -28,42 +28,40 @@ End Animal.
 
 Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Definition Self := returning_traits_with_dyn.Sheep.
+  Definition Self `{State.Trait} := returning_traits_with_dyn.Sheep.
   
-  Parameter noise :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (ref str).
+  Parameter noise : forall `{State.Trait}, (ref Self) -> M (ref str).
   
-  Global Instance Method_noise `{H' : State.Trait} : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
-  Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise `{H' : State.Trait} := noise;
+  Global Instance I `{State.Trait}
+    : returning_traits_with_dyn.Animal.Trait Self := {
+    returning_traits_with_dyn.Animal.noise := noise;
   }.
   Global Hint Resolve I : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Definition Self := returning_traits_with_dyn.Cow.
+  Definition Self `{State.Trait} := returning_traits_with_dyn.Cow.
   
-  Parameter noise :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (ref str).
+  Parameter noise : forall `{State.Trait}, (ref Self) -> M (ref str).
   
-  Global Instance Method_noise `{H' : State.Trait} : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
-  Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise `{H' : State.Trait} := noise;
+  Global Instance I `{State.Trait}
+    : returning_traits_with_dyn.Animal.Trait Self := {
+    returning_traits_with_dyn.Animal.noise := noise;
   }.
   Global Hint Resolve I : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal :
-    forall `{H' : State.Trait},
-    f64 -> M (H := H') (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A).
+    forall `{State.Trait},
+    f64 -> M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

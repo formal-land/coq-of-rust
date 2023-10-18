@@ -10,25 +10,25 @@ End Food.
 Definition Food : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
-  Definition Self := combinators_map.Food.
+  Definition Self `{State.Trait} := combinators_map.Food.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 Module Peeled.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : combinators_map.Food;
   }.
   Global Set Primitive Projections.
@@ -40,25 +40,25 @@ End Peeled.
 Definition Peeled := @Peeled.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
-  Definition Self := combinators_map.Peeled.
+  Definition Self `{State.Trait} := combinators_map.Peeled.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 Module Chopped.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : combinators_map.Food;
   }.
   Global Set Primitive Projections.
@@ -70,25 +70,25 @@ End Chopped.
 Definition Chopped := @Chopped.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
-  Definition Self := combinators_map.Chopped.
+  Definition Self `{State.Trait} := combinators_map.Chopped.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 Module Cooked.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : combinators_map.Food;
   }.
   Global Set Primitive Projections.
@@ -100,45 +100,45 @@ End Cooked.
 Definition Cooked := @Cooked.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
-  Definition Self := combinators_map.Cooked.
+  Definition Self `{State.Trait} := combinators_map.Cooked.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel :
-    forall `{H' : State.Trait},
+    forall `{State.Trait},
     (core.option.Option combinators_map.Food) ->
-      M (H := H') (core.option.Option combinators_map.Peeled).
+      M (core.option.Option combinators_map.Peeled).
 
 Parameter chop :
-    forall `{H' : State.Trait},
+    forall `{State.Trait},
     (core.option.Option combinators_map.Peeled) ->
-      M (H := H') (core.option.Option combinators_map.Chopped).
+      M (core.option.Option combinators_map.Chopped).
 
 Parameter cook :
-    forall `{H' : State.Trait},
+    forall `{State.Trait},
     (core.option.Option combinators_map.Chopped) ->
-      M (H := H') (core.option.Option combinators_map.Cooked).
+      M (core.option.Option combinators_map.Cooked).
 
 Parameter process :
-    forall `{H' : State.Trait},
+    forall `{State.Trait},
     (core.option.Option combinators_map.Food) ->
-      M (H := H') (core.option.Option combinators_map.Cooked).
+      M (core.option.Option combinators_map.Cooked).
 
 Parameter eat :
-    forall `{H' : State.Trait},
-    (core.option.Option combinators_map.Cooked) -> M (H := H') unit.
+    forall `{State.Trait},
+    (core.option.Option combinators_map.Cooked) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

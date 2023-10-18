@@ -20,9 +20,7 @@ Module WebEvent.
 End WebEvent.
 Definition WebEvent : Set := WebEvent.t.
 
-Parameter inspect :
-    forall `{H' : State.Trait},
-    enums.WebEvent -> M (H := H') unit.
+Parameter inspect : forall `{State.Trait}, enums.WebEvent -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

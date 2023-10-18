@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* path :=
-    let* α0 := deref "." str in
+    let* α0 := deref (mk_str ".") str in
     let* α1 := borrow α0 str in
     std.path.Path::["new"] α1 in
   let* _display :=
@@ -14,21 +14,21 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* new_path :=
     let* α0 := deref path std.path.Path in
     let* α1 := borrow α0 std.path.Path in
-    let* α2 := std.path.Path::["join"] α1 "a" in
+    let* α2 := std.path.Path::["join"] α1 (mk_str "a") in
     let* α3 := borrow α2 std.path.PathBuf in
     let* α4 := core.ops.deref.Deref.deref α3 in
     let* α5 := deref α4 std.path.Path in
     let* α6 := borrow α5 std.path.Path in
-    std.path.Path::["join"] α6 "b" in
+    std.path.Path::["join"] α6 (mk_str "b") in
   let* _ :=
     let* α0 := borrow_mut new_path std.path.PathBuf in
-    std.path.PathBuf::["push"] α0 "c" in
+    std.path.PathBuf::["push"] α0 (mk_str "c") in
   let* _ :=
     let* α0 := borrow_mut new_path std.path.PathBuf in
-    std.path.PathBuf::["push"] α0 "myfile.tar.gz" in
+    std.path.PathBuf::["push"] α0 (mk_str "myfile.tar.gz") in
   let* _ :=
     let* α0 := borrow_mut new_path std.path.PathBuf in
-    std.path.PathBuf::["set_file_name"] α0 "package.tgz" in
+    std.path.PathBuf::["set_file_name"] α0 (mk_str "package.tgz") in
   let* α0 := borrow new_path std.path.PathBuf in
   let* α1 := core.ops.deref.Deref.deref α0 in
   let* α2 := deref α1 std.path.Path in
@@ -37,11 +37,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match α4 with
   | core.option.Option  =>
     let* α0 :=
-      std.panicking.begin_panic "new path is not a valid UTF-8 sequence" in
+      std.panicking.begin_panic
+        (mk_str "new path is not a valid UTF-8 sequence") in
     never_to_any α0
   | core.option.Option s =>
     let* _ :=
-      let* α0 := borrow [ "new path is "; "
+      let* α0 :=
+        borrow [ mk_str "new path is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

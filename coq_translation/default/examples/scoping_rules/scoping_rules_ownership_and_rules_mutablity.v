@@ -2,12 +2,17 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* immutable_box := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 5 in
+Definition main `{State.Trait} : M unit :=
+  let* immutable_box :=
+    let* α0 := M.alloc 5 in
+    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "immutable_box contains "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "immutable_box contains "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -26,8 +31,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let mutable_box := immutable_box in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "mutable_box contains "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "mutable_box contains "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -44,11 +52,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* α0 := deref mutable_box u32 in
-    assign α0 4 in
+    let* α1 := M.alloc 4 in
+    assign α0 α1 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "mutable_box now contains "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "mutable_box now contains "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

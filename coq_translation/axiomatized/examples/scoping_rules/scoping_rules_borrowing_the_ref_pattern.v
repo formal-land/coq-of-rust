@@ -3,51 +3,53 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     x : i32;
     y : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x) : M _;
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(x) : M _;
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
+    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_y `{State.Trait} : Notation.DoubleColon t "y" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
   }.
 End Point.
-Definition Point : Set := Point.t.
+Definition Point `{State.Trait} : Set := M.val (Point.t).
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self := scoping_rules_borrowing_the_ref_pattern.Point.
+  Definition Self `{State.Trait} :=
+    scoping_rules_borrowing_the_ref_pattern.Point.
   
   Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') scoping_rules_borrowing_the_ref_pattern.Point.
+      forall `{State.Trait},
+      (ref Self) -> M scoping_rules_borrowing_the_ref_pattern.Point.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
-  Definition Self := scoping_rules_borrowing_the_ref_pattern.Point.
+  Definition Self `{State.Trait} :=
+    scoping_rules_borrowing_the_ref_pattern.Point.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

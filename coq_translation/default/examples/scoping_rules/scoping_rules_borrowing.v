@@ -2,14 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition eat_box_i32
-    `{H' : State.Trait}
+    `{State.Trait}
     (boxed_i32 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        borrow [ "Destroying box that contains "; "
-" ] (list (ref str)) in
+        borrow
+          [ mk_str "Destroying box that contains "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -26,13 +28,11 @@ Definition eat_box_i32
     Pure tt in
   Pure tt.
 
-Definition borrow_i32
-    `{H' : State.Trait}
-    (borrowed_i32 : ref i32)
-    : M (H := H') unit :=
+Definition borrow_i32 `{State.Trait} (borrowed_i32 : ref i32) : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "This int is: "; "
+      let* α0 :=
+        borrow [ mk_str "This int is: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -51,9 +51,11 @@ Definition borrow_i32
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* boxed_i32 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 5 in
-  let stacked_i32 := 6 in
+Definition main `{State.Trait} : M unit :=
+  let* boxed_i32 :=
+    let* α0 := M.alloc 5 in
+    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+  let* stacked_i32 := M.alloc 6 in
   let* _ :=
     let* α0 := borrow boxed_i32 (alloc.boxed.Box i32 alloc.alloc.Global) in
     let* α1 := deref α0 (alloc.boxed.Box i32 alloc.alloc.Global) in

@@ -32,9 +32,11 @@ End Blue.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Definition Self := generics_bounds_test_case_empty_bounds.Cardinal.
+  Definition Self `{State.Trait} :=
+    generics_bounds_test_case_empty_bounds.Cardinal.
   
-  Global Instance I : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
+  Global Instance I `{State.Trait}
+    : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End
@@ -42,9 +44,10 @@ End
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Definition Self := generics_bounds_test_case_empty_bounds.BlueJay.
+  Definition Self `{State.Trait} :=
+    generics_bounds_test_case_empty_bounds.BlueJay.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
   }.
   Global Hint Resolve I : core.
@@ -52,29 +55,30 @@ End
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
 
 Definition red
-    `{H' : State.Trait}
+    `{State.Trait}
     {T : Set}
     `{generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
-    : M (H := H') (ref str) :=
-  Pure "red".
+    : M (ref str) :=
+  Pure (mk_str "red").
 
 Definition blue
-    `{H' : State.Trait}
+    `{State.Trait}
     {T : Set}
     `{generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
-    : M (H := H') (ref str) :=
-  Pure "blue".
+    : M (ref str) :=
+  Pure (mk_str "blue").
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let cardinal := generics_bounds_test_case_empty_bounds.Cardinal.Build_t tt in
   let blue_jay := generics_bounds_test_case_empty_bounds.BlueJay.Build_t tt in
   let _turkey := generics_bounds_test_case_empty_bounds.Turkey.Build_t tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "A cardinal is "; "
+      let* α0 :=
+        borrow [ mk_str "A cardinal is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -97,7 +101,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "A blue jay is "; "
+      let* α0 :=
+        borrow [ mk_str "A blue jay is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

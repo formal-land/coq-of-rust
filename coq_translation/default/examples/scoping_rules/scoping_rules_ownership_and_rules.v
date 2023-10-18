@@ -2,14 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition destroy_box
-    `{H' : State.Trait}
+    `{State.Trait}
     (c : alloc.boxed.Box i32 alloc.boxed.Box.Default.A)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        borrow [ "Destroying a box that contains "; "
-" ] (list (ref str)) in
+        borrow
+          [ mk_str "Destroying a box that contains "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -27,13 +29,16 @@ Definition destroy_box
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := 5 in
+Definition main `{State.Trait} : M unit :=
+  let* x := M.alloc 5 in
   let y := x in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "x is "; ", and y is "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "x is "; mk_str ", and y is "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -52,10 +57,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
     Pure tt in
-  let* a := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 5 in
+  let* a :=
+    let* α0 := M.alloc 5 in
+    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "a contains: "; "
+      let* α0 :=
+        borrow [ mk_str "a contains: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

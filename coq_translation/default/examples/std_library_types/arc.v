@@ -2,15 +2,18 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* apple := (alloc.sync.Arc _)::["new"] "the same apple" in
+Definition main `{State.Trait} : M unit :=
+  let* apple := (alloc.sync.Arc _)::["new"] (mk_str "the same apple") in
   let* _ :=
-    let* α0 :=
-      core.iter.traits.collect.IntoIterator.into_iter
-        {| core.ops.range.Range.start := 0; core.ops.range.Range.end := 10;
+    let* α0 := M.alloc 0 in
+    let* α1 := M.alloc 10 in
+    let* α2 :=
+      M.alloc
+        {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1;
         |} in
-    let* α1 :=
-      match α0 with
+    let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+    let* α4 :=
+      match α3 with
       | iter =>
         loop
           (let* _ :=
@@ -32,7 +35,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                 std.thread.spawn
                   let* _ :=
                     let* _ :=
-                      let* α0 := borrow [ ""; "
+                      let* α0 :=
+                        borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
                       let* α1 := deref α0 (list (ref str)) in
                       let* α2 := borrow α1 (list (ref str)) in
@@ -53,8 +57,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             end in
           Pure tt)
       end in
-    use α1 in
+    use α4 in
   let* _ :=
-    let* α0 := core.time.Duration::["from_secs"] 1 in
-    std.thread.sleep α0 in
+    let* α0 := M.alloc 1 in
+    let* α1 := core.time.Duration::["from_secs"] α0 in
+    std.thread.sleep α1 in
   Pure tt.

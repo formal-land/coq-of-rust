@@ -2,22 +2,22 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition apply
-    `{H' : State.Trait}
+    `{State.Trait}
     {F : Set}
     `{core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* α0 := borrow f _ in
     core.ops.function.Fn.call α0 tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := 7 in
+Definition main `{State.Trait} : M unit :=
+  let* x := M.alloc 7 in
   let print :=
     let* _ :=
-      let* α0 := borrow [ ""; "
+      let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

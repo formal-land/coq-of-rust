@@ -2,28 +2,29 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{H' : State.Trait}
+    `{State.Trait}
     (first : ref i32)
     (second : ref i32)
-    : M (H := H') i32 :=
+    : M i32 :=
   core.ops.arith.Mul.mul first second.
 
 Definition choose_first
-    `{H' : State.Trait}
+    `{State.Trait}
     (first : ref i32)
     (arg : ref i32)
-    : M (H := H') (ref i32) :=
+    : M (ref i32) :=
   let* α0 := deref first i32 in
   borrow α0 i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let first := 2 in
+Definition main `{State.Trait} : M unit :=
+  let* first := M.alloc 2 in
   let* _ :=
-    let second := 3 in
+    let* second := M.alloc 3 in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "The product is "; "
+        let* α0 :=
+          borrow [ mk_str "The product is "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -48,7 +49,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ ""; " is the first
+        let* α0 :=
+          borrow [ mk_str ""; mk_str " is the first
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in

@@ -32,14 +32,14 @@ Module SomeTrait.
         `(traits_parms.Bar.Trait SomeType)
         `(traits_parms.Tar.Trait SomeType),
       unit;
-    some_fn `{H' : State.Trait} : M (H := H') unit;
+    some_fn `{State.Trait} : M unit;
   }.
   
   Global Instance Method_SomeType `(Trait)
     : Notation.DoubleColonType Self "SomeType" := {
     Notation.double_colon_type := SomeType;
   }.
-  Global Instance Method_some_fn `{H' : State.Trait} `(Trait)
+  Global Instance Method_some_fn `{State.Trait} `(Trait)
     : Notation.Dot "some_fn" := {
     Notation.dot := some_fn;
   }.
@@ -47,7 +47,7 @@ End SomeTrait.
 
 Module SomeOtherType.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : u32;
   }.
   Global Set Primitive Projections.
@@ -59,45 +59,45 @@ End SomeOtherType.
 Definition SomeOtherType := @SomeOtherType.t.
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Foo.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.Foo.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Bar.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.Bar.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Tar.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.Tar.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
   Definition SomeType : Set := traits_parms.SomeOtherType.
   
-  Parameter some_fn : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter some_fn : forall `{State.Trait}, M unit.
   
-  Global Instance AssociatedFunction_some_fn `{H' : State.Trait} :
+  Global Instance AssociatedFunction_some_fn `{State.Trait} :
     Notation.DoubleColon Self "some_fn" := {
     Notation.double_colon := some_fn;
   }.
   
   #[refine]
-  Global Instance I : traits_parms.SomeTrait.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.SomeTrait.Trait Self := {
     traits_parms.SomeTrait.SomeType := SomeType;
-    traits_parms.SomeTrait.some_fn `{H' : State.Trait} := some_fn;
+    traits_parms.SomeTrait.some_fn := some_fn;
   }.
   eauto.
   Defined.

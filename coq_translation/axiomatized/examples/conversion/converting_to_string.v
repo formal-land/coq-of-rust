@@ -3,36 +3,37 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Circle.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     radius : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_radius : Notation.Dot "radius" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_radius `{State.Trait} : Notation.Dot "radius" := {
+    Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
   }.
-  Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_radius `{State.Trait}
+    : Notation.DoubleColon t "radius" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
   }.
 End Circle.
-Definition Circle : Set := Circle.t.
+Definition Circle `{State.Trait} : Set := M.val (Circle.t).
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Definition Self := converting_to_string.Circle.
+  Definition Self `{State.Trait} := converting_to_string.Circle.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

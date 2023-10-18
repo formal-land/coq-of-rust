@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* path :=
-    let* α0 := deref "hello.txt" str in
+    let* α0 := deref (mk_str "hello.txt") str in
     let* α1 := borrow α0 str in
     std.path.Path::["new"] α1 in
   let* display :=
@@ -16,7 +16,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* α1 := std.fs.File::["open"] α0 in
     match α1 with
     | core.result.Result why =>
-      let* α0 := borrow [ "couldn't open "; ": " ] (list (ref str)) in
+      let* α0 :=
+        borrow [ mk_str "couldn't open "; mk_str ": " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -45,7 +46,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* α4 := std.io.Read.read_to_string α0 α3 in
   match α4 with
   | core.result.Result why =>
-    let* α0 := borrow [ "couldn't read "; ": " ] (list (ref str)) in
+    let* α0 :=
+      borrow [ mk_str "couldn't read "; mk_str ": " ] (list (ref str)) in
     let* α1 := deref α0 (list (ref str)) in
     let* α2 := borrow α1 (list (ref str)) in
     let* α3 := pointer_coercion "Unsize" α2 in
@@ -66,7 +68,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     never_to_any α17
   | core.result.Result _ =>
     let* _ :=
-      let* α0 := borrow [ ""; " contains:
+      let* α0 := borrow [ mk_str ""; mk_str " contains:
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

@@ -2,22 +2,26 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let counter := 0 in
+Definition main `{State.Trait} : M unit :=
+  let* counter := M.alloc 0 in
   let* result :=
     loop
-      (let* _ := assign_op add counter 1 in
-      let* α0 := eq counter 10 in
-      let* α1 := use α0 in
-      if (α1 : bool) then
+      (let* _ :=
+        let* α0 := M.alloc 1 in
+        assign_op add counter α0 in
+      let* α0 := M.alloc 10 in
+      let* α1 := eq counter α0 in
+      let* α2 := use α1 in
+      if (α2 : bool) then
         let* _ := Break in
         never_to_any tt
       else
         Pure tt) in
   let* _ :=
     let* α0 := borrow result i32 in
-    let* α1 := borrow 20 i32 in
-    match (α0, α1) with
+    let* α1 := M.alloc 20 in
+    let* α2 := borrow α1 i32 in
+    match (α0, α2) with
     | (left_val, right_val) =>
       let* α0 := deref left_val i32 in
       let* α1 := deref right_val i32 in

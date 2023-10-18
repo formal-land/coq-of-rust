@@ -2,29 +2,33 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition checked_division
-    `{H' : State.Trait}
+    `{State.Trait}
     (dividend : i32)
     (divisor : i32)
-    : M (H := H') (core.option.Option i32) :=
-  let* α0 := eq divisor 0 in
-  let* α1 := use α0 in
-  if (α1 : bool) then
+    : M (core.option.Option i32) :=
+  let* α0 := M.alloc 0 in
+  let* α1 := eq divisor α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
     Pure (core.option.Option.None tt)
   else
     let* α0 := div dividend divisor in
     Pure (core.option.Option.Some α0).
 
 Definition try_division
-    `{H' : State.Trait}
+    `{State.Trait}
     (dividend : i32)
     (divisor : i32)
-    : M (H := H') unit :=
+    : M unit :=
   let* α0 := option.checked_division dividend divisor in
   match α0 with
   | core.option.Option  =>
     let* _ :=
-      let* α0 := borrow [ ""; " / "; " failed!
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str " / "; mk_str " failed!
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -45,8 +49,11 @@ Definition try_division
     Pure tt
   | core.option.Option quotient =>
     let* _ :=
-      let* α0 := borrow [ ""; " / "; " = "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str " / "; mk_str " = "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -72,16 +79,27 @@ Definition try_division
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* _ := option.try_division 4 2 in
-  let* _ := option.try_division 1 0 in
+Definition main `{State.Trait} : M unit :=
+  let* _ :=
+    let* α0 := M.alloc 4 in
+    let* α1 := M.alloc 2 in
+    option.try_division α0 α1 in
+  let* _ :=
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 0 in
+    option.try_division α0 α1 in
   let none := core.option.Option.None tt in
   let _equivalent_none := core.option.Option.None tt in
-  let optional_float := core.option.Option.Some 0 (* 0 *) in
+  let* optional_float :=
+    let* α0 := M.alloc 0 (* 0 *) in
+    Pure (core.option.Option.Some α0) in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; " unwraps to "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str " unwraps to "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -103,8 +121,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; " unwraps to "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str " unwraps to "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition cat
-    `{H' : State.Trait}
+    `{State.Trait}
     (path : ref std.path.Path)
-    : M (H := H') (std.io.error.Result alloc.string.String) :=
+    : M (std.io.error.Result alloc.string.String) :=
   let* f :=
     let* α0 := std.fs.File::["open"] path in
     let* α1 := core.ops.try_trait.Try.branch α0 in
@@ -27,10 +27,10 @@ Definition cat
   end.
 
 Definition echo
-    `{H' : State.Trait}
+    `{State.Trait}
     (s : ref str)
     (path : ref std.path.Path)
-    : M (H := H') (std.io.error.Result unit) :=
+    : M (std.io.error.Result unit) :=
   let* f :=
     let* α0 := std.fs.File::["create"] path in
     let* α1 := core.ops.try_trait.Try.branch α0 in
@@ -50,28 +50,30 @@ Definition echo
   std.io.Write.write_all α0 α5.
 
 Definition touch
-    `{H' : State.Trait}
+    `{State.Trait}
     (path : ref std.path.Path)
-    : M (H := H') (std.io.error.Result unit) :=
+    : M (std.io.error.Result unit) :=
   let* α0 := std.fs.OpenOptions::["new"] in
   let* α1 := borrow_mut α0 std.fs.OpenOptions in
-  let* α2 := std.fs.OpenOptions::["create"] α1 true in
-  let* α3 := deref α2 std.fs.OpenOptions in
-  let* α4 := borrow_mut α3 std.fs.OpenOptions in
-  let* α5 := std.fs.OpenOptions::["write"] α4 true in
-  let* α6 := deref α5 std.fs.OpenOptions in
-  let* α7 := borrow α6 std.fs.OpenOptions in
-  let* α8 := std.fs.OpenOptions::["open"] α7 path in
-  match α8 with
+  let* α2 := true in
+  let* α3 := std.fs.OpenOptions::["create"] α1 α2 in
+  let* α4 := deref α3 std.fs.OpenOptions in
+  let* α5 := borrow_mut α4 std.fs.OpenOptions in
+  let* α6 := true in
+  let* α7 := std.fs.OpenOptions::["write"] α5 α6 in
+  let* α8 := deref α7 std.fs.OpenOptions in
+  let* α9 := borrow α8 std.fs.OpenOptions in
+  let* α10 := std.fs.OpenOptions::["open"] α9 path in
+  match α10 with
   | core.result.Result _ => Pure (core.result.Result.Ok tt)
   | core.result.Result e => Pure (core.result.Result.Err e)
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`mkdir a`
+      let* α0 := borrow [ mk_str "`mkdir a`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -80,11 +82,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.create_dir "a" in
+    let* α0 := std.fs.create_dir (mk_str "a") in
     match α0 with
     | core.result.Result why =>
       let* _ :=
-        let* α0 := borrow [ "! "; "
+        let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -106,7 +108,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`echo hello > a/b.txt`
+      let* α0 := borrow [ mk_str "`echo hello > a/b.txt`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -115,9 +117,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := deref "hello" str in
+    let* α0 := deref (mk_str "hello") str in
     let* α1 := borrow α0 str in
-    let* α2 := deref "a/b.txt" str in
+    let* α2 := deref (mk_str "a/b.txt") str in
     let* α3 := borrow α2 str in
     let* α4 := std.path.Path::["new"] α3 in
     let* α5 := borrow α4 (ref std.path.Path) in
@@ -129,7 +131,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       α9
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "! "; "
+          let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -150,7 +152,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`mkdir -p a/c/d`
+      let* α0 := borrow [ mk_str "`mkdir -p a/c/d`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -159,12 +161,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.create_dir_all "a/c/d" in
+    let* α0 := std.fs.create_dir_all (mk_str "a/c/d") in
     (core.result.Result _ _)::["unwrap_or_else"]
       α0
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "! "; "
+          let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -185,7 +187,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`touch a/c/e.txt`
+      let* α0 := borrow [ mk_str "`touch a/c/e.txt`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -194,7 +196,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := deref "a/c/e.txt" str in
+    let* α0 := deref (mk_str "a/c/e.txt") str in
     let* α1 := borrow α0 str in
     let* α2 := std.path.Path::["new"] α1 in
     let* α3 := borrow α2 (ref std.path.Path) in
@@ -206,7 +208,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       α7
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "! "; "
+          let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -227,7 +229,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`ln -s ../b.txt a/c/b.txt`
+      let* α0 :=
+        borrow [ mk_str "`ln -s ../b.txt a/c/b.txt`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -236,15 +239,17 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := use true in
-    if (α0 : bool) then
+    let* α0 := true in
+    let* α1 := use α0 in
+    if (α1 : bool) then
       let* _ :=
-        let* α0 := std.os.unix.fs.symlink "../b.txt" "a/c/b.txt" in
+        let* α0 :=
+          std.os.unix.fs.symlink (mk_str "../b.txt") (mk_str "a/c/b.txt") in
         (core.result.Result _ _)::["unwrap_or_else"]
           α0
           let* _ :=
             let* _ :=
-              let* α0 := borrow [ "! "; "
+              let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
               let* α1 := deref α0 (list (ref str)) in
               let* α2 := borrow α1 (list (ref str)) in
@@ -268,7 +273,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`cat a/c/b.txt`
+      let* α0 := borrow [ mk_str "`cat a/c/b.txt`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -277,7 +282,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := deref "a/c/b.txt" str in
+    let* α0 := deref (mk_str "a/c/b.txt") str in
     let* α1 := borrow α0 str in
     let* α2 := std.path.Path::["new"] α1 in
     let* α3 := borrow α2 (ref std.path.Path) in
@@ -288,7 +293,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     match α7 with
     | core.result.Result why =>
       let* _ :=
-        let* α0 := borrow [ "! "; "
+        let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -308,7 +313,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt
     | core.result.Result s =>
       let* _ :=
-        let* α0 := borrow [ "> "; "
+        let* α0 := borrow [ mk_str "> "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -327,7 +332,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`ls a`
+      let* α0 := borrow [ mk_str "`ls a`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -336,11 +341,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.read_dir "a" in
+    let* α0 := std.fs.read_dir (mk_str "a") in
     match α0 with
     | core.result.Result why =>
       let* _ :=
-        let* α0 := borrow [ "! "; "
+        let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -376,7 +381,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
               | core.option.Option path =>
                 let* _ :=
                   let* _ :=
-                    let* α0 := borrow [ "> "; "
+                    let* α0 :=
+                      borrow [ mk_str "> "; mk_str "
 " ] (list (ref str)) in
                     let* α1 := deref α0 (list (ref str)) in
                     let* α2 := borrow α1 (list (ref str)) in
@@ -403,7 +409,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     end in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`rm a/c/e.txt`
+      let* α0 := borrow [ mk_str "`rm a/c/e.txt`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -412,12 +418,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.remove_file "a/c/e.txt" in
+    let* α0 := std.fs.remove_file (mk_str "a/c/e.txt") in
     (core.result.Result _ _)::["unwrap_or_else"]
       α0
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "! "; "
+          let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -438,7 +444,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`rmdir a/c/d`
+      let* α0 := borrow [ mk_str "`rmdir a/c/d`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -447,12 +453,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.remove_dir "a/c/d" in
+    let* α0 := std.fs.remove_dir (mk_str "a/c/d") in
     (core.result.Result _ _)::["unwrap_or_else"]
       α0
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "! "; "
+          let* α0 := borrow [ mk_str "! "; mk_str "
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in

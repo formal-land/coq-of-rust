@@ -10,16 +10,18 @@ End Foo.
 Definition Foo : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let a := if_let_match_enum_values.Foo.Bar tt in
   let b := if_let_match_enum_values.Foo.Baz tt in
-  let c := if_let_match_enum_values.Foo.Qux 100 in
+  let* c :=
+    let* α0 := M.alloc 100 in
+    Pure (if_let_match_enum_values.Foo.Qux α0) in
   let* _ :=
     let* α0 := let_if if_let_match_enum_values.Foo  := a in
     if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "a is foobar
+          let* α0 := borrow [ mk_str "a is foobar
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -35,7 +37,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "b is foobar
+          let* α0 := borrow [ mk_str "b is foobar
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -51,7 +53,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "c is "; "
+          let* α0 := borrow [ mk_str "c is "; mk_str "
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -74,7 +76,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   if (α0 : bool) then
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "c is one hundred
+        let* α0 := borrow [ mk_str "c is one hundred
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in

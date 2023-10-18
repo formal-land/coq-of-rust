@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{H' : State.Trait}
+    `{State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
-    : M (H := H') (core.result.Result i32 core.num.error.ParseIntError) :=
+    : M (core.result.Result i32 core.num.error.ParseIntError) :=
   let* first_number :=
     let* α0 := deref first_number_str str in
     let* α1 := borrow α0 str in
@@ -34,13 +34,13 @@ Definition multiply
   Pure (core.result.Result.Ok α0).
 
 Definition print
-    `{H' : State.Trait}
+    `{State.Trait}
     (result : core.result.Result i32 core.num.error.ParseIntError)
-    : M (H := H') unit :=
+    : M unit :=
   match result with
   | core.result.Result n =>
     let* _ :=
-      let* α0 := borrow [ "n is "; "
+      let* α0 := borrow [ mk_str "n is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -58,7 +58,7 @@ Definition print
     Pure tt
   | core.result.Result e =>
     let* _ :=
-      let* α0 := borrow [ "Error: "; "
+      let* α0 := borrow [ mk_str "Error: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -77,11 +77,11 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
-    let* α0 := deref "10" str in
+    let* α0 := deref (mk_str "10") str in
     let* α1 := borrow α0 str in
-    let* α2 := deref "2" str in
+    let* α2 := deref (mk_str "2") str in
     let* α3 := borrow α2 str in
     let* α4 :=
       introducing_question_mark_is_an_replacement_for_deprecated_try.multiply
@@ -89,9 +89,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         α3 in
     introducing_question_mark_is_an_replacement_for_deprecated_try.print α4 in
   let* _ :=
-    let* α0 := deref "t" str in
+    let* α0 := deref (mk_str "t") str in
     let* α1 := borrow α0 str in
-    let* α2 := deref "2" str in
+    let* α2 := deref (mk_str "2") str in
     let* α3 := borrow α2 str in
     let* α4 :=
       introducing_question_mark_is_an_replacement_for_deprecated_try.multiply

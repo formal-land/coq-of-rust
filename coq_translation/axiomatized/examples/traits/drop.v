@@ -3,36 +3,35 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Droppable.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     name : ref str;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_name `{State.Trait}
+    : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
   }.
 End Droppable.
-Definition Droppable : Set := Droppable.t.
+Definition Droppable `{State.Trait} : Set := M.val (Droppable.t).
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Definition Self := drop.Droppable.
+  Definition Self `{State.Trait} := drop.Droppable.
   
-  Parameter drop :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') unit.
+  Parameter drop : forall `{State.Trait}, (mut_ref Self) -> M unit.
   
-  Global Instance Method_drop `{H' : State.Trait} : Notation.Dot "drop" := {
+  Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
   }.
   
-  Global Instance I : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
+  Global Instance I `{State.Trait} : core.ops.drop.Drop.Trait Self := {
+    core.ops.drop.Drop.drop := drop;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

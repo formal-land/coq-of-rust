@@ -2,15 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
+Definition main `{State.Trait} : M unit := Pure tt.
 
-Definition mul `{H' : State.Trait} (a : u64) (b : u64) : M (H := H') u128 :=
+Definition mul `{State.Trait} (a : u64) (b : u64) : M u128 :=
   let lo := tt in
   let hi := tt in
   let _ :=
     let _ := InlineAssembly in
     tt in
   let* α0 := cast hi in
-  let* α1 := shl α0 64 in
-  let* α2 := cast lo in
-  add α1 α2.
+  let* α1 := M.alloc 64 in
+  let* α2 := shl α0 α1 in
+  let* α3 := cast lo in
+  add α2 α3.

@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : u32;
   }.
   Global Set Primitive Projections.
@@ -17,16 +17,20 @@ Definition Foo := @Foo.t.
 Module Impl_example05_Foo.
   Definition Self := example05.Foo.
   
-  Definition plus1 `{H' : State.Trait} (self : Self) : M (H := H') u32 :=
-    add self.["0"] 1.
+  Definition plus1 `{State.Trait} (self : Self) : M u32 :=
+    let* α0 := self.["0"] in
+    let* α1 := M.alloc 1 in
+    add α0 α1.
   
-  Global Instance Method_plus1 `{H' : State.Trait} : Notation.Dot "plus1" := {
+  Global Instance Method_plus1 `{State.Trait} : Notation.Dot "plus1" := {
     Notation.dot := plus1;
   }.
 End Impl_example05_Foo.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let foo := example05.Foo.Build_t 0 in
+Definition main `{State.Trait} : M unit :=
+  let* foo :=
+    let* α0 := M.alloc 0 in
+    Pure (example05.Foo.Build_t α0) in
   let* _ := example05.Foo::["plus1"] foo in
   Pure tt.

@@ -2,10 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let _mutable_integer := 7 in
+Definition main `{State.Trait} : M unit :=
+  let* _mutable_integer := M.alloc 7 in
   let _ :=
     let _mutable_integer := _mutable_integer in
     tt in
-  let* _ := assign _mutable_integer 3 in
+  let* _ :=
+    let* α0 := M.alloc 3 in
+    assign _mutable_integer α0 in
   Pure tt.

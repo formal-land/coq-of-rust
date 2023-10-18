@@ -2,14 +2,17 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let decimal := 65 (* 65.4321 *) in
+Definition main `{State.Trait} : M unit :=
+  let* decimal := M.alloc 65 (* 65.4321 *) in
   let* integer := cast decimal in
   let* character := cast integer in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Casting: "; " -> "; " -> "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "Casting: "; mk_str " -> "; mk_str " -> "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -34,197 +37,219 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "1000 as a u16 is: "; "
+      let* α0 :=
+        borrow [ mk_str "1000 as a u16 is: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := use 1000 in
-      let* α5 := borrow α4 u16 in
-      let* α6 := deref α5 u16 in
-      let* α7 := borrow α6 u16 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 1000 in
+      let* α5 := use α4 in
+      let* α6 := borrow α5 u16 in
+      let* α7 := deref α6 u16 in
+      let* α8 := borrow α7 u16 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "1000 as a u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str "1000 as a u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := use 1000 in
-      let* α5 := borrow α4 u8 in
-      let* α6 := deref α5 u8 in
-      let* α7 := borrow α6 u8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 1000 in
+      let* α5 := use α4 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := deref α6 u8 in
+      let* α8 := borrow α7 u8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "  -1 as a u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str "  -1 as a u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := cast (- 1) in
-      let* α5 := borrow α4 u8 in
-      let* α6 := deref α5 u8 in
-      let* α7 := borrow α6 u8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc (- 1) in
+      let* α5 := cast α4 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := deref α6 u8 in
+      let* α8 := borrow α7 u8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "1000 mod 256 is : "; "
+      let* α0 :=
+        borrow [ mk_str "1000 mod 256 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := rem 1000 256 in
-      let* α5 := borrow α4 i32 in
-      let* α6 := deref α5 i32 in
+      let* α4 := M.alloc 1000 in
+      let* α5 := M.alloc 256 in
+      let* α6 := rem α4 α5 in
       let* α7 := borrow α6 i32 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α8 := deref α7 i32 in
+      let* α9 := borrow α8 i32 in
+      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
+      let* α12 := deref α11 (list core.fmt.rt.Argument) in
+      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
+      let* α14 := pointer_coercion "Unsize" α13 in
+      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+      std.io.stdio._print α15 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ " 128 as a i16 is: "; "
+      let* α0 :=
+        borrow [ mk_str " 128 as a i16 is: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := use 128 in
-      let* α5 := borrow α4 i16 in
-      let* α6 := deref α5 i16 in
-      let* α7 := borrow α6 i16 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 128 in
+      let* α5 := use α4 in
+      let* α6 := borrow α5 i16 in
+      let* α7 := deref α6 i16 in
+      let* α8 := borrow α7 i16 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ " 128 as a i8 is : "; "
+      let* α0 :=
+        borrow [ mk_str " 128 as a i8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := use 128 in
-      let* α5 := borrow α4 i8 in
-      let* α6 := deref α5 i8 in
-      let* α7 := borrow α6 i8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 128 in
+      let* α5 := use α4 in
+      let* α6 := borrow α5 i8 in
+      let* α7 := deref α6 i8 in
+      let* α8 := borrow α7 i8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "1000 as a u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str "1000 as a u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := use 1000 in
-      let* α5 := borrow α4 u8 in
-      let* α6 := deref α5 u8 in
-      let* α7 := borrow α6 u8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 1000 in
+      let* α5 := use α4 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := deref α6 u8 in
+      let* α8 := borrow α7 u8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ " 232 as a i8 is : "; "
+      let* α0 :=
+        borrow [ mk_str " 232 as a i8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := use 232 in
-      let* α5 := borrow α4 i8 in
-      let* α6 := deref α5 i8 in
-      let* α7 := borrow α6 i8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 232 in
+      let* α5 := use α4 in
+      let* α6 := borrow α5 i8 in
+      let* α7 := deref α6 i8 in
+      let* α8 := borrow α7 i8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ " 300.0 as u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str " 300.0 as u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := cast 300 (* 300.0 *) in
-      let* α5 := borrow α4 u8 in
-      let* α6 := deref α5 u8 in
-      let* α7 := borrow α6 u8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 300 (* 300.0 *) in
+      let* α5 := cast α4 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := deref α6 u8 in
+      let* α8 := borrow α7 u8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "-100.0 as u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str "-100.0 as u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := cast (- 100 (* 100.0 *)) in
-      let* α5 := borrow α4 u8 in
-      let* α6 := deref α5 u8 in
-      let* α7 := borrow α6 u8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc (- 100 (* 100.0 *)) in
+      let* α5 := cast α4 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := deref α6 u8 in
+      let* α8 := borrow α7 u8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "   nan as u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str "   nan as u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -243,45 +268,50 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ " 300.0 as u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str " 300.0 as u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := f32::["to_int_unchecked"] 300 (* 300.0 *) in
-      let* α5 := borrow α4 u8 in
-      let* α6 := deref α5 u8 in
-      let* α7 := borrow α6 u8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc 300 (* 300.0 *) in
+      let* α5 := f32::["to_int_unchecked"] α4 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := deref α6 u8 in
+      let* α8 := borrow α7 u8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "-100.0 as u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str "-100.0 as u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := f32::["to_int_unchecked"] (- 100 (* 100.0 *)) in
-      let* α5 := borrow α4 u8 in
-      let* α6 := deref α5 u8 in
-      let* α7 := borrow α6 u8 in
-      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
-      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
-      let* α10 := deref α9 (list core.fmt.rt.Argument) in
-      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
-      let* α12 := pointer_coercion "Unsize" α11 in
-      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
-      std.io.stdio._print α13 in
+      let* α4 := M.alloc (- 100 (* 100.0 *)) in
+      let* α5 := f32::["to_int_unchecked"] α4 in
+      let* α6 := borrow α5 u8 in
+      let* α7 := deref α6 u8 in
+      let* α8 := borrow α7 u8 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "   nan as u8 is : "; "
+      let* α0 :=
+        borrow [ mk_str "   nan as u8 is : "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

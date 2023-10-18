@@ -2,16 +2,19 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := 1 in
-  let y := 2 in
-  let z := 3 (* 3 *) in
-  let i := 1 in
-  let f := 1 (* 1.0 *) in
+Definition main `{State.Trait} : M unit :=
+  let* x := M.alloc 1 in
+  let* y := M.alloc 2 in
+  let* z := M.alloc 3 (* 3 *) in
+  let* i := M.alloc 1 in
+  let* f := M.alloc 1 (* 1.0 *) in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "size of `x` in bytes: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "size of `x` in bytes: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -32,8 +35,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "size of `y` in bytes: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "size of `y` in bytes: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -54,8 +60,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "size of `z` in bytes: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "size of `z` in bytes: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -76,8 +85,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "size of `i` in bytes: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "size of `i` in bytes: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -98,8 +110,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "size of `f` in bytes: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "size of `f` in bytes: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

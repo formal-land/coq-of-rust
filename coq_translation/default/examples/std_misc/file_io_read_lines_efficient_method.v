@@ -2,8 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* α0 := file_io_read_lines_efficient_method.read_lines "./hosts" in
+Definition main `{State.Trait} : M unit :=
+  let* α0 :=
+    file_io_read_lines_efficient_method.read_lines (mk_str "./hosts") in
   let* α1 := let_if core.result.Result lines := α0 in
   if (α1 : bool) then
     let* α0 := core.iter.traits.collect.IntoIterator.into_iter lines in
@@ -37,7 +38,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
               if (α0 : bool) then
                 let* _ :=
                   let* _ :=
-                    let* α0 := borrow [ ""; "
+                    let* α0 :=
+                      borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
                     let* α1 := deref α0 (list (ref str)) in
                     let* α2 := borrow α1 (list (ref str)) in
@@ -64,12 +66,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt.
 
 Definition read_lines
-    `{H' : State.Trait}
+    `{State.Trait}
     {P : Set}
     `{core.convert.AsRef.Trait P (T := std.path.Path)}
     (filename : P)
     :
-      M (H := H')
+      M
         (std.io.error.Result
           (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File))) :=
   let* file :=

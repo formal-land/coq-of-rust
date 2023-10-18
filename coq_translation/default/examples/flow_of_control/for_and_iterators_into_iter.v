@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* names :=
-    let* α0 := deref "Frank" str in
+    let* α0 := deref (mk_str "Frank") str in
     let* α1 := borrow α0 str in
-    let* α2 := deref "Ferris" str in
+    let* α2 := deref (mk_str "Ferris") str in
     let* α3 := borrow α2 str in
     let* α4 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ "Bob"; α1; α3 ] in
+        [ mk_str "Bob"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
     (Slice _)::["into_vec"] α5 in
   let* α0 := core.iter.traits.collect.IntoIterator.into_iter names in
@@ -43,7 +43,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
               let* _ :=
                 let* α0 :=
                   borrow
-                    [ "There is a rustacean among us!
+                    [ mk_str "There is a rustacean among us!
 " ]
                     (list (ref str)) in
                 let* α1 := deref α0 (list (ref str)) in
@@ -54,7 +54,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
               Pure tt
             | _ =>
               let* _ :=
-                let* α0 := borrow [ "Hello "; "
+                let* α0 :=
+                  borrow [ mk_str "Hello "; mk_str "
 " ] (list (ref str)) in
                 let* α1 := deref α0 (list (ref str)) in
                 let* α2 := borrow α1 (list (ref str)) in

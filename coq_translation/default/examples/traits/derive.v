@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Centimeters.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : f64;
   }.
   Global Set Primitive Projections.
@@ -15,72 +15,77 @@ End Centimeters.
 Definition Centimeters := @Centimeters.t.
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
-  Definition Self := derive.Centimeters.
+  Definition Self `{State.Trait} := derive.Centimeters.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.marker.StructuralPartialEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
-  Definition Self := derive.Centimeters.
+  Definition Self `{State.Trait} := derive.Centimeters.
   
   Definition eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref derive.Centimeters)
-      : M (H := H') bool :=
+      : M bool :=
     let* α0 := deref self derive.Centimeters in
-    let* α1 := deref other derive.Centimeters in
-    eq α0.["0"] α1.["0"].
+    let* α1 := α0.["0"] in
+    let* α2 := deref other derive.Centimeters in
+    let* α3 := α2.["0"] in
+    eq α1 α3.
   
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
       := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    core.cmp.PartialEq.eq := eq;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_derive_Centimeters.
 
 Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
-  Definition Self := derive.Centimeters.
+  Definition Self `{State.Trait} := derive.Centimeters.
   
   Definition partial_cmp
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref derive.Centimeters)
-      : M (H := H') (core.option.Option core.cmp.Ordering) :=
+      : M (core.option.Option core.cmp.Ordering) :=
     let* α0 := deref self derive.Centimeters in
-    let* α1 := borrow α0.["0"] f64 in
-    let* α2 := deref α1 f64 in
-    let* α3 := borrow α2 f64 in
-    let* α4 := deref other derive.Centimeters in
-    let* α5 := borrow α4.["0"] f64 in
-    let* α6 := deref α5 f64 in
+    let* α1 := α0.["0"] in
+    let* α2 := borrow α1 f64 in
+    let* α3 := deref α2 f64 in
+    let* α4 := borrow α3 f64 in
+    let* α5 := deref other derive.Centimeters in
+    let* α6 := α5.["0"] in
     let* α7 := borrow α6 f64 in
-    core.cmp.PartialOrd.partial_cmp α3 α7.
+    let* α8 := deref α7 f64 in
+    let* α9 := borrow α8 f64 in
+    core.cmp.PartialOrd.partial_cmp α4 α9.
   
-  Global Instance Method_partial_cmp `{H' : State.Trait} :
+  Global Instance Method_partial_cmp `{State.Trait} :
     Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
       := {
-    core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+    core.cmp.PartialOrd.partial_cmp := partial_cmp;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 
 Module Inches.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i32;
   }.
   Global Set Primitive Projections.
@@ -92,31 +97,32 @@ End Inches.
 Definition Inches := @Inches.t.
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
-  Definition Self := derive.Inches.
+  Definition Self `{State.Trait} := derive.Inches.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
+      : M core.fmt.Result :=
     let* α0 := deref f core.fmt.Formatter in
     let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref "Inches" str in
+    let* α2 := deref (mk_str "Inches") str in
     let* α3 := borrow α2 str in
     let* α4 := deref self derive.Inches in
-    let* α5 := borrow α4.["0"] i32 in
-    let* α6 := borrow α5 (ref i32) in
-    let* α7 := deref α6 (ref i32) in
-    let* α8 := borrow α7 (ref i32) in
-    let* α9 := pointer_coercion "Unsize" α8 in
-    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α9.
+    let* α5 := α4.["0"] in
+    let* α6 := borrow α5 i32 in
+    let* α7 := borrow α6 (ref i32) in
+    let* α8 := deref α7 (ref i32) in
+    let* α9 := borrow α8 (ref i32) in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_derive_Inches.
@@ -125,15 +131,16 @@ Module Impl_derive_Inches_2.
   Definition Self := derive.Inches.
   
   Definition to_centimeters
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') derive.Centimeters :=
+      : M derive.Centimeters :=
     let 'derive.Inches.Build_t inches := self in
     let* α0 := cast inches in
-    let* α1 := mul α0 3 (* 2.54 *) in
-    Pure (derive.Centimeters.Build_t α1).
+    let* α1 := M.alloc 3 (* 2.54 *) in
+    let* α2 := mul α0 α1 in
+    Pure (derive.Centimeters.Build_t α2).
   
-  Global Instance Method_to_centimeters `{H' : State.Trait} :
+  Global Instance Method_to_centimeters `{State.Trait} :
     Notation.Dot "to_centimeters" := {
     Notation.dot := to_centimeters;
   }.
@@ -141,7 +148,7 @@ End Impl_derive_Inches_2.
 
 Module Seconds.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i32;
   }.
   Global Set Primitive Projections.
@@ -153,12 +160,17 @@ End Seconds.
 Definition Seconds := @Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let _one_second := derive.Seconds.Build_t 1 in
-  let foot := derive.Inches.Build_t 12 in
+Definition main `{State.Trait} : M unit :=
+  let* _one_second :=
+    let* α0 := M.alloc 1 in
+    Pure (derive.Seconds.Build_t α0) in
+  let* foot :=
+    let* α0 := M.alloc 12 in
+    Pure (derive.Inches.Build_t α0) in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "One foot equals "; "
+      let* α0 :=
+        borrow [ mk_str "One foot equals "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -174,7 +186,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     Pure tt in
-  let meter := derive.Centimeters.Build_t 100 (* 100.0 *) in
+  let* meter :=
+    let* α0 := M.alloc 100 (* 100.0 *) in
+    Pure (derive.Centimeters.Build_t α0) in
   let* cmp :=
     let* α0 := borrow foot derive.Inches in
     let* α1 := derive.Inches::["to_centimeters"] α0 in
@@ -183,15 +197,17 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* α4 := core.cmp.PartialOrd.lt α2 α3 in
     let* α5 := use α4 in
     if (α5 : bool) then
-      Pure "smaller"
+      Pure (mk_str "smaller")
     else
-      let* α0 := deref "bigger" str in
+      let* α0 := deref (mk_str "bigger") str in
       borrow α0 str in
   let* _ :=
     let* _ :=
       let* α0 :=
-        borrow [ "One foot is "; " than one meter.
-" ] (list (ref str)) in
+        borrow
+          [ mk_str "One foot is "; mk_str " than one meter.
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

@@ -8,7 +8,7 @@ Definition A := @A.t.
 
 Module Single.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : generics.A;
   }.
   Global Set Primitive Projections.
@@ -23,7 +23,7 @@ Module SingleGen.
   Section SingleGen.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : T;
     }.
     Global Set Primitive Projections.
@@ -36,4 +36,4 @@ End SingleGen.
 Definition SingleGen := @SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

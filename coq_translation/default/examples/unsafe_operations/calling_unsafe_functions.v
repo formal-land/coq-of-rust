@@ -2,12 +2,17 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* some_vector :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3; 4 ] in
-    let* α1 := pointer_coercion "Unsize" α0 in
-    (Slice _)::["into_vec"] α1 in
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    let* α3 := M.alloc 4 in
+    let* α4 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ α0; α1; α2; α3 ] in
+    let* α5 := pointer_coercion "Unsize" α4 in
+    (Slice _)::["into_vec"] α5 in
   let* pointer :=
     let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
     (alloc.vec.Vec _ _)::["as_ptr"] α0 in

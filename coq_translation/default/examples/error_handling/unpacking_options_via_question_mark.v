@@ -3,117 +3,124 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     job : core.option.Option unpacking_options_via_question_mark.Job;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_job : Notation.Dot "job" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_job `{State.Trait} : Notation.Dot "job" := {
+    Notation.dot x := let* x := M.read x in Pure x.(job) : M _;
   }.
-  Global Instance Get_AF_job : Notation.DoubleColon t "job" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_job `{State.Trait} : Notation.DoubleColon t "job" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(job) : M _;
   }.
 End Person.
-Definition Person : Set := ⟅Person.t⟆.
+Definition Person `{State.Trait} : Set := M.val (Person.t).
 
 Module Job.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     phone_number
       :
       core.option.Option unpacking_options_via_question_mark.PhoneNumber;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_phone_number : Notation.Dot "phone_number" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_phone_number `{State.Trait}
+    : Notation.Dot "phone_number" := {
+    Notation.dot x := let* x := M.read x in Pure x.(phone_number) : M _;
   }.
-  Global Instance Get_AF_phone_number
+  Global Instance Get_AF_phone_number `{State.Trait}
     : Notation.DoubleColon t "phone_number" := {
-    Notation.double_colon '(Build_t x0) := x0;
+    Notation.double_colon x
+      :=
+      let* x := M.read x in Pure x.(phone_number) : M _;
   }.
 End Job.
-Definition Job : Set := ⟅Job.t⟆.
+Definition Job `{State.Trait} : Set := M.val (Job.t).
 
 Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
-  Definition Self := unpacking_options_via_question_mark.Job.
+  Definition Self `{State.Trait} := unpacking_options_via_question_mark.Job.
   
   Definition clone
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') unpacking_options_via_question_mark.Job :=
+      : M unpacking_options_via_question_mark.Job :=
     let _ := tt in
     deref self unpacking_options_via_question_mark.Job.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
 
 Module Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
-  Definition Self := unpacking_options_via_question_mark.Job.
+  Definition Self `{State.Trait} := unpacking_options_via_question_mark.Job.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job.
 
 Module PhoneNumber.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     area_code : core.option.Option u8;
     number : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_area_code : Notation.Dot "area_code" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_area_code `{State.Trait} : Notation.Dot "area_code" := {
+    Notation.dot x := let* x := M.read x in Pure x.(area_code) : M _;
   }.
-  Global Instance Get_AF_area_code : Notation.DoubleColon t "area_code" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_area_code `{State.Trait}
+    : Notation.DoubleColon t "area_code" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(area_code) : M _;
   }.
-  Global Instance Get_number : Notation.Dot "number" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_number `{State.Trait} : Notation.Dot "number" := {
+    Notation.dot x := let* x := M.read x in Pure x.(number) : M _;
   }.
-  Global Instance Get_AF_number : Notation.DoubleColon t "number" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_number `{State.Trait}
+    : Notation.DoubleColon t "number" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(number) : M _;
   }.
 End PhoneNumber.
-Definition PhoneNumber : Set := ⟅PhoneNumber.t⟆.
+Definition PhoneNumber `{State.Trait} : Set := M.val (PhoneNumber.t).
 
 Module
   Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self := unpacking_options_via_question_mark.PhoneNumber.
+  Definition Self `{State.Trait} :=
+    unpacking_options_via_question_mark.PhoneNumber.
   
   Definition clone
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') unpacking_options_via_question_mark.PhoneNumber :=
+      : M unpacking_options_via_question_mark.PhoneNumber :=
     let _ := tt in
     let _ := tt in
     deref self unpacking_options_via_question_mark.PhoneNumber.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module
   Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
-  Definition Self := unpacking_options_via_question_mark.PhoneNumber.
+  Definition Self `{State.Trait} :=
+    unpacking_options_via_question_mark.PhoneNumber.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
@@ -122,60 +129,69 @@ Module Impl_unpacking_options_via_question_mark_Person.
   Definition Self := unpacking_options_via_question_mark.Person.
   
   Definition work_phone_area_code
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') (core.option.Option u8) :=
+      : M (core.option.Option u8) :=
     let* α0 := deref self unpacking_options_via_question_mark.Person in
-    let* α1 := core.ops.try_trait.Try.branch α0.["job"] in
-    let* α2 :=
-      match α1 with
+    let* α1 := α0.["job"] in
+    let* α2 := core.ops.try_trait.Try.branch α1 in
+    let* α3 :=
+      match α2 with
       | core.ops.control_flow.ControlFlow residual =>
         let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
         let* α1 := Return α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => Pure val
       end in
-    let* α3 := core.ops.try_trait.Try.branch α2.["phone_number"] in
-    let* α4 :=
-      match α3 with
+    let* α4 := α3.["phone_number"] in
+    let* α5 := core.ops.try_trait.Try.branch α4 in
+    let* α6 :=
+      match α5 with
       | core.ops.control_flow.ControlFlow residual =>
         let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
         let* α1 := Return α0 in
         never_to_any α1
       | core.ops.control_flow.ControlFlow val => Pure val
       end in
-    Pure α4.["area_code"].
+    α6.["area_code"].
   
-  Global Instance Method_work_phone_area_code `{H' : State.Trait} :
+  Global Instance Method_work_phone_area_code `{State.Trait} :
     Notation.Dot "work_phone_area_code" := {
     Notation.dot := work_phone_area_code;
   }.
 End Impl_unpacking_options_via_question_mark_Person.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let p :=
-    {|
-      unpacking_options_via_question_mark.Person.job :=
-        core.option.Option.Some
-          {|
-            unpacking_options_via_question_mark.Job.phone_number :=
-              core.option.Option.Some
-                {|
-                  unpacking_options_via_question_mark.PhoneNumber.area_code :=
-                    core.option.Option.Some 61;
-                  unpacking_options_via_question_mark.PhoneNumber.number :=
-                    439222222;
-                |};
-          |};
-    |} in
+Definition main `{State.Trait} : M unit :=
+  let* p :=
+    let* α0 := M.alloc 61 in
+    let* α1 := M.alloc 439222222 in
+    let* α2 :=
+      M.alloc
+        {|
+          unpacking_options_via_question_mark.PhoneNumber.area_code :=
+            core.option.Option.Some α0;
+          unpacking_options_via_question_mark.PhoneNumber.number := α1;
+        |} in
+    let* α3 :=
+      M.alloc
+        {|
+          unpacking_options_via_question_mark.Job.phone_number :=
+            core.option.Option.Some α2;
+        |} in
+    M.alloc
+      {|
+        unpacking_options_via_question_mark.Person.job :=
+          core.option.Option.Some α3;
+      |} in
   let* _ :=
     let* α0 := borrow p unpacking_options_via_question_mark.Person in
     let* α1 :=
       unpacking_options_via_question_mark.Person::["work_phone_area_code"] α0 in
     let* α2 := borrow α1 (core.option.Option u8) in
-    let* α3 := borrow (core.option.Option.Some 61) (core.option.Option u8) in
-    match (α2, α3) with
+    let* α3 := M.alloc 61 in
+    let* α4 := borrow (core.option.Option.Some α3) (core.option.Option u8) in
+    match (α2, α4) with
     | (left_val, right_val) =>
       let* α0 := deref left_val (core.option.Option u8) in
       let* α1 := borrow α0 (core.option.Option u8) in

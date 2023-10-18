@@ -3,33 +3,33 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Point.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     x : i32;
     y : i32;
     z : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
+  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x) : M _;
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon '(Build_t x0 _ _) := x0;
+  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(x) : M _;
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
+  Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
+    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon '(Build_t _ x1 _) := x1;
+  Global Instance Get_AF_y `{State.Trait} : Notation.DoubleColon t "y" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
   }.
-  Global Instance Get_z : Notation.Dot "z" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
+  Global Instance Get_z `{State.Trait} : Notation.Dot "z" := {
+    Notation.dot x := let* x := M.read x in Pure x.(z) : M _;
   }.
-  Global Instance Get_AF_z : Notation.DoubleColon t "z" := {
-    Notation.double_colon '(Build_t _ _ x2) := x2;
+  Global Instance Get_AF_z `{State.Trait} : Notation.DoubleColon t "z" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(z) : M _;
   }.
 End Point.
-Definition Point : Set := Point.t.
+Definition Point `{State.Trait} : Set := M.val (Point.t).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

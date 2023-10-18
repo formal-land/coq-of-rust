@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module EvenNumber.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i32;
   }.
   Global Set Primitive Projections.
@@ -15,109 +15,118 @@ End EvenNumber.
 Definition EvenNumber := @EvenNumber.t.
 
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
-  Definition Self := try_from_and_try_into.EvenNumber.
+  Definition Self `{State.Trait} := try_from_and_try_into.EvenNumber.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
+      : M core.fmt.Result :=
     let* α0 := deref f core.fmt.Formatter in
     let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref "EvenNumber" str in
+    let* α2 := deref (mk_str "EvenNumber") str in
     let* α3 := borrow α2 str in
     let* α4 := deref self try_from_and_try_into.EvenNumber in
-    let* α5 := borrow α4.["0"] i32 in
-    let* α6 := borrow α5 (ref i32) in
-    let* α7 := deref α6 (ref i32) in
-    let* α8 := borrow α7 (ref i32) in
-    let* α9 := pointer_coercion "Unsize" α8 in
-    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α9.
+    let* α5 := α4.["0"] in
+    let* α6 := borrow α5 i32 in
+    let* α7 := borrow α6 (ref i32) in
+    let* α8 := deref α7 (ref i32) in
+    let* α9 := borrow α8 (ref i32) in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
-  Definition Self := try_from_and_try_into.EvenNumber.
+  Definition Self `{State.Trait} := try_from_and_try_into.EvenNumber.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.marker.StructuralPartialEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
-  Definition Self := try_from_and_try_into.EvenNumber.
+  Definition Self `{State.Trait} := try_from_and_try_into.EvenNumber.
   
   Definition eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref try_from_and_try_into.EvenNumber)
-      : M (H := H') bool :=
+      : M bool :=
     let* α0 := deref self try_from_and_try_into.EvenNumber in
-    let* α1 := deref other try_from_and_try_into.EvenNumber in
-    eq α0.["0"] α1.["0"].
+    let* α1 := α0.["0"] in
+    let* α2 := deref other try_from_and_try_into.EvenNumber in
+    let* α3 := α2.["0"] in
+    eq α1 α3.
   
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
       := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    core.cmp.PartialEq.eq := eq;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
-  Definition Self := try_from_and_try_into.EvenNumber.
+  Definition Self `{State.Trait} := try_from_and_try_into.EvenNumber.
   
   Definition Error : Set := unit.
   
   Definition try_from
-      `{H' : State.Trait}
+      `{State.Trait}
       (value : i32)
-      : M (H := H') (core.result.Result Self Error) :=
-    let* α0 := rem value 2 in
-    let* α1 := eq α0 0 in
-    let* α2 := use α1 in
-    if (α2 : bool) then
+      : M (core.result.Result Self Error) :=
+    let* α0 := M.alloc 2 in
+    let* α1 := rem value α0 in
+    let* α2 := M.alloc 0 in
+    let* α3 := eq α1 α2 in
+    let* α4 := use α3 in
+    if (α4 : bool) then
       Pure
         (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t value))
     else
       Pure (core.result.Result.Err tt).
   
-  Global Instance AssociatedFunction_try_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_try_from `{State.Trait} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
   }.
   
-  Global Instance I : core.convert.TryFrom.Trait Self (T := i32) := {
+  Global Instance I `{State.Trait}
+    : core.convert.TryFrom.Trait Self (T := i32) := {
     core.convert.TryFrom.Error := Error;
-    core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
+    core.convert.TryFrom.try_from := try_from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_TryFrom_for_try_from_and_try_into_EvenNumber.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
-    let* α0 := core.convert.TryFrom.try_from 8 in
-    let* α1 :=
-      borrow α0 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+    let* α0 := M.alloc 8 in
+    let* α1 := core.convert.TryFrom.try_from α0 in
     let* α2 :=
+      borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+    let* α3 := M.alloc 8 in
+    let* α4 :=
       borrow
-        (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t 8))
+        (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t α3))
         (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α1, α2) with
+    match (α2, α4) with
     | (left_val, right_val) =>
       let* α0 :=
         deref
@@ -179,14 +188,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         Pure tt
     end in
   let* _ :=
-    let* α0 := core.convert.TryFrom.try_from 5 in
-    let* α1 :=
-      borrow α0 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+    let* α0 := M.alloc 5 in
+    let* α1 := core.convert.TryFrom.try_from α0 in
     let* α2 :=
+      borrow α1 (core.result.Result try_from_and_try_into.EvenNumber unit) in
+    let* α3 :=
       borrow
         (core.result.Result.Err tt)
         (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α1, α2) with
+    match (α2, α3) with
     | (left_val, right_val) =>
       let* α0 :=
         deref
@@ -247,17 +257,20 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       else
         Pure tt
     end in
-  let* result := core.convert.TryInto.try_into 8 in
+  let* result :=
+    let* α0 := M.alloc 8 in
+    core.convert.TryInto.try_into α0 in
   let* _ :=
     let* α0 :=
       borrow
         result
         (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    let* α1 :=
+    let* α1 := M.alloc 8 in
+    let* α2 :=
       borrow
-        (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t 8))
+        (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t α1))
         (core.result.Result try_from_and_try_into.EvenNumber unit) in
-    match (α0, α1) with
+    match (α0, α2) with
     | (left_val, right_val) =>
       let* α0 :=
         deref
@@ -318,7 +331,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       else
         Pure tt
     end in
-  let* result := core.convert.TryInto.try_into 5 in
+  let* result :=
+    let* α0 := M.alloc 5 in
+    core.convert.TryInto.try_into α0 in
   let* _ :=
     let* α0 :=
       borrow

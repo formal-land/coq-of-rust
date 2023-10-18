@@ -2,17 +2,21 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let optional := core.option.Option.Some 0 in
+Definition main `{State.Trait} : M unit :=
+  let* optional :=
+    let* α0 := M.alloc 0 in
+    Pure (core.option.Option.Some α0) in
   loop
     (match optional with
     | core.option.Option i =>
-      let* α0 := gt i 9 in
-      let* α1 := use α0 in
-      if (α1 : bool) then
+      let* α0 := M.alloc 9 in
+      let* α1 := gt i α0 in
+      let* α2 := use α1 in
+      if (α2 : bool) then
         let* _ :=
           let* _ :=
-            let* α0 := borrow [ "Greater than 9, quit!
+            let* α0 :=
+              borrow [ mk_str "Greater than 9, quit!
 " ] (list (ref str)) in
             let* α1 := deref α0 (list (ref str)) in
             let* α2 := borrow α1 (list (ref str)) in
@@ -26,8 +30,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* _ :=
             let* α0 :=
-              borrow [ "`i` is `"; "`. Try again.
-" ] (list (ref str)) in
+              borrow
+                [ mk_str "`i` is `"; mk_str "`. Try again.
+" ]
+                (list (ref str)) in
             let* α1 := deref α0 (list (ref str)) in
             let* α2 := borrow α1 (list (ref str)) in
             let* α3 := pointer_coercion "Unsize" α2 in
@@ -43,8 +49,9 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             std.io.stdio._print α12 in
           Pure tt in
         let* _ :=
-          let* α0 := add i 1 in
-          assign optional (core.option.Option.Some α0) in
+          let* α0 := M.alloc 1 in
+          let* α1 := add i α0 in
+          assign optional (core.option.Option.Some α1) in
         Pure tt
     | _ =>
       let* _ := Break in

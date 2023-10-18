@@ -2,12 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let _immutable_binding := 1 in
-  let mutable_binding := 1 in
+Definition main `{State.Trait} : M unit :=
+  let* _immutable_binding := M.alloc 1 in
+  let* mutable_binding := M.alloc 1 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Before mutation: "; "
+      let* α0 :=
+        borrow [ mk_str "Before mutation: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -23,10 +24,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     Pure tt in
-  let* _ := assign_op add mutable_binding 1 in
+  let* _ :=
+    let* α0 := M.alloc 1 in
+    assign_op add mutable_binding α0 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "After mutation: "; "
+      let* α0 :=
+        borrow [ mk_str "After mutation: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

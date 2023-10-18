@@ -3,9 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main
-    `{H' : State.Trait}
-    : M (H := H') (core.result.Result unit core.num.error.ParseIntError) :=
-  let number_str := "10" in
+    `{State.Trait}
+    : M (core.result.Result unit core.num.error.ParseIntError) :=
+  let number_str := mk_str "10" in
   let* number :=
     let* α0 := deref number_str str in
     let* α1 := borrow α0 str in
@@ -18,7 +18,7 @@ Definition main
     end in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; "
+      let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

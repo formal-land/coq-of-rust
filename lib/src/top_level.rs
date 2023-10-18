@@ -2523,7 +2523,7 @@ impl TopLevelItem {
                                     coq::TopLevelItem::Definition(coq::Definition::new(
                                         "Self",
                                         &coq::DefinitionKind::Alias {
-                                            args: vec![],
+                                            args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
                                             ty: None,
                                             body: self_ty.to_coq(),
                                         },
@@ -2542,7 +2542,7 @@ impl TopLevelItem {
                                 vec![coq::TopLevelItem::Instance(coq::Instance::new(
                                     *has_predicates_on_assoc_ty,
                                     "I",
-                                    &[],
+                                    &[coq::ArgDecl::monadic_typeclass_parameter()],
                                     coq::Expression::Variable {
                                         ident: Path::concat(&[
                                             of_trait.to_owned(),
@@ -2582,8 +2582,7 @@ impl TopLevelItem {
                                                     &Path::concat(&[of_trait.to_owned(), Path::new(&[item.name()])]),
                                                     &match item {
                                                         ImplItem::Type {..} => vec![],
-                                                        _ => vec![
-                                                            vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                                                        _ =>
                                                             match item {
                                                                 ImplItem::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..} =>
                                                                 vec![
@@ -2592,8 +2591,7 @@ impl TopLevelItem {
                                                                 },
                                                                 where_predicates.iter().map(|predicate| predicate.to_coq()).collect()].concat(),
                                                                 _ => vec![]
-                                                            }
-                                                        ].concat(),
+                                                            },
                                                     },
                                                     {
                                                         let body = coq::Expression::just_name(&item.name());
@@ -2835,34 +2833,38 @@ impl TypeStructStruct {
                                   coq::TopLevel::new(
                                       &fields
                                           .iter()
-                                          .enumerate()
-                                          .flat_map(|(i, (name, _))| {
+                                          .flat_map(|(name, _)| {
                                               let projection_pattern = [coq::ArgDecl::new(
-                                                  &coq::ArgDeclVar::Destructured {
-                                                      pattern: coq::Expression::just_name("Build_t")
-                                                          .apply_many(
-                                                              &fields
-                                                                  .iter()
-                                                                  .enumerate()
-                                                                  .map(|(j, _)| {
-                                                                      if i == j {
-                                                                          coq::Expression::just_name(
-                                                                              &format!("x{j}"),
-                                                                          )
-                                                                      } else {
-                                                                          coq::Expression::Wild
-                                                                      }
-                                                                  })
-                                                                  .collect::<Vec<_>>(),
-                                                          ),
+                                                  &coq::ArgDeclVar::Simple {
+                                                    idents: vec!["x".to_string()],
+                                                    ty: None,
                                                   },
                                                   coq::ArgSpecKind::Explicit,
                                               )];
+                                              let field_value = coq::Expression::Code(nest([
+                                                group([
+                                                    nest([
+                                                        text("let* x :="),
+                                                        line(),
+                                                        text("M.read x in"),
+                                                    ]),
+                                                    line(),
+                                                    nest([
+                                                        text("Pure"),
+                                                        line(),
+                                                        text("x.("),
+                                                        text(name.to_owned()),
+                                                        text(") :"),
+                                                    ])
+                                                ]),
+                                                line(),
+                                                text("M _"),
+                                              ]));
                                               [
                                                   coq::TopLevelItem::Instance(coq::Instance::new(
                                                       false,
                                                       &format!("Get_{name}"),
-                                                      &[],
+                                                      &[coq::ArgDecl::monadic_typeclass_parameter()],
                                                       coq::Expression::Variable {
                                                           ident: Path::new(&["Notation", "Dot"]),
                                                           no_implicit: false,
@@ -2874,9 +2876,7 @@ impl TypeStructStruct {
                                                           fields: vec![coq::Field::new(
                                                               &Path::new(&["Notation", "dot"]),
                                                               &projection_pattern,
-                                                              &coq::Expression::just_name(&format!(
-                                                                  "x{i}"
-                                                              )),
+                                                              &field_value,
                                                           )],
                                                       },
                                                       vec![],
@@ -2884,7 +2884,7 @@ impl TypeStructStruct {
                                                   coq::TopLevelItem::Instance(coq::Instance::new(
                                                       false,
                                                       &format!("Get_AF_{name}"),
-                                                      &[],
+                                                      &[coq::ArgDecl::monadic_typeclass_parameter()],
                                                       coq::Expression::Variable {
                                                           ident: Path::new(&[
                                                               "Notation",
@@ -2903,9 +2903,7 @@ impl TypeStructStruct {
                                                                   "double_colon",
                                                               ]),
                                                               &projection_pattern,
-                                                              &coq::Expression::just_name(&format!(
-                                                                  "x{i}"
-                                                              )),
+                                                              &field_value,
                                                           )],
                                                       },
                                                       vec![],
@@ -2939,6 +2937,7 @@ impl TypeStructStruct {
                                         coq::ArgSpecKind::Explicit,
                                     )]
                                 },
+                                vec![coq::ArgDecl::monadic_typeclass_parameter()],
                                 predicates
                                     .iter()
                                     .map(|predicate| predicate.to_coq())
@@ -2946,7 +2945,7 @@ impl TypeStructStruct {
                             ]
                             .concat(),
                             ty: Some(coq::Expression::Set),
-                            body: coq::Expression::Variable {
+                            body: coq::Expression::just_name("M.val").apply(&coq::Expression::Variable {
                                 ident: Path::new(&[name, &"t".to_string()]),
                                 no_implicit: false,
                             }
@@ -2960,7 +2959,7 @@ impl TypeStructStruct {
                                         )
                                     })
                                     .collect::<Vec<_>>(),
-                            ).in_ref(),
+                            )),
                         },
                     )),
                 ],

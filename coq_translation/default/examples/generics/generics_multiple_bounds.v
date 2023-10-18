@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition compare_prints
-    `{H' : State.Trait}
+    `{State.Trait}
     {T : Set}
     `{core.fmt.Debug.Trait T}
     `{core.fmt.Display.Trait T}
     (t : ref T)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Debug: `"; "`
+      let* α0 := borrow [ mk_str "Debug: `"; mk_str "`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -28,7 +28,7 @@ Definition compare_prints
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Display: `"; "`
+      let* α0 := borrow [ mk_str "Display: `"; mk_str "`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -47,16 +47,16 @@ Definition compare_prints
   Pure tt.
 
 Definition compare_types
-    `{H' : State.Trait}
+    `{State.Trait}
     {T U : Set}
     `{core.fmt.Debug.Trait T}
     `{core.fmt.Debug.Trait U}
     (t : ref T)
     (u : ref U)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "t: `"; "`
+      let* α0 := borrow [ mk_str "t: `"; mk_str "`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -74,7 +74,7 @@ Definition compare_types
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "u: `"; "`
+      let* α0 := borrow [ mk_str "u: `"; mk_str "`
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -93,14 +93,21 @@ Definition compare_types
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let string := "words" in
-  let array := [ 1; 2; 3 ] in
+Definition main `{State.Trait} : M unit :=
+  let string := mk_str "words" in
+  let* array :=
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    Pure [ α0; α1; α2 ] in
   let* vec :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    let* α1 := pointer_coercion "Unsize" α0 in
-    (Slice _)::["into_vec"] α1 in
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    let* α3 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
+    let* α4 := pointer_coercion "Unsize" α3 in
+    (Slice _)::["into_vec"] α4 in
   let* _ :=
     let* α0 := borrow string (ref str) in
     let* α1 := deref α0 (ref str) in

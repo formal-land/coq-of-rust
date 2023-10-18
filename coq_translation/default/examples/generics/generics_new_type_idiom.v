@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i64;
   }.
   Global Set Primitive Projections.
@@ -16,7 +16,7 @@ Definition Years := @Years.t.
 
 Module Days.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i64;
   }.
   Global Set Primitive Projections.
@@ -31,15 +31,16 @@ Module Impl_generics_new_type_idiom_Years.
   Definition Self := generics_new_type_idiom.Years.
   
   Definition to_days
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') generics_new_type_idiom.Days :=
+      : M generics_new_type_idiom.Days :=
     let* α0 := deref self generics_new_type_idiom.Years in
-    let* α1 := mul α0.["0"] 365 in
-    Pure (generics_new_type_idiom.Days.Build_t α1).
+    let* α1 := α0.["0"] in
+    let* α2 := M.alloc 365 in
+    let* α3 := mul α1 α2 in
+    Pure (generics_new_type_idiom.Days.Build_t α3).
   
-  Global Instance Method_to_days `{H' : State.Trait} :
-    Notation.Dot "to_days" := {
+  Global Instance Method_to_days `{State.Trait} : Notation.Dot "to_days" := {
     Notation.dot := to_days;
   }.
 End Impl_generics_new_type_idiom_Years.
@@ -48,35 +49,40 @@ Module Impl_generics_new_type_idiom_Days.
   Definition Self := generics_new_type_idiom.Days.
   
   Definition to_years
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') generics_new_type_idiom.Years :=
+      : M generics_new_type_idiom.Years :=
     let* α0 := deref self generics_new_type_idiom.Days in
-    let* α1 := div α0.["0"] 365 in
-    Pure (generics_new_type_idiom.Years.Build_t α1).
+    let* α1 := α0.["0"] in
+    let* α2 := M.alloc 365 in
+    let* α3 := div α1 α2 in
+    Pure (generics_new_type_idiom.Years.Build_t α3).
   
-  Global Instance Method_to_years `{H' : State.Trait} :
-    Notation.Dot "to_years" := {
+  Global Instance Method_to_years `{State.Trait} : Notation.Dot "to_years" := {
     Notation.dot := to_years;
   }.
 End Impl_generics_new_type_idiom_Days.
 
 Definition old_enough
-    `{H' : State.Trait}
+    `{State.Trait}
     (age : ref generics_new_type_idiom.Years)
-    : M (H := H') bool :=
+    : M bool :=
   let* α0 := deref age generics_new_type_idiom.Years in
-  ge α0.["0"] 18.
+  let* α1 := α0.["0"] in
+  let* α2 := M.alloc 18 in
+  ge α1 α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let age := generics_new_type_idiom.Years.Build_t 5 in
+Definition main `{State.Trait} : M unit :=
+  let* age :=
+    let* α0 := M.alloc 5 in
+    Pure (generics_new_type_idiom.Years.Build_t α0) in
   let* age_days :=
     let* α0 := borrow age generics_new_type_idiom.Years in
     generics_new_type_idiom.Years::["to_days"] α0 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Old enough "; "
+      let* α0 := borrow [ mk_str "Old enough "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -98,7 +104,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Old enough "; "
+      let* α0 := borrow [ mk_str "Old enough "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

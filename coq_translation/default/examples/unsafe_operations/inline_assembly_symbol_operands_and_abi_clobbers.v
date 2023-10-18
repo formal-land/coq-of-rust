@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
+Definition main `{State.Trait} : M unit := Pure tt.
 
-Definition foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
+Definition foo `{State.Trait} (arg : i32) : M i32 :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "arg = "; "
+      let* α0 := borrow [ mk_str "arg = "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -23,9 +23,10 @@ Definition foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     Pure tt in
-  mul arg 2.
+  let* α0 := M.alloc 2 in
+  mul arg α0.
 
-Definition call_foo `{H' : State.Trait} (arg : i32) : M (H := H') i32 :=
+Definition call_foo `{State.Trait} (arg : i32) : M i32 :=
   let result := tt in
   let _ := InlineAssembly in
   Pure result.

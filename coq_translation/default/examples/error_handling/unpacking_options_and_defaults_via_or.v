@@ -12,47 +12,47 @@ End Fruit.
 Definition Fruit : Set := Fruit.t.
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
-  Definition Self := unpacking_options_and_defaults_via_or.Fruit.
+  Definition Self `{State.Trait} := unpacking_options_and_defaults_via_or.Fruit.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
+      : M core.fmt.Result :=
     let* α0 := deref f core.fmt.Formatter in
     let* α1 := borrow_mut α0 core.fmt.Formatter in
     let* α2 :=
       match self with
       | unpacking_options_and_defaults_via_or.Fruit  =>
-        let* α0 := deref "Apple" str in
+        let* α0 := deref (mk_str "Apple") str in
         borrow α0 str
       | unpacking_options_and_defaults_via_or.Fruit  =>
-        let* α0 := deref "Orange" str in
+        let* α0 := deref (mk_str "Orange") str in
         borrow α0 str
       | unpacking_options_and_defaults_via_or.Fruit  =>
-        let* α0 := deref "Banana" str in
+        let* α0 := deref (mk_str "Banana") str in
         borrow α0 str
       | unpacking_options_and_defaults_via_or.Fruit  =>
-        let* α0 := deref "Kiwi" str in
+        let* α0 := deref (mk_str "Kiwi") str in
         borrow α0 str
       | unpacking_options_and_defaults_via_or.Fruit  =>
-        let* α0 := deref "Lemon" str in
+        let* α0 := deref (mk_str "Lemon") str in
         borrow α0 str
       end in
     core.fmt.Formatter::["write_str"] α1 α2.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let apple :=
     core.option.Option.Some
       (unpacking_options_and_defaults_via_or.Fruit.Apple tt) in
@@ -65,8 +65,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     (core.option.Option _)::["or"] α0 apple in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "first_available_fruit: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "first_available_fruit: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

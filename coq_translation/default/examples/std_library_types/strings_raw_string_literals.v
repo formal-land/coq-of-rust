@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let raw_str := "Escapes don't work here: \x3F \u{211D}" in
+Definition main `{State.Trait} : M unit :=
+  let raw_str := mk_str "Escapes don't work here: \x3F \u{211D}" in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; "
+      let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -22,10 +22,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     Pure tt in
-  let quotes := "And then I said: "There is no escape!"" in
+  let quotes := mk_str "And then I said: "There is no escape!"" in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; "
+      let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -41,10 +41,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     Pure tt in
-  let longer_delimiter := "A string with "# in it. And even "##!" in
+  let longer_delimiter := mk_str "A string with "# in it. And even "##!" in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; "
+      let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

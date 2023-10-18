@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i32;
     _ : i32;
   }.
@@ -20,64 +20,56 @@ Definition Container := @Container.t.
 
 Module Contains.
   Class Trait (Self : Set) {A B : Set} : Type := {
-    contains `{H' : State.Trait}
-      :
-      (ref Self) -> (ref A) -> (ref B) -> M (H := H') bool;
-    first `{H' : State.Trait} : (ref Self) -> M (H := H') i32;
-    last `{H' : State.Trait} : (ref Self) -> M (H := H') i32;
+    contains `{State.Trait} : (ref Self) -> (ref A) -> (ref B) -> M bool;
+    first `{State.Trait} : (ref Self) -> M i32;
+    last `{State.Trait} : (ref Self) -> M i32;
   }.
   
-  Global Instance Method_contains `{H' : State.Trait} `(Trait)
+  Global Instance Method_contains `{State.Trait} `(Trait)
     : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
-  Global Instance Method_first `{H' : State.Trait} `(Trait)
+  Global Instance Method_first `{State.Trait} `(Trait)
     : Notation.Dot "first" := {
     Notation.dot := first;
   }.
-  Global Instance Method_last `{H' : State.Trait} `(Trait)
-    : Notation.Dot "last" := {
+  Global Instance Method_last `{State.Trait} `(Trait) : Notation.Dot "last" := {
     Notation.dot := last;
   }.
 End Contains.
 
 Module
   Impl_generics_associated_types_problem_Contains_for_generics_associated_types_problem_Container.
-  Definition Self := generics_associated_types_problem.Container.
+  Definition Self `{State.Trait} := generics_associated_types_problem.Container.
   
   Parameter contains :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref i32) -> (ref i32) -> M (H := H') bool.
+      forall `{State.Trait},
+      (ref Self) -> (ref i32) -> (ref i32) -> M bool.
   
-  Global Instance Method_contains `{H' : State.Trait} :
-    Notation.Dot "contains" := {
+  Global Instance Method_contains `{State.Trait} : Notation.Dot "contains" := {
     Notation.dot := contains;
   }.
   
-  Parameter first : forall `{H' : State.Trait}, (ref Self) -> M (H := H') i32.
+  Parameter first : forall `{State.Trait}, (ref Self) -> M i32.
   
-  Global Instance Method_first `{H' : State.Trait} : Notation.Dot "first" := {
+  Global Instance Method_first `{State.Trait} : Notation.Dot "first" := {
     Notation.dot := first;
   }.
   
-  Parameter last : forall `{H' : State.Trait}, (ref Self) -> M (H := H') i32.
+  Parameter last : forall `{State.Trait}, (ref Self) -> M i32.
   
-  Global Instance Method_last `{H' : State.Trait} : Notation.Dot "last" := {
+  Global Instance Method_last `{State.Trait} : Notation.Dot "last" := {
     Notation.dot := last;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : generics_associated_types_problem.Contains.Trait Self
         (A := i32)
         (B := i32)
       := {
-    generics_associated_types_problem.Contains.contains `{H' : State.Trait}
-      :=
-      contains;
-    generics_associated_types_problem.Contains.first `{H' : State.Trait}
-      :=
-      first;
-    generics_associated_types_problem.Contains.last `{H' : State.Trait} := last;
+    generics_associated_types_problem.Contains.contains := contains;
+    generics_associated_types_problem.Contains.first := first;
+    generics_associated_types_problem.Contains.last := last;
   }.
   Global Hint Resolve I : core.
 End
@@ -85,10 +77,10 @@ End
 
 Parameter difference :
     forall
-      `{H' : State.Trait}
+      `{State.Trait}
       {A B C : Set}
       `{generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
-    (ref C) -> M (H := H') i32.
+    (ref C) -> M i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

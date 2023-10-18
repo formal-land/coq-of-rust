@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i64;
   }.
   Global Set Primitive Projections.
@@ -16,7 +16,7 @@ Definition Years := @Years.t.
 
 Module Days.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i64;
   }.
   Global Set Primitive Projections.
@@ -31,11 +31,10 @@ Module Impl_generics_new_type_idiom_Years.
   Definition Self := generics_new_type_idiom.Years.
   
   Parameter to_days :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') generics_new_type_idiom.Days.
+      forall `{State.Trait},
+      (ref Self) -> M generics_new_type_idiom.Days.
   
-  Global Instance Method_to_days `{H' : State.Trait} :
-    Notation.Dot "to_days" := {
+  Global Instance Method_to_days `{State.Trait} : Notation.Dot "to_days" := {
     Notation.dot := to_days;
   }.
 End Impl_generics_new_type_idiom_Years.
@@ -44,18 +43,17 @@ Module Impl_generics_new_type_idiom_Days.
   Definition Self := generics_new_type_idiom.Days.
   
   Parameter to_years :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') generics_new_type_idiom.Years.
+      forall `{State.Trait},
+      (ref Self) -> M generics_new_type_idiom.Years.
   
-  Global Instance Method_to_years `{H' : State.Trait} :
-    Notation.Dot "to_years" := {
+  Global Instance Method_to_years `{State.Trait} : Notation.Dot "to_years" := {
     Notation.dot := to_years;
   }.
 End Impl_generics_new_type_idiom_Days.
 
 Parameter old_enough :
-    forall `{H' : State.Trait},
-    (ref generics_new_type_idiom.Years) -> M (H := H') bool.
+    forall `{State.Trait},
+    (ref generics_new_type_idiom.Years) -> M bool.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

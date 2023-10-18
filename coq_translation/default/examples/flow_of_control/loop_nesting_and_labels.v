@@ -2,12 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     loop
       (let* _ :=
         let* _ :=
-          let* α0 := borrow [ "Entered the outer loop
+          let* α0 :=
+            borrow [ mk_str "Entered the outer loop
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -21,8 +22,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             (let* _ :=
               let* _ :=
                 let* α0 :=
-                  borrow [ "Entered the inner loop
-" ] (list (ref str)) in
+                  borrow
+                    [ mk_str "Entered the inner loop
+" ]
+                    (list (ref str)) in
                 let* α1 := deref α0 (list (ref str)) in
                 let* α2 := borrow α1 (list (ref str)) in
                 let* α3 := pointer_coercion "Unsize" α2 in
@@ -35,8 +38,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* _ :=
           let* α0 :=
-            borrow [ "This point will never be reached
-" ] (list (ref str)) in
+            borrow
+              [ mk_str "This point will never be reached
+" ]
+              (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
           let* α3 := pointer_coercion "Unsize" α2 in
@@ -46,7 +51,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt) in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Exited the outer loop
+      let* α0 := borrow [ mk_str "Exited the outer loop
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

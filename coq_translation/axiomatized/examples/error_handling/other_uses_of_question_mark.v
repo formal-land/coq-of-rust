@@ -12,55 +12,55 @@ End EmptyVec.
 Definition EmptyVec := @EmptyVec.t.
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self := other_uses_of_question_mark.EmptyVec.
+  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self := other_uses_of_question_mark.EmptyVec.
+  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self := other_uses_of_question_mark.EmptyVec.
+  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
   
-  Global Instance I : core.error.Error.Trait Self := {
+  Global Instance I `{State.Trait} : core.error.Error.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Parameter double_first :
-    forall `{H' : State.Trait},
+    forall `{State.Trait},
     (alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A) ->
-      M (H := H') (other_uses_of_question_mark.Result i32).
+      M (other_uses_of_question_mark.Result i32).
 
 Parameter print :
-    forall `{H' : State.Trait},
-    (other_uses_of_question_mark.Result i32) -> M (H := H') unit.
+    forall `{State.Trait},
+    (other_uses_of_question_mark.Result i32) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

@@ -2,8 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let number := core.option.Option.Some 7 in
+Definition main `{State.Trait} : M unit :=
+  let* number :=
+    let* α0 := M.alloc 7 in
+    Pure (core.option.Option.Some α0) in
   let letter := core.option.Option.None tt in
   let emoticon := core.option.Option.None tt in
   let* _ :=
@@ -11,7 +13,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "Matched "; "!
+          let* α0 :=
+            borrow [ mk_str "Matched "; mk_str "!
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -35,7 +38,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "Matched "; "!
+          let* α0 :=
+            borrow [ mk_str "Matched "; mk_str "!
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -57,7 +61,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* α0 :=
             borrow
-              [ "Didn't match a number. Let's go with a letter!
+              [ mk_str "Didn't match a number. Let's go with a letter!
 " ]
               (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
@@ -67,12 +71,12 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           std.io.stdio._print α4 in
         Pure tt in
       Pure tt in
-  let i_like_letters := false in
+  let* i_like_letters := false in
   let* α0 := let_if core.option.Option i := emoticon in
   if (α0 : bool) then
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "Matched "; "!
+        let* α0 := borrow [ mk_str "Matched "; mk_str "!
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -96,7 +100,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* α0 :=
             borrow
-              [ "Didn't match a number. Let's go with a letter!
+              [ mk_str "Didn't match a number. Let's go with a letter!
 " ]
               (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
@@ -111,7 +115,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* _ :=
           let* α0 :=
             borrow
-              [ "I don't like letters. Let's go with an emoticon :)!
+              [ mk_str "I don't like letters. Let's go with an emoticon :)!
 " ]
               (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in

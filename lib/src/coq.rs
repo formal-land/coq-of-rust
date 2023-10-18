@@ -3,9 +3,6 @@ use crate::render::{
     self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
 };
 
-/// the
-pub(crate) const LOCAL_STATE_TRAIT_INSTANCE: &str = "H'";
-
 #[derive(Clone)]
 /// a list of coq top level items
 pub(crate) struct TopLevel<'a> {
@@ -172,7 +169,6 @@ pub(crate) enum Expression<'a> {
     Record {
         fields: Vec<Field<'a>>,
     },
-    Ref(Box<Expression<'a>>),
     /// Set constant (the type of our types)
     Set,
     /// a dependent sum of types
@@ -542,6 +538,8 @@ impl<'a> Record<'a> {
                 line(),
                 text(self.name.to_owned()),
                 line(),
+                text("`{State.Trait}"),
+                line(),
                 text(":"),
                 line(),
                 self.ty.to_doc(false),
@@ -844,7 +842,6 @@ impl<'a> Expression<'a> {
                 hardline(),
                 text("}"),
             ]),
-            Self::Ref(expr) => concat([text("⟅"), expr.to_doc(false), text("⟆")]),
             Self::Set => text("Set"),
             Self::SigmaType { args, image } => paren(
                 with_paren,
@@ -931,10 +928,6 @@ impl<'a> Expression<'a> {
             None => Expression::Unit,
         }
     }
-
-    pub(crate) fn in_ref(&self) -> Self {
-        Expression::Ref(Box::new(self.to_owned()))
-    }
 }
 
 impl<'a> Field<'a> {
@@ -983,8 +976,7 @@ impl<'a> ArgDecl<'a> {
     pub(crate) fn monadic_typeclass_parameter() -> Self {
         ArgDecl {
             decl: ArgDeclVar::Generalized {
-                // @TODO: check whether the name of the parameter is necessary
-                idents: vec![LOCAL_STATE_TRAIT_INSTANCE.to_string()],
+                idents: vec![],
                 ty: Expression::Variable {
                     ident: Path::new(&["State", "Trait"]),
                     no_implicit: false,
@@ -1000,13 +992,20 @@ impl<'a> ArgDecl<'a> {
             ArgSpecKind::Implicit => render::curly_brackets,
         };
         match self.decl.to_owned() {
-            ArgDeclVar::Simple { idents, ty } => brackets(nest([
-                intersperse(idents, [line()]),
-                match ty {
-                    Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
-                    None => nil(),
-                },
-            ])),
+            ArgDeclVar::Simple { idents, ty } => {
+                let arg_decl = nest([
+                    intersperse(idents, [line()]),
+                    match &ty {
+                        Some(ty) => concat([line(), text(":"), line(), ty.to_doc(false)]),
+                        None => nil(),
+                    },
+                ]);
+                if let (ArgSpecKind::Explicit, None) = (&self.kind, ty) {
+                    arg_decl
+                } else {
+                    brackets(arg_decl)
+                }
+            }
             ArgDeclVar::Generalized { idents, ty } => group([
                 text("`"),
                 brackets(nest([

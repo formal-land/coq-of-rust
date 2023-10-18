@@ -2,15 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := 171 in
+Definition main `{State.Trait} : M unit :=
+  let* x := M.alloc 171 in
   let _ :=
     let _ := InlineAssembly in
     tt in
   let* _ :=
     let* α0 := borrow x u16 in
-    let* α1 := borrow 43947 u16 in
-    match (α0, α1) with
+    let* α1 := M.alloc 43947 in
+    let* α2 := borrow α1 u16 in
+    match (α0, α2) with
     | (left_val, right_val) =>
       let* α0 := deref left_val u16 in
       let* α1 := deref right_val u16 in

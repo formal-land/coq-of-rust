@@ -2,14 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* person :=
-    let* α0 := core.convert.From.from "Alice" in
-    let* α1 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 20 in
-    Pure
+    let* α0 := core.convert.From.from (mk_str "Alice") in
+    let* α1 := M.alloc 20 in
+    let* α2 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α1 in
+    M.alloc
       {|
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α0;
-        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α1;
+        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α2;
       |} in
   let
       '{|
@@ -21,7 +22,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     person in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "The person's age is "; "
+      let* α0 :=
+        borrow [ mk_str "The person's age is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -39,8 +41,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "The person's name is "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "The person's name is "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -59,52 +64,53 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "The person's age from person struct is "; "
+          [ mk_str "The person's age from person struct is "; mk_str "
 " ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 :=
-        borrow person.["age"] (alloc.boxed.Box u8 alloc.alloc.Global) in
-      let* α5 := deref α4 (alloc.boxed.Box u8 alloc.alloc.Global) in
-      let* α6 := borrow α5 (alloc.boxed.Box u8 alloc.alloc.Global) in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
+      let* α4 := person.["age"] in
+      let* α5 := borrow α4 (alloc.boxed.Box u8 alloc.alloc.Global) in
+      let* α6 := deref α5 (alloc.boxed.Box u8 alloc.alloc.Global) in
+      let* α7 := borrow α6 (alloc.boxed.Box u8 alloc.alloc.Global) in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
     Pure tt in
   Pure tt.
 
 Module Person.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     name : alloc.string.String;
     age : alloc.boxed.Box u8 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_name `{State.Trait}
+    : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_age `{State.Trait} : Notation.Dot "age" := {
+    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
   }.
-  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_age `{State.Trait} : Notation.DoubleColon t "age" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
   }.
 End Person.
-Definition Person : Set := ⟅Person.t⟆.
+Definition Person `{State.Trait} : Set := M.val (Person.t).
 
 Module
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Definition Self :=
+  Definition Self `{State.Trait} :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
   Parameter struct_parameter_for_fmt :
@@ -114,46 +120,48 @@ Module
           alloc_string_String ->
           string ->
           alloc_boxed_Box_u8_alloc_boxed_Box_Default_A ->
-          M (H := H') core.fmt.Result.
+          M core.fmt.Result.
   
   Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
     core.fmt.Formatter "struct_parameter_for_fmt" := {
     Notation.double_colon := struct_parameter_for_fmt; }.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
+      : M core.fmt.Result :=
     let* α0 := deref f core.fmt.Formatter in
     let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref "Person" str in
+    let* α2 := deref (mk_str "Person") str in
     let* α3 := borrow α2 str in
-    let* α4 := deref "name" str in
+    let* α4 := deref (mk_str "name") str in
     let* α5 := borrow α4 str in
     let* α6 :=
       deref self scoping_rules_ownership_and_rules_partial_moves.main.Person in
-    let* α7 := borrow α6.["name"] alloc.string.String in
-    let* α8 := deref α7 alloc.string.String in
-    let* α9 := borrow α8 alloc.string.String in
-    let* α10 := pointer_coercion "Unsize" α9 in
-    let* α11 := deref "age" str in
-    let* α12 := borrow α11 str in
-    let* α13 :=
+    let* α7 := α6.["name"] in
+    let* α8 := borrow α7 alloc.string.String in
+    let* α9 := deref α8 alloc.string.String in
+    let* α10 := borrow α9 alloc.string.String in
+    let* α11 := pointer_coercion "Unsize" α10 in
+    let* α12 := deref (mk_str "age") str in
+    let* α13 := borrow α12 str in
+    let* α14 :=
       deref self scoping_rules_ownership_and_rules_partial_moves.main.Person in
-    let* α14 := borrow α13.["age"] (alloc.boxed.Box u8 alloc.alloc.Global) in
-    let* α15 := borrow α14 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-    let* α16 := deref α15 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
+    let* α15 := α14.["age"] in
+    let* α16 := borrow α15 (alloc.boxed.Box u8 alloc.alloc.Global) in
     let* α17 := borrow α16 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
-    let* α18 := pointer_coercion "Unsize" α17 in
-    core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α10 α12 α18.
+    let* α18 := deref α17 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
+    let* α19 := borrow α18 (ref (alloc.boxed.Box u8 alloc.alloc.Global)) in
+    let* α20 := pointer_coercion "Unsize" α19 in
+    core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End

@@ -5,7 +5,7 @@ Module PhantomTuple.
   Section PhantomTuple.
     Context {A B : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : A;
       _ : core.marker.PhantomData B;
     }.
@@ -26,9 +26,10 @@ Module
   Section
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     Context {A B : Set}.
-    Definition Self := generics_phantom_type.PhantomTuple A B.
+    Definition Self `{State.Trait} := generics_phantom_type.PhantomTuple A B.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance I `{State.Trait}
+      : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
@@ -42,23 +43,21 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
     Context
       `{core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
       `{core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
-    Definition Self := generics_phantom_type.PhantomTuple A B.
+    Definition Self `{State.Trait} := generics_phantom_type.PhantomTuple A B.
     
     Parameter eq :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (ref (generics_phantom_type.PhantomTuple A B)) ->
-          M (H := H') bool.
+        forall `{State.Trait},
+        (ref Self) -> (ref (generics_phantom_type.PhantomTuple A B)) -> M bool.
     
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_A_B.
   Global Hint Resolve I : core.
@@ -68,36 +67,40 @@ Module PhantomStruct.
   Section PhantomStruct.
     Context {A B : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       first : A;
       phantom : core.marker.PhantomData B;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_first : Notation.Dot "first" := {
-      Notation.dot '(Build_t x0 _) := x0;
+    Global Instance Get_first `{State.Trait} : Notation.Dot "first" := {
+      Notation.dot x := let* x := M.read x in Pure x.(first) : M _;
     }.
-    Global Instance Get_AF_first : Notation.DoubleColon t "first" := {
-      Notation.double_colon '(Build_t x0 _) := x0;
+    Global Instance Get_AF_first `{State.Trait}
+      : Notation.DoubleColon t "first" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(first) : M _;
     }.
-    Global Instance Get_phantom : Notation.Dot "phantom" := {
-      Notation.dot '(Build_t _ x1) := x1;
+    Global Instance Get_phantom `{State.Trait} : Notation.Dot "phantom" := {
+      Notation.dot x := let* x := M.read x in Pure x.(phantom) : M _;
     }.
-    Global Instance Get_AF_phantom : Notation.DoubleColon t "phantom" := {
-      Notation.double_colon '(Build_t _ x1) := x1;
+    Global Instance Get_AF_phantom `{State.Trait}
+      : Notation.DoubleColon t "phantom" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(phantom) : M _;
     }.
   End PhantomStruct.
 End PhantomStruct.
-Definition PhantomStruct (A B : Set) : Set := PhantomStruct.t (A := A) (B := B).
+Definition PhantomStruct (A B : Set) `{State.Trait} : Set :=
+  M.val (PhantomStruct.t (A := A) (B := B)).
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Section
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     Context {A B : Set}.
-    Definition Self := generics_phantom_type.PhantomStruct A B.
+    Definition Self `{State.Trait} := generics_phantom_type.PhantomStruct A B.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance I `{State.Trait}
+      : core.marker.StructuralPartialEq.Trait Self := {
     }.
   End
     Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
@@ -111,27 +114,25 @@ Module Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
     Context
       `{core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
       `{core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
-    Definition Self := generics_phantom_type.PhantomStruct A B.
+    Definition Self `{State.Trait} := generics_phantom_type.PhantomStruct A B.
     
     Parameter eq :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (ref (generics_phantom_type.PhantomStruct A B)) ->
-          M (H := H') bool.
+        forall `{State.Trait},
+        (ref Self) -> (ref (generics_phantom_type.PhantomStruct A B)) -> M bool.
     
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      core.cmp.PartialEq.eq := eq;
     }.
   End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

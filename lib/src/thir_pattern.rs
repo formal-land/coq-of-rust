@@ -110,37 +110,48 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .emit();
             Pattern::Wild
         }
-        //     rustc_middle::mir::consts::ConstValue(rustc_middle::mir::interpret::value::Scalar()),
-        //     _ => panic!("constant {:#?} not yet handled", value),
-        // },
-        // /// One of the following:
-        // /// * `&str`, which will be handled as a string pattern and thus exhaustiveness
-        // ///   checking will detect if you use the same string twice in different patterns.
-        // /// * integer, bool, char or float, which will be handled by exhaustiveness to cover exactly
-        // ///   its own value, similar to `&str`, but these values are much simpler.
-        // /// * Opaque constants, that must not be matched structurally. So anything that does not derive
-        // ///   `PartialEq` and `Eq`.
-        // Constant {
-        //     value: mir::ConstantKind<'tcx>,
-        // },
-
         // Range(Box<PatRange<'tcx>>),
-
-        // /// Matches against a slice, checking the length and extracting elements.
-        // /// irrefutable when there is a slice pattern and both `prefix` and `suffix` are empty.
-        // /// e.g., `&[ref xs @ ..]`.
-        // Slice {
-        //     prefix: Box<[Box<Pat<'tcx>>]>,
-        //     slice: Option<Box<Pat<'tcx>>>,
-        //     suffix: Box<[Box<Pat<'tcx>>]>,
-        // },
-
-        // /// Fixed match against an array; irrefutable.
-        // Array {
-        //     prefix: Box<[Box<Pat<'tcx>>]>,
-        //     slice: Option<Box<Pat<'tcx>>>,
-        //     suffix: Box<[Box<Pat<'tcx>>]>,
-        // },
+        PatKind::Slice {
+            prefix,
+            slice,
+            suffix,
+        }
+        | PatKind::Array {
+            prefix,
+            slice,
+            suffix,
+        } => {
+            let prefix: Vec<Pattern> = prefix.iter().map(|pat| compile_pattern(env, pat)).collect();
+            let suffix: Vec<Pattern> = suffix.iter().map(|pat| compile_pattern(env, pat)).collect();
+            match slice {
+                Some(pat_middle) => {
+                    if suffix.is_empty() {
+                        let pat_middle = compile_pattern(env, pat_middle);
+                        Pattern::Slice {
+                            init_patterns: prefix,
+                            slice_pattern: Some(Box::new(pat_middle)),
+                        }
+                    } else {
+                        env.tcx
+                            .sess
+                            .struct_span_warn(
+                                pat.span,
+                                "Destructuring after slice patterns is not supported.",
+                            )
+                            .help("Reverse the slice instead.")
+                            .emit();
+                        Pattern::Wild
+                    }
+                }
+                None => {
+                    let all_patterns = [prefix, suffix].concat().to_vec();
+                    Pattern::Slice {
+                        init_patterns: all_patterns,
+                        slice_pattern: None,
+                    }
+                }
+            }
+        }
         PatKind::Or { pats } => {
             Pattern::Or(pats.iter().map(|pat| compile_pattern(env, pat)).collect())
         }

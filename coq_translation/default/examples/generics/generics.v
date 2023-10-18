@@ -8,7 +8,7 @@ Definition A := @A.t.
 
 Module Single.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : generics.A;
   }.
   Global Set Primitive Projections.
@@ -23,7 +23,7 @@ Module SingleGen.
   Section SingleGen.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : T;
     }.
     Global Set Primitive Projections.
@@ -36,10 +36,16 @@ End SingleGen.
 Definition SingleGen := @SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let _s := generics.Single.Build_t (generics.A.Build_t tt) in
-  let _char := generics.SingleGen.Build_t "a"%char in
+  let* _char :=
+    let* α0 := "a"%char in
+    Pure (generics.SingleGen.Build_t α0) in
   let _t := generics.SingleGen.Build_t (generics.A.Build_t tt) in
-  let _i32 := generics.SingleGen.Build_t 6 in
-  let _char := generics.SingleGen.Build_t "a"%char in
+  let* _i32 :=
+    let* α0 := M.alloc 6 in
+    Pure (generics.SingleGen.Build_t α0) in
+  let* _char :=
+    let* α0 := "a"%char in
+    Pure (generics.SingleGen.Build_t α0) in
   Pure tt.

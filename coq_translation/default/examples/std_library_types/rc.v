@@ -2,14 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* rc_examples :=
-    let* α0 := deref "Rc examples" str in
+    let* α0 := deref (mk_str "Rc examples") str in
     let* α1 := borrow α0 str in
     alloc.string.ToString.to_string α1 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "--- rc_a is created ---
+      let* α0 :=
+        borrow [ mk_str "--- rc_a is created ---
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -20,8 +21,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* rc_a := (alloc.rc.Rc _)::["new"] rc_examples in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Reference Count of rc_a: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "Reference Count of rc_a: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -44,8 +48,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          borrow [ "--- rc_a is cloned to rc_b ---
-" ] (list (ref str)) in
+          borrow
+            [ mk_str "--- rc_a is cloned to rc_b ---
+" ]
+            (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
@@ -60,8 +66,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          borrow [ "Reference Count of rc_b: "; "
-" ] (list (ref str)) in
+          borrow
+            [ mk_str "Reference Count of rc_b: "; mk_str "
+" ]
+            (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
@@ -83,8 +91,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          borrow [ "Reference Count of rc_a: "; "
-" ] (list (ref str)) in
+          borrow
+            [ mk_str "Reference Count of rc_a: "; mk_str "
+" ]
+            (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
@@ -106,8 +116,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          borrow [ "rc_a and rc_b are equal: "; "
-" ] (list (ref str)) in
+          borrow
+            [ mk_str "rc_a and rc_b are equal: "; mk_str "
+" ]
+            (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
@@ -131,7 +143,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* _ :=
         let* α0 :=
           borrow
-            [ "Length of the value inside rc_a: "; "
+            [ mk_str "Length of the value inside rc_a: "; mk_str "
 " ]
             (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
@@ -155,7 +167,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "Value of rc_b: "; "
+        let* α0 :=
+          borrow [ mk_str "Value of rc_b: "; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -174,8 +187,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* _ :=
         let* α0 :=
-          borrow [ "--- rc_b is dropped out of scope ---
-" ] (list (ref str)) in
+          borrow
+            [ mk_str "--- rc_b is dropped out of scope ---
+" ]
+            (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
@@ -185,8 +200,11 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Reference Count of rc_a: "; "
-" ] (list (ref str)) in
+      let* α0 :=
+        borrow
+          [ mk_str "Reference Count of rc_a: "; mk_str "
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -208,8 +226,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        borrow [ "--- rc_a is dropped out of scope ---
-" ] (list (ref str)) in
+        borrow
+          [ mk_str "--- rc_a is dropped out of scope ---
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module PrintInOption.
   Class Trait (Self : Set) : Type := {
-    print_in_option `{H' : State.Trait} : Self -> M (H := H') unit;
+    print_in_option `{State.Trait} : Self -> M unit;
   }.
   
-  Global Instance Method_print_in_option `{H' : State.Trait} `(Trait)
+  Global Instance Method_print_in_option `{State.Trait} `(Trait)
     : Notation.Dot "print_in_option" := {
     Notation.dot := print_in_option;
   }.
@@ -16,15 +16,12 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
   Section Impl_generics_where_clauses_PrintInOption_for_T.
     Context {T : Set}.
     Context `{core.fmt.Debug.Trait (core.option.Option T)}.
-    Definition Self := T.
+    Definition Self `{State.Trait} := T.
     
-    Definition print_in_option
-        `{H' : State.Trait}
-        (self : Self)
-        : M (H := H') unit :=
+    Definition print_in_option `{State.Trait} (self : Self) : M unit :=
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ ""; "
+          let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -43,26 +40,28 @@ Module Impl_generics_where_clauses_PrintInOption_for_T.
         Pure tt in
       Pure tt.
     
-    Global Instance Method_print_in_option `{H' : State.Trait} :
+    Global Instance Method_print_in_option `{State.Trait} :
       Notation.Dot "print_in_option" := {
       Notation.dot := print_in_option;
     }.
     
-    Global Instance I : generics_where_clauses.PrintInOption.Trait Self := {
-      generics_where_clauses.PrintInOption.print_in_option `{H' : State.Trait}
-        :=
-        print_in_option;
+    Global Instance I `{State.Trait}
+      : generics_where_clauses.PrintInOption.Trait Self := {
+      generics_where_clauses.PrintInOption.print_in_option := print_in_option;
     }.
   End Impl_generics_where_clauses_PrintInOption_for_T.
   Global Hint Resolve I : core.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* vec :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3 ] in
-    let* α1 := pointer_coercion "Unsize" α0 in
-    (Slice _)::["into_vec"] α1 in
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    let* α3 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
+    let* α4 := pointer_coercion "Unsize" α3 in
+    (Slice _)::["into_vec"] α4 in
   let* _ := generics_where_clauses.PrintInOption.print_in_option vec in
   Pure tt.

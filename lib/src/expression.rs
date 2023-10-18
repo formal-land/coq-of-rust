@@ -308,6 +308,10 @@ fn monadic_lets(
     }
 }
 
+fn is_literal_pure(literal: &LitKind) -> bool {
+    matches!(literal, LitKind::Str(_, _))
+}
+
 /// Monadic translation of an expression
 ///
 /// The convention is to do transformation in a deep first fashion, so
@@ -329,7 +333,14 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
             fresh_vars,
         ),
         Expr::AssociatedFunction { .. } => (pure(expr), fresh_vars),
-        Expr::Literal { .. } => (pure(expr), fresh_vars),
+        Expr::Literal { ref literal, .. } => (
+            if is_literal_pure(literal) {
+                pure(expr)
+            } else {
+                Stmt::Expr(Box::new(expr))
+            },
+            fresh_vars,
+        ),
         Expr::NonHirLiteral { .. } => (pure(expr), fresh_vars),
         Expr::AddrOf(e) => monadic_let(fresh_vars, *e, |fresh_vars, e| {
             (pure(Expr::AddrOf(Box::new(e))), fresh_vars)
@@ -487,10 +498,10 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Stmt, FreshVa
         }),
         Expr::NamedField { base, name } => monadic_let(fresh_vars, *base, |fresh_vars, base| {
             (
-                pure(Expr::NamedField {
+                Stmt::Expr(Box::new(Expr::NamedField {
                     base: Box::new(base),
                     name,
-                }),
+                })),
                 fresh_vars,
             )
         }),

@@ -2,11 +2,16 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let triple := (0, - 2, 3) in
+Definition main `{State.Trait} : M unit :=
+  let* triple :=
+    let* α0 := M.alloc 0 in
+    let* α1 := M.alloc (- 2) in
+    let* α2 := M.alloc 3 in
+    Pure (α0, α1, α2) in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Tell me about "; "
+      let* α0 :=
+        borrow [ mk_str "Tell me about "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -27,7 +32,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "First is `0`, `y` is "; ", and `z` is "; "
+          [ mk_str "First is `0`, `y` is "; mk_str ", and `z` is "; mk_str "
 " ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -52,7 +57,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "First is `1` and the rest doesn't matter
+          [ mk_str "First is `1` and the rest doesn't matter
 " ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -65,7 +70,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "last is `2` and the rest doesn't matter
+          [ mk_str "last is `2` and the rest doesn't matter
 " ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -78,7 +83,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "First is `3`, last is `4`, and the rest doesn't matter
+          [ mk_str "First is `3`, last is `4`, and the rest doesn't matter
 " ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -90,7 +95,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | _ =>
     let* _ :=
       let* α0 :=
-        borrow [ "It doesn't matter what they are
+        borrow [ mk_str "It doesn't matter what they are
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

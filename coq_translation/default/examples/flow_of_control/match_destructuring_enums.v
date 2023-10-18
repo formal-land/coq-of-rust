@@ -15,11 +15,15 @@ End Color.
 Definition Color : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let color := match_destructuring_enums.Color.RGB 122 17 40 in
+Definition main `{State.Trait} : M unit :=
+  let* color :=
+    let* α0 := M.alloc 122 in
+    let* α1 := M.alloc 17 in
+    let* α2 := M.alloc 40 in
+    Pure (match_destructuring_enums.Color.RGB α0 α1 α2) in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "What color is it?
+      let* α0 := borrow [ mk_str "What color is it?
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -30,7 +34,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match color with
   | match_destructuring_enums.Color  =>
     let* _ :=
-      let* α0 := borrow [ "The color is Red!
+      let* α0 := borrow [ mk_str "The color is Red!
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -40,7 +44,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_destructuring_enums.Color  =>
     let* _ :=
-      let* α0 := borrow [ "The color is Blue!
+      let* α0 := borrow [ mk_str "The color is Blue!
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -50,7 +54,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt
   | match_destructuring_enums.Color  =>
     let* _ :=
-      let* α0 := borrow [ "The color is Green!
+      let* α0 := borrow [ mk_str "The color is Green!
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -62,8 +66,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "Red: "; ", green: "; ", and blue: "; "!
-" ]
+          [
+            mk_str "Red: ";
+            mk_str ", green: ";
+            mk_str ", and blue: ";
+            mk_str "!
+"
+          ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -91,8 +100,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "Hue: "; ", saturation: "; ", value: "; "!
-" ]
+          [
+            mk_str "Hue: ";
+            mk_str ", saturation: ";
+            mk_str ", value: ";
+            mk_str "!
+"
+          ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -120,8 +134,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "Hue: "; ", saturation: "; ", lightness: "; "!
-" ]
+          [
+            mk_str "Hue: ";
+            mk_str ", saturation: ";
+            mk_str ", lightness: ";
+            mk_str "!
+"
+          ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -149,8 +168,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "Cyan: "; ", magenta: "; ", yellow: "; "!
-" ]
+          [
+            mk_str "Cyan: ";
+            mk_str ", magenta: ";
+            mk_str ", yellow: ";
+            mk_str "!
+"
+          ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -178,8 +202,14 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "Cyan: "; ", magenta: "; ", yellow: "; ", key (black): "; "!
-" ]
+          [
+            mk_str "Cyan: ";
+            mk_str ", magenta: ";
+            mk_str ", yellow: ";
+            mk_str ", key (black): ";
+            mk_str "!
+"
+          ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

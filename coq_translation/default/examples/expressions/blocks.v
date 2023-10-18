@@ -2,19 +2,21 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := 5 in
+Definition main `{State.Trait} : M unit :=
+  let* x := M.alloc 5 in
   let* y :=
     let* x_squared := mul x x in
     let* x_cube := mul x_squared x in
     let* α0 := add x_cube x_squared in
     add α0 x in
   let* z :=
-    let* _ := mul 2 x in
+    let* _ :=
+      let* α0 := M.alloc 2 in
+      mul α0 x in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "x is "; "
+      let* α0 := borrow [ mk_str "x is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -32,7 +34,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "y is "; "
+      let* α0 := borrow [ mk_str "y is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -50,7 +52,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "z is "; "
+      let* α0 := borrow [ mk_str "z is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

@@ -12,72 +12,70 @@ End EmptyVec.
 Definition EmptyVec := @EmptyVec.t.
 
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
   Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') boxing_errors.EmptyVec.
+      forall `{State.Trait},
+      (ref Self) -> M boxing_errors.EmptyVec.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
-  Global Instance I : core.error.Error.Trait Self := {
+  Global Instance I `{State.Trait} : core.error.Error.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first :
-    forall `{H' : State.Trait},
+    forall `{State.Trait},
     (alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A) ->
-      M (H := H') (boxing_errors.Result i32).
+      M (boxing_errors.Result i32).
 
-Parameter print :
-    forall `{H' : State.Trait},
-    (boxing_errors.Result i32) -> M (H := H') unit.
+Parameter print : forall `{State.Trait}, (boxing_errors.Result i32) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

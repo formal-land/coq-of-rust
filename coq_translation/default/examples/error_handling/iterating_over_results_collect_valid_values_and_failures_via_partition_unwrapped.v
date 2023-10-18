@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* strings :=
-    let* α0 := deref "93" str in
+    let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in
-    let* α2 := deref "18" str in
+    let* α2 := deref (mk_str "18") str in
     let* α3 := borrow α2 str in
     let* α4 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ "tofu"; α1; α3 ] in
+        [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
     (Slice _)::["into_vec"] α5 in
   let* '(numbers, errors) :=
@@ -40,7 +40,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     core.iter.traits.iterator.Iterator.collect α1 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Numbers: "; "
+      let* α0 := borrow [ mk_str "Numbers: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -58,7 +58,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Errors: "; "
+      let* α0 := borrow [ mk_str "Errors: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

@@ -2,11 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* child :=
-    let* α0 := std.process.Command::["new"] "sleep" in
+    let* α0 := std.process.Command::["new"] (mk_str "sleep") in
     let* α1 := borrow_mut α0 std.process.Command in
-    let* α2 := std.process.Command::["arg"] α1 "5" in
+    let* α2 := std.process.Command::["arg"] α1 (mk_str "5") in
     let* α3 := deref α2 std.process.Command in
     let* α4 := borrow_mut α3 std.process.Command in
     let* α5 := std.process.Command::["spawn"] α4 in
@@ -17,7 +17,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
     (core.result.Result _ _)::["unwrap"] α1 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "reached end of main
+      let* α0 := borrow [ mk_str "reached end of main
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

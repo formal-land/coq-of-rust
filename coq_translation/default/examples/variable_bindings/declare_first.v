@@ -2,17 +2,17 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let a_binding := tt in
   let* _ :=
-    let x := 2 in
+    let* x := M.alloc 2 in
     let* _ :=
       let* α0 := mul x x in
       assign a_binding α0 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "a binding: "; "
+      let* α0 := borrow [ mk_str "a binding: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -29,10 +29,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α12 in
     Pure tt in
   let another_binding := tt in
-  let* _ := assign another_binding 1 in
+  let* _ :=
+    let* α0 := M.alloc 1 in
+    assign another_binding α0 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "another binding: "; "
+      let* α0 :=
+        borrow [ mk_str "another binding: "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

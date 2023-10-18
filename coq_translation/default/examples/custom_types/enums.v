@@ -20,19 +20,17 @@ Module WebEvent.
 End WebEvent.
 Definition WebEvent : Set := WebEvent.t.
 
-Definition inspect
-    `{H' : State.Trait}
-    (event : enums.WebEvent)
-    : M (H := H') unit :=
+Definition inspect `{State.Trait} (event : enums.WebEvent) : M unit :=
   match event with
   | enums.WebEvent  =>
     let* _ :=
       let* α0 :=
         borrow
           [
-            "page loaded, r" ++
-              String.String "233" ("f" ++ String.String "233" "
-")
+            mk_str
+              ("page loaded, r" ++
+                String.String "233" ("f" ++ String.String "233" "
+"))
           ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -43,7 +41,7 @@ Definition inspect
     Pure tt
   | enums.WebEvent  =>
     let* _ :=
-      let* α0 := borrow [ "page unloaded
+      let* α0 := borrow [ mk_str "page unloaded
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -53,7 +51,7 @@ Definition inspect
     Pure tt
   | enums.WebEvent c =>
     let* _ :=
-      let* α0 := borrow [ "pressed '"; "'.
+      let* α0 := borrow [ mk_str "pressed '"; mk_str "'.
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -71,7 +69,7 @@ Definition inspect
     Pure tt
   | enums.WebEvent s =>
     let* _ :=
-      let* α0 := borrow [ "pasted ""; "".
+      let* α0 := borrow [ mk_str "pasted ""; mk_str "".
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -90,8 +88,11 @@ Definition inspect
   | enums.WebEvent {| enums.WebEvent.x := x; enums.WebEvent.y := y; |} =>
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "clicked at x="; ", y="; ".
-" ] (list (ref str)) in
+        let* α0 :=
+          borrow
+            [ mk_str "clicked at x="; mk_str ", y="; mk_str ".
+" ]
+            (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
         let* α3 := pointer_coercion "Unsize" α2 in
@@ -114,19 +115,24 @@ Definition inspect
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let pressed := enums.WebEvent.KeyPress "x"%char in
+Definition main `{State.Trait} : M unit :=
+  let* pressed :=
+    let* α0 := "x"%char in
+    Pure (enums.WebEvent.KeyPress α0) in
   let* pasted :=
-    let* α0 := deref "my text" str in
+    let* α0 := deref (mk_str "my text") str in
     let* α1 := borrow α0 str in
     let* α2 := alloc.borrow.ToOwned.to_owned α1 in
     Pure (enums.WebEvent.Paste α2) in
-  let click :=
-    enums.WebEvent.Click
-      {|
-      enums.WebEvent.Click.x := 20;
-      enums.WebEvent.Click.y := 80;
-    |} in
+  let* click :=
+    let* α0 := M.alloc 20 in
+    let* α1 := M.alloc 80 in
+    M.alloc
+      enums.WebEvent.Click
+        {|
+        enums.WebEvent.Click.x := α0;
+        enums.WebEvent.Click.y := α1;
+      |} in
   let load := enums.WebEvent.PageLoad tt in
   let unload := enums.WebEvent.PageUnload tt in
   let* _ := enums.inspect pressed in

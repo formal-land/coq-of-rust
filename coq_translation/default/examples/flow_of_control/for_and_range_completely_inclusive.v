@@ -2,11 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* α0 := (core.ops.range.RangeInclusive _)::["new"] 1 100 in
-  let* α1 := core.iter.traits.collect.IntoIterator.into_iter α0 in
-  let* α2 :=
-    match α1 with
+Definition main `{State.Trait} : M unit :=
+  let* α0 := M.alloc 1 in
+  let* α1 := M.alloc 100 in
+  let* α2 := (core.ops.range.RangeInclusive _)::["new"] α0 α1 in
+  let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+  let* α4 :=
+    match α3 with
     | iter =>
       loop
         (let* _ :=
@@ -19,13 +21,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
             let* α0 := Break in
             never_to_any α0
           | core.option.Option n =>
-            let* α0 := rem n 15 in
-            let* α1 := eq α0 0 in
-            let* α2 := use α1 in
-            if (α2 : bool) then
+            let* α0 := M.alloc 15 in
+            let* α1 := rem n α0 in
+            let* α2 := M.alloc 0 in
+            let* α3 := eq α1 α2 in
+            let* α4 := use α3 in
+            if (α4 : bool) then
               let* _ :=
                 let* _ :=
-                  let* α0 := borrow [ "fizzbuzz
+                  let* α0 := borrow [ mk_str "fizzbuzz
 " ] (list (ref str)) in
                   let* α1 := deref α0 (list (ref str)) in
                   let* α2 := borrow α1 (list (ref str)) in
@@ -35,13 +39,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                 Pure tt in
               Pure tt
             else
-              let* α0 := rem n 3 in
-              let* α1 := eq α0 0 in
-              let* α2 := use α1 in
-              if (α2 : bool) then
+              let* α0 := M.alloc 3 in
+              let* α1 := rem n α0 in
+              let* α2 := M.alloc 0 in
+              let* α3 := eq α1 α2 in
+              let* α4 := use α3 in
+              if (α4 : bool) then
                 let* _ :=
                   let* _ :=
-                    let* α0 := borrow [ "fizz
+                    let* α0 := borrow [ mk_str "fizz
 " ] (list (ref str)) in
                     let* α1 := deref α0 (list (ref str)) in
                     let* α2 := borrow α1 (list (ref str)) in
@@ -51,13 +57,15 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                   Pure tt in
                 Pure tt
               else
-                let* α0 := rem n 5 in
-                let* α1 := eq α0 0 in
-                let* α2 := use α1 in
-                if (α2 : bool) then
+                let* α0 := M.alloc 5 in
+                let* α1 := rem n α0 in
+                let* α2 := M.alloc 0 in
+                let* α3 := eq α1 α2 in
+                let* α4 := use α3 in
+                if (α4 : bool) then
                   let* _ :=
                     let* _ :=
-                      let* α0 := borrow [ "buzz
+                      let* α0 := borrow [ mk_str "buzz
 " ] (list (ref str)) in
                       let* α1 := deref α0 (list (ref str)) in
                       let* α2 := borrow α1 (list (ref str)) in
@@ -69,7 +77,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
                 else
                   let* _ :=
                     let* _ :=
-                      let* α0 := borrow [ ""; "
+                      let* α0 :=
+                        borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
                       let* α1 := deref α0 (list (ref str)) in
                       let* α2 := borrow α1 (list (ref str)) in
@@ -89,4 +98,4 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           end in
         Pure tt)
     end in
-  use α2.
+  use α4.

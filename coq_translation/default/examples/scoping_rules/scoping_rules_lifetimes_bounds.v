@@ -5,7 +5,7 @@ Module Ref.
   Section Ref.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : ref T;
     }.
     Global Set Primitive Projections.
@@ -21,45 +21,47 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
     Context {T : Set}.
     Context `{core.fmt.Debug.Trait T}.
-    Definition Self := scoping_rules_lifetimes_bounds.Ref T.
+    Definition Self `{State.Trait} := scoping_rules_lifetimes_bounds.Ref T.
     
     Definition fmt
-        `{H' : State.Trait}
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M (H := H') core.fmt.Result :=
+        : M core.fmt.Result :=
       let* α0 := deref f core.fmt.Formatter in
       let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 := deref "Ref" str in
+      let* α2 := deref (mk_str "Ref") str in
       let* α3 := borrow α2 str in
       let* α4 := deref self (scoping_rules_lifetimes_bounds.Ref _) in
-      let* α5 := borrow α4.["0"] (ref _) in
-      let* α6 := borrow α5 (ref (ref _)) in
-      let* α7 := deref α6 (ref (ref _)) in
-      let* α8 := borrow α7 (ref (ref _)) in
-      let* α9 := pointer_coercion "Unsize" α8 in
-      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α9.
+      let* α5 := α4.["0"] in
+      let* α6 := borrow α5 (ref _) in
+      let* α7 := borrow α6 (ref (ref _)) in
+      let* α8 := deref α7 (ref (ref _)) in
+      let* α9 := borrow α8 (ref (ref _)) in
+      let* α10 := pointer_coercion "Unsize" α9 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_T.
 
 Definition print
-    `{H' : State.Trait}
+    `{State.Trait}
     {T : Set}
     `{core.fmt.Debug.Trait T}
     (t : T)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`print`: t is "; "
+      let* α0 :=
+        borrow [ mk_str "`print`: t is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -78,14 +80,15 @@ Definition print
   Pure tt.
 
 Definition print_ref
-    `{H' : State.Trait}
+    `{State.Trait}
     {T : Set}
     `{core.fmt.Debug.Trait T}
     (t : ref T)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "`print_ref`: t is "; "
+      let* α0 :=
+        borrow [ mk_str "`print_ref`: t is "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -104,8 +107,8 @@ Definition print_ref
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := 7 in
+Definition main `{State.Trait} : M unit :=
+  let* x := M.alloc 7 in
   let* ref_x :=
     let* α0 := borrow x i32 in
     let* α1 := deref α0 i32 in

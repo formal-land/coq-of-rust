@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := 5 in
+Definition main `{State.Trait} : M unit :=
+  let* x := M.alloc 5 in
   let _ := x in
-  let* _ := add x 1 in
-  let _ := 15 in
+  let* _ :=
+    let* α0 := M.alloc 1 in
+    add x α0 in
+  let* _ := M.alloc 15 in
   Pure tt.

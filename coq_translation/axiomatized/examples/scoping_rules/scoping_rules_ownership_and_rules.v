@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter destroy_box :
-    forall `{H' : State.Trait},
-    (alloc.boxed.Box i32 alloc.boxed.Box.Default.A) -> M (H := H') unit.
+    forall `{State.Trait},
+    (alloc.boxed.Box i32 alloc.boxed.Box.Default.A) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

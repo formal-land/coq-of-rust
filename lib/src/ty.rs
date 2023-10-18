@@ -1,4 +1,4 @@
-use crate::coq::{self, LOCAL_STATE_TRAIT_INSTANCE};
+use crate::coq::{self};
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
@@ -39,17 +39,14 @@ impl CoqType {
 
     pub(crate) fn monad(ty: Box<CoqType>) -> Box<CoqType> {
         Box::new(CoqType::Application {
-            // TODO: try to remove the explicit parameter
-            func: Box::new(CoqType::Var(Box::new(Path::local(format!(
-                "M (H := {LOCAL_STATE_TRAIT_INSTANCE})"
-            ))))),
+            func: CoqType::var("M".to_string()),
             args: vec![ty],
         })
     }
 
-    pub(crate) fn remove_ref(ty: Box<CoqType>) -> Box<CoqType> {
-        match *ty {
-            CoqType::Ref(ty, _) => ty,
+    pub(crate) fn remove_ref(ty: CoqType) -> CoqType {
+        match ty {
+            CoqType::Ref(ty, _) => *ty,
             _ => panic!("remove_ref called on a non-ref type"),
         }
     }

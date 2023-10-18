@@ -2,33 +2,36 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* _ := functions.fizzbuzz_to 100 in
+Definition main `{State.Trait} : M unit :=
+  let* _ :=
+    let* α0 := M.alloc 100 in
+    functions.fizzbuzz_to α0 in
   Pure tt.
 
-Definition is_divisible_by
-    `{H' : State.Trait}
-    (lhs : u32)
-    (rhs : u32)
-    : M (H := H') bool :=
+Definition is_divisible_by `{State.Trait} (lhs : u32) (rhs : u32) : M bool :=
   let* _ :=
-    let* α0 := eq rhs 0 in
-    let* α1 := use α0 in
-    if (α1 : bool) then
-      let* _ := Return false in
+    let* α0 := M.alloc 0 in
+    let* α1 := eq rhs α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
+      let* _ :=
+        let* α0 := false in
+        Return α0 in
       never_to_any tt
     else
       Pure tt in
   let* α0 := rem lhs rhs in
-  eq α0 0.
+  let* α1 := M.alloc 0 in
+  eq α0 α1.
 
-Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
-  let* α0 := functions.is_divisible_by n 15 in
-  let* α1 := use α0 in
-  if (α1 : bool) then
+Definition fizzbuzz `{State.Trait} (n : u32) : M unit :=
+  let* α0 := M.alloc 15 in
+  let* α1 := functions.is_divisible_by n α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "fizzbuzz
+        let* α0 := borrow [ mk_str "fizzbuzz
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -38,12 +41,13 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
       Pure tt in
     Pure tt
   else
-    let* α0 := functions.is_divisible_by n 3 in
-    let* α1 := use α0 in
-    if (α1 : bool) then
+    let* α0 := M.alloc 3 in
+    let* α1 := functions.is_divisible_by n α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "fizz
+          let* α0 := borrow [ mk_str "fizz
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in
@@ -53,12 +57,13 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
         Pure tt in
       Pure tt
     else
-      let* α0 := functions.is_divisible_by n 5 in
-      let* α1 := use α0 in
-      if (α1 : bool) then
+      let* α0 := M.alloc 5 in
+      let* α1 := functions.is_divisible_by n α0 in
+      let* α2 := use α1 in
+      if (α2 : bool) then
         let* _ :=
           let* _ :=
-            let* α0 := borrow [ "buzz
+            let* α0 := borrow [ mk_str "buzz
 " ] (list (ref str)) in
             let* α1 := deref α0 (list (ref str)) in
             let* α2 := borrow α1 (list (ref str)) in
@@ -70,7 +75,7 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
       else
         let* _ :=
           let* _ :=
-            let* α0 := borrow [ ""; "
+            let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
             let* α1 := deref α0 (list (ref str)) in
             let* α2 := borrow α1 (list (ref str)) in
@@ -88,11 +93,12 @@ Definition fizzbuzz `{H' : State.Trait} (n : u32) : M (H := H') unit :=
           Pure tt in
         Pure tt.
 
-Definition fizzbuzz_to `{H' : State.Trait} (n : u32) : M (H := H') unit :=
-  let* α0 := (core.ops.range.RangeInclusive _)::["new"] 1 n in
-  let* α1 := core.iter.traits.collect.IntoIterator.into_iter α0 in
-  let* α2 :=
-    match α1 with
+Definition fizzbuzz_to `{State.Trait} (n : u32) : M unit :=
+  let* α0 := M.alloc 1 in
+  let* α1 := (core.ops.range.RangeInclusive _)::["new"] α0 n in
+  let* α2 := core.iter.traits.collect.IntoIterator.into_iter α1 in
+  let* α3 :=
+    match α2 with
     | iter =>
       loop
         (let* _ :=
@@ -110,4 +116,4 @@ Definition fizzbuzz_to `{H' : State.Trait} (n : u32) : M (H := H') unit :=
           end in
         Pure tt)
     end in
-  use α2.
+  use α3.

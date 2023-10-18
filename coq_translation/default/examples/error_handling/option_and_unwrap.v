@@ -2,13 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition give_adult
-    `{H' : State.Trait}
+    `{State.Trait}
     (drink : core.option.Option (ref str))
-    : M (H := H') unit :=
+    : M unit :=
   match drink with
   | core.option.Option _ =>
     let* _ :=
-      let* α0 := borrow [ "Yuck! Too sugary.
+      let* α0 := borrow [ mk_str "Yuck! Too sugary.
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -18,7 +18,7 @@ Definition give_adult
     Pure tt
   | core.option.Option inner =>
     let* _ :=
-      let* α0 := borrow [ ""; "? How nice.
+      let* α0 := borrow [ mk_str ""; mk_str "? How nice.
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -36,7 +36,7 @@ Definition give_adult
     Pure tt
   | core.option.Option  =>
     let* _ :=
-      let* α0 := borrow [ "No drink? Oh well.
+      let* α0 := borrow [ mk_str "No drink? Oh well.
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -47,25 +47,26 @@ Definition give_adult
   end.
 
 Definition drink
-    `{H' : State.Trait}
+    `{State.Trait}
     (drink : core.option.Option (ref str))
-    : M (H := H') unit :=
+    : M unit :=
   let* inside := (core.option.Option _)::["unwrap"] drink in
   let* _ :=
     let* α0 := borrow inside (ref str) in
-    let* α1 := borrow "lemonade" (ref str) in
+    let* α1 := borrow (mk_str "lemonade") (ref str) in
     let* α2 := core.cmp.PartialEq.eq α0 α1 in
     let* α3 := use α2 in
     if (α3 : bool) then
       let* _ :=
-        let* α0 := std.panicking.begin_panic "AAAaaaaa!!!!" in
+        let* α0 := std.panicking.begin_panic (mk_str "AAAaaaaa!!!!") in
         never_to_any α0 in
       never_to_any tt
     else
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "I love "; "s!!!!!
+      let* α0 :=
+        borrow [ mk_str "I love "; mk_str "s!!!!!
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -84,14 +85,14 @@ Definition drink
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let water := core.option.Option.Some "water" in
-  let lemonade := core.option.Option.Some "lemonade" in
+Definition main `{State.Trait} : M unit :=
+  let water := core.option.Option.Some (mk_str "water") in
+  let lemonade := core.option.Option.Some (mk_str "lemonade") in
   let void := core.option.Option.None tt in
   let* _ := option_and_unwrap.give_adult water in
   let* _ := option_and_unwrap.give_adult lemonade in
   let* _ := option_and_unwrap.give_adult void in
-  let coffee := core.option.Option.Some "coffee" in
+  let coffee := core.option.Option.Some (mk_str "coffee") in
   let nothing := core.option.Option.None tt in
   let* _ := option_and_unwrap.drink coffee in
   let* _ := option_and_unwrap.drink nothing in

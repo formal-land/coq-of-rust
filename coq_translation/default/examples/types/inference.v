@@ -2,15 +2,15 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let elem := 5 in
+Definition main `{State.Trait} : M unit :=
+  let* elem := M.alloc 5 in
   let* vec := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* _ :=
     let* α0 := borrow_mut vec (alloc.vec.Vec u8 alloc.alloc.Global) in
     (alloc.vec.Vec _ _)::["push"] α0 elem in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; "
+      let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

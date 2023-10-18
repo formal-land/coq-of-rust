@@ -8,15 +8,24 @@ Definition Inch : Set := u64.
 Definition U64 : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* nanoseconds := use 5 in
-  let* inches := use 2 in
+Definition main `{State.Trait} : M unit :=
+  let* nanoseconds :=
+    let* α0 := M.alloc 5 in
+    use α0 in
+  let* inches :=
+    let* α0 := M.alloc 2 in
+    use α0 in
   let* _ :=
     let* _ :=
       let* α0 :=
         borrow
-          [ ""; " nanoseconds + "; " inches = "; " unit?
-" ]
+          [
+            mk_str "";
+            mk_str " nanoseconds + ";
+            mk_str " inches = ";
+            mk_str " unit?
+"
+          ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

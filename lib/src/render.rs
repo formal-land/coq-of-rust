@@ -99,14 +99,17 @@ fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'
     }
 }
 
-fn string_to_doc(with_paren: bool, text: &str) -> RcDoc<()> {
-    let pieces = cut_string_in_pieces_for_coq(text);
-    string_pieces_to_doc(with_paren, &pieces)
+fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
+    let pieces = cut_string_in_pieces_for_coq(message);
+    paren(
+        with_paren,
+        nest([text("mk_str"), line(), string_pieces_to_doc(true, &pieces)]),
+    )
 }
 
-fn apply_neg_to_literal(with_paren: bool, literal: RcDoc<()>, neg: bool) -> RcDoc<()> {
+fn apply_neg_to_literal(literal: RcDoc<()>, neg: bool) -> RcDoc<()> {
     if neg {
-        paren(with_paren, nest([text("-"), line(), literal]))
+        paren(true, nest([text("-"), line(), literal]))
     } else {
         literal
     }
@@ -115,11 +118,21 @@ fn apply_neg_to_literal(with_paren: bool, literal: RcDoc<()>, neg: bool) -> RcDo
 pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind, neg: bool) -> RcDoc<()> {
     match literal {
         LitKind::Str(s, _) => string_to_doc(with_paren, s.as_str()),
-        LitKind::Int(i, _) => apply_neg_to_literal(with_paren, RcDoc::text(format!("{i}")), neg),
-        LitKind::Float(f, _) => apply_neg_to_literal(
+        LitKind::Int(i, _) => paren(
             with_paren,
-            RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
-            neg,
+            nest([
+                text("M.alloc"),
+                line(),
+                apply_neg_to_literal(RcDoc::text(format!("{i}")), neg),
+            ]),
+        ),
+        LitKind::Float(f, _) => paren(
+            with_paren,
+            nest([
+                text("M.alloc"),
+                line(),
+                apply_neg_to_literal(RcDoc::text(format!("{} (* {f} *)", round_symbol(f))), neg),
+            ]),
         ),
         LitKind::Bool(b) => RcDoc::text(format!("{b}")),
         LitKind::Char(c) => RcDoc::text(format!("\"{c}\"%char")),

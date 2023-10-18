@@ -2,11 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition read_lines
-    `{H' : State.Trait}
+    `{State.Trait}
     (filename : alloc.string.String)
-    :
-      M (H := H')
-        (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
+    : M (std.io.Lines (std.io.buffered.bufreader.BufReader std.fs.File)) :=
   let* file :=
     let* α0 := std.fs.File::["open"] filename in
     (core.result.Result _ _)::["unwrap"] α0 in
@@ -17,9 +15,9 @@ Definition read_lines
   never_to_any tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* lines :=
-    let* α0 := deref "./hosts" str in
+    let* α0 := deref (mk_str "./hosts") str in
     let* α1 := borrow α0 str in
     let* α2 := alloc.string.ToString.to_string α1 in
     file_io_read_lines.read_lines α2 in
@@ -52,7 +50,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
           | core.option.Option line =>
             let* _ :=
               let* _ :=
-                let* α0 := borrow [ ""; "
+                let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
                 let* α1 := deref α0 (list (ref str)) in
                 let* α2 := borrow α1 (list (ref str)) in

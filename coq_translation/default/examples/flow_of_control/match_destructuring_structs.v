@@ -3,34 +3,38 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     x : u32 * u32;
     y : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x) : M _;
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(x) : M _;
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
+    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_y `{State.Trait} : Notation.DoubleColon t "y" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
   }.
 End Foo.
-Definition Foo : Set := ⟅Foo.t⟆.
+Definition Foo `{State.Trait} : Set := M.val (Foo.t).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let foo :=
-    {|
-      match_destructuring_structs.Foo.x := (1, 2);
-      match_destructuring_structs.Foo.y := 3;
-    |} in
+Definition main `{State.Trait} : M unit :=
+  let* foo :=
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    M.alloc
+      {|
+        match_destructuring_structs.Foo.x := (α0, α1);
+        match_destructuring_structs.Foo.y := α2;
+      |} in
   match foo with
   |
       {|
@@ -40,8 +44,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       =>
     let* _ :=
       let* α0 :=
-        borrow [ "First of x is 1, b = "; ",  y = "; " 
-" ] (list (ref str)) in
+        borrow
+          [ mk_str "First of x is 1, b = "; mk_str ",  y = "; mk_str " 
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
@@ -67,7 +73,8 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       |}
       =>
     let* _ :=
-      let* α0 := borrow [ "y is 2, i = "; "
+      let* α0 :=
+        borrow [ mk_str "y is 2, i = "; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -86,8 +93,10 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   | {| match_destructuring_structs.Foo.y := y; |} =>
     let* _ :=
       let* α0 :=
-        borrow [ "y = "; ", we don't care about x
-" ] (list (ref str)) in
+        borrow
+          [ mk_str "y = "; mk_str ", we don't care about x
+" ]
+          (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in

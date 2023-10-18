@@ -2,11 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let count := 0 in
+Definition main `{State.Trait} : M unit :=
+  let* count := M.alloc 0 in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ "Let's count until infinity!
+      let* α0 :=
+        borrow [ mk_str "Let's count until infinity!
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -15,14 +16,17 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α4 in
     Pure tt in
   loop
-    (let* _ := assign_op add count 1 in
+    (let* _ :=
+      let* α0 := M.alloc 1 in
+      assign_op add count α0 in
     let* _ :=
-      let* α0 := eq count 3 in
-      let* α1 := use α0 in
-      if (α1 : bool) then
+      let* α0 := M.alloc 3 in
+      let* α1 := eq count α0 in
+      let* α2 := use α1 in
+      if (α2 : bool) then
         let* _ :=
           let* _ :=
-            let* α0 := borrow [ "three
+            let* α0 := borrow [ mk_str "three
 " ] (list (ref str)) in
             let* α1 := deref α0 (list (ref str)) in
             let* α2 := borrow α1 (list (ref str)) in
@@ -36,7 +40,7 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         Pure tt in
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ ""; "
+        let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in
@@ -52,12 +56,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
         let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
         std.io.stdio._print α12 in
       Pure tt in
-    let* α0 := eq count 5 in
-    let* α1 := use α0 in
-    if (α1 : bool) then
+    let* α0 := M.alloc 5 in
+    let* α1 := eq count α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := borrow [ "OK, that's enough
+          let* α0 := borrow [ mk_str "OK, that's enough
 " ] (list (ref str)) in
           let* α1 := deref α0 (list (ref str)) in
           let* α2 := borrow α1 (list (ref str)) in

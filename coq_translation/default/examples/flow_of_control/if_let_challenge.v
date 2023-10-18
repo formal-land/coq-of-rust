@@ -8,13 +8,13 @@ End Foo.
 Definition Foo : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let a := if_let_challenge.Foo.Bar tt in
   let* α0 := let_if if_let_challenge.Foo  := a in
   if (α0 : bool) then
     let* _ :=
       let* _ :=
-        let* α0 := borrow [ "a is foobar
+        let* α0 := borrow [ mk_str "a is foobar
 " ] (list (ref str)) in
         let* α1 := deref α0 (list (ref str)) in
         let* α2 := borrow α1 (list (ref str)) in

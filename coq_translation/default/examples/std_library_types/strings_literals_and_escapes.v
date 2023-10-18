@@ -2,13 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let byte_escape := "I'm writing Rust!" in
+Definition main `{State.Trait} : M unit :=
+  let byte_escape := mk_str "I'm writing Rust!" in
   let* _ :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "What are you doing? (\x3F means ?) "; "
+          [ mk_str "What are you doing? (\x3F means ?) "; mk_str "
 " ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
@@ -25,14 +25,18 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     Pure tt in
-  let unicode_codepoint := String.String "29" "" in
-  let character_name := ""DOUBLE-STRUCK CAPITAL R"" in
+  let unicode_codepoint := mk_str (String.String "29" "") in
+  let character_name := mk_str ""DOUBLE-STRUCK CAPITAL R"" in
   let* _ :=
     let* _ :=
       let* α0 :=
         borrow
-          [ "Unicode character "; " (U+211D) is called "; "
-" ]
+          [
+            mk_str "Unicode character ";
+            mk_str " (U+211D) is called ";
+            mk_str "
+"
+          ]
           (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in
@@ -53,12 +57,13 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
       std.io.stdio._print α16 in
     Pure tt in
   let long_string :=
-    "String literals
+    mk_str
+      "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!" in
   let* _ :=
     let* _ :=
-      let* α0 := borrow [ ""; "
+      let* α0 := borrow [ mk_str ""; mk_str "
 " ] (list (ref str)) in
       let* α1 := deref α0 (list (ref str)) in
       let* α2 := borrow α1 (list (ref str)) in

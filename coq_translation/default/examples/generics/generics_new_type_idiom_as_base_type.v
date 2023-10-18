@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     _ : i64;
   }.
   Global Set Primitive Projections.
@@ -15,9 +15,11 @@ End Years.
 Definition Years := @Years.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let years := generics_new_type_idiom_as_base_type.Years.Build_t 42 in
-  let years_as_primitive_1 := years.["0"] in
+Definition main `{State.Trait} : M unit :=
+  let* years :=
+    let* α0 := M.alloc 42 in
+    Pure (generics_new_type_idiom_as_base_type.Years.Build_t α0) in
+  let* years_as_primitive_1 := years.["0"] in
   let
       'generics_new_type_idiom_as_base_type.Years.Build_t
         years_as_primitive_2 :=
