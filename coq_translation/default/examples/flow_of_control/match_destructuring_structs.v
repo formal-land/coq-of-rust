@@ -22,7 +22,7 @@ Module Foo.
     Notation.double_colon '(Build_t _ x1) := x1;
   }.
 End Foo.
-Definition Foo : Set := Foo.t.
+Definition Foo : Set := ⟅Foo.t⟆.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
@@ -34,43 +34,72 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   match foo with
   |
       {|
-        match_destructuring_structs.Foo.x := (1, b);
+        match_destructuring_structs.Foo.x := (_, b);
         match_destructuring_structs.Foo.y := y;
       |}
       =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of b) in
-      let* α1 := format_argument::["new_display"] (addr_of y) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "First of x is 1, b = "; ",  y = "; " 
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow [ "First of x is 1, b = "; ",  y = "; " 
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow b u32 in
+      let* α5 := deref α4 u32 in
+      let* α6 := borrow α5 u32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow y u32 in
+      let* α9 := deref α8 u32 in
+      let* α10 := borrow α9 u32 in
+      let* α11 := core.fmt.rt.Argument::["new_display"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
+      std.io.stdio._print α16 in
     Pure tt
   |
       {|
-        match_destructuring_structs.Foo.y := 2;
+        match_destructuring_structs.Foo.y := _;
         match_destructuring_structs.Foo.x := i;
       |}
       =>
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of i) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "y is 2, i = "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "y is 2, i = "; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow i (u32 * u32) in
+      let* α5 := deref α4 (u32 * u32) in
+      let* α6 := borrow α5 (u32 * u32) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
   | {| match_destructuring_structs.Foo.y := y; |} =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of y) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "y = "; ", we don't care about x
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 :=
+        borrow [ "y = "; ", we don't care about x
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow y u32 in
+      let* α5 := deref α4 u32 in
+      let* α6 := borrow α5 u32 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
   end.

@@ -15,7 +15,7 @@ Module Number.
     Notation.double_colon '(Build_t x0) := x0;
   }.
 End Number.
-Definition Number : Set := Number.t.
+Definition Number : Set := ⟅Number.t⟆.
 
 Module Impl_core_convert_From_for_into_Number.
   Definition Self := into.Number.
@@ -36,5 +36,5 @@ End Impl_core_convert_From_for_into_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* _ := 5.["into"] : M into.Number in
+  let* _ := core.convert.Into.into 5 in
   Pure tt.

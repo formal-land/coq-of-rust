@@ -11,5 +11,5 @@ impl From<i32> for Number {
 }
 
 fn main() {
-    5.into::<Number>();
+    <i32 as std::convert::Into<Number>>::into(5);
 }

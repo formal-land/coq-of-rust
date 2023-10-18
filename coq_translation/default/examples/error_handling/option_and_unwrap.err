@@ -1,15 +1,8 @@
-thread 'rustc' panicked at 'pattern Pat {
-    ty: &str,
-    span: examples/error_handling/option_and_unwrap.rs:6:14: 6:24 (#0),
-    kind: Constant {
-        value: Val(
-            Slice {
-                data: ConstAllocation { .. },
-                start: 0,
-                end: 8,
-            },
-            &str,
-        ),
-    },
-} not implemented', lib/src/thir_pattern.rs:114:14
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: Constants in patterns are not yet supported.
+ --> examples/error_handling/option_and_unwrap.rs:6:14
+  |
+6 |         Some("lemonade") => println!("Yuck! Too sugary."),
+  |              ^^^^^^^^^^
+
+warning: 1 warning emitted
+

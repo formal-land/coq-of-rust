@@ -1,0 +1,30 @@
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match_binding.rs:10:9
+   |
+10 |         0 => println!("I haven't celebrated my first birthday yet"),
+   |         ^
+
+thread 'rustc' panicked at 'pattern Pat {
+    ty: u32,
+    span: examples/flow_of_control/match_binding.rs:14:13: 14:19 (#0),
+    kind: Range(
+        PatRange {
+            lo: Val(
+                Scalar(
+                    0x00000001,
+                ),
+                u32,
+            ),
+            hi: Val(
+                Scalar(
+                    0x0000000c,
+                ),
+                u32,
+            ),
+            end: Included,
+        },
+    ),
+} not implemented', lib/src/thir_pattern.rs:147:14
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: 1 warning emitted
+

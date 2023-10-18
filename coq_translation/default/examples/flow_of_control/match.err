@@ -1,0 +1,72 @@
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:23:9
+   |
+23 |         false => 0,
+   |         ^^^^^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:24:9
+   |
+24 |         true => 1,
+   |         ^^^^
+
+warning: Constants in patterns are not yet supported.
+ --> examples/flow_of_control/match.rs:8:9
+  |
+8 |         1 => println!("One!"),
+  |         ^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:10:9
+   |
+10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
+   |         ^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:10:13
+   |
+10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
+   |             ^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:10:17
+   |
+10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
+   |                 ^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:10:21
+   |
+10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
+   |                     ^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:10:25
+   |
+10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
+   |                         ^^
+
+thread 'rustc' panicked at 'pattern Pat {
+    ty: i32,
+    span: examples/flow_of_control/match.rs:13:9: 13:16 (#0),
+    kind: Range(
+        PatRange {
+            lo: Val(
+                Scalar(
+                    0x0000000d,
+                ),
+                i32,
+            ),
+            hi: Val(
+                Scalar(
+                    0x00000013,
+                ),
+                i32,
+            ),
+            end: Included,
+        },
+    ),
+} not implemented', lib/src/thir_pattern.rs:147:14
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: 8 warnings emitted
+

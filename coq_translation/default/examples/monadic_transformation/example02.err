@@ -1,13 +1,8 @@
-thread 'rustc' panicked at 'pattern Pat {
-    ty: i32,
-    span: examples/monadic_transformation/example02.rs:3:9: 3:10 (#0),
-    kind: Constant {
-        value: Val(
-            Scalar(
-                0x00000000,
-            ),
-            i32,
-        ),
-    },
-} not implemented', lib/src/thir_pattern.rs:114:14
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: Constants in patterns are not yet supported.
+ --> examples/monadic_transformation/example02.rs:3:9
+  |
+3 |         0 => false,
+  |         ^
+
+warning: 1 warning emitted
+

@@ -7,5 +7,6 @@ Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* α0 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 5; 6; 7; 8 ] in
-    (Slice _)::["into_vec"] α0 in
+    let* α1 := pointer_coercion "Unsize" α0 in
+    (Slice _)::["into_vec"] α1 in
   Pure tt.

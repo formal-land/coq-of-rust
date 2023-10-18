@@ -4,6 +4,25 @@ use crate::pattern::*;
 use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::sty::TyKind;
 
+// fn const_to_lit_kind(constant: rustc_middle::mir::ConstantKind) -> rustc_ast::LitKind {
+//     match constant {
+//         rustc_middle::mir::ConstantKind::Val(value, _) => match value {
+//             rustc_middle::mir::interpret::ConstValue::Scalar(scalar) => match scalar.to_u128() {
+//                 Result::Ok(value) => {
+//                     return rustc_ast::LitKind::Int(
+//                         value as u128,
+//                         rustc_ast::LitIntType::Unsuffixed,
+//                     );
+//                 }
+//                 Result::Err(_) => (),
+//             },
+//             _ => (),
+//         },
+//         _ => (),
+//     }
+//     panic!("constant {:#?} not yet handled", constant);
+// }
+
 pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
     match &pat.kind {
         PatKind::Wild => Pattern::Wild,
@@ -80,6 +99,20 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
             }
         }
         PatKind::Deref { subpattern } => compile_pattern(env, subpattern),
+        // PatKind::Constant { value } => {
+        //     let literal = const_to_lit_kind(*value);
+        //     Pattern::Lit(literal)
+        // }
+        PatKind::Constant { .. } => {
+            env.tcx
+                .sess
+                .struct_span_warn(pat.span, "Constants in patterns are not yet supported.")
+                .emit();
+            Pattern::Wild
+        }
+        //     rustc_middle::mir::consts::ConstValue(rustc_middle::mir::interpret::value::Scalar()),
+        //     _ => panic!("constant {:#?} not yet handled", value),
+        // },
         // /// One of the following:
         // /// * `&str`, which will be handled as a string pattern and thus exhaustiveness
         // ///   checking will detect if you use the same string twice in different patterns.

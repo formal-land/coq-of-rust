@@ -1,0 +1,8 @@
+thread 'rustc' panicked at 'type Alias(
+    Opaque,
+    AliasTy {
+        substs: [],
+        def_id: DefId(0:13 ~ functions_closures_as_output_parameters[5480]::create_fnmut::{opaque#0}),
+    },
+) not yet handled', lib/src/thir_ty.rs:59:14
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

@@ -6,29 +6,43 @@ Definition give_adult
     (drink : core.option.Option (ref str))
     : M (H := H') unit :=
   match drink with
-  | core.option.Option.Some "lemonade" =>
+  | core.option.Option _ =>
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "Yuck! Too sugary.
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ "Yuck! Too sugary.
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt
-  | core.option.Option.Some inner =>
+  | core.option.Option inner =>
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of inner) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; "? How nice.
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ ""; "? How nice.
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow inner (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt
-  | core.option.Option.None =>
+  | core.option.Option  =>
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "No drink? Oh well.
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ "No drink? Oh well.
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt
   end.
 
@@ -36,23 +50,36 @@ Definition drink
     `{H' : State.Trait}
     (drink : core.option.Option (ref str))
     : M (H := H') unit :=
-  let* inside := drink.["unwrap"] in
+  let* inside := (core.option.Option _)::["unwrap"] drink in
   let* _ :=
-    let* α0 := inside.["eq"] "lemonade" in
-    if (α0 : bool) then
-      let* _ := std.panicking.begin_panic "AAAaaaaa!!!!" in
-      Pure tt
+    let* α0 := borrow inside (ref str) in
+    let* α1 := borrow "lemonade" (ref str) in
+    let* α2 := core.cmp.PartialEq.eq α0 α1 in
+    let* α3 := use α2 in
+    if (α3 : bool) then
+      let* _ :=
+        let* α0 := std.panicking.begin_panic "AAAaaaaa!!!!" in
+        never_to_any α0 in
+      never_to_any tt
     else
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of inside) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "I love "; "s!!!!!
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ "I love "; "s!!!!!
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow inside (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   Pure tt.
 
@@ -60,12 +87,12 @@ Definition drink
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let water := core.option.Option.Some "water" in
   let lemonade := core.option.Option.Some "lemonade" in
-  let void := core.option.Option.None in
+  let void := core.option.Option.None tt in
   let* _ := option_and_unwrap.give_adult water in
   let* _ := option_and_unwrap.give_adult lemonade in
   let* _ := option_and_unwrap.give_adult void in
   let coffee := core.option.Option.Some "coffee" in
-  let nothing := core.option.Option.None in
+  let nothing := core.option.Option.None tt in
   let* _ := option_and_unwrap.drink coffee in
   let* _ := option_and_unwrap.drink nothing in
   Pure tt.

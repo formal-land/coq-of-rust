@@ -4,24 +4,44 @@ Require Import CoqOfRust.CoqOfRust.
 Definition increase `{H' : State.Trait} (number : i32) : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := number.["add"] 1 in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := add number 1 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
     Pure tt in
   Pure tt.
 
 Definition decrease `{H' : State.Trait} (number : i32) : M (H := H') unit :=
   let* _ :=
     let* _ :=
-      let* α0 := number.["sub"] 1 in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ ""; "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := sub number 1 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
     Pure tt in
   Pure tt.
 
@@ -29,17 +49,21 @@ Definition help `{H' : State.Trait} : M (H := H') unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of
-            [
-              "usage:
+        borrow
+          [
+            "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-            ]) in
-      std.io.stdio._print α0 in
+          ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   Pure tt.
 
@@ -47,71 +71,117 @@ match_args {increase|decrease} <integer>
 Definition main `{H' : State.Trait} : M (H := H') unit :=
   let* args :=
     let* α0 := std.env.args in
-    α0.["collect"] in
-  let* α0 := args.["len"] in
-  match α0 with
-  | 1 =>
+    core.iter.traits.iterator.Iterator.collect α0 in
+  let* α0 :=
+    borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
+  let* α1 := (alloc.vec.Vec _ _)::["len"] α0 in
+  match α1 with
+  | _ =>
     let* _ :=
       let* _ :=
         let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of
-              [ "My name is 'match_args'. Try passing some arguments!
-" ]) in
-        std.io.stdio._print α0 in
+          borrow
+            [ "My name is 'match_args'. Try passing some arguments!
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
       Pure tt in
     Pure tt
-  | 2 =>
-    let* α0 := args[1].["parse"] in
-    match α0 with
-    | core.result.Result.Ok 42 =>
+  | _ =>
+    let* α0 :=
+      borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
+    let* α1 := core.ops.index.Index.index α0 1 in
+    let* α2 := deref α1 alloc.string.String in
+    let* α3 := borrow α2 alloc.string.String in
+    let* α4 := core.ops.deref.Deref.deref α3 in
+    let* α5 := deref α4 str in
+    let* α6 := borrow α5 str in
+    let* α7 := str::["parse"] α6 in
+    match α7 with
+    | core.result.Result _ =>
       let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "This is the answer!
-" ]) in
-        std.io.stdio._print α0 in
+        let* α0 := borrow [ "This is the answer!
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
       Pure tt
     | _ =>
       let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"]
-            (addr_of [ "This is not the answer.
-" ]) in
-        std.io.stdio._print α0 in
+        let* α0 := borrow [ "This is not the answer.
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
       Pure tt
     end
-  | 3 =>
-    let cmd := addr_of args[1] in
-    let num := addr_of args[2] in
+  | _ =>
+    let* cmd :=
+      let* α0 :=
+        borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
+      let* α1 := core.ops.index.Index.index α0 1 in
+      let* α2 := deref α1 alloc.string.String in
+      borrow α2 alloc.string.String in
+    let* num :=
+      let* α0 :=
+        borrow args (alloc.vec.Vec alloc.string.String alloc.alloc.Global) in
+      let* α1 := core.ops.index.Index.index α0 2 in
+      let* α2 := deref α1 alloc.string.String in
+      borrow α2 alloc.string.String in
     let* number :=
-      let* α0 := num.["parse"] in
-      match α0 with
-      | core.result.Result.Ok n => Pure n
-      | core.result.Result.Err _ =>
+      let* α0 := deref num alloc.string.String in
+      let* α1 := borrow α0 alloc.string.String in
+      let* α2 := core.ops.deref.Deref.deref α1 in
+      let* α3 := deref α2 str in
+      let* α4 := borrow α3 str in
+      let* α5 := str::["parse"] α4 in
+      match α5 with
+      | core.result.Result n => Pure n
+      | core.result.Result _ =>
         let* _ :=
           let* _ :=
             let* α0 :=
-              format_arguments::["new_const"]
-                (addr_of [ "error: second argument not an integer
-" ]) in
-            std.io.stdio._eprint α0 in
+              borrow
+                [ "error: second argument not an integer
+" ]
+                (list (ref str)) in
+            let* α1 := deref α0 (list (ref str)) in
+            let* α2 := borrow α1 (list (ref str)) in
+            let* α3 := pointer_coercion "Unsize" α2 in
+            let* α4 := core.fmt.Arguments::["new_const"] α3 in
+            std.io.stdio._eprint α4 in
           Pure tt in
         let* _ := program_arguments_parsing.help in
-        let* _ := Return in
-        Pure tt
+        let* _ := Return tt in
+        never_to_any tt
       end in
-    match addr_of cmd[LanguageItem.RangeFull {|  |}] with
-    | "increase" => program_arguments_parsing.increase number
-    | "decrease" => program_arguments_parsing.decrease number
+    let* α0 := deref cmd alloc.string.String in
+    let* α1 := borrow α0 alloc.string.String in
+    let* α2 :=
+      core.ops.index.Index.index α1 (core.ops.range.RangeFull.Build_t tt) in
+    let* α3 := deref α2 str in
+    let* α4 := borrow α3 str in
+    match α4 with
+    | _ => program_arguments_parsing.increase number
+    | _ => program_arguments_parsing.decrease number
     | _ =>
       let* _ :=
         let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"]
-              (addr_of [ "error: invalid command
-" ]) in
-          std.io.stdio._eprint α0 in
+          let* α0 := borrow [ "error: invalid command
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._eprint α4 in
         Pure tt in
       let* _ := program_arguments_parsing.help in
       Pure tt
