@@ -46,27 +46,11 @@ warning: Constants in patterns are not yet supported.
 10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
    |                         ^^
 
-thread 'rustc' panicked at 'pattern Pat {
-    ty: i32,
-    span: examples/flow_of_control/match.rs:13:9: 13:16 (#0),
-    kind: Range(
-        PatRange {
-            lo: Val(
-                Scalar(
-                    0x0000000d,
-                ),
-                i32,
-            ),
-            hi: Val(
-                Scalar(
-                    0x00000013,
-                ),
-                i32,
-            ),
-            end: Included,
-        },
-    ),
-} not implemented', lib/src/thir_pattern.rs:158:14
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-warning: 8 warnings emitted
+warning: Ranges in patterns are not yet supported.
+  --> examples/flow_of_control/match.rs:13:9
+   |
+13 |         13..=19 => println!("A teen"),
+   |         ^^^^^^^
+
+warning: 9 warnings emitted
 

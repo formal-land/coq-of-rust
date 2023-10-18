@@ -11,29 +11,35 @@ Module checked.
   Definition MathError : Set := MathError.t.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self := result.checked.MathError.
+    Definition Self `{State.Trait} := result.checked.MathError.
     
     Definition fmt
-        `{H' : State.Trait}
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M (H := H') core.fmt.Result :=
-      let* α0 :=
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
         match self with
-        | result.checked.MathError.DivisionByZero => Pure "DivisionByZero"
-        | result.checked.MathError.NonPositiveLogarithm =>
-          Pure "NonPositiveLogarithm"
-        | result.checked.MathError.NegativeSquareRoot =>
-          Pure "NegativeSquareRoot"
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "DivisionByZero") str in
+          borrow α0 str
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+          borrow α0 str
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "NegativeSquareRoot") str in
+          borrow α0 str
         end in
-      core.fmt.Formatter::["write_str"] f α0.
+      core.fmt.Formatter::["write_str"] α1 α2.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
@@ -42,38 +48,41 @@ Module checked.
     core.result.Result f64 result.checked.MathError.
   
   Definition div
-      `{H' : State.Trait}
+      `{State.Trait}
       (x : f64)
       (y : f64)
-      : M (H := H') result.checked.MathResult :=
-    let* α0 := y.["eq"] 0 (* 0.0 *) in
-    if (α0 : bool) then
-      Pure (core.result.Result.Err result.checked.MathError.DivisionByZero)
+      : M result.checked.MathResult :=
+    let* α0 := M.alloc 0 (* 0.0 *) in
+    let* α1 := eq y α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
+      Pure (core.result.Result.Err (result.checked.MathError.DivisionByZero tt))
     else
-      let* α0 := x.["div"] y in
+      let* α0 := div x y in
       Pure (core.result.Result.Ok α0).
   
-  Definition sqrt
-      `{H' : State.Trait}
-      (x : f64)
-      : M (H := H') result.checked.MathResult :=
-    let* α0 := x.["lt"] 0 (* 0.0 *) in
-    if (α0 : bool) then
-      Pure (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
-    else
-      let* α0 := x.["sqrt"] in
-      Pure (core.result.Result.Ok α0).
-  
-  Definition ln
-      `{H' : State.Trait}
-      (x : f64)
-      : M (H := H') result.checked.MathResult :=
-    let* α0 := x.["le"] 0 (* 0.0 *) in
-    if (α0 : bool) then
+  Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
+    let* α0 := M.alloc 0 (* 0.0 *) in
+    let* α1 := lt x α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
       Pure
-        (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
+        (core.result.Result.Err
+          (result.checked.MathError.NegativeSquareRoot tt))
     else
-      let* α0 := x.["ln"] in
+      let* α0 := f64::["sqrt"] x in
+      Pure (core.result.Result.Ok α0).
+  
+  Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
+    let* α0 := M.alloc 0 (* 0.0 *) in
+    let* α1 := le x α0 in
+    let* α2 := use α1 in
+    if (α2 : bool) then
+      Pure
+        (core.result.Result.Err
+          (result.checked.MathError.NonPositiveLogarithm tt))
+    else
+      let* α0 := f64::["ln"] x in
       Pure (core.result.Result.Ok α0).
 End checked.
 
@@ -86,28 +95,35 @@ End MathError.
 Definition MathError : Set := MathError.t.
 
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
-  Definition Self := result.checked.MathError.
+  Definition Self `{State.Trait} := result.checked.MathError.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    let* α0 :=
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 :=
       match self with
-      | result.checked.MathError.DivisionByZero => Pure "DivisionByZero"
-      | result.checked.MathError.NonPositiveLogarithm =>
-        Pure "NonPositiveLogarithm"
-      | result.checked.MathError.NegativeSquareRoot => Pure "NegativeSquareRoot"
+      | result.checked.MathError  =>
+        let* α0 := deref (mk_str "DivisionByZero") str in
+        borrow α0 str
+      | result.checked.MathError  =>
+        let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+        borrow α0 str
+      | result.checked.MathError  =>
+        let* α0 := deref (mk_str "NegativeSquareRoot") str in
+        borrow α0 str
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] α1 α2.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
@@ -115,76 +131,125 @@ End Impl_core_fmt_Debug_for_result_checked_MathError.
 Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
 
 Definition div
-    `{H' : State.Trait}
+    `{State.Trait}
     (x : f64)
     (y : f64)
-    : M (H := H') result.checked.MathResult :=
-  let* α0 := y.["eq"] 0 (* 0.0 *) in
-  if (α0 : bool) then
-    Pure (core.result.Result.Err result.checked.MathError.DivisionByZero)
+    : M result.checked.MathResult :=
+  let* α0 := M.alloc 0 (* 0.0 *) in
+  let* α1 := eq y α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
+    Pure (core.result.Result.Err (result.checked.MathError.DivisionByZero tt))
   else
-    let* α0 := x.["div"] y in
+    let* α0 := div x y in
     Pure (core.result.Result.Ok α0).
 
-Definition sqrt
-    `{H' : State.Trait}
-    (x : f64)
-    : M (H := H') result.checked.MathResult :=
-  let* α0 := x.["lt"] 0 (* 0.0 *) in
-  if (α0 : bool) then
-    Pure (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
+Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
+  let* α0 := M.alloc 0 (* 0.0 *) in
+  let* α1 := lt x α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
+    Pure
+      (core.result.Result.Err (result.checked.MathError.NegativeSquareRoot tt))
   else
-    let* α0 := x.["sqrt"] in
+    let* α0 := f64::["sqrt"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition ln
-    `{H' : State.Trait}
-    (x : f64)
-    : M (H := H') result.checked.MathResult :=
-  let* α0 := x.["le"] 0 (* 0.0 *) in
-  if (α0 : bool) then
-    Pure (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
+Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
+  let* α0 := M.alloc 0 (* 0.0 *) in
+  let* α1 := le x α0 in
+  let* α2 := use α1 in
+  if (α2 : bool) then
+    Pure
+      (core.result.Result.Err
+        (result.checked.MathError.NonPositiveLogarithm tt))
   else
-    let* α0 := x.["ln"] in
+    let* α0 := f64::["ln"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition op `{H' : State.Trait} (x : f64) (y : f64) : M (H := H') f64 :=
+Definition op `{State.Trait} (x : f64) (y : f64) : M f64 :=
   let* α0 := result.checked.div x y in
   match α0 with
-  | core.result.Result.Err why =>
-    let* α0 := format_argument::["new_debug"] (addr_of why) in
-    let* α1 := format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
-    core.panicking.panic_fmt α1
-  | core.result.Result.Ok ratio =>
+  | core.result.Result why =>
+    let* α0 := borrow [ mk_str "" ] (list (ref str)) in
+    let* α1 := deref α0 (list (ref str)) in
+    let* α2 := borrow α1 (list (ref str)) in
+    let* α3 := pointer_coercion "Unsize" α2 in
+    let* α4 := borrow why result.checked.MathError in
+    let* α5 := deref α4 result.checked.MathError in
+    let* α6 := borrow α5 result.checked.MathError in
+    let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+    let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+    let* α9 := deref α8 (list core.fmt.rt.Argument) in
+    let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+    let* α11 := pointer_coercion "Unsize" α10 in
+    let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+    let* α13 := core.panicking.panic_fmt α12 in
+    never_to_any α13
+  | core.result.Result ratio =>
     let* α0 := result.checked.ln ratio in
     match α0 with
-    | core.result.Result.Err why =>
-      let* α0 := format_argument::["new_debug"] (addr_of why) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
-      core.panicking.panic_fmt α1
-    | core.result.Result.Ok ln =>
+    | core.result.Result why =>
+      let* α0 := borrow [ mk_str "" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow why result.checked.MathError in
+      let* α5 := deref α4 result.checked.MathError in
+      let* α6 := borrow α5 result.checked.MathError in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13
+    | core.result.Result ln =>
       let* α0 := result.checked.sqrt ln in
       match α0 with
-      | core.result.Result.Err why =>
-        let* α0 := format_argument::["new_debug"] (addr_of why) in
-        let* α1 :=
-          format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α0 ]) in
-        core.panicking.panic_fmt α1
-      | core.result.Result.Ok sqrt => Pure sqrt
+      | core.result.Result why =>
+        let* α0 := borrow [ mk_str "" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow why result.checked.MathError in
+        let* α5 := deref α4 result.checked.MathError in
+        let* α6 := borrow α5 result.checked.MathError in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13
+      | core.result.Result sqrt => Pure sqrt
       end
     end
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := result.op 1 (* 1.0 *) 10 (* 10.0 *) in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 1 (* 1.0 *) in
+      let* α5 := M.alloc 10 (* 10.0 *) in
+      let* α6 := result.op α4 α5 in
+      let* α7 := borrow α6 f64 in
+      let* α8 := deref α7 f64 in
+      let* α9 := borrow α8 f64 in
+      let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+      let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
+      let* α12 := deref α11 (list core.fmt.rt.Argument) in
+      let* α13 := borrow α12 (list core.fmt.rt.Argument) in
+      let* α14 := pointer_coercion "Unsize" α13 in
+      let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+      std.io.stdio._print α15 in
     Pure tt in
   Pure tt.

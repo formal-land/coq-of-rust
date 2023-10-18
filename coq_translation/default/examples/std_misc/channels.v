@@ -32,34 +32,7 @@ Definition main `{State.Trait} : M unit :=
               let* thread_tx :=
                 let* α0 := borrow tx (std.sync.mpsc.Sender i32) in
                 core.clone.Clone.clone α0 in
-              let* child :=
-                std.thread.spawn
-                  let* _ :=
-                    let* α0 := borrow thread_tx (std.sync.mpsc.Sender i32) in
-                    let* α1 := (std.sync.mpsc.Sender _)::["send"] α0 id in
-                    (core.result.Result _ _)::["unwrap"] α1 in
-                  let* _ :=
-                    let* _ :=
-                      let* α0 :=
-                        borrow
-                          [ mk_str "thread "; mk_str " finished
-" ]
-                          (list (ref str)) in
-                      let* α1 := deref α0 (list (ref str)) in
-                      let* α2 := borrow α1 (list (ref str)) in
-                      let* α3 := pointer_coercion "Unsize" α2 in
-                      let* α4 := borrow id i32 in
-                      let* α5 := deref α4 i32 in
-                      let* α6 := borrow α5 i32 in
-                      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-                      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
-                      let* α9 := deref α8 (list core.fmt.rt.Argument) in
-                      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
-                      let* α11 := pointer_coercion "Unsize" α10 in
-                      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-                      std.io.stdio._print α12 in
-                    Pure tt in
-                  Pure tt in
+              let* child := std.thread.spawn "Closure" in
               let* _ :=
                 let* α0 :=
                   borrow_mut

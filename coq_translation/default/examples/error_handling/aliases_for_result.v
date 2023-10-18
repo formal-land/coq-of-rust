@@ -12,12 +12,7 @@ Definition multiply
   let* α0 := deref first_number_str str in
   let* α1 := borrow α0 str in
   let* α2 := str::["parse"] α1 in
-  (core.result.Result _ _)::["and_then"]
-    α2
-    let* α0 := deref second_number_str str in
-    let* α1 := borrow α0 str in
-    let* α2 := str::["parse"] α1 in
-    (core.result.Result _ _)::["map"] α2 mul first_number second_number.
+  (core.result.Result _ _)::["and_then"] α2 "Closure".
 
 Definition print
     `{State.Trait}

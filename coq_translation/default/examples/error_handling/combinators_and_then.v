@@ -10,35 +10,35 @@ End Food.
 Definition Food : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
-  Definition Self := combinators_and_then.Food.
+  Definition Self `{State.Trait} := combinators_and_then.Food.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    let* α0 := deref f in
-    let* α1 := borrow_mut α0 in
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
     let* α2 :=
       match self with
       | combinators_and_then.Food  =>
-        let* α0 := deref "CordonBleu" in
-        borrow α0
+        let* α0 := deref (mk_str "CordonBleu") str in
+        borrow α0 str
       | combinators_and_then.Food  =>
-        let* α0 := deref "Steak" in
-        borrow α0
+        let* α0 := deref (mk_str "Steak") str in
+        borrow α0 str
       | combinators_and_then.Food  =>
-        let* α0 := deref "Sushi" in
-        borrow α0
+        let* α0 := deref (mk_str "Sushi") str in
+        borrow α0 str
       end in
     core.fmt.Formatter::["write_str"] α1 α2.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
@@ -52,61 +52,61 @@ End Day.
 Definition Day : Set := Day.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
-  Definition Self := combinators_and_then.Day.
+  Definition Self `{State.Trait} := combinators_and_then.Day.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    let* α0 := deref f in
-    let* α1 := borrow_mut α0 in
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
     let* α2 :=
       match self with
       | combinators_and_then.Day  =>
-        let* α0 := deref "Monday" in
-        borrow α0
+        let* α0 := deref (mk_str "Monday") str in
+        borrow α0 str
       | combinators_and_then.Day  =>
-        let* α0 := deref "Tuesday" in
-        borrow α0
+        let* α0 := deref (mk_str "Tuesday") str in
+        borrow α0 str
       | combinators_and_then.Day  =>
-        let* α0 := deref "Wednesday" in
-        borrow α0
+        let* α0 := deref (mk_str "Wednesday") str in
+        borrow α0 str
       end in
     core.fmt.Formatter::["write_str"] α1 α2.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
 Definition have_ingredients
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : combinators_and_then.Food)
-    : M (H := H') (core.option.Option combinators_and_then.Food) :=
+    : M (core.option.Option combinators_and_then.Food) :=
   match food with
   | combinators_and_then.Food  => Pure (core.option.Option.None tt)
   | _ => Pure (core.option.Option.Some food)
   end.
 
 Definition have_recipe
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : combinators_and_then.Food)
-    : M (H := H') (core.option.Option combinators_and_then.Food) :=
+    : M (core.option.Option combinators_and_then.Food) :=
   match food with
   | combinators_and_then.Food  => Pure (core.option.Option.None tt)
   | _ => Pure (core.option.Option.Some food)
   end.
 
 Definition cookable_v1
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : combinators_and_then.Food)
-    : M (H := H') (core.option.Option combinators_and_then.Food) :=
+    : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
   match α0 with
   | core.option.Option  => Pure (core.option.Option.None tt)
@@ -119,55 +119,61 @@ Definition cookable_v1
   end.
 
 Definition cookable_v2
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : combinators_and_then.Food)
-    : M (H := H') (core.option.Option combinators_and_then.Food) :=
+    : M (core.option.Option combinators_and_then.Food) :=
   let* α0 := combinators_and_then.have_recipe food in
   (core.option.Option _)::["and_then"] α0 combinators_and_then.have_ingredients.
 
 Definition eat
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : combinators_and_then.Food)
     (day : combinators_and_then.Day)
-    : M (H := H') unit :=
+    : M unit :=
   let* α0 := combinators_and_then.cookable_v2 food in
   match α0 with
   | core.option.Option food =>
     let* _ :=
-      let* α0 := borrow [ "Yay! On "; " we get to eat "; ".
-" ] in
-      let* α1 := deref α0 in
-      let* α2 := borrow α1 in
+      let* α0 :=
+        borrow
+          [ mk_str "Yay! On "; mk_str " we get to eat "; mk_str ".
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow day in
-      let* α5 := deref α4 in
-      let* α6 := borrow α5 in
+      let* α4 := borrow day combinators_and_then.Day in
+      let* α5 := deref α4 combinators_and_then.Day in
+      let* α6 := borrow α5 combinators_and_then.Day in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow food in
-      let* α9 := deref α8 in
-      let* α10 := borrow α9 in
+      let* α8 := borrow food combinators_and_then.Food in
+      let* α9 := deref α8 combinators_and_then.Food in
+      let* α10 := borrow α9 combinators_and_then.Food in
       let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
-      let* α12 := borrow [ α7; α11 ] in
-      let* α13 := deref α12 in
-      let* α14 := borrow α13 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
       let* α15 := pointer_coercion "Unsize" α14 in
       let* α16 := core.fmt.Arguments::["new_v1"] α3 α15 in
       std.io.stdio._print α16 in
     Pure tt
   | core.option.Option  =>
     let* _ :=
-      let* α0 := borrow [ "Oh no. We don't get to eat on "; "?
-" ] in
-      let* α1 := deref α0 in
-      let* α2 := borrow α1 in
+      let* α0 :=
+        borrow
+          [ mk_str "Oh no. We don't get to eat on "; mk_str "?
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow day in
-      let* α5 := deref α4 in
-      let* α6 := borrow α5 in
+      let* α4 := borrow day combinators_and_then.Day in
+      let* α5 := deref α4 combinators_and_then.Day in
+      let* α6 := borrow α5 combinators_and_then.Day in
       let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-      let* α8 := borrow [ α7 ] in
-      let* α9 := deref α8 in
-      let* α10 := borrow α9 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
@@ -175,7 +181,7 @@ Definition eat
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let '(cordon_bleu, steak, sushi) :=
     (combinators_and_then.Food.CordonBleu tt,
       combinators_and_then.Food.Steak tt,

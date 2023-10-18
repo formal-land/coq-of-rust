@@ -4,27 +4,17 @@ warning: Constants in patterns are not yet supported.
 10 |         0 => println!("I haven't celebrated my first birthday yet"),
    |         ^
 
-thread 'rustc' panicked at 'pattern Pat {
-    ty: u32,
-    span: examples/flow_of_control/match_binding.rs:14:13: 14:19 (#0),
-    kind: Range(
-        PatRange {
-            lo: Val(
-                Scalar(
-                    0x00000001,
-                ),
-                u32,
-            ),
-            hi: Val(
-                Scalar(
-                    0x0000000c,
-                ),
-                u32,
-            ),
-            end: Included,
-        },
-    ),
-} not implemented', lib/src/thir_pattern.rs:158:14
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-warning: 1 warning emitted
+warning: Ranges in patterns are not yet supported.
+  --> examples/flow_of_control/match_binding.rs:14:13
+   |
+14 |         n @ 1..=12 => println!("I'm a child of age {:?}", n),
+   |             ^^^^^^
+
+warning: Ranges in patterns are not yet supported.
+  --> examples/flow_of_control/match_binding.rs:15:13
+   |
+15 |         n @ 13..=19 => println!("I'm a teen of age {:?}", n),
+   |             ^^^^^^^
+
+warning: 3 warnings emitted
 

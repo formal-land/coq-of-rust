@@ -12,143 +12,136 @@ End EmptyVec.
 Definition EmptyVec := @EmptyVec.t.
 
 Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    let* α0 := deref f in
-    let* α1 := borrow_mut α0 in
-    let* α2 := deref "EmptyVec" in
-    let* α3 := borrow α2 in
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "EmptyVec") str in
+    let* α3 := borrow α2 str in
     core.fmt.Formatter::["write_str"] α1 α3.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
 Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
   Definition clone
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') boxing_errors.EmptyVec :=
+      : M boxing_errors.EmptyVec :=
     Pure (boxing_errors.EmptyVec.Build_t tt).
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
 Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    let* α0 := deref f in
-    let* α1 := borrow_mut α0 in
-    let* α2 := borrow [ "invalid first item to double" ] in
-    let* α3 := deref α2 in
-    let* α4 := borrow α3 in
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 :=
+      borrow [ mk_str "invalid first item to double" ] (list (ref str)) in
+    let* α3 := deref α2 (list (ref str)) in
+    let* α4 := borrow α3 (list (ref str)) in
     let* α5 := pointer_coercion "Unsize" α4 in
     let* α6 := core.fmt.Arguments::["new_const"] α5 in
     core.fmt.Formatter::["write_fmt"] α1 α6.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
+    core.fmt.Display.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
 Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
-  Definition Self := boxing_errors.EmptyVec.
+  Definition Self `{State.Trait} := boxing_errors.EmptyVec.
   
-  Global Instance I : core.error.Error.Trait Self := {
+  Global Instance I `{State.Trait} : core.error.Error.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Definition double_first
-    `{H' : State.Trait}
+    `{State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
-    : M (H := H') (boxing_errors.Result i32) :=
-  let* α0 := borrow vec in
+    : M (boxing_errors.Result i32) :=
+  let* α0 := borrow vec (alloc.vec.Vec (ref str) alloc.alloc.Global) in
   let* α1 := core.ops.deref.Deref.deref α0 in
-  let* α2 := deref α1 in
-  let* α3 := borrow α2 in
+  let* α2 := deref α1 (Slice (ref str)) in
+  let* α3 := borrow α2 (Slice (ref str)) in
   let* α4 := (Slice _)::["first"] α3 in
-  let* α5 :=
-    (core.option.Option _)::["ok_or_else"]
-      α4
-      core.convert.Into.into (boxing_errors.EmptyVec.Build_t tt) in
-  (core.result.Result _ _)::["and_then"]
-    α5
-    let* α0 := deref s in
-    let* α1 := deref α0 in
-    let* α2 := borrow α1 in
-    let* α3 := str::["parse"] α2 in
-    let* α4 :=
-      (core.result.Result _ _)::["map_err"] α3 core.convert.Into.into e in
-    (core.result.Result _ _)::["map"] α4 mul 2 i.
+  let* α5 := (core.option.Option _)::["ok_or_else"] α4 "Closure" in
+  (core.result.Result _ _)::["and_then"] α5 "Closure".
 
-Definition print
-    `{H' : State.Trait}
-    (result : boxing_errors.Result i32)
-    : M (H := H') unit :=
+Definition print `{State.Trait} (result : boxing_errors.Result i32) : M unit :=
   match result with
   | core.result.Result n =>
     let* _ :=
-      let* α0 := borrow [ "The first doubled is "; "
-" ] in
-      let* α1 := deref α0 in
-      let* α2 := borrow α1 in
+      let* α0 :=
+        borrow
+          [ mk_str "The first doubled is "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow n in
-      let* α5 := deref α4 in
-      let* α6 := borrow α5 in
+      let* α4 := borrow n i32 in
+      let* α5 := deref α4 i32 in
+      let* α6 := borrow α5 i32 in
       let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] in
-      let* α9 := deref α8 in
-      let* α10 := borrow α9 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
     Pure tt
   | core.result.Result e =>
     let* _ :=
-      let* α0 := borrow [ "Error: "; "
-" ] in
-      let* α1 := deref α0 in
-      let* α2 := borrow α1 in
+      let* α0 := borrow [ mk_str "Error: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow e in
-      let* α5 := deref α4 in
-      let* α6 := borrow α5 in
+      let* α4 :=
+        borrow e (alloc.boxed.Box type not implemented alloc.alloc.Global) in
+      let* α5 :=
+        deref α4 (alloc.boxed.Box type not implemented alloc.alloc.Global) in
+      let* α6 :=
+        borrow α5 (alloc.boxed.Box type not implemented alloc.alloc.Global) in
       let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] in
-      let* α9 := deref α8 in
-      let* α10 := borrow α9 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
       let* α11 := pointer_coercion "Unsize" α10 in
       let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
       std.io.stdio._print α12 in
@@ -156,25 +149,26 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* numbers :=
-    let* α0 := deref "93" in
-    let* α1 := borrow α0 in
-    let* α2 := deref "18" in
-    let* α3 := borrow α2 in
+    let* α0 := deref (mk_str "93") str in
+    let* α1 := borrow α0 str in
+    let* α2 := deref (mk_str "18") str in
+    let* α3 := borrow α2 str in
     let* α4 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ "42"; α1; α3 ] in
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ mk_str "42"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
     (Slice _)::["into_vec"] α5 in
   let* empty := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* strings :=
-    let* α0 := deref "93" in
-    let* α1 := borrow α0 in
-    let* α2 := deref "18" in
-    let* α3 := borrow α2 in
+    let* α0 := deref (mk_str "93") str in
+    let* α1 := borrow α0 str in
+    let* α2 := deref (mk_str "18") str in
+    let* α3 := borrow α2 str in
     let* α4 :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
-        [ "tofu"; α1; α3 ] in
+        [ mk_str "tofu"; α1; α3 ] in
     let* α5 := pointer_coercion "Unsize" α4 in
     (Slice _)::["into_vec"] α5 in
   let* _ :=

@@ -673,7 +673,7 @@ fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Ex
     let Ok((thir, expr_id)) = thir else {
         panic!("thir failed to compile");
     };
-    let thir = thir.steal();
+    let thir = thir.borrow();
     if env.axiomatize {
         None
     } else {

@@ -1,2 +1,0 @@
-thread 'rustc' panicked at 'unimplemented parent_kind: Variant', lib/src/thir_expression.rs:378:29
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

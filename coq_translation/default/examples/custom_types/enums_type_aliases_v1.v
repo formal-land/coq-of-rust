@@ -13,6 +13,7 @@ Definition Operations : Set :=
   enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := enums_type_aliases_v1.Operations::["Add"] in
+Definition main `{State.Trait} : M unit :=
+  let x :=
+    enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add tt in
   Pure tt.

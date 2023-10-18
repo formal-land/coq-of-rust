@@ -2,84 +2,29 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* color := core.convert.From.from "green" in
-  let print :=
-    let* _ :=
-      let* α0 := borrow [ "`color`: "; "
-" ] in
-      let* α1 := deref (list (ref str)) α0 in
-      let* α2 := borrow α1 in
-      let* α3 := pointer_coercion "Unsize" α2 in
-      let* α4 := borrow color in
-      let* α5 := deref alloc.string.String α4 in
-      let* α6 := borrow α5 in
-      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-      let* α8 := borrow [ α7 ] in
-      let* α9 := deref (list core.fmt.rt.Argument) α8 in
-      let* α10 := borrow α9 in
-      let* α11 := pointer_coercion "Unsize" α10 in
-      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-      std.io.stdio._print α12 in
-    Pure tt in
+Definition main `{State.Trait} : M unit :=
+  let* color := core.convert.From.from (mk_str "green") in
+  let print := "Closure" in
   let* _ :=
-    let* α0 := borrow print in
+    let* α0 := borrow print type not implemented in
     core.ops.function.Fn.call α0 tt in
-  let* _reborrow := borrow color in
+  let* _reborrow := borrow color alloc.string.String in
   let* _ :=
-    let* α0 := borrow print in
+    let* α0 := borrow print type not implemented in
     core.ops.function.Fn.call α0 tt in
   let _color_moved := color in
-  let count := 0 in
-  let inc :=
-    let* _ := assign_op add count 1 in
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ "`count`: "; "
-" ] in
-        let* α1 := deref (list (ref str)) α0 in
-        let* α2 := borrow α1 in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow count in
-        let* α5 := deref i32 α4 in
-        let* α6 := borrow α5 in
-        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
-        let* α8 := borrow [ α7 ] in
-        let* α9 := deref (list core.fmt.rt.Argument) α8 in
-        let* α10 := borrow α9 in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
-      Pure tt in
-    Pure tt in
+  let* count := M.alloc 0 in
+  let inc := "Closure" in
   let* _ :=
-    let* α0 := borrow_mut inc in
+    let* α0 := borrow_mut inc type not implemented in
     core.ops.function.FnMut.call_mut α0 tt in
   let* _ :=
-    let* α0 := borrow_mut inc in
+    let* α0 := borrow_mut inc type not implemented in
     core.ops.function.FnMut.call_mut α0 tt in
-  let* _count_reborrowed := borrow_mut count in
-  let* movable := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] 3 in
-  let consume :=
-    let* _ :=
-      let* _ :=
-        let* α0 := borrow [ "`movable`: "; "
-" ] in
-        let* α1 := deref (list (ref str)) α0 in
-        let* α2 := borrow α1 in
-        let* α3 := pointer_coercion "Unsize" α2 in
-        let* α4 := borrow movable in
-        let* α5 := deref (alloc.boxed.Box i32 alloc.alloc.Global) α4 in
-        let* α6 := borrow α5 in
-        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
-        let* α8 := borrow [ α7 ] in
-        let* α9 := deref (list core.fmt.rt.Argument) α8 in
-        let* α10 := borrow α9 in
-        let* α11 := pointer_coercion "Unsize" α10 in
-        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
-        std.io.stdio._print α12 in
-      Pure tt in
-    let* _ := core.mem.drop movable in
-    Pure tt in
+  let* _count_reborrowed := borrow_mut count i32 in
+  let* movable :=
+    let* α0 := M.alloc 3 in
+    (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in
+  let consume := "Closure" in
   let* _ := core.ops.function.FnOnce.call_once consume tt in
   Pure tt.

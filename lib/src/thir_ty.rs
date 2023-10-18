@@ -56,6 +56,9 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Box<CoqType>
         // Placeholder(Placeholder<BoundTy>),
         // Infer(InferTy),
         // Error(ErrorGuaranteed),
-        _ => panic!("type {:#?} not yet handled", ty.kind()),
+        _ => {
+            eprintln!("type {:#?} not yet handled", ty.kind());
+            CoqType::var("type not implemented".to_string())
+        }
     }
 }

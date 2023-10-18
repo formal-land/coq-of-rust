@@ -1,4 +1,4 @@
-thread 'rustc' panicked at 'type Dynamic(
+type Dynamic(
     [
         Binder(
             Trait(
@@ -9,5 +9,16 @@ thread 'rustc' panicked at 'type Dynamic(
     ],
     ReErased,
     Dyn,
-) not yet handled', lib/src/thir_ty.rs:59:14
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+) not yet handled
+type Dynamic(
+    [
+        Binder(
+            Trait(
+                Animal,
+            ),
+            [],
+        ),
+    ],
+    ReErased,
+    Dyn,
+) not yet handled

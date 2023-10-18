@@ -110,7 +110,13 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .emit();
             Pattern::Wild
         }
-        // Range(Box<PatRange<'tcx>>),
+        PatKind::Range(_) => {
+            env.tcx
+                .sess
+                .struct_span_warn(pat.span, "Ranges in patterns are not yet supported.")
+                .emit();
+            Pattern::Wild
+        }
         PatKind::Slice {
             prefix,
             slice,
@@ -155,6 +161,5 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
         PatKind::Or { pats } => {
             Pattern::Or(pats.iter().map(|pat| compile_pattern(env, pat)).collect())
         }
-        _ => panic!("pattern {pat:#?} not implemented"),
     }
 }

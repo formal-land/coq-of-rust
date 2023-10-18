@@ -3,12 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter call_me :
     forall
-      `{H' : State.Trait}
+      `{State.Trait}
       {F : Set}
       `{core.ops.function.Fn.Trait F (Args := unit)},
-    F -> M (H := H') unit.
+    F -> M unit.
 
-Parameter function : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter function : forall `{State.Trait}, M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.
