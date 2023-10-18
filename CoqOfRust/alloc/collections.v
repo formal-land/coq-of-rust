@@ -1,4 +1,3 @@
-Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 Require CoqOfRust.core.alloc.
 Require CoqOfRust.core.clone.

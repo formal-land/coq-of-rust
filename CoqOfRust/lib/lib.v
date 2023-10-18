@@ -12,9 +12,8 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
-Require Export CoqOfRust.Monad.
-Export Monad.Notations.
-Require Export CoqOfRust.lib.Notations.
+Require Export CoqOfRust.M.
+Export M.Notations.
 
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
@@ -104,4 +103,4 @@ Definition slice (A : Set) : Set := list A.
 Definition array (A : Set) : Set := list A.
 
 Definition mk_str `{State.Trait} (s : string) : ref str :=
-  StateMonad.Ref.Immutable (StateMonad.Ref.Immutable s).
+  M.Ref.Immutable (M.Ref.Immutable s).

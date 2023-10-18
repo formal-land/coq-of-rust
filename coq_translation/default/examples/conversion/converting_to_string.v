@@ -9,10 +9,10 @@ Module Circle. Section Circle.
   }.
   
   Global Instance Get_radius : Notation.Dot "radius" := {
-    Notation.dot x := let* x := StateMonad.read x in Pure x.(radius);
+    Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
   }.
   Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
-    Notation.double_colon x := let* x := StateMonad.read x in Pure x.(radius);
+    Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
   }.
 End Circle. End Circle.
 Definition Circle `{State.Trait} : Set := val Circle.t.
@@ -66,8 +66,8 @@ End Impl_core_fmt_Display_for_converting_to_string_Circle.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* six := StateMonad.alloc 6 in
-  let* circle := StateMonad.alloc {| converting_to_string.Circle.radius := six; |} in
+  let* six := M.alloc 6 in
+  let* circle := M.alloc {| converting_to_string.Circle.radius := six; |} in
   let* _ :=
     let* α0 := borrow circle converting_to_string.Circle in
     alloc.string.ToString.to_string α0 in

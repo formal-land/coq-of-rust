@@ -31,7 +31,7 @@ Module State.
         | Some s' => read a1 s' = read a1 s
         | None => True
         end;
-      }.
+        }.
   End Valid.
 End State.
 
@@ -110,7 +110,8 @@ Definition Monad `{State.Trait} (R A : Set) : Set :=
 Definition M `{State.Trait} (A : Set) : Set :=
   Monad Empty_set A.
 
-Definition pure `{State.Trait} {R A : Set} (v : A) : Monad R A :=
+(* @TODO: change in `pure` for uniformity *)
+Definition Pure `{State.Trait} {R A : Set} (v : A) : Monad R A :=
   fun fuel s => RawMonad.Pure (inl v, s).
 
 Definition bind `{State.Trait} {R A B : Set}
@@ -209,3 +210,10 @@ Definition write `{State.Trait} {R A : Set} (r : Ref A) (v : A) :
       end
     end
   end.
+
+(** Used for the definitions of "const". *)
+(* @TODO: Give a definition for [run]. There should be an additional parameter
+   witnessing that the calculation is possible. *)
+Parameter run : forall `{State.Trait} {A : Set}, M A -> A.
+
+Definition val `{State.Trait} (A : Set) : Set := Ref A.
