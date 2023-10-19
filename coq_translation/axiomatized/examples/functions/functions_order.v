@@ -4,28 +4,28 @@ Require Import CoqOfRust.CoqOfRust.
 Module SomeType.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : u32;
+    x0 : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End SomeType.
-Definition SomeType := @SomeType.t.
+Definition SomeType `{State.Trait} : Set := M.val SomeType.t.
 
 Module OtherType.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : bool;
+    x0 : bool;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End OtherType.
-Definition OtherType := @OtherType.t.
+Definition OtherType `{State.Trait} : Set := M.val OtherType.t.
 
 Module Impl_functions_order_SomeType.
   Definition Self := functions_order.SomeType.

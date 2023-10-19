@@ -9,31 +9,31 @@ Definition A := @A.t.
 Module S.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : generics_functions.A;
+    x0 : generics_functions.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End S.
-Definition S := @S.t.
+Definition S `{State.Trait} : Set := M.val S.t.
 
 Module SGen.
   Section SGen.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : T;
+      x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End SGen.
 End SGen.
-Definition SGen := @SGen.t.
+Definition SGen `{State.Trait} : Set := M.val SGen.t.
 
 Parameter reg_fn : forall `{State.Trait}, generics_functions.S -> M unit.
 

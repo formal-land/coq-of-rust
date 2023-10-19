@@ -4,15 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Module Centimeters.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : f64;
+    x0 : f64;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Centimeters.
-Definition Centimeters := @Centimeters.t.
+Definition Centimeters `{State.Trait} : Set := M.val Centimeters.t.
 
 Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
   Definition Self `{State.Trait} := derive.Centimeters.
@@ -68,15 +68,15 @@ End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
 Module Inches.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : i32;
+    x0 : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Inches.
-Definition Inches := @Inches.t.
+Definition Inches `{State.Trait} : Set := M.val Inches.t.
 
 Module Impl_core_fmt_Debug_for_derive_Inches.
   Definition Self `{State.Trait} := derive.Inches.
@@ -111,15 +111,15 @@ End Impl_derive_Inches_2.
 Module Seconds.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : i32;
+    x0 : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Seconds.
-Definition Seconds := @Seconds.t.
+Definition Seconds `{State.Trait} : Set := M.val Seconds.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{State.Trait}, M unit.

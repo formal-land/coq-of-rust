@@ -4,15 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Module Borrowed.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : ref i32;
+    x0 : ref i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Borrowed.
-Definition Borrowed := @Borrowed.t.
+Definition Borrowed `{State.Trait} : Set := M.val Borrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   Definition Self `{State.Trait} := scoping_rules_lifetimes_structs.Borrowed.
@@ -40,10 +40,10 @@ Module NamedBorrowed.
   Global Set Primitive Projections.
   
   Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x) : M _;
+    Notation.dot x := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(x) : M _;
+    Notation.double_colon x := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
     Notation.dot x := let* x := M.read x in Pure x.(y) : M _;

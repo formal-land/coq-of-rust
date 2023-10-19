@@ -10,10 +10,10 @@ Module Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x) : M _;
+    Notation.dot x := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(x) : M _;
+    Notation.double_colon x := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
     Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
@@ -106,19 +106,19 @@ End Impl_associated_functions_and_methods_Rectangle.
 Module Pair.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
   }.
 End Pair.
-Definition Pair := @Pair.t.
+Definition Pair `{State.Trait} : Set := M.val Pair.t.
 
 Module Impl_associated_functions_and_methods_Pair.
   Definition Self := associated_functions_and_methods.Pair.

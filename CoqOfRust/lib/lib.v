@@ -17,12 +17,11 @@ Export M.Notations.
 
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
-      methods, or access to named or indexed fields of structures.
-      The kind is either a string or an integer. *)
-  Class Dot {Kind : Set} (name : Kind) {T : Set} : Set := {
+      methods, or access to named or indexed fields of structures. *)
+  Class Dot (name : string) {T : Set} : Set := {
     dot : T;
   }.
-  Arguments dot {Kind} name {T Dot}.
+  Arguments dot name {T Dot}.
 
   (** A class to represent associated functions (the notation [e1::e2]). The
       kind might be [Set] functions associated to a type, or [Set -> Set] for
@@ -50,7 +49,7 @@ Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
 (** A method is also an associated function for its type. *)
 Global Instance AssociatedFunctionFromMethod
   (type : Set) (name : string) (T : Set)
-  `(Notation.Dot (Kind := string) name (T := type -> T)) :
+  `(Notation.Dot name (T := type -> T)) :
   Notation.DoubleColon type name (T := type -> T) := {
   Notation.double_colon := Notation.dot name;
 }.

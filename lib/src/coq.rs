@@ -230,6 +230,7 @@ pub(crate) enum ArgDeclVar<'a> {
         ty: Expression<'a>,
     },
     /// a destructured argument
+    #[allow(dead_code)]
     Destructured { pattern: Expression<'a> },
 }
 

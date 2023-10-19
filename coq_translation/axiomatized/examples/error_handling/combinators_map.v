@@ -29,15 +29,15 @@ End Impl_core_fmt_Debug_for_combinators_map_Food.
 Module Peeled.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : combinators_map.Food;
+    x0 : combinators_map.Food;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Peeled.
-Definition Peeled := @Peeled.t.
+Definition Peeled `{State.Trait} : Set := M.val Peeled.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Definition Self `{State.Trait} := combinators_map.Peeled.
@@ -59,15 +59,15 @@ End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 Module Chopped.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : combinators_map.Food;
+    x0 : combinators_map.Food;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Chopped.
-Definition Chopped := @Chopped.t.
+Definition Chopped `{State.Trait} : Set := M.val Chopped.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Definition Self `{State.Trait} := combinators_map.Chopped.
@@ -89,15 +89,15 @@ End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 Module Cooked.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : combinators_map.Food;
+    x0 : combinators_map.Food;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Cooked.
-Definition Cooked := @Cooked.t.
+Definition Cooked `{State.Trait} : Set := M.val Cooked.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Definition Self `{State.Trait} := combinators_map.Cooked.

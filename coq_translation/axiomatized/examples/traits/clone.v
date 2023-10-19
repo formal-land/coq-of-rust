@@ -49,19 +49,19 @@ End Impl_core_marker_Copy_for_clone_Unit.
 Module Pair.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
   }.
 End Pair.
-Definition Pair := @Pair.t.
+Definition Pair `{State.Trait} : Set := M.val Pair.t.
 
 Module Impl_core_clone_Clone_for_clone_Pair.
   Definition Self `{State.Trait} := clone.Pair.
@@ -97,59 +97,3 @@ End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : forall `{State.Trait}, M unit.
-
-Module Speak.
-  Class Trait (Self : Set) {T : Set} : Type := {
-    speak `{State.Trait} : (ref Self) -> M unit;
-  }.
-  
-  Global Instance Method_speak `{State.Trait} `(Trait)
-    : Notation.Dot "speak" := {
-    Notation.dot := speak;
-  }.
-End Speak.
-
-Module Impl_clone_Speak_for_Tuple_A_bool_.
-  Section Impl_clone_Speak_for_Tuple_A_bool_.
-    Context {A : Set}.
-    Context `{clone.Speak.Trait A (T := alloc.string.String)}.
-    Definition Self `{State.Trait} := A * bool.
-    
-    Parameter speak : forall `{State.Trait}, (ref Self) -> M unit.
-    
-    Global Instance Method_speak `{State.Trait} : Notation.Dot "speak" := {
-      Notation.dot := speak;
-    }.
-    
-    Global Instance I `{State.Trait}
-      : clone.Speak.Trait Self (T := alloc.string.String) := {
-      clone.Speak.speak := speak;
-    }.
-  End Impl_clone_Speak_for_Tuple_A_bool_.
-  Global Hint Resolve I : core.
-End Impl_clone_Speak_for_Tuple_A_bool_.
-
-Module Impl_clone_Speak_for_i32.
-  Definition Self `{State.Trait} := i32.
-  
-  Parameter speak : forall `{State.Trait}, (ref Self) -> M unit.
-  
-  Global Instance Method_speak `{State.Trait} : Notation.Dot "speak" := {
-    Notation.dot := speak;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : clone.Speak.Trait Self (T := alloc.string.String) := {
-    clone.Speak.speak := speak;
-  }.
-  Global Hint Resolve I : core.
-End Impl_clone_Speak_for_i32.
-
-Parameter gre :
-    forall
-      `{State.Trait}
-      {A : Set}
-      `{clone.Speak.Trait A (T := alloc.string.String)},
-    A -> M unit.
-
-Parameter arg : forall `{State.Trait}, i32 -> M unit.

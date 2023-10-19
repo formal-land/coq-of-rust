@@ -120,20 +120,20 @@ Module Length.
     Context {Unit : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : f64;
-      _ : core.marker.PhantomData Unit;
+      x0 : f64;
+      x1 : core.marker.PhantomData Unit;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0 _) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Global Instance Get_1 : Notation.Dot 1 := {
-      Notation.dot '(Build_t _ x1) := x1;
+    Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
   End Length.
 End Length.
-Definition Length := @Length.t.
+Definition Length `{State.Trait} : Set := M.val Length.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.

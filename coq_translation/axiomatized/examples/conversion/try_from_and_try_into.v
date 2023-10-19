@@ -4,15 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Module EvenNumber.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : i32;
+    x0 : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End EvenNumber.
-Definition EvenNumber := @EvenNumber.t.
+Definition EvenNumber `{State.Trait} : Set := M.val EvenNumber.t.
 
 Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Definition Self `{State.Trait} := try_from_and_try_into.EvenNumber.

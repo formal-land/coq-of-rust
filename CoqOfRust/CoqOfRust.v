@@ -72,7 +72,7 @@ Notation "e1 ::type[ e2 ]" := (Notation.double_colon_type e1 e2)
 (** A method is also an associated function for its type. *)
 Global Instance AssociatedFunctionFromMethod
   (type : Set) (name : string) (T : Set)
-  `(Notation.Dot (Kind := string) name (T := type -> T)) :
+  `(Notation.Dot name (T := type -> T)) :
   Notation.DoubleColon type name (T := type -> T) := {
   Notation.double_colon := Notation.dot name;
 }.
