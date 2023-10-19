@@ -83,7 +83,7 @@ Module Animal.
 End Animal.
 
 Module Impl_traits_Sheep.
-  Definition Self := traits.Sheep.
+  Definition Self `{State.Trait} : Set := traits.Sheep.
   
   Definition is_naked `{State.Trait} (self : ref Self) : M bool :=
     let* α0 := deref self traits.Sheep in
@@ -174,7 +174,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_3.
-  Definition Self := traits.Sheep.
+  Definition Self `{State.Trait} : Set := traits.Sheep.
   
   Definition shear `{State.Trait} (self : mut_ref Self) : M unit :=
     let* α0 := deref self traits.Sheep in

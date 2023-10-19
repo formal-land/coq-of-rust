@@ -1,6 +1,5 @@
 # blacklisting for the change to THIR
 examples/
-examples_axiomatized/custom_types/enums.v
 examples_axiomatized/custom_types/structures.v
 examples_axiomatized/error_handling/combinators_map.v
 examples_axiomatized/error_handling/defining_an_error_type.v

@@ -2,20 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Number.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Zero
   | One
   | Two.
 End Number.
-Definition Number : Set := Number.t.
+Definition Number `{State.Trait} : Set := Number.t.
 
 Module Color.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Red
   | Green
   | Blue.
 End Color.
-Definition Color : Set := Color.t.
+Definition Color `{State.Trait} : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=

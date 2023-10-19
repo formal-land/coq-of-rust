@@ -339,16 +339,16 @@ Module impls.
       Context {ParentKey : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : core.marker.PhantomData (ParentKey);
+        x0 : core.marker.PhantomData (ParentKey);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End ManualKey.
   End ManualKey.
-  Definition ManualKey := @ManualKey.t.
+  Definition ManualKey `{State.Trait} : Set := M.val ManualKey.t.
   
   Module
     Impl_core_default_Default_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -601,16 +601,16 @@ Module impls.
       Context {L R : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : core.marker.PhantomData (L * R);
+        x0 : core.marker.PhantomData (L * R);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End ResolverKey.
   End ResolverKey.
-  Definition ResolverKey := @ResolverKey.t.
+  Definition ResolverKey `{State.Trait} : Set := M.val ResolverKey.t.
   
   Module Impl_core_default_Default_for_ink_storage_traits_impls_ResolverKey_L_R.
     Section
@@ -1131,16 +1131,16 @@ Module ManualKey.
     Context {ParentKey : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : core.marker.PhantomData (ParentKey);
+      x0 : core.marker.PhantomData (ParentKey);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End ManualKey.
 End ManualKey.
-Definition ManualKey := @ManualKey.t.
+Definition ManualKey `{State.Trait} : Set := M.val ManualKey.t.
 
 Module
   Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ManualKey_ParentKey.
@@ -1419,16 +1419,16 @@ Module ResolverKey.
     Context {L R : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : core.marker.PhantomData (L * R);
+      x0 : core.marker.PhantomData (L * R);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End ResolverKey.
 End ResolverKey.
-Definition ResolverKey := @ResolverKey.t.
+Definition ResolverKey `{State.Trait} : Set := M.val ResolverKey.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.
   Section Impl_scale_info_TypeInfo_for_ink_storage_traits_impls_ResolverKey_L_R.

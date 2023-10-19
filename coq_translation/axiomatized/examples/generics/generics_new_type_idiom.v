@@ -28,7 +28,7 @@ End Days.
 Definition Days `{State.Trait} : Set := M.val Days.t.
 
 Module Impl_generics_new_type_idiom_Years.
-  Definition Self := generics_new_type_idiom.Years.
+  Definition Self `{State.Trait} : Set := generics_new_type_idiom.Years.
   
   Parameter to_days :
       forall `{State.Trait},
@@ -40,7 +40,7 @@ Module Impl_generics_new_type_idiom_Years.
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
-  Definition Self := generics_new_type_idiom.Days.
+  Definition Self `{State.Trait} : Set := generics_new_type_idiom.Days.
   
   Parameter to_years :
       forall `{State.Trait},

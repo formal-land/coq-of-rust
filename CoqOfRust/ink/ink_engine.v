@@ -4,24 +4,24 @@ Require Import CoqOfRust.CoqOfRust.
 Require CoqOfRust.ink.parity_scale_codec.
 
 Module types.
-  Definition BlockNumber : Set := u32.
+  Definition BlockNumber `{State.Trait} : Set := u32.
   
-  Definition BlockTimestamp : Set := u64.
+  Definition BlockTimestamp `{State.Trait} : Set := u64.
   
-  Definition Balance : Set := u128.
+  Definition Balance `{State.Trait} : Set := u128.
   
   Module AccountId.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      x0 : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End AccountId.
-  Definition AccountId := @AccountId.t.
+  Definition AccountId `{State.Trait} : Set := M.val AccountId.t.
   
   Module Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
     Definition Self `{State.Trait} := ink_engine.types.AccountId.
@@ -199,15 +199,15 @@ Module types.
   Module Key.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+      x0 : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End Key.
-  Definition Key := @Key.t.
+  Definition Key `{State.Trait} : Set := M.val Key.t.
   
   Module Impl_core_default_Default_for_ink_engine_types_Key.
     Definition Self `{State.Trait} := ink_engine.types.Key.
@@ -381,12 +381,12 @@ Module types.
   End Impl_core_hash_Hash_for_ink_engine_types_Key.
   
   Module AccountError.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | Decoding (_ : parity_scale_codec.error.Error)
     | UnexpectedUserAccount
     | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
-  Definition AccountError : Set := AccountError.t.
+  Definition AccountError `{State.Trait} : Set := AccountError.t.
   
   Module Impl_core_clone_Clone_for_ink_engine_types_AccountError.
     Definition Self `{State.Trait} := ink_engine.types.AccountError.
@@ -724,15 +724,15 @@ Module chain_extension.
   Module ExtensionId.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : u32;
+      x0 : u32;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End ExtensionId.
-  Definition ExtensionId := @ExtensionId.t.
+  Definition ExtensionId `{State.Trait} : Set := M.val ExtensionId.t.
   
   Module ChainExtension.
     Class Trait (Self : Set) : Type := {
@@ -1120,7 +1120,7 @@ End exec_context.
 
 Module ext.
   Module Error.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | CalleeTrapped
     | CalleeReverted
     | KeyNotFound
@@ -1133,7 +1133,7 @@ Module ext.
     | EcdsaRecoveryFailed
     | Unknown.
   End Error.
-  Definition Error : Set := Error.t.
+  Definition Error `{State.Trait} : Set := Error.t.
   
   Module Impl_core_fmt_Debug_for_ink_engine_ext_Error.
     Definition Self `{State.Trait} := ink_engine.ext.Error.
@@ -1155,15 +1155,15 @@ Module ext.
   Module ReturnCode.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : u32;
+      x0 : u32;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End ReturnCode.
-  Definition ReturnCode := @ReturnCode.t.
+  Definition ReturnCode `{State.Trait} : Set := M.val ReturnCode.t.
   
   Module ChainSpec.
     Unset Primitive Projections.
@@ -1339,15 +1339,15 @@ End Impl_core_convert_From_for_ink_engine_ext_Result. *)
 Module ReturnCode.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : u32;
+    x0 : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End ReturnCode.
-Definition ReturnCode := @ReturnCode.t.
+Definition ReturnCode `{State.Trait} : Set := M.val ReturnCode.t.
 
 Module Engine.
   Unset Primitive Projections.
@@ -1762,15 +1762,15 @@ Definition ChainExtensionHandler `{State.Trait} : Set :=
 Module ExtensionId.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : u32;
+    x0 : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End ExtensionId.
-Definition ExtensionId := @ExtensionId.t.
+Definition ExtensionId `{State.Trait} : Set := M.val ExtensionId.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_chain_extension_ExtensionId.
   Definition Self `{State.Trait} := ink_engine.chain_extension.ExtensionId.
@@ -2228,24 +2228,24 @@ Parameter sha2_256 :
     forall `{State.Trait},
     (ref (Slice u8)) -> (mut_ref (array u8)) -> M unit.
 
-Definition BlockNumber : Set := u32.
+Definition BlockNumber `{State.Trait} : Set := u32.
 
-Definition BlockTimestamp : Set := u64.
+Definition BlockTimestamp `{State.Trait} : Set := u64.
 
-Definition Balance : Set := u128.
+Definition Balance `{State.Trait} : Set := u128.
 
 Module AccountId.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+    x0 : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End AccountId.
-Definition AccountId := @AccountId.t.
+Definition AccountId `{State.Trait} : Set := M.val AccountId.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_types_AccountId.
   Definition Self `{State.Trait} := ink_engine.types.AccountId.
@@ -2422,15 +2422,15 @@ End Impl_core_hash_Hash_for_ink_engine_types_AccountId.
 Module Key.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
+    x0 : alloc.vec.Vec u8 alloc.vec.Vec.Default.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Key.
-Definition Key := @Key.t.
+Definition Key `{State.Trait} : Set := M.val Key.t.
 
 Module Impl_core_default_Default_for_ink_engine_types_Key.
   Definition Self `{State.Trait} := ink_engine.types.Key.
@@ -2601,12 +2601,12 @@ Module Impl_core_hash_Hash_for_ink_engine_types_Key.
 End Impl_core_hash_Hash_for_ink_engine_types_Key.
 
 Module AccountError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Decoding (_ : parity_scale_codec.error.Error)
   | UnexpectedUserAccount
   | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
-Definition AccountError : Set := AccountError.t.
+Definition AccountError `{State.Trait} : Set := AccountError.t.
 
 Module Impl_core_clone_Clone_for_ink_engine_types_AccountError.
   Definition Self `{State.Trait} := ink_engine.types.AccountError.
@@ -2715,13 +2715,13 @@ Module Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
 End Impl_core_cmp_Eq_for_ink_engine_types_AccountError.
 
 Module Error.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Account (_ : ink_engine.types.AccountError)
   | UninitializedBlocks
   | UninitializedExecutionContext
   | UnregisteredChainExtension.
 End Error.
-Definition Error : Set := Error.t.
+Definition Error `{State.Trait} : Set := Error.t.
 
 Module Impl_core_fmt_Debug_for_ink_engine_Error.
   Definition Self `{State.Trait} := ink_engine.Error.

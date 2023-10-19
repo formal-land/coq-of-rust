@@ -3,12 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError : Set := MathError.t.
+  Definition MathError `{State.Trait} : Set := MathError.t.
   
   Module
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
@@ -47,7 +47,7 @@ Module checked.
   End
     Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   
-  Definition MathResult : Set :=
+  Definition MathResult `{State.Trait} : Set :=
     core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
   
   Definition div
@@ -168,12 +168,12 @@ Module checked.
 End checked.
 
 Module MathError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError : Set := MathError.t.
+Definition MathError `{State.Trait} : Set := MathError.t.
 
 Module
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
@@ -212,7 +212,7 @@ Module
 End
   Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
 
-Definition MathResult : Set :=
+Definition MathResult `{State.Trait} : Set :=
   core.result.Result f64 result_chaining_with_question_mark.checked.MathError.
 
 Definition div

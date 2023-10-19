@@ -6,20 +6,20 @@ Module PhantomTuple.
     Context {A B : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : A;
-      _ : core.marker.PhantomData B;
+      x0 : A;
+      x1 : core.marker.PhantomData B;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0 _) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
-    Global Instance Get_1 : Notation.Dot 1 := {
-      Notation.dot '(Build_t _ x1) := x1;
+    Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
     }.
   End PhantomTuple.
 End PhantomTuple.
-Definition PhantomTuple := @PhantomTuple.t.
+Definition PhantomTuple `{State.Trait} : Set := M.val PhantomTuple.t.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.

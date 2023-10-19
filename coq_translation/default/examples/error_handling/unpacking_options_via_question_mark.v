@@ -126,7 +126,8 @@ Module
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber.
 
 Module Impl_unpacking_options_via_question_mark_Person.
-  Definition Self := unpacking_options_via_question_mark.Person.
+  Definition Self `{State.Trait} : Set :=
+    unpacking_options_via_question_mark.Person.
   
   Definition work_phone_area_code
       `{State.Trait}

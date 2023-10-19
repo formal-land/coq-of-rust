@@ -4,18 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 Module Foo.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : u32;
+    x0 : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Foo.
-Definition Foo := @Foo.t.
+Definition Foo `{State.Trait} : Set := M.val Foo.t.
 
 Module Impl_example05_Foo.
-  Definition Self := example05.Foo.
+  Definition Self `{State.Trait} : Set := example05.Foo.
   
   Definition plus1 `{State.Trait} (self : Self) : M u32 :=
     let* α0 := self.["0"] in

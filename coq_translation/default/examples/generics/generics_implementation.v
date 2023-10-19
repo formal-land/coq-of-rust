@@ -38,7 +38,7 @@ End GenVal.
 Definition GenVal (T : Set) `{State.Trait} : Set := M.val (GenVal.t (T := T)).
 
 Module Impl_generics_implementation_Val.
-  Definition Self := generics_implementation.Val.
+  Definition Self `{State.Trait} : Set := generics_implementation.Val.
   
   Definition value `{State.Trait} (self : ref Self) : M (ref f64) :=
     let* α0 := deref self generics_implementation.Val in
@@ -53,7 +53,7 @@ Module Impl_generics_implementation_Val.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
-  Definition Self := generics_implementation.GenVal T.
+  Definition Self `{State.Trait} : Set := generics_implementation.GenVal T.
   
   Definition value `{State.Trait} (self : ref Self) : M (ref T) :=
     let* α0 := deref self (generics_implementation.GenVal _) in

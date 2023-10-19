@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Food.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Apple
   | Carrot
   | Potato.
 End Food.
-Definition Food : Set := Food.t.
+Definition Food `{State.Trait} : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self `{State.Trait} := combinators_map.Food.

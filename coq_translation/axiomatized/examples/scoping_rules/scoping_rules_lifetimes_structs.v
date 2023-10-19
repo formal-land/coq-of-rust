@@ -73,11 +73,11 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 Module Either.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Num (_ : i32)
   | Ref (_ : ref i32).
 End Either.
-Definition Either : Set := Either.t.
+Definition Either `{State.Trait} : Set := Either.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Definition Self `{State.Trait} := scoping_rules_lifetimes_structs.Either.

@@ -4,18 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 Module Owner.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : i32;
+    x0 : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Owner.
-Definition Owner := @Owner.t.
+Definition Owner `{State.Trait} : Set := M.val Owner.t.
 
 Module Impl_scoping_rules_lifetimes_methods_Owner.
-  Definition Self := scoping_rules_lifetimes_methods.Owner.
+  Definition Self `{State.Trait} : Set := scoping_rules_lifetimes_methods.Owner.
   
   Definition add_one `{State.Trait} (self : mut_ref Self) : M unit :=
     let* _ :=

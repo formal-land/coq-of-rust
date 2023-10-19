@@ -248,24 +248,24 @@ Module types.
   End Environment.
   
   Module NoChainExtension.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     .
   End NoChainExtension.
-  Definition NoChainExtension : Set := NoChainExtension.t.
+  Definition NoChainExtension `{State.Trait} : Set := NoChainExtension.t.
   
   Module DefaultEnvironment.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     .
   End DefaultEnvironment.
-  Definition DefaultEnvironment : Set := DefaultEnvironment.t.
+  Definition DefaultEnvironment `{State.Trait} : Set := DefaultEnvironment.t.
   
-  Definition Balance : Set := u128.
+  Definition Balance `{State.Trait} : Set := u128.
   
-  Definition Timestamp : Set := u64.
+  Definition Timestamp `{State.Trait} : Set := u64.
   
-  Definition Gas : Set := u64.
+  Definition Gas `{State.Trait} : Set := u64.
   
-  Definition BlockNumber : Set := u32.
+  Definition BlockNumber `{State.Trait} : Set := u32.
 End types.
 
 Module FromLittleEndian.
@@ -418,24 +418,24 @@ Module Environment.
 End Environment.
 
 Module NoChainExtension.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End NoChainExtension.
-Definition NoChainExtension : Set := NoChainExtension.t.
+Definition NoChainExtension `{State.Trait} : Set := NoChainExtension.t.
 
 Module DefaultEnvironment.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End DefaultEnvironment.
-Definition DefaultEnvironment : Set := DefaultEnvironment.t.
+Definition DefaultEnvironment `{State.Trait} : Set := DefaultEnvironment.t.
 
-Definition Balance : Set := u128.
+Definition Balance `{State.Trait} : Set := u128.
 
-Definition Timestamp : Set := u64.
+Definition Timestamp `{State.Trait} : Set := u64.
 
-Definition Gas : Set := u64.
+Definition Gas `{State.Trait} : Set := u64.
 
-Definition BlockNumber : Set := u32.
+Definition BlockNumber `{State.Trait} : Set := u32.
 
 Module contract.
   Module ContractEnv.
@@ -469,48 +469,48 @@ Module call.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t `{State.Trait} : Set := {
-          _ : core.marker.PhantomData (T);
+          x0 : core.marker.PhantomData (T);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End ReturnType.
     End ReturnType.
-    Definition ReturnType := @ReturnType.t.
+    Definition ReturnType `{State.Trait} : Set := M.val ReturnType.t.
     
     Module Set_.
       Section Set_.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t `{State.Trait} : Set := {
-          _ : T;
+          x0 : T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End Set_.
     End Set_.
-    Definition Set_ := @Set_.t.
+    Definition Set_ `{State.Trait} : Set := M.val Set_.t.
     
     Module Unset_.
       Section Unset_.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t `{State.Trait} : Set := {
-          _ : core.marker.PhantomData (T);
+          x0 : core.marker.PhantomData (T);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End Unset_.
     End Unset_.
-    Definition Unset_ := @Unset_.t.
+    Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
     
     Module Unwrap.
       Class Trait (Self : Set) : Type := {
@@ -640,7 +640,7 @@ Module call.
     Definition Argument (T : Set) `{State.Trait} : Set :=
       M.val (Argument.t (T := T)).
     
-    Definition ArgsList (Head Rest : Set) : Set :=
+    Definition ArgsList (Head Rest : Set) `{State.Trait} : Set :=
       ink_env.call.execution_input.ArgumentList
         (ink_env.call.execution_input.Argument Head)
         Rest.
@@ -650,7 +650,7 @@ Module call.
     End ArgumentListEnd.
     Definition ArgumentListEnd := @ArgumentListEnd.t.
     
-    Definition EmptyArgumentList : Set :=
+    Definition EmptyArgumentList `{State.Trait} : Set :=
       ink_env.call.execution_input.ArgumentList
         ink_env.call.execution_input.ArgumentListEnd
         ink_env.call.execution_input.ArgumentListEnd.
@@ -659,10 +659,10 @@ Module call.
   Module create_builder.
     Module state.
       Module Salt.
-        Inductive t : Set :=
+        Inductive t `{State.Trait} : Set :=
         .
       End Salt.
-      Definition Salt : Set := Salt.t.
+      Definition Salt `{State.Trait} : Set := Salt.t.
     End state.
     
     Module FromAccountId.
@@ -978,21 +978,21 @@ Module engine.
     Definition EnvInstance `{State.Trait} : Set := M.val (EnvInstance.t).
     
     Module AccountError.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       | Decoding (_ : parity_scale_codec.error.Error)
       | UnexpectedUserAccount
       | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
     End AccountError.
-    Definition AccountError : Set := AccountError.t.
+    Definition AccountError `{State.Trait} : Set := AccountError.t.
     
     Module OffChainError.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       | Account (_ : ink_env.engine.off_chain.AccountError)
       | UninitializedBlocks
       | UninitializedExecutionContext
       | UnregisteredChainExtension.
     End OffChainError.
-    Definition OffChainError : Set := OffChainError.t.
+    Definition OffChainError `{State.Trait} : Set := OffChainError.t.
   End off_chain.
 End engine.
 
@@ -1035,28 +1035,28 @@ Module hash.
   End CryptoHash.
   
   Module Sha2x256.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     .
   End Sha2x256.
-  Definition Sha2x256 : Set := Sha2x256.t.
+  Definition Sha2x256 `{State.Trait} : Set := Sha2x256.t.
   
   Module Keccak256.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     .
   End Keccak256.
-  Definition Keccak256 : Set := Keccak256.t.
+  Definition Keccak256 `{State.Trait} : Set := Keccak256.t.
   
   Module Blake2x256.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     .
   End Blake2x256.
-  Definition Blake2x256 : Set := Blake2x256.t.
+  Definition Blake2x256 `{State.Trait} : Set := Blake2x256.t.
   
   Module Blake2x128.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     .
   End Blake2x128.
-  Definition Blake2x128 : Set := Blake2x128.t.
+  Definition Blake2x128 `{State.Trait} : Set := Blake2x128.t.
 End hash.
 
 Module topics.
@@ -1125,22 +1125,22 @@ Module topics.
   
   Module state.
     Module Uninit.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End Uninit.
-    Definition Uninit : Set := Uninit.t.
+    Definition Uninit `{State.Trait} : Set := Uninit.t.
     
     Module HasRemainingTopics.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End HasRemainingTopics.
-    Definition HasRemainingTopics : Set := HasRemainingTopics.t.
+    Definition HasRemainingTopics `{State.Trait} : Set := HasRemainingTopics.t.
     
     Module NoRemainingTopics.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End NoRemainingTopics.
-    Definition NoRemainingTopics : Set := NoRemainingTopics.t.
+    Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
   End state.
   
   Module SomeRemainingTopics.
@@ -1227,7 +1227,7 @@ End topics.
 
 Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Module Error.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | Decode (_ : parity_scale_codec.error.Error)
     | OffChain (_ : ink_env.engine.off_chain.OffChainError)
     | CalleeTrapped
@@ -1243,9 +1243,9 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     | CallRuntimeFailed
     | EcdsaRecoveryFailed.
   End Error.
-  Definition Error : Set := Error.t.
+  Definition Error `{State.Trait} : Set := Error.t.
   
-  Definition Result (T : Set) : Set :=
+  Definition Result (T : Set) `{State.Trait} : Set :=
     core.result.Result
       T
       ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
@@ -3009,7 +3009,7 @@ Module Saturating.
 End Saturating.
 
 Module Error.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Decode (_ : parity_scale_codec.error.Error)
   | OffChain (_ : ink_env.engine.off_chain.OffChainError)
   | CalleeTrapped
@@ -3025,9 +3025,9 @@ Module Error.
   | CallRuntimeFailed
   | EcdsaRecoveryFailed.
 End Error.
-Definition Error : Set := Error.t.
+Definition Error `{State.Trait} : Set := Error.t.
 
-Definition Result (T : Set) : Set :=
+Definition Result (T : Set) `{State.Trait} : Set :=
   core.result.Result
     T
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error.
@@ -4163,48 +4163,48 @@ Module common.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : core.marker.PhantomData (T);
+        x0 : core.marker.PhantomData (T);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End ReturnType.
   End ReturnType.
-  Definition ReturnType := @ReturnType.t.
+  Definition ReturnType `{State.Trait} : Set := M.val ReturnType.t.
   
   Module Set_.
     Section Set_.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : T;
+        x0 : T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End Set_.
   End Set_.
-  Definition Set_ := @Set_.t.
+  Definition Set_ `{State.Trait} : Set := M.val Set_.t.
   
   Module Unset_.
     Section Unset_.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : core.marker.PhantomData (T);
+        x0 : core.marker.PhantomData (T);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End Unset_.
   End Unset_.
-  Definition Unset_ := @Unset_.t.
+  Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
   
   Module Unwrap.
     Class Trait (Self : Set) : Type := {
@@ -4237,48 +4237,48 @@ Module ReturnType.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : core.marker.PhantomData (T);
+      x0 : core.marker.PhantomData (T);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End ReturnType.
 End ReturnType.
-Definition ReturnType := @ReturnType.t.
+Definition ReturnType `{State.Trait} : Set := M.val ReturnType.t.
 
 Module Set_.
   Section Set_.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : T;
+      x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End Set_.
 End Set_.
-Definition Set_ := @Set_.t.
+Definition Set_ `{State.Trait} : Set := M.val Set_.t.
 
 Module Unset_.
   Section Unset_.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : core.marker.PhantomData (T);
+      x0 : core.marker.PhantomData (T);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End Unset_.
 End Unset_.
-Definition Unset_ := @Unset_.t.
+Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
 
 Module Unwrap.
   Class Trait (Self : Set) : Type := {
@@ -4308,10 +4308,10 @@ End Unwrap.
 Module create_builder.
   Module state.
     Module Salt.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End Salt.
-    Definition Salt : Set := Salt.t.
+    Definition Salt `{State.Trait} : Set := Salt.t.
   End state.
   
   Module FromAccountId.
@@ -4561,17 +4561,17 @@ End create_builder.
 
 Module state.
   Module Salt.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     .
   End Salt.
-  Definition Salt : Set := Salt.t.
+  Definition Salt `{State.Trait} : Set := Salt.t.
 End state.
 
 Module Salt.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Salt.
-Definition Salt : Set := Salt.t.
+Definition Salt `{State.Trait} : Set := Salt.t.
 
 Module FromAccountId.
   Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
@@ -4898,7 +4898,7 @@ Module execution_input.
   Definition Argument (T : Set) `{State.Trait} : Set :=
     M.val (Argument.t (T := T)).
   
-  Definition ArgsList (Head Rest : Set) : Set :=
+  Definition ArgsList (Head Rest : Set) `{State.Trait} : Set :=
     ink_env.call.execution_input.ArgumentList
       (ink_env.call.execution_input.Argument Head)
       Rest.
@@ -4908,7 +4908,7 @@ Module execution_input.
   End ArgumentListEnd.
   Definition ArgumentListEnd := @ArgumentListEnd.t.
   
-  Definition EmptyArgumentList : Set :=
+  Definition EmptyArgumentList `{State.Trait} : Set :=
     ink_env.call.execution_input.ArgumentList
       ink_env.call.execution_input.ArgumentListEnd
       ink_env.call.execution_input.ArgumentListEnd.
@@ -4972,7 +4972,7 @@ End ArgumentList.
 Definition ArgumentList (Head Rest : Set) `{State.Trait} : Set :=
   M.val (ArgumentList.t (Head := Head) (Rest := Rest)).
 
-Definition ArgsList (Head Rest : Set) : Set :=
+Definition ArgsList (Head Rest : Set) `{State.Trait} : Set :=
   ink_env.call.execution_input.ArgumentList
     (ink_env.call.execution_input.Argument Head)
     Rest.
@@ -5003,7 +5003,7 @@ Module ArgumentListEnd.
 End ArgumentListEnd.
 Definition ArgumentListEnd := @ArgumentListEnd.t.
 
-Definition EmptyArgumentList : Set :=
+Definition EmptyArgumentList `{State.Trait} : Set :=
   ink_env.call.execution_input.ArgumentList
     ink_env.call.execution_input.ArgumentListEnd
     ink_env.call.execution_input.ArgumentListEnd.
@@ -5087,10 +5087,10 @@ Module chain_extension.
   
   Module state.
     Module IgnoreErrorCode.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End IgnoreErrorCode.
-    Definition IgnoreErrorCode : Set := IgnoreErrorCode.t.
+    Definition IgnoreErrorCode `{State.Trait} : Set := IgnoreErrorCode.t.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
@@ -5188,10 +5188,10 @@ Definition ChainExtensionMethod (I O ErrorCode : Set) `{State.Trait} : Set :=
 Module Wrap_state_1.
   Module state.
     Module IgnoreErrorCode.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End IgnoreErrorCode.
-    Definition IgnoreErrorCode : Set := IgnoreErrorCode.t.
+    Definition IgnoreErrorCode `{State.Trait} : Set := IgnoreErrorCode.t.
     
     Module HandleErrorCode.
       Section HandleErrorCode.
@@ -5221,10 +5221,10 @@ End Wrap_state_1.
 Import Wrap_state_1.
 
 Module IgnoreErrorCode.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End IgnoreErrorCode.
-Definition IgnoreErrorCode : Set := IgnoreErrorCode.t.
+Definition IgnoreErrorCode `{State.Trait} : Set := IgnoreErrorCode.t.
 
 Module HandleErrorCode.
   Section HandleErrorCode.
@@ -5366,21 +5366,21 @@ Module off_chain.
   Definition EnvInstance `{State.Trait} : Set := M.val (EnvInstance.t).
   
   Module AccountError.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | Decoding (_ : parity_scale_codec.error.Error)
     | UnexpectedUserAccount
     | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
   End AccountError.
-  Definition AccountError : Set := AccountError.t.
+  Definition AccountError `{State.Trait} : Set := AccountError.t.
   
   Module OffChainError.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | Account (_ : ink_env.engine.off_chain.AccountError)
     | UninitializedBlocks
     | UninitializedExecutionContext
     | UnregisteredChainExtension.
   End OffChainError.
-  Definition OffChainError : Set := OffChainError.t.
+  Definition OffChainError `{State.Trait} : Set := OffChainError.t.
 End off_chain.
 
 Module call_data.
@@ -5481,21 +5481,21 @@ End EnvInstance.
 Definition EnvInstance `{State.Trait} : Set := M.val (EnvInstance.t).
 
 Module OffChainError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Account (_ : ink_env.engine.off_chain.AccountError)
   | UninitializedBlocks
   | UninitializedExecutionContext
   | UnregisteredChainExtension.
 End OffChainError.
-Definition OffChainError : Set := OffChainError.t.
+Definition OffChainError `{State.Trait} : Set := OffChainError.t.
 
 Module AccountError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Decoding (_ : parity_scale_codec.error.Error)
   | UnexpectedUserAccount
   | NoAccountForId (_ : alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End AccountError.
-Definition AccountError : Set := AccountError.t.
+Definition AccountError `{State.Trait} : Set := AccountError.t.
 
 Module HashOutput.
   Class Trait (Self : Set) `{ink_env.hash.private.Sealed.Trait Self} : Type := {
@@ -5524,28 +5524,28 @@ Module CryptoHash.
 End CryptoHash.
 
 Module Sha2x256.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Sha2x256.
-Definition Sha2x256 : Set := Sha2x256.t.
+Definition Sha2x256 `{State.Trait} : Set := Sha2x256.t.
 
 Module Keccak256.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Keccak256.
-Definition Keccak256 : Set := Keccak256.t.
+Definition Keccak256 `{State.Trait} : Set := Keccak256.t.
 
 Module Blake2x256.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Blake2x256.
-Definition Blake2x256 : Set := Blake2x256.t.
+Definition Blake2x256 `{State.Trait} : Set := Blake2x256.t.
 
 Module Blake2x128.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Blake2x128.
-Definition Blake2x128 : Set := Blake2x128.t.
+Definition Blake2x128 `{State.Trait} : Set := Blake2x128.t.
 
 Module Wrap_private_1.
   Module private.
@@ -5632,43 +5632,43 @@ Definition TopicsBuilder (S E B : Set) `{State.Trait} : Set :=
 Module Wrap_state_2.
   Module state.
     Module Uninit.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End Uninit.
-    Definition Uninit : Set := Uninit.t.
+    Definition Uninit `{State.Trait} : Set := Uninit.t.
     
     Module HasRemainingTopics.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End HasRemainingTopics.
-    Definition HasRemainingTopics : Set := HasRemainingTopics.t.
+    Definition HasRemainingTopics `{State.Trait} : Set := HasRemainingTopics.t.
     
     Module NoRemainingTopics.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       .
     End NoRemainingTopics.
-    Definition NoRemainingTopics : Set := NoRemainingTopics.t.
+    Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
   End state.
 End Wrap_state_2.
 Import Wrap_state_2.
 
 Module Uninit.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Uninit.
-Definition Uninit : Set := Uninit.t.
+Definition Uninit `{State.Trait} : Set := Uninit.t.
 
 Module HasRemainingTopics.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End HasRemainingTopics.
-Definition HasRemainingTopics : Set := HasRemainingTopics.t.
+Definition HasRemainingTopics `{State.Trait} : Set := HasRemainingTopics.t.
 
 Module NoRemainingTopics.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End NoRemainingTopics.
-Definition NoRemainingTopics : Set := NoRemainingTopics.t.
+Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
 
 Module SomeRemainingTopics.
   Class Trait (Self : Set) : Type := {

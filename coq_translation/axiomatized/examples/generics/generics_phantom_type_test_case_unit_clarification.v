@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Inch.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Inch.
-Definition Inch : Set := Inch.t.
+Definition Inch `{State.Trait} : Set := Inch.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
@@ -59,10 +59,10 @@ End
   Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 Module Mm.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End Mm.
-Definition Mm : Set := Mm.t.
+Definition Mm `{State.Trait} : Set := Mm.t.
 
 Module
   Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.

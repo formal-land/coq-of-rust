@@ -5,7 +5,7 @@ Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.scale_info.
 
 Module key.
-  Definition Key : Set := u32.
+  Definition Key `{State.Trait} : Set := u32.
   
   Module KeyComposer.
     Inductive t : Set := Build.
@@ -13,11 +13,11 @@ Module key.
   Definition KeyComposer := @KeyComposer.t.
   
   Module Error.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | StructNameIsEmpty
     | FieldNameIsEmpty.
   End Error.
-  Definition Error : Set := Error.t.
+  Definition Error `{State.Trait} : Set := Error.t.
   
   Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
     Definition Self `{State.Trait} := ink_primitives.key.Error.
@@ -91,7 +91,7 @@ Module key.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
 End key.
 
-Definition Key : Set := u32.
+Definition Key `{State.Trait} : Set := u32.
 
 Module KeyComposer.
   Inductive t : Set := Build.
@@ -99,11 +99,11 @@ End KeyComposer.
 Definition KeyComposer := @KeyComposer.t.
 
 Module Error.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | StructNameIsEmpty
   | FieldNameIsEmpty.
 End Error.
-Definition Error : Set := Error.t.
+Definition Error `{State.Trait} : Set := Error.t.
 
 Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
   Definition Self `{State.Trait} := ink_primitives.key.Error.
@@ -179,15 +179,15 @@ Module types.
   Module AccountId.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : array u8;
+      x0 : array u8;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End AccountId.
-  Definition AccountId := @AccountId.t.
+  Definition AccountId `{State.Trait} : Set := M.val AccountId.t.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
     Definition Self `{State.Trait} := ink_primitives.types.AccountId.
@@ -509,15 +509,15 @@ Module types.
   Module Hash.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : array u8;
+      x0 : array u8;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End Hash.
-  Definition Hash := @Hash.t.
+  Definition Hash `{State.Trait} : Set := M.val Hash.t.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
     Definition Self `{State.Trait} := ink_primitives.types.Hash.
@@ -908,15 +908,15 @@ End types.
 Module AccountId.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : array u8;
+    x0 : array u8;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End AccountId.
-Definition AccountId := @AccountId.t.
+Definition AccountId `{State.Trait} : Set := M.val AccountId.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
   Definition Self `{State.Trait} := ink_primitives.types.AccountId.
@@ -942,15 +942,15 @@ End Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
 Module Visitor.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : core.marker.PhantomData unit;
+    x0 : core.marker.PhantomData unit;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Visitor.
-Definition Visitor := @Visitor.t.
+Definition Visitor `{State.Trait} : Set := M.val Visitor.t.
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId.
   Definition Self `{State.Trait} := ink_primitives.types.AccountId.
@@ -1439,15 +1439,15 @@ End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
 Module Hash.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : array u8;
+    x0 : array u8;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Hash.
-Definition Hash := @Hash.t.
+Definition Hash `{State.Trait} : Set := M.val Hash.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
   Definition Self `{State.Trait} := ink_primitives.types.Hash.
@@ -2022,10 +2022,10 @@ End Impl_ink_primitives_types_Clear_for_Array_u8. *)
 End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
 
 Module LangError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | CouldNotReadInput.
 End LangError.
-Definition LangError : Set := LangError.t.
+Definition LangError `{State.Trait} : Set := LangError.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
   Definition Self `{State.Trait} := ink_primitives.LangError.
@@ -2210,8 +2210,8 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)
 
-Definition MessageResult (T : Set) : Set :=
+Definition MessageResult (T : Set) `{State.Trait} : Set :=
   core.result.Result T ink_primitives.LangError.
 
-Definition ConstructorResult (T : Set) : Set :=
+Definition ConstructorResult (T : Set) `{State.Trait} : Set :=
   core.result.Result T ink_primitives.LangError.

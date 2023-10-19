@@ -39,16 +39,16 @@ Module result_info.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : ref T;
+        x0 : ref T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End IsResultErr.
   End IsResultErr.
-  Definition IsResultErr := @IsResultErr.t.
+  Definition IsResultErr `{State.Trait} : Set := M.val IsResultErr.t.
   
   Module IsResultErrFallback.
     Unset Primitive Projections.
@@ -99,16 +99,16 @@ Module IsResultErr.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : ref T;
+      x0 : ref T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End IsResultErr.
 End IsResultErr.
-Definition IsResultErr := @IsResultErr.t.
+Definition IsResultErr `{State.Trait} : Set := M.val IsResultErr.t.
 
 Module IsResultErrFallback.
   Unset Primitive Projections.
@@ -274,26 +274,27 @@ Module reflect.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t `{State.Trait} : Set := {
-          _ : T;
+          x0 : T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End ConstructorOutputValue.
     End ConstructorOutputValue.
-    Definition ConstructorOutputValue := @ConstructorOutputValue.t.
+    Definition ConstructorOutputValue `{State.Trait} : Set :=
+      M.val ConstructorOutputValue.t.
     
     Module DispatchError.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       | InvalidSelector
       | UnknownSelector
       | InvalidParameters
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError : Set := DispatchError.t.
+    Definition DispatchError `{State.Trait} : Set := DispatchError.t.
     
     Module ExecuteDispatchable.
       Class Trait (Self : Set) : Type := {
@@ -471,32 +472,32 @@ Module codegen.
           Context {T : Set}.
           Unset Primitive Projections.
           Record t `{State.Trait} : Set := {
-            _ : T;
+            x0 : T;
           }.
           Global Set Primitive Projections.
           
-          Global Instance Get_0 : Notation.Dot 0 := {
-            Notation.dot '(Build_t x0) := x0;
+          Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+            Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
           }.
         End DispatchInput.
       End DispatchInput.
-      Definition DispatchInput := @DispatchInput.t.
+      Definition DispatchInput `{State.Trait} : Set := M.val DispatchInput.t.
       
       Module DispatchOutput.
         Section DispatchOutput.
           Context {T : Set}.
           Unset Primitive Projections.
           Record t `{State.Trait} : Set := {
-            _ : T;
+            x0 : T;
           }.
           Global Set Primitive Projections.
           
-          Global Instance Get_0 : Notation.Dot 0 := {
-            Notation.dot '(Build_t x0) := x0;
+          Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+            Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
           }.
         End DispatchOutput.
       End DispatchOutput.
-      Definition DispatchOutput := @DispatchOutput.t.
+      Definition DispatchOutput `{State.Trait} : Set := M.val DispatchOutput.t.
     End type_check.
   End dispatch.
   
@@ -799,32 +800,32 @@ Module dispatch.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t `{State.Trait} : Set := {
-          _ : T;
+          x0 : T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End DispatchInput.
     End DispatchInput.
-    Definition DispatchInput := @DispatchInput.t.
+    Definition DispatchInput `{State.Trait} : Set := M.val DispatchInput.t.
     
     Module DispatchOutput.
       Section DispatchOutput.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t `{State.Trait} : Set := {
-          _ : T;
+          x0 : T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End DispatchOutput.
     End DispatchOutput.
-    Definition DispatchOutput := @DispatchOutput.t.
+    Definition DispatchOutput `{State.Trait} : Set := M.val DispatchOutput.t.
   End type_check.
 End dispatch.
 
@@ -868,32 +869,32 @@ Module type_check.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : T;
+        x0 : T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End DispatchInput.
   End DispatchInput.
-  Definition DispatchInput := @DispatchInput.t.
+  Definition DispatchInput `{State.Trait} : Set := M.val DispatchInput.t.
   
   Module DispatchOutput.
     Section DispatchOutput.
       Context {T : Set}.
       Unset Primitive Projections.
       Record t `{State.Trait} : Set := {
-        _ : T;
+        x0 : T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_0 : Notation.Dot 0 := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+        Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
       }.
     End DispatchOutput.
   End DispatchOutput.
-  Definition DispatchOutput := @DispatchOutput.t.
+  Definition DispatchOutput `{State.Trait} : Set := M.val DispatchOutput.t.
 End type_check.
 
 Module DispatchInput.
@@ -901,32 +902,32 @@ Module DispatchInput.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : T;
+      x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End DispatchInput.
 End DispatchInput.
-Definition DispatchInput := @DispatchInput.t.
+Definition DispatchInput `{State.Trait} : Set := M.val DispatchInput.t.
 
 Module DispatchOutput.
   Section DispatchOutput.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : T;
+      x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End DispatchOutput.
 End DispatchOutput.
-Definition DispatchOutput := @DispatchOutput.t.
+Definition DispatchOutput `{State.Trait} : Set := M.val DispatchOutput.t.
 
 Module env.
   Module Env.
@@ -1816,26 +1817,27 @@ Module Wrap_dispatch_1.
         Context {T : Set}.
         Unset Primitive Projections.
         Record t `{State.Trait} : Set := {
-          _ : T;
+          x0 : T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_0 : Notation.Dot 0 := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+          Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
         }.
       End ConstructorOutputValue.
     End ConstructorOutputValue.
-    Definition ConstructorOutputValue := @ConstructorOutputValue.t.
+    Definition ConstructorOutputValue `{State.Trait} : Set :=
+      M.val ConstructorOutputValue.t.
     
     Module DispatchError.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       | InvalidSelector
       | UnknownSelector
       | InvalidParameters
       | CouldNotReadInput
       | PaidUnpayableMessage.
     End DispatchError.
-    Definition DispatchError : Set := DispatchError.t.
+    Definition DispatchError `{State.Trait} : Set := DispatchError.t.
     
     Module ExecuteDispatchable.
       Class Trait (Self : Set) : Type := {
@@ -2053,16 +2055,17 @@ Module ConstructorOutputValue.
     Context {T : Set}.
     Unset Primitive Projections.
     Record t `{State.Trait} : Set := {
-      _ : T;
+      x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End ConstructorOutputValue.
 End ConstructorOutputValue.
-Definition ConstructorOutputValue := @ConstructorOutputValue.t.
+Definition ConstructorOutputValue `{State.Trait} : Set :=
+  M.val ConstructorOutputValue.t.
 
 Module ContractMessageDecoder.
   Class Trait (Self : Set) : Type := {
@@ -2112,14 +2115,14 @@ Module ExecuteDispatchable.
 End ExecuteDispatchable.
 
 Module DispatchError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | InvalidSelector
   | UnknownSelector
   | InvalidParameters
   | CouldNotReadInput
   | PaidUnpayableMessage.
 End DispatchError.
-Definition DispatchError : Set := DispatchError.t.
+Definition DispatchError `{State.Trait} : Set := DispatchError.t.
 
 Module DecodeDispatch.
   Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :

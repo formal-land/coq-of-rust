@@ -1899,13 +1899,11 @@ impl TopLevelItem {
                 ty_params,
             } => nest([
                 nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
+                    nest([text("Definition"), line(), text(name)]),
                     if ty_params.is_empty() {
                         nil()
                     } else {
-                        concat([
+                        nest([
                             line(),
                             text("("),
                             concat(ty_params.iter().map(|ty| concat([text(ty), line()]))),
@@ -1915,11 +1913,11 @@ impl TopLevelItem {
                         ])
                     },
                     line(),
-                    text(":"),
+                    text("`{State.Trait}"),
+                    text(" :"),
                     line(),
                     text("Set"),
-                    line(),
-                    text(":="),
+                    text(" :="),
                 ]),
                 line(),
                 ty.to_doc(false),
@@ -1963,6 +1961,8 @@ impl TopLevelItem {
                                                             text("Record"),
                                                             line(),
                                                             text("t"),
+                                                            line(),
+                                                            text("`{State.Trait}"),
                                                             line(),
                                                             text(":"),
                                                             line(),
@@ -2013,6 +2013,8 @@ impl TopLevelItem {
                                     text("Inductive"),
                                     line(),
                                     text("t"),
+                                    line(),
+                                    text("`{State.Trait}"),
                                     line(),
                                     text(":"),
                                     line(),
@@ -2079,6 +2081,7 @@ impl TopLevelItem {
                                     coq::ArgSpecKind::Explicit,
                                 )]
                             },
+                            vec![coq::ArgDecl::monadic_typeclass_parameter()],
                             predicates
                                 .iter()
                                 .map(|predicate| predicate.to_coq())
@@ -2229,8 +2232,8 @@ impl TopLevelItem {
                         coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
                             "Self",
                             &coq::DefinitionKind::Alias {
-                                args: vec![],
-                                ty: None,
+                                args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                                ty: Some(coq::Expression::Set),
                                 body: self_ty.to_coq(),
                             },
                         ))]),
@@ -2915,7 +2918,7 @@ impl TypeStructStruct {
                                                       &coq::Expression::Record {
                                                           fields: vec![coq::Field::new(
                                                               &Path::new(&["Notation", "dot"]),
-                                                              &vec![struct_projection_pattern()],
+                                                              &[struct_projection_pattern()],
                                                               &struct_field_value(name.to_owned()),
                                                           )],
                                                       },
@@ -2942,7 +2945,7 @@ impl TypeStructStruct {
                                                                   "Notation",
                                                                   "double_colon",
                                                               ]),
-                                                              &vec![struct_projection_pattern()],
+                                                              &[struct_projection_pattern()],
                                                               &struct_field_value(name.to_owned()),
                                                           )],
                                                       },

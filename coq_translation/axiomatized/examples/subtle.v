@@ -55,7 +55,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice_4.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} : Set := subtle.Choice.
   
   Parameter unwrap_u8 : forall `{State.Trait}, (ref Self) -> M u8.
   
@@ -961,7 +961,7 @@ Module Impl_core_convert_From_for_core_option_Option_T.
 End Impl_core_convert_From_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T_4.
-  Definition Self := subtle.CtOption T.
+  Definition Self `{State.Trait} : Set := subtle.CtOption T.
   
   Parameter new :
       forall `{State.Trait},

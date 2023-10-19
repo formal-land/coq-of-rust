@@ -45,11 +45,11 @@ Module erc20.
     Global Hint Resolve I : core.
   End Impl_ink_env_types_Environment_for_ink_env_types_DefaultEnvironment.
 
-  Definition AccountId : Set :=
+  Definition AccountId `{State.Trait} : Set :=
     ink_env.types.Environment.AccountId
       (Self := ink_env.types.DefaultEnvironment).
   
-  Definition Balance : Set :=
+  Definition Balance `{State.Trait} : Set :=
     ink_env.types.Environment.Balance
       (Self := ink_env.types.DefaultEnvironment).
   
@@ -124,22 +124,22 @@ Module erc20.
     Global Hint Resolve I : core.
   End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   
-  Definition Environment : Set :=
+  Definition Environment `{State.Trait} : Set :=
     ink_env.types.DefaultEnvironment.
   
-  Definition Hash : Set :=
+  Definition Hash `{State.Trait} : Set :=
     ink_env.types.Environment.Hash
       (Self := ink_env.types.DefaultEnvironment).
   
-  Definition Timestamp : Set :=
+  Definition Timestamp `{State.Trait} : Set :=
     ink_env.types.Environment.Timestamp
       (Self := ink_env.types.DefaultEnvironment).
   
-  Definition BlockNumber : Set :=
+  Definition BlockNumber `{State.Trait} : Set :=
     ink_env.types.Environment.BlockNumber
       (Self := ink_env.types.DefaultEnvironment).
   
-  Definition ChainExtension : Set :=
+  Definition ChainExtension `{State.Trait} : Set :=
     ink_env.types.Environment.ChainExtension
       (Self := ink_env.types.DefaultEnvironment).
   
@@ -247,11 +247,11 @@ Module erc20.
   Definition Approval `{State.Trait} : Set := M.val (Approval.t).
   
   Module __ink_EventBase.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | Transfer (_ : erc20.erc20.Transfer)
     | Approval (_ : erc20.erc20.Approval).
   End __ink_EventBase.
-  Definition __ink_EventBase : Set := __ink_EventBase.t.
+  Definition __ink_EventBase `{State.Trait} : Set := __ink_EventBase.t.
   
   Module Impl_ink_codegen_event_topics_EventLenTopics_for_erc20_erc20_Transfer.
     Definition Self `{State.Trait} := erc20.erc20.Transfer.
@@ -974,7 +974,7 @@ Module erc20.
   End Impl_core_clone_Clone_for_erc20_erc20_Erc20Ref.
   
   Module Impl_erc20_erc20_Erc20Ref_8.
-    Definition Self := erc20.erc20.Erc20Ref.
+    Definition Self `{State.Trait} : Set := erc20.erc20.Erc20Ref.
     
     Definition new
         `{State.Trait}
@@ -1436,11 +1436,11 @@ Module erc20.
   End Impl_core_convert_AsMut_for_erc20_erc20_Erc20Ref.
   
   Module Error.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | InsufficientBalance
     | InsufficientAllowance.
   End Error.
-  Definition Error : Set := Error.t.
+  Definition Error `{State.Trait} : Set := Error.t.
   
   Module Impl_core_fmt_Debug_for_erc20_erc20_Error.
     Definition Self `{State.Trait} := erc20.erc20.Error.
@@ -1540,7 +1540,8 @@ Module erc20.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Eq_for_erc20_erc20_Error.
   
-  Definition Result (T : Set) : Set := core.result.Result T erc20.erc20.Error.
+  Definition Result (T : Set) `{State.Trait} : Set :=
+    core.result.Result T erc20.erc20.Error.
 End erc20.
 
 Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
@@ -1555,30 +1556,30 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
   Global Hint Resolve I : core.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20.
 
-Definition Environment : Set :=
+Definition Environment `{State.Trait} : Set :=
   ink_env.types.DefaultEnvironment.
 
-Definition AccountId : Set :=
+Definition AccountId `{State.Trait} : Set :=
   ink_env.types.Environment.AccountId
     (Self := ink_env.types.DefaultEnvironment).
 
-Definition Balance : Set :=
+Definition Balance `{State.Trait} : Set :=
   ink_env.types.Environment.Balance
     (Self := ink_env.types.DefaultEnvironment).
 
-Definition Hash : Set :=
+Definition Hash `{State.Trait} : Set :=
   ink_env.types.Environment.Hash
     (Self := ink_env.types.DefaultEnvironment).
 
-Definition Timestamp : Set :=
+Definition Timestamp `{State.Trait} : Set :=
   ink_env.types.Environment.Timestamp
     (Self := ink_env.types.DefaultEnvironment).
 
-Definition BlockNumber : Set :=
+Definition BlockNumber `{State.Trait} : Set :=
   ink_env.types.Environment.BlockNumber
     (Self := ink_env.types.DefaultEnvironment).
 
-Definition ChainExtension : Set :=
+Definition ChainExtension `{State.Trait} : Set :=
   ink_env.types.Environment.ChainExtension
     (Self := ink_env.types.DefaultEnvironment).
 
@@ -2127,11 +2128,11 @@ End
   Impl_ink_codegen_event_emit_EmitEvent_for_ink_env_access_EnvAccess_erc20_erc20_Environment.
 
 Module __ink_EventBase.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Transfer (_ : erc20.erc20.Transfer)
   | Approval (_ : erc20.erc20.Approval).
 End __ink_EventBase.
-Definition __ink_EventBase : Set := __ink_EventBase.t.
+Definition __ink_EventBase `{State.Trait} : Set := __ink_EventBase.t.
 
 Module Impl_parity_scale_codec_codec_Encode_for_erc20_erc20___ink_EventBase.
   Definition Self `{State.Trait} := erc20.erc20.__ink_EventBase.
@@ -2316,10 +2317,10 @@ Module Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
 End Impl_core_convert_From_for_erc20_erc20___ink_EventBase.
 
 Module __ink_UndefinedAmountOfTopics.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End __ink_UndefinedAmountOfTopics.
-Definition __ink_UndefinedAmountOfTopics : Set :=
+Definition __ink_UndefinedAmountOfTopics `{State.Trait} : Set :=
   __ink_UndefinedAmountOfTopics.t.
 
 Module
@@ -3526,7 +3527,7 @@ Module Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 End Impl_ink_reflect_dispatch_DispatchableMessageInfo_for_erc20_erc20_Erc20.
 
 Module __ink_ConstructorDecoder.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   |
     Constructor0
     (_
@@ -3534,7 +3535,8 @@ Module __ink_ConstructorDecoder.
       ink.reflect.dispatch.DispatchableConstructorInfo.Input
         (Self := erc20.erc20.Erc20)).
 End __ink_ConstructorDecoder.
-Definition __ink_ConstructorDecoder : Set := __ink_ConstructorDecoder.t.
+Definition __ink_ConstructorDecoder `{State.Trait} : Set :=
+  __ink_ConstructorDecoder.t.
 
 Module
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_ConstructorDecoder.
@@ -3777,7 +3779,7 @@ Module
 End Impl_ink_reflect_dispatch_ContractConstructorDecoder_for_erc20_erc20_Erc20.
 
 Module __ink_MessageDecoder.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   |
     Message0
     (_
@@ -3815,7 +3817,7 @@ Module __ink_MessageDecoder.
       ink.reflect.dispatch.DispatchableMessageInfo.Input
         (Self := erc20.erc20.Erc20)).
 End __ink_MessageDecoder.
-Definition __ink_MessageDecoder : Set := __ink_MessageDecoder.t.
+Definition __ink_MessageDecoder `{State.Trait} : Set := __ink_MessageDecoder.t.
 
 Module
   Impl_ink_reflect_dispatch_DecodeDispatch_for_erc20_erc20_____ink_MessageDecoder.
@@ -4743,7 +4745,7 @@ Definition _
   run ((ink.codegen.utils.same_type.IsSameType erc20.erc20.Erc20)::["new"]).
 
 Module Impl_erc20_erc20_Erc20_29.
-  Definition Self := erc20.erc20.Erc20.
+  Definition Self `{State.Trait} : Set := erc20.erc20.Erc20.
   
   Definition new `{State.Trait} (total_supply : erc20.erc20.Balance) : M Self :=
     let* balances := core.default.Default.default in
@@ -5813,7 +5815,7 @@ Module Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
 End Impl_core_convert_AsMut_for_erc20_erc20___CallBuilder.
 
 Module Impl_erc20_erc20___CallBuilder_18.
-  Definition Self := erc20.erc20._.CallBuilder.
+  Definition Self `{State.Trait} : Set := erc20.erc20._.CallBuilder.
   
   Definition total_supply
       `{State.Trait}
@@ -6814,7 +6816,7 @@ Module Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 End Impl_ink_env_contract_ContractEnv_for_erc20_erc20_Erc20Ref.
 
 Module Impl_erc20_erc20_Erc20Ref_26.
-  Definition Self := erc20.erc20.Erc20Ref.
+  Definition Self `{State.Trait} : Set := erc20.erc20.Erc20Ref.
   
   Definition new
       `{State.Trait}
@@ -8408,11 +8410,11 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
   ink_metadata.InkProject::["new"] layout α378.
 
 Module Error.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | InsufficientBalance
   | InsufficientAllowance.
 End Error.
-Definition Error : Set := Error.t.
+Definition Error `{State.Trait} : Set := Error.t.
 
 Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
   Definition Self `{State.Trait} := erc20.erc20.Error.
@@ -8689,4 +8691,5 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
 
-Definition Result (T : Set) : Set := core.result.Result T erc20.erc20.Error.
+Definition Result (T : Set) `{State.Trait} : Set :=
+  core.result.Result T erc20.erc20.Error.

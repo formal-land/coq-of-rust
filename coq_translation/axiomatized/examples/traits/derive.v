@@ -96,7 +96,7 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
 End Impl_core_fmt_Debug_for_derive_Inches.
 
 Module Impl_derive_Inches_2.
-  Definition Self := derive.Inches.
+  Definition Self `{State.Trait} : Set := derive.Inches.
   
   Parameter to_centimeters :
       forall `{State.Trait},

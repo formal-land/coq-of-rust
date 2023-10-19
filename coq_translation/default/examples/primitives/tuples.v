@@ -8,27 +8,27 @@ Definition reverse `{State.Trait} (pair : i32 * bool) : M (bool * i32) :=
 Module Matrix.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : f32;
-    _ : f32;
-    _ : f32;
-    _ : f32;
+    x0 : f32;
+    x1 : f32;
+    x2 : f32;
+    x3 : f32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _ _ _) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1 _ _) := x1;
+  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
   }.
-  Global Instance Get_2 : Notation.Dot 2 := {
-    Notation.dot '(Build_t _ _ x2 _) := x2;
+  Global Instance Get_2 `{State.Trait} : Notation.Dot "2" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x2) : M _;
   }.
-  Global Instance Get_3 : Notation.Dot 3 := {
-    Notation.dot '(Build_t _ _ _ x3) := x3;
+  Global Instance Get_3 `{State.Trait} : Notation.Dot "3" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x3) : M _;
   }.
 End Matrix.
-Definition Matrix := @Matrix.t.
+Definition Matrix `{State.Trait} : Set := M.val Matrix.t.
 
 Module Impl_core_fmt_Debug_for_tuples_Matrix.
   Definition Self `{State.Trait} := tuples.Matrix.

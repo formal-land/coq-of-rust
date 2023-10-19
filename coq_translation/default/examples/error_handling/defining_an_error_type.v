@@ -49,7 +49,7 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
-Definition Result (T : Set) : Set :=
+Definition Result (T : Set) `{State.Trait} : Set :=
   core.result.Result T defining_an_error_type.DoubleError.
 
 Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.

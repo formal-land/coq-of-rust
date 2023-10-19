@@ -3,12 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError : Set := MathError.t.
+  Definition MathError `{State.Trait} : Set := MathError.t.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Definition Self `{State.Trait} := result.checked.MathError.
@@ -44,7 +44,7 @@ Module checked.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
-  Definition MathResult : Set :=
+  Definition MathResult `{State.Trait} : Set :=
     core.result.Result f64 result.checked.MathError.
   
   Definition div
@@ -87,12 +87,12 @@ Module checked.
 End checked.
 
 Module MathError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError : Set := MathError.t.
+Definition MathError `{State.Trait} : Set := MathError.t.
 
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Definition Self `{State.Trait} := result.checked.MathError.
@@ -128,7 +128,8 @@ Module Impl_core_fmt_Debug_for_result_checked_MathError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
-Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
+Definition MathResult `{State.Trait} : Set :=
+  core.result.Result f64 result.checked.MathError.
 
 Definition div
     `{State.Trait}

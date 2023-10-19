@@ -2,12 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Food.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | CordonBleu
   | Steak
   | Sushi.
 End Food.
-Definition Food : Set := Food.t.
+Definition Food `{State.Trait} : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self `{State.Trait} := combinators_and_then.Food.
@@ -44,12 +44,12 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
 Module Day.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Monday
   | Tuesday
   | Wednesday.
 End Day.
-Definition Day : Set := Day.t.
+Definition Day `{State.Trait} : Set := Day.t.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self `{State.Trait} := combinators_and_then.Day.

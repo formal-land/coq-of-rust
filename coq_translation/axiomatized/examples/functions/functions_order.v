@@ -28,7 +28,7 @@ End OtherType.
 Definition OtherType `{State.Trait} : Set := M.val OtherType.t.
 
 Module Impl_functions_order_SomeType.
-  Definition Self := functions_order.SomeType.
+  Definition Self `{State.Trait} : Set := functions_order.SomeType.
   
   Parameter meth2 : forall `{State.Trait}, Self -> M unit.
   

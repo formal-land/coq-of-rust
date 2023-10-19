@@ -15,7 +15,7 @@ End Owner.
 Definition Owner `{State.Trait} : Set := M.val Owner.t.
 
 Module Impl_scoping_rules_lifetimes_methods_Owner.
-  Definition Self := scoping_rules_lifetimes_methods.Owner.
+  Definition Self `{State.Trait} : Set := scoping_rules_lifetimes_methods.Owner.
   
   Parameter add_one : forall `{State.Trait}, (mut_ref Self) -> M unit.
   

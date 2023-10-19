@@ -49,7 +49,7 @@ Module my.
     M.val (ClosedBox.t (T := T)).
   
   Module Impl_struct_visibility_my_ClosedBox_T.
-    Definition Self := struct_visibility.my.ClosedBox T.
+    Definition Self `{State.Trait} : Set := struct_visibility.my.ClosedBox T.
     
     Definition new
         `{State.Trait}
@@ -106,7 +106,7 @@ Definition ClosedBox (T : Set) `{State.Trait} : Set :=
   M.val (ClosedBox.t (T := T)).
 
 Module Impl_struct_visibility_my_ClosedBox_T_2.
-  Definition Self := struct_visibility.my.ClosedBox T.
+  Definition Self `{State.Trait} : Set := struct_visibility.my.ClosedBox T.
   
   Definition new
       `{State.Trait}

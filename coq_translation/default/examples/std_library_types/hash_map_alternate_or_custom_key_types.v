@@ -179,7 +179,7 @@ Module AccountInfo.
 End AccountInfo.
 Definition AccountInfo `{State.Trait} : Set := M.val (AccountInfo.t).
 
-Definition Accounts : Set :=
+Definition Accounts `{State.Trait} : Set :=
   std.collections.hash.map.HashMap
     hash_map_alternate_or_custom_key_types.Account
     hash_map_alternate_or_custom_key_types.AccountInfo

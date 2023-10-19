@@ -48,15 +48,15 @@ End SomeTrait.
 Module SomeOtherType.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : u32;
+    x0 : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End SomeOtherType.
-Definition SomeOtherType := @SomeOtherType.t.
+Definition SomeOtherType `{State.Trait} : Set := M.val SomeOtherType.t.
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
   Definition Self `{State.Trait} := traits_parms.SomeOtherType.

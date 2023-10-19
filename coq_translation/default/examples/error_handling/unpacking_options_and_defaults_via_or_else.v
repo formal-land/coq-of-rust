@@ -2,14 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Fruit.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Apple
   | Orange
   | Banana
   | Kiwi
   | Lemon.
 End Fruit.
-Definition Fruit : Set := Fruit.t.
+Definition Fruit `{State.Trait} : Set := Fruit.t.
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Definition Self `{State.Trait} :=

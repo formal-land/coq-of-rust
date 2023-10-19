@@ -87,19 +87,19 @@ Definition Unit := @Unit.t.
 Module Pair.
   Unset Primitive Projections.
   Record t `{State.Trait} : Set := {
-    _ : i32;
-    _ : f32;
+    x0 : i32;
+    x1 : f32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
   }.
 End Pair.
-Definition Pair := @Pair.t.
+Definition Pair `{State.Trait} : Set := M.val Pair.t.
 
 Module Point.
   Unset Primitive Projections.
@@ -110,10 +110,10 @@ Module Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x) : M _;
+    Notation.dot x := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(x) : M _;
+    Notation.double_colon x := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
     Notation.dot x := let* x := M.read x in Pure x.(y) : M _;

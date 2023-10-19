@@ -25,7 +25,8 @@ End Point.
 Definition Point `{State.Trait} : Set := M.val (Point.t).
 
 Module Impl_associated_functions_and_methods_Point.
-  Definition Self := associated_functions_and_methods.Point.
+  Definition Self `{State.Trait} : Set :=
+    associated_functions_and_methods.Point.
   
   Parameter origin :
       forall `{State.Trait},
@@ -70,7 +71,8 @@ End Rectangle.
 Definition Rectangle `{State.Trait} : Set := M.val (Rectangle.t).
 
 Module Impl_associated_functions_and_methods_Rectangle.
-  Definition Self := associated_functions_and_methods.Rectangle.
+  Definition Self `{State.Trait} : Set :=
+    associated_functions_and_methods.Rectangle.
   
   Parameter get_p1 :
       forall `{State.Trait},
@@ -121,7 +123,7 @@ End Pair.
 Definition Pair `{State.Trait} : Set := M.val Pair.t.
 
 Module Impl_associated_functions_and_methods_Pair.
-  Definition Self := associated_functions_and_methods.Pair.
+  Definition Self `{State.Trait} : Set := associated_functions_and_methods.Pair.
   
   Parameter destroy : forall `{State.Trait}, Self -> M unit.
   

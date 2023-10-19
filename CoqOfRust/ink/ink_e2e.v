@@ -9,7 +9,9 @@ Require CoqOfRust.ink.sp_keyring.
 Require CoqOfRust.ink.subxt.
 
 Module builders.
-  Definition CreateBuilderPartial (E ContractRef Args R : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  Definition CreateBuilderPartial (E ContractRef Args R : Set)
+      `{State.Trait} `{ink_env.types.Environment.Trait E} :
+      Set :=
     ink_env.call.create_builder.CreateBuilder
       E
       ContractRef
@@ -32,7 +34,9 @@ Module builders.
         M (alloc.vec.Vec u8 alloc.vec.Vec.Default.A).
 End builders.
 
-Definition CreateBuilderPartial (E ContractRef Args R : Set) `{ink_env.types.Environment.Trait E} : Set :=
+Definition CreateBuilderPartial (E ContractRef Args R : Set)
+    `{State.Trait} :
+    Set :=
   ink_env.call.create_builder.CreateBuilder
     E
     ContractRef
@@ -697,11 +701,11 @@ Module xts.
   End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
   
   Module Determinism.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | Enforced
     | Relaxed.
   End Determinism.
-  Definition Determinism : Set := Determinism.t.
+  Definition Determinism `{State.Trait} : Set := Determinism.t.
   
   Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
     Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
@@ -990,7 +994,7 @@ Module xts.
 End xts.
 
 Module client.
-  Definition CallBuilderFinal (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=
+  Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=
     ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
       E
       (ink_env.call.common.Set_
@@ -1291,7 +1295,7 @@ Module client.
         `{subxt.config.Config.Trait C}
         `{ink_env.types.Environment.Trait E}
         `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
-      Inductive t : Set :=
+      Inductive t `{State.Trait} : Set :=
       | ContractNotFound (_ : alloc.string.String)
       |
         InstantiateDryRun
@@ -1319,6 +1323,7 @@ Module client.
   End Error.
   Definition Error
       (C E : Set)
+      `{State.Trait}
       `{subxt.config.Config.Trait C}
       `{ink_env.types.Environment.Trait E}
       `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
@@ -1622,7 +1627,7 @@ Module client.
     M.val (Client.t (C := C) (E := E)).
 End client.
 
-Definition CallBuilderFinal (E Args RetType : Set) `{ink_env.types.Environment.Trait E} : Set :=
+Definition CallBuilderFinal (E Args RetType : Set) `{State.Trait} `{ink_env.types.Environment.Trait E} : Set :=
   ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.CallBuilder
     E
     (ink_env.call.common.Set_
@@ -1913,7 +1918,7 @@ Module Error.
       `{subxt.config.Config.Trait C}
       `{ink_env.types.Environment.Trait E}
       `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | ContractNotFound (_ : alloc.string.String)
     |
       InstantiateDryRun
@@ -1941,6 +1946,7 @@ Module Error.
 End Error.
 Definition Error
     (C E : Set)
+    `{State.Trait}
     `{subxt.config.Config.Trait C}
     `{ink_env.types.Environment.Trait E}
     `{core.fmt.Debug.Trait (ink_env.types.Environment.Balance (Self := E))}
@@ -4217,11 +4223,11 @@ Module Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
 End Impl_scale_encode_EncodeAsFields_for_ink_e2e_xts_Transfer_E_C.
 
 Module Determinism.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Enforced
   | Relaxed.
 End Determinism.
-Definition Determinism : Set := Determinism.t.
+Definition Determinism `{State.Trait} : Set := Determinism.t.
 
 Module Impl_core_fmt_Debug_for_ink_e2e_xts_Determinism.
   Definition Self `{State.Trait} := ink_e2e.xts.Determinism.
@@ -5058,10 +5064,10 @@ Definition ContractsApi
   M.val (ContractsApi.t (C := C) (E := E)).
 
 Module SubstrateConfig.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   .
 End SubstrateConfig.
-Definition SubstrateConfig : Set := SubstrateConfig.t.
+Definition SubstrateConfig `{State.Trait} : Set := SubstrateConfig.t.
 
 Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
   Definition Self `{State.Trait} := ink_e2e.SubstrateConfig.
@@ -5100,12 +5106,12 @@ Module Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
   Global Hint Resolve I : core.
 End Impl_subxt_config_Config_for_ink_e2e_SubstrateConfig.
 
-Definition PolkadotConfig : Set :=
+Definition PolkadotConfig `{State.Trait} : Set :=
   subxt.config.WithExtrinsicParams
     ink_e2e.SubstrateConfig
     (subxt.config.polkadot.PolkadotExtrinsicParams ink_e2e.SubstrateConfig).
 
-Definition Signer (C : Set) : Set :=
+Definition Signer (C : Set) `{State.Trait} : Set :=
   subxt.tx.signer.pair_signer.PairSigner C sp_core.sr25519.Pair.
 
 Parameter INIT : forall `{State.Trait}, std.sync.once.Once.

@@ -15,7 +15,7 @@ End Foo.
 Definition Foo `{State.Trait} : Set := M.val Foo.t.
 
 Module Impl_example05_Foo.
-  Definition Self := example05.Foo.
+  Definition Self `{State.Trait} : Set := example05.Foo.
   
   Parameter plus1 : forall `{State.Trait}, Self -> M u32.
   
