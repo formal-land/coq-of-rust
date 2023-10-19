@@ -32,10 +32,10 @@ Traits
 [x] PartialOrd
 *)
 Module PartialEq.
-  Class Trait (Self : Set) {Rhs : Set} : Set := {
+  Class Trait (Self : Set) {Rhs : Set} `{State.Trait} : Set := {
     Rhs := Rhs;
 
-    eq `{State.Trait} : ref Self -> ref Rhs -> M bool;
+    eq : ref Self -> ref Rhs -> M bool;
   }.
 
   Module Default.
@@ -163,9 +163,9 @@ Module Impls.
   Module Impl_PartialEq_for_unit.
     Definition eq `{State.Trait} (x y : ref unit) : M bool := Pure true.
 
-    Global Instance I :
+    Global Instance I `{State.Trait} :
       PartialEq.Trait unit (Rhs := PartialEq.Default.Rhs unit) := {
-      eq `{State.Trait} := eq;
+      eq := eq;
     }.
   End Impl_PartialEq_for_unit.
 End Impls.

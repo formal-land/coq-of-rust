@@ -370,6 +370,18 @@ Module i32_Instances.
   Admitted.
 End i32_Instances.
 
+Module ref_Instances.
+  Global Instance IDisplay {T : Set} `{H : State.Trait}
+      {_ : core.fmt.Display.Trait T (H := H)} :
+    core.fmt.Display.Trait (ref T).
+  Admitted.
+
+  Global Instance IDebug {T : Set} `{H : State.Trait}
+      {_ : core.fmt.Debug.Trait T (H := H)} :
+    core.fmt.Debug.Trait (ref T).
+  Admitted.
+End ref_Instances.
+
 Module Debug_Tuple_Instances.
   Global Instance IDebug2 {A1 A2 : Set}
     `(core.fmt.Debug.Trait A1)

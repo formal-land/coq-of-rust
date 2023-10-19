@@ -344,11 +344,20 @@ Module rt.
   Definition Argument : Set := ArgumentV1.
 
   Parameter new_display :
-      forall `{State.Trait} {T : Set} `{Display.Trait T}, ref T -> M Argument.
+    forall `{State.Trait} {T : Set} `{Display.Trait T}, ref T -> M Argument.
 
   Global Instance Argument_new_display
-    `{State.Trait} {T : Set} `{Display.Trait T} :
+    {T : Set} `{State.Trait} `{Display.Trait T} :
     Notation.DoubleColon Argument "new_display" := {
     Notation.double_colon := new_display (T := T);
+  }.
+
+  Parameter new_debug :
+    forall `{State.Trait} {T : Set} `{Debug.Trait T}, ref T -> M Argument.
+
+  Global Instance Argument_new_debug
+    {T : Set} `{State.Trait} `{Debug.Trait T} :
+    Notation.DoubleColon Argument "new_debug" := {
+    Notation.double_colon := new_debug (T := T);
   }.
 End rt.
