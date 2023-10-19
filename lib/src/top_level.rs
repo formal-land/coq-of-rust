@@ -1224,7 +1224,6 @@ fn make_dyn_parm(dy_gen: DynNameGen, arg: Box<CoqType>) -> (DynNameGen, Box<CoqT
                 Box::new(CoqType::Var(Box::new(Path::local(dy_name)))),
             )
         } else {
-            // NOTE: cannot use `arg` directly because it is partially borrowed. Can it be fixed?
             (dy_gen, Box::new(CoqType::Dyn(path)))
         }
     } else {
@@ -1374,13 +1373,20 @@ impl FunDefinition {
                                                     })
                                                     .collect::<Vec<_>>()
                                             }),
+                                      with_monad_parm: true
                                     },
                                 )),
                                 coq::TopLevelItem::Line,
                                 coq::TopLevelItem::Code(nest([
                                     text("Global Instance "),
                                     text(format!("Deb_{body_parameter_name_for_fmt}")),
-                                    text(" : "),
+                                    text(" :"),
+                                    line(),
+                                    text("forall"),
+                                    line(),
+                                    monadic_typeclass_parameter(), 
+                                    text(","),
+                                    line(),
                                     Path::new(&["Notation", "DoubleColon"]).to_doc(),
                                     line(),
                                     concat(self.signature_and_body.args.iter().map(
@@ -1460,6 +1466,7 @@ impl FunDefinition {
                                         .concat(),
                                         image: Box::new(coq::Expression::Unit),
                                     },
+                                    with_monad_parm: true
                                 },
                             ))
                         };
@@ -1516,6 +1523,7 @@ impl FunDefinition {
                                                 ),
                                         ),
                                     },
+                                    with_monad_parm: true
                                 },
                             ))],
                         ]
@@ -1832,6 +1840,7 @@ impl TopLevelItem {
                                 args: vec![coq::ArgDecl::monadic_typeclass_parameter()],
                                 image: Box::new(ty.to_coq()),
                             },
+                            with_monad_parm: false
                         },
                     )),
                 ])
@@ -2709,6 +2718,7 @@ impl TypeStructStruct {
                                                                   "t",
                                                                   &coq::DefinitionKind::Assumption {
                                                                       ty: coq::Expression::Set,
+                                                                      with_monad_parm: false
                                                                   },
                                                               ),
                                                           )],
@@ -2778,6 +2788,7 @@ impl TypeStructStruct {
                                                                               ]),
                                                                       ),
                                                                   },
+                                                                  with_monad_parm: false
                                                               },
                                                           ))],
                                                       ].concat()),

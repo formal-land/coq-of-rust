@@ -1,6 +1,6 @@
 use crate::path::Path;
 use crate::render::{
-    self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
+    self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc, monadic_typeclass_parameter,
 };
 
 /// the
@@ -110,7 +110,10 @@ pub(crate) enum DefinitionKind<'a> {
     },
     /// an opaque constant
     /// (using `Parameter`)
-    Assumption { ty: Expression<'a> },
+    Assumption { 
+      ty: Expression<'a>,
+      with_monad_parm: bool
+    },
 }
 
 #[derive(Clone)]
@@ -511,14 +514,25 @@ impl<'a> Definition<'a> {
                 body.to_doc(false),
                 text("."),
             ]),
-            DefinitionKind::Assumption { ty } => nest([
+            DefinitionKind::Assumption { ty, with_monad_parm } => nest([
                 nest([
                     text("Parameter"),
                     line(),
                     text(self.name.to_owned()),
                     line(),
                 ]),
-                nest([text(":"), line(), ty.to_doc(false)]),
+                nest([text(":"), line(), 
+                
+                if with_monad_parm {
+                  concat([
+                    text("forall"),
+                    line(),
+                    monadic_typeclass_parameter(),
+                    text(","),
+                    line()
+                  ])
+                } else { nil() },
+                ty.to_doc(false)]),
                 text("."),
             ]),
         }
