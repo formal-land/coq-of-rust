@@ -1,6 +1,7 @@
 use crate::path::Path;
 use crate::render::{
-    self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc, monadic_typeclass_parameter,
+    self, concat, group, hardline, intersperse, line, monadic_typeclass_parameter, nest, nil,
+    paren, text, Doc,
 };
 
 /// the
@@ -110,9 +111,9 @@ pub(crate) enum DefinitionKind<'a> {
     },
     /// an opaque constant
     /// (using `Parameter`)
-    Assumption { 
-      ty: Expression<'a>,
-      with_monad_parm: bool
+    Assumption {
+        ty: Expression<'a>,
+        with_monad_parm: bool,
     },
 }
 
@@ -514,25 +515,32 @@ impl<'a> Definition<'a> {
                 body.to_doc(false),
                 text("."),
             ]),
-            DefinitionKind::Assumption { ty, with_monad_parm } => nest([
+            DefinitionKind::Assumption {
+                ty,
+                with_monad_parm,
+            } => nest([
                 nest([
                     text("Parameter"),
                     line(),
                     text(self.name.to_owned()),
                     line(),
                 ]),
-                nest([text(":"), line(), 
-                
-                if with_monad_parm {
-                  concat([
-                    text("forall"),
+                nest([
+                    text(":"),
                     line(),
-                    monadic_typeclass_parameter(),
-                    text(","),
-                    line()
-                  ])
-                } else { nil() },
-                ty.to_doc(false)]),
+                    if with_monad_parm {
+                        concat([
+                            text("forall"),
+                            line(),
+                            monadic_typeclass_parameter(),
+                            text(","),
+                            line(),
+                        ])
+                    } else {
+                        nil()
+                    },
+                    ty.to_doc(false),
+                ]),
                 text("."),
             ]),
         }

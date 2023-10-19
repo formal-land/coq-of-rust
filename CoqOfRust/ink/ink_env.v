@@ -1403,6 +1403,8 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             T).
   
   Parameter recorded_events_ret_ty :
+      forall
+      `{H' : State.Trait},
       Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
       unit.
   Parameter recorded_events :
@@ -3134,6 +3136,8 @@ Definition DefaultAccounts
   DefaultAccounts.t (T := T).
 
 Parameter recorded_events_ret_ty :
+    forall
+    `{H' : State.Trait},
     Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
     unit.
 Parameter recorded_events :

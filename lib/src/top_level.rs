@@ -1373,7 +1373,7 @@ impl FunDefinition {
                                                     })
                                                     .collect::<Vec<_>>()
                                             }),
-                                      with_monad_parm: true
+                                        with_monad_parm: true,
                                     },
                                 )),
                                 coq::TopLevelItem::Line,
@@ -1384,7 +1384,7 @@ impl FunDefinition {
                                     line(),
                                     text("forall"),
                                     line(),
-                                    monadic_typeclass_parameter(), 
+                                    monadic_typeclass_parameter(),
                                     text(","),
                                     line(),
                                     Path::new(&["Notation", "DoubleColon"]).to_doc(),
@@ -1466,7 +1466,7 @@ impl FunDefinition {
                                         .concat(),
                                         image: Box::new(coq::Expression::Unit),
                                     },
-                                    with_monad_parm: true
+                                    with_monad_parm: true,
                                 },
                             ))
                         };
@@ -1523,7 +1523,7 @@ impl FunDefinition {
                                                 ),
                                         ),
                                     },
-                                    with_monad_parm: true
+                                    with_monad_parm: false,
                                 },
                             ))],
                         ]

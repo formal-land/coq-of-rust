@@ -2,6 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter create_fn_ret_ty :
+    forall
+    `{H' : State.Trait},
     Sigma (Ty : Set) `(core.ops.function.Fn.Trait Ty),
     unit.
 Parameter create_fn :
@@ -11,6 +13,8 @@ Parameter create_fn :
 Error OpaqueTy.
 
 Parameter create_fnmut_ret_ty :
+    forall
+    `{H' : State.Trait},
     Sigma (Ty : Set) `(core.ops.function.FnMut.Trait Ty),
     unit.
 Parameter create_fnmut :
@@ -18,6 +22,8 @@ Parameter create_fnmut :
     M (H := H') (projT1 create_fnmut_ret_ty).
 
 Parameter create_fnonce_ret_ty :
+    forall
+    `{H' : State.Trait},
     Sigma (Ty : Set) `(core.ops.function.FnOnce.Trait Ty),
     unit.
 Parameter create_fnonce :
