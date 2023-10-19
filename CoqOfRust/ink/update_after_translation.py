@@ -64,7 +64,8 @@ Require CoqOfRust.ink.ink_env.""",
     )
     content = sub_at_least_once(
         re.escape(
-            "Definition IsResultType (T : Set) : Set := IsResultType.t (T := T)."
+            """Definition IsResultType (T : Set) `{State.Trait} : Set :=
+    M.val (IsResultType.t (T := T))."""
         ),
         "",
         content,
@@ -329,37 +330,6 @@ Require CoqOfRust.ink.subxt.""",
         content,
     )
 
-    content = sub_at_least_once(
-        re.escape("Definition Self := ink_e2e.client.UploadResult C E."),
-        """Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
-      Definition Self := ink_e2e.client.UploadResult C E.""",
-        content,
-    )
-    content = sub_at_least_once(
-        re.escape("Definition Self := ink_e2e.client.InstantiationResult C E."),
-        """Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
-      Definition Self := ink_e2e.client.InstantiationResult C E.""",
-        content,
-    )
-    content = sub_at_least_once(
-        re.escape("Definition Self := ink_e2e.client.CallResult C E V."),
-        """Context
-        `{subxt.config.Config.Trait C}
-        `{ink_env.types.Environment.Trait E}.
-      Definition Self := ink_e2e.client.CallResult C E V.""",
-        content,
-    )
-    content = sub_at_least_once(
-        re.escape("Definition Self := ink_e2e.client.CallDryRunResult E V."),
-        """Context `{ink_env.types.Environment.Trait E}.
-      Definition Self := ink_e2e.client.CallDryRunResult E V.""",
-        content,
-    )
-
     content = ignore_module_names(
         [
             "Impl_core_fmt_Debug_for_ink_e2e_client_ContractInstantiatedEvent_E",
@@ -429,19 +399,19 @@ Require CoqOfRust.ink.syn.""",
     )
 
     content = sub_at_least_once(
-        re.escape("""M (H := H') unit.
+        re.escape("""M unit.
 
 Module InkE2ETest."""),
-        """M (H := H') unit.
+        """M unit.
 
 (* Module InkE2ETest.""",
         content,
     )
     content = sub_at_least_once(
-        re.escape("""Definition InkE2ETest : Set := InkE2ETest.t.
+        re.escape("""Definition InkE2ETest `{State.Trait} : Set := M.val (InkE2ETest.t).
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest."""),
-        """Definition InkE2ETest : Set := InkE2ETest.t. *)
+        """Definition InkE2ETest `{State.Trait} : Set := M.val InkE2ETest.t. *)
 
 Module Impl_core_convert_From_for_ink_e2e_macro_codegen_InkE2ETest.""",
         content,
@@ -476,10 +446,10 @@ Parameter generate""",
         content,
     )
     content = sub_at_least_once(
-        r"""M \(H := H'\) \(syn.error.Result proc_macro2.TokenStream\).
+        re.escape("""M (syn.error.Result proc_macro2.TokenStream).
 
-Module trait_def.""",
-        """M (H := H') (syn.error.Result proc_macro2.TokenStream). *)
+Module trait_def."""),
+        """M (syn.error.Result proc_macro2.TokenStream). *)
 
 Module trait_def.""",
         content,
@@ -643,9 +613,9 @@ Require CoqOfRust.ink.ink.""",
 
     content = sub_at_least_once(
         r"""Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-    Definition Self := erc20.erc20.Erc20.""",
+    Definition Self `{State.Trait} := erc20.erc20.Erc20.""",
         """Module Impl_core_default_Default_for_erc20_erc20_Erc20.
-    Definition Self := erc20.erc20.Erc20.
+    Definition Self `{State.Trait} := erc20.erc20.Erc20.
 
     Global Instance Default_for_AutoStorableHint_Type_ : default.Default.Trait
      (forall (Self Key : Set) (H : ink_storage_traits.storage.StorageKey.Trait Key)
@@ -656,13 +626,13 @@ Require CoqOfRust.ink.ink.""",
     )
 
     content = sub_at_least_once(
-        r"""  End Erc20.
-  Definition Erc20 : Set := Erc20.t.
-""",
-        r"""    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
+        re.escape("""  End Erc20.
+  Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
+"""),
+        """    Global Instance Erc20_New `{State.Trait} : Notation.DoubleColon t "new" (T := unit -> M t).
     Admitted.
   End Erc20.
-  Definition Erc20 : Set := Erc20.t.
+  Definition Erc20 `{State.Trait} : Set := M.val (Erc20.t).
 """,
         content,
     )
@@ -713,9 +683,10 @@ Require CoqOfRust.ink.ink.""",
     )
 
     content = sub_at_least_once(
-        """    Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
+        re.escape("""    Global Instance I `{State.Trait}
+      : ink_env.contract.ContractEnv.Trait Self := {
       ink_env.contract.ContractEnv.Env := Env;
-    }.""",
+    }."""),
         """    #[refine]
     Global Instance I : ink_env.contract.ContractEnv.Trait Self := {
       ink_env.contract.ContractEnv.Env := Env;

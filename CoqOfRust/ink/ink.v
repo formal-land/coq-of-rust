@@ -7,16 +7,17 @@ Module result_info.
     (* Section IsResultType.
       Context {T : Set}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         marker : core.marker.PhantomData (T);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+        Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
       }.
-      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-        Notation.double_colon '(Build_t x0) := x0;
+      Global Instance Get_AF_marker `{State.Trait}
+        : Notation.DoubleColon t "marker" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
     End IsResultType. *)
   End IsResultType. *)
@@ -24,10 +25,10 @@ Module result_info.
   
   Module IsResultTypeFallback.
     Class Trait (Self : Set) : Type := {
-      VALUE `{H' : State.Trait} : bool;
+      VALUE `{State.Trait} : bool;
     }.
     
-    Global Instance Method_VALUE `{H' : State.Trait} `(Trait)
+    Global Instance Method_VALUE `{State.Trait} `(Trait)
       : Notation.Dot "VALUE" := {
       Notation.dot := VALUE;
     }.
@@ -37,7 +38,7 @@ Module result_info.
     Section IsResultErr.
       Context {T : Set}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         _ : ref T;
       }.
       Global Set Primitive Projections.
@@ -54,9 +55,9 @@ Module result_info.
     Class Trait (Self : Set) : Type := {
     }.
     Global Set Primitive Projections.
-    Global Instance Method_value `{H' : State.Trait} `(Trait)
+    Global Instance Method_value `{State.Trait} `(Trait)
       : Notation.Dot "value" := {
-      Notation.dot (self : ref Self) := (axiom : M (H := H') bool);
+      Notation.dot (self : ref Self) := (axiom : M bool);
     }.
   End IsResultErrFallback.
 End result_info.
@@ -65,27 +66,29 @@ End result_info.
   (* Section IsResultType.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       marker : core.marker.PhantomData (T);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
     }.
-    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon '(Build_t x0) := x0;
+    Global Instance Get_AF_marker `{State.Trait}
+      : Notation.DoubleColon t "marker" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
   End IsResultType. *)
 End IsResultType. *)
-
+Definition IsResultType (T : Set) `{State.Trait} : Set :=
+  M.val (IsResultType.t (T := T)).
 
 Module IsResultTypeFallback.
   Class Trait (Self : Set) : Type := {
-    VALUE `{H' : State.Trait} : bool;
+    VALUE `{State.Trait} : bool;
   }.
   
-  Global Instance Method_VALUE `{H' : State.Trait} `(Trait)
+  Global Instance Method_VALUE `{State.Trait} `(Trait)
     : Notation.Dot "VALUE" := {
     Notation.dot := VALUE;
   }.
@@ -95,7 +98,7 @@ Module IsResultErr.
   Section IsResultErr.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : ref T;
     }.
     Global Set Primitive Projections.
@@ -112,9 +115,9 @@ Module IsResultErrFallback.
   Class Trait (Self : Set) : Type := {
   }.
   Global Set Primitive Projections.
-  Global Instance Method_value `{H' : State.Trait} `(Trait)
+  Global Instance Method_value `{State.Trait} `(Trait)
     : Notation.Dot "value" := {
-    Notation.dot (self : ref Self) := (axiom : M (H := H') bool);
+    Notation.dot (self : ref Self) := (axiom : M bool);
   }.
 End IsResultErrFallback.
 
@@ -122,10 +125,10 @@ Module reflect.
   Module contract.
     Module ContractName.
       Class Trait (Self : Set) : Type := {
-        NAME `{H' : State.Trait} : ref str;
+        NAME `{State.Trait} : ref str;
       }.
       
-      Global Instance Method_NAME `{H' : State.Trait} `(Trait)
+      Global Instance Method_NAME `{State.Trait} `(Trait)
         : Notation.Dot "NAME" := {
         Notation.dot := NAME;
       }.
@@ -138,13 +141,11 @@ Module reflect.
         Input : Set;
         Output : Set;
         Storage : Set;
-        CALLABLE `{H' : State.Trait}
-          :
-          (mut_ref Storage) -> Input -> M (H := H') Output;
-        MUTATES `{H' : State.Trait} : bool;
-        PAYABLE `{H' : State.Trait} : bool;
-        SELECTOR `{H' : State.Trait} : list u8;
-        LABEL `{H' : State.Trait} : ref str;
+        CALLABLE `{State.Trait} : (mut_ref Storage) -> Input -> M Output;
+        MUTATES `{State.Trait} : bool;
+        PAYABLE `{State.Trait} : bool;
+        SELECTOR `{State.Trait} : array u8;
+        LABEL `{State.Trait} : ref str;
       }.
       
       Global Instance Method_Input `(Trait)
@@ -159,23 +160,23 @@ Module reflect.
         : Notation.DoubleColonType Self "Storage" := {
         Notation.double_colon_type := Storage;
       }.
-      Global Instance Method_CALLABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_CALLABLE `{State.Trait} `(Trait)
         : Notation.Dot "CALLABLE" := {
         Notation.dot := CALLABLE;
       }.
-      Global Instance Method_MUTATES `{H' : State.Trait} `(Trait)
+      Global Instance Method_MUTATES `{State.Trait} `(Trait)
         : Notation.Dot "MUTATES" := {
         Notation.dot := MUTATES;
       }.
-      Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_PAYABLE `{State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
         Notation.dot := PAYABLE;
       }.
-      Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+      Global Instance Method_SELECTOR `{State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
         Notation.dot := SELECTOR;
       }.
-      Global Instance Method_LABEL `{H' : State.Trait} `(Trait)
+      Global Instance Method_LABEL `{State.Trait} `(Trait)
         : Notation.Dot "LABEL" := {
         Notation.dot := LABEL;
       }.
@@ -187,11 +188,11 @@ Module reflect.
         Storage : Set;
         Output : Set;
         Error : Set;
-        IS_RESULT `{H' : State.Trait} : bool;
-        CALLABLE `{H' : State.Trait} : Input -> M (H := H') Output;
-        PAYABLE `{H' : State.Trait} : bool;
-        SELECTOR `{H' : State.Trait} : list u8;
-        LABEL `{H' : State.Trait} : ref str;
+        IS_RESULT `{State.Trait} : bool;
+        CALLABLE `{State.Trait} : Input -> M Output;
+        PAYABLE `{State.Trait} : bool;
+        SELECTOR `{State.Trait} : array u8;
+        LABEL `{State.Trait} : ref str;
       }.
       
       Global Instance Method_Input `(Trait)
@@ -210,23 +211,23 @@ Module reflect.
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
-      Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
+      Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
         : Notation.Dot "IS_RESULT" := {
         Notation.dot := IS_RESULT;
       }.
-      Global Instance Method_CALLABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_CALLABLE `{State.Trait} `(Trait)
         : Notation.Dot "CALLABLE" := {
         Notation.dot := CALLABLE;
       }.
-      Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_PAYABLE `{State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
         Notation.dot := PAYABLE;
       }.
-      Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+      Global Instance Method_SELECTOR `{State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
         Notation.dot := SELECTOR;
       }.
-      Global Instance Method_LABEL `{H' : State.Trait} `(Trait)
+      Global Instance Method_LABEL `{State.Trait} `(Trait)
         : Notation.Dot "LABEL" := {
         Notation.dot := LABEL;
       }.
@@ -247,14 +248,14 @@ Module reflect.
           `{ink.reflect.dispatch.private.Sealed.Trait Self}
           {C : Set} :
           Type := {
-        IS_RESULT `{H' : State.Trait} : bool;
+        IS_RESULT `{State.Trait} : bool;
         Error : Set;
-        as_result `{H' : State.Trait}
+        as_result `{State.Trait}
           :
-          (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error));
+          (ref Self) -> M (core.result.Result (ref C) (ref Error));
       }.
       
-      Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
+      Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
         : Notation.Dot "IS_RESULT" := {
         Notation.dot := IS_RESULT;
       }.
@@ -262,7 +263,7 @@ Module reflect.
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
-      Global Instance Method_as_result `{H' : State.Trait} `(Trait)
+      Global Instance Method_as_result `{State.Trait} `(Trait)
         : Notation.Dot "as_result" := {
         Notation.dot := as_result;
       }.
@@ -272,7 +273,7 @@ Module reflect.
       Section ConstructorOutputValue.
         Context {T : Set}.
         Unset Primitive Projections.
-        Record t : Set := {
+        Record t `{State.Trait} : Set := {
           _ : T;
         }.
         Global Set Primitive Projections.
@@ -296,14 +297,13 @@ Module reflect.
     
     Module ExecuteDispatchable.
       Class Trait (Self : Set) : Type := {
-        execute_dispatchable `{H' : State.Trait}
+        execute_dispatchable `{State.Trait}
           :
           Self ->
-            M (H := H')
-              (core.result.Result unit ink.reflect.dispatch.DispatchError);
+            M (core.result.Result unit ink.reflect.dispatch.DispatchError);
       }.
       
-      Global Instance Method_execute_dispatchable `{H' : State.Trait} `(Trait)
+      Global Instance Method_execute_dispatchable `{State.Trait} `(Trait)
         : Notation.Dot "execute_dispatchable" := {
         Notation.dot := execute_dispatchable;
       }.
@@ -330,16 +330,15 @@ Module reflect.
       Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
           Type := {
         decode_dispatch
-          `{H' : State.Trait}
+          `{State.Trait}
           {I : Set}
           `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :
           (mut_ref I) ->
-            M (H := H')
-              (core.result.Result Self ink.reflect.dispatch.DispatchError);
+            M (core.result.Result Self ink.reflect.dispatch.DispatchError);
       }.
       
-      Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
+      Global Instance Method_decode_dispatch `{State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
         Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :=
@@ -382,15 +381,15 @@ Module reflect.
     Module info.
       Module TraitMessageInfo.
         Class Trait (Self : Set) : Type := {
-          PAYABLE `{H' : State.Trait} : bool;
-          SELECTOR `{H' : State.Trait} : list u8;
+          PAYABLE `{State.Trait} : bool;
+          SELECTOR `{State.Trait} : array u8;
         }.
         
-        Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+        Global Instance Method_PAYABLE `{State.Trait} `(Trait)
           : Notation.Dot "PAYABLE" := {
           Notation.dot := PAYABLE;
         }.
-        Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+        Global Instance Method_SELECTOR `{State.Trait} `(Trait)
           : Notation.Dot "SELECTOR" := {
           Notation.dot := SELECTOR;
         }.
@@ -398,20 +397,20 @@ Module reflect.
       
       Module TraitInfo.
         Class Trait (Self : Set) : Type := {
-          ID `{H' : State.Trait} : u32;
-          PATH `{H' : State.Trait} : ref str;
-          NAME `{H' : State.Trait} : ref str;
+          ID `{State.Trait} : u32;
+          PATH `{State.Trait} : ref str;
+          NAME `{State.Trait} : ref str;
         }.
         
-        Global Instance Method_ID `{H' : State.Trait} `(Trait)
+        Global Instance Method_ID `{State.Trait} `(Trait)
           : Notation.Dot "ID" := {
           Notation.dot := ID;
         }.
-        Global Instance Method_PATH `{H' : State.Trait} `(Trait)
+        Global Instance Method_PATH `{State.Trait} `(Trait)
           : Notation.Dot "PATH" := {
           Notation.dot := PATH;
         }.
-        Global Instance Method_NAME `{H' : State.Trait} `(Trait)
+        Global Instance Method_NAME `{State.Trait} `(Trait)
           : Notation.Dot "NAME" := {
           Notation.dot := NAME;
         }.
@@ -423,21 +422,24 @@ Module reflect.
         Section TraitDefinitionRegistry.
           Context {E : Set}.
           Unset Primitive Projections.
-          Record t : Set := {
+          Record t `{State.Trait} : Set := {
             marker : core.marker.PhantomData (E);
           }.
           Global Set Primitive Projections.
           
-          Global Instance Get_marker : Notation.Dot "marker" := {
-            Notation.dot '(Build_t x0) := x0;
+          Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+            Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
           }.
-          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-            Notation.double_colon '(Build_t x0) := x0;
+          Global Instance Get_AF_marker `{State.Trait}
+            : Notation.DoubleColon t "marker" := {
+            Notation.double_colon x
+              :=
+              let* x := M.read x in Pure x.(marker) : M _;
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry (E : Set) : Set :=
-        TraitDefinitionRegistry.t (E := E).
+      Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+        M.val (TraitDefinitionRegistry.t (E := E)).
     End registry.
   End trait_def.
 End reflect.
@@ -446,12 +448,8 @@ Module codegen.
   Module dispatch.
     Module execution.
       Parameter deny_payment :
-          forall
-            `{H' : State.Trait}
-            {E : Set}
-            `{ink_env.types.Environment.Trait E},
-          M (H := H')
-              (core.result.Result unit ink.reflect.dispatch.DispatchError).
+          forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+          M (core.result.Result unit ink.reflect.dispatch.DispatchError).
     End execution.
     
     Module info.
@@ -472,7 +470,7 @@ Module codegen.
         Section DispatchInput.
           Context {T : Set}.
           Unset Primitive Projections.
-          Record t : Set := {
+          Record t `{State.Trait} : Set := {
             _ : T;
           }.
           Global Set Primitive Projections.
@@ -488,7 +486,7 @@ Module codegen.
         Section DispatchOutput.
           Context {T : Set}.
           Unset Primitive Projections.
-          Record t : Set := {
+          Record t `{State.Trait} : Set := {
             _ : T;
           }.
           Global Set Primitive Projections.
@@ -506,14 +504,14 @@ Module codegen.
     Module Env.
       Class Trait (Self : Set) : Type := {
         EnvAccess : Set;
-        env `{H' : State.Trait} : Self -> M (H := H') EnvAccess;
+        env `{State.Trait} : Self -> M EnvAccess;
       }.
       
       Global Instance Method_EnvAccess `(Trait)
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
-      Global Instance Method_env `{H' : State.Trait} `(Trait)
+      Global Instance Method_env `{State.Trait} `(Trait)
         : Notation.Dot "env" := {
         Notation.dot := env;
       }.
@@ -522,14 +520,14 @@ Module codegen.
     Module StaticEnv.
       Class Trait (Self : Set) : Type := {
         EnvAccess : Set;
-        env `{H' : State.Trait} : M (H := H') EnvAccess;
+        env `{State.Trait} : M EnvAccess;
       }.
       
       Global Instance Method_EnvAccess `(Trait)
         : Notation.DoubleColonType Self "EnvAccess" := {
         Notation.double_colon_type := EnvAccess;
       }.
-      Global Instance Method_env `{H' : State.Trait} `(Trait)
+      Global Instance Method_env `{State.Trait} `(Trait)
         : Notation.Dot "env" := {
         Notation.dot := env;
       }.
@@ -545,17 +543,17 @@ Module codegen.
             `{ink.reflect.event.ContractEventBase.Trait C} :
             Type := {
           emit_event
-            `{H' : State.Trait}
+            `{State.Trait}
             {E : Set}
             `{H'0
               :
               core.convert.Into.Trait E
                 (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
             :
-            Self -> E -> M (H := H') unit;
+            Self -> E -> M unit;
         }.
         
-        Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
+        Global Instance Method_emit_event `{State.Trait} `(Trait)
           : Notation.Dot "emit_event" := {
           Notation.dot
             {E : Set}
@@ -597,27 +595,31 @@ Module codegen.
                   (ink.codegen.event.topics.EventLenTopics.LenTopics
                     (Self := Event))}.
           Unset Primitive Projections.
-          Record t : Set := {
+          Record t `{State.Trait} : Set := {
             marker : core.marker.PhantomData (Event);
           }.
           Global Set Primitive Projections.
           
-          Global Instance Get_marker : Notation.Dot "marker" := {
-            Notation.dot '(Build_t x0) := x0;
+          Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+            Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
           }.
-          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-            Notation.double_colon '(Build_t x0) := x0;
+          Global Instance Get_AF_marker `{State.Trait}
+            : Notation.DoubleColon t "marker" := {
+            Notation.double_colon x
+              :=
+              let* x := M.read x in Pure x.(marker) : M _;
           }.
         End EventRespectsTopicLimit.
       End EventRespectsTopicLimit.
       Definition EventRespectsTopicLimit
           (Event : Set)
+          `{State.Trait}
           `{ink.codegen.event.topics.EventLenTopics.Trait Event}
           `{ink.codegen.event.topics.RespectTopicLimit.Trait
                 (ink.codegen.event.topics.EventLenTopics.LenTopics
                   (Self := Event))}
           : Set :=
-        EventRespectsTopicLimit.t (Event := Event).
+        M.val (EventRespectsTopicLimit.t (Event := Event)).
       
       Module EventTopics.
         Inductive t : Set := Build.
@@ -640,21 +642,19 @@ Module codegen.
       Module TraitCallBuilder.
         Class Trait (Self : Set) : Type := {
           Builder : Set;
-          call `{H' : State.Trait} : (ref Self) -> M (H := H') (ref Builder);
-          call_mut `{H' : State.Trait}
-            :
-            (mut_ref Self) -> M (H := H') (mut_ref Builder);
+          call `{State.Trait} : (ref Self) -> M (ref Builder);
+          call_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Builder);
         }.
         
         Global Instance Method_Builder `(Trait)
           : Notation.DoubleColonType Self "Builder" := {
           Notation.double_colon_type := Builder;
         }.
-        Global Instance Method_call `{H' : State.Trait} `(Trait)
+        Global Instance Method_call `{State.Trait} `(Trait)
           : Notation.Dot "call" := {
           Notation.dot := call;
         }.
-        Global Instance Method_call_mut `{H' : State.Trait} `(Trait)
+        Global Instance Method_call_mut `{State.Trait} `(Trait)
           : Notation.Dot "call_mut" := {
           Notation.dot := call_mut;
         }.
@@ -686,23 +686,19 @@ Module codegen.
               `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
                     Forwarder),
             unit;
-          forward `{H' : State.Trait}
-            :
-            (ref Self) -> M (H := H') (ref Forwarder);
-          forward_mut `{H' : State.Trait}
-            :
-            (mut_ref Self) -> M (H := H') (mut_ref Forwarder);
-          build `{H' : State.Trait}
+          forward `{State.Trait} : (ref Self) -> M (ref Forwarder);
+          forward_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Forwarder);
+          build `{State.Trait}
             :
             (ref Self) ->
-              M (H := H')
+              M
                 (ref
                   (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                     (Self := Forwarder)));
-          build_mut `{H' : State.Trait}
+          build_mut `{State.Trait}
             :
             (mut_ref Self) ->
-              M (H := H')
+              M
                 (mut_ref
                   (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                     (Self := Forwarder)));
@@ -712,19 +708,19 @@ Module codegen.
           : Notation.DoubleColonType Self "Forwarder" := {
           Notation.double_colon_type := Forwarder;
         }.
-        Global Instance Method_forward `{H' : State.Trait} `(Trait)
+        Global Instance Method_forward `{State.Trait} `(Trait)
           : Notation.Dot "forward" := {
           Notation.dot := forward;
         }.
-        Global Instance Method_forward_mut `{H' : State.Trait} `(Trait)
+        Global Instance Method_forward_mut `{State.Trait} `(Trait)
           : Notation.Dot "forward_mut" := {
           Notation.dot := forward_mut;
         }.
-        Global Instance Method_build `{H' : State.Trait} `(Trait)
+        Global Instance Method_build `{State.Trait} `(Trait)
           : Notation.Dot "build" := {
           Notation.dot := build;
         }.
-        Global Instance Method_build_mut `{H' : State.Trait} `(Trait)
+        Global Instance Method_build_mut `{State.Trait} `(Trait)
           : Notation.Dot "build_mut" := {
           Notation.dot := build_mut;
         }.
@@ -746,9 +742,7 @@ Module codegen.
   
   Module utils.
     Module identity_type.
-      Parameter consume_type :
-          forall `{H' : State.Trait} {T : Set},
-          M (H := H') unit.
+      Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
     End identity_type.
     
     Module same_type.
@@ -756,20 +750,25 @@ Module codegen.
         Section IsSameType.
           Context {T : Set}.
           Unset Primitive Projections.
-          Record t : Set := {
+          Record t `{State.Trait} : Set := {
             _marker : core.marker.PhantomData T;
           }.
           Global Set Primitive Projections.
           
-          Global Instance Get__marker : Notation.Dot "_marker" := {
-            Notation.dot '(Build_t x0) := x0;
+          Global Instance Get__marker `{State.Trait}
+            : Notation.Dot "_marker" := {
+            Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
           }.
-          Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-            Notation.double_colon '(Build_t x0) := x0;
+          Global Instance Get_AF__marker `{State.Trait}
+            : Notation.DoubleColon t "_marker" := {
+            Notation.double_colon x
+              :=
+              let* x := M.read x in Pure x.(_marker) : M _;
           }.
         End IsSameType.
       End IsSameType.
-      Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
+      Definition IsSameType (T : Set) `{State.Trait} : Set :=
+        M.val (IsSameType.t (T := T)).
     End same_type.
   End utils.
 End codegen.
@@ -777,12 +776,8 @@ End codegen.
 Module dispatch.
   Module execution.
     Parameter deny_payment :
-        forall
-          `{H' : State.Trait}
-          {E : Set}
-          `{ink_env.types.Environment.Trait E},
-        M (H := H')
-            (core.result.Result unit ink.reflect.dispatch.DispatchError).
+        forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+        M (core.result.Result unit ink.reflect.dispatch.DispatchError).
   End execution.
   
   Module info.
@@ -803,7 +798,7 @@ Module dispatch.
       Section DispatchInput.
         Context {T : Set}.
         Unset Primitive Projections.
-        Record t : Set := {
+        Record t `{State.Trait} : Set := {
           _ : T;
         }.
         Global Set Primitive Projections.
@@ -819,7 +814,7 @@ Module dispatch.
       Section DispatchOutput.
         Context {T : Set}.
         Unset Primitive Projections.
-        Record t : Set := {
+        Record t `{State.Trait} : Set := {
           _ : T;
         }.
         Global Set Primitive Projections.
@@ -835,13 +830,13 @@ End dispatch.
 
 Module execution.
   Parameter deny_payment :
-      forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
-      M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
+      forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+      M (core.result.Result unit ink.reflect.dispatch.DispatchError).
 End execution.
 
 Parameter deny_payment :
-    forall `{H' : State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
-    M (H := H') (core.result.Result unit ink.reflect.dispatch.DispatchError).
+    forall `{State.Trait} {E : Set} `{ink_env.types.Environment.Trait E},
+    M (core.result.Result unit ink.reflect.dispatch.DispatchError).
 
 Module info.
   Module ContractCallBuilder.
@@ -872,7 +867,7 @@ Module type_check.
     Section DispatchInput.
       Context {T : Set}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         _ : T;
       }.
       Global Set Primitive Projections.
@@ -888,7 +883,7 @@ Module type_check.
     Section DispatchOutput.
       Context {T : Set}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         _ : T;
       }.
       Global Set Primitive Projections.
@@ -905,7 +900,7 @@ Module DispatchInput.
   Section DispatchInput.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : T;
     }.
     Global Set Primitive Projections.
@@ -921,7 +916,7 @@ Module DispatchOutput.
   Section DispatchOutput.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : T;
     }.
     Global Set Primitive Projections.
@@ -937,15 +932,14 @@ Module env.
   Module Env.
     Class Trait (Self : Set) : Type := {
       EnvAccess : Set;
-      env `{H' : State.Trait} : Self -> M (H := H') EnvAccess;
+      env `{State.Trait} : Self -> M EnvAccess;
     }.
     
     Global Instance Method_EnvAccess `(Trait)
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
-    Global Instance Method_env `{H' : State.Trait} `(Trait)
-      : Notation.Dot "env" := {
+    Global Instance Method_env `{State.Trait} `(Trait) : Notation.Dot "env" := {
       Notation.dot := env;
     }.
   End Env.
@@ -953,15 +947,14 @@ Module env.
   Module StaticEnv.
     Class Trait (Self : Set) : Type := {
       EnvAccess : Set;
-      env `{H' : State.Trait} : M (H := H') EnvAccess;
+      env `{State.Trait} : M EnvAccess;
     }.
     
     Global Instance Method_EnvAccess `(Trait)
       : Notation.DoubleColonType Self "EnvAccess" := {
       Notation.double_colon_type := EnvAccess;
     }.
-    Global Instance Method_env `{H' : State.Trait} `(Trait)
-      : Notation.Dot "env" := {
+    Global Instance Method_env `{State.Trait} `(Trait) : Notation.Dot "env" := {
       Notation.dot := env;
     }.
   End StaticEnv.
@@ -970,15 +963,14 @@ End env.
 Module Env.
   Class Trait (Self : Set) : Type := {
     EnvAccess : Set;
-    env `{H' : State.Trait} : Self -> M (H := H') EnvAccess;
+    env `{State.Trait} : Self -> M EnvAccess;
   }.
   
   Global Instance Method_EnvAccess `(Trait)
     : Notation.DoubleColonType Self "EnvAccess" := {
     Notation.double_colon_type := EnvAccess;
   }.
-  Global Instance Method_env `{H' : State.Trait} `(Trait)
-    : Notation.Dot "env" := {
+  Global Instance Method_env `{State.Trait} `(Trait) : Notation.Dot "env" := {
     Notation.dot := env;
   }.
 End Env.
@@ -986,15 +978,14 @@ End Env.
 Module StaticEnv.
   Class Trait (Self : Set) : Type := {
     EnvAccess : Set;
-    env `{H' : State.Trait} : M (H := H') EnvAccess;
+    env `{State.Trait} : M EnvAccess;
   }.
   
   Global Instance Method_EnvAccess `(Trait)
     : Notation.DoubleColonType Self "EnvAccess" := {
     Notation.double_colon_type := EnvAccess;
   }.
-  Global Instance Method_env `{H' : State.Trait} `(Trait)
-    : Notation.Dot "env" := {
+  Global Instance Method_env `{State.Trait} `(Trait) : Notation.Dot "env" := {
     Notation.dot := env;
   }.
 End StaticEnv.
@@ -1008,17 +999,17 @@ Module event.
           `{ink.reflect.event.ContractEventBase.Trait C} :
           Type := {
         emit_event
-          `{H' : State.Trait}
+          `{State.Trait}
           {E : Set}
           `{H'0
             :
             core.convert.Into.Trait E
               (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
           :
-          Self -> E -> M (H := H') unit;
+          Self -> E -> M unit;
       }.
       
-      Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
+      Global Instance Method_emit_event `{State.Trait} `(Trait)
         : Notation.Dot "emit_event" := {
         Notation.dot
           {E : Set}
@@ -1060,27 +1051,31 @@ Module event.
                 (ink.codegen.event.topics.EventLenTopics.LenTopics
                   (Self := Event))}.
         Unset Primitive Projections.
-        Record t : Set := {
+        Record t `{State.Trait} : Set := {
           marker : core.marker.PhantomData (Event);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get_marker : Notation.Dot "marker" := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+          Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
         }.
-        Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-          Notation.double_colon '(Build_t x0) := x0;
+        Global Instance Get_AF_marker `{State.Trait}
+          : Notation.DoubleColon t "marker" := {
+          Notation.double_colon x
+            :=
+            let* x := M.read x in Pure x.(marker) : M _;
         }.
       End EventRespectsTopicLimit.
     End EventRespectsTopicLimit.
     Definition EventRespectsTopicLimit
         (Event : Set)
+        `{State.Trait}
         `{ink.codegen.event.topics.EventLenTopics.Trait Event}
         `{ink.codegen.event.topics.RespectTopicLimit.Trait
               (ink.codegen.event.topics.EventLenTopics.LenTopics
                 (Self := Event))}
         : Set :=
-      EventRespectsTopicLimit.t (Event := Event).
+      M.val (EventRespectsTopicLimit.t (Event := Event)).
     
     Module EventTopics.
       Inductive t : Set := Build.
@@ -1097,17 +1092,17 @@ Module emit.
         `{ink.reflect.event.ContractEventBase.Trait C} :
         Type := {
       emit_event
-        `{H' : State.Trait}
+        `{State.Trait}
         {E : Set}
         `{H'0
           :
           core.convert.Into.Trait E
             (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
         :
-        Self -> E -> M (H := H') unit;
+        Self -> E -> M unit;
     }.
     
-    Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
+    Global Instance Method_emit_event `{State.Trait} `(Trait)
       : Notation.Dot "emit_event" := {
       Notation.dot
         {E : Set}
@@ -1128,17 +1123,17 @@ Module EmitEvent.
       `{ink.reflect.event.ContractEventBase.Trait C} :
       Type := {
     emit_event
-      `{H' : State.Trait}
+      `{State.Trait}
       {E : Set}
       `{H'0
         :
         core.convert.Into.Trait E
           (T := ink.reflect.event.ContractEventBase.Type_ (Self := C))}
       :
-      Self -> E -> M (H := H') unit;
+      Self -> E -> M unit;
   }.
   
-  Global Instance Method_emit_event `{H' : State.Trait} `(Trait)
+  Global Instance Method_emit_event `{State.Trait} `(Trait)
     : Notation.Dot "emit_event" := {
     Notation.dot
       {E : Set}
@@ -1179,26 +1174,28 @@ Module topics.
               (ink.codegen.event.topics.EventLenTopics.LenTopics
                 (Self := Event))}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         marker : core.marker.PhantomData (Event);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+        Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
       }.
-      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-        Notation.double_colon '(Build_t x0) := x0;
+      Global Instance Get_AF_marker `{State.Trait}
+        : Notation.DoubleColon t "marker" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
     End EventRespectsTopicLimit.
   End EventRespectsTopicLimit.
   Definition EventRespectsTopicLimit
       (Event : Set)
+      `{State.Trait}
       `{ink.codegen.event.topics.EventLenTopics.Trait Event}
       `{ink.codegen.event.topics.RespectTopicLimit.Trait
             (ink.codegen.event.topics.EventLenTopics.LenTopics (Self := Event))}
       : Set :=
-    EventRespectsTopicLimit.t (Event := Event).
+    M.val (EventRespectsTopicLimit.t (Event := Event)).
   
   Module EventTopics.
     Inductive t : Set := Build.
@@ -1215,26 +1212,28 @@ Module EventRespectsTopicLimit.
             (ink.codegen.event.topics.EventLenTopics.LenTopics
               (Self := Event))}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       marker : core.marker.PhantomData (Event);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
     }.
-    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon '(Build_t x0) := x0;
+    Global Instance Get_AF_marker `{State.Trait}
+      : Notation.DoubleColon t "marker" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
   End EventRespectsTopicLimit.
 End EventRespectsTopicLimit.
 Definition EventRespectsTopicLimit
     (Event : Set)
+    `{State.Trait}
     `{ink.codegen.event.topics.EventLenTopics.Trait Event}
     `{ink.codegen.event.topics.RespectTopicLimit.Trait
           (ink.codegen.event.topics.EventLenTopics.LenTopics (Self := Event))}
     : Set :=
-  EventRespectsTopicLimit.t (Event := Event).
+  M.val (EventRespectsTopicLimit.t (Event := Event)).
 
 Module RespectTopicLimit.
   Unset Primitive Projections.
@@ -1280,21 +1279,19 @@ Module trait_def.
     Module TraitCallBuilder.
       Class Trait (Self : Set) : Type := {
         Builder : Set;
-        call `{H' : State.Trait} : (ref Self) -> M (H := H') (ref Builder);
-        call_mut `{H' : State.Trait}
-          :
-          (mut_ref Self) -> M (H := H') (mut_ref Builder);
+        call `{State.Trait} : (ref Self) -> M (ref Builder);
+        call_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Builder);
       }.
       
       Global Instance Method_Builder `(Trait)
         : Notation.DoubleColonType Self "Builder" := {
         Notation.double_colon_type := Builder;
       }.
-      Global Instance Method_call `{H' : State.Trait} `(Trait)
+      Global Instance Method_call `{State.Trait} `(Trait)
         : Notation.Dot "call" := {
         Notation.dot := call;
       }.
-      Global Instance Method_call_mut `{H' : State.Trait} `(Trait)
+      Global Instance Method_call_mut `{State.Trait} `(Trait)
         : Notation.Dot "call_mut" := {
         Notation.dot := call_mut;
       }.
@@ -1326,21 +1323,19 @@ Module trait_def.
             `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
                   Forwarder),
           unit;
-        forward `{H' : State.Trait} : (ref Self) -> M (H := H') (ref Forwarder);
-        forward_mut `{H' : State.Trait}
-          :
-          (mut_ref Self) -> M (H := H') (mut_ref Forwarder);
-        build `{H' : State.Trait}
+        forward `{State.Trait} : (ref Self) -> M (ref Forwarder);
+        forward_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Forwarder);
+        build `{State.Trait}
           :
           (ref Self) ->
-            M (H := H')
+            M
               (ref
                 (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                   (Self := Forwarder)));
-        build_mut `{H' : State.Trait}
+        build_mut `{State.Trait}
           :
           (mut_ref Self) ->
-            M (H := H')
+            M
               (mut_ref
                 (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                   (Self := Forwarder)));
@@ -1350,19 +1345,19 @@ Module trait_def.
         : Notation.DoubleColonType Self "Forwarder" := {
         Notation.double_colon_type := Forwarder;
       }.
-      Global Instance Method_forward `{H' : State.Trait} `(Trait)
+      Global Instance Method_forward `{State.Trait} `(Trait)
         : Notation.Dot "forward" := {
         Notation.dot := forward;
       }.
-      Global Instance Method_forward_mut `{H' : State.Trait} `(Trait)
+      Global Instance Method_forward_mut `{State.Trait} `(Trait)
         : Notation.Dot "forward_mut" := {
         Notation.dot := forward_mut;
       }.
-      Global Instance Method_build `{H' : State.Trait} `(Trait)
+      Global Instance Method_build `{State.Trait} `(Trait)
         : Notation.Dot "build" := {
         Notation.dot := build;
       }.
-      Global Instance Method_build_mut `{H' : State.Trait} `(Trait)
+      Global Instance Method_build_mut `{State.Trait} `(Trait)
         : Notation.Dot "build_mut" := {
         Notation.dot := build_mut;
       }.
@@ -1386,21 +1381,19 @@ Module call_builder.
   Module TraitCallBuilder.
     Class Trait (Self : Set) : Type := {
       Builder : Set;
-      call `{H' : State.Trait} : (ref Self) -> M (H := H') (ref Builder);
-      call_mut `{H' : State.Trait}
-        :
-        (mut_ref Self) -> M (H := H') (mut_ref Builder);
+      call `{State.Trait} : (ref Self) -> M (ref Builder);
+      call_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Builder);
     }.
     
     Global Instance Method_Builder `(Trait)
       : Notation.DoubleColonType Self "Builder" := {
       Notation.double_colon_type := Builder;
     }.
-    Global Instance Method_call `{H' : State.Trait} `(Trait)
+    Global Instance Method_call `{State.Trait} `(Trait)
       : Notation.Dot "call" := {
       Notation.dot := call;
     }.
-    Global Instance Method_call_mut `{H' : State.Trait} `(Trait)
+    Global Instance Method_call_mut `{State.Trait} `(Trait)
       : Notation.Dot "call_mut" := {
       Notation.dot := call_mut;
     }.
@@ -1432,21 +1425,19 @@ Module call_builder.
           `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait
                 Forwarder),
         unit;
-      forward `{H' : State.Trait} : (ref Self) -> M (H := H') (ref Forwarder);
-      forward_mut `{H' : State.Trait}
-        :
-        (mut_ref Self) -> M (H := H') (mut_ref Forwarder);
-      build `{H' : State.Trait}
+      forward `{State.Trait} : (ref Self) -> M (ref Forwarder);
+      forward_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Forwarder);
+      build `{State.Trait}
         :
         (ref Self) ->
-          M (H := H')
+          M
             (ref
               (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                 (Self := Forwarder)));
-      build_mut `{H' : State.Trait}
+      build_mut `{State.Trait}
         :
         (mut_ref Self) ->
-          M (H := H')
+          M
             (mut_ref
               (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
                 (Self := Forwarder)));
@@ -1456,19 +1447,19 @@ Module call_builder.
       : Notation.DoubleColonType Self "Forwarder" := {
       Notation.double_colon_type := Forwarder;
     }.
-    Global Instance Method_forward `{H' : State.Trait} `(Trait)
+    Global Instance Method_forward `{State.Trait} `(Trait)
       : Notation.Dot "forward" := {
       Notation.dot := forward;
     }.
-    Global Instance Method_forward_mut `{H' : State.Trait} `(Trait)
+    Global Instance Method_forward_mut `{State.Trait} `(Trait)
       : Notation.Dot "forward_mut" := {
       Notation.dot := forward_mut;
     }.
-    Global Instance Method_build `{H' : State.Trait} `(Trait)
+    Global Instance Method_build `{State.Trait} `(Trait)
       : Notation.Dot "build" := {
       Notation.dot := build;
     }.
-    Global Instance Method_build_mut `{H' : State.Trait} `(Trait)
+    Global Instance Method_build_mut `{State.Trait} `(Trait)
       : Notation.Dot "build_mut" := {
       Notation.dot := build_mut;
     }.
@@ -1478,21 +1469,18 @@ End call_builder.
 Module TraitCallBuilder.
   Class Trait (Self : Set) : Type := {
     Builder : Set;
-    call `{H' : State.Trait} : (ref Self) -> M (H := H') (ref Builder);
-    call_mut `{H' : State.Trait}
-      :
-      (mut_ref Self) -> M (H := H') (mut_ref Builder);
+    call `{State.Trait} : (ref Self) -> M (ref Builder);
+    call_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Builder);
   }.
   
   Global Instance Method_Builder `(Trait)
     : Notation.DoubleColonType Self "Builder" := {
     Notation.double_colon_type := Builder;
   }.
-  Global Instance Method_call `{H' : State.Trait} `(Trait)
-    : Notation.Dot "call" := {
+  Global Instance Method_call `{State.Trait} `(Trait) : Notation.Dot "call" := {
     Notation.dot := call;
   }.
-  Global Instance Method_call_mut `{H' : State.Trait} `(Trait)
+  Global Instance Method_call_mut `{State.Trait} `(Trait)
     : Notation.Dot "call_mut" := {
     Notation.dot := call_mut;
   }.
@@ -1522,21 +1510,19 @@ End TraitCallForwarder.
       Sigma
         `(ink.codegen.trait_def.call_builder.TraitCallBuilder.Trait Forwarder),
       unit;
-    forward `{H' : State.Trait} : (ref Self) -> M (H := H') (ref Forwarder);
-    forward_mut `{H' : State.Trait}
-      :
-      (mut_ref Self) -> M (H := H') (mut_ref Forwarder);
-    build `{H' : State.Trait}
+    forward `{State.Trait} : (ref Self) -> M (ref Forwarder);
+    forward_mut `{State.Trait} : (mut_ref Self) -> M (mut_ref Forwarder);
+    build `{State.Trait}
       :
       (ref Self) ->
-        M (H := H')
+        M
           (ref
             (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
               (Self := Forwarder)));
-    build_mut `{H' : State.Trait}
+    build_mut `{State.Trait}
       :
       (mut_ref Self) ->
-        M (H := H')
+        M
           (mut_ref
             (ink.codegen.trait_def.call_builder.TraitCallBuilder.Builder
               (Self := Forwarder)));
@@ -1546,19 +1532,19 @@ End TraitCallForwarder.
     : Notation.DoubleColonType Self "Forwarder" := {
     Notation.double_colon_type := Forwarder;
   }.
-  Global Instance Method_forward `{H' : State.Trait} `(Trait)
+  Global Instance Method_forward `{State.Trait} `(Trait)
     : Notation.Dot "forward" := {
     Notation.dot := forward;
   }.
-  Global Instance Method_forward_mut `{H' : State.Trait} `(Trait)
+  Global Instance Method_forward_mut `{State.Trait} `(Trait)
     : Notation.Dot "forward_mut" := {
     Notation.dot := forward_mut;
   }.
-  Global Instance Method_build `{H' : State.Trait} `(Trait)
+  Global Instance Method_build `{State.Trait} `(Trait)
     : Notation.Dot "build" := {
     Notation.dot := build;
   }.
-  Global Instance Method_build_mut `{H' : State.Trait} `(Trait)
+  Global Instance Method_build_mut `{State.Trait} `(Trait)
     : Notation.Dot "build_mut" := {
     Notation.dot := build_mut;
   }.
@@ -1588,9 +1574,7 @@ Definition TraitMessageSelector := @TraitMessageSelector.t.
 
 Module utils.
   Module identity_type.
-    Parameter consume_type :
-        forall `{H' : State.Trait} {T : Set},
-        M (H := H') unit.
+    Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
   End identity_type.
   
   Module same_type.
@@ -1598,78 +1582,84 @@ Module utils.
       Section IsSameType.
         Context {T : Set}.
         Unset Primitive Projections.
-        Record t : Set := {
+        Record t `{State.Trait} : Set := {
           _marker : core.marker.PhantomData T;
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get__marker : Notation.Dot "_marker" := {
-          Notation.dot '(Build_t x0) := x0;
+        Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+          Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
         }.
-        Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-          Notation.double_colon '(Build_t x0) := x0;
+        Global Instance Get_AF__marker `{State.Trait}
+          : Notation.DoubleColon t "_marker" := {
+          Notation.double_colon x
+            :=
+            let* x := M.read x in Pure x.(_marker) : M _;
         }.
       End IsSameType.
     End IsSameType.
-    Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
+    Definition IsSameType (T : Set) `{State.Trait} : Set :=
+      M.val (IsSameType.t (T := T)).
   End same_type.
 End utils.
 
 Module identity_type.
-  Parameter consume_type :
-      forall `{H' : State.Trait} {T : Set},
-      M (H := H') unit.
+  Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
 End identity_type.
 
-Parameter consume_type : forall `{H' : State.Trait} {T : Set}, M (H := H') unit.
+Parameter consume_type : forall `{State.Trait} {T : Set}, M unit.
 
 Module same_type.
   Module IsSameType.
     Section IsSameType.
       Context {T : Set}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         _marker : core.marker.PhantomData T;
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get__marker : Notation.Dot "_marker" := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+        Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-        Notation.double_colon '(Build_t x0) := x0;
+      Global Instance Get_AF__marker `{State.Trait}
+        : Notation.DoubleColon t "_marker" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
     End IsSameType.
   End IsSameType.
-  Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
+  Definition IsSameType (T : Set) `{State.Trait} : Set :=
+    M.val (IsSameType.t (T := T)).
 End same_type.
 
 Module IsSameType.
   Section IsSameType.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _marker : core.marker.PhantomData T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get__marker : Notation.Dot "_marker" := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+      Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
-      Notation.double_colon '(Build_t x0) := x0;
+    Global Instance Get_AF__marker `{State.Trait}
+      : Notation.DoubleColon t "_marker" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
   End IsSameType.
 End IsSameType.
-Definition IsSameType (T : Set) : Set := IsSameType.t (T := T).
+Definition IsSameType (T : Set) `{State.Trait} : Set :=
+  M.val (IsSameType.t (T := T)).
 
 Module contract.
   Module ContractName.
     Class Trait (Self : Set) : Type := {
-      NAME `{H' : State.Trait} : ref str;
+      NAME `{State.Trait} : ref str;
     }.
     
-    Global Instance Method_NAME `{H' : State.Trait} `(Trait)
+    Global Instance Method_NAME `{State.Trait} `(Trait)
       : Notation.Dot "NAME" := {
       Notation.dot := NAME;
     }.
@@ -1678,11 +1668,10 @@ End contract.
 
 Module ContractName.
   Class Trait (Self : Set) : Type := {
-    NAME `{H' : State.Trait} : ref str;
+    NAME `{State.Trait} : ref str;
   }.
   
-  Global Instance Method_NAME `{H' : State.Trait} `(Trait)
-    : Notation.Dot "NAME" := {
+  Global Instance Method_NAME `{State.Trait} `(Trait) : Notation.Dot "NAME" := {
     Notation.dot := NAME;
   }.
 End ContractName.
@@ -1694,13 +1683,11 @@ Module Wrap_dispatch_1.
         Input : Set;
         Output : Set;
         Storage : Set;
-        CALLABLE `{H' : State.Trait}
-          :
-          (mut_ref Storage) -> Input -> M (H := H') Output;
-        MUTATES `{H' : State.Trait} : bool;
-        PAYABLE `{H' : State.Trait} : bool;
-        SELECTOR `{H' : State.Trait} : list u8;
-        LABEL `{H' : State.Trait} : ref str;
+        CALLABLE `{State.Trait} : (mut_ref Storage) -> Input -> M Output;
+        MUTATES `{State.Trait} : bool;
+        PAYABLE `{State.Trait} : bool;
+        SELECTOR `{State.Trait} : array u8;
+        LABEL `{State.Trait} : ref str;
       }.
       
       Global Instance Method_Input `(Trait)
@@ -1715,23 +1702,23 @@ Module Wrap_dispatch_1.
         : Notation.DoubleColonType Self "Storage" := {
         Notation.double_colon_type := Storage;
       }.
-      Global Instance Method_CALLABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_CALLABLE `{State.Trait} `(Trait)
         : Notation.Dot "CALLABLE" := {
         Notation.dot := CALLABLE;
       }.
-      Global Instance Method_MUTATES `{H' : State.Trait} `(Trait)
+      Global Instance Method_MUTATES `{State.Trait} `(Trait)
         : Notation.Dot "MUTATES" := {
         Notation.dot := MUTATES;
       }.
-      Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_PAYABLE `{State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
         Notation.dot := PAYABLE;
       }.
-      Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+      Global Instance Method_SELECTOR `{State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
         Notation.dot := SELECTOR;
       }.
-      Global Instance Method_LABEL `{H' : State.Trait} `(Trait)
+      Global Instance Method_LABEL `{State.Trait} `(Trait)
         : Notation.Dot "LABEL" := {
         Notation.dot := LABEL;
       }.
@@ -1743,11 +1730,11 @@ Module Wrap_dispatch_1.
         Storage : Set;
         Output : Set;
         Error : Set;
-        IS_RESULT `{H' : State.Trait} : bool;
-        CALLABLE `{H' : State.Trait} : Input -> M (H := H') Output;
-        PAYABLE `{H' : State.Trait} : bool;
-        SELECTOR `{H' : State.Trait} : list u8;
-        LABEL `{H' : State.Trait} : ref str;
+        IS_RESULT `{State.Trait} : bool;
+        CALLABLE `{State.Trait} : Input -> M Output;
+        PAYABLE `{State.Trait} : bool;
+        SELECTOR `{State.Trait} : array u8;
+        LABEL `{State.Trait} : ref str;
       }.
       
       Global Instance Method_Input `(Trait)
@@ -1766,23 +1753,23 @@ Module Wrap_dispatch_1.
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
-      Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
+      Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
         : Notation.Dot "IS_RESULT" := {
         Notation.dot := IS_RESULT;
       }.
-      Global Instance Method_CALLABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_CALLABLE `{State.Trait} `(Trait)
         : Notation.Dot "CALLABLE" := {
         Notation.dot := CALLABLE;
       }.
-      Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_PAYABLE `{State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
         Notation.dot := PAYABLE;
       }.
-      Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+      Global Instance Method_SELECTOR `{State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
         Notation.dot := SELECTOR;
       }.
-      Global Instance Method_LABEL `{H' : State.Trait} `(Trait)
+      Global Instance Method_LABEL `{State.Trait} `(Trait)
         : Notation.Dot "LABEL" := {
         Notation.dot := LABEL;
       }.
@@ -1803,14 +1790,14 @@ Module Wrap_dispatch_1.
           `{ink.reflect.dispatch.private.Sealed.Trait Self}
           {C : Set} :
           Type := {
-        IS_RESULT `{H' : State.Trait} : bool;
+        IS_RESULT `{State.Trait} : bool;
         Error : Set;
-        as_result `{H' : State.Trait}
+        as_result `{State.Trait}
           :
-          (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error));
+          (ref Self) -> M (core.result.Result (ref C) (ref Error));
       }.
       
-      Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
+      Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
         : Notation.Dot "IS_RESULT" := {
         Notation.dot := IS_RESULT;
       }.
@@ -1818,7 +1805,7 @@ Module Wrap_dispatch_1.
         : Notation.DoubleColonType Self "Error" := {
         Notation.double_colon_type := Error;
       }.
-      Global Instance Method_as_result `{H' : State.Trait} `(Trait)
+      Global Instance Method_as_result `{State.Trait} `(Trait)
         : Notation.Dot "as_result" := {
         Notation.dot := as_result;
       }.
@@ -1828,7 +1815,7 @@ Module Wrap_dispatch_1.
       Section ConstructorOutputValue.
         Context {T : Set}.
         Unset Primitive Projections.
-        Record t : Set := {
+        Record t `{State.Trait} : Set := {
           _ : T;
         }.
         Global Set Primitive Projections.
@@ -1852,14 +1839,13 @@ Module Wrap_dispatch_1.
     
     Module ExecuteDispatchable.
       Class Trait (Self : Set) : Type := {
-        execute_dispatchable `{H' : State.Trait}
+        execute_dispatchable `{State.Trait}
           :
           Self ->
-            M (H := H')
-              (core.result.Result unit ink.reflect.dispatch.DispatchError);
+            M (core.result.Result unit ink.reflect.dispatch.DispatchError);
       }.
       
-      Global Instance Method_execute_dispatchable `{H' : State.Trait} `(Trait)
+      Global Instance Method_execute_dispatchable `{State.Trait} `(Trait)
         : Notation.Dot "execute_dispatchable" := {
         Notation.dot := execute_dispatchable;
       }.
@@ -1886,16 +1872,15 @@ Module Wrap_dispatch_1.
       Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
           Type := {
         decode_dispatch
-          `{H' : State.Trait}
+          `{State.Trait}
           {I : Set}
           `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :
           (mut_ref I) ->
-            M (H := H')
-              (core.result.Result Self ink.reflect.dispatch.DispatchError);
+            M (core.result.Result Self ink.reflect.dispatch.DispatchError);
       }.
       
-      Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
+      Global Instance Method_decode_dispatch `{State.Trait} `(Trait)
         : Notation.Dot "decode_dispatch" := {
         Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
           :=
@@ -1928,13 +1913,11 @@ Module DispatchableMessageInfo.
     Input : Set;
     Output : Set;
     Storage : Set;
-    CALLABLE `{H' : State.Trait}
-      :
-      (mut_ref Storage) -> Input -> M (H := H') Output;
-    MUTATES `{H' : State.Trait} : bool;
-    PAYABLE `{H' : State.Trait} : bool;
-    SELECTOR `{H' : State.Trait} : list u8;
-    LABEL `{H' : State.Trait} : ref str;
+    CALLABLE `{State.Trait} : (mut_ref Storage) -> Input -> M Output;
+    MUTATES `{State.Trait} : bool;
+    PAYABLE `{State.Trait} : bool;
+    SELECTOR `{State.Trait} : array u8;
+    LABEL `{State.Trait} : ref str;
   }.
   
   Global Instance Method_Input `(Trait)
@@ -1949,23 +1932,23 @@ Module DispatchableMessageInfo.
     : Notation.DoubleColonType Self "Storage" := {
     Notation.double_colon_type := Storage;
   }.
-  Global Instance Method_CALLABLE `{H' : State.Trait} `(Trait)
+  Global Instance Method_CALLABLE `{State.Trait} `(Trait)
     : Notation.Dot "CALLABLE" := {
     Notation.dot := CALLABLE;
   }.
-  Global Instance Method_MUTATES `{H' : State.Trait} `(Trait)
+  Global Instance Method_MUTATES `{State.Trait} `(Trait)
     : Notation.Dot "MUTATES" := {
     Notation.dot := MUTATES;
   }.
-  Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+  Global Instance Method_PAYABLE `{State.Trait} `(Trait)
     : Notation.Dot "PAYABLE" := {
     Notation.dot := PAYABLE;
   }.
-  Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+  Global Instance Method_SELECTOR `{State.Trait} `(Trait)
     : Notation.Dot "SELECTOR" := {
     Notation.dot := SELECTOR;
   }.
-  Global Instance Method_LABEL `{H' : State.Trait} `(Trait)
+  Global Instance Method_LABEL `{State.Trait} `(Trait)
     : Notation.Dot "LABEL" := {
     Notation.dot := LABEL;
   }.
@@ -1977,11 +1960,11 @@ Module DispatchableConstructorInfo.
     Storage : Set;
     Output : Set;
     Error : Set;
-    IS_RESULT `{H' : State.Trait} : bool;
-    CALLABLE `{H' : State.Trait} : Input -> M (H := H') Output;
-    PAYABLE `{H' : State.Trait} : bool;
-    SELECTOR `{H' : State.Trait} : list u8;
-    LABEL `{H' : State.Trait} : ref str;
+    IS_RESULT `{State.Trait} : bool;
+    CALLABLE `{State.Trait} : Input -> M Output;
+    PAYABLE `{State.Trait} : bool;
+    SELECTOR `{State.Trait} : array u8;
+    LABEL `{State.Trait} : ref str;
   }.
   
   Global Instance Method_Input `(Trait)
@@ -2000,23 +1983,23 @@ Module DispatchableConstructorInfo.
     : Notation.DoubleColonType Self "Error" := {
     Notation.double_colon_type := Error;
   }.
-  Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
+  Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
     : Notation.Dot "IS_RESULT" := {
     Notation.dot := IS_RESULT;
   }.
-  Global Instance Method_CALLABLE `{H' : State.Trait} `(Trait)
+  Global Instance Method_CALLABLE `{State.Trait} `(Trait)
     : Notation.Dot "CALLABLE" := {
     Notation.dot := CALLABLE;
   }.
-  Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+  Global Instance Method_PAYABLE `{State.Trait} `(Trait)
     : Notation.Dot "PAYABLE" := {
     Notation.dot := PAYABLE;
   }.
-  Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+  Global Instance Method_SELECTOR `{State.Trait} `(Trait)
     : Notation.Dot "SELECTOR" := {
     Notation.dot := SELECTOR;
   }.
-  Global Instance Method_LABEL `{H' : State.Trait} `(Trait)
+  Global Instance Method_LABEL `{State.Trait} `(Trait)
     : Notation.Dot "LABEL" := {
     Notation.dot := LABEL;
   }.
@@ -2044,14 +2027,14 @@ Module ConstructorOutput.
       `{ink.reflect.dispatch.private.Sealed.Trait Self}
       {C : Set} :
       Type := {
-    IS_RESULT `{H' : State.Trait} : bool;
+    IS_RESULT `{State.Trait} : bool;
     Error : Set;
-    as_result `{H' : State.Trait}
+    as_result `{State.Trait}
       :
-      (ref Self) -> M (H := H') (core.result.Result (ref C) (ref Error));
+      (ref Self) -> M (core.result.Result (ref C) (ref Error));
   }.
   
-  Global Instance Method_IS_RESULT `{H' : State.Trait} `(Trait)
+  Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
     : Notation.Dot "IS_RESULT" := {
     Notation.dot := IS_RESULT;
   }.
@@ -2059,7 +2042,7 @@ Module ConstructorOutput.
     : Notation.DoubleColonType Self "Error" := {
     Notation.double_colon_type := Error;
   }.
-  Global Instance Method_as_result `{H' : State.Trait} `(Trait)
+  Global Instance Method_as_result `{State.Trait} `(Trait)
     : Notation.Dot "as_result" := {
     Notation.dot := as_result;
   }.
@@ -2069,7 +2052,7 @@ Module ConstructorOutputValue.
   Section ConstructorOutputValue.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       _ : T;
     }.
     Global Set Primitive Projections.
@@ -2117,14 +2100,12 @@ End ContractConstructorDecoder.
 
 Module ExecuteDispatchable.
   Class Trait (Self : Set) : Type := {
-    execute_dispatchable `{H' : State.Trait}
+    execute_dispatchable `{State.Trait}
       :
-      Self ->
-        M (H := H')
-          (core.result.Result unit ink.reflect.dispatch.DispatchError);
+      Self -> M (core.result.Result unit ink.reflect.dispatch.DispatchError);
   }.
   
-  Global Instance Method_execute_dispatchable `{H' : State.Trait} `(Trait)
+  Global Instance Method_execute_dispatchable `{State.Trait} `(Trait)
     : Notation.Dot "execute_dispatchable" := {
     Notation.dot := execute_dispatchable;
   }.
@@ -2144,16 +2125,15 @@ Module DecodeDispatch.
   Class Trait (Self : Set) `{parity_scale_codec.codec.Decode.Trait Self} :
       Type := {
     decode_dispatch
-      `{H' : State.Trait}
+      `{State.Trait}
       {I : Set}
       `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) ->
-        M (H := H')
-          (core.result.Result Self ink.reflect.dispatch.DispatchError);
+        M (core.result.Result Self ink.reflect.dispatch.DispatchError);
   }.
   
-  Global Instance Method_decode_dispatch `{H' : State.Trait} `(Trait)
+  Global Instance Method_decode_dispatch `{State.Trait} `(Trait)
     : Notation.Dot "decode_dispatch" := {
     Notation.dot {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :=
@@ -2193,15 +2173,15 @@ Module Wrap_trait_def_1.
     Module info.
       Module TraitMessageInfo.
         Class Trait (Self : Set) : Type := {
-          PAYABLE `{H' : State.Trait} : bool;
-          SELECTOR `{H' : State.Trait} : list u8;
+          PAYABLE `{State.Trait} : bool;
+          SELECTOR `{State.Trait} : array u8;
         }.
         
-        Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+        Global Instance Method_PAYABLE `{State.Trait} `(Trait)
           : Notation.Dot "PAYABLE" := {
           Notation.dot := PAYABLE;
         }.
-        Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+        Global Instance Method_SELECTOR `{State.Trait} `(Trait)
           : Notation.Dot "SELECTOR" := {
           Notation.dot := SELECTOR;
         }.
@@ -2209,20 +2189,20 @@ Module Wrap_trait_def_1.
       
       Module TraitInfo.
         Class Trait (Self : Set) : Type := {
-          ID `{H' : State.Trait} : u32;
-          PATH `{H' : State.Trait} : ref str;
-          NAME `{H' : State.Trait} : ref str;
+          ID `{State.Trait} : u32;
+          PATH `{State.Trait} : ref str;
+          NAME `{State.Trait} : ref str;
         }.
         
-        Global Instance Method_ID `{H' : State.Trait} `(Trait)
+        Global Instance Method_ID `{State.Trait} `(Trait)
           : Notation.Dot "ID" := {
           Notation.dot := ID;
         }.
-        Global Instance Method_PATH `{H' : State.Trait} `(Trait)
+        Global Instance Method_PATH `{State.Trait} `(Trait)
           : Notation.Dot "PATH" := {
           Notation.dot := PATH;
         }.
-        Global Instance Method_NAME `{H' : State.Trait} `(Trait)
+        Global Instance Method_NAME `{State.Trait} `(Trait)
           : Notation.Dot "NAME" := {
           Notation.dot := NAME;
         }.
@@ -2234,21 +2214,24 @@ Module Wrap_trait_def_1.
         Section TraitDefinitionRegistry.
           Context {E : Set}.
           Unset Primitive Projections.
-          Record t : Set := {
+          Record t `{State.Trait} : Set := {
             marker : core.marker.PhantomData (E);
           }.
           Global Set Primitive Projections.
           
-          Global Instance Get_marker : Notation.Dot "marker" := {
-            Notation.dot '(Build_t x0) := x0;
+          Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+            Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
           }.
-          Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-            Notation.double_colon '(Build_t x0) := x0;
+          Global Instance Get_AF_marker `{State.Trait}
+            : Notation.DoubleColon t "marker" := {
+            Notation.double_colon x
+              :=
+              let* x := M.read x in Pure x.(marker) : M _;
           }.
         End TraitDefinitionRegistry.
       End TraitDefinitionRegistry.
-      Definition TraitDefinitionRegistry (E : Set) : Set :=
-        TraitDefinitionRegistry.t (E := E).
+      Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+        M.val (TraitDefinitionRegistry.t (E := E)).
     End registry.
   End trait_def.
 End Wrap_trait_def_1.
@@ -2258,15 +2241,15 @@ Module Wrap_info_1.
   Module info.
     Module TraitMessageInfo.
       Class Trait (Self : Set) : Type := {
-        PAYABLE `{H' : State.Trait} : bool;
-        SELECTOR `{H' : State.Trait} : list u8;
+        PAYABLE `{State.Trait} : bool;
+        SELECTOR `{State.Trait} : array u8;
       }.
       
-      Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+      Global Instance Method_PAYABLE `{State.Trait} `(Trait)
         : Notation.Dot "PAYABLE" := {
         Notation.dot := PAYABLE;
       }.
-      Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+      Global Instance Method_SELECTOR `{State.Trait} `(Trait)
         : Notation.Dot "SELECTOR" := {
         Notation.dot := SELECTOR;
       }.
@@ -2274,20 +2257,19 @@ Module Wrap_info_1.
     
     Module TraitInfo.
       Class Trait (Self : Set) : Type := {
-        ID `{H' : State.Trait} : u32;
-        PATH `{H' : State.Trait} : ref str;
-        NAME `{H' : State.Trait} : ref str;
+        ID `{State.Trait} : u32;
+        PATH `{State.Trait} : ref str;
+        NAME `{State.Trait} : ref str;
       }.
       
-      Global Instance Method_ID `{H' : State.Trait} `(Trait)
-        : Notation.Dot "ID" := {
+      Global Instance Method_ID `{State.Trait} `(Trait) : Notation.Dot "ID" := {
         Notation.dot := ID;
       }.
-      Global Instance Method_PATH `{H' : State.Trait} `(Trait)
+      Global Instance Method_PATH `{State.Trait} `(Trait)
         : Notation.Dot "PATH" := {
         Notation.dot := PATH;
       }.
-      Global Instance Method_NAME `{H' : State.Trait} `(Trait)
+      Global Instance Method_NAME `{State.Trait} `(Trait)
         : Notation.Dot "NAME" := {
         Notation.dot := NAME;
       }.
@@ -2298,15 +2280,15 @@ Import Wrap_info_1.
 
 Module TraitMessageInfo.
   Class Trait (Self : Set) : Type := {
-    PAYABLE `{H' : State.Trait} : bool;
-    SELECTOR `{H' : State.Trait} : list u8;
+    PAYABLE `{State.Trait} : bool;
+    SELECTOR `{State.Trait} : array u8;
   }.
   
-  Global Instance Method_PAYABLE `{H' : State.Trait} `(Trait)
+  Global Instance Method_PAYABLE `{State.Trait} `(Trait)
     : Notation.Dot "PAYABLE" := {
     Notation.dot := PAYABLE;
   }.
-  Global Instance Method_SELECTOR `{H' : State.Trait} `(Trait)
+  Global Instance Method_SELECTOR `{State.Trait} `(Trait)
     : Notation.Dot "SELECTOR" := {
     Notation.dot := SELECTOR;
   }.
@@ -2314,21 +2296,18 @@ End TraitMessageInfo.
 
 Module TraitInfo.
   Class Trait (Self : Set) : Type := {
-    ID `{H' : State.Trait} : u32;
-    PATH `{H' : State.Trait} : ref str;
-    NAME `{H' : State.Trait} : ref str;
+    ID `{State.Trait} : u32;
+    PATH `{State.Trait} : ref str;
+    NAME `{State.Trait} : ref str;
   }.
   
-  Global Instance Method_ID `{H' : State.Trait} `(Trait)
-    : Notation.Dot "ID" := {
+  Global Instance Method_ID `{State.Trait} `(Trait) : Notation.Dot "ID" := {
     Notation.dot := ID;
   }.
-  Global Instance Method_PATH `{H' : State.Trait} `(Trait)
-    : Notation.Dot "PATH" := {
+  Global Instance Method_PATH `{State.Trait} `(Trait) : Notation.Dot "PATH" := {
     Notation.dot := PATH;
   }.
-  Global Instance Method_NAME `{H' : State.Trait} `(Trait)
-    : Notation.Dot "NAME" := {
+  Global Instance Method_NAME `{State.Trait} `(Trait) : Notation.Dot "NAME" := {
     Notation.dot := NAME;
   }.
 End TraitInfo.
@@ -2338,55 +2317,57 @@ Module registry.
     Section TraitDefinitionRegistry.
       Context {E : Set}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         marker : core.marker.PhantomData (E);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+        Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
       }.
-      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-        Notation.double_colon '(Build_t x0) := x0;
+      Global Instance Get_AF_marker `{State.Trait}
+        : Notation.DoubleColon t "marker" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
     End TraitDefinitionRegistry.
   End TraitDefinitionRegistry.
-  Definition TraitDefinitionRegistry (E : Set) : Set :=
-    TraitDefinitionRegistry.t (E := E).
+  Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+    M.val (TraitDefinitionRegistry.t (E := E)).
 End registry.
 
 Module TraitDefinitionRegistry.
   Section TraitDefinitionRegistry.
     Context {E : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       marker : core.marker.PhantomData (E);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
     }.
-    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon '(Build_t x0) := x0;
+    Global Instance Get_AF_marker `{State.Trait}
+      : Notation.DoubleColon t "marker" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
   End TraitDefinitionRegistry.
 End TraitDefinitionRegistry.
-Definition TraitDefinitionRegistry (E : Set) : Set :=
-  TraitDefinitionRegistry.t (E := E).
+Definition TraitDefinitionRegistry (E : Set) `{State.Trait} : Set :=
+  M.val (TraitDefinitionRegistry.t (E := E)).
 
 Module chain_extension.
   Module ChainExtensionInstance.
     Class Trait (Self : Set) : Type := {
       Instance : Set;
-      instantiate `{H' : State.Trait} : M (H := H') Instance;
+      instantiate `{State.Trait} : M Instance;
     }.
     
     Global Instance Method_Instance `(Trait)
       : Notation.DoubleColonType Self "Instance" := {
       Notation.double_colon_type := Instance;
     }.
-    Global Instance Method_instantiate `{H' : State.Trait} `(Trait)
+    Global Instance Method_instantiate `{State.Trait} `(Trait)
       : Notation.Dot "instantiate" := {
       Notation.dot := instantiate;
     }.
@@ -2462,14 +2443,14 @@ End chain_extension.
 Module ChainExtensionInstance.
   Class Trait (Self : Set) : Type := {
     Instance : Set;
-    instantiate `{H' : State.Trait} : M (H := H') Instance;
+    instantiate `{State.Trait} : M Instance;
   }.
   
   Global Instance Method_Instance `(Trait)
     : Notation.DoubleColonType Self "Instance" := {
     Notation.double_colon_type := Instance;
   }.
-  Global Instance Method_instantiate `{H' : State.Trait} `(Trait)
+  Global Instance Method_instantiate `{State.Trait} `(Trait)
     : Notation.Dot "instantiate" := {
     Notation.dot := instantiate;
   }.
@@ -2561,13 +2542,12 @@ Module contract_ref.
   Module ToAccountId.
     Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
         Type := {
-      to_account_id `{H' : State.Trait}
+      to_account_id `{State.Trait}
         :
-        (ref Self) ->
-          M (H := H') (ink_env.types.Environment.AccountId (Self := T));
+        (ref Self) -> M (ink_env.types.Environment.AccountId (Self := T));
     }.
     
-    Global Instance Method_to_account_id `{H' : State.Trait} `(Trait)
+    Global Instance Method_to_account_id `{State.Trait} `(Trait)
       : Notation.Dot "to_account_id" := {
       Notation.dot := to_account_id;
     }.
@@ -2577,13 +2557,12 @@ End contract_ref.
 Module ToAccountId.
   Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
       Type := {
-    to_account_id `{H' : State.Trait}
+    to_account_id `{State.Trait}
       :
-      (ref Self) ->
-        M (H := H') (ink_env.types.Environment.AccountId (Self := T));
+      (ref Self) -> M (ink_env.types.Environment.AccountId (Self := T));
   }.
   
-  Global Instance Method_to_account_id `{H' : State.Trait} `(Trait)
+  Global Instance Method_to_account_id `{State.Trait} `(Trait)
     : Notation.Dot "to_account_id" := {
     Notation.dot := to_account_id;
   }.
@@ -2594,37 +2573,41 @@ Module env_access.
     Section EnvAccess.
       Context {E : Set}.
       Unset Primitive Projections.
-      Record t : Set := {
+      Record t `{State.Trait} : Set := {
         marker : core.marker.PhantomData (ref E);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get_marker : Notation.Dot "marker" := {
-        Notation.dot '(Build_t x0) := x0;
+      Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+        Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
       }.
-      Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-        Notation.double_colon '(Build_t x0) := x0;
+      Global Instance Get_AF_marker `{State.Trait}
+        : Notation.DoubleColon t "marker" := {
+        Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
       }.
     End EnvAccess.
   End EnvAccess.
-  Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
+  Definition EnvAccess (E : Set) `{State.Trait} : Set :=
+    M.val (EnvAccess.t (E := E)).
 End env_access.
 
 Module EnvAccess.
   Section EnvAccess.
     Context {E : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       marker : core.marker.PhantomData (ref E);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_marker : Notation.Dot "marker" := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_marker `{State.Trait} : Notation.Dot "marker" := {
+      Notation.dot x := let* x := M.read x in Pure x.(marker) : M _;
     }.
-    Global Instance Get_AF_marker : Notation.DoubleColon t "marker" := {
-      Notation.double_colon '(Build_t x0) := x0;
+    Global Instance Get_AF_marker `{State.Trait}
+      : Notation.DoubleColon t "marker" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(marker) : M _;
     }.
   End EnvAccess.
 End EnvAccess.
-Definition EnvAccess (E : Set) : Set := EnvAccess.t (E := E).
+Definition EnvAccess (E : Set) `{State.Trait} : Set :=
+  M.val (EnvAccess.t (E := E)).

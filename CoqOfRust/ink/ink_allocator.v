@@ -9,84 +9,79 @@ Module bump.
   
   Module
     Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
-    Definition Self := ink_allocator.bump.BumpAllocator.
+    Definition Self `{State.Trait} := ink_allocator.bump.BumpAllocator.
     
     Parameter alloc :
-        forall `{H' : State.Trait},
-        (ref Self) -> core.alloc.layout.Layout -> M (H := H') (mut_ref u8).
+        forall `{State.Trait},
+        (ref Self) -> core.alloc.layout.Layout -> M (mut_ref u8).
     
-    Global Instance Method_alloc `{H' : State.Trait} : Notation.Dot "alloc" := {
+    Global Instance Method_alloc `{State.Trait} : Notation.Dot "alloc" := {
       Notation.dot := alloc;
     }.
     
     Parameter alloc_zeroed :
-        forall `{H' : State.Trait},
-        (ref Self) -> core.alloc.layout.Layout -> M (H := H') (mut_ref u8).
+        forall `{State.Trait},
+        (ref Self) -> core.alloc.layout.Layout -> M (mut_ref u8).
     
-    Global Instance Method_alloc_zeroed `{H' : State.Trait} :
+    Global Instance Method_alloc_zeroed `{State.Trait} :
       Notation.Dot "alloc_zeroed" := {
       Notation.dot := alloc_zeroed;
     }.
     
     Parameter dealloc :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref u8) ->
-          core.alloc.layout.Layout ->
-          M (H := H') unit.
+        forall `{State.Trait},
+        (ref Self) -> (mut_ref u8) -> core.alloc.layout.Layout -> M unit.
     
-    Global Instance Method_dealloc `{H' : State.Trait} :
-      Notation.Dot "dealloc" := {
+    Global Instance Method_dealloc `{State.Trait} : Notation.Dot "dealloc" := {
       Notation.dot := dealloc;
     }.
     
-    Global Instance I : core.alloc.global.GlobalAlloc.Trait Self := {
-      core.alloc.global.GlobalAlloc.alloc `{H' : State.Trait} := alloc;
-      core.alloc.global.GlobalAlloc.dealloc `{H' : State.Trait} := dealloc;
+    Global Instance I `{State.Trait}
+      : core.alloc.global.GlobalAlloc.Trait Self := {
+      core.alloc.global.GlobalAlloc.alloc := alloc;
+      core.alloc.global.GlobalAlloc.dealloc := dealloc;
     }.
     Global Hint Resolve I : core.
   End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
   
   (* Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
-    Definition Self := ink_allocator.bump.InnerAlloc.
+    Definition Self `{State.Trait} := ink_allocator.bump.InnerAlloc.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        forall `{State.Trait},
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc. *)
   
   (* Module Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
-    Definition Self := ink_allocator.bump.InnerAlloc.
+    Definition Self `{State.Trait} := ink_allocator.bump.InnerAlloc.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc. *)
   
   (* Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
-    Definition Self := ink_allocator.bump.InnerAlloc.
+    Definition Self `{State.Trait} := ink_allocator.bump.InnerAlloc.
     
     Parameter clone :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') ink_allocator.bump.InnerAlloc.
+        forall `{State.Trait},
+        (ref Self) -> M ink_allocator.bump.InnerAlloc.
     
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
     }.
     Global Hint Resolve I : core.
   End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc. *)
@@ -98,82 +93,79 @@ End BumpAllocator.
 Definition BumpAllocator := @BumpAllocator.t.
 
 Module Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
-  Definition Self := ink_allocator.bump.BumpAllocator.
+  Definition Self `{State.Trait} := ink_allocator.bump.BumpAllocator.
   
   Parameter alloc :
-      forall `{H' : State.Trait},
-      (ref Self) -> core.alloc.layout.Layout -> M (H := H') (mut_ref u8).
+      forall `{State.Trait},
+      (ref Self) -> core.alloc.layout.Layout -> M (mut_ref u8).
   
-  Global Instance Method_alloc `{H' : State.Trait} : Notation.Dot "alloc" := {
+  Global Instance Method_alloc `{State.Trait} : Notation.Dot "alloc" := {
     Notation.dot := alloc;
   }.
   
   Parameter alloc_zeroed :
-      forall `{H' : State.Trait},
-      (ref Self) -> core.alloc.layout.Layout -> M (H := H') (mut_ref u8).
+      forall `{State.Trait},
+      (ref Self) -> core.alloc.layout.Layout -> M (mut_ref u8).
   
-  Global Instance Method_alloc_zeroed `{H' : State.Trait} :
+  Global Instance Method_alloc_zeroed `{State.Trait} :
     Notation.Dot "alloc_zeroed" := {
     Notation.dot := alloc_zeroed;
   }.
   
   Parameter dealloc :
-      forall `{H' : State.Trait},
-      (ref Self) ->
-        (mut_ref u8) ->
-        core.alloc.layout.Layout ->
-        M (H := H') unit.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref u8) -> core.alloc.layout.Layout -> M unit.
   
-  Global Instance Method_dealloc `{H' : State.Trait} :
-    Notation.Dot "dealloc" := {
+  Global Instance Method_dealloc `{State.Trait} : Notation.Dot "dealloc" := {
     Notation.dot := dealloc;
   }.
   
-  Global Instance I : core.alloc.global.GlobalAlloc.Trait Self := {
-    core.alloc.global.GlobalAlloc.alloc `{H' : State.Trait} := alloc;
-    core.alloc.global.GlobalAlloc.dealloc `{H' : State.Trait} := dealloc;
+  Global Instance I `{State.Trait}
+    : core.alloc.global.GlobalAlloc.Trait Self := {
+    core.alloc.global.GlobalAlloc.alloc := alloc;
+    core.alloc.global.GlobalAlloc.dealloc := dealloc;
   }.
   Global Hint Resolve I : core.
 End Impl_core_alloc_global_GlobalAlloc_for_ink_allocator_bump_BumpAllocator.
 
 (* Module Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc.
-  Definition Self := ink_allocator.bump.InnerAlloc.
+  Definition Self `{State.Trait} := ink_allocator.bump.InnerAlloc.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_allocator_bump_InnerAlloc. *)
 
 (* Module Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc.
-  Definition Self := ink_allocator.bump.InnerAlloc.
+  Definition Self `{State.Trait} := ink_allocator.bump.InnerAlloc.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_ink_allocator_bump_InnerAlloc. *)
 
 (* Module Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc.
-  Definition Self := ink_allocator.bump.InnerAlloc.
+  Definition Self `{State.Trait} := ink_allocator.bump.InnerAlloc.
   
   Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') ink_allocator.bump.InnerAlloc.
+      forall `{State.Trait},
+      (ref Self) -> M ink_allocator.bump.InnerAlloc.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_ink_allocator_bump_InnerAlloc. *)
