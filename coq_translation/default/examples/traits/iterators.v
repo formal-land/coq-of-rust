@@ -46,7 +46,7 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   
   Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
     core.iter.traits.iterator.Iterator.Item := Item;
-    core.iter.traits.iterator.Iterator.next `{H' : State.Trait} := next;
+    core.iter.traits.iterator.Iterator.next `{H' : State.Trait} := next; (* ??? *)
   }.
   Global Hint Resolve I : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
