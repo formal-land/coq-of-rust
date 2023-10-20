@@ -18,23 +18,25 @@ Definition Turkey := @Turkey.t.
 
 Module Red.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Red.
 
 Module Blue.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Blue.
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal.
-  Definition Self := generics_bounds_test_case_empty_bounds.Cardinal.
+  Definition Self `{State.Trait} :=
+    generics_bounds_test_case_empty_bounds.Cardinal.
   
-  Global Instance I : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
+  Global Instance I `{State.Trait}
+    : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End
@@ -42,9 +44,10 @@ End
 
 Module
   Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay.
-  Definition Self := generics_bounds_test_case_empty_bounds.BlueJay.
+  Definition Self `{State.Trait} :=
+    generics_bounds_test_case_empty_bounds.BlueJay.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
   }.
   Global Hint Resolve I : core.
@@ -53,17 +56,17 @@ End
 
 Parameter red :
     forall
-      `{H' : State.Trait}
+      `{State.Trait}
       {T : Set}
       `{generics_bounds_test_case_empty_bounds.Red.Trait T},
-    (ref T) -> M (H := H') (ref str).
+    (ref T) -> M (ref str).
 
 Parameter blue :
     forall
-      `{H' : State.Trait}
+      `{State.Trait}
       {T : Set}
       `{generics_bounds_test_case_empty_bounds.Blue.Trait T},
-    (ref T) -> M (H := H') (ref str).
+    (ref T) -> M (ref str).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

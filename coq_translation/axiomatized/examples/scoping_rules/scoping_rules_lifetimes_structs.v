@@ -3,97 +3,98 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Borrowed.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : ref i32;
+  Record t `{State.Trait} : Set := {
+    x0 : ref i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Borrowed.
-Definition Borrowed := @Borrowed.t.
+Definition Borrowed `{State.Trait} : Set := M.val Borrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
-  Definition Self := scoping_rules_lifetimes_structs.Borrowed.
+  Definition Self `{State.Trait} := scoping_rules_lifetimes_structs.Borrowed.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
 Module NamedBorrowed.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     x : ref i32;
     y : ref i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
+    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
+    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
-  Global Instance Get_y : Notation.Dot "y" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
+    Notation.dot x := let* x := M.read x in Pure x.(y) : M _;
   }.
-  Global Instance Get_AF_y : Notation.DoubleColon t "y" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_y `{State.Trait} : Notation.DoubleColon t "y" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(y) : M _;
   }.
 End NamedBorrowed.
-Definition NamedBorrowed : Set := NamedBorrowed.t.
+Definition NamedBorrowed `{State.Trait} : Set := M.val (NamedBorrowed.t).
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
-  Definition Self := scoping_rules_lifetimes_structs.NamedBorrowed.
+  Definition Self `{State.Trait} :=
+    scoping_rules_lifetimes_structs.NamedBorrowed.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
 Module Either.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Num (_ : i32)
   | Ref (_ : ref i32).
 End Either.
-Definition Either : Set := Either.t.
+Definition Either `{State.Trait} : Set := Either.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
-  Definition Self := scoping_rules_lifetimes_structs.Either.
+  Definition Self `{State.Trait} := scoping_rules_lifetimes_structs.Either.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

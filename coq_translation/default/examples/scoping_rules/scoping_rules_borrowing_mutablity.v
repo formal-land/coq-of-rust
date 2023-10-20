@@ -4,112 +4,169 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Book.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     author : ref str;
     title : ref str;
     year : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_author : Notation.Dot "author" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
+  Global Instance Get_author `{State.Trait} : Notation.Dot "author" := {
+    Notation.dot x := let* x := M.read x in Pure x.(author) : M _;
   }.
-  Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
-    Notation.double_colon '(Build_t x0 _ _) := x0;
+  Global Instance Get_AF_author `{State.Trait}
+    : Notation.DoubleColon t "author" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(author) : M _;
   }.
-  Global Instance Get_title : Notation.Dot "title" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
+  Global Instance Get_title `{State.Trait} : Notation.Dot "title" := {
+    Notation.dot x := let* x := M.read x in Pure x.(title) : M _;
   }.
-  Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
-    Notation.double_colon '(Build_t _ x1 _) := x1;
+  Global Instance Get_AF_title `{State.Trait}
+    : Notation.DoubleColon t "title" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(title) : M _;
   }.
-  Global Instance Get_year : Notation.Dot "year" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
+  Global Instance Get_year `{State.Trait} : Notation.Dot "year" := {
+    Notation.dot x := let* x := M.read x in Pure x.(year) : M _;
   }.
-  Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
-    Notation.double_colon '(Build_t _ _ x2) := x2;
+  Global Instance Get_AF_year `{State.Trait}
+    : Notation.DoubleColon t "year" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(year) : M _;
   }.
 End Book.
-Definition Book : Set := Book.t.
+Definition Book `{State.Trait} : Set := M.val (Book.t).
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-  Definition Self := scoping_rules_borrowing_mutablity.Book.
+  Definition Self `{State.Trait} := scoping_rules_borrowing_mutablity.Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') scoping_rules_borrowing_mutablity.Book :=
-    let _ : core.clone.AssertParamIsClone (ref str) := tt in
-    let _ : core.clone.AssertParamIsClone (ref str) := tt in
-    let _ : core.clone.AssertParamIsClone u32 := tt in
-    self.["deref"].
+      : M scoping_rules_borrowing_mutablity.Book :=
+    let _ := tt in
+    let _ := tt in
+    let _ := tt in
+    deref self scoping_rules_borrowing_mutablity.Book.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-  Definition Self := scoping_rules_borrowing_mutablity.Book.
+  Definition Self `{State.Trait} := scoping_rules_borrowing_mutablity.Book.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Definition borrow_book
-    `{H' : State.Trait}
+    `{State.Trait}
     (book : ref scoping_rules_borrowing_mutablity.Book)
-    : M (H := H') unit :=
+    : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
-      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "I immutably borrowed "; " - "; " edition
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow
+          [ mk_str "I immutably borrowed "; mk_str " - "; mk_str " edition
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α5 := α4.["title"] in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := deref α6 (ref str) in
+      let* α8 := borrow α7 (ref str) in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α11 := α10.["year"] in
+      let* α12 := borrow α11 u32 in
+      let* α13 := deref α12 u32 in
+      let* α14 := borrow α13 u32 in
+      let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+      let* α16 := borrow [ α9; α15 ] (list core.fmt.rt.Argument) in
+      let* α17 := deref α16 (list core.fmt.rt.Argument) in
+      let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+      let* α19 := pointer_coercion "Unsize" α18 in
+      let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+      std.io.stdio._print α20 in
     Pure tt in
   Pure tt.
 
 Definition new_edition
-    `{H' : State.Trait}
+    `{State.Trait}
     (book : mut_ref scoping_rules_borrowing_mutablity.Book)
-    : M (H := H') unit :=
-  let* _ := assign book.["year"] 2014 in
+    : M unit :=
+  let* _ :=
+    let* α0 := deref book scoping_rules_borrowing_mutablity.Book in
+    let* α1 := α0.["year"] in
+    let* α2 := M.alloc 2014 in
+    assign α1 α2 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of book.["title"]) in
-      let* α1 := format_argument::["new_display"] (addr_of book.["year"]) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "I mutably borrowed "; " - "; " edition
-" ])
-          (addr_of [ α0; α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow
+          [ mk_str "I mutably borrowed "; mk_str " - "; mk_str " edition
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α5 := α4.["title"] in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := deref α6 (ref str) in
+      let* α8 := borrow α7 (ref str) in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := deref book scoping_rules_borrowing_mutablity.Book in
+      let* α11 := α10.["year"] in
+      let* α12 := borrow α11 u32 in
+      let* α13 := deref α12 u32 in
+      let* α14 := borrow α13 u32 in
+      let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+      let* α16 := borrow [ α9; α15 ] (list core.fmt.rt.Argument) in
+      let* α17 := deref α16 (list core.fmt.rt.Argument) in
+      let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+      let* α19 := pointer_coercion "Unsize" α18 in
+      let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+      std.io.stdio._print α20 in
     Pure tt in
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let immutabook :=
-    {|
-      scoping_rules_borrowing_mutablity.Book.author := "Douglas Hofstadter";
-      scoping_rules_borrowing_mutablity.Book.title :=
-        "G" ++ String.String "246" "del, Escher, Bach";
-      scoping_rules_borrowing_mutablity.Book.year := 1979;
-    |} in
+Definition main `{State.Trait} : M unit :=
+  let* immutabook :=
+    let* α0 := M.alloc 1979 in
+    M.alloc
+      {|
+        scoping_rules_borrowing_mutablity.Book.author :=
+          mk_str "Douglas Hofstadter";
+        scoping_rules_borrowing_mutablity.Book.title :=
+          mk_str ("G" ++ String.String "246" "del, Escher, Bach");
+        scoping_rules_borrowing_mutablity.Book.year := α0;
+      |} in
   let mutabook := immutabook in
   let* _ :=
-    scoping_rules_borrowing_mutablity.borrow_book (addr_of immutabook) in
-  let* _ := scoping_rules_borrowing_mutablity.borrow_book (addr_of mutabook) in
-  let* _ := scoping_rules_borrowing_mutablity.new_edition (addr_of mutabook) in
+    let* α0 := borrow immutabook scoping_rules_borrowing_mutablity.Book in
+    let* α1 := deref α0 scoping_rules_borrowing_mutablity.Book in
+    let* α2 := borrow α1 scoping_rules_borrowing_mutablity.Book in
+    scoping_rules_borrowing_mutablity.borrow_book α2 in
+  let* _ :=
+    let* α0 := borrow mutabook scoping_rules_borrowing_mutablity.Book in
+    let* α1 := deref α0 scoping_rules_borrowing_mutablity.Book in
+    let* α2 := borrow α1 scoping_rules_borrowing_mutablity.Book in
+    scoping_rules_borrowing_mutablity.borrow_book α2 in
+  let* _ :=
+    let* α0 := borrow_mut mutabook scoping_rules_borrowing_mutablity.Book in
+    let* α1 := deref α0 scoping_rules_borrowing_mutablity.Book in
+    let* α2 := borrow_mut α1 scoping_rules_borrowing_mutablity.Book in
+    scoping_rules_borrowing_mutablity.new_edition α2 in
   Pure tt.

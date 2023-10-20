@@ -2,35 +2,77 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of "1i32 + 1 == 2i32") in
-      let* α1 := format_argument::["new_debug"] (addr_of "2i32 * 2 == 4i32") in
-      let* α2 := 1.["add"] 1 in
-      let* α3 := α2.["eq"] 2 in
-      let* α4 := 2.["mul"] 2 in
-      let* α5 := α4.["eq"] 4 in
-      let* α6 := α3.["andb"] α5 in
-      let* α7 := format_argument::["new_debug"] (addr_of α6) in
-      let* α8 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; " and "; " is "; "
-" ])
-          (addr_of [ α0; α1; α7 ]) in
-      std.io.stdio._print α8 in
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str " and "; mk_str " is "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow (mk_str "1i32 + 1 == 2i32") (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow (mk_str "2i32 * 2 == 4i32") (ref str) in
+      let* α9 := deref α8 (ref str) in
+      let* α10 := borrow α9 (ref str) in
+      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+      let* α12 := M.alloc 1 in
+      let* α13 := M.alloc 1 in
+      let* α14 := add α12 α13 in
+      let* α15 := M.alloc 2 in
+      let* α16 := eq α14 α15 in
+      let* α17 := M.alloc 2 in
+      let* α18 := M.alloc 2 in
+      let* α19 := mul α17 α18 in
+      let* α20 := M.alloc 4 in
+      let* α21 := eq α19 α20 in
+      let* α22 := and α16 α21 in
+      let* α23 := borrow α22 bool in
+      let* α24 := deref α23 bool in
+      let* α25 := borrow α24 bool in
+      let* α26 := core.fmt.rt.Argument::["new_debug"] α25 in
+      let* α27 := borrow [ α7; α11; α26 ] (list core.fmt.rt.Argument) in
+      let* α28 := deref α27 (list core.fmt.rt.Argument) in
+      let* α29 := borrow α28 (list core.fmt.rt.Argument) in
+      let* α30 := pointer_coercion "Unsize" α29 in
+      let* α31 := core.fmt.Arguments::["new_v1"] α3 α30 in
+      std.io.stdio._print α31 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of "true") in
-      let* α1 := format_argument::["new_debug"] (addr_of "false") in
-      let* α2 := true.["or"] false in
-      let* α3 := format_argument::["new_debug"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; " or "; " is "; "
-" ])
-          (addr_of [ α0; α1; α3 ]) in
-      std.io.stdio._print α4 in
+      let* α0 :=
+        borrow
+          [ mk_str ""; mk_str " or "; mk_str " is "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow (mk_str "true") (ref str) in
+      let* α5 := deref α4 (ref str) in
+      let* α6 := borrow α5 (ref str) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow (mk_str "false") (ref str) in
+      let* α9 := deref α8 (ref str) in
+      let* α10 := borrow α9 (ref str) in
+      let* α11 := core.fmt.rt.Argument::["new_debug"] α10 in
+      let* α12 := true in
+      let* α13 := false in
+      let* α14 := or α12 α13 in
+      let* α15 := borrow α14 bool in
+      let* α16 := deref α15 bool in
+      let* α17 := borrow α16 bool in
+      let* α18 := core.fmt.rt.Argument::["new_debug"] α17 in
+      let* α19 := borrow [ α7; α11; α18 ] (list core.fmt.rt.Argument) in
+      let* α20 := deref α19 (list core.fmt.rt.Argument) in
+      let* α21 := borrow α20 (list core.fmt.rt.Argument) in
+      let* α22 := pointer_coercion "Unsize" α21 in
+      let* α23 := core.fmt.Arguments::["new_v1"] α3 α22 in
+      std.io.stdio._print α23 in
     Pure tt in
   Pure tt.

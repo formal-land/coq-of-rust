@@ -2,193 +2,342 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_v1"] (addr_of [ "31 days
-" ]) (addr_of [ ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "31 days
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow [ ] (list core.fmt.rt.Argument) in
+      let* α5 := deref α4 (list core.fmt.rt.Argument) in
+      let* α6 := borrow α5 (list core.fmt.rt.Argument) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
+      std.io.stdio._print α8 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Alice, this is Bob. Bob, this is Alice
-" ])
-          (addr_of [ ]) in
-      std.io.stdio._print α0 in
+        borrow
+          [ mk_str "Alice, this is Bob. Bob, this is Alice
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow [ ] (list core.fmt.rt.Argument) in
+      let* α5 := deref α4 (list core.fmt.rt.Argument) in
+      let* α6 := borrow α5 (list core.fmt.rt.Argument) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
+      std.io.stdio._print α8 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "the quick brown fox jumps over the lazy dog
-" ])
-          (addr_of [ ]) in
-      std.io.stdio._print α0 in
+        borrow
+          [ mk_str "the quick brown fox jumps over the lazy dog
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow [ ] (list core.fmt.rt.Argument) in
+      let* α5 := deref α4 (list core.fmt.rt.Argument) in
+      let* α6 := borrow α5 (list core.fmt.rt.Argument) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
+      std.io.stdio._print α8 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Base 10:               69420
-" ])
-          (addr_of [ ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_binary"] (addr_of 69420) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Base 2 (binary):       "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_octal"] (addr_of 69420) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Base 8 (octal):        "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_lower_hex"] (addr_of 69420) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Base 16 (hexadecimal): "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_upper_hex"] (addr_of 69420) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Base 16 (hexadecimal): "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of 1) in
-      let* α1 := LanguageItem.format_count::["Is"] 5 in
-      let* α2 :=
-        LanguageItem.format_placeholder::["new"]
-          0
-          " "%char
-          LanguageItem.format_alignment::["Right"]
-          0
-          LanguageItem.format_count::["Implied"]
-          α1 in
-      let* α3 := LanguageItem.format_unsafe_arg::["new"] in
-      let* α4 :=
-        format_arguments::["new_v1_formatted"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0 ])
-          (addr_of [ α2 ])
-          α3 in
-      std.io.stdio._print α4 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of 1) in
-      let* α1 := LanguageItem.format_count::["Is"] 5 in
-      let* α2 :=
-        LanguageItem.format_placeholder::["new"]
-          0
-          "0"%char
-          LanguageItem.format_alignment::["Left"]
-          0
-          LanguageItem.format_count::["Implied"]
-          α1 in
-      let* α3 := LanguageItem.format_unsafe_arg::["new"] in
-      let* α4 :=
-        format_arguments::["new_v1_formatted"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0 ])
-          (addr_of [ α2 ])
-          α3 in
-      std.io.stdio._print α4 in
-    Pure tt in
-  let* _ :=
-    let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of 1) in
-      let* α1 := format_argument::["from_usize"] (addr_of 5) in
-      let* α2 := LanguageItem.format_count::["Param"] 1 in
-      let* α3 :=
-        LanguageItem.format_placeholder::["new"]
-          0
-          "0"%char
-          LanguageItem.format_alignment::["Right"]
-          0
-          LanguageItem.format_count::["Implied"]
-          α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
-      let* α5 :=
-        format_arguments::["new_v1_formatted"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0; α1 ])
-          (addr_of [ α3 ])
-          α4 in
-      std.io.stdio._print α5 in
+        borrow [ mk_str "Base 10:               69420
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow [ ] (list core.fmt.rt.Argument) in
+      let* α5 := deref α4 (list core.fmt.rt.Argument) in
+      let* α6 := borrow α5 (list core.fmt.rt.Argument) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
+      std.io.stdio._print α8 in
     Pure tt in
   let* _ :=
     let* _ :=
       let* α0 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "My name is Bond, James Bond
-" ])
-          (addr_of [ ]) in
-      std.io.stdio._print α0 in
+        borrow
+          [ mk_str "Base 2 (binary):       "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 69420 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_binary"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
     Pure tt in
-  let number : f64 := 1 (* 1.0 *) in
-  let width : usize := 5 in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_display"] (addr_of number) in
-      let* α1 := format_argument::["from_usize"] (addr_of width) in
-      let* α2 := LanguageItem.format_count::["Param"] 1 in
-      let* α3 :=
-        LanguageItem.format_placeholder::["new"]
-          0
-          " "%char
-          LanguageItem.format_alignment::["Right"]
-          0
-          LanguageItem.format_count::["Implied"]
-          α2 in
-      let* α4 := LanguageItem.format_unsafe_arg::["new"] in
-      let* α5 :=
-        format_arguments::["new_v1_formatted"]
-          (addr_of [ ""; "
-" ])
-          (addr_of [ α0; α1 ])
-          (addr_of [ α3 ])
-          α4 in
-      std.io.stdio._print α5 in
+      let* α0 :=
+        borrow
+          [ mk_str "Base 8 (octal):        "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 69420 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_octal"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        borrow
+          [ mk_str "Base 16 (hexadecimal): "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 69420 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_lower_hex"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        borrow
+          [ mk_str "Base 16 (hexadecimal): "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 69420 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_upper_hex"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := core.fmt.Arguments::["new_v1"] α3 α12 in
+      std.io.stdio._print α13 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 1 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := M.alloc 0 in
+      let* α14 := " "%char in
+      let* α15 := M.alloc 0 in
+      let* α16 := M.alloc 5 in
+      let* α17 := "unimplemented parent_kind" α16 in
+      let* α18 :=
+        core.fmt.rt.Placeholder::["new"]
+          α13
+          α14
+          (core.fmt.rt.Alignment.Right tt)
+          α15
+          (core.fmt.rt.Count.Implied tt)
+          α17 in
+      let* α19 := borrow [ α18 ] (list core.fmt.rt.Placeholder) in
+      let* α20 := deref α19 (list core.fmt.rt.Placeholder) in
+      let* α21 := borrow α20 (list core.fmt.rt.Placeholder) in
+      let* α22 := pointer_coercion "Unsize" α21 in
+      let* α23 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α24 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α22 α23 in
+      std.io.stdio._print α24 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 1 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := borrow [ α8 ] (list core.fmt.rt.Argument) in
+      let* α10 := deref α9 (list core.fmt.rt.Argument) in
+      let* α11 := borrow α10 (list core.fmt.rt.Argument) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      let* α13 := M.alloc 0 in
+      let* α14 := "0"%char in
+      let* α15 := M.alloc 0 in
+      let* α16 := M.alloc 5 in
+      let* α17 := "unimplemented parent_kind" α16 in
+      let* α18 :=
+        core.fmt.rt.Placeholder::["new"]
+          α13
+          α14
+          (core.fmt.rt.Alignment.Left tt)
+          α15
+          (core.fmt.rt.Count.Implied tt)
+          α17 in
+      let* α19 := borrow [ α18 ] (list core.fmt.rt.Placeholder) in
+      let* α20 := deref α19 (list core.fmt.rt.Placeholder) in
+      let* α21 := borrow α20 (list core.fmt.rt.Placeholder) in
+      let* α22 := pointer_coercion "Unsize" α21 in
+      let* α23 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α24 := core.fmt.Arguments::["new_v1_formatted"] α3 α12 α22 α23 in
+      std.io.stdio._print α24 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := M.alloc 1 in
+      let* α5 := borrow α4 i32 in
+      let* α6 := deref α5 i32 in
+      let* α7 := borrow α6 i32 in
+      let* α8 := core.fmt.rt.Argument::["new_display"] α7 in
+      let* α9 := M.alloc 5 in
+      let* α10 := borrow α9 usize in
+      let* α11 := deref α10 usize in
+      let* α12 := borrow α11 usize in
+      let* α13 := core.fmt.rt.Argument::["from_usize"] α12 in
+      let* α14 := borrow [ α8; α13 ] (list core.fmt.rt.Argument) in
+      let* α15 := deref α14 (list core.fmt.rt.Argument) in
+      let* α16 := borrow α15 (list core.fmt.rt.Argument) in
+      let* α17 := pointer_coercion "Unsize" α16 in
+      let* α18 := M.alloc 0 in
+      let* α19 := "0"%char in
+      let* α20 := M.alloc 0 in
+      let* α21 := M.alloc 1 in
+      let* α22 := "unimplemented parent_kind" α21 in
+      let* α23 :=
+        core.fmt.rt.Placeholder::["new"]
+          α18
+          α19
+          (core.fmt.rt.Alignment.Right tt)
+          α20
+          (core.fmt.rt.Count.Implied tt)
+          α22 in
+      let* α24 := borrow [ α23 ] (list core.fmt.rt.Placeholder) in
+      let* α25 := deref α24 (list core.fmt.rt.Placeholder) in
+      let* α26 := borrow α25 (list core.fmt.rt.Placeholder) in
+      let* α27 := pointer_coercion "Unsize" α26 in
+      let* α28 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α29 := core.fmt.Arguments::["new_v1_formatted"] α3 α17 α27 α28 in
+      std.io.stdio._print α29 in
+    Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        borrow [ mk_str "My name is Bond, James Bond
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow [ ] (list core.fmt.rt.Argument) in
+      let* α5 := deref α4 (list core.fmt.rt.Argument) in
+      let* α6 := borrow α5 (list core.fmt.rt.Argument) in
+      let* α7 := pointer_coercion "Unsize" α6 in
+      let* α8 := core.fmt.Arguments::["new_v1"] α3 α7 in
+      std.io.stdio._print α8 in
+    Pure tt in
+  let* number := M.alloc 1 (* 1.0 *) in
+  let* width := M.alloc 5 in
+  let* _ :=
+    let* _ :=
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow number f64 in
+      let* α5 := deref α4 f64 in
+      let* α6 := borrow α5 f64 in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow width usize in
+      let* α9 := deref α8 usize in
+      let* α10 := borrow α9 usize in
+      let* α11 := core.fmt.rt.Argument::["from_usize"] α10 in
+      let* α12 := borrow [ α7; α11 ] (list core.fmt.rt.Argument) in
+      let* α13 := deref α12 (list core.fmt.rt.Argument) in
+      let* α14 := borrow α13 (list core.fmt.rt.Argument) in
+      let* α15 := pointer_coercion "Unsize" α14 in
+      let* α16 := M.alloc 0 in
+      let* α17 := " "%char in
+      let* α18 := M.alloc 0 in
+      let* α19 := M.alloc 1 in
+      let* α20 := "unimplemented parent_kind" α19 in
+      let* α21 :=
+        core.fmt.rt.Placeholder::["new"]
+          α16
+          α17
+          (core.fmt.rt.Alignment.Right tt)
+          α18
+          (core.fmt.rt.Count.Implied tt)
+          α20 in
+      let* α22 := borrow [ α21 ] (list core.fmt.rt.Placeholder) in
+      let* α23 := deref α22 (list core.fmt.rt.Placeholder) in
+      let* α24 := borrow α23 (list core.fmt.rt.Placeholder) in
+      let* α25 := pointer_coercion "Unsize" α24 in
+      let* α26 := core.fmt.rt.UnsafeArg::["new"] in
+      let* α27 := core.fmt.Arguments::["new_v1_formatted"] α3 α15 α25 α26 in
+      std.io.stdio._print α27 in
     Pure tt in
   Pure tt.
 
 Module Structure.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : i32;
+  Record t `{State.Trait} : Set := {
+    x0 : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Structure.
-Definition Structure := @Structure.t.
+Definition Structure `{State.Trait} : Set := M.val Structure.t.

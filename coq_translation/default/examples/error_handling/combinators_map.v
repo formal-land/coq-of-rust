@@ -2,218 +2,263 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Food.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Apple
   | Carrot
   | Potato.
 End Food.
-Definition Food : Set := Food.t.
+Definition Food `{State.Trait} : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
-  Definition Self := combinators_map.Food.
+  Definition Self `{State.Trait} := combinators_map.Food.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    let* α0 :=
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 :=
       match self with
-      | combinators_map.Food.Apple => Pure "Apple"
-      | combinators_map.Food.Carrot => Pure "Carrot"
-      | combinators_map.Food.Potato => Pure "Potato"
+      | combinators_map.Food  =>
+        let* α0 := deref (mk_str "Apple") str in
+        borrow α0 str
+      | combinators_map.Food  =>
+        let* α0 := deref (mk_str "Carrot") str in
+        borrow α0 str
+      | combinators_map.Food  =>
+        let* α0 := deref (mk_str "Potato") str in
+        borrow α0 str
       end in
-    core.fmt.Formatter::["write_str"] f α0.
+    core.fmt.Formatter::["write_str"] α1 α2.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 Module Peeled.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : combinators_map.Food;
+  Record t `{State.Trait} : Set := {
+    x0 : combinators_map.Food;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Peeled.
-Definition Peeled := @Peeled.t.
+Definition Peeled `{State.Trait} : Set := M.val Peeled.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
-  Definition Self := combinators_map.Peeled.
+  Definition Self `{State.Trait} := combinators_map.Peeled.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Peeled"
-      (addr_of (addr_of (self.[0]))).
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "Peeled") str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref self combinators_map.Peeled in
+    let* α5 := α4.["0"] in
+    let* α6 := borrow α5 combinators_map.Food in
+    let* α7 := borrow α6 (ref combinators_map.Food) in
+    let* α8 := deref α7 (ref combinators_map.Food) in
+    let* α9 := borrow α8 (ref combinators_map.Food) in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 Module Chopped.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : combinators_map.Food;
+  Record t `{State.Trait} : Set := {
+    x0 : combinators_map.Food;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Chopped.
-Definition Chopped := @Chopped.t.
+Definition Chopped `{State.Trait} : Set := M.val Chopped.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
-  Definition Self := combinators_map.Chopped.
+  Definition Self `{State.Trait} := combinators_map.Chopped.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Chopped"
-      (addr_of (addr_of (self.[0]))).
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "Chopped") str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref self combinators_map.Chopped in
+    let* α5 := α4.["0"] in
+    let* α6 := borrow α5 combinators_map.Food in
+    let* α7 := borrow α6 (ref combinators_map.Food) in
+    let* α8 := deref α7 (ref combinators_map.Food) in
+    let* α9 := borrow α8 (ref combinators_map.Food) in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 Module Cooked.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : combinators_map.Food;
+  Record t `{State.Trait} : Set := {
+    x0 : combinators_map.Food;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Cooked.
-Definition Cooked := @Cooked.t.
+Definition Cooked `{State.Trait} : Set := M.val Cooked.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
-  Definition Self := combinators_map.Cooked.
+  Definition Self `{State.Trait} := combinators_map.Cooked.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Cooked"
-      (addr_of (addr_of (self.[0]))).
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "Cooked") str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref self combinators_map.Cooked in
+    let* α5 := α4.["0"] in
+    let* α6 := borrow α5 combinators_map.Food in
+    let* α7 := borrow α6 (ref combinators_map.Food) in
+    let* α8 := deref α7 (ref combinators_map.Food) in
+    let* α9 := borrow α8 (ref combinators_map.Food) in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Definition peel
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : core.option.Option combinators_map.Food)
-    : M (H := H') (core.option.Option combinators_map.Peeled) :=
+    : M (core.option.Option combinators_map.Peeled) :=
   match food with
-  | core.option.Option.Some food =>
+  | core.option.Option food =>
     Pure (core.option.Option.Some (combinators_map.Peeled.Build_t food))
-  | core.option.Option.None => Pure core.option.Option.None
+  | core.option.Option  => Pure (core.option.Option.None tt)
   end.
 
 Definition chop
-    `{H' : State.Trait}
+    `{State.Trait}
     (peeled : core.option.Option combinators_map.Peeled)
-    : M (H := H') (core.option.Option combinators_map.Chopped) :=
+    : M (core.option.Option combinators_map.Chopped) :=
   match peeled with
-  | core.option.Option.Some combinators_map.Peeled.Build_t food =>
+  | core.option.Option combinators_map.Peeled.Build_t food =>
     Pure (core.option.Option.Some (combinators_map.Chopped.Build_t food))
-  | core.option.Option.None => Pure core.option.Option.None
+  | core.option.Option  => Pure (core.option.Option.None tt)
   end.
 
 Definition cook
-    `{H' : State.Trait}
+    `{State.Trait}
     (chopped : core.option.Option combinators_map.Chopped)
-    : M (H := H') (core.option.Option combinators_map.Cooked) :=
-  chopped.["map"]
-    (fun combinators_map.Chopped.Build_t food =>
-      Pure (combinators_map.Cooked.Build_t food)).
+    : M (core.option.Option combinators_map.Cooked) :=
+  (core.option.Option _)::["map"]
+    chopped
+    Pure (combinators_map.Cooked.Build_t food).
 
 Definition process
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : core.option.Option combinators_map.Food)
-    : M (H := H') (core.option.Option combinators_map.Cooked) :=
-  let* α0 := food.["map"] (fun f => Pure (combinators_map.Peeled.Build_t f)) in
+    : M (core.option.Option combinators_map.Cooked) :=
+  let* α0 :=
+    (core.option.Option _)::["map"]
+      food
+      Pure (combinators_map.Peeled.Build_t f) in
   let* α1 :=
-    α0.["map"]
-      (fun combinators_map.Peeled.Build_t f =>
-        Pure (combinators_map.Chopped.Build_t f)) in
-  α1.["map"]
-    (fun combinators_map.Chopped.Build_t f =>
-      Pure (combinators_map.Cooked.Build_t f)).
+    (core.option.Option _)::["map"]
+      α0
+      Pure (combinators_map.Chopped.Build_t f) in
+  (core.option.Option _)::["map"] α1 Pure (combinators_map.Cooked.Build_t f).
 
 Definition eat
-    `{H' : State.Trait}
+    `{State.Trait}
     (food : core.option.Option combinators_map.Cooked)
-    : M (H := H') unit :=
+    : M unit :=
   match food with
-  | core.option.Option.Some food =>
-    let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of food) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Mmm. I love "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
-    Pure tt
-  | core.option.Option.None =>
+  | core.option.Option food =>
     let* _ :=
       let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "Oh no! It wasn't edible.
-" ]) in
-      std.io.stdio._print α0 in
+        borrow [ mk_str "Mmm. I love "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow food combinators_map.Cooked in
+      let* α5 := deref α4 combinators_map.Cooked in
+      let* α6 := borrow α5 combinators_map.Cooked in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
+    Pure tt
+  | core.option.Option  =>
+    let* _ :=
+      let* α0 :=
+        borrow [ mk_str "Oh no! It wasn't edible.
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let apple := core.option.Option.Some combinators_map.Food.Apple in
-  let carrot := core.option.Option.Some combinators_map.Food.Carrot in
-  let potato := core.option.Option.None in
+Definition main `{State.Trait} : M unit :=
+  let apple := core.option.Option.Some (combinators_map.Food.Apple tt) in
+  let carrot := core.option.Option.Some (combinators_map.Food.Carrot tt) in
+  let potato := core.option.Option.None tt in
   let* cooked_apple :=
     let* α0 := combinators_map.peel apple in
     let* α1 := combinators_map.chop α0 in

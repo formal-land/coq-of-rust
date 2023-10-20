@@ -3,88 +3,79 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module checked.
   Module MathError.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | DivisionByZero
     | NonPositiveLogarithm
     | NegativeSquareRoot.
   End MathError.
-  Definition MathError : Set := MathError.t.
+  Definition MathError `{State.Trait} : Set := MathError.t.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self := result.checked.MathError.
+    Definition Self `{State.Trait} := result.checked.MathError.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        forall `{State.Trait},
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
-  Definition MathResult : Set :=
+  Definition MathResult `{State.Trait} : Set :=
     core.result.Result f64 result.checked.MathError.
   
   Parameter div :
-      forall `{H' : State.Trait},
-      f64 -> f64 -> M (H := H') result.checked.MathResult.
+      forall `{State.Trait},
+      f64 -> f64 -> M result.checked.MathResult.
   
-  Parameter sqrt :
-      forall `{H' : State.Trait},
-      f64 -> M (H := H') result.checked.MathResult.
+  Parameter sqrt : forall `{State.Trait}, f64 -> M result.checked.MathResult.
   
-  Parameter ln :
-      forall `{H' : State.Trait},
-      f64 -> M (H := H') result.checked.MathResult.
+  Parameter ln : forall `{State.Trait}, f64 -> M result.checked.MathResult.
 End checked.
 
 Module MathError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | DivisionByZero
   | NonPositiveLogarithm
   | NegativeSquareRoot.
 End MathError.
-Definition MathError : Set := MathError.t.
+Definition MathError `{State.Trait} : Set := MathError.t.
 
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
-  Definition Self := result.checked.MathError.
+  Definition Self `{State.Trait} := result.checked.MathError.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
-Definition MathResult : Set := core.result.Result f64 result.checked.MathError.
+Definition MathResult `{State.Trait} : Set :=
+  core.result.Result f64 result.checked.MathError.
 
 Parameter div :
-    forall `{H' : State.Trait},
-    f64 -> f64 -> M (H := H') result.checked.MathResult.
+    forall `{State.Trait},
+    f64 -> f64 -> M result.checked.MathResult.
 
-Parameter sqrt :
-    forall `{H' : State.Trait},
-    f64 -> M (H := H') result.checked.MathResult.
+Parameter sqrt : forall `{State.Trait}, f64 -> M result.checked.MathResult.
 
-Parameter ln :
-    forall `{H' : State.Trait},
-    f64 -> M (H := H') result.checked.MathResult.
+Parameter ln : forall `{State.Trait}, f64 -> M result.checked.MathResult.
 
-Parameter op : forall `{H' : State.Trait}, f64 -> f64 -> M (H := H') f64.
+Parameter op : forall `{State.Trait}, f64 -> f64 -> M f64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

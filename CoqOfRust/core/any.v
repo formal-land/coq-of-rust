@@ -31,7 +31,7 @@ pub trait Provider {
 }
 *)
 Module Provider.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     provide : ref Self -> mut_ref Demand;
   }.
 End Provider.
@@ -43,7 +43,7 @@ pub trait Any: 'static {
 }
 *)
 Module Any.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     type_id : ref Self -> TypeId;
   }.
 End Any.

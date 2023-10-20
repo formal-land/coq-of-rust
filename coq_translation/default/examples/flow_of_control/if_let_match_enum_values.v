@@ -2,69 +2,88 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Bar
   | Baz
   | Qux (_ : u32).
 End Foo.
-Definition Foo : Set := Foo.t.
+Definition Foo `{State.Trait} : Set := Foo.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let a := if_let_match_enum_values.Foo.Bar in
-  let b := if_let_match_enum_values.Foo.Baz in
-  let c := if_let_match_enum_values.Foo.Qux 100 in
+Definition main `{State.Trait} : M unit :=
+  let a := if_let_match_enum_values.Foo.Bar tt in
+  let b := if_let_match_enum_values.Foo.Baz tt in
+  let* c :=
+    let* α0 := M.alloc 100 in
+    Pure (if_let_match_enum_values.Foo.Qux α0) in
   let* _ :=
-    match a with
-    | if_let_match_enum_values.Foo.Bar =>
+    let* α0 := let_if if_let_match_enum_values.Foo  := a in
+    if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"] (addr_of [ "a is foobar
-" ]) in
-          std.io.stdio._print α0 in
+          let* α0 := borrow [ mk_str "a is foobar
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
         Pure tt in
       Pure tt
-    | _ => Pure tt
-    end in
+    else
+      Pure tt in
   let* _ :=
-    match b with
-    | if_let_match_enum_values.Foo.Bar =>
+    let* α0 := let_if if_let_match_enum_values.Foo  := b in
+    if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 :=
-            format_arguments::["new_const"] (addr_of [ "b is foobar
-" ]) in
-          std.io.stdio._print α0 in
+          let* α0 := borrow [ mk_str "b is foobar
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := core.fmt.Arguments::["new_const"] α3 in
+          std.io.stdio._print α4 in
         Pure tt in
       Pure tt
-    | _ => Pure tt
-    end in
+    else
+      Pure tt in
   let* _ :=
-    match c with
-    | if_let_match_enum_values.Foo.Qux value =>
+    let* α0 := let_if if_let_match_enum_values.Foo value := c in
+    if (α0 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of value) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "c is "; "
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
+          let* α0 := borrow [ mk_str "c is "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow value u32 in
+          let* α5 := deref α4 u32 in
+          let* α6 := borrow α5 u32 in
+          let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          std.io.stdio._print α12 in
         Pure tt in
       Pure tt
-    | _ => Pure tt
-    end in
-  match c with
-  | if_let_match_enum_values.Foo.Qux (100 as value) =>
+    else
+      Pure tt in
+  let* α0 := let_if if_let_match_enum_values.Foo (_ as value) := c in
+  if (α0 : bool) then
     let* _ :=
       let* _ :=
-        let* α0 :=
-          format_arguments::["new_const"] (addr_of [ "c is one hundred
-" ]) in
-        std.io.stdio._print α0 in
+        let* α0 := borrow [ mk_str "c is one hundred
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
       Pure tt in
     Pure tt
-  | _ => Pure tt
-  end.
+  else
+    Pure tt.

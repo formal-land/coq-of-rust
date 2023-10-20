@@ -7,97 +7,93 @@ End Unit.
 Definition Unit := @Unit.t.
 
 Module Impl_core_fmt_Debug_for_clone_Unit.
-  Definition Self := clone.Unit.
+  Definition Self `{State.Trait} := clone.Unit.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
-  Definition Self := clone.Unit.
+  Definition Self `{State.Trait} := clone.Unit.
   
-  Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') clone.Unit.
+  Parameter clone : forall `{State.Trait}, (ref Self) -> M clone.Unit.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
-  Definition Self := clone.Unit.
+  Definition Self `{State.Trait} := clone.Unit.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    _ : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+  Record t `{State.Trait} : Set := {
+    x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
-  Global Instance Get_1 : Notation.Dot 1 := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
   }.
 End Pair.
-Definition Pair := @Pair.t.
+Definition Pair `{State.Trait} : Set := M.val Pair.t.
 
 Module Impl_core_clone_Clone_for_clone_Pair.
-  Definition Self := clone.Pair.
+  Definition Self `{State.Trait} := clone.Pair.
   
-  Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') clone.Pair.
+  Parameter clone : forall `{State.Trait}, (ref Self) -> M clone.Pair.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
-  Definition Self := clone.Pair.
+  Definition Self `{State.Trait} := clone.Pair.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

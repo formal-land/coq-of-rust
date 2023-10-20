@@ -2,22 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module VeryVerboseEnumOfThingsToDoWithNumbers.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Add
   | Subtract.
 End VeryVerboseEnumOfThingsToDoWithNumbers.
-Definition VeryVerboseEnumOfThingsToDoWithNumbers : Set :=
+Definition VeryVerboseEnumOfThingsToDoWithNumbers `{State.Trait} : Set :=
   VeryVerboseEnumOfThingsToDoWithNumbers.t.
 
 Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
-  Definition Self :=
+  Definition Self `{State.Trait} : Set :=
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.
   
-  Parameter run :
-      forall `{H' : State.Trait},
-      (ref Self) -> i32 -> i32 -> M (H := H') i32.
+  Parameter run : forall `{State.Trait}, (ref Self) -> i32 -> i32 -> M i32.
   
-  Global Instance Method_run `{H' : State.Trait} : Notation.Dot "run" := {
+  Global Instance Method_run `{State.Trait} : Notation.Dot "run" := {
     Notation.dot := run;
   }.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

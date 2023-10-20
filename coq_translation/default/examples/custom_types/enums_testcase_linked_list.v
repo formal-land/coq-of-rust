@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module List.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   |
     Cons
     (_ : u32)
@@ -11,107 +11,162 @@ Module List.
       alloc.boxed.Box enums_testcase_linked_list.List alloc.boxed.Box.Default.A)
   | Nil.
 End List.
-Definition List : Set := List.t.
+Definition List `{State.Trait} : Set := List.t.
 
 Module Impl_enums_testcase_linked_list_List.
-  Definition Self := enums_testcase_linked_list.List.
+  Definition Self `{State.Trait} : Set := enums_testcase_linked_list.List.
   
-  Definition new
-      `{H' : State.Trait}
-      : M (H := H') enums_testcase_linked_list.List :=
-    Pure enums_testcase_linked_list.List.Nil.
+  Definition new `{State.Trait} : M enums_testcase_linked_list.List :=
+    Pure (enums_testcase_linked_list.List.Nil tt).
   
-  Global Instance AssociatedFunction_new `{H' : State.Trait} :
+  Global Instance AssociatedFunction_new `{State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
   Definition prepend
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : Self)
       (elem : u32)
-      : M (H := H') enums_testcase_linked_list.List :=
-    let* α0 := (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] self in
+      : M enums_testcase_linked_list.List :=
+    let* α0 := (alloc.boxed.Box _ alloc.alloc.Global)::["new"] self in
     Pure (enums_testcase_linked_list.List.Cons elem α0).
   
-  Global Instance Method_prepend `{H' : State.Trait} :
-    Notation.Dot "prepend" := {
+  Global Instance Method_prepend `{State.Trait} : Notation.Dot "prepend" := {
     Notation.dot := prepend;
   }.
   
-  Definition len `{H' : State.Trait} (self : ref Self) : M (H := H') u32 :=
-    let* α0 := self.["deref"] in
+  Definition len `{State.Trait} (self : ref Self) : M u32 :=
+    let* α0 := deref self enums_testcase_linked_list.List in
     match α0 with
-    | enums_testcase_linked_list.List.Cons _ tail =>
-      let* α0 := tail.["len"] in
-      1.["add"] α0
-    | enums_testcase_linked_list.List.Nil => Pure 0
+    | enums_testcase_linked_list.List _ tail =>
+      let* α0 := M.alloc 1 in
+      let* α1 :=
+        deref
+          tail
+          (alloc.boxed.Box
+            enums_testcase_linked_list.List
+            alloc.alloc.Global) in
+      let* α2 := deref α1 enums_testcase_linked_list.List in
+      let* α3 := borrow α2 enums_testcase_linked_list.List in
+      let* α4 := enums_testcase_linked_list.List::["len"] α3 in
+      add α0 α4
+    | enums_testcase_linked_list.List  => M.alloc 0
     end.
   
-  Global Instance Method_len `{H' : State.Trait} : Notation.Dot "len" := {
+  Global Instance Method_len `{State.Trait} : Notation.Dot "len" := {
     Notation.dot := len;
   }.
   
   Definition stringify
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
-      : M (H := H') alloc.string.String :=
-    let* α0 := self.["deref"] in
+      : M alloc.string.String :=
+    let* α0 := deref self enums_testcase_linked_list.List in
     match α0 with
-    | enums_testcase_linked_list.List.Cons head tail =>
+    | enums_testcase_linked_list.List head tail =>
       let* res :=
-        let* α0 := format_argument::["new_display"] (addr_of head) in
-        let* α1 := tail.["stringify"] in
-        let* α2 := format_argument::["new_display"] (addr_of α1) in
-        let* α3 :=
-          format_arguments::["new_v1"]
-            (addr_of [ ""; ", " ])
-            (addr_of [ α0; α2 ]) in
-        alloc.fmt.format α3 in
+        let* α0 := borrow [ mk_str ""; mk_str ", " ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow head u32 in
+        let* α5 := deref α4 u32 in
+        let* α6 := borrow α5 u32 in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 :=
+          deref
+            tail
+            (alloc.boxed.Box
+              enums_testcase_linked_list.List
+              alloc.alloc.Global) in
+        let* α9 := deref α8 enums_testcase_linked_list.List in
+        let* α10 := borrow α9 enums_testcase_linked_list.List in
+        let* α11 := enums_testcase_linked_list.List::["stringify"] α10 in
+        let* α12 := borrow α11 alloc.string.String in
+        let* α13 := deref α12 alloc.string.String in
+        let* α14 := borrow α13 alloc.string.String in
+        let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+        let* α16 := borrow [ α7; α15 ] (list core.fmt.rt.Argument) in
+        let* α17 := deref α16 (list core.fmt.rt.Argument) in
+        let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+        let* α19 := pointer_coercion "Unsize" α18 in
+        let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+        alloc.fmt.format α20 in
       Pure res
-    | enums_testcase_linked_list.List.Nil =>
+    | enums_testcase_linked_list.List  =>
       let* res :=
-        let* α0 := format_arguments::["new_const"] (addr_of [ "Nil" ]) in
-        alloc.fmt.format α0 in
+        let* α0 := borrow [ mk_str "Nil" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        alloc.fmt.format α4 in
       Pure res
     end.
   
-  Global Instance Method_stringify `{H' : State.Trait} :
+  Global Instance Method_stringify `{State.Trait} :
     Notation.Dot "stringify" := {
     Notation.dot := stringify;
   }.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* list := enums_testcase_linked_list.List::["new"] in
   let* _ :=
-    let* α0 := list.["prepend"] 1 in
-    assign list α0 in
+    let* α0 := M.alloc 1 in
+    let* α1 := enums_testcase_linked_list.List::["prepend"] list α0 in
+    assign list α1 in
   let* _ :=
-    let* α0 := list.["prepend"] 2 in
-    assign list α0 in
+    let* α0 := M.alloc 2 in
+    let* α1 := enums_testcase_linked_list.List::["prepend"] list α0 in
+    assign list α1 in
   let* _ :=
-    let* α0 := list.["prepend"] 3 in
-    assign list α0 in
+    let* α0 := M.alloc 3 in
+    let* α1 := enums_testcase_linked_list.List::["prepend"] list α0 in
+    assign list α1 in
   let* _ :=
     let* _ :=
-      let* α0 := list.["len"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "linked list has length: "; "
-" ])
-          (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 :=
+        borrow
+          [ mk_str "linked list has length: "; mk_str "
+" ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow list enums_testcase_linked_list.List in
+      let* α5 := enums_testcase_linked_list.List::["len"] α4 in
+      let* α6 := borrow α5 u32 in
+      let* α7 := deref α6 u32 in
+      let* α8 := borrow α7 u32 in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 := list.["stringify"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α1 ]) in
-      std.io.stdio._print α2 in
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow list enums_testcase_linked_list.List in
+      let* α5 := enums_testcase_linked_list.List::["stringify"] α4 in
+      let* α6 := borrow α5 alloc.string.String in
+      let* α7 := deref α6 alloc.string.String in
+      let* α8 := borrow α7 alloc.string.String in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+      let* α11 := deref α10 (list core.fmt.rt.Argument) in
+      let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+      let* α13 := pointer_coercion "Unsize" α12 in
+      let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+      std.io.stdio._print α14 in
     Pure tt in
   Pure tt.

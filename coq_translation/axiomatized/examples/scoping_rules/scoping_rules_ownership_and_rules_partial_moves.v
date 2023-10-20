@@ -2,46 +2,47 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.
 
 Module Person.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     name : alloc.string.String;
     age : alloc.boxed.Box u8 alloc.boxed.Box.Default.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_name `{State.Trait}
+    : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_age : Notation.Dot "age" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_age `{State.Trait} : Notation.Dot "age" := {
+    Notation.dot x := let* x := M.read x in Pure x.(age) : M _;
   }.
-  Global Instance Get_AF_age : Notation.DoubleColon t "age" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_age `{State.Trait} : Notation.DoubleColon t "age" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(age) : M _;
   }.
 End Person.
-Definition Person : Set := Person.t.
+Definition Person `{State.Trait} : Set := M.val (Person.t).
 
 Module
   Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
-  Definition Self :=
+  Definition Self `{State.Trait} :=
     scoping_rules_ownership_and_rules_partial_moves.main.Person.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End

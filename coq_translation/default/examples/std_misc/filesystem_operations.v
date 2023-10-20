@@ -2,304 +2,479 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition cat
-    `{H' : State.Trait}
+    `{State.Trait}
     (path : ref std.path.Path)
-    : M (H := H') (std.io.error.Result alloc.string.String) :=
+    : M (std.io.error.Result alloc.string.String) :=
   let* f :=
     let* α0 := std.fs.File::["open"] path in
-    let* α1 := α0.["branch"] in
+    let* α1 := core.ops.try_trait.Try.branch α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
-      Return α0
-    | LanguageItem.Continue val => Pure val
+    | core.ops.control_flow.ControlFlow residual =>
+      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α1 := Return α0 in
+      never_to_any α1
+    | core.ops.control_flow.ControlFlow val => Pure val
     end in
   let* s := alloc.string.String::["new"] in
-  let* α0 := f.["read_to_string"] (addr_of s) in
-  match α0 with
-  | core.result.Result.Ok _ => Pure (core.result.Result.Ok s)
-  | core.result.Result.Err e => Pure (core.result.Result.Err e)
+  let* α0 := borrow_mut f std.fs.File in
+  let* α1 := borrow_mut s alloc.string.String in
+  let* α2 := deref α1 alloc.string.String in
+  let* α3 := borrow_mut α2 alloc.string.String in
+  let* α4 := std.io.Read.read_to_string α0 α3 in
+  match α4 with
+  | core.result.Result _ => Pure (core.result.Result.Ok s)
+  | core.result.Result e => Pure (core.result.Result.Err e)
   end.
 
 Definition echo
-    `{H' : State.Trait}
+    `{State.Trait}
     (s : ref str)
     (path : ref std.path.Path)
-    : M (H := H') (std.io.error.Result unit) :=
+    : M (std.io.error.Result unit) :=
   let* f :=
     let* α0 := std.fs.File::["create"] path in
-    let* α1 := α0.["branch"] in
+    let* α1 := core.ops.try_trait.Try.branch α0 in
     match α1 with
-    | LanguageItem.Break residual =>
-      let* α0 := residual.["from_residual"] in
-      Return α0
-    | LanguageItem.Continue val => Pure val
+    | core.ops.control_flow.ControlFlow residual =>
+      let* α0 := core.ops.try_trait.FromResidual.from_residual residual in
+      let* α1 := Return α0 in
+      never_to_any α1
+    | core.ops.control_flow.ControlFlow val => Pure val
     end in
-  let* α0 := s.["as_bytes"] in
-  f.["write_all"] α0.
+  let* α0 := borrow_mut f std.fs.File in
+  let* α1 := deref s str in
+  let* α2 := borrow α1 str in
+  let* α3 := str::["as_bytes"] α2 in
+  let* α4 := deref α3 (Slice u8) in
+  let* α5 := borrow α4 (Slice u8) in
+  std.io.Write.write_all α0 α5.
 
 Definition touch
-    `{H' : State.Trait}
+    `{State.Trait}
     (path : ref std.path.Path)
-    : M (H := H') (std.io.error.Result unit) :=
+    : M (std.io.error.Result unit) :=
   let* α0 := std.fs.OpenOptions::["new"] in
-  let* α1 := α0.["create"] true in
-  let* α2 := α1.["write"] true in
-  let* α3 := α2.["open"] path in
-  match α3 with
-  | core.result.Result.Ok _ => Pure (core.result.Result.Ok tt)
-  | core.result.Result.Err e => Pure (core.result.Result.Err e)
+  let* α1 := borrow_mut α0 std.fs.OpenOptions in
+  let* α2 := true in
+  let* α3 := std.fs.OpenOptions::["create"] α1 α2 in
+  let* α4 := deref α3 std.fs.OpenOptions in
+  let* α5 := borrow_mut α4 std.fs.OpenOptions in
+  let* α6 := true in
+  let* α7 := std.fs.OpenOptions::["write"] α5 α6 in
+  let* α8 := deref α7 std.fs.OpenOptions in
+  let* α9 := borrow α8 std.fs.OpenOptions in
+  let* α10 := std.fs.OpenOptions::["open"] α9 path in
+  match α10 with
+  | core.result.Result _ => Pure (core.result.Result.Ok tt)
+  | core.result.Result e => Pure (core.result.Result.Err e)
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* _ :=
     let* _ :=
-      let* α0 := format_arguments::["new_const"] (addr_of [ "`mkdir a`
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "`mkdir a`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.create_dir "a" in
+    let* α0 := std.fs.create_dir (mk_str "a") in
     match α0 with
-    | core.result.Result.Err why =>
+    | core.result.Result why =>
       let* _ :=
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (addr_of α0) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "! "; "
-" ])
-            (addr_of [ α1 ]) in
-        std.io.stdio._print α2 in
+        let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow why std.io.error.Error in
+        let* α5 := std.io.error.Error::["kind"] α4 in
+        let* α6 := borrow α5 std.io.error.ErrorKind in
+        let* α7 := deref α6 std.io.error.ErrorKind in
+        let* α8 := borrow α7 std.io.error.ErrorKind in
+        let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
       Pure tt
-    | core.result.Result.Ok _ => Pure tt
+    | core.result.Result _ => Pure tt
     end in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "`echo hello > a/b.txt`
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "`echo hello > a/b.txt`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.path.Path::["new"] "a/b.txt" in
-    let* α1 := filesystem_operations.echo "hello" (addr_of α0) in
-    α1.["unwrap_or_else"]
-      (fun why =>
-        let* _ :=
-          let* _ :=
-            let* α0 := why.["kind"] in
-            let* α1 := format_argument::["new_debug"] (addr_of α0) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "! "; "
-" ])
-                (addr_of [ α1 ]) in
-            std.io.stdio._print α2 in
-          Pure tt in
-        Pure tt) in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "`mkdir -p a/c/d`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ :=
-    let* α0 := std.fs.create_dir_all "a/c/d" in
-    α0.["unwrap_or_else"]
-      (fun why =>
-        let* _ :=
-          let* _ :=
-            let* α0 := why.["kind"] in
-            let* α1 := format_argument::["new_debug"] (addr_of α0) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "! "; "
-" ])
-                (addr_of [ α1 ]) in
-            std.io.stdio._print α2 in
-          Pure tt in
-        Pure tt) in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "`touch a/c/e.txt`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ :=
-    let* α0 := std.path.Path::["new"] "a/c/e.txt" in
-    let* α1 := filesystem_operations.touch (addr_of α0) in
-    α1.["unwrap_or_else"]
-      (fun why =>
-        let* _ :=
-          let* _ :=
-            let* α0 := why.["kind"] in
-            let* α1 := format_argument::["new_debug"] (addr_of α0) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "! "; "
-" ])
-                (addr_of [ α1 ]) in
-            std.io.stdio._print α2 in
-          Pure tt in
-        Pure tt) in
-  let* _ :=
-    let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"]
-          (addr_of [ "`ln -s ../b.txt a/c/b.txt`
-" ]) in
-      std.io.stdio._print α0 in
-    Pure tt in
-  let* _ :=
-    if (true : bool) then
+    let* α0 := deref (mk_str "hello") str in
+    let* α1 := borrow α0 str in
+    let* α2 := deref (mk_str "a/b.txt") str in
+    let* α3 := borrow α2 str in
+    let* α4 := std.path.Path::["new"] α3 in
+    let* α5 := borrow α4 (ref std.path.Path) in
+    let* α6 := deref α5 (ref std.path.Path) in
+    let* α7 := deref α6 std.path.Path in
+    let* α8 := borrow α7 std.path.Path in
+    let* α9 := filesystem_operations.echo α1 α8 in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α9
       let* _ :=
-        let* α0 := std.os.unix.fs.symlink "../b.txt" "a/c/b.txt" in
-        α0.["unwrap_or_else"]
-          (fun why =>
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := borrow [ mk_str "`mkdir -p a/c/d`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    Pure tt in
+  let* _ :=
+    let* α0 := std.fs.create_dir_all (mk_str "a/c/d") in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α0
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 := borrow [ mk_str "`touch a/c/e.txt`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    Pure tt in
+  let* _ :=
+    let* α0 := deref (mk_str "a/c/e.txt") str in
+    let* α1 := borrow α0 str in
+    let* α2 := std.path.Path::["new"] α1 in
+    let* α3 := borrow α2 (ref std.path.Path) in
+    let* α4 := deref α3 (ref std.path.Path) in
+    let* α5 := deref α4 std.path.Path in
+    let* α6 := borrow α5 std.path.Path in
+    let* α7 := filesystem_operations.touch α6 in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α7
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
+  let* _ :=
+    let* _ :=
+      let* α0 :=
+        borrow [ mk_str "`ln -s ../b.txt a/c/b.txt`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
+    Pure tt in
+  let* _ :=
+    let* α0 := true in
+    let* α1 := use α0 in
+    if (α1 : bool) then
+      let* _ :=
+        let* α0 :=
+          std.os.unix.fs.symlink (mk_str "../b.txt") (mk_str "a/c/b.txt") in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α0
+          let* _ :=
             let* _ :=
-              let* _ :=
-                let* α0 := why.["kind"] in
-                let* α1 := format_argument::["new_debug"] (addr_of α0) in
-                let* α2 :=
-                  format_arguments::["new_v1"]
-                    (addr_of [ "! "; "
-" ])
-                    (addr_of [ α1 ]) in
-                std.io.stdio._print α2 in
-              Pure tt in
-            Pure tt) in
+              let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+              let* α1 := deref α0 (list (ref str)) in
+              let* α2 := borrow α1 (list (ref str)) in
+              let* α3 := pointer_coercion "Unsize" α2 in
+              let* α4 := borrow why std.io.error.Error in
+              let* α5 := std.io.error.Error::["kind"] α4 in
+              let* α6 := borrow α5 std.io.error.ErrorKind in
+              let* α7 := deref α6 std.io.error.ErrorKind in
+              let* α8 := borrow α7 std.io.error.ErrorKind in
+              let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+              let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+              let* α11 := deref α10 (list core.fmt.rt.Argument) in
+              let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+              let* α13 := pointer_coercion "Unsize" α12 in
+              let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+              std.io.stdio._print α14 in
+            Pure tt in
+          Pure tt in
       Pure tt
     else
       Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "`cat a/c/b.txt`
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "`cat a/c/b.txt`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.path.Path::["new"] "a/c/b.txt" in
-    let* α1 := filesystem_operations.cat (addr_of α0) in
-    match α1 with
-    | core.result.Result.Err why =>
+    let* α0 := deref (mk_str "a/c/b.txt") str in
+    let* α1 := borrow α0 str in
+    let* α2 := std.path.Path::["new"] α1 in
+    let* α3 := borrow α2 (ref std.path.Path) in
+    let* α4 := deref α3 (ref std.path.Path) in
+    let* α5 := deref α4 std.path.Path in
+    let* α6 := borrow α5 std.path.Path in
+    let* α7 := filesystem_operations.cat α6 in
+    match α7 with
+    | core.result.Result why =>
       let* _ :=
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (addr_of α0) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "! "; "
-" ])
-            (addr_of [ α1 ]) in
-        std.io.stdio._print α2 in
+        let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow why std.io.error.Error in
+        let* α5 := std.io.error.Error::["kind"] α4 in
+        let* α6 := borrow α5 std.io.error.ErrorKind in
+        let* α7 := deref α6 std.io.error.ErrorKind in
+        let* α8 := borrow α7 std.io.error.ErrorKind in
+        let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
       Pure tt
-    | core.result.Result.Ok s =>
+    | core.result.Result s =>
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of s) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "> "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 := borrow [ mk_str "> "; mk_str "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow s alloc.string.String in
+        let* α5 := deref α4 alloc.string.String in
+        let* α6 := borrow α5 alloc.string.String in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt
     end in
   let* _ :=
     let* _ :=
-      let* α0 := format_arguments::["new_const"] (addr_of [ "`ls a`
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "`ls a`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.read_dir "a" in
+    let* α0 := std.fs.read_dir (mk_str "a") in
     match α0 with
-    | core.result.Result.Err why =>
+    | core.result.Result why =>
       let* _ :=
-        let* α0 := why.["kind"] in
-        let* α1 := format_argument::["new_debug"] (addr_of α0) in
-        let* α2 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "! "; "
-" ])
-            (addr_of [ α1 ]) in
-        std.io.stdio._print α2 in
+        let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow why std.io.error.Error in
+        let* α5 := std.io.error.Error::["kind"] α4 in
+        let* α6 := borrow α5 std.io.error.ErrorKind in
+        let* α7 := deref α6 std.io.error.ErrorKind in
+        let* α8 := borrow α7 std.io.error.ErrorKind in
+        let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+        let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+        let* α11 := deref α10 (list core.fmt.rt.Argument) in
+        let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+        let* α13 := pointer_coercion "Unsize" α12 in
+        let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+        std.io.stdio._print α14 in
       Pure tt
-    | core.result.Result.Ok paths =>
-      let* α0 := paths.["into_iter"] in
-      match α0 with
-      | iter =>
-        loop
-          (let* _ :=
-            let* α0 := (addr_of iter).["next"] in
-            match α0 with
-            | core.option.Option.None  => Break
-            | core.option.Option.Some path =>
-              let* _ :=
+    | core.result.Result paths =>
+      let* α0 := core.iter.traits.collect.IntoIterator.into_iter paths in
+      let* α1 :=
+        match α0 with
+        | iter =>
+          loop
+            (let* _ :=
+              let* α0 := borrow_mut iter std.fs.ReadDir in
+              let* α1 := deref α0 std.fs.ReadDir in
+              let* α2 := borrow_mut α1 std.fs.ReadDir in
+              let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+              match α3 with
+              | core.option.Option  =>
+                let* α0 := Break in
+                never_to_any α0
+              | core.option.Option path =>
                 let* _ :=
-                  let* α0 := path.["unwrap"] in
-                  let* α1 := α0.["path"] in
-                  let* α2 := format_argument::["new_debug"] (addr_of α1) in
-                  let* α3 :=
-                    format_arguments::["new_v1"]
-                      (addr_of [ "> "; "
-" ])
-                      (addr_of [ α2 ]) in
-                  std.io.stdio._print α3 in
-                Pure tt in
-              Pure tt
-            end in
-          Pure tt)
-      end
+                  let* _ :=
+                    let* α0 :=
+                      borrow [ mk_str "> "; mk_str "
+" ] (list (ref str)) in
+                    let* α1 := deref α0 (list (ref str)) in
+                    let* α2 := borrow α1 (list (ref str)) in
+                    let* α3 := pointer_coercion "Unsize" α2 in
+                    let* α4 := (core.result.Result _ _)::["unwrap"] path in
+                    let* α5 := borrow α4 std.fs.DirEntry in
+                    let* α6 := std.fs.DirEntry::["path"] α5 in
+                    let* α7 := borrow α6 std.path.PathBuf in
+                    let* α8 := deref α7 std.path.PathBuf in
+                    let* α9 := borrow α8 std.path.PathBuf in
+                    let* α10 := core.fmt.rt.Argument::["new_debug"] α9 in
+                    let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
+                    let* α12 := deref α11 (list core.fmt.rt.Argument) in
+                    let* α13 := borrow α12 (list core.fmt.rt.Argument) in
+                    let* α14 := pointer_coercion "Unsize" α13 in
+                    let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+                    std.io.stdio._print α15 in
+                  Pure tt in
+                Pure tt
+              end in
+            Pure tt)
+        end in
+      use α1
     end in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "`rm a/c/e.txt`
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "`rm a/c/e.txt`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.remove_file "a/c/e.txt" in
-    α0.["unwrap_or_else"]
-      (fun why =>
+    let* α0 := std.fs.remove_file (mk_str "a/c/e.txt") in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α0
+      let* _ :=
         let* _ :=
-          let* _ :=
-            let* α0 := why.["kind"] in
-            let* α1 := format_argument::["new_debug"] (addr_of α0) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "! "; "
-" ])
-                (addr_of [ α1 ]) in
-            std.io.stdio._print α2 in
-          Pure tt in
-        Pure tt) in
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "`rmdir a/c/d`
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "`rmdir a/c/d`
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   let* _ :=
-    let* α0 := std.fs.remove_dir "a/c/d" in
-    α0.["unwrap_or_else"]
-      (fun why =>
+    let* α0 := std.fs.remove_dir (mk_str "a/c/d") in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α0
+      let* _ :=
         let* _ :=
-          let* _ :=
-            let* α0 := why.["kind"] in
-            let* α1 := format_argument::["new_debug"] (addr_of α0) in
-            let* α2 :=
-              format_arguments::["new_v1"]
-                (addr_of [ "! "; "
-" ])
-                (addr_of [ α1 ]) in
-            std.io.stdio._print α2 in
-          Pure tt in
-        Pure tt) in
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
   Pure tt.

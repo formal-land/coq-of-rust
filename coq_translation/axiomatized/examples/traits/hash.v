@@ -3,54 +3,53 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     id : u32;
     name : alloc.string.String;
     phone : u64;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_id : Notation.Dot "id" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
+  Global Instance Get_id `{State.Trait} : Notation.Dot "id" := {
+    Notation.dot x := let* x := M.read x in Pure x.(id) : M _;
   }.
-  Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
-    Notation.double_colon '(Build_t x0 _ _) := x0;
+  Global Instance Get_AF_id `{State.Trait} : Notation.DoubleColon t "id" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(id) : M _;
   }.
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
+  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon '(Build_t _ x1 _) := x1;
+  Global Instance Get_AF_name `{State.Trait}
+    : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_phone : Notation.Dot "phone" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
+  Global Instance Get_phone `{State.Trait} : Notation.Dot "phone" := {
+    Notation.dot x := let* x := M.read x in Pure x.(phone) : M _;
   }.
-  Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
-    Notation.double_colon '(Build_t _ _ x2) := x2;
+  Global Instance Get_AF_phone `{State.Trait}
+    : Notation.DoubleColon t "phone" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(phone) : M _;
   }.
 End Person.
-Definition Person : Set := Person.t.
+Definition Person `{State.Trait} : Set := M.val (Person.t).
 
 Module Impl_core_hash_Hash_for_hash_Person.
-  Definition Self := hash.Person.
+  Definition Self `{State.Trait} := hash.Person.
   
   Parameter hash :
-      forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
-      (ref Self) -> (mut_ref __H) -> M (H := H') unit.
+      forall `{State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
+      (ref Self) -> (mut_ref __H) -> M unit.
   
   Global Instance Method_hash
-      `{H' : State.Trait}
+      `{State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H} :
     Notation.Dot "hash" := {
     Notation.dot := hash (__H := __H);
   }.
   
-  Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash
-      `{H' : State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
+  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
+    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
       :=
       hash (__H := __H);
   }.
@@ -58,8 +57,8 @@ Module Impl_core_hash_Hash_for_hash_Person.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Parameter calculate_hash :
-    forall `{H' : State.Trait} {T : Set} `{core.hash.Hash.Trait T},
-    (ref T) -> M (H := H') u64.
+    forall `{State.Trait} {T : Set} `{core.hash.Hash.Trait T},
+    (ref T) -> M u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

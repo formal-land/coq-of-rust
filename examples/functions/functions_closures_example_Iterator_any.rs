@@ -21,5 +21,5 @@ fn main() {
     // `iter()` for arrays yields `&i32`.
     println!("2 in array1: {}", array1.iter().any(|&x| x == 2));
     // `into_iter()` for arrays yields `i32`.
-    println!("2 in array2: {}", array2.into_iter().any(|x| x == 2));
+    println!("2 in array2: {}", array2.into_iter().any(|x| *x == 2));
 }

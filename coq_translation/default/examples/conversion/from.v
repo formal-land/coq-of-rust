@@ -3,38 +3,42 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Number.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     value : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_value : Notation.Dot "value" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
   }.
-  Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_value `{State.Trait}
+    : Notation.DoubleColon t "value" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
   }.
 End Number.
-Definition Number : Set := Number.t.
+Definition Number `{State.Trait} : Set := M.val (Number.t).
 
 Module Impl_core_convert_From_for_from_Number.
-  Definition Self := from.Number.
+  Definition Self `{State.Trait} := from.Number.
   
-  Definition from `{H' : State.Trait} (item : i32) : M (H := H') Self :=
-    Pure {| from.Number.value := item; |}.
+  Definition from `{State.Trait} (item : i32) : M Self :=
+    M.alloc {| from.Number.value := item; |}.
   
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_from `{State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T := i32) := {
-    core.convert.From.from `{H' : State.Trait} := from;
+  Global Instance I `{State.Trait}
+    : core.convert.From.Trait Self (T := i32) := {
+    core.convert.From.from := from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_from_Number.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* _ := from.Number::["from"] 30 in
+Definition main `{State.Trait} : M unit :=
+  let* _ :=
+    let* α0 := M.alloc 30 in
+    core.convert.From.from α0 in
   Pure tt.

@@ -1,4 +1,4 @@
-use crate::coq::{self, LOCAL_STATE_TRAIT_INSTANCE};
+use crate::coq::{self};
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
@@ -25,6 +25,7 @@ pub(crate) enum CoqType {
     Ref(Box<CoqType>, rustc_hir::Mutability),
     OpaqueType(Vec<Path>),
     Dyn(Vec<Path>),
+    Infer,
 }
 
 impl CoqType {
@@ -38,12 +39,16 @@ impl CoqType {
 
     pub(crate) fn monad(ty: Box<CoqType>) -> Box<CoqType> {
         Box::new(CoqType::Application {
-            // TODO: try to remove the explicit parameter
-            func: Box::new(CoqType::Var(Box::new(Path::local(format!(
-                "M (H := {LOCAL_STATE_TRAIT_INSTANCE})"
-            ))))),
+            func: CoqType::var("M".to_string()),
             args: vec![ty],
         })
+    }
+
+    pub(crate) fn remove_ref(ty: CoqType) -> CoqType {
+        match ty {
+            CoqType::Ref(ty, _) => *ty,
+            _ => panic!("remove_ref called on a non-ref type"),
+        }
     }
 }
 
@@ -64,6 +69,7 @@ pub(crate) fn mt_ty_unboxed(ty: CoqType) -> CoqType {
         CoqType::Ref(ty, mutability) => CoqType::Ref(mt_ty(ty), mutability),
         CoqType::OpaqueType(..) => ty,
         CoqType::Dyn(..) => ty,
+        CoqType::Infer => ty,
     }
 }
 
@@ -119,7 +125,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                                         segments.push(name);
                                         Box::new(CoqType::Var(Box::new(Path { segments })))
                                     } else {
-                                        CoqType::var("_".to_string())
+                                        Box::new(CoqType::Infer)
                                     }
                                 }
                             })
@@ -218,7 +224,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Box<CoqType> {
                 .collect(),
         )),
         TyKind::Typeof(_) => CoqType::var("Typeof".to_string()),
-        TyKind::Infer => CoqType::var("_".to_string()),
+        TyKind::Infer => Box::new(CoqType::Infer),
         TyKind::Err(_) => CoqType::var("Error_type".to_string()),
     }
 }
@@ -280,7 +286,7 @@ impl CoqType {
                 &tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>(),
             ),
             CoqType::Array(ty) => coq::Expression::Variable {
-                ident: Path::new(&["list"]),
+                ident: Path::new(&["array"]),
                 no_implicit: false,
             }
             .apply(&ty.to_coq()),
@@ -300,6 +306,7 @@ impl CoqType {
                 ident: Path::new(&["_ (* dyn *)"]),
                 no_implicit: false,
             },
+            CoqType::Infer => coq::Expression::Wild,
         }
     }
 
@@ -322,14 +329,20 @@ impl CoqType {
                     nest([text("(Self :="), line(), self_ty.to_doc(false), text(")")]),
                 ]),
             ),
-            CoqType::Application { func, args } => paren(
-                with_paren,
-                nest([
-                    func.to_doc(true),
-                    line(),
-                    intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
-                ]),
-            ),
+            CoqType::Application { func, args } => {
+                if args.is_empty() {
+                    func.to_doc(with_paren)
+                } else {
+                    paren(
+                        with_paren,
+                        nest([
+                            func.to_doc(true),
+                            line(),
+                            intersperse(args.iter().map(|arg| arg.to_doc(true)), [line()]),
+                        ]),
+                    )
+                }
+            }
             CoqType::Function { args, ret } => paren(
                 with_paren,
                 group([
@@ -363,6 +376,7 @@ impl CoqType {
             ),
             CoqType::OpaqueType(_) => text("_ (* OpaqueTy *)"),
             CoqType::Dyn(_) => text("_ (* OpaqueTy *)"),
+            CoqType::Infer => text("_"),
         }
     }
 
@@ -413,6 +427,7 @@ impl CoqType {
             }
             CoqType::OpaqueType(_) => todo!(),
             CoqType::Dyn(_) => todo!(),
+            CoqType::Infer => "inferred_type".to_string(),
         }
     }
 
@@ -442,6 +457,7 @@ impl CoqType {
             CoqType::Ref(ty, _) => ty.has_opaque_types(),
             CoqType::OpaqueType(_) => true,
             CoqType::Dyn(_) => false,
+            CoqType::Infer => false,
         }
     }
 
@@ -467,6 +483,7 @@ impl CoqType {
             CoqType::Ref(ty, _) => ty.opaque_types_bounds(),
             CoqType::OpaqueType(bounds) => vec![bounds.to_owned()],
             CoqType::Dyn(..) => vec![],
+            CoqType::Infer => vec![],
         }
     }
 
@@ -493,6 +510,7 @@ impl CoqType {
             CoqType::Ref(ref_ty, _) => ref_ty.subst_opaque_types(ty),
             CoqType::OpaqueType(_) => *self = ty.clone(),
             CoqType::Dyn(_) => (),
+            CoqType::Infer => (),
         }
     }
 
@@ -523,6 +541,7 @@ impl CoqType {
                 *self = *CoqType::var(CoqType::trait_object_to_name(trait_names));
                 vec![tn]
             }
+            CoqType::Infer => vec![],
         }
     }
 

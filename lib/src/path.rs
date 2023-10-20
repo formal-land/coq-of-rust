@@ -44,24 +44,28 @@ fn compile_path_without_env(path: &rustc_hir::Path) -> Path {
     }
 }
 
+pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Path {
+    let crate_name: String = env.tcx.crate_name(def_id.krate).to_string();
+    let path_items = env.tcx.def_path(def_id);
+    let mut segments = vec![crate_name];
+    segments.extend(
+        path_items
+            .data
+            .iter()
+            .filter_map(|item| item.data.get_opt_name())
+            .map(|name| to_valid_coq_name(name.to_string())),
+    );
+    Path { segments }
+}
+
 pub(crate) fn compile_path(env: &Env, path: &rustc_hir::Path) -> Path {
-    if let Some(def_if) = path.res.opt_def_id() {
+    if let Some(def_id) = path.res.opt_def_id() {
         // The type parameters should not have an absolute name, as they are not
         // not declared at top-level.
         if let Res::Def(DefKind::TyParam, _) = path.res {
             return compile_path_without_env(path);
         }
-        let crate_name: String = env.tcx.crate_name(def_if.krate).to_string();
-        let path_items = env.tcx.def_path(def_if);
-        let mut segments = vec![crate_name];
-        segments.extend(
-            path_items
-                .data
-                .iter()
-                .filter_map(|item| item.data.get_opt_name())
-                .map(|name| to_valid_coq_name(name.to_string())),
-        );
-        return Path { segments };
+        return compile_def_id(env, def_id);
     }
     compile_path_without_env(path)
 }

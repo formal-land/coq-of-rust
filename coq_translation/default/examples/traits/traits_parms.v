@@ -3,27 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Foo.
 
 Module Bar.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Bar.
 
 Module Tar.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Tar.
 
 Module SomeTrait.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     SomeType : Set;
     _
       :
@@ -32,14 +32,14 @@ Module SomeTrait.
         `(traits_parms.Bar.Trait SomeType)
         `(traits_parms.Tar.Trait SomeType),
       unit;
-    some_fn `{H' : State.Trait} : M (H := H') unit;
+    some_fn : M unit;
   }.
   
   Global Instance Method_SomeType `(Trait)
     : Notation.DoubleColonType Self "SomeType" := {
     Notation.double_colon_type := SomeType;
   }.
-  Global Instance Method_some_fn `{H' : State.Trait} `(Trait)
+  Global Instance Method_some_fn `{State.Trait} `(Trait)
     : Notation.Dot "some_fn" := {
     Notation.dot := some_fn;
   }.
@@ -47,57 +47,57 @@ End SomeTrait.
 
 Module SomeOtherType.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : u32;
+  Record t `{State.Trait} : Set := {
+    x0 : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End SomeOtherType.
-Definition SomeOtherType := @SomeOtherType.t.
+Definition SomeOtherType `{State.Trait} : Set := M.val SomeOtherType.t.
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Foo.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.Foo.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Bar.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.Bar.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
-  Global Instance I : traits_parms.Tar.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.Tar.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-  Definition Self := traits_parms.SomeOtherType.
+  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
   
   Definition SomeType : Set := traits_parms.SomeOtherType.
   
-  Definition some_fn `{H' : State.Trait} : M (H := H') unit := Pure tt.
+  Definition some_fn `{State.Trait} : M unit := Pure tt.
   
-  Global Instance AssociatedFunction_some_fn `{H' : State.Trait} :
+  Global Instance AssociatedFunction_some_fn `{State.Trait} :
     Notation.DoubleColon Self "some_fn" := {
     Notation.double_colon := some_fn;
   }.
   
   #[refine]
-  Global Instance I : traits_parms.SomeTrait.Trait Self := {
+  Global Instance I `{State.Trait} : traits_parms.SomeTrait.Trait Self := {
     traits_parms.SomeTrait.SomeType := SomeType;
-    traits_parms.SomeTrait.some_fn `{H' : State.Trait} := some_fn;
+    traits_parms.SomeTrait.some_fn := some_fn;
   }.
   eauto.
   Defined.

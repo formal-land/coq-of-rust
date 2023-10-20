@@ -98,13 +98,13 @@ pub struct Output {
 }
 *)
 Module Output.
-  Record t : Set := { 
+  Record t `{State.Trait} : Set := { 
     status : ExitStatus;
     stdout : Vec u8 Vec.Default.A;
     stderr : Vec u8 Vec.Default.A;
   }.
 End Output.
-Definition Output := Output.t.
+Definition Output `{State.Trait} := Output.t.
 
 (* pub struct Stdio(_); *)
 Module Stdio.

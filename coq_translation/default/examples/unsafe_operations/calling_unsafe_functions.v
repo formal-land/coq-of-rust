@@ -2,33 +2,58 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* some_vector :=
-    let* α0 :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ 1; 2; 3; 4 ] in
-    (Slice _)::["into_vec"] α0 in
-  let* pointer := some_vector.["as_ptr"] in
-  let* length := some_vector.["len"] in
-  let* my_slice := core.slice.raw.from_raw_parts pointer length in
+    let* α0 := M.alloc 1 in
+    let* α1 := M.alloc 2 in
+    let* α2 := M.alloc 3 in
+    let* α3 := M.alloc 4 in
+    let* α4 :=
+      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"]
+        [ α0; α1; α2; α3 ] in
+    let* α5 := pointer_coercion "Unsize" α4 in
+    (Slice _)::["into_vec"] α5 in
+  let* pointer :=
+    let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
+    (alloc.vec.Vec _ _)::["as_ptr"] α0 in
+  let* length :=
+    let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
+    (alloc.vec.Vec _ _)::["len"] α0 in
+  let* my_slice :=
+    let* α0 := core.slice.raw.from_raw_parts pointer length in
+    let* α1 := deref α0 (Slice u32) in
+    borrow α1 (Slice u32) in
   let* _ :=
-    let* α0 := some_vector.["as_slice"] in
-    match (addr_of α0, addr_of my_slice) with
+    let* α0 := borrow some_vector (alloc.vec.Vec u32 alloc.alloc.Global) in
+    let* α1 := (alloc.vec.Vec _ _)::["as_slice"] α0 in
+    let* α2 := borrow α1 (ref (Slice u32)) in
+    let* α3 := borrow my_slice (ref (Slice u32)) in
+    match (α2, α3) with
     | (left_val, right_val) =>
-      let* α0 := left_val.["deref"] in
-      let* α1 := right_val.["deref"] in
-      let* α2 := α0.["eq"] α1 in
-      let* α3 := α2.["not"] in
-      if (α3 : bool) then
-        let kind := core.panicking.AssertKind.Eq in
+      let* α0 := deref left_val (ref (Slice u32)) in
+      let* α1 := borrow α0 (ref (Slice u32)) in
+      let* α2 := deref right_val (ref (Slice u32)) in
+      let* α3 := borrow α2 (ref (Slice u32)) in
+      let* α4 := core.cmp.PartialEq.eq α1 α3 in
+      let* α5 := not α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let kind := core.panicking.AssertKind.Eq tt in
         let* _ :=
-          let* α0 := left_val.["deref"] in
-          let* α1 := right_val.["deref"] in
+          let* α0 := deref left_val (ref (Slice u32)) in
+          let* α1 := borrow α0 (ref (Slice u32)) in
+          let* α2 := deref α1 (ref (Slice u32)) in
+          let* α3 := borrow α2 (ref (Slice u32)) in
+          let* α4 := deref right_val (ref (Slice u32)) in
+          let* α5 := borrow α4 (ref (Slice u32)) in
+          let* α6 := deref α5 (ref (Slice u32)) in
+          let* α7 := borrow α6 (ref (Slice u32)) in
           core.panicking.assert_failed
             kind
-            (addr_of α0)
-            (addr_of α1)
-            core.option.Option.None in
-        Pure tt
+            α3
+            α7
+            (core.option.Option.None tt) in
+        never_to_any tt
       else
         Pure tt
     end in

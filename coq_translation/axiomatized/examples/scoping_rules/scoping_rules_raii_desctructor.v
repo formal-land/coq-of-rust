@@ -7,21 +7,19 @@ End ToDrop.
 Definition ToDrop := @ToDrop.t.
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-  Definition Self := scoping_rules_raii_desctructor.ToDrop.
+  Definition Self `{State.Trait} := scoping_rules_raii_desctructor.ToDrop.
   
-  Parameter drop :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') unit.
+  Parameter drop : forall `{State.Trait}, (mut_ref Self) -> M unit.
   
-  Global Instance Method_drop `{H' : State.Trait} : Notation.Dot "drop" := {
+  Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
     Notation.dot := drop;
   }.
   
-  Global Instance I : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop `{H' : State.Trait} := drop;
+  Global Instance I `{State.Trait} : core.ops.drop.Drop.Trait Self := {
+    core.ops.drop.Drop.drop := drop;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

@@ -5,7 +5,7 @@ Require CoqOfRust.ink.scale_encode.
 Require CoqOfRust.ink.scale_info.
 
 Module key.
-  Definition Key : Set := u32.
+  Definition Key `{State.Trait} : Set := u32.
   
   Module KeyComposer.
     Inductive t : Set := Build.
@@ -13,86 +13,85 @@ Module key.
   Definition KeyComposer := @KeyComposer.t.
   
   Module Error.
-    Inductive t : Set :=
+    Inductive t `{State.Trait} : Set :=
     | StructNameIsEmpty
     | FieldNameIsEmpty.
   End Error.
-  Definition Error : Set := Error.t.
+  Definition Error `{State.Trait} : Set := Error.t.
   
   Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
-    Definition Self := ink_primitives.key.Error.
+    Definition Self `{State.Trait} := ink_primitives.key.Error.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        forall `{State.Trait},
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_ink_primitives_key_Error.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
-    Definition Self := ink_primitives.key.Error.
+    Definition Self `{State.Trait} := ink_primitives.key.Error.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance I `{State.Trait}
+      : core.marker.StructuralPartialEq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
   
   Module Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
-    Definition Self := ink_primitives.key.Error.
+    Definition Self `{State.Trait} := ink_primitives.key.Error.
     
     Parameter eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> (ref ink_primitives.key.Error) -> M (H := H') bool.
+        forall `{State.Trait},
+        (ref Self) -> (ref ink_primitives.key.Error) -> M bool.
     
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      core.cmp.PartialEq.eq := eq;
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
   
   Module Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
-    Definition Self := ink_primitives.key.Error.
+    Definition Self `{State.Trait} := ink_primitives.key.Error.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
   
   Module Impl_core_cmp_Eq_for_ink_primitives_key_Error.
-    Definition Self := ink_primitives.key.Error.
+    Definition Self `{State.Trait} := ink_primitives.key.Error.
     
     Parameter assert_receiver_is_total_eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') unit.
+        forall `{State.Trait},
+        (ref Self) -> M unit.
     
-    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I : core.cmp.Eq.Trait Self := {
+    Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
 End key.
 
-Definition Key : Set := u32.
+Definition Key `{State.Trait} : Set := u32.
 
 Module KeyComposer.
   Inductive t : Set := Build.
@@ -100,77 +99,78 @@ End KeyComposer.
 Definition KeyComposer := @KeyComposer.t.
 
 Module Error.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | StructNameIsEmpty
   | FieldNameIsEmpty.
 End Error.
-Definition Error : Set := Error.t.
+Definition Error `{State.Trait} : Set := Error.t.
 
 Module Impl_core_fmt_Debug_for_ink_primitives_key_Error.
-  Definition Self := ink_primitives.key.Error.
+  Definition Self `{State.Trait} := ink_primitives.key.Error.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_primitives_key_Error.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
-  Definition Self := ink_primitives.key.Error.
+  Definition Self `{State.Trait} := ink_primitives.key.Error.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.marker.StructuralPartialEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_key_Error.
 
 Module Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
-  Definition Self := ink_primitives.key.Error.
+  Definition Self `{State.Trait} := ink_primitives.key.Error.
   
   Parameter eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref ink_primitives.key.Error) -> M (H := H') bool.
+      forall `{State.Trait},
+      (ref Self) -> (ref ink_primitives.key.Error) -> M bool.
   
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
       := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    core.cmp.PartialEq.eq := eq;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_key_Error.
 
 Module Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
-  Definition Self := ink_primitives.key.Error.
+  Definition Self `{State.Trait} := ink_primitives.key.Error.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_key_Error.
 
 Module Impl_core_cmp_Eq_for_ink_primitives_key_Error.
-  Definition Self := ink_primitives.key.Error.
+  Definition Self `{State.Trait} := ink_primitives.key.Error.
   
   Parameter assert_receiver_is_total_eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+      forall `{State.Trait},
+      (ref Self) -> M unit.
   
-  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
   
-  Global Instance I : core.cmp.Eq.Trait Self := {
+  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
@@ -178,225 +178,218 @@ End Impl_core_cmp_Eq_for_ink_primitives_key_Error.
 Module types.
   Module AccountId.
     Unset Primitive Projections.
-    Record t : Set := {
-      _ : list u8;
+    Record t `{State.Trait} : Set := {
+      x0 : array u8;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End AccountId.
-  Definition AccountId := @AccountId.t.
+  Definition AccountId `{State.Trait} : Set := M.val AccountId.t.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter encode_as_type_to :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-          M (H := H') (core.result.Result unit scale_encode.error.Error).
+          M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+    Global Instance Method_encode_as_type_to `{State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
-        :=
-        encode_as_type_to;
+    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
     Global Hint Resolve I : core.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter encode_as_fields_to :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-          M (H := H') (core.result.Result unit scale_encode.error.Error).
+          M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+    Global Instance Method_encode_as_fields_to `{State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
-        :=
-        encode_as_fields_to;
+    Global Instance I `{State.Trait}
+      : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
     Global Hint Resolve I : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
   
   Module Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        forall `{State.Trait},
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
   
   Module Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter clone :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') ink_primitives.types.AccountId.
+        forall `{State.Trait},
+        (ref Self) -> M ink_primitives.types.AccountId.
     
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
     }.
     Global Hint Resolve I : core.
   End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
   
   Module Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
   
   Module
     Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance I `{State.Trait}
+      : core.marker.StructuralPartialEq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
   
   Module Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> (ref ink_primitives.types.AccountId) -> M (H := H') bool.
+        forall `{State.Trait},
+        (ref Self) -> (ref ink_primitives.types.AccountId) -> M bool.
     
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      core.cmp.PartialEq.eq := eq;
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
   
   Module Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
   
   Module Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter assert_receiver_is_total_eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') unit.
+        forall `{State.Trait},
+        (ref Self) -> M unit.
     
-    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I : core.cmp.Eq.Trait Self := {
+    Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
   
   Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter partial_cmp :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref Self) ->
           (ref ink_primitives.types.AccountId) ->
-          M (H := H') (core.option.Option core.cmp.Ordering).
+          M (core.option.Option core.cmp.Ordering).
     
-    Global Instance Method_partial_cmp `{H' : State.Trait} :
+    Global Instance Method_partial_cmp `{State.Trait} :
       Notation.Dot "partial_cmp" := {
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
         := {
-      core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+      core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
   
   Module Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter cmp :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref Self) ->
           (ref ink_primitives.types.AccountId) ->
-          M (H := H') core.cmp.Ordering.
+          M core.cmp.Ordering.
     
-    Global Instance Method_cmp `{H' : State.Trait} : Notation.Dot "cmp" := {
+    Global Instance Method_cmp `{State.Trait} : Notation.Dot "cmp" := {
       Notation.dot := cmp;
     }.
     
-    Global Instance I : core.cmp.Ord.Trait Self := {
-      core.cmp.Ord.cmp `{H' : State.Trait} := cmp;
+    Global Instance I `{State.Trait} : core.cmp.Ord.Trait Self := {
+      core.cmp.Ord.cmp := cmp;
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
   
   Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter hash :
-        forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
-        (ref Self) -> (mut_ref __H) -> M (H := H') unit.
+        forall `{State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
+        (ref Self) -> (mut_ref __H) -> M unit.
     
     Global Instance Method_hash
-        `{H' : State.Trait}
+        `{State.Trait}
         {__H : Set}
         `{core.hash.Hasher.Trait __H} :
       Notation.Dot "hash" := {
       Notation.dot := hash (__H := __H);
     }.
     
-    Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash
-        `{H' : State.Trait}
-        {__H : Set}
-        `{core.hash.Hasher.Trait __H}
+    Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
+      core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
         :=
         hash (__H := __H);
     }.
@@ -404,338 +397,326 @@ Module types.
   End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
   
   Module Impl_core_convert_From_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter from :
-        forall `{H' : State.Trait},
-        (list u8) -> M (H := H') ink_primitives.types.AccountId.
+        forall `{State.Trait},
+        (array u8) -> M ink_primitives.types.AccountId.
     
-    Global Instance AssociatedFunction_from `{H' : State.Trait} :
+    Global Instance AssociatedFunction_from `{State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self (T := list u8) := {
-      core.convert.From.from `{H' : State.Trait} := from;
+    Global Instance I `{State.Trait}
+      : core.convert.From.Trait Self (T := array u8) := {
+      core.convert.From.from := from;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_From_for_ink_primitives_types_AccountId.
   
   (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
-    Parameter as_ref :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') (ref (list u8)).
+    Parameter as_ref : forall `{State.Trait}, (ref Self) -> M (ref (array u8)).
     
-    Global Instance Method_as_ref `{H' : State.Trait} :
-      Notation.Dot "as_ref" := {
+    Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
       Notation.dot := as_ref;
     }.
     
-    Global Instance I : core.convert.AsRef.Trait Self (T := list u8) := {
-      core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
+    Global Instance I `{State.Trait}
+      : core.convert.AsRef.Trait Self (T := array u8) := {
+      core.convert.AsRef.as_ref := as_ref;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
   
   (* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter as_mut :
-        forall `{H' : State.Trait},
-        (mut_ref Self) -> M (H := H') (mut_ref (list u8)).
+        forall `{State.Trait},
+        (mut_ref Self) -> M (mut_ref (array u8)).
     
-    Global Instance Method_as_mut `{H' : State.Trait} :
-      Notation.Dot "as_mut" := {
+    Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
       Notation.dot := as_mut;
     }.
     
-    Global Instance I : core.convert.AsMut.Trait Self (T := list u8) := {
-      core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
+    Global Instance I `{State.Trait}
+      : core.convert.AsMut.Trait Self (T := array u8) := {
+      core.convert.AsMut.as_mut := as_mut;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
   
   (* (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
-    Parameter as_ref :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') (ref (Slice u8)).
+    Parameter as_ref : forall `{State.Trait}, (ref Self) -> M (ref (Slice u8)).
     
-    Global Instance Method_as_ref `{H' : State.Trait} :
-      Notation.Dot "as_ref" := {
+    Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
       Notation.dot := as_ref;
     }.
     
-    Global Instance I : core.convert.AsRef.Trait Self (T := Slice u8) := {
-      core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
+    Global Instance I `{State.Trait}
+      : core.convert.AsRef.Trait Self (T := Slice u8) := {
+      core.convert.AsRef.as_ref := as_ref;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
   
   (* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Parameter as_mut :
-        forall `{H' : State.Trait},
-        (mut_ref Self) -> M (H := H') (mut_ref (Slice u8)).
+        forall `{State.Trait},
+        (mut_ref Self) -> M (mut_ref (Slice u8)).
     
-    Global Instance Method_as_mut `{H' : State.Trait} :
-      Notation.Dot "as_mut" := {
+    Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
       Notation.dot := as_mut;
     }.
     
-    Global Instance I : core.convert.AsMut.Trait Self (T := Slice u8) := {
-      core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
+    Global Instance I `{State.Trait}
+      : core.convert.AsMut.Trait Self (T := Slice u8) := {
+      core.convert.AsMut.as_mut := as_mut;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *) *)
   
   Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
-    Definition Self := ink_primitives.types.AccountId.
+    Definition Self `{State.Trait} := ink_primitives.types.AccountId.
     
     Definition Error : Set := core.array.TryFromSliceError.
     
     Parameter try_from :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref (Slice u8)) ->
-          M (H := H') (core.result.Result Self core.array.TryFromSliceError).
+          M (core.result.Result Self core.array.TryFromSliceError).
     
-    Global Instance AssociatedFunction_try_from `{H' : State.Trait} :
+    Global Instance AssociatedFunction_try_from `{State.Trait} :
       Notation.DoubleColon Self "try_from" := {
       Notation.double_colon := try_from;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
       core.convert.TryFrom.Error := Error;
-      core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
+      core.convert.TryFrom.try_from := try_from;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
   
   Module Hash.
     Unset Primitive Projections.
-    Record t : Set := {
-      _ : list u8;
+    Record t `{State.Trait} : Set := {
+      x0 : array u8;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End Hash.
-  Definition Hash := @Hash.t.
+  Definition Hash `{State.Trait} : Set := M.val Hash.t.
   
   Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter encode_as_type_to :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref Self) ->
           u32 ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-          M (H := H') (core.result.Result unit scale_encode.error.Error).
+          M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+    Global Instance Method_encode_as_type_to `{State.Trait} :
       Notation.Dot "encode_as_type_to" := {
       Notation.dot := encode_as_type_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-      scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
-        :=
-        encode_as_type_to;
+    Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+      scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
     }.
     Global Hint Resolve I : core.
   End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
   
   Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter encode_as_fields_to :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref Self) ->
           (ref (Slice scale_encode.PortableField)) ->
           (ref scale_info.portable.PortableRegistry) ->
           (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-          M (H := H') (core.result.Result unit scale_encode.error.Error).
+          M (core.result.Result unit scale_encode.error.Error).
     
-    Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+    Global Instance Method_encode_as_fields_to `{State.Trait} :
       Notation.Dot "encode_as_fields_to" := {
       Notation.dot := encode_as_fields_to;
     }.
     
-    Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-      scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
-        :=
-        encode_as_fields_to;
+    Global Instance I `{State.Trait}
+      : scale_encode.EncodeAsFields.Trait Self := {
+      scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
     }.
     Global Hint Resolve I : core.
   End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
   
   Module Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter fmt :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (mut_ref core.fmt.Formatter) ->
-          M (H := H') core.fmt.Result.
+        forall `{State.Trait},
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
   
   Module Impl_core_clone_Clone_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter clone :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') ink_primitives.types.Hash.
+        forall `{State.Trait},
+        (ref Self) -> M ink_primitives.types.Hash.
     
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
     }.
     Global Hint Resolve I : core.
   End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
   
   Module Impl_core_marker_Copy_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_Copy_for_ink_primitives_types_Hash.
   
   Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
-    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    Global Instance I `{State.Trait}
+      : core.marker.StructuralPartialEq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
   
   Module Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> (ref ink_primitives.types.Hash) -> M (H := H') bool.
+        forall `{State.Trait},
+        (ref Self) -> (ref ink_primitives.types.Hash) -> M bool.
     
-    Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+    Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
       Notation.dot := eq;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.cmp.PartialEq.Trait Self
           (Rhs := core.cmp.PartialEq.Default.Rhs Self)
         := {
-      core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+      core.cmp.PartialEq.eq := eq;
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
   
   Module Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
-    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
   
   Module Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter assert_receiver_is_total_eq :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') unit.
+        forall `{State.Trait},
+        (ref Self) -> M unit.
     
-    Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+    Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
       Notation.Dot "assert_receiver_is_total_eq" := {
       Notation.dot := assert_receiver_is_total_eq;
     }.
     
-    Global Instance I : core.cmp.Eq.Trait Self := {
+    Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
   
   Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter partial_cmp :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref Self) ->
           (ref ink_primitives.types.Hash) ->
-          M (H := H') (core.option.Option core.cmp.Ordering).
+          M (core.option.Option core.cmp.Ordering).
     
-    Global Instance Method_partial_cmp `{H' : State.Trait} :
+    Global Instance Method_partial_cmp `{State.Trait} :
       Notation.Dot "partial_cmp" := {
       Notation.dot := partial_cmp;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.cmp.PartialOrd.Trait Self
           (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
         := {
-      core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+      core.cmp.PartialOrd.partial_cmp := partial_cmp;
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
   
   Module Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter cmp :
-        forall `{H' : State.Trait},
-        (ref Self) ->
-          (ref ink_primitives.types.Hash) ->
-          M (H := H') core.cmp.Ordering.
+        forall `{State.Trait},
+        (ref Self) -> (ref ink_primitives.types.Hash) -> M core.cmp.Ordering.
     
-    Global Instance Method_cmp `{H' : State.Trait} : Notation.Dot "cmp" := {
+    Global Instance Method_cmp `{State.Trait} : Notation.Dot "cmp" := {
       Notation.dot := cmp;
     }.
     
-    Global Instance I : core.cmp.Ord.Trait Self := {
-      core.cmp.Ord.cmp `{H' : State.Trait} := cmp;
+    Global Instance I `{State.Trait} : core.cmp.Ord.Trait Self := {
+      core.cmp.Ord.cmp := cmp;
     }.
     Global Hint Resolve I : core.
   End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
   
   Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter hash :
-        forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
-        (ref Self) -> (mut_ref __H) -> M (H := H') unit.
+        forall `{State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
+        (ref Self) -> (mut_ref __H) -> M unit.
     
     Global Instance Method_hash
-        `{H' : State.Trait}
+        `{State.Trait}
         {__H : Set}
         `{core.hash.Hasher.Trait __H} :
       Notation.Dot "hash" := {
       Notation.dot := hash (__H := __H);
     }.
     
-    Global Instance I : core.hash.Hash.Trait Self := {
-      core.hash.Hash.hash
-        `{H' : State.Trait}
-        {__H : Set}
-        `{core.hash.Hasher.Trait __H}
+    Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
+      core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
         :=
         hash (__H := __H);
     }.
@@ -743,186 +724,182 @@ Module types.
   End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
   
   Module Impl_core_convert_From_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter from :
-        forall `{H' : State.Trait},
-        (list u8) -> M (H := H') ink_primitives.types.Hash.
+        forall `{State.Trait},
+        (array u8) -> M ink_primitives.types.Hash.
     
-    Global Instance AssociatedFunction_from `{H' : State.Trait} :
+    Global Instance AssociatedFunction_from `{State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    Global Instance I : core.convert.From.Trait Self (T := list u8) := {
-      core.convert.From.from `{H' : State.Trait} := from;
+    Global Instance I `{State.Trait}
+      : core.convert.From.Trait Self (T := array u8) := {
+      core.convert.From.from := from;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_From_for_ink_primitives_types_Hash.
   
   Module Impl_core_default_Default_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
-    Parameter default :
-        forall `{H' : State.Trait},
-        M (H := H') ink_primitives.types.Hash.
+    Parameter default : forall `{State.Trait}, M ink_primitives.types.Hash.
     
-    Global Instance AssociatedFunction_default `{H' : State.Trait} :
+    Global Instance AssociatedFunction_default `{State.Trait} :
       Notation.DoubleColon Self "default" := {
       Notation.double_colon := default;
     }.
     
-    Global Instance I : core.default.Default.Trait Self := {
-      core.default.Default.default `{H' : State.Trait} := default;
+    Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
     }.
     Global Hint Resolve I : core.
   End Impl_core_default_Default_for_ink_primitives_types_Hash.
   
   Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Definition Error : Set := core.array.TryFromSliceError.
     
     Parameter try_from :
-        forall `{H' : State.Trait},
+        forall `{State.Trait},
         (ref (Slice u8)) ->
-          M (H := H') (core.result.Result Self core.array.TryFromSliceError).
+          M (core.result.Result Self core.array.TryFromSliceError).
     
-    Global Instance AssociatedFunction_try_from `{H' : State.Trait} :
+    Global Instance AssociatedFunction_try_from `{State.Trait} :
       Notation.DoubleColon Self "try_from" := {
       Notation.double_colon := try_from;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
       core.convert.TryFrom.Error := Error;
-      core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
+      core.convert.TryFrom.try_from := try_from;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
   
   Module Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
-    Parameter as_ref :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') (ref (Slice u8)).
+    Parameter as_ref : forall `{State.Trait}, (ref Self) -> M (ref (Slice u8)).
     
-    Global Instance Method_as_ref `{H' : State.Trait} :
-      Notation.Dot "as_ref" := {
+    Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
       Notation.dot := as_ref;
     }.
     
-    Global Instance I : core.convert.AsRef.Trait Self (T := Slice u8) := {
-      core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
+    Global Instance I `{State.Trait}
+      : core.convert.AsRef.Trait Self (T := Slice u8) := {
+      core.convert.AsRef.as_ref := as_ref;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
   
   Module Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Parameter as_mut :
-        forall `{H' : State.Trait},
-        (mut_ref Self) -> M (H := H') (mut_ref (Slice u8)).
+        forall `{State.Trait},
+        (mut_ref Self) -> M (mut_ref (Slice u8)).
     
-    Global Instance Method_as_mut `{H' : State.Trait} :
-      Notation.Dot "as_mut" := {
+    Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
       Notation.dot := as_mut;
     }.
     
-    Global Instance I : core.convert.AsMut.Trait Self (T := Slice u8) := {
-      core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
+    Global Instance I `{State.Trait}
+      : core.convert.AsMut.Trait Self (T := Slice u8) := {
+      core.convert.AsMut.as_mut := as_mut;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
   
   Module Impl_core_convert_From_for_Array_u8.
-    Definition Self := list u8.
+    Definition Self `{State.Trait} := array u8.
     
-    Parameter from :
-        forall `{H' : State.Trait},
-        ink_primitives.types.Hash -> M (H := H') Self.
+    Parameter from : forall `{State.Trait}, ink_primitives.types.Hash -> M Self.
     
-    Global Instance AssociatedFunction_from `{H' : State.Trait} :
+    Global Instance AssociatedFunction_from `{State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
-      core.convert.From.from `{H' : State.Trait} := from;
+      core.convert.From.from := from;
     }.
     Global Hint Resolve I : core.
   End Impl_core_convert_From_for_Array_u8.
   
   Module Clear.
-    Class Trait (Self : Set) : Type := {
-      CLEAR_HASH `{H' : State.Trait} : Self;
-      is_clear `{H' : State.Trait} : (ref Self) -> M (H := H') bool;
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      CLEAR_HASH : Self;
+      is_clear : (ref Self) -> M bool;
     }.
     
-    Global Instance Method_CLEAR_HASH `{H' : State.Trait} `(Trait)
+    Global Instance Method_CLEAR_HASH `{State.Trait} `(Trait)
       : Notation.Dot "CLEAR_HASH" := {
       Notation.dot := CLEAR_HASH;
     }.
-    Global Instance Method_is_clear `{H' : State.Trait} `(Trait)
+    Global Instance Method_is_clear `{State.Trait} `(Trait)
       : Notation.Dot "is_clear" := {
       Notation.dot := is_clear;
     }.
   End Clear.
   
   (* Module Impl_ink_primitives_types_Clear_for_Array_u8.
-    Definition Self := list u8.
+    Definition Self `{State.Trait} := array u8.
     
-    Definition CLEAR_HASH `{H' : State.Trait} := repeat 0.
+    Definition
+      CLEAR_HASH
+      `{State.Trait} := let* α0 := M.alloc 0 in
+      repeat α0.
     
-    Global Instance AssociatedFunction_CLEAR_HASH `{H' : State.Trait} :
+    Global Instance AssociatedFunction_CLEAR_HASH `{State.Trait} :
       Notation.DoubleColon Self "CLEAR_HASH" := {
       Notation.double_colon := CLEAR_HASH;
     }.
     
-    Parameter is_clear :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') bool.
+    Parameter is_clear : forall `{State.Trait}, (ref Self) -> M bool.
     
-    Global Instance Method_is_clear `{H' : State.Trait} :
+    Global Instance Method_is_clear `{State.Trait} :
       Notation.Dot "is_clear" := {
       Notation.dot := is_clear;
     }.
     
-    Global Instance I : ink_primitives.types.Clear.Trait Self := {
-      ink_primitives.types.Clear.CLEAR_HASH `{H' : State.Trait} := CLEAR_HASH;
-      ink_primitives.types.Clear.is_clear `{H' : State.Trait} := is_clear;
+    Global Instance I `{State.Trait}
+      : ink_primitives.types.Clear.Trait Self := {
+      ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
+      ink_primitives.types.Clear.is_clear := is_clear;
     }.
     Global Hint Resolve I : core.
   End Impl_ink_primitives_types_Clear_for_Array_u8. *)
   
   (* Module Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
-    Definition Self := ink_primitives.types.Hash.
+    Definition Self `{State.Trait} := ink_primitives.types.Hash.
     
     Definition
       CLEAR_HASH
-      `{H' : State.Trait} := Self
+      `{State.Trait} := Self
         (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))).
     
-    Global Instance AssociatedFunction_CLEAR_HASH `{H' : State.Trait} :
+    Global Instance AssociatedFunction_CLEAR_HASH `{State.Trait} :
       Notation.DoubleColon Self "CLEAR_HASH" := {
       Notation.double_colon := CLEAR_HASH;
     }.
     
-    Parameter is_clear :
-        forall `{H' : State.Trait},
-        (ref Self) -> M (H := H') bool.
+    Parameter is_clear : forall `{State.Trait}, (ref Self) -> M bool.
     
-    Global Instance Method_is_clear `{H' : State.Trait} :
+    Global Instance Method_is_clear `{State.Trait} :
       Notation.Dot "is_clear" := {
       Notation.dot := is_clear;
     }.
     
-    Global Instance I : ink_primitives.types.Clear.Trait Self := {
-      ink_primitives.types.Clear.CLEAR_HASH `{H' : State.Trait} := CLEAR_HASH;
-      ink_primitives.types.Clear.is_clear `{H' : State.Trait} := is_clear;
+    Global Instance I `{State.Trait}
+      : ink_primitives.types.Clear.Trait Self := {
+      ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
+      ink_primitives.types.Clear.is_clear := is_clear;
     }.
     Global Hint Resolve I : core.
   End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
@@ -930,102 +907,103 @@ End types.
 
 Module AccountId.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : list u8;
+  Record t `{State.Trait} : Set := {
+    x0 : array u8;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End AccountId.
-Definition AccountId := @AccountId.t.
+Definition AccountId `{State.Trait} : Set := M.val AccountId.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Definition Identity : Set := Self.
   
   Parameter type_info :
-      forall `{H' : State.Trait},
-      M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+      forall `{State.Trait},
+      M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
   
-  Global Instance AssociatedFunction_type_info `{H' : State.Trait} :
+  Global Instance AssociatedFunction_type_info `{State.Trait} :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
-  Global Instance I : scale_info.TypeInfo.Trait Self := {
+  Global Instance I `{State.Trait} : scale_info.TypeInfo.Trait Self := {
     scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
+    scale_info.TypeInfo.type_info := type_info;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_info_TypeInfo_for_ink_primitives_types_AccountId.
 
 Module Visitor.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : core.marker.PhantomData unit;
+  Record t `{State.Trait} : Set := {
+    x0 : core.marker.PhantomData unit;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Visitor.
-Definition Visitor := @Visitor.t.
+Definition Visitor `{State.Trait} : Set := M.val Visitor.t.
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Definition Visitor : Set := ink_primitives.types._.Visitor.
   
-  Parameter into_visitor : forall `{H' : State.Trait}, M (H := H') Visitor.
+  Parameter into_visitor : forall `{State.Trait}, M Visitor.
   
-  Global Instance AssociatedFunction_into_visitor `{H' : State.Trait} :
+  Global Instance AssociatedFunction_into_visitor `{State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
     Notation.double_colon := into_visitor;
   }.
   
-  Global Instance I : scale_decode.IntoVisitor.Trait Self := {
+  Global Instance I `{State.Trait} : scale_decode.IntoVisitor.Trait Self := {
     scale_decode.IntoVisitor.Visitor := Visitor;
-    scale_decode.IntoVisitor.into_visitor `{H' : State.Trait} := into_visitor;
+    scale_decode.IntoVisitor.into_visitor := into_visitor;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
 
 (* (* Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
-  Definition Self := ink_primitives.types._.Visitor.
+  Definition Self `{State.Trait} := ink_primitives.types._.Visitor.
   
   Definition Error : Set := scale_decode.error.Error.
   
   Definition Value : Set := ink_primitives.types.AccountId.
   
   Parameter visit_composite :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       Self ->
         (mut_ref scale_decode.visitor.types.composite.Composite) ->
         scale_decode.visitor.TypeId ->
-        M (H := H') (core.result.Result Value Error).
+        M (core.result.Result Value Error).
   
-  Global Instance Method_visit_composite `{H' : State.Trait} :
+  Global Instance Method_visit_composite `{State.Trait} :
     Notation.Dot "visit_composite" := {
     Notation.dot := visit_composite;
   }.
   
   Parameter visit_tuple :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       Self ->
         (mut_ref scale_decode.visitor.types.tuple.Tuple) ->
         scale_decode.visitor.TypeId ->
-        M (H := H') (core.result.Result Value Error).
+        M (core.result.Result Value Error).
   
-  Global Instance Method_visit_tuple `{H' : State.Trait} :
+  Global Instance Method_visit_tuple `{State.Trait} :
     Notation.Dot "visit_tuple" := {
     Notation.dot := visit_tuple;
   }.
   
-  Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
+  Global Instance I `{State.Trait}
+    : scale_decode.visitor.Visitor.Trait Self := {
     scale_decode.visitor.Visitor.Error := Error;
     scale_decode.visitor.Visitor.Value := Value;
   }.
@@ -1033,232 +1011,222 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_AccountId. *)
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter decode_as_fields :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (mut_ref (ref (Slice u8))) ->
         (ref (Slice scale_decode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
-        M (H := H') (core.result.Result Self scale_decode.error.Error).
+        M (core.result.Result Self scale_decode.error.Error).
   
-  Global Instance AssociatedFunction_decode_as_fields `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_as_fields `{State.Trait} :
     Notation.DoubleColon Self "decode_as_fields" := {
     Notation.double_colon := decode_as_fields;
   }.
   
-  Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
-    scale_decode.DecodeAsFields.decode_as_fields `{H' : State.Trait}
-      :=
-      decode_as_fields;
+  Global Instance I `{State.Trait} : scale_decode.DecodeAsFields.Trait Self := {
+    scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_AccountId. *)
 
 Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter encode_as_type_to :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-        M (H := H') (core.result.Result unit scale_encode.error.Error).
+        M (core.result.Result unit scale_encode.error.Error).
   
-  Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+  Global Instance Method_encode_as_type_to `{State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
-  Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
-      :=
-      encode_as_type_to;
+  Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_AccountId.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter encode_as_fields_to :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
         (ref (Slice scale_encode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-        M (H := H') (core.result.Result unit scale_encode.error.Error).
+        M (core.result.Result unit scale_encode.error.Error).
   
-  Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+  Global Instance Method_encode_as_fields_to `{State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
-  Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
-      :=
-      encode_as_fields_to;
+  Global Instance I `{State.Trait} : scale_encode.EncodeAsFields.Trait Self := {
+    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_AccountId.
 
 Module Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_primitives_types_AccountId.
 
 Module Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_ink_primitives_types_AccountId.
 
 Module Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') ink_primitives.types.AccountId.
+      forall `{State.Trait},
+      (ref Self) -> M ink_primitives.types.AccountId.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_ink_primitives_types_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.marker.StructuralPartialEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_AccountId.
 
 Module Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref ink_primitives.types.AccountId) -> M (H := H') bool.
+      forall `{State.Trait},
+      (ref Self) -> (ref ink_primitives.types.AccountId) -> M bool.
   
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
       := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    core.cmp.PartialEq.eq := eq;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_types_AccountId.
 
 Module Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_types_AccountId.
 
 Module Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter assert_receiver_is_total_eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+      forall `{State.Trait},
+      (ref Self) -> M unit.
   
-  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
   
-  Global Instance I : core.cmp.Eq.Trait Self := {
+  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_ink_primitives_types_AccountId.
 
 Module Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter cmp :
-      forall `{H' : State.Trait},
-      (ref Self) ->
-        (ref ink_primitives.types.AccountId) ->
-        M (H := H') core.cmp.Ordering.
+      forall `{State.Trait},
+      (ref Self) -> (ref ink_primitives.types.AccountId) -> M core.cmp.Ordering.
   
-  Global Instance Method_cmp `{H' : State.Trait} : Notation.Dot "cmp" := {
+  Global Instance Method_cmp `{State.Trait} : Notation.Dot "cmp" := {
     Notation.dot := cmp;
   }.
   
-  Global Instance I : core.cmp.Ord.Trait Self := {
-    core.cmp.Ord.cmp `{H' : State.Trait} := cmp;
+  Global Instance I `{State.Trait} : core.cmp.Ord.Trait Self := {
+    core.cmp.Ord.cmp := cmp;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Ord_for_ink_primitives_types_AccountId.
 
 Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter partial_cmp :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
         (ref ink_primitives.types.AccountId) ->
-        M (H := H') (core.option.Option core.cmp.Ordering).
+        M (core.option.Option core.cmp.Ordering).
   
-  Global Instance Method_partial_cmp `{H' : State.Trait} :
+  Global Instance Method_partial_cmp `{State.Trait} :
     Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
       := {
-    core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+    core.cmp.PartialOrd.partial_cmp := partial_cmp;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialOrd_for_ink_primitives_types_AccountId.
 
 Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter hash :
-      forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
-      (ref Self) -> (mut_ref __H) -> M (H := H') unit.
+      forall `{State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
+      (ref Self) -> (mut_ref __H) -> M unit.
   
   Global Instance Method_hash
-      `{H' : State.Trait}
+      `{State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H} :
     Notation.Dot "hash" := {
     Notation.dot := hash (__H := __H);
   }.
   
-  Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash
-      `{H' : State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
+  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
+    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
       :=
       hash (__H := __H);
   }.
@@ -1266,27 +1234,27 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
 End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter decode :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {__CodecInputEdqy : Set}
         `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
       (mut_ref __CodecInputEdqy) ->
-        M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+        M (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode
-      `{H' : State.Trait}
+      `{State.Trait}
       {__CodecInputEdqy : Set}
       `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
-  Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+  Global Instance I `{State.Trait}
+    : parity_scale_codec.codec.Decode.Trait Self := {
     parity_scale_codec.codec.Decode.decode
-      `{H' : State.Trait}
       {__CodecInputEdqy : Set}
       `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       :=
@@ -1296,18 +1264,18 @@ End Impl_core_hash_Hash_for_ink_primitives_types_AccountId.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter encode_to :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {__CodecOutputEdqy : Set}
         `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         `{core.marker.Sized.Trait __CodecOutputEdqy},
-      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
   
   Global Instance Method_encode_to
-      `{H' : State.Trait}
+      `{State.Trait}
       {__CodecOutputEdqy : Set}
       `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
       `{core.marker.Sized.Trait __CodecOutputEdqy} :
@@ -1316,25 +1284,24 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
   }.
   
   Parameter encode :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
-        M (H := H')
-          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
+        M (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
   
-  Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
+  Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
   Parameter using_encoded :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {R F : Set}
         `{core.ops.function.FnOnce.Trait F
             (Args := ref (Slice CoqOfRust.core.primitive.u8))},
-      (ref Self) -> F -> M (H := H') R.
+      (ref Self) -> F -> M R.
   
   Global Instance Method_using_encoded
-      `{H' : State.Trait}
+      `{State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait F
           (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
@@ -1342,15 +1309,16 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_AccountId. *)
     Notation.dot := using_encoded (R := R) (F := F);
   }.
   
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+  Global Instance I `{State.Trait}
+    : parity_scale_codec.codec.Encode.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
       := {
@@ -1359,198 +1327,201 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_AccountId. *)
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_AccountId. *)
 
 Module Impl_core_convert_From_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter from :
-      forall `{H' : State.Trait},
-      (list u8) -> M (H := H') ink_primitives.types.AccountId.
+      forall `{State.Trait},
+      (array u8) -> M ink_primitives.types.AccountId.
   
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_from `{State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T := list u8) := {
-    core.convert.From.from `{H' : State.Trait} := from;
+  Global Instance I `{State.Trait}
+    : core.convert.From.Trait Self (T := array u8) := {
+    core.convert.From.from := from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_ink_primitives_types_AccountId.
 
 (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
-  Parameter as_ref :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (ref (list u8)).
+  Parameter as_ref : forall `{State.Trait}, (ref Self) -> M (ref (array u8)).
   
-  Global Instance Method_as_ref `{H' : State.Trait} : Notation.Dot "as_ref" := {
+  Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
     Notation.dot := as_ref;
   }.
   
-  Global Instance I : core.convert.AsRef.Trait Self (T := list u8) := {
-    core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
+  Global Instance I `{State.Trait}
+    : core.convert.AsRef.Trait Self (T := array u8) := {
+    core.convert.AsRef.as_ref := as_ref;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
 
 (* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter as_mut :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') (mut_ref (list u8)).
+      forall `{State.Trait},
+      (mut_ref Self) -> M (mut_ref (array u8)).
   
-  Global Instance Method_as_mut `{H' : State.Trait} : Notation.Dot "as_mut" := {
+  Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
     Notation.dot := as_mut;
   }.
   
-  Global Instance I : core.convert.AsMut.Trait Self (T := list u8) := {
-    core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
+  Global Instance I `{State.Trait}
+    : core.convert.AsMut.Trait Self (T := array u8) := {
+    core.convert.AsMut.as_mut := as_mut;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
 
 (* Module Impl_core_convert_AsRef_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
-  Parameter as_ref :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (ref (Slice u8)).
+  Parameter as_ref : forall `{State.Trait}, (ref Self) -> M (ref (Slice u8)).
   
-  Global Instance Method_as_ref `{H' : State.Trait} : Notation.Dot "as_ref" := {
+  Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
     Notation.dot := as_ref;
   }.
   
-  Global Instance I : core.convert.AsRef.Trait Self (T := Slice u8) := {
-    core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
+  Global Instance I `{State.Trait}
+    : core.convert.AsRef.Trait Self (T := Slice u8) := {
+    core.convert.AsRef.as_ref := as_ref;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsRef_for_ink_primitives_types_AccountId. *)
 
 (* Module Impl_core_convert_AsMut_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Parameter as_mut :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') (mut_ref (Slice u8)).
+      forall `{State.Trait},
+      (mut_ref Self) -> M (mut_ref (Slice u8)).
   
-  Global Instance Method_as_mut `{H' : State.Trait} : Notation.Dot "as_mut" := {
+  Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
     Notation.dot := as_mut;
   }.
   
-  Global Instance I : core.convert.AsMut.Trait Self (T := Slice u8) := {
-    core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
+  Global Instance I `{State.Trait}
+    : core.convert.AsMut.Trait Self (T := Slice u8) := {
+    core.convert.AsMut.as_mut := as_mut;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsMut_for_ink_primitives_types_AccountId. *)
 
 Module Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
-  Definition Self := ink_primitives.types.AccountId.
+  Definition Self `{State.Trait} := ink_primitives.types.AccountId.
   
   Definition Error : Set := core.array.TryFromSliceError.
   
   Parameter try_from :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref (Slice u8)) ->
-        M (H := H') (core.result.Result Self core.array.TryFromSliceError).
+        M (core.result.Result Self core.array.TryFromSliceError).
   
-  Global Instance AssociatedFunction_try_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_try_from `{State.Trait} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
   }.
   
-  Global Instance I : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+  Global Instance I `{State.Trait}
+    : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
     core.convert.TryFrom.Error := Error;
-    core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
+    core.convert.TryFrom.try_from := try_from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_TryFrom_for_ink_primitives_types_AccountId.
 
 Module Hash.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : list u8;
+  Record t `{State.Trait} : Set := {
+    x0 : array u8;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Hash.
-Definition Hash := @Hash.t.
+Definition Hash `{State.Trait} : Set := M.val Hash.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Definition Identity : Set := Self.
   
   Parameter type_info :
-      forall `{H' : State.Trait},
-      M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+      forall `{State.Trait},
+      M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
   
-  Global Instance AssociatedFunction_type_info `{H' : State.Trait} :
+  Global Instance AssociatedFunction_type_info `{State.Trait} :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
-  Global Instance I : scale_info.TypeInfo.Trait Self := {
+  Global Instance I `{State.Trait} : scale_info.TypeInfo.Trait Self := {
     scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
+    scale_info.TypeInfo.type_info := type_info;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_info_TypeInfo_for_ink_primitives_types_Hash.
 
 (* Module Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Definition Visitor : Set := ink_primitives.types._.Visitor.
   
-  Parameter into_visitor : forall `{H' : State.Trait}, M (H := H') Visitor.
+  Parameter into_visitor : forall `{State.Trait}, M Visitor.
   
-  Global Instance AssociatedFunction_into_visitor `{H' : State.Trait} :
+  Global Instance AssociatedFunction_into_visitor `{State.Trait} :
     Notation.DoubleColon Self "into_visitor" := {
     Notation.double_colon := into_visitor;
   }.
   
-  Global Instance I : scale_decode.IntoVisitor.Trait Self := {
+  Global Instance I `{State.Trait} : scale_decode.IntoVisitor.Trait Self := {
     scale_decode.IntoVisitor.Visitor := Visitor;
-    scale_decode.IntoVisitor.into_visitor `{H' : State.Trait} := into_visitor;
+    scale_decode.IntoVisitor.into_visitor := into_visitor;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
 
 (* (* Module Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor.
-  Definition Self := ink_primitives.types._.Visitor.
+  Definition Self `{State.Trait} := ink_primitives.types._.Visitor.
   
   Definition Error : Set := scale_decode.error.Error.
   
   Definition Value : Set := ink_primitives.types.Hash.
   
   Parameter visit_composite :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       Self ->
         (mut_ref scale_decode.visitor.types.composite.Composite) ->
         scale_decode.visitor.TypeId ->
-        M (H := H') (core.result.Result Value Error).
+        M (core.result.Result Value Error).
   
-  Global Instance Method_visit_composite `{H' : State.Trait} :
+  Global Instance Method_visit_composite `{State.Trait} :
     Notation.Dot "visit_composite" := {
     Notation.dot := visit_composite;
   }.
   
   Parameter visit_tuple :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       Self ->
         (mut_ref scale_decode.visitor.types.tuple.Tuple) ->
         scale_decode.visitor.TypeId ->
-        M (H := H') (core.result.Result Value Error).
+        M (core.result.Result Value Error).
   
-  Global Instance Method_visit_tuple `{H' : State.Trait} :
+  Global Instance Method_visit_tuple `{State.Trait} :
     Notation.Dot "visit_tuple" := {
     Notation.dot := visit_tuple;
   }.
   
-  Global Instance I : scale_decode.visitor.Visitor.Trait Self := {
+  Global Instance I `{State.Trait}
+    : scale_decode.visitor.Visitor.Trait Self := {
     scale_decode.visitor.Visitor.Error := Error;
     scale_decode.visitor.Visitor.Value := Value;
   }.
@@ -1558,232 +1529,222 @@ End Impl_scale_decode_IntoVisitor_for_ink_primitives_types_Hash. *)
 End Impl_scale_decode_visitor_Visitor_for_ink_primitives_types___Visitor. *) *)
 
 (* Module Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter decode_as_fields :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (mut_ref (ref (Slice u8))) ->
         (ref (Slice scale_decode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
-        M (H := H') (core.result.Result Self scale_decode.error.Error).
+        M (core.result.Result Self scale_decode.error.Error).
   
-  Global Instance AssociatedFunction_decode_as_fields `{H' : State.Trait} :
+  Global Instance AssociatedFunction_decode_as_fields `{State.Trait} :
     Notation.DoubleColon Self "decode_as_fields" := {
     Notation.double_colon := decode_as_fields;
   }.
   
-  Global Instance I : scale_decode.DecodeAsFields.Trait Self := {
-    scale_decode.DecodeAsFields.decode_as_fields `{H' : State.Trait}
-      :=
-      decode_as_fields;
+  Global Instance I `{State.Trait} : scale_decode.DecodeAsFields.Trait Self := {
+    scale_decode.DecodeAsFields.decode_as_fields := decode_as_fields;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_decode_DecodeAsFields_for_ink_primitives_types_Hash. *)
 
 Module Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter encode_as_type_to :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
         u32 ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-        M (H := H') (core.result.Result unit scale_encode.error.Error).
+        M (core.result.Result unit scale_encode.error.Error).
   
-  Global Instance Method_encode_as_type_to `{H' : State.Trait} :
+  Global Instance Method_encode_as_type_to `{State.Trait} :
     Notation.Dot "encode_as_type_to" := {
     Notation.dot := encode_as_type_to;
   }.
   
-  Global Instance I : scale_encode.EncodeAsType.Trait Self := {
-    scale_encode.EncodeAsType.encode_as_type_to `{H' : State.Trait}
-      :=
-      encode_as_type_to;
+  Global Instance I `{State.Trait} : scale_encode.EncodeAsType.Trait Self := {
+    scale_encode.EncodeAsType.encode_as_type_to := encode_as_type_to;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsType_for_ink_primitives_types_Hash.
 
 Module Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter encode_as_fields_to :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
         (ref (Slice scale_encode.PortableField)) ->
         (ref scale_info.portable.PortableRegistry) ->
         (mut_ref (alloc.vec.Vec u8 alloc.vec.Vec.Default.A)) ->
-        M (H := H') (core.result.Result unit scale_encode.error.Error).
+        M (core.result.Result unit scale_encode.error.Error).
   
-  Global Instance Method_encode_as_fields_to `{H' : State.Trait} :
+  Global Instance Method_encode_as_fields_to `{State.Trait} :
     Notation.Dot "encode_as_fields_to" := {
     Notation.dot := encode_as_fields_to;
   }.
   
-  Global Instance I : scale_encode.EncodeAsFields.Trait Self := {
-    scale_encode.EncodeAsFields.encode_as_fields_to `{H' : State.Trait}
-      :=
-      encode_as_fields_to;
+  Global Instance I `{State.Trait} : scale_encode.EncodeAsFields.Trait Self := {
+    scale_encode.EncodeAsFields.encode_as_fields_to := encode_as_fields_to;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_encode_EncodeAsFields_for_ink_primitives_types_Hash.
 
 Module Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_primitives_types_Hash.
 
 Module Impl_core_marker_Copy_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_ink_primitives_types_Hash.
 
 Module Impl_core_clone_Clone_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') ink_primitives.types.Hash.
+      forall `{State.Trait},
+      (ref Self) -> M ink_primitives.types.Hash.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_ink_primitives_types_Hash.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.marker.StructuralPartialEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_types_Hash.
 
 Module Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref ink_primitives.types.Hash) -> M (H := H') bool.
+      forall `{State.Trait},
+      (ref Self) -> (ref ink_primitives.types.Hash) -> M bool.
   
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
       := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    core.cmp.PartialEq.eq := eq;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_types_Hash.
 
 Module Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_types_Hash.
 
 Module Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter assert_receiver_is_total_eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+      forall `{State.Trait},
+      (ref Self) -> M unit.
   
-  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
   
-  Global Instance I : core.cmp.Eq.Trait Self := {
+  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_ink_primitives_types_Hash.
 
 Module Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter cmp :
-      forall `{H' : State.Trait},
-      (ref Self) ->
-        (ref ink_primitives.types.Hash) ->
-        M (H := H') core.cmp.Ordering.
+      forall `{State.Trait},
+      (ref Self) -> (ref ink_primitives.types.Hash) -> M core.cmp.Ordering.
   
-  Global Instance Method_cmp `{H' : State.Trait} : Notation.Dot "cmp" := {
+  Global Instance Method_cmp `{State.Trait} : Notation.Dot "cmp" := {
     Notation.dot := cmp;
   }.
   
-  Global Instance I : core.cmp.Ord.Trait Self := {
-    core.cmp.Ord.cmp `{H' : State.Trait} := cmp;
+  Global Instance I `{State.Trait} : core.cmp.Ord.Trait Self := {
+    core.cmp.Ord.cmp := cmp;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Ord_for_ink_primitives_types_Hash.
 
 Module Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter partial_cmp :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
         (ref ink_primitives.types.Hash) ->
-        M (H := H') (core.option.Option core.cmp.Ordering).
+        M (core.option.Option core.cmp.Ordering).
   
-  Global Instance Method_partial_cmp `{H' : State.Trait} :
+  Global Instance Method_partial_cmp `{State.Trait} :
     Notation.Dot "partial_cmp" := {
     Notation.dot := partial_cmp;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialOrd.Trait Self
         (Rhs := core.cmp.PartialOrd.Default.Rhs Self)
       := {
-    core.cmp.PartialOrd.partial_cmp `{H' : State.Trait} := partial_cmp;
+    core.cmp.PartialOrd.partial_cmp := partial_cmp;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialOrd_for_ink_primitives_types_Hash.
 
 Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter hash :
-      forall `{H' : State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
-      (ref Self) -> (mut_ref __H) -> M (H := H') unit.
+      forall `{State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
+      (ref Self) -> (mut_ref __H) -> M unit.
   
   Global Instance Method_hash
-      `{H' : State.Trait}
+      `{State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H} :
     Notation.Dot "hash" := {
     Notation.dot := hash (__H := __H);
   }.
   
-  Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash
-      `{H' : State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
+  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
+    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
       :=
       hash (__H := __H);
   }.
@@ -1791,27 +1752,27 @@ Module Impl_core_hash_Hash_for_ink_primitives_types_Hash.
 End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter decode :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {__CodecInputEdqy : Set}
         `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
       (mut_ref __CodecInputEdqy) ->
-        M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+        M (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode
-      `{H' : State.Trait}
+      `{State.Trait}
       {__CodecInputEdqy : Set}
       `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
-  Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+  Global Instance I `{State.Trait}
+    : parity_scale_codec.codec.Decode.Trait Self := {
     parity_scale_codec.codec.Decode.decode
-      `{H' : State.Trait}
       {__CodecInputEdqy : Set}
       `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       :=
@@ -1821,18 +1782,18 @@ End Impl_core_hash_Hash_for_ink_primitives_types_Hash.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter encode_to :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {__CodecOutputEdqy : Set}
         `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         `{core.marker.Sized.Trait __CodecOutputEdqy},
-      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
   
   Global Instance Method_encode_to
-      `{H' : State.Trait}
+      `{State.Trait}
       {__CodecOutputEdqy : Set}
       `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
       `{core.marker.Sized.Trait __CodecOutputEdqy} :
@@ -1841,25 +1802,24 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
   }.
   
   Parameter encode :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref Self) ->
-        M (H := H')
-          (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
+        M (alloc.vec.Vec CoqOfRust.core.primitive.u8 alloc.vec.Vec.Default.A).
   
-  Global Instance Method_encode `{H' : State.Trait} : Notation.Dot "encode" := {
+  Global Instance Method_encode `{State.Trait} : Notation.Dot "encode" := {
     Notation.dot := encode;
   }.
   
   Parameter using_encoded :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {R F : Set}
         `{core.ops.function.FnOnce.Trait F
             (Args := ref (Slice CoqOfRust.core.primitive.u8))},
-      (ref Self) -> F -> M (H := H') R.
+      (ref Self) -> F -> M R.
   
   Global Instance Method_using_encoded
-      `{H' : State.Trait}
+      `{State.Trait}
       {R F : Set}
       `{core.ops.function.FnOnce.Trait F
           (Args := ref (Slice CoqOfRust.core.primitive.u8))} :
@@ -1867,15 +1827,16 @@ End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_types_Hash. *)
     Notation.dot := using_encoded (R := R) (F := F);
   }.
   
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+  Global Instance I `{State.Trait}
+    : parity_scale_codec.codec.Encode.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
       := {
@@ -1884,321 +1845,317 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_types_Hash. *)
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_types_Hash. *)
 
 Module Impl_core_convert_From_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter from :
-      forall `{H' : State.Trait},
-      (list u8) -> M (H := H') ink_primitives.types.Hash.
+      forall `{State.Trait},
+      (array u8) -> M ink_primitives.types.Hash.
   
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_from `{State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T := list u8) := {
-    core.convert.From.from `{H' : State.Trait} := from;
+  Global Instance I `{State.Trait}
+    : core.convert.From.Trait Self (T := array u8) := {
+    core.convert.From.from := from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_ink_primitives_types_Hash.
 
 Module Impl_core_default_Default_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
-  Parameter default :
-      forall `{H' : State.Trait},
-      M (H := H') ink_primitives.types.Hash.
+  Parameter default : forall `{State.Trait}, M ink_primitives.types.Hash.
   
-  Global Instance AssociatedFunction_default `{H' : State.Trait} :
+  Global Instance AssociatedFunction_default `{State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H' : State.Trait} := default;
+  Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
+    core.default.Default.default := default;
   }.
   Global Hint Resolve I : core.
 End Impl_core_default_Default_for_ink_primitives_types_Hash.
 
 Module Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Definition Error : Set := core.array.TryFromSliceError.
   
   Parameter try_from :
-      forall `{H' : State.Trait},
+      forall `{State.Trait},
       (ref (Slice u8)) ->
-        M (H := H') (core.result.Result Self core.array.TryFromSliceError).
+        M (core.result.Result Self core.array.TryFromSliceError).
   
-  Global Instance AssociatedFunction_try_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_try_from `{State.Trait} :
     Notation.DoubleColon Self "try_from" := {
     Notation.double_colon := try_from;
   }.
   
-  Global Instance I : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
+  Global Instance I `{State.Trait}
+    : core.convert.TryFrom.Trait Self (T := ref (Slice u8)) := {
     core.convert.TryFrom.Error := Error;
-    core.convert.TryFrom.try_from `{H' : State.Trait} := try_from;
+    core.convert.TryFrom.try_from := try_from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_TryFrom_for_ink_primitives_types_Hash.
 
 Module Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
-  Parameter as_ref :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') (ref (Slice u8)).
+  Parameter as_ref : forall `{State.Trait}, (ref Self) -> M (ref (Slice u8)).
   
-  Global Instance Method_as_ref `{H' : State.Trait} : Notation.Dot "as_ref" := {
+  Global Instance Method_as_ref `{State.Trait} : Notation.Dot "as_ref" := {
     Notation.dot := as_ref;
   }.
   
-  Global Instance I : core.convert.AsRef.Trait Self (T := Slice u8) := {
-    core.convert.AsRef.as_ref `{H' : State.Trait} := as_ref;
+  Global Instance I `{State.Trait}
+    : core.convert.AsRef.Trait Self (T := Slice u8) := {
+    core.convert.AsRef.as_ref := as_ref;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsRef_for_ink_primitives_types_Hash.
 
 Module Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Parameter as_mut :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') (mut_ref (Slice u8)).
+      forall `{State.Trait},
+      (mut_ref Self) -> M (mut_ref (Slice u8)).
   
-  Global Instance Method_as_mut `{H' : State.Trait} : Notation.Dot "as_mut" := {
+  Global Instance Method_as_mut `{State.Trait} : Notation.Dot "as_mut" := {
     Notation.dot := as_mut;
   }.
   
-  Global Instance I : core.convert.AsMut.Trait Self (T := Slice u8) := {
-    core.convert.AsMut.as_mut `{H' : State.Trait} := as_mut;
+  Global Instance I `{State.Trait}
+    : core.convert.AsMut.Trait Self (T := Slice u8) := {
+    core.convert.AsMut.as_mut := as_mut;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_AsMut_for_ink_primitives_types_Hash.
 
 Module Impl_core_convert_From_for_Array_u8.
-  Definition Self := list u8.
+  Definition Self `{State.Trait} := array u8.
   
-  Parameter from :
-      forall `{H' : State.Trait},
-      ink_primitives.types.Hash -> M (H := H') Self.
+  Parameter from : forall `{State.Trait}, ink_primitives.types.Hash -> M Self.
   
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_from `{State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.convert.From.Trait Self (T := ink_primitives.types.Hash) := {
-    core.convert.From.from `{H' : State.Trait} := from;
+    core.convert.From.from := from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_Array_u8.
 
 Module Clear.
-  Class Trait (Self : Set) : Type := {
-    CLEAR_HASH `{H' : State.Trait} : Self;
-    is_clear `{H' : State.Trait} : (ref Self) -> M (H := H') bool;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    CLEAR_HASH : Self;
+    is_clear : (ref Self) -> M bool;
   }.
   
-  Global Instance Method_CLEAR_HASH `{H' : State.Trait} `(Trait)
+  Global Instance Method_CLEAR_HASH `{State.Trait} `(Trait)
     : Notation.Dot "CLEAR_HASH" := {
     Notation.dot := CLEAR_HASH;
   }.
-  Global Instance Method_is_clear `{H' : State.Trait} `(Trait)
+  Global Instance Method_is_clear `{State.Trait} `(Trait)
     : Notation.Dot "is_clear" := {
     Notation.dot := is_clear;
   }.
 End Clear.
 
 (* Module Impl_ink_primitives_types_Clear_for_Array_u8.
-  Definition Self := list u8.
+  Definition Self `{State.Trait} := array u8.
   
-  Definition CLEAR_HASH `{H' : State.Trait} := repeat 0.
+  Definition
+    CLEAR_HASH
+    `{State.Trait} := let* α0 := M.alloc 0 in
+    repeat α0.
   
-  Global Instance AssociatedFunction_CLEAR_HASH `{H' : State.Trait} :
+  Global Instance AssociatedFunction_CLEAR_HASH `{State.Trait} :
     Notation.DoubleColon Self "CLEAR_HASH" := {
     Notation.double_colon := CLEAR_HASH;
   }.
   
-  Parameter is_clear :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') bool.
+  Parameter is_clear : forall `{State.Trait}, (ref Self) -> M bool.
   
-  Global Instance Method_is_clear `{H' : State.Trait} :
-    Notation.Dot "is_clear" := {
+  Global Instance Method_is_clear `{State.Trait} : Notation.Dot "is_clear" := {
     Notation.dot := is_clear;
   }.
   
-  Global Instance I : ink_primitives.types.Clear.Trait Self := {
-    ink_primitives.types.Clear.CLEAR_HASH `{H' : State.Trait} := CLEAR_HASH;
-    ink_primitives.types.Clear.is_clear `{H' : State.Trait} := is_clear;
+  Global Instance I `{State.Trait} : ink_primitives.types.Clear.Trait Self := {
+    ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
+    ink_primitives.types.Clear.is_clear := is_clear;
   }.
   Global Hint Resolve I : core.
 End Impl_ink_primitives_types_Clear_for_Array_u8. *)
 
 (* Module Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash.
-  Definition Self := ink_primitives.types.Hash.
+  Definition Self `{State.Trait} := ink_primitives.types.Hash.
   
   Definition
     CLEAR_HASH
-    `{H' : State.Trait} := Self
+    `{State.Trait} := Self
       (ink_primitives.types.Clear.CLEAR_HASH (Self := (list u8))).
   
-  Global Instance AssociatedFunction_CLEAR_HASH `{H' : State.Trait} :
+  Global Instance AssociatedFunction_CLEAR_HASH `{State.Trait} :
     Notation.DoubleColon Self "CLEAR_HASH" := {
     Notation.double_colon := CLEAR_HASH;
   }.
   
-  Parameter is_clear :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') bool.
+  Parameter is_clear : forall `{State.Trait}, (ref Self) -> M bool.
   
-  Global Instance Method_is_clear `{H' : State.Trait} :
-    Notation.Dot "is_clear" := {
+  Global Instance Method_is_clear `{State.Trait} : Notation.Dot "is_clear" := {
     Notation.dot := is_clear;
   }.
   
-  Global Instance I : ink_primitives.types.Clear.Trait Self := {
-    ink_primitives.types.Clear.CLEAR_HASH `{H' : State.Trait} := CLEAR_HASH;
-    ink_primitives.types.Clear.is_clear `{H' : State.Trait} := is_clear;
+  Global Instance I `{State.Trait} : ink_primitives.types.Clear.Trait Self := {
+    ink_primitives.types.Clear.CLEAR_HASH := CLEAR_HASH;
+    ink_primitives.types.Clear.is_clear := is_clear;
   }.
   Global Hint Resolve I : core.
 End Impl_ink_primitives_types_Clear_for_ink_primitives_types_Hash. *)
 
 Module LangError.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | CouldNotReadInput.
 End LangError.
-Definition LangError : Set := LangError.t.
+Definition LangError `{State.Trait} : Set := LangError.t.
 
 Module Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
   Definition Identity : Set := Self.
   
   Parameter type_info :
-      forall `{H' : State.Trait},
-      M (H := H') (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
+      forall `{State.Trait},
+      M (scale_info.ty.Type_ scale_info.ty.Type_.Default.T).
   
-  Global Instance AssociatedFunction_type_info `{H' : State.Trait} :
+  Global Instance AssociatedFunction_type_info `{State.Trait} :
     Notation.DoubleColon Self "type_info" := {
     Notation.double_colon := type_info;
   }.
   
-  Global Instance I : scale_info.TypeInfo.Trait Self := {
+  Global Instance I `{State.Trait} : scale_info.TypeInfo.Trait Self := {
     scale_info.TypeInfo.Identity := Identity;
-    scale_info.TypeInfo.type_info `{H' : State.Trait} := type_info;
+    scale_info.TypeInfo.type_info := type_info;
   }.
   Global Hint Resolve I : core.
 End Impl_scale_info_TypeInfo_for_ink_primitives_LangError.
 
 Module Impl_core_fmt_Debug_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_ink_primitives_LangError.
 
 Module Impl_core_clone_Clone_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
   Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') ink_primitives.LangError.
+      forall `{State.Trait},
+      (ref Self) -> M ink_primitives.LangError.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_ink_primitives_LangError.
 
 Module Impl_core_marker_Copy_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_ink_primitives_LangError.
 
 Module Impl_core_marker_StructuralPartialEq_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
-  Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.marker.StructuralPartialEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralPartialEq_for_ink_primitives_LangError.
 
 Module Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
   Parameter eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> (ref ink_primitives.LangError) -> M (H := H') bool.
+      forall `{State.Trait},
+      (ref Self) -> (ref ink_primitives.LangError) -> M bool.
   
-  Global Instance Method_eq `{H' : State.Trait} : Notation.Dot "eq" := {
+  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
     Notation.dot := eq;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
       := {
-    core.cmp.PartialEq.eq `{H' : State.Trait} := eq;
+    core.cmp.PartialEq.eq := eq;
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_ink_primitives_LangError.
 
 Module Impl_core_marker_StructuralEq_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
-  Global Instance I : core.marker.StructuralEq.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_StructuralEq_for_ink_primitives_LangError.
 
 Module Impl_core_cmp_Eq_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
   Parameter assert_receiver_is_total_eq :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+      forall `{State.Trait},
+      (ref Self) -> M unit.
   
-  Global Instance Method_assert_receiver_is_total_eq `{H' : State.Trait} :
+  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
     Notation.Dot "assert_receiver_is_total_eq" := {
     Notation.dot := assert_receiver_is_total_eq;
   }.
   
-  Global Instance I : core.cmp.Eq.Trait Self := {
+  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_ink_primitives_LangError.
 
 (* Module Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
   Parameter encode_to :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {__CodecOutputEdqy : Set}
         `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
         `{core.marker.Sized.Trait __CodecOutputEdqy},
-      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M (H := H') unit.
+      (ref Self) -> (mut_ref __CodecOutputEdqy) -> M unit.
   
   Global Instance Method_encode_to
-      `{H' : State.Trait}
+      `{State.Trait}
       {__CodecOutputEdqy : Set}
       `{parity_scale_codec.codec.Output.Trait __CodecOutputEdqy}
       `{core.marker.Sized.Trait __CodecOutputEdqy} :
@@ -2206,15 +2163,16 @@ End Impl_core_cmp_Eq_for_ink_primitives_LangError.
     Notation.dot := encode_to (__CodecOutputEdqy := __CodecOutputEdqy);
   }.
   
-  Global Instance I : parity_scale_codec.codec.Encode.Trait Self := {
+  Global Instance I `{State.Trait}
+    : parity_scale_codec.codec.Encode.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
 
 (* Module Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : parity_scale_codec.encode_like.EncodeLike.Trait Self
         (T := parity_scale_codec.encode_like.EncodeLike.Default.T Self)
       := {
@@ -2223,27 +2181,27 @@ End Impl_parity_scale_codec_codec_Encode_for_ink_primitives_LangError. *)
 End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError. *)
 
 (* Module Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError.
-  Definition Self := ink_primitives.LangError.
+  Definition Self `{State.Trait} := ink_primitives.LangError.
   
   Parameter decode :
       forall
-        `{H' : State.Trait}
+        `{State.Trait}
         {__CodecInputEdqy : Set}
         `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy},
       (mut_ref __CodecInputEdqy) ->
-        M (H := H') (core.result.Result Self parity_scale_codec.error.Error).
+        M (core.result.Result Self parity_scale_codec.error.Error).
   
   Global Instance AssociatedFunction_decode
-      `{H' : State.Trait}
+      `{State.Trait}
       {__CodecInputEdqy : Set}
       `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy} :
     Notation.DoubleColon Self "decode" := {
     Notation.double_colon := decode (__CodecInputEdqy := __CodecInputEdqy);
   }.
   
-  Global Instance I : parity_scale_codec.codec.Decode.Trait Self := {
+  Global Instance I `{State.Trait}
+    : parity_scale_codec.codec.Decode.Trait Self := {
     parity_scale_codec.codec.Decode.decode
-      `{H' : State.Trait}
       {__CodecInputEdqy : Set}
       `{parity_scale_codec.codec.Input.Trait __CodecInputEdqy}
       :=
@@ -2252,8 +2210,8 @@ End Impl_parity_scale_codec_encode_like_EncodeLike_for_ink_primitives_LangError.
   Global Hint Resolve I : core.
 End Impl_parity_scale_codec_codec_Decode_for_ink_primitives_LangError. *)
 
-Definition MessageResult (T : Set) : Set :=
+Definition MessageResult (T : Set) `{State.Trait} : Set :=
   core.result.Result T ink_primitives.LangError.
 
-Definition ConstructorResult (T : Set) : Set :=
+Definition ConstructorResult (T : Set) `{State.Trait} : Set :=
   core.result.Result T ink_primitives.LangError.

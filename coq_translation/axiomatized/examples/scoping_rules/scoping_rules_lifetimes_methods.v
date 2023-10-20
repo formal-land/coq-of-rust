@@ -3,35 +3,32 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Owner.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : i32;
+  Record t `{State.Trait} : Set := {
+    x0 : i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Owner.
-Definition Owner := @Owner.t.
+Definition Owner `{State.Trait} : Set := M.val Owner.t.
 
 Module Impl_scoping_rules_lifetimes_methods_Owner.
-  Definition Self := scoping_rules_lifetimes_methods.Owner.
+  Definition Self `{State.Trait} : Set := scoping_rules_lifetimes_methods.Owner.
   
-  Parameter add_one :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') unit.
+  Parameter add_one : forall `{State.Trait}, (mut_ref Self) -> M unit.
   
-  Global Instance Method_add_one `{H' : State.Trait} :
-    Notation.Dot "add_one" := {
+  Global Instance Method_add_one `{State.Trait} : Notation.Dot "add_one" := {
     Notation.dot := add_one;
   }.
   
-  Parameter print : forall `{H' : State.Trait}, (ref Self) -> M (H := H') unit.
+  Parameter print : forall `{State.Trait}, (ref Self) -> M unit.
   
-  Global Instance Method_print `{H' : State.Trait} : Notation.Dot "print" := {
+  Global Instance Method_print `{State.Trait} : Notation.Dot "print" := {
     Notation.dot := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

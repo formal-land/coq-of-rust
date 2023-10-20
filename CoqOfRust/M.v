@@ -31,7 +31,7 @@ Module State.
         | Some s' => read a1 s' = read a1 s
         | None => True
         end;
-      }.
+        }.
   End Valid.
 End State.
 
@@ -54,7 +54,8 @@ Module RawMonad.
   Inductive t `{State.Trait} (A : Set) : Set :=
   | Pure : A -> t A
   | Bind {B : Set} : t B -> (B -> t A) -> t A
-  | AddressOracle {B : Set} : (MutRef B -> t A) -> t A
+  (** [None] when we allocate an immediate value *)
+  | AddressOracle {B : Set} : (option (MutRef B) -> t A) -> t A
   | Impossible : t A.
   Arguments Pure {_ _ _ _}.
   Arguments Bind {_ _ _ _ _}.
@@ -77,7 +78,8 @@ Module Run.
     t e1 v1 ->
     t (e2 v1) v2 ->
     t (RawMonad.Bind e1 e2) v2
-  | AddressOracle {B : Set} (r : MutRef B) (e : MutRef B -> RawMonad A) (v : A) :
+  | AddressOracle {B : Set}
+      (r : option (MutRef B)) (e : option (MutRef B) -> RawMonad A) (v : A) :
     t (e r) v ->
     t (RawMonad.AddressOracle e) v.
 End Run.
@@ -108,7 +110,8 @@ Definition Monad `{State.Trait} (R A : Set) : Set :=
 Definition M `{State.Trait} (A : Set) : Set :=
   Monad Empty_set A.
 
-Definition pure `{State.Trait} {R A : Set} (v : A) : Monad R A :=
+(* @TODO: change in `pure` for uniformity *)
+Definition Pure `{State.Trait} {R A : Set} (v : A) : Monad R A :=
   fun fuel s => RawMonad.Pure (inl v, s).
 
 Definition bind `{State.Trait} {R A B : Set}
@@ -159,3 +162,58 @@ Definition loop `{State.Trait} {R : Set} (m : Monad R unit) : Monad R unit :=
         end
       )
     end.
+
+Definition alloc `{State.Trait} {R A : Set} (v : A) : Monad R (Ref A) :=
+  fun fuel s =>
+  RawMonad.AddressOracle (B := A) (fun r =>
+  match r with
+  | None => RawMonad.Pure (inl (Ref.Immutable v), s)
+  | Some r =>
+    match r, v with
+    | MutRef.Make a, _ =>
+      match State.read a s with
+      | Some _ => RawMonad.Impossible
+      | None =>
+        match State.alloc_write a s v with
+        | Some s => RawMonad.Pure (inl (Ref.OfMutRef (MutRef.Make a)), s)
+        | None => RawMonad.Impossible
+        end
+      end
+    end
+  end).
+
+Definition read `{State.Trait} {R A : Set} (r : Ref A) : Monad R A :=
+  fun fuel s =>
+  match r with
+  | Ref.Immutable v => RawMonad.Pure (inl v, s)
+  | Ref.OfMutRef r =>
+    match r with
+    | MutRef.Make a =>
+      match State.read a s with
+      | None => RawMonad.Impossible
+      | Some v => RawMonad.Pure (inl v, s)
+      end
+    end
+  end.
+
+Definition write `{State.Trait} {R A : Set} (r : Ref A) (v : A) :
+  Monad R unit :=
+  fun fuel s =>
+  match r with
+  | Ref.Immutable _ => RawMonad.Impossible
+  | Ref.OfMutRef r =>
+    match r, v with
+    | MutRef.Make a, _ =>
+      match State.alloc_write a s v with
+      | None => RawMonad.Impossible
+      | Some s => RawMonad.Pure (inl tt, s)
+      end
+    end
+  end.
+
+(** Used for the definitions of "const". *)
+(* @TODO: Give a definition for [run]. There should be an additional parameter
+   witnessing that the calculation is possible. *)
+Parameter run : forall `{State.Trait} {A : Set}, M A -> A.
+
+Definition val `{State.Trait} (A : Set) : Set := Ref A.

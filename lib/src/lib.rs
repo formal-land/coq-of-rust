@@ -14,6 +14,7 @@ extern crate rustc_interface;
 extern crate rustc_middle;
 extern crate rustc_session;
 extern crate rustc_span;
+extern crate rustc_type_ir;
 
 pub mod callbacks;
 pub mod configuration;
@@ -27,6 +28,9 @@ pub mod path;
 pub mod pattern;
 pub mod render;
 pub mod reorder;
+pub mod thir_expression;
+pub mod thir_pattern;
+pub mod thir_ty;
 pub mod top_level;
 pub mod ty;
 pub mod utils;

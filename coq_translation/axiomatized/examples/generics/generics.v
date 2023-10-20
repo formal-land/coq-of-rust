@@ -8,32 +8,32 @@ Definition A := @A.t.
 
 Module Single.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : generics.A;
+  Record t `{State.Trait} : Set := {
+    x0 : generics.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Single.
-Definition Single := @Single.t.
+Definition Single `{State.Trait} : Set := M.val Single.t.
 
 Module SingleGen.
   Section SingleGen.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
-      _ : T;
+    Record t `{State.Trait} : Set := {
+      x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End SingleGen.
 End SingleGen.
-Definition SingleGen := @SingleGen.t.
+Definition SingleGen `{State.Trait} : Set := M.val SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

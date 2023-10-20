@@ -1,0 +1,24 @@
+type Closure(
+    DefId(0:6 ~ functions_closures[d419]::main::{closure#2}),
+    [
+        i8,
+        extern "rust-call" fn(()) -> i32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ functions_closures[d419]::main::{closure#1}),
+    [
+        i8,
+        extern "rust-call" fn((i32,)) -> i32,
+        (&i32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:4 ~ functions_closures[d419]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn((i32,)) -> i32,
+        (&i32,),
+    ],
+) not yet handled

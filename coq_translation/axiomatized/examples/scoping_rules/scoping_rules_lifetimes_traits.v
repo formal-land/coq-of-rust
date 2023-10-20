@@ -3,52 +3,52 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Borrowed.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     x : ref i32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_x : Notation.Dot "x" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
+    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
-  Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
+    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
 End Borrowed.
-Definition Borrowed : Set := Borrowed.t.
+Definition Borrowed `{State.Trait} : Set := M.val (Borrowed.t).
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-  Definition Self := scoping_rules_lifetimes_traits.Borrowed.
+  Definition Self `{State.Trait} := scoping_rules_lifetimes_traits.Borrowed.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-  Definition Self := scoping_rules_lifetimes_traits.Borrowed.
+  Definition Self `{State.Trait} := scoping_rules_lifetimes_traits.Borrowed.
   
-  Parameter default : forall `{H' : State.Trait}, M (H := H') Self.
+  Parameter default : forall `{State.Trait}, M Self.
   
-  Global Instance AssociatedFunction_default `{H' : State.Trait} :
+  Global Instance AssociatedFunction_default `{State.Trait} :
     Notation.DoubleColon Self "default" := {
     Notation.double_colon := default;
   }.
   
-  Global Instance I : core.default.Default.Trait Self := {
-    core.default.Default.default `{H' : State.Trait} := default;
+  Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
+    core.default.Default.default := default;
   }.
   Global Hint Resolve I : core.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

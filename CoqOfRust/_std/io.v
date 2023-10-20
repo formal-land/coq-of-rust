@@ -1,4 +1,3 @@
-Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 
 Require CoqOfRust.alloc.vec.
@@ -83,7 +82,7 @@ pub trait Write {
 }
 *)
 Module Write.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     write : mut_ref Self -> ref (slice u8) -> Result usize;
     flush : mut_ref Self -> Result unit;
     write_vectored : mut_ref Self -> ref (slice IoSlice) -> Result usize;
@@ -325,13 +324,13 @@ pub enum SeekFrom {
 }
 *)
 Module SeekFrom.
-  Inductive t : Set :=
+  Inductive t `{State.Trait} : Set :=
   | Start : u64 -> t
   | End : i64 -> t
   | Current : i64 -> t
   .
 End SeekFrom.
-Definition SeekFrom := SeekFrom.t.
+Definition SeekFrom `{State.Trait} := SeekFrom.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -349,7 +348,7 @@ pub trait IsTerminal: Sealed {
 }
 *)
 Module IsTerminal.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     is_terminal : ref Self -> bool;
   }.
 End IsTerminal.
@@ -378,7 +377,7 @@ pub trait Read {
 }
 *)
 Module Read.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     read : mut_ref Self -> mut_ref (slice u8) -> Result usize;
     read_vectored : mut_ref Self -> mut_ref (slice IoSliceMut) -> Result usize;
     is_read_vectored : ref Self -> bool;
@@ -411,7 +410,7 @@ pub trait BufRead: Read {
 }
 *)
 Module BufRead.
-  Class Trait (Self : Set) `{Read.Trait Self}: Set := { 
+  Class Trait `{State.Trait} (Self : Set) `{Read.Trait Self}: Set := { 
     fill_buf : mut_ref Self -> Result (ref (slice u8));
     consume : mut_ref Self -> usize -> unit;
     has_data_left : mut_ref Self -> Result bool;
@@ -435,7 +434,7 @@ pub trait Seek {
 }
 *)
 Module Seek.
-  Class Trait (Self : Set) : Set := { 
+  Class Trait `{State.Trait} (Self : Set) : Set := { 
     seek : mut_ref Self -> SeekFrom -> Result u64;
     rewind : mut_ref Self -> Result unit;
     stream_len : mut_ref Self -> Result u64;
@@ -462,5 +461,5 @@ End Seek.
 *)
 
 Module stdio.
-  Parameter _print : forall `{State.Trait} {A : Set}, A -> M unit.
+  Parameter _print : forall `{State.Trait}, fmt.Arguments -> M unit.
 End stdio.

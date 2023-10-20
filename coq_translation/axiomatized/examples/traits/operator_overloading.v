@@ -17,18 +17,18 @@ End FooBar.
 Definition FooBar := @FooBar.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
-  Definition Self := operator_overloading.FooBar.
+  Definition Self `{State.Trait} := operator_overloading.FooBar.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
@@ -39,67 +39,63 @@ End BarFoo.
 Definition BarFoo := @BarFoo.t.
 
 Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
-  Definition Self := operator_overloading.BarFoo.
+  Definition Self `{State.Trait} := operator_overloading.BarFoo.
   
   Parameter fmt :
-      forall `{H' : State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M (H := H') core.fmt.Result.
+      forall `{State.Trait},
+      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Foo.
-  Definition Self := operator_overloading.Foo.
+  Definition Self `{State.Trait} := operator_overloading.Foo.
   
   Definition Output : Set := operator_overloading.FooBar.
   
   Parameter add :
-      forall `{H' : State.Trait},
-      Self ->
-        operator_overloading.Bar ->
-        M (H := H') operator_overloading.FooBar.
+      forall `{State.Trait},
+      Self -> operator_overloading.Bar -> M operator_overloading.FooBar.
   
-  Global Instance Method_add `{H' : State.Trait} : Notation.Dot "add" := {
+  Global Instance Method_add `{State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar) := {
     core.ops.arith.Add.Output := Output;
-    core.ops.arith.Add.add `{H' : State.Trait} := add;
+    core.ops.arith.Add.add := add;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Foo.
 
 Module Impl_core_ops_arith_Add_for_operator_overloading_Bar.
-  Definition Self := operator_overloading.Bar.
+  Definition Self `{State.Trait} := operator_overloading.Bar.
   
   Definition Output : Set := operator_overloading.BarFoo.
   
   Parameter add :
-      forall `{H' : State.Trait},
-      Self ->
-        operator_overloading.Foo ->
-        M (H := H') operator_overloading.BarFoo.
+      forall `{State.Trait},
+      Self -> operator_overloading.Foo -> M operator_overloading.BarFoo.
   
-  Global Instance Method_add `{H' : State.Trait} : Notation.Dot "add" := {
+  Global Instance Method_add `{State.Trait} : Notation.Dot "add" := {
     Notation.dot := add;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo) := {
     core.ops.arith.Add.Output := Output;
-    core.ops.arith.Add.add `{H' : State.Trait} := add;
+    core.ops.arith.Add.add := add;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_arith_Add_for_operator_overloading_Bar.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

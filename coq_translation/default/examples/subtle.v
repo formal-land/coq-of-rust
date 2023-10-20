@@ -3,367 +3,394 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Choice.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : u8;
+  Record t `{State.Trait} : Set := {
+    x0 : u8;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Choice.
-Definition Choice := @Choice.t.
+Definition Choice `{State.Trait} : Set := M.val Choice.t.
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
-  Definition clone
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') subtle.Choice :=
-    let _ : core.clone.AssertParamIsClone u8 := tt in
-    self.["deref"].
+  Definition clone `{State.Trait} (self : ref Self) : M subtle.Choice :=
+    let _ := tt in
+    deref self subtle.Choice.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition fmt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter)
-      : M (H := H') core.fmt.Result :=
-    core.fmt.Formatter::["debug_tuple_field1_finish"]
-      f
-      "Choice"
-      (addr_of (addr_of (self.[0]))).
+      : M core.fmt.Result :=
+    let* α0 := deref f core.fmt.Formatter in
+    let* α1 := borrow_mut α0 core.fmt.Formatter in
+    let* α2 := deref (mk_str "Choice") str in
+    let* α3 := borrow α2 str in
+    let* α4 := deref self subtle.Choice in
+    let* α5 := α4.["0"] in
+    let* α6 := borrow α5 u8 in
+    let* α7 := borrow α6 (ref u8) in
+    let* α8 := deref α7 (ref u8) in
+    let* α9 := borrow α8 (ref u8) in
+    let* α10 := pointer_coercion "Unsize" α9 in
+    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
   
-  Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
     Notation.dot := fmt;
   }.
   
-  Global Instance I : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
   }.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice_4.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} : Set := subtle.Choice.
   
-  Definition unwrap_u8 `{H' : State.Trait} (self : ref Self) : M (H := H') u8 :=
-    Pure (self.[0]).
+  Definition unwrap_u8 `{State.Trait} (self : ref Self) : M u8 :=
+    let* α0 := deref self subtle.Choice in
+    α0.["0"].
   
-  Global Instance Method_unwrap_u8 `{H' : State.Trait} :
+  Global Instance Method_unwrap_u8 `{State.Trait} :
     Notation.Dot "unwrap_u8" := {
     Notation.dot := unwrap_u8;
   }.
 End Impl_subtle_Choice_4.
 
 Module Impl_core_convert_From_for_bool.
-  Definition Self := bool.
+  Definition Self `{State.Trait} := bool.
   
-  Definition from
-      `{H' : State.Trait}
-      (source : subtle.Choice)
-      : M (H := H') bool :=
+  Definition from `{State.Trait} (source : subtle.Choice) : M bool :=
     let* _ :=
-      if (true : bool) then
+      let* α0 := true in
+      let* α1 := use α0 in
+      if (α1 : bool) then
         let* _ :=
-          let* α0 := (source.[0]).["eq"] 0 in
-          let* α1 := (source.[0]).["eq"] 1 in
-          let* α2 := α0.["bitor"] α1 in
-          let* α3 := α2.["not"] in
-          if (α3 : bool) then
-            core.panicking.panic
-              "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
+          let* α0 := source.["0"] in
+          let* α1 := M.alloc 0 in
+          let* α2 := eq α0 α1 in
+          let* α3 := source.["0"] in
+          let* α4 := M.alloc 1 in
+          let* α5 := eq α3 α4 in
+          let* α6 := bitor α2 α5 in
+          let* α7 := not α6 in
+          let* α8 := use α7 in
+          if (α8 : bool) then
+            let* α0 :=
+              core.panicking.panic
+                (mk_str
+                  "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)") in
+            never_to_any α0
           else
             Pure tt in
         Pure tt
       else
         Pure tt in
-    (source.[0]).["ne"] 0.
+    let* α0 := source.["0"] in
+    let* α1 := M.alloc 0 in
+    ne α0 α1.
   
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_from `{State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T := subtle.Choice) := {
-    core.convert.From.from `{H' : State.Trait} := from;
+  Global Instance I `{State.Trait}
+    : core.convert.From.Trait Self (T := subtle.Choice) := {
+    core.convert.From.from := from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition Output : Set := subtle.Choice.
   
   Definition bitand
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : Self)
       (rhs : subtle.Choice)
-      : M (H := H') subtle.Choice :=
-    let* α0 := (self.[0]).["bitand"] (rhs.[0]) in
-    α0.["into"].
+      : M subtle.Choice :=
+    let* α0 := self.["0"] in
+    let* α1 := rhs.["0"] in
+    let* α2 := bitand α0 α1 in
+    core.convert.Into.into α2.
   
-  Global Instance Method_bitand `{H' : State.Trait} : Notation.Dot "bitand" := {
+  Global Instance Method_bitand `{State.Trait} : Notation.Dot "bitand" := {
     Notation.dot := bitand;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.bit.BitAnd.Trait Self
         (Rhs := core.ops.bit.BitAnd.Default.Rhs Self)
       := {
     core.ops.bit.BitAnd.Output := Output;
-    core.ops.bit.BitAnd.bitand `{H' : State.Trait} := bitand;
+    core.ops.bit.BitAnd.bitand := bitand;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition bitand_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := α1.["bitand"] rhs in
+      let* α0 := deref self subtle.Choice in
+      let* α1 := deref self subtle.Choice in
+      let* α2 := core.ops.bit.BitAnd.bitand α1 rhs in
       assign α0 α2 in
     Pure tt.
   
-  Global Instance Method_bitand_assign `{H' : State.Trait} :
+  Global Instance Method_bitand_assign `{State.Trait} :
     Notation.Dot "bitand_assign" := {
     Notation.dot := bitand_assign;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.bit.BitAndAssign.Trait Self
         (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self)
       := {
-    core.ops.bit.BitAndAssign.bitand_assign `{H' : State.Trait}
-      :=
-      bitand_assign;
+    core.ops.bit.BitAndAssign.bitand_assign := bitand_assign;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition Output : Set := subtle.Choice.
   
   Definition bitor
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : Self)
       (rhs : subtle.Choice)
-      : M (H := H') subtle.Choice :=
-    let* α0 := (self.[0]).["bitor"] (rhs.[0]) in
-    α0.["into"].
+      : M subtle.Choice :=
+    let* α0 := self.["0"] in
+    let* α1 := rhs.["0"] in
+    let* α2 := bitor α0 α1 in
+    core.convert.Into.into α2.
   
-  Global Instance Method_bitor `{H' : State.Trait} : Notation.Dot "bitor" := {
+  Global Instance Method_bitor `{State.Trait} : Notation.Dot "bitor" := {
     Notation.dot := bitor;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.bit.BitOr.Trait Self (Rhs := core.ops.bit.BitOr.Default.Rhs Self)
       := {
     core.ops.bit.BitOr.Output := Output;
-    core.ops.bit.BitOr.bitor `{H' : State.Trait} := bitor;
+    core.ops.bit.BitOr.bitor := bitor;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition bitor_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := α1.["bitor"] rhs in
+      let* α0 := deref self subtle.Choice in
+      let* α1 := deref self subtle.Choice in
+      let* α2 := core.ops.bit.BitOr.bitor α1 rhs in
       assign α0 α2 in
     Pure tt.
   
-  Global Instance Method_bitor_assign `{H' : State.Trait} :
+  Global Instance Method_bitor_assign `{State.Trait} :
     Notation.Dot "bitor_assign" := {
     Notation.dot := bitor_assign;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.bit.BitOrAssign.Trait Self
         (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self)
       := {
-    core.ops.bit.BitOrAssign.bitor_assign `{H' : State.Trait} := bitor_assign;
+    core.ops.bit.BitOrAssign.bitor_assign := bitor_assign;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition Output : Set := subtle.Choice.
   
   Definition bitxor
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : Self)
       (rhs : subtle.Choice)
-      : M (H := H') subtle.Choice :=
-    let* α0 := (self.[0]).["bitxor"] (rhs.[0]) in
-    α0.["into"].
+      : M subtle.Choice :=
+    let* α0 := self.["0"] in
+    let* α1 := rhs.["0"] in
+    let* α2 := bitxor α0 α1 in
+    core.convert.Into.into α2.
   
-  Global Instance Method_bitxor `{H' : State.Trait} : Notation.Dot "bitxor" := {
+  Global Instance Method_bitxor `{State.Trait} : Notation.Dot "bitxor" := {
     Notation.dot := bitxor;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.bit.BitXor.Trait Self
         (Rhs := core.ops.bit.BitXor.Default.Rhs Self)
       := {
     core.ops.bit.BitXor.Output := Output;
-    core.ops.bit.BitXor.bitxor `{H' : State.Trait} := bitxor;
+    core.ops.bit.BitXor.bitxor := bitxor;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition bitxor_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (rhs : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := α1.["bitxor"] rhs in
+      let* α0 := deref self subtle.Choice in
+      let* α1 := deref self subtle.Choice in
+      let* α2 := core.ops.bit.BitXor.bitxor α1 rhs in
       assign α0 α2 in
     Pure tt.
   
-  Global Instance Method_bitxor_assign `{H' : State.Trait} :
+  Global Instance Method_bitxor_assign `{State.Trait} :
     Notation.Dot "bitxor_assign" := {
     Notation.dot := bitxor_assign;
   }.
   
-  Global Instance I
+  Global Instance I `{State.Trait}
     : core.ops.bit.BitXorAssign.Trait Self
         (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self)
       := {
-    core.ops.bit.BitXorAssign.bitxor_assign `{H' : State.Trait}
-      :=
-      bitxor_assign;
+    core.ops.bit.BitXorAssign.bitxor_assign := bitxor_assign;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition Output : Set := subtle.Choice.
   
-  Definition not
-      `{H' : State.Trait}
-      (self : Self)
-      : M (H := H') subtle.Choice :=
-    let* α0 := (self.[0]).["not"] in
-    let* α1 := 1.["bitand"] α0 in
-    α1.["into"].
+  Definition not `{State.Trait} (self : Self) : M subtle.Choice :=
+    let* α0 := M.alloc 1 in
+    let* α1 := self.["0"] in
+    let* α2 := not α1 in
+    let* α3 := bitand α0 α2 in
+    core.convert.Into.into α3.
   
-  Global Instance Method_not `{H' : State.Trait} : Notation.Dot "not" := {
+  Global Instance Method_not `{State.Trait} : Notation.Dot "not" := {
     Notation.dot := not;
   }.
   
-  Global Instance I : core.ops.bit.Not.Trait Self := {
+  Global Instance I `{State.Trait} : core.ops.bit.Not.Trait Self := {
     core.ops.bit.Not.Output := Output;
-    core.ops.bit.Not.not `{H' : State.Trait} := not;
+    core.ops.bit.Not.not := not;
   }.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
-Definition black_box `{H' : State.Trait} (input : u8) : M (H := H') u8 :=
+Definition black_box `{State.Trait} (input : u8) : M u8 :=
   let* _ :=
-    if (true : bool) then
+    let* α0 := true in
+    let* α1 := use α0 in
+    if (α1 : bool) then
       let* _ :=
-        let* α0 := input.["eq"] 0 in
-        let* α1 := input.["eq"] 1 in
-        let* α2 := α0.["bitor"] α1 in
-        let* α3 := α2.["not"] in
-        if (α3 : bool) then
-          core.panicking.panic
-            "assertion failed: (input == 0u8) | (input == 1u8)"
+        let* α0 := M.alloc 0 in
+        let* α1 := eq input α0 in
+        let* α2 := M.alloc 1 in
+        let* α3 := eq input α2 in
+        let* α4 := bitor α1 α3 in
+        let* α5 := not α4 in
+        let* α6 := use α5 in
+        if (α6 : bool) then
+          let* α0 :=
+            core.panicking.panic
+              (mk_str "assertion failed: (input == 0u8) | (input == 1u8)") in
+          never_to_any α0
         else
           Pure tt in
       Pure tt
     else
       Pure tt in
-  core.ptr.read_volatile (cast (addr_of input) (ref u8)).
+  let* α0 := borrow input u8 in
+  let* α1 := deref α0 u8 in
+  let* α2 := addr_of α1 in
+  let* α3 := use α2 in
+  core.ptr.read_volatile α3.
 
 Module Impl_core_convert_From_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
-  Definition from
-      `{H' : State.Trait}
-      (input : u8)
-      : M (H := H') subtle.Choice :=
+  Definition from `{State.Trait} (input : u8) : M subtle.Choice :=
     let* α0 := subtle.black_box input in
     Pure (subtle.Choice.Build_t α0).
   
-  Global Instance AssociatedFunction_from `{H' : State.Trait} :
+  Global Instance AssociatedFunction_from `{State.Trait} :
     Notation.DoubleColon Self "from" := {
     Notation.double_colon := from;
   }.
   
-  Global Instance I : core.convert.From.Trait Self (T := u8) := {
-    core.convert.From.from `{H' : State.Trait} := from;
+  Global Instance I `{State.Trait} : core.convert.From.Trait Self (T := u8) := {
+    core.convert.From.from := from;
   }.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_subtle_Choice.
 
 Module ConstantTimeEq.
-  Class Trait (Self : Set) : Type := {
-    ct_eq `{H' : State.Trait}
-      :
-      (ref Self) -> (ref Self) -> M (H := H') subtle.Choice;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    ct_eq : (ref Self) -> (ref Self) -> M subtle.Choice;
   }.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} `(Trait)
+  Global Instance Method_ct_eq `{State.Trait} `(Trait)
     : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
-  Global Instance Method_ct_ne `{H' : State.Trait} `(Trait)
+  Global Instance Method_ct_ne `{State.Trait} `(Trait)
     : Notation.Dot "ct_ne" := {
     Notation.dot (self : ref Self) (other : ref Self)
       :=
-      (let* α0 := self.["ct_eq"] other in
-      α0.["not"]
-      : M (H := H') subtle.Choice);
+      (let* α0 := deref self _ in
+      let* α1 := borrow α0 _ in
+      let* α2 := deref other _ in
+      let* α3 := borrow α2 _ in
+      let* α4 := subtle.ConstantTimeEq.ct_eq α1 α3 in
+      core.ops.bit.Not.not α4
+      : M subtle.Choice);
   }.
 End ConstantTimeEq.
 
@@ -371,341 +398,433 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
   Section Impl_subtle_ConstantTimeEq_for_Slice_T.
     Context {T : Set}.
     Context `{subtle.ConstantTimeEq.Trait T}.
-    Definition Self := Slice T.
+    Definition Self `{State.Trait} := Slice T.
     
     Definition ct_eq
-        `{H' : State.Trait}
+        `{State.Trait}
         (self : ref Self)
         (_rhs : ref (Slice T))
-        : M (H := H') subtle.Choice :=
-      let* len := self.["len"] in
+        : M subtle.Choice :=
+      let* len :=
+        let* α0 := deref self (Slice _) in
+        let* α1 := borrow α0 (Slice _) in
+        (Slice _)::["len"] α1 in
       let* _ :=
-        let* α0 := _rhs.["len"] in
-        let* α1 := len.["ne"] α0 in
-        if (α1 : bool) then
+        let* α0 := deref _rhs (Slice _) in
+        let* α1 := borrow α0 (Slice _) in
+        let* α2 := (Slice _)::["len"] α1 in
+        let* α3 := ne len α2 in
+        let* α4 := use α3 in
+        if (α4 : bool) then
           let* _ :=
-            let* α0 := subtle.Choice::["from"] 0 in
-            Return α0 in
-          Pure tt
+            let* α0 := M.alloc 0 in
+            let* α1 := core.convert.From.from α0 in
+            Return α1 in
+          never_to_any tt
         else
           Pure tt in
-      let x := 1 in
+      let* x := M.alloc 1 in
       let* _ :=
-        let* α0 := self.["iter"] in
-        let* α1 := _rhs.["iter"] in
-        let* α2 := α0.["zip"] α1 in
-        let* α3 := α2.["into_iter"] in
-        match α3 with
-        | iter =>
-          loop
-            (let* _ :=
-              let* α0 := (addr_of iter).["next"] in
-              match α0 with
-              | core.option.Option.None  => Break
-              | core.option.Option.Some (ai, bi) =>
-                let* _ :=
-                  let* α0 := ai.["ct_eq"] bi in
-                  let* α1 := α0.["unwrap_u8"] in
-                  x.["bitand_assign"] α1 in
-                Pure tt
-              end in
-            Pure tt)
-        end in
-      x.["into"].
+        let* α0 := deref self (Slice _) in
+        let* α1 := borrow α0 (Slice _) in
+        let* α2 := (Slice _)::["iter"] α1 in
+        let* α3 := deref _rhs (Slice _) in
+        let* α4 := borrow α3 (Slice _) in
+        let* α5 := (Slice _)::["iter"] α4 in
+        let* α6 := core.iter.traits.iterator.Iterator.zip α2 α5 in
+        let* α7 := core.iter.traits.collect.IntoIterator.into_iter α6 in
+        let* α8 :=
+          match α7 with
+          | iter =>
+            loop
+              (let* _ :=
+                let* α0 :=
+                  borrow_mut
+                    iter
+                    (core.iter.adapters.zip.Zip
+                      (core.slice.iter.Iter _)
+                      (core.slice.iter.Iter _)) in
+                let* α1 :=
+                  deref
+                    α0
+                    (core.iter.adapters.zip.Zip
+                      (core.slice.iter.Iter _)
+                      (core.slice.iter.Iter _)) in
+                let* α2 :=
+                  borrow_mut
+                    α1
+                    (core.iter.adapters.zip.Zip
+                      (core.slice.iter.Iter _)
+                      (core.slice.iter.Iter _)) in
+                let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+                match α3 with
+                | core.option.Option  =>
+                  let* α0 := Break in
+                  never_to_any α0
+                | core.option.Option (ai, bi) =>
+                  let* _ :=
+                    let* α0 := deref ai _ in
+                    let* α1 := borrow α0 _ in
+                    let* α2 := deref bi _ in
+                    let* α3 := borrow α2 _ in
+                    let* α4 := subtle.ConstantTimeEq.ct_eq α1 α3 in
+                    let* α5 := borrow α4 subtle.Choice in
+                    let* α6 := subtle.Choice::["unwrap_u8"] α5 in
+                    assign_op bitand x α6 in
+                  Pure tt
+                end in
+              Pure tt)
+          end in
+        use α8 in
+      core.convert.Into.into x.
     
-    Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+    Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
       Notation.dot := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-      subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+    Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_Slice_T.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (rhs : ref subtle.Choice)
-      : M (H := H') subtle.Choice :=
-    let* α0 := self.["deref"] in
-    let* α1 := rhs.["deref"] in
-    let* α2 := α0.["bitxor"] α1 in
-    α2.["not"].
+      : M subtle.Choice :=
+    let* α0 := deref self subtle.Choice in
+    let* α1 := deref rhs subtle.Choice in
+    let* α2 := core.ops.bit.BitXor.bitxor α0 α1 in
+    core.ops.bit.Not.not α2.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
-  Definition Self := u8.
+  Definition Self `{State.Trait} := u8.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u8)
-      : M (H := H') subtle.Choice :=
-    let* x := self.["bitxor"] other in
+      : M subtle.Choice :=
+    let* x := core.ops.bit.BitXor.bitxor self other in
     let* y :=
-      let* α0 := x.["wrapping_neg"] in
-      let* α1 := x.["bitor"] α0 in
-      let* α2 := 8.["sub"] 1 in
-      α1.["shr"] α2 in
-    let* α0 := y.["bitxor"] (cast 1 u8) in
-    (cast α0 u8).["into"].
+      let* α0 := u8::["wrapping_neg"] x in
+      let* α1 := bitor x α0 in
+      let* α2 := M.alloc 8 in
+      let* α3 := M.alloc 1 in
+      let* α4 := sub α2 α3 in
+      shr α1 α4 in
+    let* α0 := M.alloc 1 in
+    let* α1 := use α0 in
+    let* α2 := bitxor y α1 in
+    let* α3 := use α2 in
+    core.convert.Into.into α3.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
-  Definition Self := i8.
+  Definition Self `{State.Trait} := i8.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref i8)
-      : M (H := H') subtle.Choice :=
-    let* α0 := self.["deref"] in
-    let* α1 := other.["deref"] in
-    (cast α0 u8).["ct_eq"] (addr_of (cast α1 u8)).
+      : M subtle.Choice :=
+    let* α0 := deref self i8 in
+    let* α1 := cast α0 in
+    let* α2 := borrow α1 u8 in
+    let* α3 := deref other i8 in
+    let* α4 := cast α3 in
+    let* α5 := borrow α4 u8 in
+    let* α6 := deref α5 u8 in
+    let* α7 := borrow α6 u8 in
+    subtle.ConstantTimeEq.ct_eq α2 α7.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
-  Definition Self := u16.
+  Definition Self `{State.Trait} := u16.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u16)
-      : M (H := H') subtle.Choice :=
-    let* x := self.["bitxor"] other in
+      : M subtle.Choice :=
+    let* x := core.ops.bit.BitXor.bitxor self other in
     let* y :=
-      let* α0 := x.["wrapping_neg"] in
-      let* α1 := x.["bitor"] α0 in
-      let* α2 := 16.["sub"] 1 in
-      α1.["shr"] α2 in
-    let* α0 := y.["bitxor"] (cast 1 u16) in
-    (cast α0 u8).["into"].
+      let* α0 := u16::["wrapping_neg"] x in
+      let* α1 := bitor x α0 in
+      let* α2 := M.alloc 16 in
+      let* α3 := M.alloc 1 in
+      let* α4 := sub α2 α3 in
+      shr α1 α4 in
+    let* α0 := M.alloc 1 in
+    let* α1 := use α0 in
+    let* α2 := bitxor y α1 in
+    let* α3 := cast α2 in
+    core.convert.Into.into α3.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
-  Definition Self := i16.
+  Definition Self `{State.Trait} := i16.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref i16)
-      : M (H := H') subtle.Choice :=
-    let* α0 := self.["deref"] in
-    let* α1 := other.["deref"] in
-    (cast α0 u16).["ct_eq"] (addr_of (cast α1 u16)).
+      : M subtle.Choice :=
+    let* α0 := deref self i16 in
+    let* α1 := cast α0 in
+    let* α2 := borrow α1 u16 in
+    let* α3 := deref other i16 in
+    let* α4 := cast α3 in
+    let* α5 := borrow α4 u16 in
+    let* α6 := deref α5 u16 in
+    let* α7 := borrow α6 u16 in
+    subtle.ConstantTimeEq.ct_eq α2 α7.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
-  Definition Self := u32.
+  Definition Self `{State.Trait} := u32.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u32)
-      : M (H := H') subtle.Choice :=
-    let* x := self.["bitxor"] other in
+      : M subtle.Choice :=
+    let* x := core.ops.bit.BitXor.bitxor self other in
     let* y :=
-      let* α0 := x.["wrapping_neg"] in
-      let* α1 := x.["bitor"] α0 in
-      let* α2 := 32.["sub"] 1 in
-      α1.["shr"] α2 in
-    let* α0 := y.["bitxor"] (cast 1 u32) in
-    (cast α0 u8).["into"].
+      let* α0 := u32::["wrapping_neg"] x in
+      let* α1 := bitor x α0 in
+      let* α2 := M.alloc 32 in
+      let* α3 := M.alloc 1 in
+      let* α4 := sub α2 α3 in
+      shr α1 α4 in
+    let* α0 := M.alloc 1 in
+    let* α1 := use α0 in
+    let* α2 := bitxor y α1 in
+    let* α3 := cast α2 in
+    core.convert.Into.into α3.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
-  Definition Self := i32.
+  Definition Self `{State.Trait} := i32.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref i32)
-      : M (H := H') subtle.Choice :=
-    let* α0 := self.["deref"] in
-    let* α1 := other.["deref"] in
-    (cast α0 u32).["ct_eq"] (addr_of (cast α1 u32)).
+      : M subtle.Choice :=
+    let* α0 := deref self i32 in
+    let* α1 := cast α0 in
+    let* α2 := borrow α1 u32 in
+    let* α3 := deref other i32 in
+    let* α4 := cast α3 in
+    let* α5 := borrow α4 u32 in
+    let* α6 := deref α5 u32 in
+    let* α7 := borrow α6 u32 in
+    subtle.ConstantTimeEq.ct_eq α2 α7.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
-  Definition Self := u64.
+  Definition Self `{State.Trait} := u64.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u64)
-      : M (H := H') subtle.Choice :=
-    let* x := self.["bitxor"] other in
+      : M subtle.Choice :=
+    let* x := core.ops.bit.BitXor.bitxor self other in
     let* y :=
-      let* α0 := x.["wrapping_neg"] in
-      let* α1 := x.["bitor"] α0 in
-      let* α2 := 64.["sub"] 1 in
-      α1.["shr"] α2 in
-    let* α0 := y.["bitxor"] (cast 1 u64) in
-    (cast α0 u8).["into"].
+      let* α0 := u64::["wrapping_neg"] x in
+      let* α1 := bitor x α0 in
+      let* α2 := M.alloc 64 in
+      let* α3 := M.alloc 1 in
+      let* α4 := sub α2 α3 in
+      shr α1 α4 in
+    let* α0 := M.alloc 1 in
+    let* α1 := use α0 in
+    let* α2 := bitxor y α1 in
+    let* α3 := cast α2 in
+    core.convert.Into.into α3.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
-  Definition Self := i64.
+  Definition Self `{State.Trait} := i64.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref i64)
-      : M (H := H') subtle.Choice :=
-    let* α0 := self.["deref"] in
-    let* α1 := other.["deref"] in
-    (cast α0 u64).["ct_eq"] (addr_of (cast α1 u64)).
+      : M subtle.Choice :=
+    let* α0 := deref self i64 in
+    let* α1 := cast α0 in
+    let* α2 := borrow α1 u64 in
+    let* α3 := deref other i64 in
+    let* α4 := cast α3 in
+    let* α5 := borrow α4 u64 in
+    let* α6 := deref α5 u64 in
+    let* α7 := borrow α6 u64 in
+    subtle.ConstantTimeEq.ct_eq α2 α7.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
-  Definition Self := usize.
+  Definition Self `{State.Trait} := usize.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref usize)
-      : M (H := H') subtle.Choice :=
-    let* x := self.["bitxor"] other in
+      : M subtle.Choice :=
+    let* x := core.ops.bit.BitXor.bitxor self other in
     let* y :=
-      let* α0 := x.["wrapping_neg"] in
-      let* α1 := x.["bitor"] α0 in
+      let* α0 := usize::["wrapping_neg"] x in
+      let* α1 := bitor x α0 in
       let* α2 := core.mem.size_of in
-      let* α3 := α2.["mul"] 8 in
-      let* α4 := α3.["sub"] 1 in
-      α1.["shr"] α4 in
-    let* α0 := y.["bitxor"] (cast 1 usize) in
-    (cast α0 u8).["into"].
+      let* α3 := M.alloc 8 in
+      let* α4 := mul α2 α3 in
+      let* α5 := M.alloc 1 in
+      let* α6 := sub α4 α5 in
+      shr α1 α6 in
+    let* α0 := M.alloc 1 in
+    let* α1 := use α0 in
+    let* α2 := bitxor y α1 in
+    let* α3 := cast α2 in
+    core.convert.Into.into α3.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
-  Definition Self := isize.
+  Definition Self `{State.Trait} := isize.
   
   Definition ct_eq
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref isize)
-      : M (H := H') subtle.Choice :=
-    let* α0 := self.["deref"] in
-    let* α1 := other.["deref"] in
-    (cast α0 usize).["ct_eq"] (addr_of (cast α1 usize)).
+      : M subtle.Choice :=
+    let* α0 := deref self isize in
+    let* α1 := cast α0 in
+    let* α2 := borrow α1 usize in
+    let* α3 := deref other isize in
+    let* α4 := cast α3 in
+    let* α5 := borrow α4 usize in
+    let* α6 := deref α5 usize in
+    let* α7 := borrow α6 usize in
+    subtle.ConstantTimeEq.ct_eq α2 α7.
   
-  Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
     Notation.dot := ct_eq;
   }.
   
-  Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    subtle.ConstantTimeEq.ct_eq := ct_eq;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Type := {
-    conditional_select `{H' : State.Trait}
-      :
-      (ref Self) -> (ref Self) -> subtle.Choice -> M (H := H') Self;
+  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} `{State.Trait} :
+      Type := {
+    conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> M Self;
   }.
   
-  Global Instance Method_conditional_select `{H' : State.Trait} `(Trait)
+  Global Instance Method_conditional_select `{State.Trait} `(Trait)
     : Notation.Dot "conditional_select" := {
     Notation.dot := conditional_select;
   }.
-  Global Instance Method_conditional_assign `{H' : State.Trait} `(Trait)
+  Global Instance Method_conditional_assign `{State.Trait} `(Trait)
     : Notation.Dot "conditional_assign" := {
     Notation.dot
       (self : mut_ref Self)
@@ -713,714 +832,779 @@ Module ConditionallySelectable.
       (choice : subtle.Choice)
       :=
       (let* _ :=
-        let* α0 := self.["deref"] in
-        let* α1 := Self::["conditional_select"] self other choice in
-        assign α0 α1 in
+        let* α0 := deref self _ in
+        let* α1 := deref self _ in
+        let* α2 := borrow α1 _ in
+        let* α3 := deref other _ in
+        let* α4 := borrow α3 _ in
+        let* α5 :=
+          subtle.ConditionallySelectable.conditional_select α2 α4 choice in
+        assign α0 α5 in
       Pure tt
-      : M (H := H') unit);
+      : M unit);
   }.
-  Global Instance Method_conditional_swap `{H' : State.Trait} `(Trait)
+  Global Instance Method_conditional_swap `{State.Trait} `(Trait)
     : Notation.Dot "conditional_swap" := {
     Notation.dot (a : mut_ref Self) (b : mut_ref Self) (choice : subtle.Choice)
       :=
-      (let* t := a.["deref"] in
-      let* _ := a.["conditional_assign"] (addr_of b) choice in
-      let* _ := b.["conditional_assign"] (addr_of t) choice in
+      (let* t := deref a _ in
+      let* _ :=
+        let* α0 := deref a _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := borrow b (mut_ref _) in
+        let* α3 := deref α2 (mut_ref _) in
+        let* α4 := deref α3 _ in
+        let* α5 := borrow α4 _ in
+        subtle.ConditionallySelectable.conditional_assign α1 α5 choice in
+      let* _ :=
+        let* α0 := deref b _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := borrow t _ in
+        let* α3 := deref α2 _ in
+        let* α4 := borrow α3 _ in
+        subtle.ConditionallySelectable.conditional_assign α1 α4 choice in
       Pure tt
-      : M (H := H') unit);
+      : M unit);
   }.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
-  Definition Self := u8.
+  Definition Self `{State.Trait} := u8.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i8).["neg"] in
-      Pure (cast α1 u8) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i8).["neg"] in
-      Pure (cast α1 u8) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self u8 in
+      let* α1 := deref self u8 in
+      let* α2 := deref other u8 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i8).["neg"] in
-      Pure (cast α1 u8) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a u8 in
+      let* α1 := deref b u8 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a u8 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b u8 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
-  Definition Self := i8.
+  Definition Self `{State.Trait} := i8.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i8).["neg"] in
-      Pure (cast α1 i8) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i8).["neg"] in
-      Pure (cast α1 i8) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self i8 in
+      let* α1 := deref self i8 in
+      let* α2 := deref other i8 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i8).["neg"] in
-      Pure (cast α1 i8) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a i8 in
+      let* α1 := deref b i8 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a i8 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b i8 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
-  Definition Self := u16.
+  Definition Self `{State.Trait} := u16.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i16).["neg"] in
-      Pure (cast α1 u16) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i16).["neg"] in
-      Pure (cast α1 u16) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self u16 in
+      let* α1 := deref self u16 in
+      let* α2 := deref other u16 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i16).["neg"] in
-      Pure (cast α1 u16) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a u16 in
+      let* α1 := deref b u16 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a u16 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b u16 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
-  Definition Self := i16.
+  Definition Self `{State.Trait} := i16.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i16).["neg"] in
-      Pure (cast α1 i16) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i16).["neg"] in
-      Pure (cast α1 i16) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self i16 in
+      let* α1 := deref self i16 in
+      let* α2 := deref other i16 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i16).["neg"] in
-      Pure (cast α1 i16) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a i16 in
+      let* α1 := deref b i16 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a i16 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b i16 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
-  Definition Self := u32.
+  Definition Self `{State.Trait} := u32.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i32).["neg"] in
-      Pure (cast α1 u32) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i32).["neg"] in
-      Pure (cast α1 u32) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self u32 in
+      let* α1 := deref self u32 in
+      let* α2 := deref other u32 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i32).["neg"] in
-      Pure (cast α1 u32) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a u32 in
+      let* α1 := deref b u32 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a u32 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b u32 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
-  Definition Self := i32.
+  Definition Self `{State.Trait} := i32.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i32).["neg"] in
-      Pure (cast α1 i32) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i32).["neg"] in
-      Pure (cast α1 i32) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self i32 in
+      let* α1 := deref self i32 in
+      let* α2 := deref other i32 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i32).["neg"] in
-      Pure (cast α1 i32) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a i32 in
+      let* α1 := deref b i32 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a i32 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b i32 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
-  Definition Self := u64.
+  Definition Self `{State.Trait} := u64.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i64).["neg"] in
-      Pure (cast α1 u64) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i64).["neg"] in
-      Pure (cast α1 u64) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self u64 in
+      let* α1 := deref self u64 in
+      let* α2 := deref other u64 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i64).["neg"] in
-      Pure (cast α1 u64) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      cast α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a u64 in
+      let* α1 := deref b u64 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a u64 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b u64 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
-  Definition Self := i64.
+  Definition Self `{State.Trait} := i64.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
+      : M Self :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i64).["neg"] in
-      Pure (cast α1 i64) in
-    let* α0 := a.["bitxor"] b in
-    let* α1 := mask.["bitand"] α0 in
-    a.["bitxor"] α1.
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
+    let* α0 := core.ops.bit.BitXor.bitxor a b in
+    let* α1 := bitand mask α0 in
+    core.ops.bit.BitXor.bitxor a α1.
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
   Definition conditional_assign
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : mut_ref Self)
       (other : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i64).["neg"] in
-      Pure (cast α1 i64) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* _ :=
-      let* α0 := self.["deref"] in
-      let* α1 := self.["deref"] in
-      let* α2 := other.["deref"] in
-      let* α3 := α1.["bitxor"] α2 in
-      let* α4 := mask.["bitand"] α3 in
-      α0.["bitxor_assign"] α4 in
+      let* α0 := deref self i64 in
+      let* α1 := deref self i64 in
+      let* α2 := deref other i64 in
+      let* α3 := bitxor α1 α2 in
+      let* α4 := bitand mask α3 in
+      assign_op bitxor α0 α4 in
     Pure tt.
   
-  Global Instance Method_conditional_assign `{H' : State.Trait} :
+  Global Instance Method_conditional_assign `{State.Trait} :
     Notation.Dot "conditional_assign" := {
     Notation.dot := conditional_assign;
   }.
   
   Definition conditional_swap
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : mut_ref Self)
       (b : mut_ref Self)
       (choice : subtle.Choice)
-      : M (H := H') unit :=
+      : M unit :=
     let* mask :=
-      let* α0 := choice.["unwrap_u8"] in
-      let* α1 := (cast α0 i64).["neg"] in
-      Pure (cast α1 i64) in
+      let* α0 := borrow choice subtle.Choice in
+      let* α1 := subtle.Choice::["unwrap_u8"] α0 in
+      let* α2 := cast α1 in
+      let* α3 := neg α2 in
+      use α3 in
     let* t :=
-      let* α0 := a.["deref"] in
-      let* α1 := b.["deref"] in
-      let* α2 := α0.["bitxor"] α1 in
-      mask.["bitand"] α2 in
+      let* α0 := deref a i64 in
+      let* α1 := deref b i64 in
+      let* α2 := bitxor α0 α1 in
+      bitand mask α2 in
     let* _ :=
-      let* α0 := a.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref a i64 in
+      assign_op bitxor α0 t in
     let* _ :=
-      let* α0 := b.["deref"] in
-      α0.["bitxor_assign"] t in
+      let* α0 := deref b i64 in
+      assign_op bitxor α0 t in
     Pure tt.
   
-  Global Instance AssociatedFunction_conditional_swap `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
     Notation.DoubleColon Self "conditional_swap" := {
     Notation.double_colon := conditional_swap;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
-  Definition Self := subtle.Choice.
+  Definition Self `{State.Trait} := subtle.Choice.
   
   Definition conditional_select
-      `{H' : State.Trait}
+      `{State.Trait}
       (a : ref Self)
       (b : ref Self)
       (choice : subtle.Choice)
-      : M (H := H') Self :=
-    let* α0 :=
-      u8::["conditional_select"] (addr_of (a.[0])) (addr_of (b.[0])) choice in
-    Pure (subtle.Choice.Build_t α0).
+      : M Self :=
+    let* α0 := deref a subtle.Choice in
+    let* α1 := α0.["0"] in
+    let* α2 := borrow α1 u8 in
+    let* α3 := deref α2 u8 in
+    let* α4 := borrow α3 u8 in
+    let* α5 := deref b subtle.Choice in
+    let* α6 := α5.["0"] in
+    let* α7 := borrow α6 u8 in
+    let* α8 := deref α7 u8 in
+    let* α9 := borrow α8 u8 in
+    let* α10 :=
+      subtle.ConditionallySelectable.conditional_select α4 α9 choice in
+    Pure (subtle.Choice.Build_t α10).
   
-  Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
     Notation.DoubleColon Self "conditional_select" := {
     Notation.double_colon := conditional_select;
   }.
   
-  Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-      :=
-      conditional_select;
+  Global Instance I `{State.Trait}
+    : subtle.ConditionallySelectable.Trait Self := {
+    subtle.ConditionallySelectable.conditional_select := conditional_select;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) : Type := {
-    conditional_negate `{H' : State.Trait}
-      :
-      (mut_ref Self) -> subtle.Choice -> M (H := H') unit;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    conditional_negate : (mut_ref Self) -> subtle.Choice -> M unit;
   }.
   
-  Global Instance Method_conditional_negate `{H' : State.Trait} `(Trait)
+  Global Instance Method_conditional_negate `{State.Trait} `(Trait)
     : Notation.Dot "conditional_negate" := {
     Notation.dot := conditional_negate;
   }.
@@ -1432,26 +1616,35 @@ Module Impl_subtle_ConditionallyNegatable_for_T.
     Context
       `{subtle.ConditionallySelectable.Trait T}
       `{core.ops.arith.Neg.Trait (ref T)}.
-    Definition Self := T.
+    Definition Self `{State.Trait} := T.
     
     Definition conditional_negate
-        `{H' : State.Trait}
+        `{State.Trait}
         (self : mut_ref Self)
         (choice : subtle.Choice)
-        : M (H := H') unit :=
-      let* self_neg := (cast self (ref T)).["neg"] in
-      let* _ := self.["conditional_assign"] (addr_of self_neg) choice in
+        : M unit :=
+      let* self_neg :=
+        let* α0 := deref self _ in
+        let* α1 := borrow α0 _ in
+        let* α2 := use α1 in
+        core.ops.arith.Neg.neg (α2 : (ref _)) in
+      let* _ :=
+        let* α0 := deref self _ in
+        let* α1 := borrow_mut α0 _ in
+        let* α2 := borrow self_neg _ in
+        let* α3 := deref α2 _ in
+        let* α4 := borrow α3 _ in
+        subtle.ConditionallySelectable.conditional_assign α1 α4 choice in
       Pure tt.
     
-    Global Instance Method_conditional_negate `{H' : State.Trait} :
+    Global Instance Method_conditional_negate `{State.Trait} :
       Notation.Dot "conditional_negate" := {
       Notation.dot := conditional_negate;
     }.
     
-    Global Instance I : subtle.ConditionallyNegatable.Trait Self := {
-      subtle.ConditionallyNegatable.conditional_negate `{H' : State.Trait}
-        :=
-        conditional_negate;
+    Global Instance I `{State.Trait}
+      : subtle.ConditionallyNegatable.Trait Self := {
+      subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
     }.
   End Impl_subtle_ConditionallyNegatable_for_T.
   Global Hint Resolve I : core.
@@ -1461,48 +1654,59 @@ Module CtOption.
   Section CtOption.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       value : T;
       is_some : subtle.Choice;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_value : Notation.Dot "value" := {
-      Notation.dot '(Build_t x0 _) := x0;
+    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+      Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
-      Notation.double_colon '(Build_t x0 _) := x0;
+    Global Instance Get_AF_value `{State.Trait}
+      : Notation.DoubleColon t "value" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_is_some : Notation.Dot "is_some" := {
-      Notation.dot '(Build_t _ x1) := x1;
+    Global Instance Get_is_some `{State.Trait} : Notation.Dot "is_some" := {
+      Notation.dot x := let* x := M.read x in Pure x.(is_some) : M _;
     }.
-    Global Instance Get_AF_is_some : Notation.DoubleColon t "is_some" := {
-      Notation.double_colon '(Build_t _ x1) := x1;
+    Global Instance Get_AF_is_some `{State.Trait}
+      : Notation.DoubleColon t "is_some" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(is_some) : M _;
     }.
   End CtOption.
 End CtOption.
-Definition CtOption (T : Set) : Set := CtOption.t (T := T).
+Definition CtOption (T : Set) `{State.Trait} : Set :=
+  M.val (CtOption.t (T := T)).
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   Section Impl_core_clone_Clone_for_subtle_CtOption_T.
     Context {T : Set}.
     Context `{core.clone.Clone.Trait T}.
-    Definition Self := subtle.CtOption T.
+    Definition Self `{State.Trait} := subtle.CtOption T.
     
-    Definition clone
-        `{H' : State.Trait}
-        (self : ref Self)
-        : M (H := H') (subtle.CtOption T) :=
-      let* α0 := core.clone.Clone.clone (addr_of self.["value"]) in
-      let* α1 := core.clone.Clone.clone (addr_of self.["is_some"]) in
-      Pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
+    Definition clone `{State.Trait} (self : ref Self) : M (subtle.CtOption T) :=
+      let* α0 := deref self (subtle.CtOption _) in
+      let* α1 := α0.["value"] in
+      let* α2 := borrow α1 _ in
+      let* α3 := deref α2 _ in
+      let* α4 := borrow α3 _ in
+      let* α5 := core.clone.Clone.clone α4 in
+      let* α6 := deref self (subtle.CtOption _) in
+      let* α7 := α6.["is_some"] in
+      let* α8 := borrow α7 subtle.Choice in
+      let* α9 := deref α8 subtle.Choice in
+      let* α10 := borrow α9 subtle.Choice in
+      let* α11 := core.clone.Clone.clone α10 in
+      M.alloc
+        {| subtle.CtOption.value := α5; subtle.CtOption.is_some := α11; |}.
     
-    Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
       Notation.dot := clone;
     }.
     
-    Global Instance I : core.clone.Clone.Trait Self := {
-      core.clone.Clone.clone `{H' : State.Trait} := clone;
+    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_subtle_CtOption_T.
   Global Hint Resolve I : core.
@@ -1512,9 +1716,9 @@ Module Impl_core_marker_Copy_for_subtle_CtOption_T.
   Section Impl_core_marker_Copy_for_subtle_CtOption_T.
     Context {T : Set}.
     Context `{core.marker.Copy.Trait T}.
-    Definition Self := subtle.CtOption T.
+    Definition Self `{State.Trait} := subtle.CtOption T.
     
-    Global Instance I : core.marker.Copy.Trait Self := {
+    Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_subtle_CtOption_T.
   Global Hint Resolve I : core.
@@ -1524,27 +1728,42 @@ Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
     Context {T : Set}.
     Context `{core.fmt.Debug.Trait T}.
-    Definition Self := subtle.CtOption T.
+    Definition Self `{State.Trait} := subtle.CtOption T.
     
     Definition fmt
-        `{H' : State.Trait}
+        `{State.Trait}
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter)
-        : M (H := H') core.fmt.Result :=
-      core.fmt.Formatter::["debug_struct_field2_finish"]
-        f
-        "CtOption"
-        "value"
-        (addr_of self.["value"])
-        "is_some"
-        (addr_of (addr_of self.["is_some"])).
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "CtOption") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref (mk_str "value") str in
+      let* α5 := borrow α4 str in
+      let* α6 := deref self (subtle.CtOption _) in
+      let* α7 := α6.["value"] in
+      let* α8 := borrow α7 _ in
+      let* α9 := deref α8 _ in
+      let* α10 := borrow α9 _ in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := deref (mk_str "is_some") str in
+      let* α13 := borrow α12 str in
+      let* α14 := deref self (subtle.CtOption _) in
+      let* α15 := α14.["is_some"] in
+      let* α16 := borrow α15 subtle.Choice in
+      let* α17 := borrow α16 (ref subtle.Choice) in
+      let* α18 := deref α17 (ref subtle.Choice) in
+      let* α19 := borrow α18 (ref subtle.Choice) in
+      let* α20 := pointer_coercion "Unsize" α19 in
+      core.fmt.Formatter::["debug_struct_field2_finish"] α1 α3 α5 α11 α13 α20.
     
-    Global Instance Method_fmt `{H' : State.Trait} : Notation.Dot "fmt" := {
+    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
       Notation.dot := fmt;
     }.
     
-    Global Instance I : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt `{H' : State.Trait} := fmt;
+    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Global Hint Resolve I : core.
@@ -1553,148 +1772,193 @@ End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 Module Impl_core_convert_From_for_core_option_Option_T.
   Section Impl_core_convert_From_for_core_option_Option_T.
     Context {T : Set}.
-    Definition Self := core.option.Option T.
+    Definition Self `{State.Trait} := core.option.Option T.
     
     Definition from
-        `{H' : State.Trait}
+        `{State.Trait}
         (source : subtle.CtOption T)
-        : M (H := H') (core.option.Option T) :=
-      let* α0 := source.["is_some"] in
-      let* α1 := α0.["unwrap_u8"] in
-      let* α2 := α1.["eq"] 1 in
-      if (α2 : bool) then
-        Pure (core.option.Option.Some source.["value"])
+        : M (core.option.Option T) :=
+      let* α0 := borrow source (subtle.CtOption _) in
+      let* α1 := (subtle.CtOption _)::["is_some"] α0 in
+      let* α2 := borrow α1 subtle.Choice in
+      let* α3 := subtle.Choice::["unwrap_u8"] α2 in
+      let* α4 := M.alloc 1 in
+      let* α5 := eq α3 α4 in
+      let* α6 := use α5 in
+      if (α6 : bool) then
+        let* α0 := source.["value"] in
+        Pure (core.option.Option.Some α0)
       else
-        Pure core.option.Option.None.
+        Pure (core.option.Option.None tt).
     
-    Global Instance AssociatedFunction_from `{H' : State.Trait} :
+    Global Instance AssociatedFunction_from `{State.Trait} :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    Global Instance I
+    Global Instance I `{State.Trait}
       : core.convert.From.Trait Self (T := subtle.CtOption T) := {
-      core.convert.From.from `{H' : State.Trait} := from;
+      core.convert.From.from := from;
     }.
   End Impl_core_convert_From_for_core_option_Option_T.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T_4.
-  Definition Self := subtle.CtOption T.
+  Definition Self `{State.Trait} : Set := subtle.CtOption T.
   
   Definition new
-      `{H' : State.Trait}
+      `{State.Trait}
       (value : T)
       (is_some : subtle.Choice)
-      : M (H := H') (subtle.CtOption T) :=
-    Pure
+      : M (subtle.CtOption T) :=
+    M.alloc
       {| subtle.CtOption.value := value; subtle.CtOption.is_some := is_some; |}.
   
-  Global Instance AssociatedFunction_new `{H' : State.Trait} :
+  Global Instance AssociatedFunction_new `{State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition expect
-      `{H' : State.Trait}
-      (self : Self)
-      (msg : ref str)
-      : M (H := H') T :=
+  Definition expect `{State.Trait} (self : Self) (msg : ref str) : M T :=
     let* _ :=
-      let* α0 := self.["is_some"].["unwrap_u8"] in
-      match (addr_of α0, addr_of 1) with
+      let* α0 := self.["is_some"] in
+      let* α1 := borrow α0 subtle.Choice in
+      let* α2 := subtle.Choice::["unwrap_u8"] α1 in
+      let* α3 := borrow α2 u8 in
+      let* α4 := M.alloc 1 in
+      let* α5 := borrow α4 u8 in
+      match (α3, α5) with
       | (left_val, right_val) =>
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
-        let* α2 := α0.["eq"] α1 in
-        let* α3 := α2.["not"] in
-        if (α3 : bool) then
-          let kind := core.panicking.AssertKind.Eq in
+        let* α0 := deref left_val u8 in
+        let* α1 := deref right_val u8 in
+        let* α2 := eq α0 α1 in
+        let* α3 := not α2 in
+        let* α4 := use α3 in
+        if (α4 : bool) then
+          let kind := core.panicking.AssertKind.Eq tt in
           let* _ :=
-            let* α0 := left_val.["deref"] in
-            let* α1 := right_val.["deref"] in
-            let* α2 := format_argument::["new_display"] (addr_of msg) in
-            let* α3 :=
-              format_arguments::["new_v1"] (addr_of [ "" ]) (addr_of [ α2 ]) in
+            let* α0 := deref left_val u8 in
+            let* α1 := borrow α0 u8 in
+            let* α2 := deref α1 u8 in
+            let* α3 := borrow α2 u8 in
+            let* α4 := deref right_val u8 in
+            let* α5 := borrow α4 u8 in
+            let* α6 := deref α5 u8 in
+            let* α7 := borrow α6 u8 in
+            let* α8 := borrow [ mk_str "" ] (list (ref str)) in
+            let* α9 := deref α8 (list (ref str)) in
+            let* α10 := borrow α9 (list (ref str)) in
+            let* α11 := pointer_coercion "Unsize" α10 in
+            let* α12 := borrow msg (ref str) in
+            let* α13 := deref α12 (ref str) in
+            let* α14 := borrow α13 (ref str) in
+            let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+            let* α16 := borrow [ α15 ] (list core.fmt.rt.Argument) in
+            let* α17 := deref α16 (list core.fmt.rt.Argument) in
+            let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+            let* α19 := pointer_coercion "Unsize" α18 in
+            let* α20 := core.fmt.Arguments::["new_v1"] α11 α19 in
             core.panicking.assert_failed
               kind
-              (addr_of α0)
-              (addr_of α1)
-              (core.option.Option.Some α3) in
-          Pure tt
+              α3
+              α7
+              (core.option.Option.Some α20) in
+          never_to_any tt
         else
           Pure tt
       end in
-    Pure self.["value"].
+    self.["value"].
   
-  Global Instance Method_expect `{H' : State.Trait} : Notation.Dot "expect" := {
+  Global Instance Method_expect `{State.Trait} : Notation.Dot "expect" := {
     Notation.dot := expect;
   }.
   
-  Definition unwrap `{H' : State.Trait} (self : Self) : M (H := H') T :=
+  Definition unwrap `{State.Trait} (self : Self) : M T :=
     let* _ :=
-      let* α0 := self.["is_some"].["unwrap_u8"] in
-      match (addr_of α0, addr_of 1) with
+      let* α0 := self.["is_some"] in
+      let* α1 := borrow α0 subtle.Choice in
+      let* α2 := subtle.Choice::["unwrap_u8"] α1 in
+      let* α3 := borrow α2 u8 in
+      let* α4 := M.alloc 1 in
+      let* α5 := borrow α4 u8 in
+      match (α3, α5) with
       | (left_val, right_val) =>
-        let* α0 := left_val.["deref"] in
-        let* α1 := right_val.["deref"] in
-        let* α2 := α0.["eq"] α1 in
-        let* α3 := α2.["not"] in
-        if (α3 : bool) then
-          let kind := core.panicking.AssertKind.Eq in
+        let* α0 := deref left_val u8 in
+        let* α1 := deref right_val u8 in
+        let* α2 := eq α0 α1 in
+        let* α3 := not α2 in
+        let* α4 := use α3 in
+        if (α4 : bool) then
+          let kind := core.panicking.AssertKind.Eq tt in
           let* _ :=
-            let* α0 := left_val.["deref"] in
-            let* α1 := right_val.["deref"] in
+            let* α0 := deref left_val u8 in
+            let* α1 := borrow α0 u8 in
+            let* α2 := deref α1 u8 in
+            let* α3 := borrow α2 u8 in
+            let* α4 := deref right_val u8 in
+            let* α5 := borrow α4 u8 in
+            let* α6 := deref α5 u8 in
+            let* α7 := borrow α6 u8 in
             core.panicking.assert_failed
               kind
-              (addr_of α0)
-              (addr_of α1)
-              core.option.Option.None in
-          Pure tt
+              α3
+              α7
+              (core.option.Option.None tt) in
+          never_to_any tt
         else
           Pure tt
       end in
-    Pure self.["value"].
+    self.["value"].
   
-  Global Instance Method_unwrap `{H' : State.Trait} : Notation.Dot "unwrap" := {
+  Global Instance Method_unwrap `{State.Trait} : Notation.Dot "unwrap" := {
     Notation.dot := unwrap;
   }.
   
   Definition unwrap_or
-      `{H' : State.Trait}
+      `{State.Trait}
       `{subtle.ConditionallySelectable.Trait T}
       (self : Self)
       (def : T)
-      : M (H := H') T :=
-    T::["conditional_select"]
-      (addr_of def)
-      (addr_of self.["value"])
-      self.["is_some"].
+      : M T :=
+    let* α0 := borrow def _ in
+    let* α1 := deref α0 _ in
+    let* α2 := borrow α1 _ in
+    let* α3 := self.["value"] in
+    let* α4 := borrow α3 _ in
+    let* α5 := deref α4 _ in
+    let* α6 := borrow α5 _ in
+    let* α7 := self.["is_some"] in
+    subtle.ConditionallySelectable.conditional_select α2 α6 α7.
   
   Global Instance Method_unwrap_or
-      `{H' : State.Trait}
+      `{State.Trait}
       `{subtle.ConditionallySelectable.Trait T} :
     Notation.Dot "unwrap_or" := {
     Notation.dot := unwrap_or;
   }.
   
   Definition unwrap_or_else
-      `{H' : State.Trait}
+      `{State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
       `{core.ops.function.FnOnce.Trait F (Args := unit)}
       (self : Self)
       (f : F)
-      : M (H := H') T :=
-    let* α0 := f in
-    T::["conditional_select"]
-      (addr_of α0)
-      (addr_of self.["value"])
-      self.["is_some"].
+      : M T :=
+    let* α0 := core.ops.function.FnOnce.call_once f tt in
+    let* α1 := borrow α0 _ in
+    let* α2 := deref α1 _ in
+    let* α3 := borrow α2 _ in
+    let* α4 := self.["value"] in
+    let* α5 := borrow α4 _ in
+    let* α6 := deref α5 _ in
+    let* α7 := borrow α6 _ in
+    let* α8 := self.["is_some"] in
+    subtle.ConditionallySelectable.conditional_select α3 α7 α8.
   
   Global Instance Method_unwrap_or_else
-      `{H' : State.Trait}
+      `{State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
       `{core.ops.function.FnOnce.Trait F (Args := unit)} :
@@ -1702,48 +1966,48 @@ Module Impl_subtle_CtOption_T_4.
     Notation.dot := unwrap_or_else (F := F);
   }.
   
-  Definition is_some
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') subtle.Choice :=
-    Pure self.["is_some"].
+  Definition is_some `{State.Trait} (self : ref Self) : M subtle.Choice :=
+    let* α0 := deref self (subtle.CtOption _) in
+    α0.["is_some"].
   
-  Global Instance Method_is_some `{H' : State.Trait} :
-    Notation.Dot "is_some" := {
+  Global Instance Method_is_some `{State.Trait} : Notation.Dot "is_some" := {
     Notation.dot := is_some;
   }.
   
-  Definition is_none
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') subtle.Choice :=
-    self.["is_some"].["not"].
+  Definition is_none `{State.Trait} (self : ref Self) : M subtle.Choice :=
+    let* α0 := deref self (subtle.CtOption _) in
+    let* α1 := α0.["is_some"] in
+    core.ops.bit.Not.not α1.
   
-  Global Instance Method_is_none `{H' : State.Trait} :
-    Notation.Dot "is_none" := {
+  Global Instance Method_is_none `{State.Trait} : Notation.Dot "is_none" := {
     Notation.dot := is_none;
   }.
   
   Definition map
-      `{H' : State.Trait}
+      `{State.Trait}
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
       `{core.ops.function.FnOnce.Trait F (Args := T)}
       (self : Self)
       (f : F)
-      : M (H := H') (subtle.CtOption U) :=
-    let* α0 := T::["default"] in
-    let* α1 :=
-      T::["conditional_select"]
-        (addr_of α0)
-        (addr_of self.["value"])
-        self.["is_some"] in
-    let* α2 := f α1 in
-    (subtle.CtOption _)::["new"] α2 self.["is_some"].
+      : M (subtle.CtOption U) :=
+    let* α0 := core.default.Default.default in
+    let* α1 := borrow α0 _ in
+    let* α2 := deref α1 _ in
+    let* α3 := borrow α2 _ in
+    let* α4 := self.["value"] in
+    let* α5 := borrow α4 _ in
+    let* α6 := deref α5 _ in
+    let* α7 := borrow α6 _ in
+    let* α8 := self.["is_some"] in
+    let* α9 := subtle.ConditionallySelectable.conditional_select α3 α7 α8 in
+    let* α10 := core.ops.function.FnOnce.call_once f (α9) in
+    let* α11 := self.["is_some"] in
+    (subtle.CtOption _)::["new"] α10 α11.
   
   Global Instance Method_map
-      `{H' : State.Trait}
+      `{State.Trait}
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
@@ -1753,27 +2017,35 @@ Module Impl_subtle_CtOption_T_4.
   }.
   
   Definition and_then
-      `{H' : State.Trait}
+      `{State.Trait}
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
       `{core.ops.function.FnOnce.Trait F (Args := T)}
       (self : Self)
       (f : F)
-      : M (H := H') (subtle.CtOption U) :=
+      : M (subtle.CtOption U) :=
     let* tmp :=
-      let* α0 := T::["default"] in
-      let* α1 :=
-        T::["conditional_select"]
-          (addr_of α0)
-          (addr_of self.["value"])
-          self.["is_some"] in
-      f α1 in
-    let* _ := tmp.["is_some"].["bitand_assign"] self.["is_some"] in
+      let* α0 := core.default.Default.default in
+      let* α1 := borrow α0 _ in
+      let* α2 := deref α1 _ in
+      let* α3 := borrow α2 _ in
+      let* α4 := self.["value"] in
+      let* α5 := borrow α4 _ in
+      let* α6 := deref α5 _ in
+      let* α7 := borrow α6 _ in
+      let* α8 := self.["is_some"] in
+      let* α9 := subtle.ConditionallySelectable.conditional_select α3 α7 α8 in
+      core.ops.function.FnOnce.call_once f (α9) in
+    let* _ :=
+      let* α0 := tmp.["is_some"] in
+      let* α1 := borrow_mut α0 subtle.Choice in
+      let* α2 := self.["is_some"] in
+      core.ops.bit.BitAndAssign.bitand_assign α1 α2 in
     Pure tmp.
   
   Global Instance Method_and_then
-      `{H' : State.Trait}
+      `{State.Trait}
       {U F : Set}
       `{core.default.Default.Trait T}
       `{subtle.ConditionallySelectable.Trait T}
@@ -1783,19 +2055,27 @@ Module Impl_subtle_CtOption_T_4.
   }.
   
   Definition or_else
-      `{H' : State.Trait}
+      `{State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
       `{core.ops.function.FnOnce.Trait F (Args := unit)}
       (self : Self)
       (f : F)
-      : M (H := H') (subtle.CtOption T) :=
-    let* is_none := self.["is_none"] in
-    let* f := f in
-    Self::["conditional_select"] (addr_of self) (addr_of f) is_none.
+      : M (subtle.CtOption T) :=
+    let* is_none :=
+      let* α0 := borrow self (subtle.CtOption _) in
+      (subtle.CtOption _)::["is_none"] α0 in
+    let* f := core.ops.function.FnOnce.call_once f tt in
+    let* α0 := borrow self (subtle.CtOption _) in
+    let* α1 := deref α0 (subtle.CtOption _) in
+    let* α2 := borrow α1 (subtle.CtOption _) in
+    let* α3 := borrow f (subtle.CtOption _) in
+    let* α4 := deref α3 (subtle.CtOption _) in
+    let* α5 := borrow α4 (subtle.CtOption _) in
+    subtle.ConditionallySelectable.conditional_select α2 α5 is_none.
   
   Global Instance Method_or_else
-      `{H' : State.Trait}
+      `{State.Trait}
       {F : Set}
       `{subtle.ConditionallySelectable.Trait T}
       `{core.ops.function.FnOnce.Trait F (Args := unit)} :
@@ -1808,35 +2088,48 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
     Context {T : Set}.
     Context `{subtle.ConditionallySelectable.Trait T}.
-    Definition Self := subtle.CtOption T.
+    Definition Self `{State.Trait} := subtle.CtOption T.
     
     Definition conditional_select
-        `{H' : State.Trait}
+        `{State.Trait}
         (a : ref Self)
         (b : ref Self)
         (choice : subtle.Choice)
-        : M (H := H') Self :=
-      let* α0 :=
-        T::["conditional_select"]
-          (addr_of a.["value"])
-          (addr_of b.["value"])
-          choice in
-      let* α1 :=
-        subtle.Choice::["conditional_select"]
-          (addr_of a.["is_some"])
-          (addr_of b.["is_some"])
-          choice in
-      (subtle.CtOption _)::["new"] α0 α1.
+        : M Self :=
+      let* α0 := deref a (subtle.CtOption _) in
+      let* α1 := α0.["value"] in
+      let* α2 := borrow α1 _ in
+      let* α3 := deref α2 _ in
+      let* α4 := borrow α3 _ in
+      let* α5 := deref b (subtle.CtOption _) in
+      let* α6 := α5.["value"] in
+      let* α7 := borrow α6 _ in
+      let* α8 := deref α7 _ in
+      let* α9 := borrow α8 _ in
+      let* α10 :=
+        subtle.ConditionallySelectable.conditional_select α4 α9 choice in
+      let* α11 := deref a (subtle.CtOption _) in
+      let* α12 := α11.["is_some"] in
+      let* α13 := borrow α12 subtle.Choice in
+      let* α14 := deref α13 subtle.Choice in
+      let* α15 := borrow α14 subtle.Choice in
+      let* α16 := deref b (subtle.CtOption _) in
+      let* α17 := α16.["is_some"] in
+      let* α18 := borrow α17 subtle.Choice in
+      let* α19 := deref α18 subtle.Choice in
+      let* α20 := borrow α19 subtle.Choice in
+      let* α21 :=
+        subtle.ConditionallySelectable.conditional_select α15 α20 choice in
+      (subtle.CtOption _)::["new"] α10 α21.
     
-    Global Instance AssociatedFunction_conditional_select `{H' : State.Trait} :
+    Global Instance AssociatedFunction_conditional_select `{State.Trait} :
       Notation.DoubleColon Self "conditional_select" := {
       Notation.double_colon := conditional_select;
     }.
     
-    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
-      subtle.ConditionallySelectable.conditional_select `{H' : State.Trait}
-        :=
-        conditional_select;
+    Global Instance I `{State.Trait}
+      : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Global Hint Resolve I : core.
@@ -1846,267 +2139,319 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     Context {T : Set}.
     Context `{subtle.ConstantTimeEq.Trait T}.
-    Definition Self := subtle.CtOption T.
+    Definition Self `{State.Trait} := subtle.CtOption T.
     
     Definition ct_eq
-        `{H' : State.Trait}
+        `{State.Trait}
         (self : ref Self)
         (rhs : ref (subtle.CtOption T))
-        : M (H := H') subtle.Choice :=
-      let* a := self.["is_some"] in
-      let* b := rhs.["is_some"] in
-      let* α0 := a.["bitand"] b in
-      let* α1 := self.["value"].["ct_eq"] (addr_of rhs.["value"]) in
-      let* α2 := α0.["bitand"] α1 in
-      let* α3 := a.["not"] in
-      let* α4 := b.["not"] in
-      let* α5 := α3.["bitand"] α4 in
-      α2.["bitor"] α5.
+        : M subtle.Choice :=
+      let* a :=
+        let* α0 := deref self (subtle.CtOption _) in
+        let* α1 := borrow α0 (subtle.CtOption _) in
+        (subtle.CtOption _)::["is_some"] α1 in
+      let* b :=
+        let* α0 := deref rhs (subtle.CtOption _) in
+        let* α1 := borrow α0 (subtle.CtOption _) in
+        (subtle.CtOption _)::["is_some"] α1 in
+      let* α0 := core.ops.bit.BitAnd.bitand a b in
+      let* α1 := deref self (subtle.CtOption _) in
+      let* α2 := α1.["value"] in
+      let* α3 := borrow α2 _ in
+      let* α4 := deref rhs (subtle.CtOption _) in
+      let* α5 := α4.["value"] in
+      let* α6 := borrow α5 _ in
+      let* α7 := deref α6 _ in
+      let* α8 := borrow α7 _ in
+      let* α9 := subtle.ConstantTimeEq.ct_eq α3 α8 in
+      let* α10 := core.ops.bit.BitAnd.bitand α0 α9 in
+      let* α11 := core.ops.bit.Not.not a in
+      let* α12 := core.ops.bit.Not.not b in
+      let* α13 := core.ops.bit.BitAnd.bitand α11 α12 in
+      core.ops.bit.BitOr.bitor α10 α13.
     
-    Global Instance Method_ct_eq `{H' : State.Trait} : Notation.Dot "ct_eq" := {
+    Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
       Notation.dot := ct_eq;
     }.
     
-    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
-      subtle.ConstantTimeEq.ct_eq `{H' : State.Trait} := ct_eq;
+    Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) : Type := {
-    ct_gt `{H' : State.Trait}
-      :
-      (ref Self) -> (ref Self) -> M (H := H') subtle.Choice;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    ct_gt : (ref Self) -> (ref Self) -> M subtle.Choice;
   }.
   
-  Global Instance Method_ct_gt `{H' : State.Trait} `(Trait)
+  Global Instance Method_ct_gt `{State.Trait} `(Trait)
     : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
   }.
 End ConstantTimeGreater.
 
 Module Impl_subtle_ConstantTimeGreater_for_u8.
-  Definition Self := u8.
+  Definition Self `{State.Trait} := u8.
   
   Definition ct_gt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u8)
-      : M (H := H') subtle.Choice :=
+      : M subtle.Choice :=
     let* gtb :=
-      let* α0 := other.["not"] in
-      self.["bitand"] α0 in
+      let* α0 := core.ops.bit.Not.not other in
+      core.ops.bit.BitAnd.bitand self α0 in
     let* ltb :=
-      let* α0 := self.["not"] in
-      α0.["bitand"] other in
-    let pow := 1 in
+      let* α0 := core.ops.bit.Not.not self in
+      core.ops.bit.BitAnd.bitand α0 other in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 8 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 8 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := ltb.["shr"] pow in
-            ltb.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr ltb pow in
+            assign_op bitor ltb α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
     let* bit :=
-      let* α0 := ltb.["not"] in
-      gtb.["bitand"] α0 in
-    let pow := 1 in
+      let* α0 := not ltb in
+      bitand gtb α0 in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 8 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 8 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := bit.["shr"] pow in
-            bit.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr bit pow in
+            assign_op bitor bit α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
-    let* α0 := bit.["bitand"] 1 in
-    subtle.Choice::["from"] (cast α0 u8).
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
+    let* α0 := M.alloc 1 in
+    let* α1 := bitand bit α0 in
+    let* α2 := use α1 in
+    core.convert.From.from α2.
   
-  Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
+  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
   }.
   
-  Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt `{H' : State.Trait} := ct_gt;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
+    subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
-  Definition Self := u16.
+  Definition Self `{State.Trait} := u16.
   
   Definition ct_gt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u16)
-      : M (H := H') subtle.Choice :=
+      : M subtle.Choice :=
     let* gtb :=
-      let* α0 := other.["not"] in
-      self.["bitand"] α0 in
+      let* α0 := core.ops.bit.Not.not other in
+      core.ops.bit.BitAnd.bitand self α0 in
     let* ltb :=
-      let* α0 := self.["not"] in
-      α0.["bitand"] other in
-    let pow := 1 in
+      let* α0 := core.ops.bit.Not.not self in
+      core.ops.bit.BitAnd.bitand α0 other in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 16 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 16 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := ltb.["shr"] pow in
-            ltb.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr ltb pow in
+            assign_op bitor ltb α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
     let* bit :=
-      let* α0 := ltb.["not"] in
-      gtb.["bitand"] α0 in
-    let pow := 1 in
+      let* α0 := not ltb in
+      bitand gtb α0 in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 16 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 16 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := bit.["shr"] pow in
-            bit.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr bit pow in
+            assign_op bitor bit α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
-    let* α0 := bit.["bitand"] 1 in
-    subtle.Choice::["from"] (cast α0 u8).
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
+    let* α0 := M.alloc 1 in
+    let* α1 := bitand bit α0 in
+    let* α2 := cast α1 in
+    core.convert.From.from α2.
   
-  Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
+  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
   }.
   
-  Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt `{H' : State.Trait} := ct_gt;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
+    subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
-  Definition Self := u32.
+  Definition Self `{State.Trait} := u32.
   
   Definition ct_gt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u32)
-      : M (H := H') subtle.Choice :=
+      : M subtle.Choice :=
     let* gtb :=
-      let* α0 := other.["not"] in
-      self.["bitand"] α0 in
+      let* α0 := core.ops.bit.Not.not other in
+      core.ops.bit.BitAnd.bitand self α0 in
     let* ltb :=
-      let* α0 := self.["not"] in
-      α0.["bitand"] other in
-    let pow := 1 in
+      let* α0 := core.ops.bit.Not.not self in
+      core.ops.bit.BitAnd.bitand α0 other in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 32 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 32 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := ltb.["shr"] pow in
-            ltb.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr ltb pow in
+            assign_op bitor ltb α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
     let* bit :=
-      let* α0 := ltb.["not"] in
-      gtb.["bitand"] α0 in
-    let pow := 1 in
+      let* α0 := not ltb in
+      bitand gtb α0 in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 32 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 32 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := bit.["shr"] pow in
-            bit.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr bit pow in
+            assign_op bitor bit α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
-    let* α0 := bit.["bitand"] 1 in
-    subtle.Choice::["from"] (cast α0 u8).
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
+    let* α0 := M.alloc 1 in
+    let* α1 := bitand bit α0 in
+    let* α2 := cast α1 in
+    core.convert.From.from α2.
   
-  Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
+  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
   }.
   
-  Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt `{H' : State.Trait} := ct_gt;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
+    subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
-  Definition Self := u64.
+  Definition Self `{State.Trait} := u64.
   
   Definition ct_gt
-      `{H' : State.Trait}
+      `{State.Trait}
       (self : ref Self)
       (other : ref u64)
-      : M (H := H') subtle.Choice :=
+      : M subtle.Choice :=
     let* gtb :=
-      let* α0 := other.["not"] in
-      self.["bitand"] α0 in
+      let* α0 := core.ops.bit.Not.not other in
+      core.ops.bit.BitAnd.bitand self α0 in
     let* ltb :=
-      let* α0 := self.["not"] in
-      α0.["bitand"] other in
-    let pow := 1 in
+      let* α0 := core.ops.bit.Not.not self in
+      core.ops.bit.BitAnd.bitand α0 other in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 64 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 64 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := ltb.["shr"] pow in
-            ltb.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr ltb pow in
+            assign_op bitor ltb α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
     let* bit :=
-      let* α0 := ltb.["not"] in
-      gtb.["bitand"] α0 in
-    let pow := 1 in
+      let* α0 := not ltb in
+      bitand gtb α0 in
+    let* pow := M.alloc 1 in
     let* _ :=
       loop
-        (let* α0 := pow.["lt"] 64 in
-        if (α0 : bool) then
+        (let* α0 := M.alloc 64 in
+        let* α1 := lt pow α0 in
+        let* α2 := use α1 in
+        if (α2 : bool) then
           let* _ :=
-            let* α0 := bit.["shr"] pow in
-            bit.["bitor_assign"] α0 in
-          let* _ := pow.["add_assign"] pow in
+            let* α0 := shr bit pow in
+            assign_op bitor bit α0 in
+          let* _ := assign_op add pow pow in
           Pure tt
         else
-          let* _ := Break in
-          Pure tt) in
-    let* α0 := bit.["bitand"] 1 in
-    subtle.Choice::["from"] (cast α0 u8).
+          let* _ :=
+            let* α0 := Break in
+            never_to_any α0 in
+          never_to_any tt) in
+    let* α0 := M.alloc 1 in
+    let* α1 := bitand bit α0 in
+    let* α2 := cast α1 in
+    core.convert.From.from α2.
   
-  Global Instance Method_ct_gt `{H' : State.Trait} : Notation.Dot "ct_gt" := {
+  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
     Notation.dot := ct_gt;
   }.
   
-  Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt `{H' : State.Trait} := ct_gt;
+  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
+    subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u64.
@@ -2116,51 +2461,60 @@ Module ConstantTimeLess.
   Class Trait
       (Self : Set)
       `{subtle.ConstantTimeEq.Trait Self}
-      `{subtle.ConstantTimeGreater.Trait Self} :
+      `{subtle.ConstantTimeGreater.Trait Self}
+      `{State.Trait} :
       Type := {
   }.
   Global Set Primitive Projections.
-  Global Instance Method_ct_lt `{H' : State.Trait} `(Trait)
+  Global Instance Method_ct_lt `{State.Trait} `(Trait)
     : Notation.Dot "ct_lt" := {
     Notation.dot (self : ref Self) (other : ref Self)
       :=
-      (let* α0 := self.["ct_gt"] other in
-      let* α1 := α0.["not"] in
-      let* α2 := self.["ct_eq"] other in
-      let* α3 := α2.["not"] in
-      α1.["bitand"] α3
-      : M (H := H') subtle.Choice);
+      (let* α0 := deref self _ in
+      let* α1 := borrow α0 _ in
+      let* α2 := deref other _ in
+      let* α3 := borrow α2 _ in
+      let* α4 := subtle.ConstantTimeGreater.ct_gt α1 α3 in
+      let* α5 := core.ops.bit.Not.not α4 in
+      let* α6 := deref self _ in
+      let* α7 := borrow α6 _ in
+      let* α8 := deref other _ in
+      let* α9 := borrow α8 _ in
+      let* α10 := subtle.ConstantTimeEq.ct_eq α7 α9 in
+      let* α11 := core.ops.bit.Not.not α10 in
+      core.ops.bit.BitAnd.bitand α5 α11
+      : M subtle.Choice);
   }.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.
-  Definition Self := u8.
+  Definition Self `{State.Trait} := u8.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
-  Definition Self := u16.
+  Definition Self `{State.Trait} := u16.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
-  Definition Self := u32.
+  Definition Self `{State.Trait} := u32.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
-  Definition Self := u64.
+  Definition Self `{State.Trait} := u64.
   
-  Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u64.

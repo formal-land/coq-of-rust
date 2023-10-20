@@ -2,66 +2,113 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let reference := addr_of 4 in
+Definition main `{State.Trait} : M unit :=
+  let* reference :=
+    let* α0 := M.alloc 4 in
+    borrow α0 i32 in
   let* _ :=
     match reference with
     | val =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of val) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Got a value via destructuring: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 :=
+          borrow
+            [ mk_str "Got a value via destructuring: "; mk_str "
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow val i32 in
+        let* α5 := deref α4 i32 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt
     end in
   let* _ :=
-    let* α0 := reference.["deref"] in
+    let* α0 := deref reference i32 in
     match α0 with
     | val =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of val) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Got a value via dereferencing: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 :=
+          borrow
+            [ mk_str "Got a value via dereferencing: "; mk_str "
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow val i32 in
+        let* α5 := deref α4 i32 in
+        let* α6 := borrow α5 i32 in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt
     end in
-  let _not_a_reference := 3 in
-  let _is_a_reference := 3 in
-  let value := 5 in
-  let mut_value := 6 in
+  let* _not_a_reference := M.alloc 3 in
+  let* _is_a_reference := M.alloc 3 in
+  let* value := M.alloc 5 in
+  let* mut_value := M.alloc 6 in
   let* _ :=
     match value with
     | r =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of r) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Got a reference to a value: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 :=
+          borrow
+            [ mk_str "Got a reference to a value: "; mk_str "
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow r (ref i32) in
+        let* α5 := deref α4 (ref i32) in
+        let* α6 := borrow α5 (ref i32) in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt
     end in
   match mut_value with
   | m =>
     let* _ :=
-      let* α0 := m.["deref"] in
-      α0.["add_assign"] 10 in
+      let* α0 := deref m i32 in
+      let* α1 := M.alloc 10 in
+      assign_op add α0 α1 in
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of m) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "We added 10. `mut_value`: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 :=
+          borrow
+            [ mk_str "We added 10. `mut_value`: "; mk_str "
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow m (mut_ref i32) in
+        let* α5 := deref α4 (mut_ref i32) in
+        let* α6 := borrow α5 (mut_ref i32) in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt in
     Pure tt
   end.

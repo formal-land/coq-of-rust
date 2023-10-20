@@ -3,82 +3,103 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Val.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     val : f64;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_val : Notation.Dot "val" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_val `{State.Trait} : Notation.Dot "val" := {
+    Notation.dot x := let* x := M.read x in Pure x.(val) : M _;
   }.
-  Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_val `{State.Trait} : Notation.DoubleColon t "val" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(val) : M _;
   }.
 End Val.
-Definition Val : Set := Val.t.
+Definition Val `{State.Trait} : Set := M.val (Val.t).
 
 Module GenVal.
   Section GenVal.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
+    Record t `{State.Trait} : Set := {
       gen_val : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_gen_val : Notation.Dot "gen_val" := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_gen_val `{State.Trait} : Notation.Dot "gen_val" := {
+      Notation.dot x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
-    Global Instance Get_AF_gen_val : Notation.DoubleColon t "gen_val" := {
-      Notation.double_colon '(Build_t x0) := x0;
+    Global Instance Get_AF_gen_val `{State.Trait}
+      : Notation.DoubleColon t "gen_val" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
   End GenVal.
 End GenVal.
-Definition GenVal (T : Set) : Set := GenVal.t (T := T).
+Definition GenVal (T : Set) `{State.Trait} : Set := M.val (GenVal.t (T := T)).
 
 Module Impl_generics_implementation_Val.
-  Definition Self := generics_implementation.Val.
+  Definition Self `{State.Trait} : Set := generics_implementation.Val.
   
-  Definition value
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') (ref f64) :=
-    Pure (addr_of self.["val"]).
+  Definition value `{State.Trait} (self : ref Self) : M (ref f64) :=
+    let* α0 := deref self generics_implementation.Val in
+    let* α1 := α0.["val"] in
+    let* α2 := borrow α1 f64 in
+    let* α3 := deref α2 f64 in
+    borrow α3 f64.
   
-  Global Instance Method_value `{H' : State.Trait} : Notation.Dot "value" := {
+  Global Instance Method_value `{State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
   }.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
-  Definition Self := generics_implementation.GenVal T.
+  Definition Self `{State.Trait} : Set := generics_implementation.GenVal T.
   
-  Definition value
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') (ref T) :=
-    Pure (addr_of self.["gen_val"]).
+  Definition value `{State.Trait} (self : ref Self) : M (ref T) :=
+    let* α0 := deref self (generics_implementation.GenVal _) in
+    let* α1 := α0.["gen_val"] in
+    let* α2 := borrow α1 _ in
+    let* α3 := deref α2 _ in
+    borrow α3 _.
   
-  Global Instance Method_value `{H' : State.Trait} : Notation.Dot "value" := {
+  Global Instance Method_value `{State.Trait} : Notation.Dot "value" := {
     Notation.dot := value;
   }.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let x := {| generics_implementation.Val.val := 3 (* 3.0 *); |} in
-  let y := {| generics_implementation.GenVal.gen_val := 3; |} in
+Definition main `{State.Trait} : M unit :=
+  let* x :=
+    let* α0 := M.alloc 3 (* 3.0 *) in
+    M.alloc {| generics_implementation.Val.val := α0; |} in
+  let* y :=
+    let* α0 := M.alloc 3 in
+    M.alloc {| generics_implementation.GenVal.gen_val := α0; |} in
   let* _ :=
     let* _ :=
-      let* α0 := x.["value"] in
-      let* α1 := format_argument::["new_display"] (addr_of α0) in
-      let* α2 := y.["value"] in
-      let* α3 := format_argument::["new_display"] (addr_of α2) in
-      let* α4 :=
-        format_arguments::["new_v1"]
-          (addr_of [ ""; ", "; "
-" ])
-          (addr_of [ α1; α3 ]) in
-      std.io.stdio._print α4 in
+      let* α0 :=
+        borrow [ mk_str ""; mk_str ", "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow x generics_implementation.Val in
+      let* α5 := generics_implementation.Val::["value"] α4 in
+      let* α6 := borrow α5 (ref f64) in
+      let* α7 := deref α6 (ref f64) in
+      let* α8 := borrow α7 (ref f64) in
+      let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+      let* α10 := borrow y (generics_implementation.GenVal i32) in
+      let* α11 := (generics_implementation.GenVal _)::["value"] α10 in
+      let* α12 := borrow α11 (ref i32) in
+      let* α13 := deref α12 (ref i32) in
+      let* α14 := borrow α13 (ref i32) in
+      let* α15 := core.fmt.rt.Argument::["new_display"] α14 in
+      let* α16 := borrow [ α9; α15 ] (list core.fmt.rt.Argument) in
+      let* α17 := deref α16 (list core.fmt.rt.Argument) in
+      let* α18 := borrow α17 (list core.fmt.rt.Argument) in
+      let* α19 := pointer_coercion "Unsize" α18 in
+      let* α20 := core.fmt.Arguments::["new_v1"] α3 α19 in
+      std.io.stdio._print α20 in
     Pure tt in
   Pure tt.

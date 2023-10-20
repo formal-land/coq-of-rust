@@ -3,50 +3,51 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Fibonacci.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     curr : u32;
     next : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_curr : Notation.Dot "curr" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_curr `{State.Trait} : Notation.Dot "curr" := {
+    Notation.dot x := let* x := M.read x in Pure x.(curr) : M _;
   }.
-  Global Instance Get_AF_curr : Notation.DoubleColon t "curr" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_curr `{State.Trait}
+    : Notation.DoubleColon t "curr" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(curr) : M _;
   }.
-  Global Instance Get_next : Notation.Dot "next" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_next `{State.Trait} : Notation.Dot "next" := {
+    Notation.dot x := let* x := M.read x in Pure x.(next) : M _;
   }.
-  Global Instance Get_AF_next : Notation.DoubleColon t "next" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_next `{State.Trait}
+    : Notation.DoubleColon t "next" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(next) : M _;
   }.
 End Fibonacci.
-Definition Fibonacci : Set := Fibonacci.t.
+Definition Fibonacci `{State.Trait} : Set := M.val (Fibonacci.t).
 
 Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
-  Definition Self := iterators.Fibonacci.
+  Definition Self `{State.Trait} := iterators.Fibonacci.
   
   Definition Item : Set := u32.
   
   Parameter next :
-      forall `{H' : State.Trait},
-      (mut_ref Self) -> M (H := H') (core.option.Option Item).
+      forall `{State.Trait},
+      (mut_ref Self) -> M (core.option.Option Item).
   
-  Global Instance Method_next `{H' : State.Trait} : Notation.Dot "next" := {
+  Global Instance Method_next `{State.Trait} : Notation.Dot "next" := {
     Notation.dot := next;
   }.
   
-  Global Instance I : core.iter.traits.iterator.Iterator.Trait Self := {
+  Global Instance I `{State.Trait}
+    : core.iter.traits.iterator.Iterator.Trait Self := {
     core.iter.traits.iterator.Iterator.Item := Item;
-    core.iter.traits.iterator.Iterator.next `{H' : State.Trait} := next;
+    core.iter.traits.iterator.Iterator.next := next;
   }.
   Global Hint Resolve I : core.
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
-Parameter fibonacci :
-    forall `{H' : State.Trait},
-    M (H := H') iterators.Fibonacci.
+Parameter fibonacci : forall `{State.Trait}, M iterators.Fibonacci.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

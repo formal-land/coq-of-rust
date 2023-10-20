@@ -3,194 +3,254 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     naked : bool;
     name : ref str;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_naked : Notation.Dot "naked" := {
-    Notation.dot '(Build_t x0 _) := x0;
+  Global Instance Get_naked `{State.Trait} : Notation.Dot "naked" := {
+    Notation.dot x := let* x := M.read x in Pure x.(naked) : M _;
   }.
-  Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
-    Notation.double_colon '(Build_t x0 _) := x0;
+  Global Instance Get_AF_naked `{State.Trait}
+    : Notation.DoubleColon t "naked" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(naked) : M _;
   }.
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot '(Build_t _ x1) := x1;
+  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon '(Build_t _ x1) := x1;
+  Global Instance Get_AF_name `{State.Trait}
+    : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
   }.
 End Sheep.
-Definition Sheep : Set := Sheep.t.
+Definition Sheep `{State.Trait} : Set := M.val (Sheep.t).
 
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    new `{H' : State.Trait} : (ref str) -> M (H := H') Self;
-    name `{H' : State.Trait} : (ref Self) -> M (H := H') (ref str);
-    noise `{H' : State.Trait} : (ref Self) -> M (H := H') (ref str);
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    new : (ref str) -> M Self;
+    name : (ref Self) -> M (ref str);
+    noise : (ref Self) -> M (ref str);
   }.
   
-  Global Instance Method_new `{H' : State.Trait} `(Trait)
-    : Notation.Dot "new" := {
+  Global Instance Method_new `{State.Trait} `(Trait) : Notation.Dot "new" := {
     Notation.dot := new;
   }.
-  Global Instance Method_name `{H' : State.Trait} `(Trait)
-    : Notation.Dot "name" := {
+  Global Instance Method_name `{State.Trait} `(Trait) : Notation.Dot "name" := {
     Notation.dot := name;
   }.
-  Global Instance Method_noise `{H' : State.Trait} `(Trait)
+  Global Instance Method_noise `{State.Trait} `(Trait)
     : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
-  Global Instance Method_talk `{H' : State.Trait} `(Trait)
-    : Notation.Dot "talk" := {
+  Global Instance Method_talk `{State.Trait} `(Trait) : Notation.Dot "talk" := {
     Notation.dot (self : ref Self)
       :=
       (let* _ :=
         let* _ :=
-          let* α0 := self.["name"] in
-          let* α1 := format_argument::["new_display"] (addr_of α0) in
-          let* α2 := self.["noise"] in
-          let* α3 := format_argument::["new_display"] (addr_of α2) in
-          let* α4 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; " says "; "
-" ])
-              (addr_of [ α1; α3 ]) in
-          std.io.stdio._print α4 in
+          let* α0 :=
+            borrow
+              [ mk_str ""; mk_str " says "; mk_str "
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := deref self _ in
+          let* α5 := borrow α4 _ in
+          let* α6 := traits.Animal.name α5 in
+          let* α7 := borrow α6 (ref str) in
+          let* α8 := deref α7 (ref str) in
+          let* α9 := borrow α8 (ref str) in
+          let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+          let* α11 := deref self _ in
+          let* α12 := borrow α11 _ in
+          let* α13 := traits.Animal.noise α12 in
+          let* α14 := borrow α13 (ref str) in
+          let* α15 := deref α14 (ref str) in
+          let* α16 := borrow α15 (ref str) in
+          let* α17 := core.fmt.rt.Argument::["new_display"] α16 in
+          let* α18 := borrow [ α10; α17 ] (list core.fmt.rt.Argument) in
+          let* α19 := deref α18 (list core.fmt.rt.Argument) in
+          let* α20 := borrow α19 (list core.fmt.rt.Argument) in
+          let* α21 := pointer_coercion "Unsize" α20 in
+          let* α22 := core.fmt.Arguments::["new_v1"] α3 α21 in
+          std.io.stdio._print α22 in
         Pure tt in
       Pure tt
-      : M (H := H') unit);
+      : M unit);
   }.
 End Animal.
 
 Module Impl_traits_Sheep.
-  Definition Self := traits.Sheep.
+  Definition Self `{State.Trait} : Set := traits.Sheep.
   
-  Definition is_naked
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') bool :=
-    Pure self.["naked"].
+  Definition is_naked `{State.Trait} (self : ref Self) : M bool :=
+    let* α0 := deref self traits.Sheep in
+    α0.["naked"].
   
-  Global Instance Method_is_naked `{H' : State.Trait} :
-    Notation.Dot "is_naked" := {
+  Global Instance Method_is_naked `{State.Trait} : Notation.Dot "is_naked" := {
     Notation.dot := is_naked;
   }.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
-  Definition Self := traits.Sheep.
+  Definition Self `{State.Trait} := traits.Sheep.
   
-  Definition new
-      `{H' : State.Trait}
-      (name : ref str)
-      : M (H := H') traits.Sheep :=
-    Pure {| traits.Sheep.name := name; traits.Sheep.naked := false; |}.
+  Definition new `{State.Trait} (name : ref str) : M traits.Sheep :=
+    let* α0 := false in
+    M.alloc {| traits.Sheep.name := name; traits.Sheep.naked := α0; |}.
   
-  Global Instance AssociatedFunction_new `{H' : State.Trait} :
+  Global Instance AssociatedFunction_new `{State.Trait} :
     Notation.DoubleColon Self "new" := {
     Notation.double_colon := new;
   }.
   
-  Definition name
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') (ref str) :=
-    Pure self.["name"].
+  Definition name `{State.Trait} (self : ref Self) : M (ref str) :=
+    let* α0 := deref self traits.Sheep in
+    α0.["name"].
   
-  Global Instance Method_name `{H' : State.Trait} : Notation.Dot "name" := {
+  Global Instance Method_name `{State.Trait} : Notation.Dot "name" := {
     Notation.dot := name;
   }.
   
-  Definition noise
-      `{H' : State.Trait}
-      (self : ref Self)
-      : M (H := H') (ref str) :=
-    let* α0 := self.["is_naked"] in
-    if (α0 : bool) then
-      Pure "baaaaah?"
+  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
+    let* α0 := deref self traits.Sheep in
+    let* α1 := borrow α0 traits.Sheep in
+    let* α2 := traits.Sheep::["is_naked"] α1 in
+    let* α3 := use α2 in
+    if (α3 : bool) then
+      Pure (mk_str "baaaaah?")
     else
-      Pure "baaaaah!".
+      Pure (mk_str "baaaaah!").
   
-  Global Instance Method_noise `{H' : State.Trait} : Notation.Dot "noise" := {
+  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
     Notation.dot := noise;
   }.
   
-  Definition talk `{H' : State.Trait} (self : ref Self) : M (H := H') unit :=
+  Definition talk `{State.Trait} (self : ref Self) : M unit :=
     let* _ :=
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
-        let* α1 := self.["noise"] in
-        let* α2 := format_argument::["new_display"] (addr_of α1) in
-        let* α3 :=
-          format_arguments::["new_v1"]
-            (addr_of [ ""; " pauses briefly... "; "
-" ])
-            (addr_of [ α0; α2 ]) in
-        std.io.stdio._print α3 in
+        let* α0 :=
+          borrow
+            [ mk_str ""; mk_str " pauses briefly... "; mk_str "
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := deref self traits.Sheep in
+        let* α5 := α4.["name"] in
+        let* α6 := borrow α5 (ref str) in
+        let* α7 := deref α6 (ref str) in
+        let* α8 := borrow α7 (ref str) in
+        let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+        let* α10 := deref self traits.Sheep in
+        let* α11 := borrow α10 traits.Sheep in
+        let* α12 := traits.Animal.noise α11 in
+        let* α13 := borrow α12 (ref str) in
+        let* α14 := deref α13 (ref str) in
+        let* α15 := borrow α14 (ref str) in
+        let* α16 := core.fmt.rt.Argument::["new_display"] α15 in
+        let* α17 := borrow [ α9; α16 ] (list core.fmt.rt.Argument) in
+        let* α18 := deref α17 (list core.fmt.rt.Argument) in
+        let* α19 := borrow α18 (list core.fmt.rt.Argument) in
+        let* α20 := pointer_coercion "Unsize" α19 in
+        let* α21 := core.fmt.Arguments::["new_v1"] α3 α20 in
+        std.io.stdio._print α21 in
       Pure tt in
     Pure tt.
   
-  Global Instance Method_talk `{H' : State.Trait} : Notation.Dot "talk" := {
+  Global Instance Method_talk `{State.Trait} : Notation.Dot "talk" := {
     Notation.dot := talk;
   }.
   
-  Global Instance I : traits.Animal.Trait Self := {
-    traits.Animal.new `{H' : State.Trait} := new;
-    traits.Animal.name `{H' : State.Trait} := name;
-    traits.Animal.noise `{H' : State.Trait} := noise;
+  Global Instance I `{State.Trait} : traits.Animal.Trait Self := {
+    traits.Animal.new := new;
+    traits.Animal.name := name;
+    traits.Animal.noise := noise;
   }.
   Global Hint Resolve I : core.
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_3.
-  Definition Self := traits.Sheep.
+  Definition Self `{State.Trait} : Set := traits.Sheep.
   
-  Definition shear
-      `{H' : State.Trait}
-      (self : mut_ref Self)
-      : M (H := H') unit :=
-    let* α0 := self.["is_naked"] in
-    if (α0 : bool) then
+  Definition shear `{State.Trait} (self : mut_ref Self) : M unit :=
+    let* α0 := deref self traits.Sheep in
+    let* α1 := borrow α0 traits.Sheep in
+    let* α2 := traits.Sheep::["is_naked"] α1 in
+    let* α3 := use α2 in
+    if (α3 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := self.["name"] in
-          let* α1 := format_argument::["new_display"] (addr_of α0) in
-          let* α2 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; " is already naked...
-" ])
-              (addr_of [ α1 ]) in
-          std.io.stdio._print α2 in
+          let* α0 :=
+            borrow
+              [ mk_str ""; mk_str " is already naked...
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := deref self traits.Sheep in
+          let* α5 := borrow α4 traits.Sheep in
+          let* α6 := traits.Animal.name α5 in
+          let* α7 := borrow α6 (ref str) in
+          let* α8 := deref α7 (ref str) in
+          let* α9 := borrow α8 (ref str) in
+          let* α10 := core.fmt.rt.Argument::["new_display"] α9 in
+          let* α11 := borrow [ α10 ] (list core.fmt.rt.Argument) in
+          let* α12 := deref α11 (list core.fmt.rt.Argument) in
+          let* α13 := borrow α12 (list core.fmt.rt.Argument) in
+          let* α14 := pointer_coercion "Unsize" α13 in
+          let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
+          std.io.stdio._print α15 in
         Pure tt in
       Pure tt
     else
       let* _ :=
         let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of self.["name"]) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ ""; " gets a haircut!
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
+          let* α0 :=
+            borrow [ mk_str ""; mk_str " gets a haircut!
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := deref self traits.Sheep in
+          let* α5 := α4.["name"] in
+          let* α6 := borrow α5 (ref str) in
+          let* α7 := deref α6 (ref str) in
+          let* α8 := borrow α7 (ref str) in
+          let* α9 := core.fmt.rt.Argument::["new_display"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
         Pure tt in
-      let* _ := assign self.["naked"] true in
+      let* _ :=
+        let* α0 := deref self traits.Sheep in
+        let* α1 := α0.["naked"] in
+        let* α2 := true in
+        assign α1 α2 in
       Pure tt.
   
-  Global Instance Method_shear `{H' : State.Trait} : Notation.Dot "shear" := {
+  Global Instance Method_shear `{State.Trait} : Notation.Dot "shear" := {
     Notation.dot := shear;
   }.
 End Impl_traits_Sheep_3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* dolly :=
-    let* α0 := traits.Animal.new "Dolly" in
-    Pure (α0 : traits.Sheep) in
-  let* _ := dolly.["talk"] in
-  let* _ := dolly.["shear"] in
-  let* _ := dolly.["talk"] in
+Definition main `{State.Trait} : M unit :=
+  let* dolly := traits.Animal.new (mk_str "Dolly") in
+  let* _ :=
+    let* α0 := borrow dolly traits.Sheep in
+    traits.Animal.talk α0 in
+  let* _ :=
+    let* α0 := borrow_mut dolly traits.Sheep in
+    traits.Sheep::["shear"] α0 in
+  let* _ :=
+    let* α0 := borrow dolly traits.Sheep in
+    traits.Animal.talk α0 in
   Pure tt.

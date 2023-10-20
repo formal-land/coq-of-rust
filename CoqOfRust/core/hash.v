@@ -1,4 +1,3 @@
-Require Import CoqOfRust.Monad.
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.core.marker.
@@ -29,7 +28,7 @@ pub trait Hasher {
 }
 *)
 Module Hasher.
-  Class Trait (Self : Set) : Set := {
+  Class Trait (Self : Set) `{State.Trait} : Set := {
   (* fn finish(&self) -> u64; *)
   finish : ref Self -> u64;
 

@@ -3,63 +3,62 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     test : bool;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_test `{State.Trait} : Notation.Dot "test" := {
+    Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
   }.
-  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_test `{State.Trait}
+    : Notation.DoubleColon t "test" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
   }.
 End Foo.
-Definition Foo : Set := Foo.t.
+Definition Foo `{State.Trait} : Set := M.val (Foo.t).
 
 Module Bar.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     test : alloc.string.String;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_test : Notation.Dot "test" := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_test `{State.Trait} : Notation.Dot "test" := {
+    Notation.dot x := let* x := M.read x in Pure x.(test) : M _;
   }.
-  Global Instance Get_AF_test : Notation.DoubleColon t "test" := {
-    Notation.double_colon '(Build_t x0) := x0;
+  Global Instance Get_AF_test `{State.Trait}
+    : Notation.DoubleColon t "test" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(test) : M _;
   }.
 End Bar.
-Definition Bar : Set := Bar.t.
+Definition Bar `{State.Trait} : Set := M.val (Bar.t).
 
 Module BarTrait.
-  Class Trait (Self : Set) : Type := {
-    show `{H' : State.Trait} : Self -> M (H := H') alloc.string.String;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    show : Self -> M alloc.string.String;
   }.
   
-  Global Instance Method_show `{H' : State.Trait} `(Trait)
-    : Notation.Dot "show" := {
+  Global Instance Method_show `{State.Trait} `(Trait) : Notation.Dot "show" := {
     Notation.dot := show;
   }.
 End BarTrait.
 
 Module
   Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
-  Definition Self := const_underscore_expression.Bar.
+  Definition Self `{State.Trait} := const_underscore_expression.Bar.
   
-  Definition show
-      `{H' : State.Trait}
-      (self : Self)
-      : M (H := H') alloc.string.String :=
-    Pure self.["test"].
+  Definition show `{State.Trait} (self : Self) : M alloc.string.String :=
+    self.["test"].
   
-  Global Instance Method_show `{H' : State.Trait} : Notation.Dot "show" := {
+  Global Instance Method_show `{State.Trait} : Notation.Dot "show" := {
     Notation.dot := show;
   }.
   
-  Global Instance I : const_underscore_expression.BarTrait.Trait Self := {
-    const_underscore_expression.BarTrait.show `{H' : State.Trait} := show;
+  Global Instance I `{State.Trait}
+    : const_underscore_expression.BarTrait.Trait Self := {
+    const_underscore_expression.BarTrait.show := show;
   }.
   Global Hint Resolve I : core.
 End

@@ -8,38 +8,44 @@ Definition A := @A.t.
 
 Module Single.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : generics.A;
+  Record t `{State.Trait} : Set := {
+    x0 : generics.A;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End Single.
-Definition Single := @Single.t.
+Definition Single `{State.Trait} : Set := M.val Single.t.
 
 Module SingleGen.
   Section SingleGen.
     Context {T : Set}.
     Unset Primitive Projections.
-    Record t : Set := {
-      _ : T;
+    Record t `{State.Trait} : Set := {
+      x0 : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_0 : Notation.Dot 0 := {
-      Notation.dot '(Build_t x0) := x0;
+    Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
     }.
   End SingleGen.
 End SingleGen.
-Definition SingleGen := @SingleGen.t.
+Definition SingleGen `{State.Trait} : Set := M.val SingleGen.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let _s := generics.Single.Build_t generics.A.Build in
-  let _char : generics.SingleGen char := generics.SingleGen.Build_t "a"%char in
-  let _t := generics.SingleGen.Build_t generics.A.Build in
-  let _i32 := generics.SingleGen.Build_t 6 in
-  let _char := generics.SingleGen.Build_t "a"%char in
+Definition main `{State.Trait} : M unit :=
+  let _s := generics.Single.Build_t (generics.A.Build_t tt) in
+  let* _char :=
+    let* α0 := "a"%char in
+    Pure (generics.SingleGen.Build_t α0) in
+  let _t := generics.SingleGen.Build_t (generics.A.Build_t tt) in
+  let* _i32 :=
+    let* α0 := M.alloc 6 in
+    Pure (generics.SingleGen.Build_t α0) in
+  let* _char :=
+    let* α0 := "a"%char in
+    Pure (generics.SingleGen.Build_t α0) in
   Pure tt.

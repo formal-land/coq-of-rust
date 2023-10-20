@@ -2,82 +2,153 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let bytestring : ref (list u8) :=
-    [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
+Definition main `{State.Trait} : M unit :=
+  let* bytestring :=
+    let* α0 :=
+      [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
+    let* α1 := deref α0 (list u8) in
+    borrow α1 (list u8) in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of bytestring) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "A byte string: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 :=
+        borrow [ mk_str "A byte string: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow bytestring (ref (list u8)) in
+      let* α5 := deref α4 (ref (list u8)) in
+      let* α6 := borrow α5 (ref (list u8)) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
-  let escaped := [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
+  let* escaped :=
+    [82, 117, 115, 116, 32, 97, 115, 32, 98, 121, 116, 101, 115] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of escaped) in
-      let* α1 :=
-        format_arguments::["new_v1"]
-          (addr_of [ "Some escaped bytes: "; "
-" ])
-          (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 :=
+        borrow [ mk_str "Some escaped bytes: "; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow escaped (ref (list u8)) in
+      let* α5 := deref α4 (ref (list u8)) in
+      let* α6 := borrow α5 (ref (list u8)) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
-  let raw_bytestring :=
+  let* raw_bytestring :=
     [92, 117, 123, 50, 49, 49, 68, 125, 32, 105, 115, 32, 110, 111, 116, 32, 101, 115, 99, 97, 112, 101, 100, 32, 104, 101, 114, 101] in
   let* _ :=
     let* _ :=
-      let* α0 := format_argument::["new_debug"] (addr_of raw_bytestring) in
-      let* α1 :=
-        format_arguments::["new_v1"] (addr_of [ ""; "
-" ]) (addr_of [ α0 ]) in
-      std.io.stdio._print α1 in
+      let* α0 := borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow raw_bytestring (ref (list u8)) in
+      let* α5 := deref α4 (ref (list u8)) in
+      let* α6 := borrow α5 (ref (list u8)) in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      std.io.stdio._print α12 in
     Pure tt in
   let* _ :=
-    let* α0 := core.str.converts.from_utf8 raw_bytestring in
-    match α0 with
-    | core.result.Result.Ok my_str =>
+    let* α0 := deref raw_bytestring (list u8) in
+    let* α1 := borrow α0 (list u8) in
+    let* α2 := pointer_coercion "Unsize" α1 in
+    let* α3 := core.str.converts.from_utf8 α2 in
+    let* α4 := let_if core.result.Result my_str := α3 in
+    if (α4 : bool) then
       let* _ :=
         let* _ :=
-          let* α0 := format_argument::["new_display"] (addr_of my_str) in
-          let* α1 :=
-            format_arguments::["new_v1"]
-              (addr_of [ "And the same as text: '"; "'
-" ])
-              (addr_of [ α0 ]) in
-          std.io.stdio._print α1 in
+          let* α0 :=
+            borrow
+              [ mk_str "And the same as text: '"; mk_str "'
+" ]
+              (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow my_str (ref str) in
+          let* α5 := deref α4 (ref str) in
+          let* α6 := borrow α5 (ref str) in
+          let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+          let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+          let* α9 := deref α8 (list core.fmt.rt.Argument) in
+          let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+          let* α11 := pointer_coercion "Unsize" α10 in
+          let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+          std.io.stdio._print α12 in
         Pure tt in
       Pure tt
-    | _ => Pure tt
-    end in
-  let _quotes :=
+    else
+      Pure tt in
+  let* _quotes :=
     [89, 111, 117, 32, 99, 97, 110, 32, 97, 108, 115, 111, 32, 117, 115, 101, 32, 34, 102, 97, 110, 99, 105, 101, 114, 34, 32, 102, 111, 114, 109, 97, 116, 116, 105, 110, 103, 44, 32, 92, 10, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 108, 105, 107, 101, 32, 119, 105, 116, 104, 32, 110, 111, 114, 109, 97, 108, 32, 114, 97, 119, 32, 115, 116, 114, 105, 110, 103, 115] in
-  let shift_jis := [130, 230, 130, 168, 130, 177, 130, 187] in
+  let* shift_jis := [130, 230, 130, 168, 130, 177, 130, 187] in
   let* _ :=
-    let* α0 := core.str.converts.from_utf8 shift_jis in
-    match α0 with
-    | core.result.Result.Ok my_str =>
+    let* α0 := deref shift_jis (list u8) in
+    let* α1 := borrow α0 (list u8) in
+    let* α2 := pointer_coercion "Unsize" α1 in
+    let* α3 := core.str.converts.from_utf8 α2 in
+    match α3 with
+    | core.result.Result my_str =>
       let* _ :=
-        let* α0 := format_argument::["new_display"] (addr_of my_str) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Conversion successful: '"; "'
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 :=
+          borrow
+            [ mk_str "Conversion successful: '"; mk_str "'
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow my_str (ref str) in
+        let* α5 := deref α4 (ref str) in
+        let* α6 := borrow α5 (ref str) in
+        let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt
-    | core.result.Result.Err e =>
+    | core.result.Result e =>
       let* _ :=
-        let* α0 := format_argument::["new_debug"] (addr_of e) in
-        let* α1 :=
-          format_arguments::["new_v1"]
-            (addr_of [ "Conversion failed: "; "
-" ])
-            (addr_of [ α0 ]) in
-        std.io.stdio._print α1 in
+        let* α0 :=
+          borrow
+            [ mk_str "Conversion failed: "; mk_str "
+" ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow e core.str.error.Utf8Error in
+        let* α5 := deref α4 core.str.error.Utf8Error in
+        let* α6 := borrow α5 core.str.error.Utf8Error in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        std.io.stdio._print α12 in
       Pure tt
     end in
   Pure tt.

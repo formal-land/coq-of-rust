@@ -3,157 +3,139 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module SomeType.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : u32;
+  Record t `{State.Trait} : Set := {
+    x0 : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End SomeType.
-Definition SomeType := @SomeType.t.
+Definition SomeType `{State.Trait} : Set := M.val SomeType.t.
 
 Module OtherType.
   Unset Primitive Projections.
-  Record t : Set := {
-    _ : bool;
+  Record t `{State.Trait} : Set := {
+    x0 : bool;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_0 : Notation.Dot 0 := {
-    Notation.dot '(Build_t x0) := x0;
+  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
+    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
   }.
 End OtherType.
-Definition OtherType := @OtherType.t.
+Definition OtherType `{State.Trait} : Set := M.val OtherType.t.
 
 Module Impl_functions_order_SomeType.
-  Definition Self := functions_order.SomeType.
+  Definition Self `{State.Trait} : Set := functions_order.SomeType.
   
-  Parameter meth2 : forall `{H' : State.Trait}, Self -> M (H := H') unit.
+  Parameter meth2 : forall `{State.Trait}, Self -> M unit.
   
-  Global Instance Method_meth2 `{H' : State.Trait} : Notation.Dot "meth2" := {
+  Global Instance Method_meth2 `{State.Trait} : Notation.Dot "meth2" := {
     Notation.dot := meth2;
   }.
   
-  Parameter meth1 : forall `{H' : State.Trait}, Self -> M (H := H') unit.
+  Parameter meth1 : forall `{State.Trait}, Self -> M unit.
   
-  Global Instance Method_meth1 `{H' : State.Trait} : Notation.Dot "meth1" := {
+  Global Instance Method_meth1 `{State.Trait} : Notation.Dot "meth1" := {
     Notation.dot := meth1;
   }.
 End Impl_functions_order_SomeType.
 
 Module SomeTrait.
-  Class Trait (Self : Set) : Type := {
-    some_trait_foo `{H' : State.Trait} : (ref Self) -> M (H := H') unit;
-    some_trait_bar `{H' : State.Trait} : (ref Self) -> M (H := H') unit;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    some_trait_foo : (ref Self) -> M unit;
+    some_trait_bar : (ref Self) -> M unit;
   }.
   
-  Global Instance Method_some_trait_foo `{H' : State.Trait} `(Trait)
+  Global Instance Method_some_trait_foo `{State.Trait} `(Trait)
     : Notation.Dot "some_trait_foo" := {
     Notation.dot := some_trait_foo;
   }.
-  Global Instance Method_some_trait_bar `{H' : State.Trait} `(Trait)
+  Global Instance Method_some_trait_bar `{State.Trait} `(Trait)
     : Notation.Dot "some_trait_bar" := {
     Notation.dot := some_trait_bar;
   }.
 End SomeTrait.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
-  Definition Self := functions_order.SomeType.
+  Definition Self `{State.Trait} := functions_order.SomeType.
   
-  Parameter some_trait_bar :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+  Parameter some_trait_bar : forall `{State.Trait}, (ref Self) -> M unit.
   
-  Global Instance Method_some_trait_bar `{H' : State.Trait} :
+  Global Instance Method_some_trait_bar `{State.Trait} :
     Notation.Dot "some_trait_bar" := {
     Notation.dot := some_trait_bar;
   }.
   
-  Parameter some_trait_foo :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+  Parameter some_trait_foo : forall `{State.Trait}, (ref Self) -> M unit.
   
-  Global Instance Method_some_trait_foo `{H' : State.Trait} :
+  Global Instance Method_some_trait_foo `{State.Trait} :
     Notation.Dot "some_trait_foo" := {
     Notation.dot := some_trait_foo;
   }.
   
-  Global Instance I : functions_order.SomeTrait.Trait Self := {
-    functions_order.SomeTrait.some_trait_bar `{H' : State.Trait}
-      :=
-      some_trait_bar;
-    functions_order.SomeTrait.some_trait_foo `{H' : State.Trait}
-      :=
-      some_trait_foo;
+  Global Instance I `{State.Trait} : functions_order.SomeTrait.Trait Self := {
+    functions_order.SomeTrait.some_trait_bar := some_trait_bar;
+    functions_order.SomeTrait.some_trait_foo := some_trait_foo;
   }.
   Global Hint Resolve I : core.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType.
 
 Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
-  Definition Self := functions_order.OtherType.
+  Definition Self `{State.Trait} := functions_order.OtherType.
   
-  Parameter some_trait_foo :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+  Parameter some_trait_foo : forall `{State.Trait}, (ref Self) -> M unit.
   
-  Global Instance Method_some_trait_foo `{H' : State.Trait} :
+  Global Instance Method_some_trait_foo `{State.Trait} :
     Notation.Dot "some_trait_foo" := {
     Notation.dot := some_trait_foo;
   }.
   
-  Parameter some_trait_bar :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') unit.
+  Parameter some_trait_bar : forall `{State.Trait}, (ref Self) -> M unit.
   
-  Global Instance Method_some_trait_bar `{H' : State.Trait} :
+  Global Instance Method_some_trait_bar `{State.Trait} :
     Notation.Dot "some_trait_bar" := {
     Notation.dot := some_trait_bar;
   }.
   
-  Global Instance I : functions_order.SomeTrait.Trait Self := {
-    functions_order.SomeTrait.some_trait_foo `{H' : State.Trait}
-      :=
-      some_trait_foo;
-    functions_order.SomeTrait.some_trait_bar `{H' : State.Trait}
-      :=
-      some_trait_bar;
+  Global Instance I `{State.Trait} : functions_order.SomeTrait.Trait Self := {
+    functions_order.SomeTrait.some_trait_foo := some_trait_foo;
+    functions_order.SomeTrait.some_trait_bar := some_trait_bar;
   }.
   Global Hint Resolve I : core.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 
-Parameter depends_on_trait_impl :
-    forall `{H' : State.Trait},
-    u32 -> bool -> M (H := H') unit.
+Parameter depends_on_trait_impl : forall `{State.Trait}, u32 -> bool -> M unit.
 
 Module inner_mod.
-  Parameter tar : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter tar : forall `{State.Trait}, M unit.
   
-  Parameter bar : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter bar : forall `{State.Trait}, M unit.
   
   Module nested_mod.
-    Parameter tack : forall `{H' : State.Trait}, M (H := H') unit.
+    Parameter tack : forall `{State.Trait}, M unit.
     
-    Parameter tick : forall `{H' : State.Trait}, M (H := H') unit.
+    Parameter tick : forall `{State.Trait}, M unit.
   End nested_mod.
 End inner_mod.
 
-Parameter bar : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter bar : forall `{State.Trait}, M unit.
 
-Parameter tar : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter tar : forall `{State.Trait}, M unit.
 
 Module nested_mod.
-  Parameter tack : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter tack : forall `{State.Trait}, M unit.
   
-  Parameter tick : forall `{H' : State.Trait}, M (H := H') unit.
+  Parameter tick : forall `{State.Trait}, M unit.
 End nested_mod.
 
-Parameter tick : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter tick : forall `{State.Trait}, M unit.
 
-Parameter tack : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter tack : forall `{State.Trait}, M unit.
 
-Parameter foo : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter foo : forall `{State.Trait}, M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

@@ -2,20 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* child :=
-    let* α0 := std.process.Command::["new"] "sleep" in
-    let* α1 := α0.["arg"] "5" in
-    let* α2 := α1.["spawn"] in
-    α2.["unwrap"] in
+    let* α0 := std.process.Command::["new"] (mk_str "sleep") in
+    let* α1 := borrow_mut α0 std.process.Command in
+    let* α2 := std.process.Command::["arg"] α1 (mk_str "5") in
+    let* α3 := deref α2 std.process.Command in
+    let* α4 := borrow_mut α3 std.process.Command in
+    let* α5 := std.process.Command::["spawn"] α4 in
+    (core.result.Result _ _)::["unwrap"] α5 in
   let* _result :=
-    let* α0 := child.["wait"] in
-    α0.["unwrap"] in
+    let* α0 := borrow_mut child std.process.Child in
+    let* α1 := std.process.Child::["wait"] α0 in
+    (core.result.Result _ _)::["unwrap"] α1 in
   let* _ :=
     let* _ :=
-      let* α0 :=
-        format_arguments::["new_const"] (addr_of [ "reached end of main
-" ]) in
-      std.io.stdio._print α0 in
+      let* α0 := borrow [ mk_str "reached end of main
+" ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := core.fmt.Arguments::["new_const"] α3 in
+      std.io.stdio._print α4 in
     Pure tt in
   Pure tt.

@@ -2,38 +2,64 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
-  let* apple := (alloc.sync.Arc _)::["new"] "the same apple" in
+Definition main `{State.Trait} : M unit :=
+  let* apple := (alloc.sync.Arc _)::["new"] (mk_str "the same apple") in
   let* _ :=
-    let* α0 :=
-      {| std.ops.Range.start := 0; std.ops.Range._end := 10; |}.["into_iter"] in
-    match α0 with
-    | iter =>
-      loop
-        (let* _ :=
-          let* α0 := (addr_of iter).["next"] in
-          match α0 with
-          | core.option.Option.None  => Break
-          | core.option.Option.Some _ =>
-            let* apple := (alloc.sync.Arc _)::["clone"] (addr_of apple) in
-            let* _ :=
-              std.thread.spawn
-                let* _ :=
+    let* α0 := M.alloc 0 in
+    let* α1 := M.alloc 10 in
+    let* α2 :=
+      M.alloc
+        {| core.ops.range.Range.start := α0; core.ops.range.Range.end := α1;
+        |} in
+    let* α3 := core.iter.traits.collect.IntoIterator.into_iter α2 in
+    let* α4 :=
+      match α3 with
+      | iter =>
+        loop
+          (let* _ :=
+            let* α0 := borrow_mut iter (core.ops.range.Range i32) in
+            let* α1 := deref α0 (core.ops.range.Range i32) in
+            let* α2 := borrow_mut α1 (core.ops.range.Range i32) in
+            let* α3 := core.iter.traits.iterator.Iterator.next α2 in
+            match α3 with
+            | core.option.Option  =>
+              let* α0 := Break in
+              never_to_any α0
+            | core.option.Option _ =>
+              let* apple :=
+                let* α0 := borrow apple (alloc.sync.Arc (ref str)) in
+                let* α1 := deref α0 (alloc.sync.Arc (ref str)) in
+                let* α2 := borrow α1 (alloc.sync.Arc (ref str)) in
+                core.clone.Clone.clone α2 in
+              let* _ :=
+                std.thread.spawn
                   let* _ :=
-                    let* α0 := format_argument::["new_debug"] (addr_of apple) in
-                    let* α1 :=
-                      format_arguments::["new_v1"]
-                        (addr_of [ ""; "
-" ])
-                        (addr_of [ α0 ]) in
-                    std.io.stdio._print α1 in
+                    let* _ :=
+                      let* α0 :=
+                        borrow [ mk_str ""; mk_str "
+" ] (list (ref str)) in
+                      let* α1 := deref α0 (list (ref str)) in
+                      let* α2 := borrow α1 (list (ref str)) in
+                      let* α3 := pointer_coercion "Unsize" α2 in
+                      let* α4 := borrow apple (alloc.sync.Arc (ref str)) in
+                      let* α5 := deref α4 (alloc.sync.Arc (ref str)) in
+                      let* α6 := borrow α5 (alloc.sync.Arc (ref str)) in
+                      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+                      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+                      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+                      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+                      let* α11 := pointer_coercion "Unsize" α10 in
+                      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+                      std.io.stdio._print α12 in
+                    Pure tt in
                   Pure tt in
-                Pure tt in
-            Pure tt
-          end in
-        Pure tt)
-    end in
+              Pure tt
+            end in
+          Pure tt)
+      end in
+    use α4 in
   let* _ :=
-    let* α0 := core.time.Duration::["from_secs"] 1 in
-    std.thread.sleep α0 in
+    let* α0 := M.alloc 1 in
+    let* α1 := core.time.Duration::["from_secs"] α0 in
+    std.thread.sleep α1 in
   Pure tt.

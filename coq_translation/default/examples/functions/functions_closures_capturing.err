@@ -1,0 +1,32 @@
+type Closure(
+    DefId(0:6 ~ functions_closures_capturing[7e38]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn(()),
+        (&mut i32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:6 ~ functions_closures_capturing[7e38]::main::{closure#1}),
+    [
+        i16,
+        extern "rust-call" fn(()),
+        (&mut i32,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ functions_closures_capturing[7e38]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (&std::string::String,),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:5 ~ functions_closures_capturing[7e38]::main::{closure#0}),
+    [
+        i8,
+        extern "rust-call" fn(()),
+        (&std::string::String,),
+    ],
+) not yet handled

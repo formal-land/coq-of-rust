@@ -32,7 +32,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
         PatKind::Binding(_, _, ident, pat) => {
             let name = ident.name.to_string();
             match pat {
-                None => Pattern::Variable(ident.name.to_string()),
+                None => Pattern::Variable(name),
                 Some(pat) => Pattern::Binding(name, Box::new(compile_pattern(env, pat))),
             }
         }
@@ -274,7 +274,7 @@ impl Pattern {
                     [text(","), line()],
                 )]),
             ),
-            Pattern::Lit(literal) => literal_to_doc(false, literal),
+            Pattern::Lit(literal) => literal_to_doc(false, literal, false),
             Pattern::Slice {
                 init_patterns,
                 slice_pattern,

@@ -4,67 +4,70 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - struct was ignored by the compiler *)
 Module Book.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     author : ref str;
     title : ref str;
     year : u32;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_author : Notation.Dot "author" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
+  Global Instance Get_author `{State.Trait} : Notation.Dot "author" := {
+    Notation.dot x := let* x := M.read x in Pure x.(author) : M _;
   }.
-  Global Instance Get_AF_author : Notation.DoubleColon t "author" := {
-    Notation.double_colon '(Build_t x0 _ _) := x0;
+  Global Instance Get_AF_author `{State.Trait}
+    : Notation.DoubleColon t "author" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(author) : M _;
   }.
-  Global Instance Get_title : Notation.Dot "title" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
+  Global Instance Get_title `{State.Trait} : Notation.Dot "title" := {
+    Notation.dot x := let* x := M.read x in Pure x.(title) : M _;
   }.
-  Global Instance Get_AF_title : Notation.DoubleColon t "title" := {
-    Notation.double_colon '(Build_t _ x1 _) := x1;
+  Global Instance Get_AF_title `{State.Trait}
+    : Notation.DoubleColon t "title" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(title) : M _;
   }.
-  Global Instance Get_year : Notation.Dot "year" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
+  Global Instance Get_year `{State.Trait} : Notation.Dot "year" := {
+    Notation.dot x := let* x := M.read x in Pure x.(year) : M _;
   }.
-  Global Instance Get_AF_year : Notation.DoubleColon t "year" := {
-    Notation.double_colon '(Build_t _ _ x2) := x2;
+  Global Instance Get_AF_year `{State.Trait}
+    : Notation.DoubleColon t "year" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(year) : M _;
   }.
 End Book.
-Definition Book : Set := Book.t.
+Definition Book `{State.Trait} : Set := M.val (Book.t).
 
 Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
-  Definition Self := scoping_rules_borrowing_mutablity.Book.
+  Definition Self `{State.Trait} := scoping_rules_borrowing_mutablity.Book.
   
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone :
-      forall `{H' : State.Trait},
-      (ref Self) -> M (H := H') scoping_rules_borrowing_mutablity.Book.
+      forall `{State.Trait},
+      (ref Self) -> M scoping_rules_borrowing_mutablity.Book.
   
-  Global Instance Method_clone `{H' : State.Trait} : Notation.Dot "clone" := {
+  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
     Notation.dot := clone;
   }.
   
-  Global Instance I : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone `{H' : State.Trait} := clone;
+  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    core.clone.Clone.clone := clone;
   }.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
 Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
-  Definition Self := scoping_rules_borrowing_mutablity.Book.
+  Definition Self `{State.Trait} := scoping_rules_borrowing_mutablity.Book.
   
-  Global Instance I : core.marker.Copy.Trait Self := {
+  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
   }.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book :
-    forall `{H' : State.Trait},
-    (ref scoping_rules_borrowing_mutablity.Book) -> M (H := H') unit.
+    forall `{State.Trait},
+    (ref scoping_rules_borrowing_mutablity.Book) -> M unit.
 
 Parameter new_edition :
-    forall `{H' : State.Trait},
-    (mut_ref scoping_rules_borrowing_mutablity.Book) -> M (H := H') unit.
+    forall `{State.Trait},
+    (mut_ref scoping_rules_borrowing_mutablity.Book) -> M unit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : forall `{H' : State.Trait}, M (H := H') unit.
+Parameter main : forall `{State.Trait}, M unit.

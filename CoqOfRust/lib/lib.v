@@ -12,18 +12,16 @@ Global Open Scope Z_scope.
 
 Export List.ListNotations.
 
-Require Export CoqOfRust.Monad.
-Export Monad.Notations.
-Require Export CoqOfRust.lib.Notations.
+Require Export CoqOfRust.M.
+Export M.Notations.
 
 Module Notation.
   (** A class to represent the notation [e1.e2]. This is mainly used to call
-      methods, or access to named or indexed fields of structures.
-      The kind is either a string or an integer. *)
-  Class Dot {Kind : Set} (name : Kind) {T : Set} : Set := {
+      methods, or access to named or indexed fields of structures. *)
+  Class Dot (name : string) {T : Set} : Set := {
     dot : T;
   }.
-  Arguments dot {Kind} name {T Dot}.
+  Arguments dot name {T Dot}.
 
   (** A class to represent associated functions (the notation [e1::e2]). The
       kind might be [Set] functions associated to a type, or [Set -> Set] for
@@ -51,7 +49,7 @@ Notation "e1 ::[ e2 ]" := (Notation.double_colon e1 e2)
 (** A method is also an associated function for its type. *)
 Global Instance AssociatedFunctionFromMethod
   (type : Set) (name : string) (T : Set)
-  `(Notation.Dot (Kind := string) name (T := type -> T)) :
+  `(Notation.Dot name (T := type -> T)) :
   Notation.DoubleColon type name (T := type -> T) := {
   Notation.double_colon := Notation.dot name;
 }.
@@ -73,31 +71,35 @@ Notation "e1 ;; e2" := (sequence e1 e2)
 
 Parameter assign : forall {A : Set}, A -> A -> unit.
 
-Definition u8 : Set := Z.
-Definition u16 : Set := Z.
-Definition u32 : Set := Z.
-Definition u64 : Set := Z.
-Definition u128 : Set := Z.
-Definition usize : Set := Z.
+Definition u8 `{State.Trait} : Set := val Z.
+Definition u16 `{State.Trait} : Set := val Z.
+Definition u32 `{State.Trait} : Set := val Z.
+Definition u64 `{State.Trait} : Set := val Z.
+Definition u128 `{State.Trait} : Set := val Z.
+Definition usize `{State.Trait} : Set := val Z.
 
-Definition i8 : Set := Z.
-Definition i16 : Set := Z.
-Definition i32 : Set := Z.
-Definition i64 : Set := Z.
-Definition i128 : Set := Z.
-Definition isize : Set := Z.
+Definition i8 `{State.Trait} : Set := val Z.
+Definition i16 `{State.Trait} : Set := val Z.
+Definition i32 `{State.Trait} : Set := val Z.
+Definition i64 `{State.Trait} : Set := val Z.
+Definition i128 `{State.Trait} : Set := val Z.
+Definition isize `{State.Trait} : Set := val Z.
 
 (* We approximate floating point numbers with integers *)
-Definition f32 : Set := Z.
-Definition f64 : Set := Z.
+Definition f32 `{State.Trait} : Set := val Z.
+Definition f64 `{State.Trait} : Set := val Z.
 
-Definition str : Set := string.
-Definition char : Set := ascii.
-Definition String : Set := string.
+Definition str `{State.Trait} : Set := val string.
+Definition char `{State.Trait} : Set := val ascii.
+Parameter String : forall `{State.Trait}, Set.
 
-Definition ref (A : Set) : Set := A.
-Definition mut_ref : Set -> Set := ref.
+Definition ref `{State.Trait} (A : Set) : Set := val A.
+Definition mut_ref `{State.Trait} (A : Set) : Set := val A.
 
 Parameter eqb : forall {A : Set}, A -> A -> bool.
 
 Definition slice (A : Set) : Set := list A.
+Definition array (A : Set) : Set := list A.
+
+Definition mk_str `{State.Trait} (s : string) : ref str :=
+  M.Ref.Immutable (M.Ref.Immutable s).

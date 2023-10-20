@@ -2,8 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit := Pure tt.
+Definition main `{State.Trait} : M unit := Pure tt.
 
-Definition foo `{H' : State.Trait} : M (H := H') Empty_set :=
-  let* _ := std.panicking.begin_panic "This call never returns." in
-  Pure tt.
+Definition foo `{State.Trait} : M Empty_set :=
+  let* _ :=
+    let* α0 := std.panicking.begin_panic (mk_str "This call never returns.") in
+    never_to_any α0 in
+  never_to_any tt.

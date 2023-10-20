@@ -3,61 +3,83 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Person.
   Unset Primitive Projections.
-  Record t : Set := {
+  Record t `{State.Trait} : Set := {
     id : u32;
     name : alloc.string.String;
     phone : u64;
   }.
   Global Set Primitive Projections.
   
-  Global Instance Get_id : Notation.Dot "id" := {
-    Notation.dot '(Build_t x0 _ _) := x0;
+  Global Instance Get_id `{State.Trait} : Notation.Dot "id" := {
+    Notation.dot x := let* x := M.read x in Pure x.(id) : M _;
   }.
-  Global Instance Get_AF_id : Notation.DoubleColon t "id" := {
-    Notation.double_colon '(Build_t x0 _ _) := x0;
+  Global Instance Get_AF_id `{State.Trait} : Notation.DoubleColon t "id" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(id) : M _;
   }.
-  Global Instance Get_name : Notation.Dot "name" := {
-    Notation.dot '(Build_t _ x1 _) := x1;
+  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
+    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
-    Notation.double_colon '(Build_t _ x1 _) := x1;
+  Global Instance Get_AF_name `{State.Trait}
+    : Notation.DoubleColon t "name" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
   }.
-  Global Instance Get_phone : Notation.Dot "phone" := {
-    Notation.dot '(Build_t _ _ x2) := x2;
+  Global Instance Get_phone `{State.Trait} : Notation.Dot "phone" := {
+    Notation.dot x := let* x := M.read x in Pure x.(phone) : M _;
   }.
-  Global Instance Get_AF_phone : Notation.DoubleColon t "phone" := {
-    Notation.double_colon '(Build_t _ _ x2) := x2;
+  Global Instance Get_AF_phone `{State.Trait}
+    : Notation.DoubleColon t "phone" := {
+    Notation.double_colon x := let* x := M.read x in Pure x.(phone) : M _;
   }.
 End Person.
-Definition Person : Set := Person.t.
+Definition Person `{State.Trait} : Set := M.val (Person.t).
 
 Module Impl_core_hash_Hash_for_hash_Person.
-  Definition Self := hash.Person.
+  Definition Self `{State.Trait} := hash.Person.
   
   Definition hash
-      `{H' : State.Trait}
+      `{State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
-      : M (H := H') unit :=
-    let* _ := core.hash.Hash.hash (addr_of self.["id"]) state in
-    let* _ := core.hash.Hash.hash (addr_of self.["name"]) state in
-    core.hash.Hash.hash (addr_of self.["phone"]) state.
+      : M unit :=
+    let* _ :=
+      let* α0 := deref self hash.Person in
+      let* α1 := α0.["id"] in
+      let* α2 := borrow α1 u32 in
+      let* α3 := deref α2 u32 in
+      let* α4 := borrow α3 u32 in
+      let* α5 := deref state _ in
+      let* α6 := borrow_mut α5 _ in
+      core.hash.Hash.hash α4 α6 in
+    let* _ :=
+      let* α0 := deref self hash.Person in
+      let* α1 := α0.["name"] in
+      let* α2 := borrow α1 alloc.string.String in
+      let* α3 := deref α2 alloc.string.String in
+      let* α4 := borrow α3 alloc.string.String in
+      let* α5 := deref state _ in
+      let* α6 := borrow_mut α5 _ in
+      core.hash.Hash.hash α4 α6 in
+    let* α0 := deref self hash.Person in
+    let* α1 := α0.["phone"] in
+    let* α2 := borrow α1 u64 in
+    let* α3 := deref α2 u64 in
+    let* α4 := borrow α3 u64 in
+    let* α5 := deref state _ in
+    let* α6 := borrow_mut α5 _ in
+    core.hash.Hash.hash α4 α6.
   
   Global Instance Method_hash
-      `{H' : State.Trait}
+      `{State.Trait}
       {__H : Set}
       `{core.hash.Hasher.Trait __H} :
     Notation.Dot "hash" := {
     Notation.dot := hash (__H := __H);
   }.
   
-  Global Instance I : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash
-      `{H' : State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H}
+  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
+    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
       :=
       hash (__H := __H);
   }.
@@ -65,41 +87,60 @@ Module Impl_core_hash_Hash_for_hash_Person.
 End Impl_core_hash_Hash_for_hash_Person.
 
 Definition calculate_hash
-    `{H' : State.Trait}
+    `{State.Trait}
     {T : Set}
     `{core.hash.Hash.Trait T}
     (t : ref T)
-    : M (H := H') u64 :=
+    : M u64 :=
   let* s := std.collections.hash.map.DefaultHasher::["new"] in
-  let* _ := t.["hash"] (addr_of s) in
-  s.["finish"].
+  let* _ :=
+    let* α0 := deref t _ in
+    let* α1 := borrow α0 _ in
+    let* α2 := borrow_mut s std.collections.hash.map.DefaultHasher in
+    let* α3 := deref α2 std.collections.hash.map.DefaultHasher in
+    let* α4 := borrow_mut α3 std.collections.hash.map.DefaultHasher in
+    core.hash.Hash.hash α1 α4 in
+  let* α0 := borrow s std.collections.hash.map.DefaultHasher in
+  core.hash.Hasher.finish α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{H' : State.Trait} : M (H := H') unit :=
+Definition main `{State.Trait} : M unit :=
   let* person1 :=
-    let* α0 := "Janet".["to_string"] in
-    Pure
-      {|
-        hash.Person.id := 5;
-        hash.Person.name := α0;
-        hash.Person.phone := 5556667777;
+    let* α0 := M.alloc 5 in
+    let* α1 := deref (mk_str "Janet") str in
+    let* α2 := borrow α1 str in
+    let* α3 := alloc.string.ToString.to_string α2 in
+    let* α4 := M.alloc 5556667777 in
+    M.alloc
+      {| hash.Person.id := α0; hash.Person.name := α3; hash.Person.phone := α4;
       |} in
   let* person2 :=
-    let* α0 := "Bob".["to_string"] in
-    Pure
-      {|
-        hash.Person.id := 5;
-        hash.Person.name := α0;
-        hash.Person.phone := 5556667777;
+    let* α0 := M.alloc 5 in
+    let* α1 := deref (mk_str "Bob") str in
+    let* α2 := borrow α1 str in
+    let* α3 := alloc.string.ToString.to_string α2 in
+    let* α4 := M.alloc 5556667777 in
+    M.alloc
+      {| hash.Person.id := α0; hash.Person.name := α3; hash.Person.phone := α4;
       |} in
   let* _ :=
-    let* α0 := hash.calculate_hash (addr_of person1) in
-    let* α1 := hash.calculate_hash (addr_of person2) in
-    let* α2 := α0.["ne"] α1 in
-    let* α3 := α2.["not"] in
-    if (α3 : bool) then
-      core.panicking.panic
-        "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)"
+    let* α0 := borrow person1 hash.Person in
+    let* α1 := deref α0 hash.Person in
+    let* α2 := borrow α1 hash.Person in
+    let* α3 := hash.calculate_hash α2 in
+    let* α4 := borrow person2 hash.Person in
+    let* α5 := deref α4 hash.Person in
+    let* α6 := borrow α5 hash.Person in
+    let* α7 := hash.calculate_hash α6 in
+    let* α8 := ne α3 α7 in
+    let* α9 := not α8 in
+    let* α10 := use α9 in
+    if (α10 : bool) then
+      let* α0 :=
+        core.panicking.panic
+          (mk_str
+            "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
+      never_to_any α0
     else
       Pure tt in
   Pure tt.
