@@ -11,11 +11,11 @@ Require CoqOfRust.ink.ink_engine.
 
 Module arithmetic.
   Module Saturating.
-    Class Trait (Self : Set) : Type := {
-      saturating_add `{State.Trait} : Self -> Self -> M Self;
-      saturating_sub `{State.Trait} : Self -> Self -> M Self;
-      saturating_mul `{State.Trait} : Self -> Self -> M Self;
-      saturating_pow `{State.Trait} : Self -> usize -> M Self;
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      saturating_add : Self -> Self -> M Self;
+      saturating_sub : Self -> Self -> M Self;
+      saturating_mul : Self -> Self -> M Self;
+      saturating_pow : Self -> usize -> M Self;
     }.
     
     Global Instance Method_saturating_add `{State.Trait} `(Trait)
@@ -67,7 +67,8 @@ Module arithmetic.
         `{core.convert.TryInto.Trait Self (T := u32)}
         `{core.convert.TryInto.Trait Self (T := u64)}
         `{core.convert.TryInto.Trait Self (T := u128)}
-        `{core.convert.TryInto.Trait Self (T := usize)} :
+        `{core.convert.TryInto.Trait Self (T := usize)}
+        `{State.Trait} :
         Type := {
     }.
     Global Set Primitive Projections.
@@ -79,7 +80,8 @@ Module arithmetic.
         (Self : Set)
         `{ink_env.arithmetic.BaseArithmetic.Trait Self}
         `{core.convert.From.Trait Self (T := u16)}
-        `{core.convert.From.Trait Self (T := u32)} :
+        `{core.convert.From.Trait Self (T := u32)}
+        `{State.Trait} :
         Type := {
     }.
     Global Set Primitive Projections.
@@ -90,7 +92,8 @@ Module arithmetic.
     Class Trait
         (Self : Set)
         `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
-        `{num_traits.sign.Unsigned.Trait Self} :
+        `{num_traits.sign.Unsigned.Trait Self}
+        `{State.Trait} :
         Type := {
     }.
     Global Set Primitive Projections.
@@ -99,7 +102,7 @@ End arithmetic.
 
 Module types.
   Module FromLittleEndian.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
       Bytes : Set;
       _
         :
@@ -108,7 +111,7 @@ Module types.
           `(core.convert.AsRef.Trait Bytes (T := Slice u8))
           `(core.convert.AsMut.Trait Bytes (T := Slice u8)),
         unit;
-      from_le_bytes `{State.Trait} : Bytes -> M Self;
+      from_le_bytes : Bytes -> M Self;
     }.
     
     Global Instance Method_Bytes `(Trait)
@@ -123,7 +126,7 @@ Module types.
   
   Module AccountIdGuard.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
     }.
     Global Set Primitive Projections.
   End AccountIdGuard.
@@ -133,15 +136,16 @@ Module types.
     Class Trait
         (Self : Set)
         `{scale_decode.DecodeAsType.Trait Self}
-        `{scale_encode.EncodeAsType.Trait Self} :
+        `{scale_encode.EncodeAsType.Trait Self}
+        `{State.Trait} :
         Type := {
     }.
     Global Set Primitive Projections.
   End CodecAsType.
   
   Module Environment.
-    Class Trait (Self : Set) : Type := {
-      MAX_EVENT_TOPICS `{State.Trait} : usize;
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      MAX_EVENT_TOPICS : usize;
       AccountId : Set;
       _
         :
@@ -269,7 +273,7 @@ Module types.
 End types.
 
 Module FromLittleEndian.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     Bytes : Set;
     _
       :
@@ -278,7 +282,7 @@ Module FromLittleEndian.
         `(core.convert.AsRef.Trait Bytes (T := Slice u8))
         `(core.convert.AsMut.Trait Bytes (T := Slice u8)),
       unit;
-    from_le_bytes `{State.Trait} : Bytes -> M Self;
+    from_le_bytes : Bytes -> M Self;
   }.
   
   Global Instance Method_Bytes `(Trait)
@@ -293,7 +297,7 @@ End FromLittleEndian.
 
 Module AccountIdGuard.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End AccountIdGuard.
@@ -303,15 +307,16 @@ Module CodecAsType.
   Class Trait
       (Self : Set)
       `{scale_decode.DecodeAsType.Trait Self}
-      `{scale_encode.EncodeAsType.Trait Self} :
+      `{scale_encode.EncodeAsType.Trait Self}
+      `{State.Trait} :
       Type := {
   }.
   Global Set Primitive Projections.
 End CodecAsType.
 
 Module Environment.
-  Class Trait (Self : Set) : Type := {
-    MAX_EVENT_TOPICS `{State.Trait} : usize;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    MAX_EVENT_TOPICS : usize;
     AccountId : Set;
     _
       :
@@ -439,7 +444,7 @@ Definition BlockNumber `{State.Trait} : Set := u32.
 
 Module contract.
   Module ContractEnv.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
       Env : Set;
       _ : Sigma `(ink_env.types.Environment.Trait Env), unit;
     }.
@@ -451,7 +456,7 @@ Module contract.
   End ContractEnv.
   
   Module ContractReference.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
       Type_ : Set;
     }.
     
@@ -513,10 +518,9 @@ Module call.
     Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
     
     Module Unwrap.
-      Class Trait (Self : Set) : Type := {
+      Class Trait (Self : Set) `{State.Trait} : Type := {
         Output : Set;
         unwrap_or_else
-          `{State.Trait}
           {F : Set}
           `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
           :
@@ -666,9 +670,13 @@ Module call.
     End state.
     
     Module FromAccountId.
-      Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+      Class Trait
+          (Self : Set)
+          {T : Set}
+          `{State.Trait}
+          `{ink_env.types.Environment.Trait T} :
           Type := {
-        from_account_id `{State.Trait}
+        from_account_id
           :
           (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
       }.
@@ -680,12 +688,12 @@ Module call.
     End FromAccountId.
     
     Module ConstructorReturnType.
-      Class Trait (Self : Set) {C : Set} : Type := {
-        IS_RESULT `{State.Trait} : bool;
+      Class Trait (Self : Set) {C : Set} `{State.Trait} : Type := {
+        IS_RESULT : bool;
         Output : Set;
         Error : Set;
         _ : Sigma `(parity_scale_codec.codec.Decode.Trait Error), unit;
-        ok `{State.Trait} : C -> M Output;
+        ok : C -> M Output;
       }.
       
       Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
@@ -1000,14 +1008,17 @@ Module hash.
   Module private.
     Module Sealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Type := {
+      Class Trait (Self : Set) `{State.Trait} : Type := {
       }.
       Global Set Primitive Projections.
     End Sealed.
   End private.
   
   Module HashOutput.
-    Class Trait (Self : Set) `{ink_env.hash.private.Sealed.Trait Self} :
+    Class Trait
+        (Self : Set)
+        `{ink_env.hash.private.Sealed.Trait Self}
+        `{State.Trait} :
         Type := {
       Type_ : Set;
       _ : Sigma `(core.default.Default.Trait Type_), unit;
@@ -1020,8 +1031,12 @@ Module hash.
   End HashOutput.
   
   Module CryptoHash.
-    Class Trait (Self : Set) `{ink_env.hash.HashOutput.Trait Self} : Type := {
-      hash `{State.Trait}
+    Class Trait
+        (Self : Set)
+        `{ink_env.hash.HashOutput.Trait Self}
+        `{State.Trait} :
+        Type := {
+      hash
         :
         (ref (Slice u8)) ->
           (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
@@ -1061,17 +1076,18 @@ End hash.
 
 Module topics.
   Module TopicsBuilderBackend.
-    Class Trait (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E} :
+    Class Trait
+        (Self : Set)
+        {E : Set}
+        `{State.Trait}
+        `{ink_env.types.Environment.Trait E} :
         Type := {
       Output : Set;
-      expect `{State.Trait} : (mut_ref Self) -> usize -> M unit;
-      push_topic
-        `{State.Trait}
-        {T : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait T}
+      expect : (mut_ref Self) -> usize -> M unit;
+      push_topic {T : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait T}
         :
         (mut_ref Self) -> (ref T) -> M unit;
-      output `{State.Trait} : Self -> M Output;
+      output : Self -> M Output;
     }.
     
     Global Instance Method_Output `(Trait)
@@ -1144,7 +1160,7 @@ Module topics.
   End state.
   
   Module SomeRemainingTopics.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
       Next : Set;
     }.
     
@@ -1155,8 +1171,8 @@ Module topics.
   End SomeRemainingTopics.
   
   Module EventTopicsAmount.
-    Class Trait (Self : Set) : Type := {
-      AMOUNT `{State.Trait} : usize;
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      AMOUNT : usize;
     }.
     
     Global Instance Method_AMOUNT `{State.Trait} `(Trait)
@@ -1166,11 +1182,10 @@ Module topics.
   End EventTopicsAmount.
   
   Module Topics.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
       RemainingTopics : Set;
       _ : Sigma `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics), unit;
       topics
-        `{State.Trait}
         {E B : Set}
         `{H'0 : ink_env.types.Environment.Trait E}
         `{H'1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}
@@ -1713,16 +1728,14 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
   Definition ReturnFlags `{State.Trait} : Set := M.val (ReturnFlags.t).
   
   Module EnvBackend.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
       set_contract_storage
-        `{State.Trait}
         {K V : Set}
         `{H'0 : parity_scale_codec.codec.Encode.Trait K}
         `{H'1 : ink_storage_traits.storage.Storable.Trait V}
         :
         (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
       get_contract_storage
-        `{State.Trait}
         {K R : Set}
         `{H'0 : parity_scale_codec.codec.Encode.Trait K}
         `{H'1 : ink_storage_traits.storage.Storable.Trait R}
@@ -1733,7 +1746,6 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               (core.option.Option R));
       take_contract_storage
-        `{State.Trait}
         {K R : Set}
         `{H'0 : parity_scale_codec.codec.Encode.Trait K}
         `{H'1 : ink_storage_traits.storage.Storable.Trait R}
@@ -1744,48 +1756,36 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               (core.option.Option R));
       contains_contract_storage
-        `{State.Trait}
         {K : Set}
         `{H'0 : parity_scale_codec.codec.Encode.Trait K}
         :
         (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
       clear_contract_storage
-        `{State.Trait}
         {K : Set}
         `{H'0 : parity_scale_codec.codec.Encode.Trait K}
         :
         (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-      decode_input
-        `{State.Trait}
-        {T : Set}
-        `{H'0 : parity_scale_codec.codec.Decode.Trait T}
+      decode_input {T : Set} `{H'0 : parity_scale_codec.codec.Decode.Trait T}
         :
         (mut_ref Self) ->
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               T);
-      return_value
-        `{State.Trait}
-        {R : Set}
-        `{H'0 : parity_scale_codec.codec.Encode.Trait R}
+      return_value {R : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait R}
         :
         (mut_ref Self) ->
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
           ->
           (ref R) ->
           M Empty_set;
-      debug_message `{State.Trait} : (mut_ref Self) -> (ref str) -> M unit;
-      hash_bytes
-        `{State.Trait}
-        {H : Set}
-        `{H'0 : ink_env.hash.CryptoHash.Trait H}
+      debug_message : (mut_ref Self) -> (ref str) -> M unit;
+      hash_bytes {H : Set} `{H'0 : ink_env.hash.CryptoHash.Trait H}
         :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
           (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
           M unit;
       hash_encoded
-        `{State.Trait}
         {H T : Set}
         `{H'0 : ink_env.hash.CryptoHash.Trait H}
         `{H'1 : parity_scale_codec.codec.Encode.Trait T}
@@ -1794,7 +1794,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           (ref T) ->
           (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
           M unit;
-      ecdsa_recover `{State.Trait}
+      ecdsa_recover
         :
         (mut_ref Self) ->
           (ref (array u8)) ->
@@ -1803,7 +1803,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               unit);
-      ecdsa_to_eth_address `{State.Trait}
+      ecdsa_to_eth_address
         :
         (mut_ref Self) ->
           (ref (array u8)) ->
@@ -1812,7 +1812,6 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               unit);
       call_chain_extension
-        `{State.Trait}
         {I T E ErrorCode F D : Set}
         `{H'0 : parity_scale_codec.codec.Encode.Trait I}
         `{H'1 : parity_scale_codec.codec.Decode.Trait T}
@@ -1826,7 +1825,7 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           F ->
           D ->
           M (core.result.Result T E);
-      set_code_hash `{State.Trait}
+      set_code_hash
         :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
@@ -1946,61 +1945,37 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
     Class Trait
         (Self : Set)
         `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-              Self} :
+              Self}
+        `{State.Trait} :
         Type := {
-      caller `{State.Trait} {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
+      caller {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M E::type["AccountId"];
-      transferred_value
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      transferred_value {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M E::type["Balance"];
-      weight_to_fee
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      weight_to_fee {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> u64 -> M E::type["Balance"];
-      gas_left
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      gas_left {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M u64;
-      block_timestamp
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      block_timestamp {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M E::type["Timestamp"];
-      account_id
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      account_id {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M E::type["AccountId"];
-      balance
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M E::type["Balance"];
-      block_number
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      block_number {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M E::type["BlockNumber"];
-      minimum_balance
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      minimum_balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M E::type["Balance"];
       emit_event
-        `{State.Trait}
         {E Event : Set}
         `{H'0 : ink_env.types.Environment.Trait E}
         `{H'1 : ink_env.topics.Topics.Trait Event}
@@ -2008,7 +1983,6 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         :
         (mut_ref Self) -> Event -> M unit;
       invoke_contract
-        `{State.Trait}
         {E Args R : Set}
         `{H'0 : ink_env.types.Environment.Trait E}
         `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -2027,7 +2001,6 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               (ink_primitives.MessageResult R));
       invoke_contract_delegate
-        `{State.Trait}
         {E Args R : Set}
         `{H'0 : ink_env.types.Environment.Trait E}
         `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -2046,7 +2019,6 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               (ink_primitives.MessageResult R));
       instantiate_contract
-        `{State.Trait}
         {E ContractRef Args Salt R : Set}
         `{H'0 : ink_env.types.Environment.Trait E}
         `{H'1
@@ -2073,16 +2045,10 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
               (ink_primitives.ConstructorResult
                 (ink_env.call.create_builder.ConstructorReturnType.Output
                   (Self := R))));
-      terminate_contract
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      terminate_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
-      transfer
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      transfer {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) ->
           E::type["AccountId"] ->
@@ -2090,39 +2056,26 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               unit);
-      is_contract
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      is_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
-      caller_is_origin
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      caller_is_origin {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) -> M bool;
-      code_hash
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) ->
           (ref E::type["AccountId"]) ->
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               E::type["Hash"]);
-      own_code_hash
-        `{State.Trait}
-        {E : Set}
-        `{H'0 : ink_env.types.Environment.Trait E}
+      own_code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
         :
         (mut_ref Self) ->
           M
             (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
               E::type["Hash"]);
       call_runtime
-        `{State.Trait}
         {E Call : Set}
         `{H'0 : ink_env.types.Environment.Trait E}
         `{H'1 : parity_scale_codec.codec.Encode.Trait Call}
@@ -2307,10 +2260,10 @@ Module backend_and_call_builder_and_engine_and_engine_test_api_and_error.
         `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
               Self}
         `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
-              Self} :
+              Self}
+        `{State.Trait} :
         Type := {
       on_instance
-        `{State.Trait}
         {F R : Set}
         `{H'0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
         :
@@ -2953,7 +2906,8 @@ Module BaseArithmetic.
       `{core.convert.TryInto.Trait Self (T := u32)}
       `{core.convert.TryInto.Trait Self (T := u64)}
       `{core.convert.TryInto.Trait Self (T := u128)}
-      `{core.convert.TryInto.Trait Self (T := usize)} :
+      `{core.convert.TryInto.Trait Self (T := usize)}
+      `{State.Trait} :
       Type := {
   }.
   Global Set Primitive Projections.
@@ -2965,7 +2919,8 @@ Module AtLeast32Bit.
       (Self : Set)
       `{ink_env.arithmetic.BaseArithmetic.Trait Self}
       `{core.convert.From.Trait Self (T := u16)}
-      `{core.convert.From.Trait Self (T := u32)} :
+      `{core.convert.From.Trait Self (T := u32)}
+      `{State.Trait} :
       Type := {
   }.
   Global Set Primitive Projections.
@@ -2976,18 +2931,19 @@ Module AtLeast32BitUnsigned.
   Class Trait
       (Self : Set)
       `{ink_env.arithmetic.AtLeast32Bit.Trait Self}
-      `{num_traits.sign.Unsigned.Trait Self} :
+      `{num_traits.sign.Unsigned.Trait Self}
+      `{State.Trait} :
       Type := {
   }.
   Global Set Primitive Projections.
 End AtLeast32BitUnsigned.
 
 Module Saturating.
-  Class Trait (Self : Set) : Type := {
-    saturating_add `{State.Trait} : Self -> Self -> M Self;
-    saturating_sub `{State.Trait} : Self -> Self -> M Self;
-    saturating_mul `{State.Trait} : Self -> Self -> M Self;
-    saturating_pow `{State.Trait} : Self -> usize -> M Self;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    saturating_add : Self -> Self -> M Self;
+    saturating_sub : Self -> Self -> M Self;
+    saturating_mul : Self -> Self -> M Self;
+    saturating_pow : Self -> usize -> M Self;
   }.
   
   Global Instance Method_saturating_add `{State.Trait} `(Trait)
@@ -3278,10 +3234,10 @@ Module OnInstance.
       `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
             Self}
       `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.TypedEnvBackend.Trait
-            Self} :
+            Self}
+      `{State.Trait} :
       Type := {
     on_instance
-      `{State.Trait}
       {F R : Set}
       `{H'0 : core.ops.function.FnOnce.Trait F (Args := mut_ref Self)}
       :
@@ -3591,16 +3547,14 @@ End CallFlags.
 Definition CallFlags `{State.Trait} : Set := M.val (CallFlags.t).
 
 Module EnvBackend.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     set_contract_storage
-      `{State.Trait}
       {K V : Set}
       `{H'0 : parity_scale_codec.codec.Encode.Trait K}
       `{H'1 : ink_storage_traits.storage.Storable.Trait V}
       :
       (mut_ref Self) -> (ref K) -> (ref V) -> M (core.option.Option u32);
     get_contract_storage
-      `{State.Trait}
       {K R : Set}
       `{H'0 : parity_scale_codec.codec.Encode.Trait K}
       `{H'1 : ink_storage_traits.storage.Storable.Trait R}
@@ -3611,7 +3565,6 @@ Module EnvBackend.
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (core.option.Option R));
     take_contract_storage
-      `{State.Trait}
       {K R : Set}
       `{H'0 : parity_scale_codec.codec.Encode.Trait K}
       `{H'1 : ink_storage_traits.storage.Storable.Trait R}
@@ -3622,45 +3575,36 @@ Module EnvBackend.
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (core.option.Option R));
     contains_contract_storage
-      `{State.Trait}
       {K : Set}
       `{H'0 : parity_scale_codec.codec.Encode.Trait K}
       :
       (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
     clear_contract_storage
-      `{State.Trait}
       {K : Set}
       `{H'0 : parity_scale_codec.codec.Encode.Trait K}
       :
       (mut_ref Self) -> (ref K) -> M (core.option.Option u32);
-    decode_input
-      `{State.Trait}
-      {T : Set}
-      `{H'0 : parity_scale_codec.codec.Decode.Trait T}
+    decode_input {T : Set} `{H'0 : parity_scale_codec.codec.Decode.Trait T}
       :
       (mut_ref Self) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             T);
-    return_value
-      `{State.Trait}
-      {R : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait R}
+    return_value {R : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait R}
       :
       (mut_ref Self) ->
         ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags
         ->
         (ref R) ->
         M Empty_set;
-    debug_message `{State.Trait} : (mut_ref Self) -> (ref str) -> M unit;
-    hash_bytes `{State.Trait} {H : Set} `{H'0 : ink_env.hash.CryptoHash.Trait H}
+    debug_message : (mut_ref Self) -> (ref str) -> M unit;
+    hash_bytes {H : Set} `{H'0 : ink_env.hash.CryptoHash.Trait H}
       :
       (mut_ref Self) ->
         (ref (Slice u8)) ->
         (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M unit;
     hash_encoded
-      `{State.Trait}
       {H T : Set}
       `{H'0 : ink_env.hash.CryptoHash.Trait H}
       `{H'1 : parity_scale_codec.codec.Encode.Trait T}
@@ -3669,7 +3613,7 @@ Module EnvBackend.
         (ref T) ->
         (mut_ref (ink_env.hash.HashOutput.Type_ (Self := H))) ->
         M unit;
-    ecdsa_recover `{State.Trait}
+    ecdsa_recover
       :
       (mut_ref Self) ->
         (ref (array u8)) ->
@@ -3678,7 +3622,7 @@ Module EnvBackend.
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             unit);
-    ecdsa_to_eth_address `{State.Trait}
+    ecdsa_to_eth_address
       :
       (mut_ref Self) ->
         (ref (array u8)) ->
@@ -3687,7 +3631,6 @@ Module EnvBackend.
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             unit);
     call_chain_extension
-      `{State.Trait}
       {I T E ErrorCode F D : Set}
       `{H'0 : parity_scale_codec.codec.Encode.Trait I}
       `{H'1 : parity_scale_codec.codec.Decode.Trait T}
@@ -3696,7 +3639,7 @@ Module EnvBackend.
       `{H'4 : core.ops.function.FnOnce.Trait D (Args := ref (Slice u8))}
       :
       (mut_ref Self) -> u32 -> (ref I) -> F -> D -> M (core.result.Result T E);
-    set_code_hash `{State.Trait}
+    set_code_hash
       :
       (mut_ref Self) ->
         (ref (Slice u8)) ->
@@ -3816,55 +3759,37 @@ Module TypedEnvBackend.
   Class Trait
       (Self : Set)
       `{ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.EnvBackend.Trait
-            Self} :
+            Self}
+      `{State.Trait} :
       Type := {
-    caller `{State.Trait} {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
+    caller {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M E::type["AccountId"];
-    transferred_value
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    transferred_value {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M E::type["Balance"];
-    weight_to_fee
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    weight_to_fee {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> u64 -> M E::type["Balance"];
-    gas_left `{State.Trait} {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
+    gas_left {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M u64;
-    block_timestamp
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    block_timestamp {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M E::type["Timestamp"];
-    account_id
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    account_id {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M E::type["AccountId"];
-    balance `{State.Trait} {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
+    balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M E::type["Balance"];
-    block_number
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    block_number {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M E::type["BlockNumber"];
-    minimum_balance
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    minimum_balance {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M E::type["Balance"];
     emit_event
-      `{State.Trait}
       {E Event : Set}
       `{H'0 : ink_env.types.Environment.Trait E}
       `{H'1 : ink_env.topics.Topics.Trait Event}
@@ -3872,7 +3797,6 @@ Module TypedEnvBackend.
       :
       (mut_ref Self) -> Event -> M unit;
     invoke_contract
-      `{State.Trait}
       {E Args R : Set}
       `{H'0 : ink_env.types.Environment.Trait E}
       `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -3891,7 +3815,6 @@ Module TypedEnvBackend.
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (ink_primitives.MessageResult R));
     invoke_contract_delegate
-      `{State.Trait}
       {E Args R : Set}
       `{H'0 : ink_env.types.Environment.Trait E}
       `{H'1 : parity_scale_codec.codec.Encode.Trait Args}
@@ -3910,7 +3833,6 @@ Module TypedEnvBackend.
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             (ink_primitives.MessageResult R));
     instantiate_contract
-      `{State.Trait}
       {E ContractRef Args Salt R : Set}
       `{H'0 : ink_env.types.Environment.Trait E}
       `{H'1
@@ -3932,13 +3854,10 @@ Module TypedEnvBackend.
             (ink_primitives.ConstructorResult
               (ink_env.call.create_builder.ConstructorReturnType.Output
                 (Self := R))));
-    terminate_contract
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    terminate_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> E::type["AccountId"] -> M Empty_set;
-    transfer `{State.Trait} {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
+    transfer {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) ->
         E::type["AccountId"] ->
@@ -3946,39 +3865,26 @@ Module TypedEnvBackend.
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             unit);
-    is_contract
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    is_contract {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> (ref E::type["AccountId"]) -> M bool;
-    caller_is_origin
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    caller_is_origin {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) -> M bool;
-    code_hash
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) ->
         (ref E::type["AccountId"]) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             E::type["Hash"]);
-    own_code_hash
-      `{State.Trait}
-      {E : Set}
-      `{H'0 : ink_env.types.Environment.Trait E}
+    own_code_hash {E : Set} `{H'0 : ink_env.types.Environment.Trait E}
       :
       (mut_ref Self) ->
         M
           (ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Result
             E::type["Hash"]);
     call_runtime
-      `{State.Trait}
       {E Call : Set}
       `{H'0 : ink_env.types.Environment.Trait E}
       `{H'1 : parity_scale_codec.codec.Encode.Trait Call}
@@ -4207,10 +4113,9 @@ Module common.
   Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
   
   Module Unwrap.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
       Output : Set;
       unwrap_or_else
-        `{State.Trait}
         {F : Set}
         `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
         :
@@ -4281,10 +4186,9 @@ End Unset_.
 Definition Unset_ `{State.Trait} : Set := M.val Unset_.t.
 
 Module Unwrap.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     Output : Set;
     unwrap_or_else
-      `{State.Trait}
       {F : Set}
       `{H'0 : core.ops.function.FnOnce.Trait F (Args := unit)}
       :
@@ -4315,9 +4219,13 @@ Module create_builder.
   End state.
   
   Module FromAccountId.
-    Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+    Class Trait
+        (Self : Set)
+        {T : Set}
+        `{State.Trait}
+        `{ink_env.types.Environment.Trait T} :
         Type := {
-      from_account_id `{State.Trait}
+      from_account_id
         :
         (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
     }.
@@ -4329,12 +4237,12 @@ Module create_builder.
   End FromAccountId.
   
   Module ConstructorReturnType.
-    Class Trait (Self : Set) {C : Set} : Type := {
-      IS_RESULT `{State.Trait} : bool;
+    Class Trait (Self : Set) {C : Set} `{State.Trait} : Type := {
+      IS_RESULT : bool;
       Output : Set;
       Error : Set;
       _ : Sigma `(parity_scale_codec.codec.Decode.Trait Error), unit;
-      ok `{State.Trait} : C -> M Output;
+      ok : C -> M Output;
     }.
     
     Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
@@ -4574,9 +4482,13 @@ End Salt.
 Definition Salt `{State.Trait} : Set := Salt.t.
 
 Module FromAccountId.
-  Class Trait (Self : Set) {T : Set} `{ink_env.types.Environment.Trait T} :
+  Class Trait
+      (Self : Set)
+      {T : Set}
+      `{State.Trait}
+      `{ink_env.types.Environment.Trait T} :
       Type := {
-    from_account_id `{State.Trait}
+    from_account_id
       :
       (ink_env.types.Environment.AccountId (Self := T)) -> M Self;
   }.
@@ -4588,12 +4500,12 @@ Module FromAccountId.
 End FromAccountId.
 
 Module ConstructorReturnType.
-  Class Trait (Self : Set) {C : Set} : Type := {
-    IS_RESULT `{State.Trait} : bool;
+  Class Trait (Self : Set) {C : Set} `{State.Trait} : Type := {
+    IS_RESULT : bool;
     Output : Set;
     Error : Set;
     _ : Sigma `(parity_scale_codec.codec.Decode.Trait Error), unit;
-    ok `{State.Trait} : C -> M Output;
+    ok : C -> M Output;
   }.
   
   Global Instance Method_IS_RESULT `{State.Trait} `(Trait)
@@ -5046,8 +4958,9 @@ Definition Selector `{State.Trait} : Set := M.val (Selector.t).
 
 Module chain_extension.
   Module FromStatusCode.
-    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
-      from_status_code `{State.Trait} : u32 -> M (core.result.Result unit Self);
+    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} `{State.Trait} :
+        Type := {
+      from_status_code : u32 -> M (core.result.Result unit Self);
     }.
     
     Global Instance Method_from_status_code `{State.Trait} `(Trait)
@@ -5120,7 +5033,7 @@ Module chain_extension.
   Module private.
     Module IsResultTypeSealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Type := {
+      Class Trait (Self : Set) `{State.Trait} : Type := {
       }.
       Global Set Primitive Projections.
     End IsResultTypeSealed.
@@ -5129,7 +5042,8 @@ Module chain_extension.
   Module IsResultType.
     Class Trait
         (Self : Set)
-        `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
+        `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
+        `{State.Trait} :
         Type := {
       Ok : Set;
       Err : Set;
@@ -5146,8 +5060,9 @@ Module chain_extension.
 End chain_extension.
 
 Module FromStatusCode.
-  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
-    from_status_code `{State.Trait} : u32 -> M (core.result.Result unit Self);
+  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} `{State.Trait} :
+      Type := {
+    from_status_code : u32 -> M (core.result.Result unit Self);
   }.
   
   Global Instance Method_from_status_code `{State.Trait} `(Trait)
@@ -5253,7 +5168,8 @@ Definition HandleErrorCode (T : Set) `{State.Trait} : Set :=
 Module IsResultType.
   Class Trait
       (Self : Set)
-      `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self} :
+      `{ink_env.chain_extension.private.IsResultTypeSealed.Trait Self}
+      `{State.Trait} :
       Type := {
     Ok : Set;
     Err : Set;
@@ -5270,7 +5186,7 @@ End IsResultType.
 Module private.
   Module IsResultTypeSealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
     }.
     Global Set Primitive Projections.
   End IsResultTypeSealed.
@@ -5278,13 +5194,13 @@ End private.
 
 Module IsResultTypeSealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End IsResultTypeSealed.
 
 Module ContractEnv.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     Env : Set;
     _ : Sigma `(ink_env.types.Environment.Trait Env), unit;
   }.
@@ -5295,7 +5211,7 @@ Module ContractEnv.
 End ContractEnv.
 
 Module ContractReference.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     Type_ : Set;
   }.
   
@@ -5498,7 +5414,11 @@ End AccountError.
 Definition AccountError `{State.Trait} : Set := AccountError.t.
 
 Module HashOutput.
-  Class Trait (Self : Set) `{ink_env.hash.private.Sealed.Trait Self} : Type := {
+  Class Trait
+      (Self : Set)
+      `{ink_env.hash.private.Sealed.Trait Self}
+      `{State.Trait} :
+      Type := {
     Type_ : Set;
     _ : Sigma `(core.default.Default.Trait Type_), unit;
   }.
@@ -5510,8 +5430,12 @@ Module HashOutput.
 End HashOutput.
 
 Module CryptoHash.
-  Class Trait (Self : Set) `{ink_env.hash.HashOutput.Trait Self} : Type := {
-    hash `{State.Trait}
+  Class Trait
+      (Self : Set)
+      `{ink_env.hash.HashOutput.Trait Self}
+      `{State.Trait} :
+      Type := {
+    hash
       :
       (ref (Slice u8)) ->
         (mut_ref (ink_env.hash.HashOutput.Type_ (Self := Self))) ->
@@ -5551,7 +5475,7 @@ Module Wrap_private_1.
   Module private.
     Module Sealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Type := {
+      Class Trait (Self : Set) `{State.Trait} : Type := {
       }.
       Global Set Primitive Projections.
     End Sealed.
@@ -5561,23 +5485,24 @@ Import Wrap_private_1.
 
 Module Sealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Sealed.
 
 Module TopicsBuilderBackend.
-  Class Trait (Self : Set) {E : Set} `{ink_env.types.Environment.Trait E} :
+  Class Trait
+      (Self : Set)
+      {E : Set}
+      `{State.Trait}
+      `{ink_env.types.Environment.Trait E} :
       Type := {
     Output : Set;
-    expect `{State.Trait} : (mut_ref Self) -> usize -> M unit;
-    push_topic
-      `{State.Trait}
-      {T : Set}
-      `{H'0 : parity_scale_codec.codec.Encode.Trait T}
+    expect : (mut_ref Self) -> usize -> M unit;
+    push_topic {T : Set} `{H'0 : parity_scale_codec.codec.Encode.Trait T}
       :
       (mut_ref Self) -> (ref T) -> M unit;
-    output `{State.Trait} : Self -> M Output;
+    output : Self -> M Output;
   }.
   
   Global Instance Method_Output `(Trait)
@@ -5671,7 +5596,7 @@ End NoRemainingTopics.
 Definition NoRemainingTopics `{State.Trait} : Set := NoRemainingTopics.t.
 
 Module SomeRemainingTopics.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     Next : Set;
   }.
   
@@ -5682,8 +5607,8 @@ Module SomeRemainingTopics.
 End SomeRemainingTopics.
 
 Module EventTopicsAmount.
-  Class Trait (Self : Set) : Type := {
-    AMOUNT `{State.Trait} : usize;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    AMOUNT : usize;
   }.
   
   Global Instance Method_AMOUNT `{State.Trait} `(Trait)
@@ -5693,11 +5618,10 @@ Module EventTopicsAmount.
 End EventTopicsAmount.
 
 Module Topics.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     RemainingTopics : Set;
     _ : Sigma `(ink_env.topics.EventTopicsAmount.Trait RemainingTopics), unit;
     topics
-      `{State.Trait}
       {E B : Set}
       `{H'0 : ink_env.types.Environment.Trait E}
       `{H'1 : ink_env.topics.TopicsBuilderBackend.Trait B (E := E)}

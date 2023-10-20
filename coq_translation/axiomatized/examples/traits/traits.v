@@ -27,10 +27,10 @@ End Sheep.
 Definition Sheep `{State.Trait} : Set := M.val (Sheep.t).
 
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    new `{State.Trait} : (ref str) -> M Self;
-    name `{State.Trait} : (ref Self) -> M (ref str);
-    noise `{State.Trait} : (ref Self) -> M (ref str);
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    new : (ref str) -> M Self;
+    name : (ref Self) -> M (ref str);
+    noise : (ref Self) -> M (ref str);
   }.
   
   Global Instance Method_new `{State.Trait} `(Trait) : Notation.Dot "new" := {

@@ -23,7 +23,7 @@ Module Global.
 End Global.
 Definition Global := Global.t.
 
-Global Instance Clone_for_Global : core.clone.Clone.Trait Global.
+Global Instance Clone_for_Global `{State.Trait} : core.clone.Clone.Trait Global.
 Admitted.
 
 Module layout.

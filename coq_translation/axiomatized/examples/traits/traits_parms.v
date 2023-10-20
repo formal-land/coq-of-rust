@@ -3,27 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Foo.
 
 Module Bar.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Bar.
 
 Module Tar.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Tar.
 
 Module SomeTrait.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     SomeType : Set;
     _
       :
@@ -32,7 +32,7 @@ Module SomeTrait.
         `(traits_parms.Bar.Trait SomeType)
         `(traits_parms.Tar.Trait SomeType),
       unit;
-    some_fn `{State.Trait} : M unit;
+    some_fn : M unit;
   }.
   
   Global Instance Method_SomeType `(Trait)

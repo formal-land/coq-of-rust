@@ -19,13 +19,13 @@ End Container.
 Definition Container `{State.Trait} : Set := M.val Container.t.
 
 Module Contains.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
     A : Set;
     B : Set;
-    contains `{State.Trait} : (ref Self) -> (ref A) -> (ref B) -> M bool;
-    first `{State.Trait} : (ref Self) -> M i32;
-    last `{State.Trait} : (ref Self) -> M i32;
-    a `{State.Trait} : (ref Self) -> M A;
+    contains : (ref Self) -> (ref A) -> (ref B) -> M bool;
+    first : (ref Self) -> M i32;
+    last : (ref Self) -> M i32;
+    a : (ref Self) -> M A;
   }.
   
   Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {

@@ -10,10 +10,10 @@ Module Point.
   Global Set Primitive Projections.
   
   Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x := let* x' := M.read x' in Pure x'.(x) : M _;
+    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
   }.
   Global Instance Get_y `{State.Trait} : Notation.Dot "y" := {
     Notation.dot x := let* x := M.read x in Pure x.(y) : M _;

@@ -14,8 +14,8 @@ pub trait Clone: Sized {
 }
 *)
 Module Clone.
-  Class Trait (Self : Set) : Set := {
-    clone `{H : State.Trait} : ref Self -> M (H := H) Self;
+  Class Trait (Self : Set) `{H : State.Trait} : Set := {
+    clone : ref Self -> M (H := H) Self;
   }.
 
   Global Instance Method_clone `{State.Trait} `(Trait) : Notation.Dot "clone" := {
@@ -27,6 +27,6 @@ Module Clone.
   End Impl_Clone_for_str.
 
   Module Impl_Clone_for_Z.
-    Global Instance I `{State.Trait} : Trait Z. Admitted.
+    Global Instance I `{State.Trait} : Trait (M.val Z). Admitted.
   End Impl_Clone_for_Z.
 End Clone.

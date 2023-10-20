@@ -735,9 +735,9 @@ Module chain_extension.
   Definition ExtensionId `{State.Trait} : Set := M.val ExtensionId.t.
   
   Module ChainExtension.
-    Class Trait (Self : Set) : Type := {
-      func_id `{State.Trait} : (ref Self) -> M u32;
-      call `{State.Trait}
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      func_id : (ref Self) -> M u32;
+      call
         :
         (mut_ref Self) ->
           (ref (Slice u8)) ->
@@ -2022,9 +2022,9 @@ Module Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
 End Impl_core_hash_Hash_for_ink_engine_chain_extension_ExtensionId.
 
 Module ChainExtension.
-  Class Trait (Self : Set) : Type := {
-    func_id `{State.Trait} : (ref Self) -> M u32;
-    call `{State.Trait}
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    func_id : (ref Self) -> M u32;
+    call
       :
       (mut_ref Self) ->
         (ref (Slice u8)) ->

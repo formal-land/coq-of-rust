@@ -36,8 +36,8 @@ End Bar.
 Definition Bar `{State.Trait} : Set := M.val (Bar.t).
 
 Module BarTrait.
-  Class Trait (Self : Set) : Type := {
-    show `{State.Trait} : Self -> M alloc.string.String;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    show : Self -> M alloc.string.String;
   }.
   
   Global Instance Method_show `{State.Trait} `(Trait) : Notation.Dot "show" := {

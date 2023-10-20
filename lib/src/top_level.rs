@@ -354,14 +354,6 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 return vec![];
             }
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            // let local_def_id = body_id.hir_id.owner.def_id;
-            // let thir = tcx.thir_body(local_def_id);
-            // println!("{name}:\n\n{thir:#?}\n\n\n\n");
-            // let Ok((thir, expr_id)) = thir else {
-            //     panic!("thir failed to compile for {name}");
-            // };
-            // let thir = thir.steal();
-            // crate::thir_expression::compile_expr(env, &thir, &expr_id);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
             vec![TopLevelItem::Definition(FunDefinition::compile(
                 env,
@@ -677,7 +669,6 @@ fn compile_function_body(env: &mut Env, body: &rustc_hir::Body) -> Option<Box<Ex
     if env.axiomatize {
         None
     } else {
-        // Some(Box::new(compile_expr(env, body.value)))
         Some(Box::new(crate::thir_expression::compile_expr(
             env, &thir, &expr_id,
         )))
@@ -2153,7 +2144,7 @@ impl TopLevelItem {
                                             &coq::Expression::Record {
                                                 fields: vec![coq::Field::new(
                                                     &Path::new(&["Notation", "dot"]),
-                                                    &[struct_projection_pattern()],
+                                                    &[struct_projection_pattern(name.to_owned())],
                                                     &struct_field_value(format!("x{i}")),
                                                 )],
                                             },
@@ -2271,10 +2262,14 @@ impl TopLevelItem {
                         )
                     })
                     .collect::<Vec<_>>(),
-                &predicates
-                    .iter()
-                    .map(|predicate| predicate.to_coq())
-                    .collect::<Vec<_>>(),
+                &vec![
+                    vec![coq::ArgDecl::monadic_typeclass_parameter()],
+                    predicates
+                        .iter()
+                        .map(|predicate| predicate.to_coq())
+                        .collect::<Vec<_>>(),
+                ]
+                .concat(),
                 &bounds
                     .iter()
                     .map(|bound| {
@@ -2294,7 +2289,6 @@ impl TopLevelItem {
                         } => vec![coq::ClassFieldDef::new(
                             &Some(name.to_owned()),
                             &[
-                                vec![coq::ArgDecl::monadic_typeclass_parameter()],
                                 if ty_params.is_empty() {
                                     vec![]
                                 } else {
@@ -2670,10 +2664,10 @@ impl TopLevelItem {
     }
 }
 
-fn struct_projection_pattern<'a>() -> coq::ArgDecl<'a> {
+fn struct_projection_pattern<'a>(name: String) -> coq::ArgDecl<'a> {
     coq::ArgDecl::new(
         &coq::ArgDeclVar::Simple {
-            idents: vec!["x".to_string()],
+            idents: vec![if name == "x" { "x'" } else { "x" }.to_string()],
             ty: None,
         },
         coq::ArgSpecKind::Explicit,
@@ -2918,7 +2912,7 @@ impl TypeStructStruct {
                                                       &coq::Expression::Record {
                                                           fields: vec![coq::Field::new(
                                                               &Path::new(&["Notation", "dot"]),
-                                                              &[struct_projection_pattern()],
+                                                              &[struct_projection_pattern(name.to_owned())],
                                                               &struct_field_value(name.to_owned()),
                                                           )],
                                                       },
@@ -2945,7 +2939,7 @@ impl TypeStructStruct {
                                                                   "Notation",
                                                                   "double_colon",
                                                               ]),
-                                                              &[struct_projection_pattern()],
+                                                              &[struct_projection_pattern(name.to_owned())],
                                                               &struct_field_value(name.to_owned()),
                                                           )],
                                                       },

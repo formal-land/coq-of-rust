@@ -16,8 +16,8 @@ End Cow.
 Definition Cow `{State.Trait} : Set := M.val (Cow.t).
 
 Module Animal.
-  Class Trait (Self : Set) : Type := {
-    noise `{State.Trait} : (ref Self) -> M (ref str);
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    noise : (ref Self) -> M (ref str);
   }.
   
   Global Instance Method_noise `{State.Trait} `(Trait)

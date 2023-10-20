@@ -53,9 +53,6 @@ pub(crate) fn compile_expr(
             Expr::Call { func, args }
         }
         ExprKind::Deref { arg } => {
-            // print expr.ty and arg.ty
-            // println!("expr: {:#?}", expr);
-            // println!("arg.ty: {:#?}", arg.ty);
             let ty = Expr::Type(compile_type(env, &expr.ty));
             let arg = compile_expr(env, thir, arg);
             Expr::Call {

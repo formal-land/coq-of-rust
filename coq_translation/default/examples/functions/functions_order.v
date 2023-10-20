@@ -46,9 +46,9 @@ Module Impl_functions_order_SomeType.
 End Impl_functions_order_SomeType.
 
 Module SomeTrait.
-  Class Trait (Self : Set) : Type := {
-    some_trait_foo `{State.Trait} : (ref Self) -> M unit;
-    some_trait_bar `{State.Trait} : (ref Self) -> M unit;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    some_trait_foo : (ref Self) -> M unit;
+    some_trait_bar : (ref Self) -> M unit;
   }.
   
   Global Instance Method_some_trait_foo `{State.Trait} `(Trait)

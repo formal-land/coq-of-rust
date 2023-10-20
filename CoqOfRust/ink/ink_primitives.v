@@ -833,9 +833,9 @@ Module types.
   End Impl_core_convert_From_for_Array_u8.
   
   Module Clear.
-    Class Trait (Self : Set) : Type := {
-      CLEAR_HASH `{State.Trait} : Self;
-      is_clear `{State.Trait} : (ref Self) -> M bool;
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      CLEAR_HASH : Self;
+      is_clear : (ref Self) -> M bool;
     }.
     
     Global Instance Method_CLEAR_HASH `{State.Trait} `(Trait)
@@ -1954,9 +1954,9 @@ Module Impl_core_convert_From_for_Array_u8.
 End Impl_core_convert_From_for_Array_u8.
 
 Module Clear.
-  Class Trait (Self : Set) : Type := {
-    CLEAR_HASH `{State.Trait} : Self;
-    is_clear `{State.Trait} : (ref Self) -> M bool;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    CLEAR_HASH : Self;
+    is_clear : (ref Self) -> M bool;
   }.
   
   Global Instance Method_CLEAR_HASH `{State.Trait} `(Trait)

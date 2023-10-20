@@ -372,8 +372,8 @@ Module Impl_core_convert_From_for_subtle_Choice.
 End Impl_core_convert_From_for_subtle_Choice.
 
 Module ConstantTimeEq.
-  Class Trait (Self : Set) : Type := {
-    ct_eq `{State.Trait} : (ref Self) -> (ref Self) -> M subtle.Choice;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    ct_eq : (ref Self) -> (ref Self) -> M subtle.Choice;
   }.
   
   Global Instance Method_ct_eq `{State.Trait} `(Trait)
@@ -815,10 +815,9 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} : Type := {
-    conditional_select `{State.Trait}
-      :
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self;
+  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} `{State.Trait} :
+      Type := {
+    conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> M Self;
   }.
   
   Global Instance Method_conditional_select `{State.Trait} `(Trait)
@@ -1601,10 +1600,8 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) : Type := {
-    conditional_negate `{State.Trait}
-      :
-      (mut_ref Self) -> subtle.Choice -> M unit;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    conditional_negate : (mut_ref Self) -> subtle.Choice -> M unit;
   }.
   
   Global Instance Method_conditional_negate `{State.Trait} `(Trait)
@@ -2185,8 +2182,8 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) : Type := {
-    ct_gt `{State.Trait} : (ref Self) -> (ref Self) -> M subtle.Choice;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    ct_gt : (ref Self) -> (ref Self) -> M subtle.Choice;
   }.
   
   Global Instance Method_ct_gt `{State.Trait} `(Trait)
@@ -2464,7 +2461,8 @@ Module ConstantTimeLess.
   Class Trait
       (Self : Set)
       `{subtle.ConstantTimeEq.Trait Self}
-      `{subtle.ConstantTimeGreater.Trait Self} :
+      `{subtle.ConstantTimeGreater.Trait Self}
+      `{State.Trait} :
       Type := {
   }.
   Global Set Primitive Projections.

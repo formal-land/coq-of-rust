@@ -6,18 +6,15 @@ Require CoqOfRust.ink.parity_scale_codec.
 
 Module storage.
   Module Storable.
-    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
+    Class Trait (Self : Set) `{core.marker.Sized.Trait Self} `{State.Trait} :
+        Type := {
       encode
-        `{State.Trait}
         {T : Set}
         `{H'0 : parity_scale_codec.codec.Output.Trait T}
         `{H'1 : core.marker.Sized.Trait T}
         :
         (ref Self) -> (mut_ref T) -> M unit;
-      decode
-        `{State.Trait}
-        {I : Set}
-        `{H'0 : parity_scale_codec.codec.Input.Trait I}
+      decode {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
         :
         (mut_ref I) ->
           M (core.result.Result Self parity_scale_codec.error.Error);
@@ -100,7 +97,7 @@ Module storage.
   Module private.
     Module Sealed.
       Unset Primitive Projections.
-      Class Trait (Self : Set) : Type := {
+      Class Trait (Self : Set) `{State.Trait} : Type := {
       }.
       Global Set Primitive Projections.
     End Sealed.
@@ -112,15 +109,16 @@ Module storage.
         (Self : Set)
         `{ink_storage_traits.storage.Storable.Trait Self}
         `{parity_scale_codec.codec.Codec.Trait Self}
-        `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+        `{ink_storage_traits.storage.private.Sealed.Trait Self}
+        `{State.Trait} :
         Type := {
     }.
     Global Set Primitive Projections.
   End Packed.
   
   Module StorageKey.
-    Class Trait (Self : Set) : Type := {
-      KEY `{State.Trait} : ink_primitives.key.Key;
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      KEY : ink_primitives.key.Key;
     }.
     
     Global Instance Method_KEY `{State.Trait} `(Trait) : Notation.Dot "KEY" := {
@@ -135,6 +133,7 @@ Module storage.
     Class Trait
         (Self : Set)
         {Key : Set}
+        `{State.Trait}
         `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
@@ -160,6 +159,7 @@ Module storage.
     Class Trait
         (Self : Set)
         {Key : Set}
+        `{State.Trait}
         `{ink_storage_traits.storage.StorageKey.Trait Key} :
         Type := {
       Type_ : Set;
@@ -1777,18 +1777,15 @@ End Impl_ink_storage_traits_storage_StorageKey_for_P. *)
 End Impl_ink_storage_traits_storage_StorableHint_for_P. *)
 
 Module Storable.
-  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} : Type := {
+  Class Trait (Self : Set) `{core.marker.Sized.Trait Self} `{State.Trait} :
+      Type := {
     encode
-      `{State.Trait}
       {T : Set}
       `{H'0 : parity_scale_codec.codec.Output.Trait T}
       `{H'1 : core.marker.Sized.Trait T}
       :
       (ref Self) -> (mut_ref T) -> M unit;
-    decode
-      `{State.Trait}
-      {I : Set}
-      `{H'0 : parity_scale_codec.codec.Input.Trait I}
+    decode {I : Set} `{H'0 : parity_scale_codec.codec.Input.Trait I}
       :
       (mut_ref I) -> M (core.result.Result Self parity_scale_codec.error.Error);
   }.
@@ -1870,7 +1867,7 @@ End Impl_ink_storage_traits_storage_Storable_for_P. *)
 Module private.
   Module Sealed.
     Unset Primitive Projections.
-    Class Trait (Self : Set) : Type := {
+    Class Trait (Self : Set) `{State.Trait} : Type := {
     }.
     Global Set Primitive Projections.
   End Sealed.
@@ -1878,7 +1875,7 @@ End private.
 
 Module Sealed.
   Unset Primitive Projections.
-  Class Trait (Self : Set) : Type := {
+  Class Trait (Self : Set) `{State.Trait} : Type := {
   }.
   Global Set Primitive Projections.
 End Sealed.
@@ -1889,15 +1886,16 @@ Module Packed.
       (Self : Set)
       `{ink_storage_traits.storage.Storable.Trait Self}
       `{parity_scale_codec.codec.Codec.Trait Self}
-      `{ink_storage_traits.storage.private.Sealed.Trait Self} :
+      `{ink_storage_traits.storage.private.Sealed.Trait Self}
+      `{State.Trait} :
       Type := {
   }.
   Global Set Primitive Projections.
 End Packed.
 
 Module StorageKey.
-  Class Trait (Self : Set) : Type := {
-    KEY `{State.Trait} : ink_primitives.key.Key;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    KEY : ink_primitives.key.Key;
   }.
   
   Global Instance Method_KEY `{State.Trait} `(Trait) : Notation.Dot "KEY" := {
@@ -1912,6 +1910,7 @@ Module StorableHint.
   Class Trait
       (Self : Set)
       {Key : Set}
+      `{State.Trait}
       `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
@@ -1934,6 +1933,7 @@ Module AutoStorableHint.
   Class Trait
       (Self : Set)
       {Key : Set}
+      `{State.Trait}
       `{ink_storage_traits.storage.StorageKey.Trait Key} :
       Type := {
     Type_ : Set;
@@ -1948,8 +1948,8 @@ End AutoStorableHint.
 
 Module layout.
   Module StorageLayout.
-    Class Trait (Self : Set) : Type := {
-      layout `{State.Trait}
+    Class Trait (Self : Set) `{State.Trait} : Type := {
+      layout
         :
         (ref ink_primitives.key.Key) ->
           M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);
@@ -3963,8 +3963,8 @@ End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_btree_set
 End Impl_ink_storage_traits_layout_StorageLayout_for_alloc_collections_vec_deque_VecDeque_T_alloc_collections_vec_deque_VecDeque_Default_A. *)
 
 Module StorageLayout.
-  Class Trait (Self : Set) : Type := {
-    layout `{State.Trait}
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    layout
       :
       (ref ink_primitives.key.Key) ->
         M (ink_metadata.layout.Layout ink_metadata.layout.Layout.Default.F);

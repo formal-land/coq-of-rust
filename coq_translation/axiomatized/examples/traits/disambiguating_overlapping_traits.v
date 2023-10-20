@@ -2,8 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module UsernameWidget.
-  Class Trait (Self : Set) : Type := {
-    get `{State.Trait} : (ref Self) -> M alloc.string.String;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    get : (ref Self) -> M alloc.string.String;
   }.
   
   Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
@@ -12,8 +12,8 @@ Module UsernameWidget.
 End UsernameWidget.
 
 Module AgeWidget.
-  Class Trait (Self : Set) : Type := {
-    get `{State.Trait} : (ref Self) -> M u8;
+  Class Trait (Self : Set) `{State.Trait} : Type := {
+    get : (ref Self) -> M u8;
   }.
   
   Global Instance Method_get `{State.Trait} `(Trait) : Notation.Dot "get" := {
