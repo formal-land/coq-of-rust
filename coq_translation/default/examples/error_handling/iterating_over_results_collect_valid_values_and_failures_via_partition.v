@@ -15,7 +15,12 @@ Definition main `{State.Trait} : M unit :=
     (Slice _)::["into_vec"] α5 in
   let* '(numbers, errors) :=
     let* α0 := core.iter.traits.collect.IntoIterator.into_iter strings in
-    let* α1 := core.iter.traits.iterator.Iterator.map α0 "Closure" in
+    let* α1 :=
+      core.iter.traits.iterator.Iterator.map
+        α0
+        let* α0 := deref s str in
+        let* α1 := borrow α0 str in
+        str::["parse"] α1 in
     core.iter.traits.iterator.Iterator.partition
       α1
       (core.result.Result _ _)::["is_ok"] in

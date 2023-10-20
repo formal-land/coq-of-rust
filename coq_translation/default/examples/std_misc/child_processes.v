@@ -10,7 +10,24 @@ Definition main `{State.Trait} : M unit :=
     let* α3 := deref α2 std.process.Command in
     let* α4 := borrow_mut α3 std.process.Command in
     let* α5 := std.process.Command::["output"] α4 in
-    (core.result.Result _ _)::["unwrap_or_else"] α5 "Closure" in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α5
+      let* α0 :=
+        borrow [ mk_str "failed to execute process: " ] (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow e std.io.error.Error in
+      let* α5 := deref α4 std.io.error.Error in
+      let* α6 := borrow α5 std.io.error.Error in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13 in
   let* α0 := output.["status"] in
   let* α1 := borrow α0 std.process.ExitStatus in
   let* α2 := std.process.ExitStatus::["success"] α1 in

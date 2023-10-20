@@ -82,9 +82,13 @@ Definition main `{State.Trait} : M unit :=
   let* sum_of_squared_odd_numbers :=
     let* α0 := M.alloc 0 in
     let* α1 := M.alloc {| core.ops.range.RangeFrom.start := α0; |} in
-    let* α2 := core.iter.traits.iterator.Iterator.map α1 "Closure" in
-    let* α3 := core.iter.traits.iterator.Iterator.take_while α2 "Closure" in
-    let* α4 := core.iter.traits.iterator.Iterator.filter α3 "Closure" in
+    let* α2 := core.iter.traits.iterator.Iterator.map α1 mul n n in
+    let* α3 :=
+      core.iter.traits.iterator.Iterator.take_while α2 lt n_squared upper in
+    let* α4 :=
+      core.iter.traits.iterator.Iterator.filter
+        α3
+        higher_order_functions.is_odd n_squared in
     core.iter.traits.iterator.Iterator.sum α4 in
   let* _ :=
     let* _ :=

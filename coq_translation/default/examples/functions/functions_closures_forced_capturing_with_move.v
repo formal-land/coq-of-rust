@@ -11,7 +11,12 @@ Definition main `{State.Trait} : M unit :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] [ α0; α1; α2 ] in
     let* α4 := pointer_coercion "Unsize" α3 in
     (Slice _)::["into_vec"] α4 in
-  let contains := "Closure" in
+  let contains :=
+    let* α0 := borrow haystack (alloc.vec.Vec i32 alloc.alloc.Global) in
+    let* α1 := core.ops.deref.Deref.deref α0 in
+    let* α2 := deref α1 (Slice i32) in
+    let* α3 := borrow α2 (Slice i32) in
+    (Slice _)::["contains"] α3 needle in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "

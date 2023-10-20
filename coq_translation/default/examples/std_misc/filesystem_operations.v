@@ -127,7 +127,29 @@ Definition main `{State.Trait} : M unit :=
     let* α7 := deref α6 std.path.Path in
     let* α8 := borrow α7 std.path.Path in
     let* α9 := filesystem_operations.echo α1 α8 in
-    (core.result.Result _ _)::["unwrap_or_else"] α9 "Closure" in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α9
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`mkdir -p a/c/d`
@@ -140,7 +162,29 @@ Definition main `{State.Trait} : M unit :=
     Pure tt in
   let* _ :=
     let* α0 := std.fs.create_dir_all (mk_str "a/c/d") in
-    (core.result.Result _ _)::["unwrap_or_else"] α0 "Closure" in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α0
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`touch a/c/e.txt`
@@ -160,7 +204,29 @@ Definition main `{State.Trait} : M unit :=
     let* α5 := deref α4 std.path.Path in
     let* α6 := borrow α5 std.path.Path in
     let* α7 := filesystem_operations.touch α6 in
-    (core.result.Result _ _)::["unwrap_or_else"] α7 "Closure" in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α7
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -179,7 +245,29 @@ Definition main `{State.Trait} : M unit :=
       let* _ :=
         let* α0 :=
           std.os.unix.fs.symlink (mk_str "../b.txt") (mk_str "a/c/b.txt") in
-        (core.result.Result _ _)::["unwrap_or_else"] α0 "Closure" in
+        (core.result.Result _ _)::["unwrap_or_else"]
+          α0
+          let* _ :=
+            let* _ :=
+              let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+              let* α1 := deref α0 (list (ref str)) in
+              let* α2 := borrow α1 (list (ref str)) in
+              let* α3 := pointer_coercion "Unsize" α2 in
+              let* α4 := borrow why std.io.error.Error in
+              let* α5 := std.io.error.Error::["kind"] α4 in
+              let* α6 := borrow α5 std.io.error.ErrorKind in
+              let* α7 := deref α6 std.io.error.ErrorKind in
+              let* α8 := borrow α7 std.io.error.ErrorKind in
+              let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+              let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+              let* α11 := deref α10 (list core.fmt.rt.Argument) in
+              let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+              let* α13 := pointer_coercion "Unsize" α12 in
+              let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+              std.io.stdio._print α14 in
+            Pure tt in
+          Pure tt in
       Pure tt
     else
       Pure tt in
@@ -331,7 +419,29 @@ Definition main `{State.Trait} : M unit :=
     Pure tt in
   let* _ :=
     let* α0 := std.fs.remove_file (mk_str "a/c/e.txt") in
-    (core.result.Result _ _)::["unwrap_or_else"] α0 "Closure" in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α0
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`rmdir a/c/d`
@@ -344,5 +454,27 @@ Definition main `{State.Trait} : M unit :=
     Pure tt in
   let* _ :=
     let* α0 := std.fs.remove_dir (mk_str "a/c/d") in
-    (core.result.Result _ _)::["unwrap_or_else"] α0 "Closure" in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α0
+      let* _ :=
+        let* _ :=
+          let* α0 := borrow [ mk_str "! "; mk_str "
+" ] (list (ref str)) in
+          let* α1 := deref α0 (list (ref str)) in
+          let* α2 := borrow α1 (list (ref str)) in
+          let* α3 := pointer_coercion "Unsize" α2 in
+          let* α4 := borrow why std.io.error.Error in
+          let* α5 := std.io.error.Error::["kind"] α4 in
+          let* α6 := borrow α5 std.io.error.ErrorKind in
+          let* α7 := deref α6 std.io.error.ErrorKind in
+          let* α8 := borrow α7 std.io.error.ErrorKind in
+          let* α9 := core.fmt.rt.Argument::["new_debug"] α8 in
+          let* α10 := borrow [ α9 ] (list core.fmt.rt.Argument) in
+          let* α11 := deref α10 (list core.fmt.rt.Argument) in
+          let* α12 := borrow α11 (list core.fmt.rt.Argument) in
+          let* α13 := pointer_coercion "Unsize" α12 in
+          let* α14 := core.fmt.Arguments::["new_v1"] α3 α13 in
+          std.io.stdio._print α14 in
+        Pure tt in
+      Pure tt in
   Pure tt.

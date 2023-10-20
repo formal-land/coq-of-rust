@@ -15,11 +15,20 @@ Definition double_first
     let* α2 := deref α1 (Slice (ref str)) in
     let* α3 := borrow α2 (Slice (ref str)) in
     let* α4 := (Slice _)::["first"] α3 in
-    (core.option.Option _)::["map"] α4 "Closure" in
+    (core.option.Option _)::["map"]
+      α4
+      let* α0 := deref first (ref str) in
+      let* α1 := deref α0 str in
+      let* α2 := borrow α1 str in
+      let* α3 := str::["parse"] α2 in
+      (core.result.Result _ _)::["map"]
+        α3
+        let* α0 := M.alloc 2 in
+        mul α0 n in
   (core.option.Option _)::["map_or"]
     opt
     (core.result.Result.Ok (core.option.Option.None tt))
-    "Closure".
+    (core.result.Result _ _)::["map"] r "unimplemented parent_kind".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=

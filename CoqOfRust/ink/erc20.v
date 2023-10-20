@@ -1055,7 +1055,26 @@ Module erc20.
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_total_supply"] α1 in
-      (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α2
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::total_supply: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow error ink_primitives.LangError in
+        let* α5 := deref α4 ink_primitives.LangError in
+        let* α6 := borrow α5 ink_primitives.LangError in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_total_supply `{State.Trait} :
       Notation.Dot "total_supply" := {
@@ -1083,7 +1102,35 @@ Module erc20.
               (ink_env.call.common.Set_
                 (ink_env.call.common.ReturnType _)))::["try_invoke"]
           α5 in
-      (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α6
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::total_supply: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow
+            error
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α5 :=
+          deref
+            α4
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α6 :=
+          borrow
+            α5
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_try_total_supply `{State.Trait} :
       Notation.Dot "try_total_supply" := {
@@ -1098,7 +1145,26 @@ Module erc20.
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_balance_of"] α1 owner in
-      (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α2
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::balance_of: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow error ink_primitives.LangError in
+        let* α5 := deref α4 ink_primitives.LangError in
+        let* α6 := borrow α5 ink_primitives.LangError in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_balance_of `{State.Trait} :
       Notation.Dot "balance_of" := {
@@ -1127,7 +1193,35 @@ Module erc20.
               (ink_env.call.common.Set_
                 (ink_env.call.common.ReturnType _)))::["try_invoke"]
           α5 in
-      (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α6
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::balance_of: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow
+            error
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α5 :=
+          deref
+            α4
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α6 :=
+          borrow
+            α5
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_try_balance_of `{State.Trait} :
       Notation.Dot "try_balance_of" := {
@@ -1143,7 +1237,26 @@ Module erc20.
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_allowance"] α1 owner spender in
-      (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α2
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::allowance: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow error ink_primitives.LangError in
+        let* α5 := deref α4 ink_primitives.LangError in
+        let* α6 := borrow α5 ink_primitives.LangError in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_allowance `{State.Trait} :
       Notation.Dot "allowance" := {
@@ -1173,7 +1286,35 @@ Module erc20.
               (ink_env.call.common.Set_
                 (ink_env.call.common.ReturnType _)))::["try_invoke"]
           α5 in
-      (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α6
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::allowance: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow
+            error
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α5 :=
+          deref
+            α4
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α6 :=
+          borrow
+            α5
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_try_allowance `{State.Trait} :
       Notation.Dot "try_allowance" := {
@@ -1189,7 +1330,26 @@ Module erc20.
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_transfer"] α1 to value in
-      (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α2
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::transfer: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow error ink_primitives.LangError in
+        let* α5 := deref α4 ink_primitives.LangError in
+        let* α6 := borrow α5 ink_primitives.LangError in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_transfer `{State.Trait} :
       Notation.Dot "transfer" := {
@@ -1220,7 +1380,35 @@ Module erc20.
               (ink_env.call.common.Set_
                 (ink_env.call.common.ReturnType _)))::["try_invoke"]
           α5 in
-      (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α6
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::transfer: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow
+            error
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α5 :=
+          deref
+            α4
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α6 :=
+          borrow
+            α5
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_try_transfer `{State.Trait} :
       Notation.Dot "try_transfer" := {
@@ -1236,7 +1424,26 @@ Module erc20.
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_approve"] α1 spender value in
-      (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α2
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::approve: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow error ink_primitives.LangError in
+        let* α5 := deref α4 ink_primitives.LangError in
+        let* α6 := borrow α5 ink_primitives.LangError in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
       Notation.dot := approve;
@@ -1266,7 +1473,35 @@ Module erc20.
               (ink_env.call.common.Set_
                 (ink_env.call.common.ReturnType _)))::["try_invoke"]
           α5 in
-      (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α6
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::approve: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow
+            error
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α5 :=
+          deref
+            α4
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α6 :=
+          borrow
+            α5
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_try_approve `{State.Trait} :
       Notation.Dot "try_approve" := {
@@ -1283,7 +1518,26 @@ Module erc20.
       let* α0 := deref self erc20.erc20.Erc20Ref in
       let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
       let* α2 := erc20.erc20.Erc20Ref::["try_transfer_from"] α1 from to value in
-      (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α2
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::transfer_from: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := borrow error ink_primitives.LangError in
+        let* α5 := deref α4 ink_primitives.LangError in
+        let* α6 := borrow α5 ink_primitives.LangError in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_transfer_from `{State.Trait} :
       Notation.Dot "transfer_from" := {
@@ -1316,7 +1570,35 @@ Module erc20.
               (ink_env.call.common.Set_
                 (ink_env.call.common.ReturnType _)))::["try_invoke"]
           α5 in
-      (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+      (core.result.Result _ _)::["unwrap_or_else"]
+        α6
+        let* α0 :=
+          borrow
+            [ mk_str "encountered error while calling Erc20::transfer_from: " ]
+            (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 :=
+          borrow
+            error
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α5 :=
+          deref
+            α4
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α6 :=
+          borrow
+            α5
+            ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+        let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+        let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+        let* α9 := deref α8 (list core.fmt.rt.Argument) in
+        let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+        let* α11 := pointer_coercion "Unsize" α10 in
+        let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+        let* α13 := core.panicking.panic_fmt α12 in
+        never_to_any α13.
     
     Global Instance Method_try_transfer_from `{State.Trait} :
       Notation.Dot "try_transfer_from" := {
@@ -1929,19 +2211,106 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20.
             scale_info.form.MetaForm
             scale_info.build.NamedFields)::["field"]
         α10
-        "Closure" in
+        let* α0 :=
+          (scale_info.build.FieldBuilder
+                scale_info.form.MetaForm
+                _
+                scale_info.build.field_state.TypeNotAssigned)::["ty"]
+            f in
+        let* α1 :=
+          (scale_info.build.FieldBuilder
+                _
+                scale_info.build.field_state.NameNotAssigned
+                _)::["name"]
+            α0
+            (mk_str "total_supply") in
+        let* α2 :=
+          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+            α1
+            (mk_str
+              "<Balance as::ink::storage::traits::AutoStorableHint<::ink::
+storage::traits::ManualKey<375105693u32, ()>,>>::Type") in
+        let* α3 := borrow [ mk_str "Total token supply." ] (list (ref str)) in
+        let* α4 := deref α3 (list (ref str)) in
+        let* α5 := borrow α4 (list (ref str)) in
+        let* α6 := pointer_coercion "Unsize" α5 in
+        (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
+          α2
+          α6 in
     let* α12 :=
       (scale_info.build.FieldsBuilder
             scale_info.form.MetaForm
             scale_info.build.NamedFields)::["field"]
         α11
-        "Closure" in
+        let* α0 :=
+          (scale_info.build.FieldBuilder
+                scale_info.form.MetaForm
+                _
+                scale_info.build.field_state.TypeNotAssigned)::["ty"]
+            f in
+        let* α1 :=
+          (scale_info.build.FieldBuilder
+                _
+                scale_info.build.field_state.NameNotAssigned
+                _)::["name"]
+            α0
+            (mk_str "balances") in
+        let* α2 :=
+          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+            α1
+            (mk_str
+              "<Mapping<AccountId, Balance> as::ink::storage::traits::
+AutoStorableHint<::ink::storage::traits::ManualKey<639884519u32, ()
+>,>>::Type") in
+        let* α3 :=
+          borrow
+            [ mk_str "Mapping from owner to number of owned token." ]
+            (list (ref str)) in
+        let* α4 := deref α3 (list (ref str)) in
+        let* α5 := borrow α4 (list (ref str)) in
+        let* α6 := pointer_coercion "Unsize" α5 in
+        (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
+          α2
+          α6 in
     let* α13 :=
       (scale_info.build.FieldsBuilder
             scale_info.form.MetaForm
             scale_info.build.NamedFields)::["field"]
         α12
-        "Closure" in
+        let* α0 :=
+          (scale_info.build.FieldBuilder
+                scale_info.form.MetaForm
+                _
+                scale_info.build.field_state.TypeNotAssigned)::["ty"]
+            f in
+        let* α1 :=
+          (scale_info.build.FieldBuilder
+                _
+                scale_info.build.field_state.NameNotAssigned
+                _)::["name"]
+            α0
+            (mk_str "allowances") in
+        let* α2 :=
+          (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+            α1
+            (mk_str
+              "<Mapping<(AccountId, AccountId), Balance> as::ink::storage::traits
+::AutoStorableHint<::ink::storage::traits::ManualKey<
+3969917367u32, ()>,>>::Type") in
+        let* α3 :=
+          borrow
+            [
+              mk_str
+                "Mapping of the token amount which an account is allowed to withdraw";
+              mk_str "from another account."
+            ]
+            (list (ref str)) in
+        let* α4 := deref α3 (list (ref str)) in
+        let* α5 := borrow α4 (list (ref str)) in
+        let* α6 := pointer_coercion "Unsize" α5 in
+        (scale_info.build.FieldBuilder scale_info.form.MetaForm _ _)::["docs"]
+          α2
+          α6 in
     (scale_info.build.TypeBuilder
           _
           scale_info.build.state.PathAssigned)::["composite"]
@@ -2218,7 +2587,13 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
     let* α0 := deref __codec_input_edqy _ in
     let* α1 := borrow_mut α0 _ in
     let* α2 := parity_scale_codec.codec.Input.read_byte α1 in
-    let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+    let* α3 :=
+      (core.result.Result _ _)::["map_err"]
+        α2
+        parity_scale_codec.error.Error::["chain"]
+          e
+          (mk_str
+            "Could not decode `__ink_EventBase`, failed to read variant byte") in
     let* α4 := core.ops.try_trait.Try.branch α3 in
     let* α5 :=
       match α4 with
@@ -2231,19 +2606,64 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20___ink_EventBase.
     match α5 with
     | __codec_x_edqy =>
       let* _ :=
-        let* α0 := borrow_mut "Closure" type not implemented in
+        let* α0 :=
+          borrow_mut
+            let* __codec_res_edqy :=
+              let* α0 := deref __codec_input_edqy _ in
+              let* α1 := borrow_mut α0 _ in
+              parity_scale_codec.codec.Decode.decode α1 in
+            let* α0 :=
+              match __codec_res_edqy with
+              | core.result.Result e =>
+                let* α0 :=
+                  parity_scale_codec.error.Error::["chain"]
+                    e
+                    (mk_str "Could not decode `__ink_EventBase::Transfer.0`") in
+                let* α1 := Return (core.result.Result.Err α0) in
+                never_to_any α1
+              | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+              end in
+            Pure
+              (core.result.Result.Ok (erc20.erc20.__ink_EventBase.Transfer α0))
+            type not implemented in
         let* α1 := core.ops.function.FnMut.call_mut α0 tt in
         Return α1 in
       never_to_any tt
     | __codec_x_edqy =>
       let* _ :=
-        let* α0 := borrow_mut "Closure" type not implemented in
+        let* α0 :=
+          borrow_mut
+            let* __codec_res_edqy :=
+              let* α0 := deref __codec_input_edqy _ in
+              let* α1 := borrow_mut α0 _ in
+              parity_scale_codec.codec.Decode.decode α1 in
+            let* α0 :=
+              match __codec_res_edqy with
+              | core.result.Result e =>
+                let* α0 :=
+                  parity_scale_codec.error.Error::["chain"]
+                    e
+                    (mk_str "Could not decode `__ink_EventBase::Approval.0`") in
+                let* α1 := Return (core.result.Result.Err α0) in
+                never_to_any α1
+              | core.result.Result __codec_res_edqy => Pure __codec_res_edqy
+              end in
+            Pure
+              (core.result.Result.Ok (erc20.erc20.__ink_EventBase.Approval α0))
+            type not implemented in
         let* α1 := core.ops.function.FnMut.call_mut α0 tt in
         Return α1 in
       never_to_any tt
     | _ =>
       let* _ :=
-        let* α0 := borrow "Closure" type not implemented in
+        let* α0 :=
+          borrow
+            let* α0 :=
+              core.convert.Into.into
+                (mk_str
+                  "Could not decode `__ink_EventBase`, variant doesn't exist") in
+            Pure (core.result.Result.Err α0)
+            type not implemented in
         let* α1 := core.ops.function.Fn.call α0 tt in
         Return α1 in
       never_to_any tt
@@ -3551,7 +3971,10 @@ Module
     let* α0 := deref input _ in
     let* α1 := borrow_mut α0 _ in
     let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-    let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+    let* α3 :=
+      (core.result.Result _ _)::["map_err"]
+        α2
+        Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt) in
     let* α4 := core.ops.try_trait.Try.branch α3 in
     let* α5 :=
       match α4 with
@@ -3566,7 +3989,10 @@ Module
       let* α0 := deref input _ in
       let* α1 := borrow_mut α0 _ in
       let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
       let* α4 := core.ops.try_trait.Try.branch α3 in
       let* α5 :=
         match α4 with
@@ -3726,7 +4152,7 @@ Module
         let* α2 :=
           ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.ReturnFlags::["new_with_reverted"]
             α1 in
-        let* α3 := (core.result.Result _ _)::["map"] output_result "Closure" in
+        let* α3 := (core.result.Result _ _)::["map"] output_result Pure tt in
         let* α4 := "unimplemented parent_kind" α3 in
         let* α5 :=
           borrow
@@ -3832,7 +4258,10 @@ Module
     let* α0 := deref input _ in
     let* α1 := borrow_mut α0 _ in
     let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-    let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+    let* α3 :=
+      (core.result.Result _ _)::["map_err"]
+        α2
+        Pure (ink.reflect.dispatch.DispatchError.InvalidSelector tt) in
     let* α4 := core.ops.try_trait.Try.branch α3 in
     let* α5 :=
       match α4 with
@@ -3847,7 +4276,10 @@ Module
       let* α0 := deref input _ in
       let* α1 := borrow_mut α0 _ in
       let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
       let* α4 := core.ops.try_trait.Try.branch α3 in
       let* α5 :=
         match α4 with
@@ -3863,7 +4295,10 @@ Module
       let* α0 := deref input _ in
       let* α1 := borrow_mut α0 _ in
       let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
       let* α4 := core.ops.try_trait.Try.branch α3 in
       let* α5 :=
         match α4 with
@@ -3879,7 +4314,10 @@ Module
       let* α0 := deref input _ in
       let* α1 := borrow_mut α0 _ in
       let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
       let* α4 := core.ops.try_trait.Try.branch α3 in
       let* α5 :=
         match α4 with
@@ -3895,7 +4333,10 @@ Module
       let* α0 := deref input _ in
       let* α1 := borrow_mut α0 _ in
       let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
       let* α4 := core.ops.try_trait.Try.branch α3 in
       let* α5 :=
         match α4 with
@@ -3911,7 +4352,10 @@ Module
       let* α0 := deref input _ in
       let* α1 := borrow_mut α0 _ in
       let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
       let* α4 := core.ops.try_trait.Try.branch α3 in
       let* α5 :=
         match α4 with
@@ -3927,7 +4371,10 @@ Module
       let* α0 := deref input _ in
       let* α1 := borrow_mut α0 _ in
       let* α2 := parity_scale_codec.codec.Decode.decode α1 in
-      let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+      let* α3 :=
+        (core.result.Result _ _)::["map_err"]
+          α2
+          Pure (ink.reflect.dispatch.DispatchError.InvalidParameters tt) in
       let* α4 := core.ops.try_trait.Try.branch α3 in
       let* α5 :=
         match α4 with
@@ -5635,7 +6082,22 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20___CallBuilder.
             scale_info.form.MetaForm
             scale_info.build.NamedFields)::["field"]
         α10
-        "Closure" in
+        let* α0 :=
+          (scale_info.build.FieldBuilder
+                scale_info.form.MetaForm
+                _
+                scale_info.build.field_state.TypeNotAssigned)::["ty"]
+            f in
+        let* α1 :=
+          (scale_info.build.FieldBuilder
+                _
+                scale_info.build.field_state.NameNotAssigned
+                _)::["name"]
+            α0
+            (mk_str "account_id") in
+        (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+          α1
+          (mk_str "AccountId") in
     (scale_info.build.TypeBuilder
           _
           scale_info.build.state.PathAssigned)::["composite"]
@@ -6661,7 +7123,22 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Erc20Ref.
             scale_info.form.MetaForm
             scale_info.build.NamedFields)::["field"]
         α10
-        "Closure" in
+        let* α0 :=
+          (scale_info.build.FieldBuilder
+                scale_info.form.MetaForm
+                _
+                scale_info.build.field_state.TypeNotAssigned)::["ty"]
+            f in
+        let* α1 :=
+          (scale_info.build.FieldBuilder
+                _
+                scale_info.build.field_state.NameNotAssigned
+                _)::["name"]
+            α0
+            (mk_str "inner") in
+        (scale_info.build.FieldBuilder _ _ _)::["type_name"]
+          α1
+          (mk_str "<Erc20 as::ink::codegen::ContractCallBuilder>::Type") in
     (scale_info.build.TypeBuilder
           _
           scale_info.build.state.PathAssigned)::["composite"]
@@ -6895,7 +7372,26 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := deref self erc20.erc20.Erc20Ref in
     let* α1 := borrow α0 erc20.erc20.Erc20Ref in
     let* α2 := erc20.erc20.Erc20Ref::["try_total_supply"] α1 in
-    (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α2
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::total_supply: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow error ink_primitives.LangError in
+      let* α5 := deref α4 ink_primitives.LangError in
+      let* α6 := borrow α5 ink_primitives.LangError in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_total_supply `{State.Trait} :
     Notation.Dot "total_supply" := {
@@ -6923,7 +7419,35 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType _)))::["try_invoke"]
         α5 in
-    (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α6
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::total_supply: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow
+          error
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α5 :=
+        deref
+          α4
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α6 :=
+        borrow
+          α5
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_try_total_supply `{State.Trait} :
     Notation.Dot "try_total_supply" := {
@@ -6938,7 +7462,26 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := deref self erc20.erc20.Erc20Ref in
     let* α1 := borrow α0 erc20.erc20.Erc20Ref in
     let* α2 := erc20.erc20.Erc20Ref::["try_balance_of"] α1 owner in
-    (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α2
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::balance_of: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow error ink_primitives.LangError in
+      let* α5 := deref α4 ink_primitives.LangError in
+      let* α6 := borrow α5 ink_primitives.LangError in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_balance_of `{State.Trait} :
     Notation.Dot "balance_of" := {
@@ -6967,7 +7510,35 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType _)))::["try_invoke"]
         α5 in
-    (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α6
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::balance_of: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow
+          error
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α5 :=
+        deref
+          α4
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α6 :=
+        borrow
+          α5
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_try_balance_of `{State.Trait} :
     Notation.Dot "try_balance_of" := {
@@ -6983,7 +7554,26 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := deref self erc20.erc20.Erc20Ref in
     let* α1 := borrow α0 erc20.erc20.Erc20Ref in
     let* α2 := erc20.erc20.Erc20Ref::["try_allowance"] α1 owner spender in
-    (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α2
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::allowance: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow error ink_primitives.LangError in
+      let* α5 := deref α4 ink_primitives.LangError in
+      let* α6 := borrow α5 ink_primitives.LangError in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_allowance `{State.Trait} :
     Notation.Dot "allowance" := {
@@ -7013,7 +7603,35 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType _)))::["try_invoke"]
         α5 in
-    (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α6
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::allowance: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow
+          error
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α5 :=
+        deref
+          α4
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α6 :=
+        borrow
+          α5
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_try_allowance `{State.Trait} :
     Notation.Dot "try_allowance" := {
@@ -7029,7 +7647,26 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := deref self erc20.erc20.Erc20Ref in
     let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
     let* α2 := erc20.erc20.Erc20Ref::["try_transfer"] α1 to value in
-    (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α2
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::transfer: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow error ink_primitives.LangError in
+      let* α5 := deref α4 ink_primitives.LangError in
+      let* α6 := borrow α5 ink_primitives.LangError in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_transfer `{State.Trait} : Notation.Dot "transfer" := {
     Notation.dot := transfer;
@@ -7059,7 +7696,35 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType _)))::["try_invoke"]
         α5 in
-    (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α6
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::transfer: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow
+          error
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α5 :=
+        deref
+          α4
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α6 :=
+        borrow
+          α5
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_try_transfer `{State.Trait} :
     Notation.Dot "try_transfer" := {
@@ -7075,7 +7740,26 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := deref self erc20.erc20.Erc20Ref in
     let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
     let* α2 := erc20.erc20.Erc20Ref::["try_approve"] α1 spender value in
-    (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α2
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::approve: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow error ink_primitives.LangError in
+      let* α5 := deref α4 ink_primitives.LangError in
+      let* α6 := borrow α5 ink_primitives.LangError in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_approve `{State.Trait} : Notation.Dot "approve" := {
     Notation.dot := approve;
@@ -7105,7 +7789,35 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType _)))::["try_invoke"]
         α5 in
-    (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α6
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::approve: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow
+          error
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α5 :=
+        deref
+          α4
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α6 :=
+        borrow
+          α5
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_try_approve `{State.Trait} :
     Notation.Dot "try_approve" := {
@@ -7122,7 +7834,26 @@ Module Impl_erc20_erc20_Erc20Ref_26.
     let* α0 := deref self erc20.erc20.Erc20Ref in
     let* α1 := borrow_mut α0 erc20.erc20.Erc20Ref in
     let* α2 := erc20.erc20.Erc20Ref::["try_transfer_from"] α1 from to value in
-    (core.result.Result _ _)::["unwrap_or_else"] α2 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α2
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::transfer_from: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow error ink_primitives.LangError in
+      let* α5 := deref α4 ink_primitives.LangError in
+      let* α6 := borrow α5 ink_primitives.LangError in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_transfer_from `{State.Trait} :
     Notation.Dot "transfer_from" := {
@@ -7154,7 +7885,35 @@ Module Impl_erc20_erc20_Erc20Ref_26.
             (ink_env.call.common.Set_
               (ink_env.call.common.ReturnType _)))::["try_invoke"]
         α5 in
-    (core.result.Result _ _)::["unwrap_or_else"] α6 "Closure".
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α6
+      let* α0 :=
+        borrow
+          [ mk_str "encountered error while calling Erc20::transfer_from: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 :=
+        borrow
+          error
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α5 :=
+        deref
+          α4
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α6 :=
+        borrow
+          α5
+          ink_env.backend_and_call_builder_and_engine_and_engine_test_api_and_error.Error in
+      let* α7 := core.fmt.rt.Argument::["new_debug"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13.
   
   Global Instance Method_try_transfer_from `{State.Trait} :
     Notation.Dot "try_transfer_from" := {
@@ -7337,7 +8096,26 @@ Definition __ink_generate_metadata `{State.Trait} : M ink_metadata.InkProject :=
     let* α2 :=
       borrow α1 (ink_metadata.layout.Layout scale_info.form.MetaForm) in
     let* α3 := ink_metadata.layout.validate.ValidateLayout::["validate"] α2 in
-    (core.result.Result _ _)::["unwrap_or_else"] α3 "Closure" in
+    (core.result.Result _ _)::["unwrap_or_else"]
+      α3
+      let* α0 :=
+        borrow
+          [ mk_str "metadata ink! generation failed: " ]
+          (list (ref str)) in
+      let* α1 := deref α0 (list (ref str)) in
+      let* α2 := borrow α1 (list (ref str)) in
+      let* α3 := pointer_coercion "Unsize" α2 in
+      let* α4 := borrow error ink_metadata.layout.MetadataError in
+      let* α5 := deref α4 ink_metadata.layout.MetadataError in
+      let* α6 := borrow α5 ink_metadata.layout.MetadataError in
+      let* α7 := core.fmt.rt.Argument::["new_display"] α6 in
+      let* α8 := borrow [ α7 ] (list core.fmt.rt.Argument) in
+      let* α9 := deref α8 (list core.fmt.rt.Argument) in
+      let* α10 := borrow α9 (list core.fmt.rt.Argument) in
+      let* α11 := pointer_coercion "Unsize" α10 in
+      let* α12 := core.fmt.Arguments::["new_v1"] α3 α11 in
+      let* α13 := core.panicking.panic_fmt α12 in
+      never_to_any α13 in
   let* α0 := (ink_metadata.specs.ContractSpec _)::["new"] in
   let* α1 :=
     (ink_metadata.specs.ConstructorSpec _)::["from_label"] (mk_str "new") in
@@ -8450,12 +9228,52 @@ Module Impl_scale_info_TypeInfo_for_erc20_erc20_Error.
       (scale_info.build.Variants _)::["variant"]
         α10
         (mk_str "InsufficientBalance")
-        "Closure" in
+        let* α0 := M.alloc 0 in
+        let* α1 := cast α0 in
+        let* α2 :=
+          (scale_info.build.VariantBuilder
+                _
+                scale_info.build.variant_state.IndexNotAssigned)::["index"]
+            v
+            α1 in
+        let* α3 :=
+          borrow
+            [
+              mk_str
+                "Returned if not enough balance to fulfill a request is available."
+            ]
+            (list (ref str)) in
+        let* α4 := deref α3 (list (ref str)) in
+        let* α5 := borrow α4 (list (ref str)) in
+        let* α6 := pointer_coercion "Unsize" α5 in
+        (scale_info.build.VariantBuilder scale_info.form.MetaForm _)::["docs"]
+          α2
+          α6 in
     let* α12 :=
       (scale_info.build.Variants _)::["variant"]
         α11
         (mk_str "InsufficientAllowance")
-        "Closure" in
+        let* α0 := M.alloc 1 in
+        let* α1 := cast α0 in
+        let* α2 :=
+          (scale_info.build.VariantBuilder
+                _
+                scale_info.build.variant_state.IndexNotAssigned)::["index"]
+            v
+            α1 in
+        let* α3 :=
+          borrow
+            [
+              mk_str
+                "Returned if not enough allowance to fulfill a request is available."
+            ]
+            (list (ref str)) in
+        let* α4 := deref α3 (list (ref str)) in
+        let* α5 := borrow α4 (list (ref str)) in
+        let* α6 := pointer_coercion "Unsize" α5 in
+        (scale_info.build.VariantBuilder scale_info.form.MetaForm _)::["docs"]
+          α2
+          α6 in
     (scale_info.build.TypeBuilder
           _
           scale_info.build.state.PathAssigned)::["variant"]
@@ -8641,7 +9459,12 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
     let* α0 := deref __codec_input_edqy _ in
     let* α1 := borrow_mut α0 _ in
     let* α2 := parity_scale_codec.codec.Input.read_byte α1 in
-    let* α3 := (core.result.Result _ _)::["map_err"] α2 "Closure" in
+    let* α3 :=
+      (core.result.Result _ _)::["map_err"]
+        α2
+        parity_scale_codec.error.Error::["chain"]
+          e
+          (mk_str "Could not decode `Error`, failed to read variant byte") in
     let* α4 := core.ops.try_trait.Try.branch α3 in
     let* α5 :=
       match α4 with
@@ -8654,19 +9477,34 @@ Module Impl_parity_scale_codec_codec_Decode_for_erc20_erc20_Error.
     match α5 with
     | __codec_x_edqy =>
       let* _ :=
-        let* α0 := borrow "Closure" type not implemented in
+        let* α0 :=
+          borrow
+            Pure
+              (core.result.Result.Ok (erc20.erc20.Error.InsufficientBalance tt))
+            type not implemented in
         let* α1 := core.ops.function.Fn.call α0 tt in
         Return α1 in
       never_to_any tt
     | __codec_x_edqy =>
       let* _ :=
-        let* α0 := borrow "Closure" type not implemented in
+        let* α0 :=
+          borrow
+            Pure
+              (core.result.Result.Ok
+                (erc20.erc20.Error.InsufficientAllowance tt))
+            type not implemented in
         let* α1 := core.ops.function.Fn.call α0 tt in
         Return α1 in
       never_to_any tt
     | _ =>
       let* _ :=
-        let* α0 := borrow "Closure" type not implemented in
+        let* α0 :=
+          borrow
+            let* α0 :=
+              core.convert.Into.into
+                (mk_str "Could not decode `Error`, variant doesn't exist") in
+            Pure (core.result.Result.Err α0)
+            type not implemented in
         let* α1 := core.ops.function.Fn.call α0 tt in
         Return α1 in
       never_to_any tt

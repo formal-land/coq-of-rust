@@ -314,77 +314,59 @@ pub(crate) fn compile_expr(
                 }
             }
         }
-        ExprKind::Closure(_closure) => {
-            Expr::Message("Closure".to_string())
-            // let rustc_middle::thir::ClosureExpr { closure_id, .. } = &**closure;
-            // let thir = env.tcx.thir_body(closure_id);
-            // let Ok((thir, expr_id)) = thir else {
-            //     panic!("thir failed to compile");
-            // };
-            // let thir = thir.borrow();
-            // let body = Box::new(compile_expr(env, &thir, &expr_id));
-            // Expr::Lambda { args: vec![], body }
+        ExprKind::Closure(closure) => {
+            let rustc_middle::thir::ClosureExpr { closure_id, .. } = &**closure;
+            let thir = env.tcx.thir_body(closure_id);
+            let Ok((thir, expr_id)) = thir else {
+                panic!("thir failed to compile");
+            };
+            let thir = thir.borrow();
+            let body = Box::new(compile_expr(env, &thir, &expr_id));
+            Expr::Lambda { args: vec![], body }
         }
         ExprKind::Literal { lit, neg } => Expr::Literal {
             literal: lit.node.clone(),
             neg: *neg,
         },
         ExprKind::NonHirLiteral { lit, .. } => Expr::NonHirLiteral(*lit),
-        ExprKind::ZstLiteral { .. } => {
-            // println!("ZstLiteral: ty: {:#?}", expr.ty);
-            // println!("ZstLiteral: kind: {:#?}", expr.kind);
-            match &expr.ty.kind() {
-                TyKind::FnDef(def_id, _) => {
-                    // let kind = env.tcx.def_kind(def_id);
-                    // println!("kind: {:#?}", kind);
-                    let key = env.tcx.def_key(def_id);
-                    // println!("key: {:#?}", key);
-                    let symbol = key.get_opt_name();
-                    // println!("symbol: {:#?}", symbol);
-                    let parent = env.tcx.opt_parent(*def_id).unwrap();
-                    // println!("parent: {:#?}", parent);
-                    let parent_kind = env.tcx.opt_def_kind(parent).unwrap();
-                    match parent_kind {
-                        DefKind::Impl { .. } => {
-                            // println!("parent_kind: {:#?}", parent_kind);
-                            // let parent_key = env.tcx.def_key(parent);
-                            // println!("parent_key: {:#?}", parent_key);
-                            let parent_subject = env.tcx.impl_subject(parent);
-                            // println!("parent_subject: {:#?}", parent_subject);
-                            // if let ImplSubject::Inherent(ref parent_coq_type) = parent_subject.0 {
-                            // println!(
-                            //     "parent_coq_type: {:#?}",
-                            //     compile_type(env, parent_coq_type)
-                            // );
-                            // }
-                            // let parent_symbol = parent_key.get_opt_name().unwrap();
-                            // println!("parent_symbol: {:#?}", parent_symbol);
-                            // let path = compile_def_id(env, def_id);
-                            // println!("path: {:#?}", path);
-                            // println!("def_id: {:#?}", def_id);
-                            match parent_subject.0 {
-                                ImplSubject::Trait(_) => todo!(),
-                                ImplSubject::Inherent(ref parent_coq_type) => {
-                                    let ty = compile_type(env, parent_coq_type);
-                                    let func = symbol.unwrap().to_string();
-                                    Expr::AssociatedFunction { ty, func }
-                                }
+        ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
+            TyKind::FnDef(def_id, _) => {
+                let key = env.tcx.def_key(def_id);
+                let symbol = key.get_opt_name();
+                let parent = env.tcx.opt_parent(*def_id).unwrap();
+                let parent_kind = env.tcx.opt_def_kind(parent).unwrap();
+                match parent_kind {
+                    DefKind::Impl { .. } => {
+                        let parent_subject = env.tcx.impl_subject(parent);
+                        match parent_subject.0 {
+                            ImplSubject::Trait(_) => todo!(),
+                            ImplSubject::Inherent(ref parent_coq_type) => {
+                                let ty = compile_type(env, parent_coq_type);
+                                let func = symbol.unwrap().to_string();
+                                Expr::AssociatedFunction { ty, func }
                             }
                         }
-                        DefKind::Trait { .. } => Expr::Var(Path::concat(&[
-                            compile_def_id(env, parent),
-                            Path::local(symbol.unwrap().to_string()),
-                        ])),
-                        DefKind::Mod { .. } => Expr::Var(compile_def_id(env, *def_id)),
-                        _ => {
-                            println!("unimplemented parent_kind: {:#?}", parent_kind);
-                            Expr::Message("unimplemented parent_kind".to_string())
-                        }
+                    }
+                    DefKind::Trait { .. } => Expr::Var(Path::concat(&[
+                        compile_def_id(env, parent),
+                        Path::local(symbol.unwrap().to_string()),
+                    ])),
+                    DefKind::Mod { .. } => Expr::Var(compile_def_id(env, *def_id)),
+                    _ => {
+                        println!("unimplemented parent_kind: {:#?}", parent_kind);
+                        Expr::Message("unimplemented parent_kind".to_string())
                     }
                 }
-                _ => todo!(),
             }
-        }
+            _ => {
+                let error_message = "Expected a function name";
+                env.tcx
+                    .sess
+                    .struct_span_warn(expr.span, error_message)
+                    .emit();
+                Expr::Message(error_message.to_string())
+            }
+        },
         ExprKind::NamedConst { def_id, .. } => Expr::Var(compile_def_id(env, *def_id)),
         ExprKind::ConstParam { def_id, .. } => Expr::Var(compile_def_id(env, *def_id)),
         ExprKind::StaticRef { def_id, .. } => Expr::Var(compile_def_id(env, *def_id)),

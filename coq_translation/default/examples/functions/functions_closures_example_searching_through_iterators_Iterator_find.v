@@ -35,7 +35,11 @@ Definition main `{State.Trait} : M unit :=
       let* α2 := borrow α1 (list (ref str)) in
       let* α3 := pointer_coercion "Unsize" α2 in
       let* α4 := borrow_mut iter (core.slice.iter.Iter i32) in
-      let* α5 := core.iter.traits.iterator.Iterator.find α4 "Closure" in
+      let* α5 :=
+        core.iter.traits.iterator.Iterator.find
+          α4
+          let* α0 := M.alloc 2 in
+          eq x α0 in
       let* α6 := borrow α5 (core.option.Option (ref i32)) in
       let* α7 := deref α6 (core.option.Option (ref i32)) in
       let* α8 := borrow α7 (core.option.Option (ref i32)) in
@@ -59,7 +63,11 @@ Definition main `{State.Trait} : M unit :=
         borrow_mut
           into_iter
           (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global) in
-      let* α5 := core.iter.traits.iterator.Iterator.find α4 "Closure" in
+      let* α5 :=
+        core.iter.traits.iterator.Iterator.find
+          α4
+          let* α0 := M.alloc 2 in
+          eq x α0 in
       let* α6 := borrow α5 (core.option.Option i32) in
       let* α7 := deref α6 (core.option.Option i32) in
       let* α8 := borrow α7 (core.option.Option i32) in
@@ -93,7 +101,11 @@ Definition main `{State.Trait} : M unit :=
       let* α5 := pointer_coercion "Unsize" α4 in
       let* α6 := (Slice _)::["iter"] α5 in
       let* α7 := borrow_mut α6 (core.slice.iter.Iter i32) in
-      let* α8 := core.iter.traits.iterator.Iterator.find α7 "Closure" in
+      let* α8 :=
+        core.iter.traits.iterator.Iterator.find
+          α7
+          let* α0 := M.alloc 2 in
+          eq x α0 in
       let* α9 := borrow α8 (core.option.Option (ref i32)) in
       let* α10 := deref α9 (core.option.Option (ref i32)) in
       let* α11 := borrow α10 (core.option.Option (ref i32)) in
@@ -116,7 +128,12 @@ Definition main `{State.Trait} : M unit :=
       let* α4 := borrow array2 (list i32) in
       let* α5 := core.iter.traits.collect.IntoIterator.into_iter α4 in
       let* α6 := borrow_mut α5 (core.slice.iter.Iter i32) in
-      let* α7 := core.iter.traits.iterator.Iterator.find α6 "Closure" in
+      let* α7 :=
+        core.iter.traits.iterator.Iterator.find
+          α6
+          let* α0 := deref x i32 in
+          let* α1 := M.alloc 2 in
+          eq α0 α1 in
       let* α8 := borrow α7 (core.option.Option (ref i32)) in
       let* α9 := deref α8 (core.option.Option (ref i32)) in
       let* α10 := borrow α9 (core.option.Option (ref i32)) in

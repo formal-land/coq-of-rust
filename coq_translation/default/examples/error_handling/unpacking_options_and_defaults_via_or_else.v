@@ -58,8 +58,36 @@ Definition main `{State.Trait} : M unit :=
     core.option.Option.Some
       (unpacking_options_and_defaults_via_or_else.Fruit.Apple tt) in
   let no_fruit := core.option.Option.None tt in
-  let get_kiwi_as_fallback := "Closure" in
-  let get_lemon_as_fallback := "Closure" in
+  let get_kiwi_as_fallback :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Providing kiwi as fallback
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      Pure tt in
+    Pure
+      (core.option.Option.Some
+        (unpacking_options_and_defaults_via_or_else.Fruit.Kiwi tt)) in
+  let get_lemon_as_fallback :=
+    let* _ :=
+      let* _ :=
+        let* α0 :=
+          borrow [ mk_str "Providing lemon as fallback
+" ] (list (ref str)) in
+        let* α1 := deref α0 (list (ref str)) in
+        let* α2 := borrow α1 (list (ref str)) in
+        let* α3 := pointer_coercion "Unsize" α2 in
+        let* α4 := core.fmt.Arguments::["new_const"] α3 in
+        std.io.stdio._print α4 in
+      Pure tt in
+    Pure
+      (core.option.Option.Some
+        (unpacking_options_and_defaults_via_or_else.Fruit.Lemon tt)) in
   let* first_available_fruit :=
     let* α0 :=
       (core.option.Option _)::["or_else"] no_fruit get_kiwi_as_fallback in

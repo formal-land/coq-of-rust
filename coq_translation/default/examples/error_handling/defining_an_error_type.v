@@ -93,7 +93,20 @@ Definition double_first
     (core.option.Option _)::["ok_or"]
       α4
       (defining_an_error_type.DoubleError.Build_t tt) in
-  (core.result.Result _ _)::["and_then"] α5 "Closure".
+  (core.result.Result _ _)::["and_then"]
+    α5
+    let* α0 := deref s (ref str) in
+    let* α1 := deref α0 str in
+    let* α2 := borrow α1 str in
+    let* α3 := str::["parse"] α2 in
+    let* α4 :=
+      (core.result.Result _ _)::["map_err"]
+        α3
+        Pure (defining_an_error_type.DoubleError.Build_t tt) in
+    (core.result.Result _ _)::["map"]
+      α4
+      let* α0 := M.alloc 2 in
+      mul α0 i.
 
 Definition print
     `{State.Trait}

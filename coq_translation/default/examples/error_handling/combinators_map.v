@@ -199,15 +199,23 @@ Definition cook
     `{State.Trait}
     (chopped : core.option.Option combinators_map.Chopped)
     : M (core.option.Option combinators_map.Cooked) :=
-  (core.option.Option _)::["map"] chopped "Closure".
+  (core.option.Option _)::["map"]
+    chopped
+    Pure (combinators_map.Cooked.Build_t food).
 
 Definition process
     `{State.Trait}
     (food : core.option.Option combinators_map.Food)
     : M (core.option.Option combinators_map.Cooked) :=
-  let* α0 := (core.option.Option _)::["map"] food "Closure" in
-  let* α1 := (core.option.Option _)::["map"] α0 "Closure" in
-  (core.option.Option _)::["map"] α1 "Closure".
+  let* α0 :=
+    (core.option.Option _)::["map"]
+      food
+      Pure (combinators_map.Peeled.Build_t f) in
+  let* α1 :=
+    (core.option.Option _)::["map"]
+      α0
+      Pure (combinators_map.Chopped.Build_t f) in
+  (core.option.Option _)::["map"] α1 Pure (combinators_map.Cooked.Build_t f).
 
 Definition eat
     `{State.Trait}

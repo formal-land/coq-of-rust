@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main `{State.Trait} : M unit :=
   let* outer_var := M.alloc 42 in
-  let closure_annotated := "Closure" in
-  let closure_inferred := "Closure" in
+  let closure_annotated := add i outer_var in
+  let closure_inferred := add i outer_var in
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -50,7 +50,7 @@ Definition main `{State.Trait} : M unit :=
       let* α15 := core.fmt.Arguments::["new_v1"] α3 α14 in
       std.io.stdio._print α15 in
     Pure tt in
-  let one := "Closure" in
+  let one := M.alloc 1 in
   let* _ :=
     let* _ :=
       let* α0 :=

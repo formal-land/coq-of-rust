@@ -20,8 +20,26 @@ Definition main `{State.Trait} : M unit :=
   let* errors := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* numbers :=
     let* α0 := core.iter.traits.collect.IntoIterator.into_iter strings in
-    let* α1 := core.iter.traits.iterator.Iterator.map α0 "Closure" in
-    let* α2 := core.iter.traits.iterator.Iterator.filter_map α1 "Closure" in
+    let* α1 :=
+      core.iter.traits.iterator.Iterator.map
+        α0
+        let* α0 := deref s str in
+        let* α1 := borrow α0 str in
+        str::["parse"] α1 in
+    let* α2 :=
+      core.iter.traits.iterator.Iterator.filter_map
+        α1
+        let* α0 :=
+          (core.result.Result _ _)::["map_err"]
+            r
+            let* α0 :=
+              borrow_mut
+                errors
+                (alloc.vec.Vec
+                  core.num.error.ParseIntError
+                  alloc.alloc.Global) in
+            (alloc.vec.Vec _ _)::["push"] α0 e in
+        (core.result.Result _ _)::["ok"] α0 in
     core.iter.traits.iterator.Iterator.collect α2 in
   let* _ :=
     let* _ :=

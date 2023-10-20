@@ -99,8 +99,22 @@ Definition double_first
   let* α2 := deref α1 (Slice (ref str)) in
   let* α3 := borrow α2 (Slice (ref str)) in
   let* α4 := (Slice _)::["first"] α3 in
-  let* α5 := (core.option.Option _)::["ok_or_else"] α4 "Closure" in
-  (core.result.Result _ _)::["and_then"] α5 "Closure".
+  let* α5 :=
+    (core.option.Option _)::["ok_or_else"]
+      α4
+      core.convert.Into.into (boxing_errors.EmptyVec.Build_t tt) in
+  (core.result.Result _ _)::["and_then"]
+    α5
+    let* α0 := deref s (ref str) in
+    let* α1 := deref α0 str in
+    let* α2 := borrow α1 str in
+    let* α3 := str::["parse"] α2 in
+    let* α4 :=
+      (core.result.Result _ _)::["map_err"] α3 core.convert.Into.into e in
+    (core.result.Result _ _)::["map"]
+      α4
+      let* α0 := M.alloc 2 in
+      mul α0 i.
 
 Definition print `{State.Trait} (result : boxing_errors.Result i32) : M unit :=
   match result with

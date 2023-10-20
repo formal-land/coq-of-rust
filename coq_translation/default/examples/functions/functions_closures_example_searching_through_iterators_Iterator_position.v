@@ -22,7 +22,12 @@ Definition main `{State.Trait} : M unit :=
     let* α3 := borrow α2 (Slice i32) in
     let* α4 := (Slice _)::["iter"] α3 in
     let* α5 := borrow_mut α4 (core.slice.iter.Iter i32) in
-    core.iter.traits.iterator.Iterator.position α5 "Closure" in
+    core.iter.traits.iterator.Iterator.position
+      α5
+      let* α0 := M.alloc 2 in
+      let* α1 := rem x α0 in
+      let* α2 := M.alloc 0 in
+      eq α1 α2 in
   let* _ :=
     let* α0 := borrow index_of_first_even_number (core.option.Option usize) in
     let* α1 := M.alloc 5 in
@@ -60,7 +65,10 @@ Definition main `{State.Trait} : M unit :=
     let* α0 := core.iter.traits.collect.IntoIterator.into_iter vec in
     let* α1 :=
       borrow_mut α0 (alloc.vec.into_iter.IntoIter i32 alloc.alloc.Global) in
-    core.iter.traits.iterator.Iterator.position α1 "Closure" in
+    core.iter.traits.iterator.Iterator.position
+      α1
+      let* α0 := M.alloc 0 in
+      lt x α0 in
   let* _ :=
     let* α0 :=
       borrow index_of_first_negative_number (core.option.Option usize) in
