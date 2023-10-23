@@ -32,6 +32,32 @@ impl Path {
         let last = self.segments.pop().unwrap();
         self.segments.push(format!("Impl{last}"));
     }
+
+    pub(crate) fn new<S: ToString>(segments: &[S]) -> Self {
+        Path {
+            segments: segments.iter().map(|s| s.to_string()).collect(),
+        }
+    }
+
+    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
+        // clone to be able to consume
+        let segments = self.segments.clone();
+        // consume (by into_iter) to let the result live arbitrarily long
+        intersperse(segments, [text(".")])
+    }
+
+    pub(crate) fn to_name(&self) -> String {
+        self.segments.join("_")
+    }
+
+    pub(crate) fn concat(paths: &[Self]) -> Self {
+        Path {
+            segments: paths
+                .iter()
+                .flat_map(|path| path.segments.to_owned())
+                .collect(),
+        }
+    }
 }
 
 fn compile_path_without_env(path: &rustc_hir::Path) -> Path {
@@ -242,32 +268,4 @@ pub(crate) fn to_valid_coq_name(str: String) -> String {
     let str = str::replace(&str, "$", "_");
     let str = str::replace(&str, "{{root}}", "CoqOfRust");
     str::replace(&str, "::", ".")
-}
-
-impl Path {
-    pub(crate) fn new<S: ToString>(segments: &[S]) -> Self {
-        Path {
-            segments: segments.iter().map(|s| s.to_string()).collect(),
-        }
-    }
-
-    pub(crate) fn to_doc<'a>(&self) -> Doc<'a> {
-        // clone to be able to consume
-        let segments = self.segments.clone();
-        // consume (by into_iter) to let the result live arbitrarily long
-        intersperse(segments, [text(".")])
-    }
-
-    pub(crate) fn to_name(&self) -> String {
-        self.segments.join("_")
-    }
-
-    pub(crate) fn concat(paths: &[Self]) -> Self {
-        Path {
-            segments: paths
-                .iter()
-                .flat_map(|path| path.segments.to_owned())
-                .collect(),
-        }
-    }
 }
