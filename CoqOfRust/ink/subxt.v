@@ -87,7 +87,7 @@ Module config.
     }
     *)
     Module ExtrinsicParams.
-      Class Trait (Self : Set) (*`{core.fmt.Debug.Trait Self}*) (Hash : Set)
+      Class Trait `{State.Trait} (Self : Set) (*`{core.fmt.Debug.Trait Self}*) (Hash : Set)
         : Type := {
         OtherParams : Set;
 
@@ -118,17 +118,18 @@ Module config.
     Definition PlainTip := PlainTip.t.
 
     Module Impl_Debug_for_PlainTip.
-      Global Instance I : core.fmt.Debug.Trait PlainTip.t.
+      Global Instance I `{State.Trait} : core.fmt.Debug.Trait PlainTip.t.
       Admitted.
     End Impl_Debug_for_PlainTip.
 
     (* *******TYPE DEFS******** *)
     (* pub type PolkadotExtrinsicParams<T> = BaseExtrinsicParams<T, PlainTip>; *)
-    Definition PolkadotExtrinsicParams (T : Set) `{Config.Trait T} : Set
+    Definition PolkadotExtrinsicParams
+        `{State.Trait} (T : Set) {H0 : Config.Trait T} : Set
       := extrinsic_params.BaseExtrinsicParams T PlainTip.
 
     Global Instance ExtrinsicParams_for_PolkadotExtrinsicParams
-      (T : Set) `{Config.Trait T} :
+        `{State.Trait} (T : Set) {H0 : Config.Trait T} :
       extrinsic_params.ExtrinsicParams.Trait (PolkadotExtrinsicParams T)
         T::type["Hash"].
     Admitted.
@@ -153,8 +154,8 @@ Module tx.
   }
   *)
   Module Signer.
-    Class Trait (Self T : Set) 
-      `{config.Config.Trait T}
+    Class Trait `{State.Trait} (Self T : Set)
+      {H0 : config.Config.Trait T}
     : Set := {
       account_id : ref Self -> T::type["AccountId"];
       address : ref Self -> T::type["Address"];
@@ -279,7 +280,7 @@ Module utils.
     }
     *)
     Module MultiAddress.
-      Inductive t (AccountId AccountIndex : Set) : Set := 
+      Inductive t `{State.Trait} (AccountId AccountIndex : Set) : Set := 
       | Id : AccountId -> t AccountId AccountIndex
       | Index : AccountIndex -> t AccountId AccountIndex
       | Raw :
@@ -288,7 +289,9 @@ Module utils.
       | Address20 : Slice u8 -> t AccountId AccountIndex
       .
     End MultiAddress.
-    Definition MultiAddress := MultiAddress.t.
+    Definition MultiAddress `{State.Trait} (AccountId AccountIndex : Set) :
+      Set :=
+      M.val (MultiAddress.t AccountId AccountIndex).
   End multi_address.
 
   Module static_type.

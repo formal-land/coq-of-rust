@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.ink.scale_info.
 
-Definition PortableRegistry := scale_info.PortableRegistry.
+Definition PortableRegistry `{State.Trait} := scale_info.PortableRegistry.
 
 (* pub struct Error { /* private fields */ } *)
 Module Error.
@@ -10,7 +10,7 @@ Module Error.
   Record t : Set := {}.
   Set Primitive Projections.
 End Error.
-Definition Error := Error.t.
+Definition Error `{State.Trait} := M.val Error.t.
 
 (*
 pub trait DecodeAsType: Sized {
@@ -24,7 +24,9 @@ pub trait DecodeAsType: Sized {
 }
 *)
 Module DecodeAsType.
-  Class Trait (Self : Set) : Set := {
-    decode_as_type : mut_ref (Slice u8) -> u32 -> ref PortableRegistry -> core.result.Result Self Error;
+  Class Trait `{State.Trait} (Self : Set) : Set := {
+    decode_as_type :
+      mut_ref (Slice u8) -> u32 -> ref PortableRegistry ->
+      M (core.result.Result Self Error);
   }.
 End DecodeAsType.
