@@ -2,7 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition double_first
-    `{State.Trait}
     (vec : alloc.vec.Vec (ref str) alloc.vec.Vec.Default.A)
     :
       M
@@ -31,7 +30,7 @@ Definition double_first
     (core.result.Result _ _)::["map"] r "unimplemented parent_kind".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* numbers :=
     let* α0 := deref (mk_str "93") str in
     let* α1 := borrow α0 str in

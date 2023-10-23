@@ -5,7 +5,7 @@ Definition message `{State.Trait} : ref str :=
   run (Pure (mk_str "Hello, World!")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "

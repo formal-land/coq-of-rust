@@ -2,128 +2,128 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Container.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i32;
-    x1 : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
-  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
-  }.
+  Section Container.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+      x1 : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Global Instance Get_1 : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    }.
+  End Container.
 End Container.
 Definition Container `{State.Trait} : Set := M.val Container.t.
 
 Module Contains.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    A : Set;
-    B : Set;
-    contains : (ref Self) -> (ref A) -> (ref B) -> M bool;
-    first : (ref Self) -> M i32;
-    last : (ref Self) -> M i32;
-    a : (ref Self) -> M A;
-  }.
-  
-  Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
-    Notation.double_colon_type := A;
-  }.
-  Global Instance Method_B `(Trait) : Notation.DoubleColonType Self "B" := {
-    Notation.double_colon_type := B;
-  }.
-  Global Instance Method_contains `{State.Trait} `(Trait)
-    : Notation.Dot "contains" := {
-    Notation.dot := contains;
-  }.
-  Global Instance Method_first `{State.Trait} `(Trait)
-    : Notation.Dot "first" := {
-    Notation.dot := first;
-  }.
-  Global Instance Method_last `{State.Trait} `(Trait) : Notation.Dot "last" := {
-    Notation.dot := last;
-  }.
-  Global Instance Method_a `{State.Trait} `(Trait) : Notation.Dot "a" := {
-    Notation.dot := a;
-  }.
+  Section Contains.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      A : Set;
+      B : Set;
+      contains : (ref Self) -> (ref A) -> (ref B) -> M bool;
+      first : (ref Self) -> M i32;
+      last : (ref Self) -> M i32;
+      a : (ref Self) -> M A;
+    }.
+    
+    Global Instance Method_A `(Trait) : Notation.DoubleColonType Self "A" := {
+      Notation.double_colon_type := A;
+    }.
+    Global Instance Method_B `(Trait) : Notation.DoubleColonType Self "B" := {
+      Notation.double_colon_type := B;
+    }.
+  End Contains.
 End Contains.
 
 Module
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
-  Definition Self `{State.Trait} :=
-    generics_associated_types_solution.Container.
-  
-  Definition A : Set := i32.
-  
-  Definition B : Set := i32.
-  
-  Definition contains
-      `{State.Trait}
-      (self : ref Self)
-      (number_1 : ref i32)
-      (number_2 : ref i32)
-      : M bool :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    let* α1 := α0.["0"] in
-    let* α2 := borrow α1 i32 in
-    let* α3 := borrow α2 (ref i32) in
-    let* α4 := borrow number_1 (ref i32) in
-    let* α5 := core.cmp.PartialEq.eq α3 α4 in
-    let* α6 := deref self generics_associated_types_solution.Container in
-    let* α7 := α6.["1"] in
-    let* α8 := borrow α7 i32 in
-    let* α9 := borrow α8 (ref i32) in
-    let* α10 := borrow number_2 (ref i32) in
-    let* α11 := core.cmp.PartialEq.eq α9 α10 in
-    and α5 α11.
-  
-  Global Instance Method_contains `{State.Trait} : Notation.Dot "contains" := {
-    Notation.dot := contains;
-  }.
-  
-  Definition first `{State.Trait} (self : ref Self) : M i32 :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    α0.["0"].
-  
-  Global Instance Method_first `{State.Trait} : Notation.Dot "first" := {
-    Notation.dot := first;
-  }.
-  
-  Definition last `{State.Trait} (self : ref Self) : M i32 :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    α0.["1"].
-  
-  Global Instance Method_last `{State.Trait} : Notation.Dot "last" := {
-    Notation.dot := last;
-  }.
-  
-  Definition a `{State.Trait} (self : ref Self) : M i32 :=
-    let* α0 := deref self generics_associated_types_solution.Container in
-    α0.["0"].
-  
-  Global Instance Method_a `{State.Trait} : Notation.Dot "a" := {
-    Notation.dot := a;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : generics_associated_types_solution.Contains.Trait Self := {
-    generics_associated_types_solution.Contains.A := A;
-    generics_associated_types_solution.Contains.B := B;
-    generics_associated_types_solution.Contains.contains := contains;
-    generics_associated_types_solution.Contains.first := first;
-    generics_associated_types_solution.Contains.last := last;
-    generics_associated_types_solution.Contains.a := a;
-  }.
+  Section
+    Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_associated_types_solution.Container.
+    
+    Definition A : Set := i32.
+    
+    Definition B : Set := i32.
+    
+    Definition contains
+        (self : ref Self)
+        (number_1 : ref i32)
+        (number_2 : ref i32)
+        : M bool :=
+      let* α0 := deref self generics_associated_types_solution.Container in
+      let* α1 := α0.["0"] in
+      let* α2 := borrow α1 i32 in
+      let* α3 := borrow α2 (ref i32) in
+      let* α4 := borrow number_1 (ref i32) in
+      let* α5 := core.cmp.PartialEq.eq α3 α4 in
+      let* α6 := deref self generics_associated_types_solution.Container in
+      let* α7 := α6.["1"] in
+      let* α8 := borrow α7 i32 in
+      let* α9 := borrow α8 (ref i32) in
+      let* α10 := borrow number_2 (ref i32) in
+      let* α11 := core.cmp.PartialEq.eq α9 α10 in
+      and α5 α11.
+    
+    Global Instance AssociatedFunction_contains :
+      Notation.DoubleColon Self "contains" := {
+      Notation.double_colon := contains;
+    }.
+    
+    Definition first (self : ref Self) : M i32 :=
+      let* α0 := deref self generics_associated_types_solution.Container in
+      α0.["0"].
+    
+    Global Instance AssociatedFunction_first :
+      Notation.DoubleColon Self "first" := {
+      Notation.double_colon := first;
+    }.
+    
+    Definition last (self : ref Self) : M i32 :=
+      let* α0 := deref self generics_associated_types_solution.Container in
+      α0.["1"].
+    
+    Global Instance AssociatedFunction_last :
+      Notation.DoubleColon Self "last" := {
+      Notation.double_colon := last;
+    }.
+    
+    Definition a (self : ref Self) : M i32 :=
+      let* α0 := deref self generics_associated_types_solution.Container in
+      α0.["0"].
+    
+    Global Instance AssociatedFunction_a : Notation.DoubleColon Self "a" := {
+      Notation.double_colon := a;
+    }.
+    
+    Global Instance I
+      : generics_associated_types_solution.Contains.Trait Self := {
+      generics_associated_types_solution.Contains.A := A;
+      generics_associated_types_solution.Contains.B := B;
+      generics_associated_types_solution.Contains.contains := contains;
+      generics_associated_types_solution.Contains.first := first;
+      generics_associated_types_solution.Contains.last := last;
+      generics_associated_types_solution.Contains.a := a;
+    }.
+  End
+    Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
   Global Hint Resolve I : core.
 End
   Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.
 
 Definition difference
-    `{State.Trait}
     {C : Set}
-    `{generics_associated_types_solution.Contains.Trait C}
+    {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M i32 :=
   let* α0 := deref container _ in
@@ -135,9 +135,8 @@ Definition difference
   sub α2 α5.
 
 Definition get_a
-    `{State.Trait}
     {C : Set}
-    `{generics_associated_types_solution.Contains.Trait C}
+    {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M C::type["A"] :=
   let* α0 := deref container _ in
@@ -145,7 +144,7 @@ Definition get_a
   generics_associated_types_solution.Contains.a α1.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* number_1 := M.alloc 3 in
   let* number_2 := M.alloc 10 in
   let container :=

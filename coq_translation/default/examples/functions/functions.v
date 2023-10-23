@@ -2,13 +2,13 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* _ :=
     let* α0 := M.alloc 100 in
     functions.fizzbuzz_to α0 in
   Pure tt.
 
-Definition is_divisible_by `{State.Trait} (lhs : u32) (rhs : u32) : M bool :=
+Definition is_divisible_by (lhs : u32) (rhs : u32) : M bool :=
   let* _ :=
     let* α0 := M.alloc 0 in
     let* α1 := eq rhs α0 in
@@ -24,7 +24,7 @@ Definition is_divisible_by `{State.Trait} (lhs : u32) (rhs : u32) : M bool :=
   let* α1 := M.alloc 0 in
   eq α0 α1.
 
-Definition fizzbuzz `{State.Trait} (n : u32) : M unit :=
+Definition fizzbuzz (n : u32) : M unit :=
   let* α0 := M.alloc 15 in
   let* α1 := functions.is_divisible_by n α0 in
   let* α2 := use α1 in
@@ -93,7 +93,7 @@ Definition fizzbuzz `{State.Trait} (n : u32) : M unit :=
           Pure tt in
         Pure tt.
 
-Definition fizzbuzz_to `{State.Trait} (n : u32) : M unit :=
+Definition fizzbuzz_to (n : u32) : M unit :=
   let* α0 := M.alloc 1 in
   let* α1 := (core.ops.range.RangeInclusive _)::["new"] α0 n in
   let* α2 := core.iter.traits.collect.IntoIterator.into_iter α1 in

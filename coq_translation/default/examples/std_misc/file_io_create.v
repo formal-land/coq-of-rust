@@ -14,7 +14,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* path :=
     let* α0 := deref (mk_str "lorem_ipsum.txt") str in
     let* α1 := borrow α0 str in

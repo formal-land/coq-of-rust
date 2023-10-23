@@ -2,78 +2,87 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Years.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i64;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Years.
 End Years.
 Definition Years `{State.Trait} : Set := M.val Years.t.
 
 Module Days.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Days.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i64;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Days.
 End Days.
 Definition Days `{State.Trait} : Set := M.val Days.t.
 
 Module Impl_generics_new_type_idiom_Years.
-  Definition Self `{State.Trait} : Set := generics_new_type_idiom.Years.
-  
-  Definition to_days
-      `{State.Trait}
-      (self : ref Self)
-      : M generics_new_type_idiom.Days :=
-    let* α0 := deref self generics_new_type_idiom.Years in
-    let* α1 := α0.["0"] in
-    let* α2 := M.alloc 365 in
-    let* α3 := mul α1 α2 in
-    Pure (generics_new_type_idiom.Days.Build_t α3).
-  
-  Global Instance Method_to_days `{State.Trait} : Notation.Dot "to_days" := {
-    Notation.dot := to_days;
-  }.
+  Section Impl_generics_new_type_idiom_Years.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_new_type_idiom.Years.
+    
+    Definition to_days (self : ref Self) : M generics_new_type_idiom.Days :=
+      let* α0 := deref self generics_new_type_idiom.Years in
+      let* α1 := α0.["0"] in
+      let* α2 := M.alloc 365 in
+      let* α3 := mul α1 α2 in
+      Pure (generics_new_type_idiom.Days.Build_t α3).
+    
+    Global Instance AssociatedFunction_to_days :
+      Notation.DoubleColon Self "to_days" := {
+      Notation.double_colon := to_days;
+    }.
+  End Impl_generics_new_type_idiom_Years.
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
-  Definition Self `{State.Trait} : Set := generics_new_type_idiom.Days.
-  
-  Definition to_years
-      `{State.Trait}
-      (self : ref Self)
-      : M generics_new_type_idiom.Years :=
-    let* α0 := deref self generics_new_type_idiom.Days in
-    let* α1 := α0.["0"] in
-    let* α2 := M.alloc 365 in
-    let* α3 := div α1 α2 in
-    Pure (generics_new_type_idiom.Years.Build_t α3).
-  
-  Global Instance Method_to_years `{State.Trait} : Notation.Dot "to_years" := {
-    Notation.dot := to_years;
-  }.
+  Section Impl_generics_new_type_idiom_Days.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_new_type_idiom.Days.
+    
+    Definition to_years (self : ref Self) : M generics_new_type_idiom.Years :=
+      let* α0 := deref self generics_new_type_idiom.Days in
+      let* α1 := α0.["0"] in
+      let* α2 := M.alloc 365 in
+      let* α3 := div α1 α2 in
+      Pure (generics_new_type_idiom.Years.Build_t α3).
+    
+    Global Instance AssociatedFunction_to_years :
+      Notation.DoubleColon Self "to_years" := {
+      Notation.double_colon := to_years;
+    }.
+  End Impl_generics_new_type_idiom_Days.
 End Impl_generics_new_type_idiom_Days.
 
-Definition old_enough
-    `{State.Trait}
-    (age : ref generics_new_type_idiom.Years)
-    : M bool :=
+Definition old_enough (age : ref generics_new_type_idiom.Years) : M bool :=
   let* α0 := deref age generics_new_type_idiom.Years in
   let* α1 := α0.["0"] in
   let* α2 := M.alloc 18 in
   ge α1 α2.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* age :=
     let* α0 := M.alloc 5 in
     Pure (generics_new_type_idiom.Years.Build_t α0) in

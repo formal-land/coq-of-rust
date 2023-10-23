@@ -2,67 +2,84 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := { }.
-  Global Set Primitive Projections.
+  Section Sheep.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := { }.
+    Global Set Primitive Projections.
+  End Sheep.
 End Sheep.
-Definition Sheep `{State.Trait} : Set := M.val (Sheep.t).
+Definition Sheep `{State.Trait} : Set := M.val Sheep.t.
 
 Module Cow.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := { }.
-  Global Set Primitive Projections.
+  Section Cow.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := { }.
+    Global Set Primitive Projections.
+  End Cow.
 End Cow.
-Definition Cow `{State.Trait} : Set := M.val (Cow.t).
+Definition Cow `{State.Trait} : Set := M.val Cow.t.
 
 Module Animal.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    noise : (ref Self) -> M (ref str);
-  }.
-  
-  Global Instance Method_noise `{State.Trait} `(Trait)
-    : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
+  Section Animal.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      noise : (ref Self) -> M (ref str);
+    }.
+    
+  End Animal.
 End Animal.
 
 Module
   Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
-  Definition Self `{State.Trait} := returning_traits_with_dyn.Sheep.
-  
-  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
-    Pure (mk_str "baaaaah!").
-  
-  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise := noise;
-  }.
+  Section
+    Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := returning_traits_with_dyn.Sheep.
+    
+    Definition noise (self : ref Self) : M (ref str) :=
+      Pure (mk_str "baaaaah!").
+    
+    Global Instance AssociatedFunction_noise :
+      Notation.DoubleColon Self "noise" := {
+      Notation.double_colon := noise;
+    }.
+    
+    Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
+      returning_traits_with_dyn.Animal.noise := noise;
+    }.
+  End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
   Global Hint Resolve I : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.
 
 Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
-  Definition Self `{State.Trait} := returning_traits_with_dyn.Cow.
-  
-  Definition noise `{State.Trait} (self : ref Self) : M (ref str) :=
-    Pure (mk_str "moooooo!").
-  
-  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : returning_traits_with_dyn.Animal.Trait Self := {
-    returning_traits_with_dyn.Animal.noise := noise;
-  }.
+  Section
+    Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := returning_traits_with_dyn.Cow.
+    
+    Definition noise (self : ref Self) : M (ref str) :=
+      Pure (mk_str "moooooo!").
+    
+    Global Instance AssociatedFunction_noise :
+      Notation.DoubleColon Self "noise" := {
+      Notation.double_colon := noise;
+    }.
+    
+    Global Instance I : returning_traits_with_dyn.Animal.Trait Self := {
+      returning_traits_with_dyn.Animal.noise := noise;
+    }.
+  End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
   Global Hint Resolve I : core.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Definition random_animal
-    `{State.Trait}
     (random_number : f64)
     : M (alloc.boxed.Box _ (* dyn *) alloc.boxed.Box.Default.A) :=
   let* α0 := M.alloc 1 (* 0.5 *) in
@@ -84,7 +101,7 @@ Definition random_animal
   pointer_coercion "Unsize" α0.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* random_number := M.alloc 0 (* 0.234 *) in
   let* animal := returning_traits_with_dyn.random_animal random_number in
   let* _ :=

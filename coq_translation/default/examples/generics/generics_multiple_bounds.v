@@ -2,10 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition compare_prints
-    `{State.Trait}
     {T : Set}
-    `{core.fmt.Debug.Trait T}
-    `{core.fmt.Display.Trait T}
+    {ℋ_0 : core.fmt.Debug.Trait T}
+    {ℋ_1 : core.fmt.Display.Trait T}
     (t : ref T)
     : M unit :=
   let* _ :=
@@ -47,10 +46,9 @@ Definition compare_prints
   Pure tt.
 
 Definition compare_types
-    `{State.Trait}
     {T U : Set}
-    `{core.fmt.Debug.Trait T}
-    `{core.fmt.Debug.Trait U}
+    {ℋ_0 : core.fmt.Debug.Trait T}
+    {ℋ_1 : core.fmt.Debug.Trait U}
     (t : ref T)
     (u : ref U)
     : M unit :=
@@ -93,7 +91,7 @@ Definition compare_types
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let string := mk_str "words" in
   let* array :=
     let* α0 := M.alloc 1 in

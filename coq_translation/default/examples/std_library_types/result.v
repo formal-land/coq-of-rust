@@ -11,47 +11,47 @@ Module checked.
   Definition MathError `{State.Trait} : Set := MathError.t.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self `{State.Trait} := result.checked.MathError.
-    
-    Definition fmt
-        `{State.Trait}
-        (self : ref Self)
-        (f : mut_ref core.fmt.Formatter)
-        : M core.fmt.Result :=
-      let* α0 := deref f core.fmt.Formatter in
-      let* α1 := borrow_mut α0 core.fmt.Formatter in
-      let* α2 :=
-        match self with
-        | result.checked.MathError  =>
-          let* α0 := deref (mk_str "DivisionByZero") str in
-          borrow α0 str
-        | result.checked.MathError  =>
-          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-          borrow α0 str
-        | result.checked.MathError  =>
-          let* α0 := deref (mk_str "NegativeSquareRoot") str in
-          borrow α0 str
-        end in
-      core.fmt.Formatter::["write_str"] α1 α2.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
+    Section Impl_core_fmt_Debug_for_result_checked_MathError.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := result.checked.MathError.
+      
+      Definition fmt
+          (self : ref Self)
+          (f : mut_ref core.fmt.Formatter)
+          : M core.fmt.Result :=
+        let* α0 := deref f core.fmt.Formatter in
+        let* α1 := borrow_mut α0 core.fmt.Formatter in
+        let* α2 :=
+          match self with
+          | result.checked.MathError  =>
+            let* α0 := deref (mk_str "DivisionByZero") str in
+            borrow α0 str
+          | result.checked.MathError  =>
+            let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+            borrow α0 str
+          | result.checked.MathError  =>
+            let* α0 := deref (mk_str "NegativeSquareRoot") str in
+            borrow α0 str
+          end in
+        core.fmt.Formatter::["write_str"] α1 α2.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_result_checked_MathError.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
   Definition MathResult `{State.Trait} : Set :=
     core.result.Result f64 result.checked.MathError.
   
-  Definition div
-      `{State.Trait}
-      (x : f64)
-      (y : f64)
-      : M result.checked.MathResult :=
+  Definition div (x : f64) (y : f64) : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := eq y α0 in
     let* α2 := use α1 in
@@ -61,7 +61,7 @@ Module checked.
       let* α0 := div x y in
       Pure (core.result.Result.Ok α0).
   
-  Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
+  Definition sqrt (x : f64) : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := lt x α0 in
     let* α2 := use α1 in
@@ -73,7 +73,7 @@ Module checked.
       let* α0 := f64::["sqrt"] x in
       Pure (core.result.Result.Ok α0).
   
-  Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
+  Definition ln (x : f64) : M result.checked.MathResult :=
     let* α0 := M.alloc 0 (* 0.0 *) in
     let* α1 := le x α0 in
     let* α2 := use α1 in
@@ -95,47 +95,47 @@ End MathError.
 Definition MathError `{State.Trait} : Set := MathError.t.
 
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
-  Definition Self `{State.Trait} := result.checked.MathError.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | result.checked.MathError  =>
-        let* α0 := deref (mk_str "DivisionByZero") str in
-        borrow α0 str
-      | result.checked.MathError  =>
-        let* α0 := deref (mk_str "NonPositiveLogarithm") str in
-        borrow α0 str
-      | result.checked.MathError  =>
-        let* α0 := deref (mk_str "NegativeSquareRoot") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_result_checked_MathError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := result.checked.MathError.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "DivisionByZero") str in
+          borrow α0 str
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "NonPositiveLogarithm") str in
+          borrow α0 str
+        | result.checked.MathError  =>
+          let* α0 := deref (mk_str "NegativeSquareRoot") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_result_checked_MathError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 
 Definition MathResult `{State.Trait} : Set :=
   core.result.Result f64 result.checked.MathError.
 
-Definition div
-    `{State.Trait}
-    (x : f64)
-    (y : f64)
-    : M result.checked.MathResult :=
+Definition div (x : f64) (y : f64) : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := eq y α0 in
   let* α2 := use α1 in
@@ -145,7 +145,7 @@ Definition div
     let* α0 := div x y in
     Pure (core.result.Result.Ok α0).
 
-Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
+Definition sqrt (x : f64) : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := lt x α0 in
   let* α2 := use α1 in
@@ -156,7 +156,7 @@ Definition sqrt `{State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := f64::["sqrt"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
+Definition ln (x : f64) : M result.checked.MathResult :=
   let* α0 := M.alloc 0 (* 0.0 *) in
   let* α1 := le x α0 in
   let* α2 := use α1 in
@@ -168,7 +168,7 @@ Definition ln `{State.Trait} (x : f64) : M result.checked.MathResult :=
     let* α0 := f64::["ln"] x in
     Pure (core.result.Result.Ok α0).
 
-Definition op `{State.Trait} (x : f64) (y : f64) : M f64 :=
+Definition op (x : f64) (y : f64) : M f64 :=
   let* α0 := result.checked.div x y in
   match α0 with
   | core.result.Result why =>
@@ -231,7 +231,7 @@ Definition op `{State.Trait} (x : f64) (y : f64) : M f64 :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str ""; mk_str "

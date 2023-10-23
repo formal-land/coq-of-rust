@@ -2,285 +2,330 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Choice.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : u8;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Choice.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : u8;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Choice.
 End Choice.
 Definition Choice `{State.Trait} : Set := M.val Choice.t.
 
 Module Impl_core_marker_Copy_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
-  }.
+  Section Impl_core_marker_Copy_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+  End Impl_core_marker_Copy_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_subtle_Choice.
 
 Module Impl_core_clone_Clone_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter clone : forall `{State.Trait}, (ref Self) -> M subtle.Choice.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
+  Section Impl_core_clone_Clone_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter clone : (ref Self) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+  End Impl_core_clone_Clone_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_subtle_Choice.
 
 Module Impl_core_fmt_Debug_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_subtle_Choice.
 
 Module Impl_subtle_Choice_4.
-  Definition Self `{State.Trait} : Set := subtle.Choice.
-  
-  Parameter unwrap_u8 : forall `{State.Trait}, (ref Self) -> M u8.
-  
-  Global Instance Method_unwrap_u8 `{State.Trait} :
-    Notation.Dot "unwrap_u8" := {
-    Notation.dot := unwrap_u8;
-  }.
+  Section Impl_subtle_Choice_4.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter unwrap_u8 : (ref Self) -> M u8.
+    
+    Global Instance AssociatedFunction_unwrap_u8 :
+      Notation.DoubleColon Self "unwrap_u8" := {
+      Notation.double_colon := unwrap_u8;
+    }.
+  End Impl_subtle_Choice_4.
 End Impl_subtle_Choice_4.
 
 Module Impl_core_convert_From_for_bool.
-  Definition Self `{State.Trait} := bool.
-  
-  Parameter from : forall `{State.Trait}, subtle.Choice -> M bool.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := subtle.Choice) := {
-    core.convert.From.from := from;
-  }.
+  Section Impl_core_convert_From_for_bool.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := bool.
+    
+    Parameter from : subtle.Choice -> M bool.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I : core.convert.From.Trait Self (T := subtle.Choice) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_bool.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_bool.
 
 Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Definition Output : Set := subtle.Choice.
-  
-  Parameter bitand :
-      forall `{State.Trait},
-      Self -> subtle.Choice -> M subtle.Choice.
-  
-  Global Instance Method_bitand `{State.Trait} : Notation.Dot "bitand" := {
-    Notation.dot := bitand;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.ops.bit.BitAnd.Trait Self
-        (Rhs := core.ops.bit.BitAnd.Default.Rhs Self)
-      := {
-    core.ops.bit.BitAnd.Output := Output;
-    core.ops.bit.BitAnd.bitand := bitand;
-  }.
+  Section Impl_core_ops_bit_BitAnd_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Definition Output : Set := subtle.Choice.
+    
+    Parameter bitand : Self -> subtle.Choice -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_bitand :
+      Notation.DoubleColon Self "bitand" := {
+      Notation.double_colon := bitand;
+    }.
+    
+    Global Instance I
+      : core.ops.bit.BitAnd.Trait Self
+          (Rhs := core.ops.bit.BitAnd.Default.Rhs Self)
+        := {
+      core.ops.bit.BitAnd.Output := Output;
+      core.ops.bit.BitAnd.bitand := bitand;
+    }.
+  End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter bitand_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_bitand_assign `{State.Trait} :
-    Notation.Dot "bitand_assign" := {
-    Notation.dot := bitand_assign;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.ops.bit.BitAndAssign.Trait Self
-        (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self)
-      := {
-    core.ops.bit.BitAndAssign.bitand_assign := bitand_assign;
-  }.
+  Section Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter bitand_assign : (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_bitand_assign :
+      Notation.DoubleColon Self "bitand_assign" := {
+      Notation.double_colon := bitand_assign;
+    }.
+    
+    Global Instance I
+      : core.ops.bit.BitAndAssign.Trait Self
+          (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self)
+        := {
+      core.ops.bit.BitAndAssign.bitand_assign := bitand_assign;
+    }.
+  End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Definition Output : Set := subtle.Choice.
-  
-  Parameter bitor :
-      forall `{State.Trait},
-      Self -> subtle.Choice -> M subtle.Choice.
-  
-  Global Instance Method_bitor `{State.Trait} : Notation.Dot "bitor" := {
-    Notation.dot := bitor;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.ops.bit.BitOr.Trait Self (Rhs := core.ops.bit.BitOr.Default.Rhs Self)
-      := {
-    core.ops.bit.BitOr.Output := Output;
-    core.ops.bit.BitOr.bitor := bitor;
-  }.
+  Section Impl_core_ops_bit_BitOr_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Definition Output : Set := subtle.Choice.
+    
+    Parameter bitor : Self -> subtle.Choice -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_bitor :
+      Notation.DoubleColon Self "bitor" := {
+      Notation.double_colon := bitor;
+    }.
+    
+    Global Instance I
+      : core.ops.bit.BitOr.Trait Self
+          (Rhs := core.ops.bit.BitOr.Default.Rhs Self)
+        := {
+      core.ops.bit.BitOr.Output := Output;
+      core.ops.bit.BitOr.bitor := bitor;
+    }.
+  End Impl_core_ops_bit_BitOr_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitOr_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter bitor_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_bitor_assign `{State.Trait} :
-    Notation.Dot "bitor_assign" := {
-    Notation.dot := bitor_assign;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.ops.bit.BitOrAssign.Trait Self
-        (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self)
-      := {
-    core.ops.bit.BitOrAssign.bitor_assign := bitor_assign;
-  }.
+  Section Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter bitor_assign : (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_bitor_assign :
+      Notation.DoubleColon Self "bitor_assign" := {
+      Notation.double_colon := bitor_assign;
+    }.
+    
+    Global Instance I
+      : core.ops.bit.BitOrAssign.Trait Self
+          (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self)
+        := {
+      core.ops.bit.BitOrAssign.bitor_assign := bitor_assign;
+    }.
+  End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Definition Output : Set := subtle.Choice.
-  
-  Parameter bitxor :
-      forall `{State.Trait},
-      Self -> subtle.Choice -> M subtle.Choice.
-  
-  Global Instance Method_bitxor `{State.Trait} : Notation.Dot "bitxor" := {
-    Notation.dot := bitxor;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.ops.bit.BitXor.Trait Self
-        (Rhs := core.ops.bit.BitXor.Default.Rhs Self)
-      := {
-    core.ops.bit.BitXor.Output := Output;
-    core.ops.bit.BitXor.bitxor := bitxor;
-  }.
+  Section Impl_core_ops_bit_BitXor_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Definition Output : Set := subtle.Choice.
+    
+    Parameter bitxor : Self -> subtle.Choice -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_bitxor :
+      Notation.DoubleColon Self "bitxor" := {
+      Notation.double_colon := bitxor;
+    }.
+    
+    Global Instance I
+      : core.ops.bit.BitXor.Trait Self
+          (Rhs := core.ops.bit.BitXor.Default.Rhs Self)
+        := {
+      core.ops.bit.BitXor.Output := Output;
+      core.ops.bit.BitXor.bitxor := bitxor;
+    }.
+  End Impl_core_ops_bit_BitXor_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitXor_for_subtle_Choice.
 
 Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter bitxor_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_bitxor_assign `{State.Trait} :
-    Notation.Dot "bitxor_assign" := {
-    Notation.dot := bitxor_assign;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.ops.bit.BitXorAssign.Trait Self
-        (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self)
-      := {
-    core.ops.bit.BitXorAssign.bitxor_assign := bitxor_assign;
-  }.
+  Section Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter bitxor_assign : (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_bitxor_assign :
+      Notation.DoubleColon Self "bitxor_assign" := {
+      Notation.double_colon := bitxor_assign;
+    }.
+    
+    Global Instance I
+      : core.ops.bit.BitXorAssign.Trait Self
+          (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self)
+        := {
+      core.ops.bit.BitXorAssign.bitxor_assign := bitxor_assign;
+    }.
+  End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Definition Output : Set := subtle.Choice.
-  
-  Parameter not : forall `{State.Trait}, Self -> M subtle.Choice.
-  
-  Global Instance Method_not `{State.Trait} : Notation.Dot "not" := {
-    Notation.dot := not;
-  }.
-  
-  Global Instance I `{State.Trait} : core.ops.bit.Not.Trait Self := {
-    core.ops.bit.Not.Output := Output;
-    core.ops.bit.Not.not := not;
-  }.
+  Section Impl_core_ops_bit_Not_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Definition Output : Set := subtle.Choice.
+    
+    Parameter not : Self -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_not :
+      Notation.DoubleColon Self "not" := {
+      Notation.double_colon := not;
+    }.
+    
+    Global Instance I : core.ops.bit.Not.Trait Self := {
+      core.ops.bit.Not.Output := Output;
+      core.ops.bit.Not.not := not;
+    }.
+  End Impl_core_ops_bit_Not_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 Parameter black_box : forall `{State.Trait}, u8 -> M u8.
 
 Module Impl_core_convert_From_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter from : forall `{State.Trait}, u8 -> M subtle.Choice.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait} : core.convert.From.Trait Self (T := u8) := {
-    core.convert.From.from := from;
-  }.
+  Section Impl_core_convert_From_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter from : u8 -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I : core.convert.From.Trait Self (T := u8) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_subtle_Choice.
 
 Module ConstantTimeEq.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    ct_eq : (ref Self) -> (ref Self) -> M subtle.Choice;
-  }.
-  
-  Global Instance Method_ct_eq `{State.Trait} `(Trait)
-    : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  Global Instance Method_ct_ne `{State.Trait} `(Trait)
-    : Notation.Dot "ct_ne" := {
-    Notation.dot (self : ref Self) (other : ref Self)
-      :=
-      (axiom : M subtle.Choice);
-  }.
+  Section ConstantTimeEq.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      ct_eq : (ref Self) -> (ref Self) -> M subtle.Choice;
+    }.
+    
+  End ConstantTimeEq.
 End ConstantTimeEq.
 
 Module Impl_subtle_ConstantTimeEq_for_Slice_T.
   Section Impl_subtle_ConstantTimeEq_for_Slice_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{subtle.ConstantTimeEq.Trait T}.
-    Definition Self `{State.Trait} := Slice T.
     
-    Parameter ct_eq :
-        forall `{State.Trait},
-        (ref Self) -> (ref (Slice T)) -> M subtle.Choice.
+    Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
+    Definition Self : Set := Slice T.
     
-    Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-      Notation.dot := ct_eq;
+    Parameter ct_eq : (ref Self) -> (ref (Slice T)) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_Slice_T.
@@ -288,564 +333,583 @@ Module Impl_subtle_ConstantTimeEq_for_Slice_T.
 End Impl_subtle_ConstantTimeEq_for_Slice_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref subtle.Choice) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter ct_eq : (ref Self) -> (ref subtle.Choice) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module Impl_subtle_ConstantTimeEq_for_u8.
-  Definition Self `{State.Trait} := u8.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref u8) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_u8.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u8.
+    
+    Parameter ct_eq : (ref Self) -> (ref u8) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_u8.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module Impl_subtle_ConstantTimeEq_for_i8.
-  Definition Self `{State.Trait} := i8.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref i8) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_i8.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i8.
+    
+    Parameter ct_eq : (ref Self) -> (ref i8) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_i8.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module Impl_subtle_ConstantTimeEq_for_u16.
-  Definition Self `{State.Trait} := u16.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref u16) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_u16.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u16.
+    
+    Parameter ct_eq : (ref Self) -> (ref u16) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_u16.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module Impl_subtle_ConstantTimeEq_for_i16.
-  Definition Self `{State.Trait} := i16.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref i16) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_i16.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i16.
+    
+    Parameter ct_eq : (ref Self) -> (ref i16) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_i16.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module Impl_subtle_ConstantTimeEq_for_u32.
-  Definition Self `{State.Trait} := u32.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref u32) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_u32.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u32.
+    
+    Parameter ct_eq : (ref Self) -> (ref u32) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_u32.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module Impl_subtle_ConstantTimeEq_for_i32.
-  Definition Self `{State.Trait} := i32.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref i32) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_i32.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i32.
+    
+    Parameter ct_eq : (ref Self) -> (ref i32) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_i32.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module Impl_subtle_ConstantTimeEq_for_u64.
-  Definition Self `{State.Trait} := u64.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref u64) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_u64.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u64.
+    
+    Parameter ct_eq : (ref Self) -> (ref u64) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_u64.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module Impl_subtle_ConstantTimeEq_for_i64.
-  Definition Self `{State.Trait} := i64.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref i64) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_i64.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i64.
+    
+    Parameter ct_eq : (ref Self) -> (ref i64) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_i64.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module Impl_subtle_ConstantTimeEq_for_usize.
-  Definition Self `{State.Trait} := usize.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref usize) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_usize.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := usize.
+    
+    Parameter ct_eq : (ref Self) -> (ref usize) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_usize.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module Impl_subtle_ConstantTimeEq_for_isize.
-  Definition Self `{State.Trait} := isize.
-  
-  Parameter ct_eq :
-      forall `{State.Trait},
-      (ref Self) -> (ref isize) -> M subtle.Choice.
-  
-  Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-    Notation.dot := ct_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
-    subtle.ConstantTimeEq.ct_eq := ct_eq;
-  }.
+  Section Impl_subtle_ConstantTimeEq_for_isize.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := isize.
+    
+    Parameter ct_eq : (ref Self) -> (ref isize) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
+      subtle.ConstantTimeEq.ct_eq := ct_eq;
+    }.
+  End Impl_subtle_ConstantTimeEq_for_isize.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeEq_for_isize.
 
 Module ConditionallySelectable.
-  Class Trait (Self : Set) `{core.marker.Copy.Trait Self} `{State.Trait} :
-      Type := {
-    conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> M Self;
-  }.
-  
-  Global Instance Method_conditional_select `{State.Trait} `(Trait)
-    : Notation.Dot "conditional_select" := {
-    Notation.dot := conditional_select;
-  }.
-  Global Instance Method_conditional_assign `{State.Trait} `(Trait)
-    : Notation.Dot "conditional_assign" := {
-    Notation.dot
-      (self : mut_ref Self)
-      (other : ref Self)
-      (choice : subtle.Choice)
-      :=
-      (axiom : M unit);
-  }.
-  Global Instance Method_conditional_swap `{State.Trait} `(Trait)
-    : Notation.Dot "conditional_swap" := {
-    Notation.dot (a : mut_ref Self) (b : mut_ref Self) (choice : subtle.Choice)
-      :=
-      (axiom : M unit);
-  }.
+  Section ConditionallySelectable.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) {ℋ_0 : core.marker.Copy.Trait Self} : Type := {
+      conditional_select : (ref Self) -> (ref Self) -> subtle.Choice -> M Self;
+    }.
+    
+  End ConditionallySelectable.
 End ConditionallySelectable.
 
 Module Impl_subtle_ConditionallySelectable_for_u8.
-  Definition Self `{State.Trait} := u8.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_u8.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u8.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_u8.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module Impl_subtle_ConditionallySelectable_for_i8.
-  Definition Self `{State.Trait} := i8.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_i8.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i8.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_i8.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module Impl_subtle_ConditionallySelectable_for_u16.
-  Definition Self `{State.Trait} := u16.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_u16.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u16.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_u16.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module Impl_subtle_ConditionallySelectable_for_i16.
-  Definition Self `{State.Trait} := i16.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_i16.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i16.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_i16.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module Impl_subtle_ConditionallySelectable_for_u32.
-  Definition Self `{State.Trait} := u32.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_u32.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u32.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_u32.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module Impl_subtle_ConditionallySelectable_for_i32.
-  Definition Self `{State.Trait} := i32.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_i32.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i32.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_i32.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module Impl_subtle_ConditionallySelectable_for_u64.
-  Definition Self `{State.Trait} := u64.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_u64.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u64.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_u64.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module Impl_subtle_ConditionallySelectable_for_i64.
-  Definition Self `{State.Trait} := i64.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Parameter conditional_assign :
-      forall `{State.Trait},
-      (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance Method_conditional_assign `{State.Trait} :
-    Notation.Dot "conditional_assign" := {
-    Notation.dot := conditional_assign;
-  }.
-  
-  Parameter conditional_swap :
-      forall `{State.Trait},
-      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
-  
-  Global Instance AssociatedFunction_conditional_swap `{State.Trait} :
-    Notation.DoubleColon Self "conditional_swap" := {
-    Notation.double_colon := conditional_swap;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_i64.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := i64.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Parameter conditional_assign :
+        (mut_ref Self) -> (ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_assign :
+      Notation.DoubleColon Self "conditional_assign" := {
+      Notation.double_colon := conditional_assign;
+    }.
+    
+    Parameter conditional_swap :
+        (mut_ref Self) -> (mut_ref Self) -> subtle.Choice -> M unit.
+    
+    Global Instance AssociatedFunction_conditional_swap :
+      Notation.DoubleColon Self "conditional_swap" := {
+      Notation.double_colon := conditional_swap;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_i64.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_i64.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
-  Definition Self `{State.Trait} := subtle.Choice.
-  
-  Parameter conditional_select :
-      forall `{State.Trait},
-      (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
-  
-  Global Instance AssociatedFunction_conditional_select `{State.Trait} :
-    Notation.DoubleColon Self "conditional_select" := {
-    Notation.double_colon := conditional_select;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : subtle.ConditionallySelectable.Trait Self := {
-    subtle.ConditionallySelectable.conditional_select := conditional_select;
-  }.
+  Section Impl_subtle_ConditionallySelectable_for_subtle_Choice.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.Choice.
+    
+    Parameter conditional_select :
+        (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
+    
+    Global Instance AssociatedFunction_conditional_select :
+      Notation.DoubleColon Self "conditional_select" := {
+      Notation.double_colon := conditional_select;
+    }.
+    
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
+      subtle.ConditionallySelectable.conditional_select := conditional_select;
+    }.
+  End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
   Global Hint Resolve I : core.
 End Impl_subtle_ConditionallySelectable_for_subtle_Choice.
 
 Module ConditionallyNegatable.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    conditional_negate : (mut_ref Self) -> subtle.Choice -> M unit;
-  }.
-  
-  Global Instance Method_conditional_negate `{State.Trait} `(Trait)
-    : Notation.Dot "conditional_negate" := {
-    Notation.dot := conditional_negate;
-  }.
+  Section ConditionallyNegatable.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      conditional_negate : (mut_ref Self) -> subtle.Choice -> M unit;
+    }.
+    
+  End ConditionallyNegatable.
 End ConditionallyNegatable.
 
 Module Impl_subtle_ConditionallyNegatable_for_T.
   Section Impl_subtle_ConditionallyNegatable_for_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Context
-      `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.arith.Neg.Trait (ref T)}.
-    Definition Self `{State.Trait} := T.
+      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
+      {ℋ_1 : core.ops.arith.Neg.Trait (ref T)}.
+    Definition Self : Set := T.
     
-    Parameter conditional_negate :
-        forall `{State.Trait},
-        (mut_ref Self) -> subtle.Choice -> M unit.
+    Parameter conditional_negate : (mut_ref Self) -> subtle.Choice -> M unit.
     
-    Global Instance Method_conditional_negate `{State.Trait} :
-      Notation.Dot "conditional_negate" := {
-      Notation.dot := conditional_negate;
+    Global Instance AssociatedFunction_conditional_negate :
+      Notation.DoubleColon Self "conditional_negate" := {
+      Notation.double_colon := conditional_negate;
     }.
     
-    Global Instance I `{State.Trait}
-      : subtle.ConditionallyNegatable.Trait Self := {
+    Global Instance I : subtle.ConditionallyNegatable.Trait Self := {
       subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
     }.
   End Impl_subtle_ConditionallyNegatable_for_T.
@@ -854,26 +918,27 @@ End Impl_subtle_ConditionallyNegatable_for_T.
 
 Module CtOption.
   Section CtOption.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       value : T;
       is_some : subtle.Choice;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_value `{State.Trait} : Notation.Dot "value" := {
+    Global Instance Get_value : Notation.Dot "value" := {
       Notation.dot x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_AF_value `{State.Trait}
-      : Notation.DoubleColon t "value" := {
+    Global Instance Get_AF_value : Notation.DoubleColon t "value" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(value) : M _;
     }.
-    Global Instance Get_is_some `{State.Trait} : Notation.Dot "is_some" := {
+    Global Instance Get_is_some : Notation.Dot "is_some" := {
       Notation.dot x := let* x := M.read x in Pure x.(is_some) : M _;
     }.
-    Global Instance Get_AF_is_some `{State.Trait}
-      : Notation.DoubleColon t "is_some" := {
+    Global Instance Get_AF_is_some : Notation.DoubleColon t "is_some" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(is_some) : M _;
     }.
   End CtOption.
@@ -883,19 +948,21 @@ Definition CtOption (T : Set) `{State.Trait} : Set :=
 
 Module Impl_core_clone_Clone_for_subtle_CtOption_T.
   Section Impl_core_clone_Clone_for_subtle_CtOption_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{core.clone.Clone.Trait T}.
-    Definition Self `{State.Trait} := subtle.CtOption T.
     
-    Parameter clone :
-        forall `{State.Trait},
-        (ref Self) -> M (subtle.CtOption T).
+    Context {ℋ_0 : core.clone.Clone.Trait T}.
+    Definition Self : Set := subtle.CtOption T.
     
-    Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-      Notation.dot := clone;
+    Parameter clone : (ref Self) -> M (subtle.CtOption T).
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
     }.
     
-    Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
+    Global Instance I : core.clone.Clone.Trait Self := {
       core.clone.Clone.clone := clone;
     }.
   End Impl_core_clone_Clone_for_subtle_CtOption_T.
@@ -904,11 +971,14 @@ End Impl_core_clone_Clone_for_subtle_CtOption_T.
 
 Module Impl_core_marker_Copy_for_subtle_CtOption_T.
   Section Impl_core_marker_Copy_for_subtle_CtOption_T.
-    Context {T : Set}.
-    Context `{core.marker.Copy.Trait T}.
-    Definition Self `{State.Trait} := subtle.CtOption T.
+    Context `{State.Trait}.
     
-    Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
+    Context {T : Set}.
+    
+    Context {ℋ_0 : core.marker.Copy.Trait T}.
+    Definition Self : Set := subtle.CtOption T.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
     }.
   End Impl_core_marker_Copy_for_subtle_CtOption_T.
   Global Hint Resolve I : core.
@@ -916,19 +986,22 @@ End Impl_core_marker_Copy_for_subtle_CtOption_T.
 
 Module Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{core.fmt.Debug.Trait T}.
-    Definition Self `{State.Trait} := subtle.CtOption T.
+    
+    Context {ℋ_0 : core.fmt.Debug.Trait T}.
+    Definition Self : Set := subtle.CtOption T.
     
     Parameter fmt :
-        forall `{State.Trait},
         (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
     
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
     }.
     
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
+    Global Instance I : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_subtle_CtOption_T.
@@ -937,19 +1010,20 @@ End Impl_core_fmt_Debug_for_subtle_CtOption_T.
 
 Module Impl_core_convert_From_for_core_option_Option_T.
   Section Impl_core_convert_From_for_core_option_Option_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Definition Self `{State.Trait} := core.option.Option T.
     
-    Parameter from :
-        forall `{State.Trait},
-        (subtle.CtOption T) -> M (core.option.Option T).
+    Definition Self : Set := core.option.Option T.
     
-    Global Instance AssociatedFunction_from `{State.Trait} :
+    Parameter from : (subtle.CtOption T) -> M (core.option.Option T).
+    
+    Global Instance AssociatedFunction_from :
       Notation.DoubleColon Self "from" := {
       Notation.double_colon := from;
     }.
     
-    Global Instance I `{State.Trait}
+    Global Instance I
       : core.convert.From.Trait Self (T := subtle.CtOption T) := {
       core.convert.From.from := from;
     }.
@@ -958,142 +1032,140 @@ Module Impl_core_convert_From_for_core_option_Option_T.
 End Impl_core_convert_From_for_core_option_Option_T.
 
 Module Impl_subtle_CtOption_T_4.
-  Definition Self `{State.Trait} : Set := subtle.CtOption T.
-  
-  Parameter new :
-      forall `{State.Trait},
-      T -> subtle.Choice -> M (subtle.CtOption T).
-  
-  Global Instance AssociatedFunction_new `{State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Parameter expect : forall `{State.Trait}, Self -> (ref str) -> M T.
-  
-  Global Instance Method_expect `{State.Trait} : Notation.Dot "expect" := {
-    Notation.dot := expect;
-  }.
-  
-  Parameter unwrap : forall `{State.Trait}, Self -> M T.
-  
-  Global Instance Method_unwrap `{State.Trait} : Notation.Dot "unwrap" := {
-    Notation.dot := unwrap;
-  }.
-  
-  Parameter unwrap_or :
-      forall `{State.Trait} `{subtle.ConditionallySelectable.Trait T},
-      Self -> T -> M T.
-  
-  Global Instance Method_unwrap_or
-      `{State.Trait}
-      `{subtle.ConditionallySelectable.Trait T} :
-    Notation.Dot "unwrap_or" := {
-    Notation.dot := unwrap_or;
-  }.
-  
-  Parameter unwrap_or_else :
-      forall
-        `{State.Trait}
+  Section Impl_subtle_CtOption_T_4.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := subtle.CtOption T.
+    
+    Parameter new : T -> subtle.Choice -> M (subtle.CtOption T).
+    
+    Global Instance AssociatedFunction_new :
+      Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+    
+    Parameter expect : Self -> (ref str) -> M T.
+    
+    Global Instance AssociatedFunction_expect :
+      Notation.DoubleColon Self "expect" := {
+      Notation.double_colon := expect;
+    }.
+    
+    Parameter unwrap : Self -> M T.
+    
+    Global Instance AssociatedFunction_unwrap :
+      Notation.DoubleColon Self "unwrap" := {
+      Notation.double_colon := unwrap;
+    }.
+    
+    Parameter unwrap_or :
+        forall {ℋ_0 : subtle.ConditionallySelectable.Trait T},
+        Self -> T -> M T.
+    
+    Global Instance AssociatedFunction_unwrap_or
+        {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
+      Notation.DoubleColon Self "unwrap_or" := {
+      Notation.double_colon := unwrap_or;
+    }.
+    
+    Parameter unwrap_or_else :
+        forall
+          {F : Set}
+          {ℋ_0 : subtle.ConditionallySelectable.Trait T}
+          {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
+        Self -> F -> M T.
+    
+    Global Instance AssociatedFunction_unwrap_or_else
         {F : Set}
-        `{subtle.ConditionallySelectable.Trait T}
-        `{core.ops.function.FnOnce.Trait F (Args := unit)},
-      Self -> F -> M T.
-  
-  Global Instance Method_unwrap_or_else
-      `{State.Trait}
-      {F : Set}
-      `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait F (Args := unit)} :
-    Notation.Dot "unwrap_or_else" := {
-    Notation.dot := unwrap_or_else (F := F);
-  }.
-  
-  Parameter is_some : forall `{State.Trait}, (ref Self) -> M subtle.Choice.
-  
-  Global Instance Method_is_some `{State.Trait} : Notation.Dot "is_some" := {
-    Notation.dot := is_some;
-  }.
-  
-  Parameter is_none : forall `{State.Trait}, (ref Self) -> M subtle.Choice.
-  
-  Global Instance Method_is_none `{State.Trait} : Notation.Dot "is_none" := {
-    Notation.dot := is_none;
-  }.
-  
-  Parameter map :
-      forall
-        `{State.Trait}
+        {ℋ_0 : subtle.ConditionallySelectable.Trait T}
+        {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+      Notation.DoubleColon Self "unwrap_or_else" := {
+      Notation.double_colon := unwrap_or_else (F := F);
+    }.
+    
+    Parameter is_some : (ref Self) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_is_some :
+      Notation.DoubleColon Self "is_some" := {
+      Notation.double_colon := is_some;
+    }.
+    
+    Parameter is_none : (ref Self) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_is_none :
+      Notation.DoubleColon Self "is_none" := {
+      Notation.double_colon := is_none;
+    }.
+    
+    Parameter map :
+        forall
+          {U F : Set}
+          {ℋ_0 : core.default.Default.Trait T}
+          {ℋ_1 : subtle.ConditionallySelectable.Trait T}
+          {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
+        Self -> F -> M (subtle.CtOption U).
+    
+    Global Instance AssociatedFunction_map
         {U F : Set}
-        `{core.default.Default.Trait T}
-        `{subtle.ConditionallySelectable.Trait T}
-        `{core.ops.function.FnOnce.Trait F (Args := T)},
-      Self -> F -> M (subtle.CtOption U).
-  
-  Global Instance Method_map
-      `{State.Trait}
-      {U F : Set}
-      `{core.default.Default.Trait T}
-      `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait F (Args := T)} :
-    Notation.Dot "map" := {
-    Notation.dot := map (U := U) (F := F);
-  }.
-  
-  Parameter and_then :
-      forall
-        `{State.Trait}
+        {ℋ_0 : core.default.Default.Trait T}
+        {ℋ_1 : subtle.ConditionallySelectable.Trait T}
+        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+      Notation.DoubleColon Self "map" := {
+      Notation.double_colon := map (U := U) (F := F);
+    }.
+    
+    Parameter and_then :
+        forall
+          {U F : Set}
+          {ℋ_0 : core.default.Default.Trait T}
+          {ℋ_1 : subtle.ConditionallySelectable.Trait T}
+          {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
+        Self -> F -> M (subtle.CtOption U).
+    
+    Global Instance AssociatedFunction_and_then
         {U F : Set}
-        `{core.default.Default.Trait T}
-        `{subtle.ConditionallySelectable.Trait T}
-        `{core.ops.function.FnOnce.Trait F (Args := T)},
-      Self -> F -> M (subtle.CtOption U).
-  
-  Global Instance Method_and_then
-      `{State.Trait}
-      {U F : Set}
-      `{core.default.Default.Trait T}
-      `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait F (Args := T)} :
-    Notation.Dot "and_then" := {
-    Notation.dot := and_then (U := U) (F := F);
-  }.
-  
-  Parameter or_else :
-      forall
-        `{State.Trait}
+        {ℋ_0 : core.default.Default.Trait T}
+        {ℋ_1 : subtle.ConditionallySelectable.Trait T}
+        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+      Notation.DoubleColon Self "and_then" := {
+      Notation.double_colon := and_then (U := U) (F := F);
+    }.
+    
+    Parameter or_else :
+        forall
+          {F : Set}
+          {ℋ_0 : subtle.ConditionallySelectable.Trait T}
+          {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
+        Self -> F -> M (subtle.CtOption T).
+    
+    Global Instance AssociatedFunction_or_else
         {F : Set}
-        `{subtle.ConditionallySelectable.Trait T}
-        `{core.ops.function.FnOnce.Trait F (Args := unit)},
-      Self -> F -> M (subtle.CtOption T).
-  
-  Global Instance Method_or_else
-      `{State.Trait}
-      {F : Set}
-      `{subtle.ConditionallySelectable.Trait T}
-      `{core.ops.function.FnOnce.Trait F (Args := unit)} :
-    Notation.Dot "or_else" := {
-    Notation.dot := or_else (F := F);
-  }.
+        {ℋ_0 : subtle.ConditionallySelectable.Trait T}
+        {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+      Notation.DoubleColon Self "or_else" := {
+      Notation.double_colon := or_else (F := F);
+    }.
+  End Impl_subtle_CtOption_T_4.
 End Impl_subtle_CtOption_T_4.
 
 Module Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{subtle.ConditionallySelectable.Trait T}.
-    Definition Self `{State.Trait} := subtle.CtOption T.
+    
+    Context {ℋ_0 : subtle.ConditionallySelectable.Trait T}.
+    Definition Self : Set := subtle.CtOption T.
     
     Parameter conditional_select :
-        forall `{State.Trait},
         (ref Self) -> (ref Self) -> subtle.Choice -> M Self.
     
-    Global Instance AssociatedFunction_conditional_select `{State.Trait} :
+    Global Instance AssociatedFunction_conditional_select :
       Notation.DoubleColon Self "conditional_select" := {
       Notation.double_colon := conditional_select;
     }.
     
-    Global Instance I `{State.Trait}
-      : subtle.ConditionallySelectable.Trait Self := {
+    Global Instance I : subtle.ConditionallySelectable.Trait Self := {
       subtle.ConditionallySelectable.conditional_select := conditional_select;
     }.
   End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
@@ -1102,19 +1174,22 @@ End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 
 Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
-    Context `{subtle.ConstantTimeEq.Trait T}.
-    Definition Self `{State.Trait} := subtle.CtOption T.
+    
+    Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
+    Definition Self : Set := subtle.CtOption T.
     
     Parameter ct_eq :
-        forall `{State.Trait},
         (ref Self) -> (ref (subtle.CtOption T)) -> M subtle.Choice.
     
-    Global Instance Method_ct_eq `{State.Trait} : Notation.Dot "ct_eq" := {
-      Notation.dot := ct_eq;
+    Global Instance AssociatedFunction_ct_eq :
+      Notation.DoubleColon Self "ct_eq" := {
+      Notation.double_colon := ct_eq;
     }.
     
-    Global Instance I `{State.Trait} : subtle.ConstantTimeEq.Trait Self := {
+    Global Instance I : subtle.ConstantTimeEq.Trait Self := {
       subtle.ConstantTimeEq.ct_eq := ct_eq;
     }.
   End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
@@ -1122,130 +1197,155 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 
 Module ConstantTimeGreater.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    ct_gt : (ref Self) -> (ref Self) -> M subtle.Choice;
-  }.
-  
-  Global Instance Method_ct_gt `{State.Trait} `(Trait)
-    : Notation.Dot "ct_gt" := {
-    Notation.dot := ct_gt;
-  }.
+  Section ConstantTimeGreater.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      ct_gt : (ref Self) -> (ref Self) -> M subtle.Choice;
+    }.
+    
+  End ConstantTimeGreater.
 End ConstantTimeGreater.
 
 Module Impl_subtle_ConstantTimeGreater_for_u8.
-  Definition Self `{State.Trait} := u8.
-  
-  Parameter ct_gt :
-      forall `{State.Trait},
-      (ref Self) -> (ref u8) -> M subtle.Choice.
-  
-  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
-    Notation.dot := ct_gt;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt := ct_gt;
-  }.
+  Section Impl_subtle_ConstantTimeGreater_for_u8.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u8.
+    
+    Parameter ct_gt : (ref Self) -> (ref u8) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_gt :
+      Notation.DoubleColon Self "ct_gt" := {
+      Notation.double_colon := ct_gt;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+      subtle.ConstantTimeGreater.ct_gt := ct_gt;
+    }.
+  End Impl_subtle_ConstantTimeGreater_for_u8.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module Impl_subtle_ConstantTimeGreater_for_u16.
-  Definition Self `{State.Trait} := u16.
-  
-  Parameter ct_gt :
-      forall `{State.Trait},
-      (ref Self) -> (ref u16) -> M subtle.Choice.
-  
-  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
-    Notation.dot := ct_gt;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt := ct_gt;
-  }.
+  Section Impl_subtle_ConstantTimeGreater_for_u16.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u16.
+    
+    Parameter ct_gt : (ref Self) -> (ref u16) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_gt :
+      Notation.DoubleColon Self "ct_gt" := {
+      Notation.double_colon := ct_gt;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+      subtle.ConstantTimeGreater.ct_gt := ct_gt;
+    }.
+  End Impl_subtle_ConstantTimeGreater_for_u16.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module Impl_subtle_ConstantTimeGreater_for_u32.
-  Definition Self `{State.Trait} := u32.
-  
-  Parameter ct_gt :
-      forall `{State.Trait},
-      (ref Self) -> (ref u32) -> M subtle.Choice.
-  
-  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
-    Notation.dot := ct_gt;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt := ct_gt;
-  }.
+  Section Impl_subtle_ConstantTimeGreater_for_u32.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u32.
+    
+    Parameter ct_gt : (ref Self) -> (ref u32) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_gt :
+      Notation.DoubleColon Self "ct_gt" := {
+      Notation.double_colon := ct_gt;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+      subtle.ConstantTimeGreater.ct_gt := ct_gt;
+    }.
+  End Impl_subtle_ConstantTimeGreater_for_u32.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module Impl_subtle_ConstantTimeGreater_for_u64.
-  Definition Self `{State.Trait} := u64.
-  
-  Parameter ct_gt :
-      forall `{State.Trait},
-      (ref Self) -> (ref u64) -> M subtle.Choice.
-  
-  Global Instance Method_ct_gt `{State.Trait} : Notation.Dot "ct_gt" := {
-    Notation.dot := ct_gt;
-  }.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeGreater.Trait Self := {
-    subtle.ConstantTimeGreater.ct_gt := ct_gt;
-  }.
+  Section Impl_subtle_ConstantTimeGreater_for_u64.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u64.
+    
+    Parameter ct_gt : (ref Self) -> (ref u64) -> M subtle.Choice.
+    
+    Global Instance AssociatedFunction_ct_gt :
+      Notation.DoubleColon Self "ct_gt" := {
+      Notation.double_colon := ct_gt;
+    }.
+    
+    Global Instance I : subtle.ConstantTimeGreater.Trait Self := {
+      subtle.ConstantTimeGreater.ct_gt := ct_gt;
+    }.
+  End Impl_subtle_ConstantTimeGreater_for_u64.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeGreater_for_u64.
 
 Module ConstantTimeLess.
-  Unset Primitive Projections.
-  Class Trait
-      (Self : Set)
-      `{subtle.ConstantTimeEq.Trait Self}
-      `{subtle.ConstantTimeGreater.Trait Self}
-      `{State.Trait} :
-      Type := {
-  }.
-  Global Set Primitive Projections.
-  Global Instance Method_ct_lt `{State.Trait} `(Trait)
-    : Notation.Dot "ct_lt" := {
-    Notation.dot (self : ref Self) (other : ref Self)
-      :=
-      (axiom : M subtle.Choice);
-  }.
+  Section ConstantTimeLess.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait
+        (Self : Set)
+        {ℋ_0 : subtle.ConstantTimeEq.Trait Self}
+        {ℋ_1 : subtle.ConstantTimeGreater.Trait Self} :
+        Type := {
+    }.
+    Global Set Primitive Projections.
+  End ConstantTimeLess.
 End ConstantTimeLess.
 
 Module Impl_subtle_ConstantTimeLess_for_u8.
-  Definition Self `{State.Trait} := u8.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
-  }.
+  Section Impl_subtle_ConstantTimeLess_for_u8.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u8.
+    
+    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    }.
+  End Impl_subtle_ConstantTimeLess_for_u8.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module Impl_subtle_ConstantTimeLess_for_u16.
-  Definition Self `{State.Trait} := u16.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
-  }.
+  Section Impl_subtle_ConstantTimeLess_for_u16.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u16.
+    
+    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    }.
+  End Impl_subtle_ConstantTimeLess_for_u16.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module Impl_subtle_ConstantTimeLess_for_u32.
-  Definition Self `{State.Trait} := u32.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
-  }.
+  Section Impl_subtle_ConstantTimeLess_for_u32.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u32.
+    
+    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    }.
+  End Impl_subtle_ConstantTimeLess_for_u32.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module Impl_subtle_ConstantTimeLess_for_u64.
-  Definition Self `{State.Trait} := u64.
-  
-  Global Instance I `{State.Trait} : subtle.ConstantTimeLess.Trait Self := {
-  }.
+  Section Impl_subtle_ConstantTimeLess_for_u64.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := u64.
+    
+    Global Instance I : subtle.ConstantTimeLess.Trait Self := {
+    }.
+  End Impl_subtle_ConstantTimeLess_for_u64.
   Global Hint Resolve I : core.
 End Impl_subtle_ConstantTimeLess_for_u64.

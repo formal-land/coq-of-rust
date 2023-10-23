@@ -2,36 +2,43 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Circle.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    radius : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_radius `{State.Trait} : Notation.Dot "radius" := {
-    Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
-  }.
-  Global Instance Get_AF_radius `{State.Trait}
-    : Notation.DoubleColon t "radius" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
-  }.
+  Section Circle.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      radius : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_radius : Notation.Dot "radius" := {
+      Notation.dot x := let* x := M.read x in Pure x.(radius) : M _;
+    }.
+    Global Instance Get_AF_radius : Notation.DoubleColon t "radius" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(radius) : M _;
+    }.
+  End Circle.
 End Circle.
-Definition Circle `{State.Trait} : Set := M.val (Circle.t).
+Definition Circle `{State.Trait} : Set := M.val Circle.t.
 
 Module Impl_core_fmt_Display_for_converting_to_string_Circle.
-  Definition Self `{State.Trait} := converting_to_string.Circle.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Display_for_converting_to_string_Circle.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := converting_to_string.Circle.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Display.Trait Self := {
+      core.fmt.Display.fmt := fmt;
+    }.
+  End Impl_core_fmt_Display_for_converting_to_string_Circle.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 

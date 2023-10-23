@@ -2,34 +2,42 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Droppable.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    name : ref str;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
-  }.
-  Global Instance Get_AF_name `{State.Trait}
-    : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
-  }.
+  Section Droppable.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      name : ref str;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_name : Notation.Dot "name" := {
+      Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+  End Droppable.
 End Droppable.
-Definition Droppable `{State.Trait} : Set := M.val (Droppable.t).
+Definition Droppable `{State.Trait} : Set := M.val Droppable.t.
 
 Module Impl_core_ops_drop_Drop_for_drop_Droppable.
-  Definition Self `{State.Trait} := drop.Droppable.
-  
-  Parameter drop : forall `{State.Trait}, (mut_ref Self) -> M unit.
-  
-  Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
-    Notation.dot := drop;
-  }.
-  
-  Global Instance I `{State.Trait} : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop := drop;
-  }.
+  Section Impl_core_ops_drop_Drop_for_drop_Droppable.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := drop.Droppable.
+    
+    Parameter drop : (mut_ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_drop :
+      Notation.DoubleColon Self "drop" := {
+      Notation.double_colon := drop;
+    }.
+    
+    Global Instance I : core.ops.drop.Drop.Trait Self := {
+      core.ops.drop.Drop.drop := drop;
+    }.
+  End Impl_core_ops_drop_Drop_for_drop_Droppable.
   Global Hint Resolve I : core.
 End Impl_core_ops_drop_Drop_for_drop_Droppable.
 

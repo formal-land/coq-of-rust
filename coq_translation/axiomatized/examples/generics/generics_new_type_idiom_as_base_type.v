@@ -2,15 +2,19 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Years.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Years.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i64;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Years.
 End Years.
 Definition Years `{State.Trait} : Set := M.val Years.t.
 

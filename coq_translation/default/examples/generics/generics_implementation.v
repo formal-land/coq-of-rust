@@ -2,35 +2,41 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Val.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    val : f64;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_val `{State.Trait} : Notation.Dot "val" := {
-    Notation.dot x := let* x := M.read x in Pure x.(val) : M _;
-  }.
-  Global Instance Get_AF_val `{State.Trait} : Notation.DoubleColon t "val" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(val) : M _;
-  }.
+  Section Val.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      val : f64;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_val : Notation.Dot "val" := {
+      Notation.dot x := let* x := M.read x in Pure x.(val) : M _;
+    }.
+    Global Instance Get_AF_val : Notation.DoubleColon t "val" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(val) : M _;
+    }.
+  End Val.
 End Val.
-Definition Val `{State.Trait} : Set := M.val (Val.t).
+Definition Val `{State.Trait} : Set := M.val Val.t.
 
 Module GenVal.
   Section GenVal.
+    Context `{State.Trait}.
+    
     Context {T : Set}.
+    
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       gen_val : T;
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get_gen_val `{State.Trait} : Notation.Dot "gen_val" := {
+    Global Instance Get_gen_val : Notation.Dot "gen_val" := {
       Notation.dot x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
-    Global Instance Get_AF_gen_val `{State.Trait}
-      : Notation.DoubleColon t "gen_val" := {
+    Global Instance Get_AF_gen_val : Notation.DoubleColon t "gen_val" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(gen_val) : M _;
     }.
   End GenVal.
@@ -38,37 +44,47 @@ End GenVal.
 Definition GenVal (T : Set) `{State.Trait} : Set := M.val (GenVal.t (T := T)).
 
 Module Impl_generics_implementation_Val.
-  Definition Self `{State.Trait} : Set := generics_implementation.Val.
-  
-  Definition value `{State.Trait} (self : ref Self) : M (ref f64) :=
-    let* α0 := deref self generics_implementation.Val in
-    let* α1 := α0.["val"] in
-    let* α2 := borrow α1 f64 in
-    let* α3 := deref α2 f64 in
-    borrow α3 f64.
-  
-  Global Instance Method_value `{State.Trait} : Notation.Dot "value" := {
-    Notation.dot := value;
-  }.
+  Section Impl_generics_implementation_Val.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_implementation.Val.
+    
+    Definition value (self : ref Self) : M (ref f64) :=
+      let* α0 := deref self generics_implementation.Val in
+      let* α1 := α0.["val"] in
+      let* α2 := borrow α1 f64 in
+      let* α3 := deref α2 f64 in
+      borrow α3 f64.
+    
+    Global Instance AssociatedFunction_value :
+      Notation.DoubleColon Self "value" := {
+      Notation.double_colon := value;
+    }.
+  End Impl_generics_implementation_Val.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
-  Definition Self `{State.Trait} : Set := generics_implementation.GenVal T.
-  
-  Definition value `{State.Trait} (self : ref Self) : M (ref T) :=
-    let* α0 := deref self (generics_implementation.GenVal _) in
-    let* α1 := α0.["gen_val"] in
-    let* α2 := borrow α1 _ in
-    let* α3 := deref α2 _ in
-    borrow α3 _.
-  
-  Global Instance Method_value `{State.Trait} : Notation.Dot "value" := {
-    Notation.dot := value;
-  }.
+  Section Impl_generics_implementation_GenVal_T.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := generics_implementation.GenVal T.
+    
+    Definition value (self : ref Self) : M (ref T) :=
+      let* α0 := deref self (generics_implementation.GenVal _) in
+      let* α1 := α0.["gen_val"] in
+      let* α2 := borrow α1 _ in
+      let* α3 := deref α2 _ in
+      borrow α3 _.
+    
+    Global Instance AssociatedFunction_value :
+      Notation.DoubleColon Self "value" := {
+      Notation.double_colon := value;
+    }.
+  End Impl_generics_implementation_GenVal_T.
 End Impl_generics_implementation_GenVal_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* x :=
     let* α0 := M.alloc 3 (* 3.0 *) in
     M.alloc {| generics_implementation.Val.val := α0; |} in

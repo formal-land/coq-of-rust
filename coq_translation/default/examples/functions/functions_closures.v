@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* outer_var := M.alloc 42 in
   let closure_annotated := add i outer_var in
   let closure_inferred := add i outer_var in

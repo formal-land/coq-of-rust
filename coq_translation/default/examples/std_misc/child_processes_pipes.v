@@ -6,7 +6,7 @@ Definition PANGRAM `{State.Trait} : ref str :=
 ")).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* process :=
     let* α0 := std.process.Command::["new"] (mk_str "wc") in
     let* α1 := borrow_mut α0 std.process.Command in

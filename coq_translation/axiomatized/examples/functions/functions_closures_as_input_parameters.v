@@ -5,14 +5,14 @@ Parameter apply :
     forall
       `{State.Trait}
       {F : Set}
-      `{core.ops.function.FnOnce.Trait F (Args := unit)},
+      {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)},
     F -> M unit.
 
 Parameter apply_to_3 :
     forall
       `{State.Trait}
       {F : Set}
-      `{core.ops.function.Fn.Trait F (Args := i32)},
+      {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32)},
     F -> M i32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -2,7 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition destroy_box
-    `{State.Trait}
     (c : alloc.boxed.Box i32 alloc.boxed.Box.Default.A)
     : M unit :=
   let* _ :=
@@ -29,7 +28,7 @@ Definition destroy_box
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* x := M.alloc 5 in
   let y := x in
   let* _ :=

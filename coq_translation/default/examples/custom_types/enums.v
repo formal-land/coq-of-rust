@@ -20,7 +20,7 @@ Module WebEvent.
 End WebEvent.
 Definition WebEvent `{State.Trait} : Set := WebEvent.t.
 
-Definition inspect `{State.Trait} (event : enums.WebEvent) : M unit :=
+Definition inspect (event : enums.WebEvent) : M unit :=
   match event with
   | enums.WebEvent  =>
     let* _ :=
@@ -115,7 +115,7 @@ Definition inspect `{State.Trait} (event : enums.WebEvent) : M unit :=
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* pressed :=
     let* α0 := "x"%char in
     Pure (enums.WebEvent.KeyPress α0) in

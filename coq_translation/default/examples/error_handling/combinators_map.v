@@ -10,173 +10,200 @@ End Food.
 Definition Food `{State.Trait} : Set := Food.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
-  Definition Self `{State.Trait} := combinators_map.Food.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | combinators_map.Food  =>
-        let* α0 := deref (mk_str "Apple") str in
-        borrow α0 str
-      | combinators_map.Food  =>
-        let* α0 := deref (mk_str "Carrot") str in
-        borrow α0 str
-      | combinators_map.Food  =>
-        let* α0 := deref (mk_str "Potato") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_map_Food.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_map.Food.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | combinators_map.Food  =>
+          let* α0 := deref (mk_str "Apple") str in
+          borrow α0 str
+        | combinators_map.Food  =>
+          let* α0 := deref (mk_str "Carrot") str in
+          borrow α0 str
+        | combinators_map.Food  =>
+          let* α0 := deref (mk_str "Potato") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_map_Food.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
 Module Peeled.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : combinators_map.Food;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Peeled.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : combinators_map.Food;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Peeled.
 End Peeled.
 Definition Peeled `{State.Trait} : Set := M.val Peeled.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
-  Definition Self `{State.Trait} := combinators_map.Peeled.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "Peeled") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref self combinators_map.Peeled in
-    let* α5 := α4.["0"] in
-    let* α6 := borrow α5 combinators_map.Food in
-    let* α7 := borrow α6 (ref combinators_map.Food) in
-    let* α8 := deref α7 (ref combinators_map.Food) in
-    let* α9 := borrow α8 (ref combinators_map.Food) in
-    let* α10 := pointer_coercion "Unsize" α9 in
-    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_map_Peeled.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_map.Peeled.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "Peeled") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref self combinators_map.Peeled in
+      let* α5 := α4.["0"] in
+      let* α6 := borrow α5 combinators_map.Food in
+      let* α7 := borrow α6 (ref combinators_map.Food) in
+      let* α8 := deref α7 (ref combinators_map.Food) in
+      let* α9 := borrow α8 (ref combinators_map.Food) in
+      let* α10 := pointer_coercion "Unsize" α9 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
 Module Chopped.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : combinators_map.Food;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Chopped.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : combinators_map.Food;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Chopped.
 End Chopped.
 Definition Chopped `{State.Trait} : Set := M.val Chopped.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
-  Definition Self `{State.Trait} := combinators_map.Chopped.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "Chopped") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref self combinators_map.Chopped in
-    let* α5 := α4.["0"] in
-    let* α6 := borrow α5 combinators_map.Food in
-    let* α7 := borrow α6 (ref combinators_map.Food) in
-    let* α8 := deref α7 (ref combinators_map.Food) in
-    let* α9 := borrow α8 (ref combinators_map.Food) in
-    let* α10 := pointer_coercion "Unsize" α9 in
-    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_map_Chopped.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_map.Chopped.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "Chopped") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref self combinators_map.Chopped in
+      let* α5 := α4.["0"] in
+      let* α6 := borrow α5 combinators_map.Food in
+      let* α7 := borrow α6 (ref combinators_map.Food) in
+      let* α8 := deref α7 (ref combinators_map.Food) in
+      let* α9 := borrow α8 (ref combinators_map.Food) in
+      let* α10 := pointer_coercion "Unsize" α9 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
 Module Cooked.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : combinators_map.Food;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Cooked.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : combinators_map.Food;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Cooked.
 End Cooked.
 Definition Cooked `{State.Trait} : Set := M.val Cooked.t.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
-  Definition Self `{State.Trait} := combinators_map.Cooked.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "Cooked") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref self combinators_map.Cooked in
-    let* α5 := α4.["0"] in
-    let* α6 := borrow α5 combinators_map.Food in
-    let* α7 := borrow α6 (ref combinators_map.Food) in
-    let* α8 := deref α7 (ref combinators_map.Food) in
-    let* α9 := borrow α8 (ref combinators_map.Food) in
-    let* α10 := pointer_coercion "Unsize" α9 in
-    core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_combinators_map_Cooked.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := combinators_map.Cooked.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "Cooked") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref self combinators_map.Cooked in
+      let* α5 := α4.["0"] in
+      let* α6 := borrow α5 combinators_map.Food in
+      let* α7 := borrow α6 (ref combinators_map.Food) in
+      let* α8 := deref α7 (ref combinators_map.Food) in
+      let* α9 := borrow α8 (ref combinators_map.Food) in
+      let* α10 := pointer_coercion "Unsize" α9 in
+      core.fmt.Formatter::["debug_tuple_field1_finish"] α1 α3 α10.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Definition peel
-    `{State.Trait}
     (food : core.option.Option combinators_map.Food)
     : M (core.option.Option combinators_map.Peeled) :=
   match food with
@@ -186,7 +213,6 @@ Definition peel
   end.
 
 Definition chop
-    `{State.Trait}
     (peeled : core.option.Option combinators_map.Peeled)
     : M (core.option.Option combinators_map.Chopped) :=
   match peeled with
@@ -196,7 +222,6 @@ Definition chop
   end.
 
 Definition cook
-    `{State.Trait}
     (chopped : core.option.Option combinators_map.Chopped)
     : M (core.option.Option combinators_map.Cooked) :=
   (core.option.Option _)::["map"]
@@ -204,7 +229,6 @@ Definition cook
     Pure (combinators_map.Cooked.Build_t food).
 
 Definition process
-    `{State.Trait}
     (food : core.option.Option combinators_map.Food)
     : M (core.option.Option combinators_map.Cooked) :=
   let* α0 :=
@@ -217,10 +241,7 @@ Definition process
       Pure (combinators_map.Chopped.Build_t f) in
   (core.option.Option _)::["map"] α1 Pure (combinators_map.Cooked.Build_t f).
 
-Definition eat
-    `{State.Trait}
-    (food : core.option.Option combinators_map.Cooked)
-    : M unit :=
+Definition eat (food : core.option.Option combinators_map.Cooked) : M unit :=
   match food with
   | core.option.Option food =>
     let* _ :=
@@ -255,7 +276,7 @@ Definition eat
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let apple := core.option.Option.Some (combinators_map.Food.Apple tt) in
   let carrot := core.option.Option.Some (combinators_map.Food.Carrot tt) in
   let potato := core.option.Option.None tt in

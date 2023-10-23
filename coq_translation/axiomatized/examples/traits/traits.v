@@ -2,106 +2,116 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Sheep.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    naked : bool;
-    name : ref str;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_naked `{State.Trait} : Notation.Dot "naked" := {
-    Notation.dot x := let* x := M.read x in Pure x.(naked) : M _;
-  }.
-  Global Instance Get_AF_naked `{State.Trait}
-    : Notation.DoubleColon t "naked" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(naked) : M _;
-  }.
-  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
-  }.
-  Global Instance Get_AF_name `{State.Trait}
-    : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
-  }.
+  Section Sheep.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      naked : bool;
+      name : ref str;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_naked : Notation.Dot "naked" := {
+      Notation.dot x := let* x := M.read x in Pure x.(naked) : M _;
+    }.
+    Global Instance Get_AF_naked : Notation.DoubleColon t "naked" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(naked) : M _;
+    }.
+    Global Instance Get_name : Notation.Dot "name" := {
+      Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+  End Sheep.
 End Sheep.
-Definition Sheep `{State.Trait} : Set := M.val (Sheep.t).
+Definition Sheep `{State.Trait} : Set := M.val Sheep.t.
 
 Module Animal.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    new : (ref str) -> M Self;
-    name : (ref Self) -> M (ref str);
-    noise : (ref Self) -> M (ref str);
-  }.
-  
-  Global Instance Method_new `{State.Trait} `(Trait) : Notation.Dot "new" := {
-    Notation.dot := new;
-  }.
-  Global Instance Method_name `{State.Trait} `(Trait) : Notation.Dot "name" := {
-    Notation.dot := name;
-  }.
-  Global Instance Method_noise `{State.Trait} `(Trait)
-    : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
-  Global Instance Method_talk `{State.Trait} `(Trait) : Notation.Dot "talk" := {
-    Notation.dot (self : ref Self) := (axiom : M unit);
-  }.
+  Section Animal.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      new : (ref str) -> M Self;
+      name : (ref Self) -> M (ref str);
+      noise : (ref Self) -> M (ref str);
+    }.
+    
+  End Animal.
 End Animal.
 
 Module Impl_traits_Sheep.
-  Definition Self `{State.Trait} : Set := traits.Sheep.
-  
-  Parameter is_naked : forall `{State.Trait}, (ref Self) -> M bool.
-  
-  Global Instance Method_is_naked `{State.Trait} : Notation.Dot "is_naked" := {
-    Notation.dot := is_naked;
-  }.
+  Section Impl_traits_Sheep.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := traits.Sheep.
+    
+    Parameter is_naked : (ref Self) -> M bool.
+    
+    Global Instance AssociatedFunction_is_naked :
+      Notation.DoubleColon Self "is_naked" := {
+      Notation.double_colon := is_naked;
+    }.
+  End Impl_traits_Sheep.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
-  Definition Self `{State.Trait} := traits.Sheep.
-  
-  Parameter new : forall `{State.Trait}, (ref str) -> M traits.Sheep.
-  
-  Global Instance AssociatedFunction_new `{State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Parameter name : forall `{State.Trait}, (ref Self) -> M (ref str).
-  
-  Global Instance Method_name `{State.Trait} : Notation.Dot "name" := {
-    Notation.dot := name;
-  }.
-  
-  Parameter noise : forall `{State.Trait}, (ref Self) -> M (ref str).
-  
-  Global Instance Method_noise `{State.Trait} : Notation.Dot "noise" := {
-    Notation.dot := noise;
-  }.
-  
-  Parameter talk : forall `{State.Trait}, (ref Self) -> M unit.
-  
-  Global Instance Method_talk `{State.Trait} : Notation.Dot "talk" := {
-    Notation.dot := talk;
-  }.
-  
-  Global Instance I `{State.Trait} : traits.Animal.Trait Self := {
-    traits.Animal.new := new;
-    traits.Animal.name := name;
-    traits.Animal.noise := noise;
-  }.
+  Section Impl_traits_Animal_for_traits_Sheep.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := traits.Sheep.
+    
+    Parameter new : (ref str) -> M traits.Sheep.
+    
+    Global Instance AssociatedFunction_new :
+      Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+    
+    Parameter name : (ref Self) -> M (ref str).
+    
+    Global Instance AssociatedFunction_name :
+      Notation.DoubleColon Self "name" := {
+      Notation.double_colon := name;
+    }.
+    
+    Parameter noise : (ref Self) -> M (ref str).
+    
+    Global Instance AssociatedFunction_noise :
+      Notation.DoubleColon Self "noise" := {
+      Notation.double_colon := noise;
+    }.
+    
+    Parameter talk : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_talk :
+      Notation.DoubleColon Self "talk" := {
+      Notation.double_colon := talk;
+    }.
+    
+    Global Instance I : traits.Animal.Trait Self := {
+      traits.Animal.new := new;
+      traits.Animal.name := name;
+      traits.Animal.noise := noise;
+    }.
+  End Impl_traits_Animal_for_traits_Sheep.
   Global Hint Resolve I : core.
 End Impl_traits_Animal_for_traits_Sheep.
 
 Module Impl_traits_Sheep_3.
-  Definition Self `{State.Trait} : Set := traits.Sheep.
-  
-  Parameter shear : forall `{State.Trait}, (mut_ref Self) -> M unit.
-  
-  Global Instance Method_shear `{State.Trait} : Notation.Dot "shear" := {
-    Notation.dot := shear;
-  }.
+  Section Impl_traits_Sheep_3.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := traits.Sheep.
+    
+    Parameter shear : (mut_ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_shear :
+      Notation.DoubleColon Self "shear" := {
+      Notation.double_colon := shear;
+    }.
+  End Impl_traits_Sheep_3.
 End Impl_traits_Sheep_3.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

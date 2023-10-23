@@ -8,7 +8,7 @@ Definition Inch `{State.Trait} : Set := u64.
 Definition U64 `{State.Trait} : Set := u64.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* nanoseconds :=
     let* α0 := M.alloc 5 in
     use α0 in

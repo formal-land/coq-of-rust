@@ -310,8 +310,8 @@ Module hash_Instances.
   }.
 
   (** Hash instance functions *)
-  Global Instance Hash_Method_hash
-    `{State.Trait} (Self : Set) `{core.hash.Hasher.Trait Self} `{core.hash.Hash.Trait Self} :
+  Global Instance Hash_Method_hash `{State.Trait} (Self : Set)
+      {H1 : core.hash.Hasher.Trait Self} {H2 : core.hash.Hash.Trait Self} :
     Notation.Dot "hash" := {
       Notation.dot := core.hash.Hash.hash (Self := Self);
   }.
@@ -321,8 +321,8 @@ Module hash_Instances.
     core.hash.Hasher.Trait std.collections.hash.map.DefaultHasher. Admitted.
 
   (** Hash implementation for primitive types *)
-  Global Instance Hash_for_unit : core.hash.Hash.Trait unit. Admitted.
-  Global Instance Hash_for_bool : core.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_unit `{State.Trait} : core.hash.Hash.Trait unit. Admitted.
+  Global Instance Hash_for_bool `{State.Trait} : core.hash.Hash.Trait unit. Admitted.
   Global Instance Hash_for_i32 `{State.Trait} : core.hash.Hash.Trait i32. Admitted.
   Global Instance Hash_for_u32 `{State.Trait} : core.hash.Hash.Trait u32. Admitted.
   Global Instance Hash_for_String `{State.Trait} : core.hash.Hash.Trait alloc.string.String. Admitted.
@@ -920,19 +920,20 @@ Global Hint Resolve tt : core.
 
 Definition deref `{State.Trait} {Self : Set}
     (r : ref Self) (Target : Set)
-    `{core.ops.Deref.Trait Self (Target := Target)} :
+    {H1 : core.ops.Deref.Trait Self (Target := Target)} :
     M Target :=
   let* ref_result := core.ops.Deref.deref r in
   M.read ref_result.
 
 Definition borrow `{State.Trait} {Self : Set}
     (v : Self) (Borrowed : Set)
-    `{core.borrow.Borrow.Trait Self Borrowed} :
+    {H1 : core.borrow.Borrow.Trait Self Borrowed} :
     M (ref Borrowed) :=
   core.borrow.Borrow.borrow (M.Ref.Immutable v).
 
 Definition borrow_mut `{State.Trait} {Self : Set}
     (v : Self) (Borrowed : Set)
-    `{core.borrow.BorrowMut.Trait Self Borrowed} :
+    {H1 : core.borrow.Borrow.Trait Self Borrowed}
+    {H2 : core.borrow.BorrowMut.Trait Self Borrowed} :
     M (mut_ref Borrowed) :=
   core.borrow.BorrowMut.borrow_mut (M.Ref.Immutable v).

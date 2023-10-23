@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* rc_examples :=
     let* α0 := deref (mk_str "Rc examples") str in
     let* α1 := borrow α0 str in

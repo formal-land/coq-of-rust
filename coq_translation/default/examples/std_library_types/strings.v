@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let pangram := mk_str "the quick brown fox jumps over the lazy dog" in
   let* _ :=
     let* _ :=

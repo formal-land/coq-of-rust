@@ -2,7 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition cat
-    `{State.Trait}
     (path : ref std.path.Path)
     : M (std.io.error.Result alloc.string.String) :=
   let* f :=
@@ -27,7 +26,6 @@ Definition cat
   end.
 
 Definition echo
-    `{State.Trait}
     (s : ref str)
     (path : ref std.path.Path)
     : M (std.io.error.Result unit) :=
@@ -49,10 +47,7 @@ Definition echo
   let* α5 := borrow α4 (Slice u8) in
   std.io.Write.write_all α0 α5.
 
-Definition touch
-    `{State.Trait}
-    (path : ref std.path.Path)
-    : M (std.io.error.Result unit) :=
+Definition touch (path : ref std.path.Path) : M (std.io.error.Result unit) :=
   let* α0 := std.fs.OpenOptions::["new"] in
   let* α1 := borrow_mut α0 std.fs.OpenOptions in
   let* α2 := true in
@@ -70,7 +65,7 @@ Definition touch
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "`mkdir a`

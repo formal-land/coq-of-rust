@@ -13,7 +13,7 @@ Definition Operations `{State.Trait} : Set :=
   enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let x :=
     enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add tt in
   Pure tt.

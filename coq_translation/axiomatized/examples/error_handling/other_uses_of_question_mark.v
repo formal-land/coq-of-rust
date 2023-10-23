@@ -7,49 +7,65 @@ Definition Result (T : Set) `{State.Trait} : Set :=
     (alloc.boxed.Box _ (* OpaqueTy *) alloc.boxed.Box.Default.A).
 
 Module EmptyVec.
-  Inductive t : Set := Build.
+  Section EmptyVec.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End EmptyVec.
 End EmptyVec.
 Definition EmptyVec := @EmptyVec.t.
 
 Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := other_uses_of_question_mark.EmptyVec.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := other_uses_of_question_mark.EmptyVec.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Display.Trait Self := {
+      core.fmt.Display.fmt := fmt;
+    }.
+  End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
 Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
-  Definition Self `{State.Trait} := other_uses_of_question_mark.EmptyVec.
-  
-  Global Instance I `{State.Trait} : core.error.Error.Trait Self := {
-  }.
+  Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := other_uses_of_question_mark.EmptyVec.
+    
+    Global Instance I : core.error.Error.Trait Self := {
+    }.
+  End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 

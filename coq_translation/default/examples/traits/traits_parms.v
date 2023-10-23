@@ -2,104 +2,126 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Foo.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Foo.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Foo.
 End Foo.
 
 Module Bar.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Bar.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Bar.
 End Bar.
 
 Module Tar.
-  Unset Primitive Projections.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-  }.
-  Global Set Primitive Projections.
+  Section Tar.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Class Trait (Self : Set) : Type := {
+    }.
+    Global Set Primitive Projections.
+  End Tar.
 End Tar.
 
 Module SomeTrait.
-  Class Trait (Self : Set) `{State.Trait} : Type := {
-    SomeType : Set;
-    _
-      :
-      Sigma
-        `(traits_parms.Foo.Trait SomeType)
-        `(traits_parms.Bar.Trait SomeType)
-        `(traits_parms.Tar.Trait SomeType),
-      unit;
-    some_fn : M unit;
-  }.
-  
-  Global Instance Method_SomeType `(Trait)
-    : Notation.DoubleColonType Self "SomeType" := {
-    Notation.double_colon_type := SomeType;
-  }.
-  Global Instance Method_some_fn `{State.Trait} `(Trait)
-    : Notation.Dot "some_fn" := {
-    Notation.dot := some_fn;
-  }.
+  Section SomeTrait.
+    Context `{State.Trait}.
+    
+    Class Trait (Self : Set) : Type := {
+      SomeType : Set;
+      some_fn : M unit;
+    }.
+    
+    Global Instance Method_SomeType `(Trait)
+      : Notation.DoubleColonType Self "SomeType" := {
+      Notation.double_colon_type := SomeType;
+    }.
+  End SomeTrait.
 End SomeTrait.
 
 Module SomeOtherType.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : u32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section SomeOtherType.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : u32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End SomeOtherType.
 End SomeOtherType.
 Definition SomeOtherType `{State.Trait} : Set := M.val SomeOtherType.t.
 
 Module Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
-  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
-  
-  Global Instance I `{State.Trait} : traits_parms.Foo.Trait Self := {
-  }.
+  Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := traits_parms.SomeOtherType.
+    
+    Global Instance I : traits_parms.Foo.Trait Self := {
+    }.
+  End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
-  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
-  
-  Global Instance I `{State.Trait} : traits_parms.Bar.Trait Self := {
-  }.
+  Section Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := traits_parms.SomeOtherType.
+    
+    Global Instance I : traits_parms.Bar.Trait Self := {
+    }.
+  End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
-  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
-  
-  Global Instance I `{State.Trait} : traits_parms.Tar.Trait Self := {
-  }.
+  Section Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := traits_parms.SomeOtherType.
+    
+    Global Instance I : traits_parms.Tar.Trait Self := {
+    }.
+  End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
   Global Hint Resolve I : core.
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
 
 Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
-  Definition Self `{State.Trait} := traits_parms.SomeOtherType.
-  
-  Definition SomeType : Set := traits_parms.SomeOtherType.
-  
-  Definition some_fn `{State.Trait} : M unit := Pure tt.
-  
-  Global Instance AssociatedFunction_some_fn `{State.Trait} :
-    Notation.DoubleColon Self "some_fn" := {
-    Notation.double_colon := some_fn;
-  }.
-  
-  #[refine]
-  Global Instance I `{State.Trait} : traits_parms.SomeTrait.Trait Self := {
-    traits_parms.SomeTrait.SomeType := SomeType;
-    traits_parms.SomeTrait.some_fn := some_fn;
-  }.
-  eauto.
-  Defined.
+  Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := traits_parms.SomeOtherType.
+    
+    Definition SomeType : Set := traits_parms.SomeOtherType.
+    
+    Definition some_fn : M unit := Pure tt.
+    
+    Global Instance AssociatedFunction_some_fn :
+      Notation.DoubleColon Self "some_fn" := {
+      Notation.double_colon := some_fn;
+    }.
+    
+    Global Instance I : traits_parms.SomeTrait.Trait Self := {
+      traits_parms.SomeTrait.SomeType := SomeType;
+      traits_parms.SomeTrait.some_fn := some_fn;
+    }.
+  End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
   Global Hint Resolve I : core.
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

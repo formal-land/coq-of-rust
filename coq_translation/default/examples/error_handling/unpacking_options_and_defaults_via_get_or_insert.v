@@ -13,49 +13,55 @@ Definition Fruit `{State.Trait} : Set := Fruit.t.
 
 Module
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
-  Definition Self `{State.Trait} :=
-    unpacking_options_and_defaults_via_get_or_insert.Fruit.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 :=
-      match self with
-      | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
-        let* α0 := deref (mk_str "Apple") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
-        let* α0 := deref (mk_str "Orange") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
-        let* α0 := deref (mk_str "Banana") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
-        let* α0 := deref (mk_str "Kiwi") str in
-        borrow α0 str
-      | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
-        let* α0 := deref (mk_str "Lemon") str in
-        borrow α0 str
-      end in
-    core.fmt.Formatter::["write_str"] α1 α2.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section
+    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
+    Context `{State.Trait}.
+    
+    Definition Self : Set :=
+      unpacking_options_and_defaults_via_get_or_insert.Fruit.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 :=
+        match self with
+        | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
+          let* α0 := deref (mk_str "Apple") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
+          let* α0 := deref (mk_str "Orange") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
+          let* α0 := deref (mk_str "Banana") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
+          let* α0 := deref (mk_str "Kiwi") str in
+          borrow α0 str
+        | unpacking_options_and_defaults_via_get_or_insert.Fruit  =>
+          let* α0 := deref (mk_str "Lemon") str in
+          borrow α0 str
+        end in
+      core.fmt.Formatter::["write_str"] α1 α2.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End
+    Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
   Global Hint Resolve I : core.
 End
   Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fruit.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let my_fruit := core.option.Option.None tt in
   let apple :=
     unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple tt in

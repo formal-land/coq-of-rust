@@ -2,7 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition eat_box_i32
-    `{State.Trait}
     (boxed_i32 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A)
     : M unit :=
   let* _ :=
@@ -28,7 +27,7 @@ Definition eat_box_i32
     Pure tt in
   Pure tt.
 
-Definition borrow_i32 `{State.Trait} (borrowed_i32 : ref i32) : M unit :=
+Definition borrow_i32 (borrowed_i32 : ref i32) : M unit :=
   let* _ :=
     let* _ :=
       let* α0 :=
@@ -51,7 +50,7 @@ Definition borrow_i32 `{State.Trait} (borrowed_i32 : ref i32) : M unit :=
   Pure tt.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* boxed_i32 :=
     let* α0 := M.alloc 5 in
     (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in

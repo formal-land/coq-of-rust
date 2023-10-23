@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition NTHREADS `{State.Trait} : i32 := run (M.alloc 3).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* '(tx, rx) := std.sync.mpsc.channel in
   let* children := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* _ :=

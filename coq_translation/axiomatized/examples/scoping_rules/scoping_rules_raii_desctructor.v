@@ -2,22 +2,31 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module ToDrop.
-  Inductive t : Set := Build.
+  Section ToDrop.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End ToDrop.
 End ToDrop.
 Definition ToDrop := @ToDrop.t.
 
 Module Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
-  Definition Self `{State.Trait} := scoping_rules_raii_desctructor.ToDrop.
-  
-  Parameter drop : forall `{State.Trait}, (mut_ref Self) -> M unit.
-  
-  Global Instance Method_drop `{State.Trait} : Notation.Dot "drop" := {
-    Notation.dot := drop;
-  }.
-  
-  Global Instance I `{State.Trait} : core.ops.drop.Drop.Trait Self := {
-    core.ops.drop.Drop.drop := drop;
-  }.
+  Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := scoping_rules_raii_desctructor.ToDrop.
+    
+    Parameter drop : (mut_ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_drop :
+      Notation.DoubleColon Self "drop" := {
+      Notation.double_colon := drop;
+    }.
+    
+    Global Instance I : core.ops.drop.Drop.Trait Self := {
+      core.ops.drop.Drop.drop := drop;
+    }.
+  End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
   Global Hint Resolve I : core.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.
 

@@ -24,10 +24,6 @@ impl Path {
         }
     }
 
-    pub fn last(&self) -> &String {
-        self.segments.last().unwrap()
-    }
-
     fn prefix_last_by_impl(&mut self) {
         let last = self.segments.pop().unwrap();
         self.segments.push(format!("Impl{last}"));

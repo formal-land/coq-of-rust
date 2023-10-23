@@ -2,7 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition multiply
-    `{State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (core.result.Result i32 core.num.error.ParseIntError) :=
@@ -24,7 +23,6 @@ Definition multiply
   end.
 
 Definition print
-    `{State.Trait}
     (result : core.result.Result i32 core.num.error.ParseIntError)
     : M unit :=
   match result with
@@ -67,7 +65,7 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* twenty :=
     let* α0 := deref (mk_str "10") str in
     let* α1 := borrow α0 str in

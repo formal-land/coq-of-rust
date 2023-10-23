@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let raw_str := mk_str "Escapes don't work here: \x3F \u{211D}" in
   let* _ :=
     let* _ :=

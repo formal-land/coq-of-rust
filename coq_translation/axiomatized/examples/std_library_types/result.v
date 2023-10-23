@@ -11,19 +11,23 @@ Module checked.
   Definition MathError `{State.Trait} : Set := MathError.t.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
-    Definition Self `{State.Trait} := result.checked.MathError.
-    
-    Parameter fmt :
-        forall `{State.Trait},
-        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-    
-    Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-      Notation.dot := fmt;
-    }.
-    
-    Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-      core.fmt.Debug.fmt := fmt;
-    }.
+    Section Impl_core_fmt_Debug_for_result_checked_MathError.
+      Context `{State.Trait}.
+      
+      Definition Self : Set := result.checked.MathError.
+      
+      Parameter fmt :
+          (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+      
+      Global Instance AssociatedFunction_fmt :
+        Notation.DoubleColon Self "fmt" := {
+        Notation.double_colon := fmt;
+      }.
+      
+      Global Instance I : core.fmt.Debug.Trait Self := {
+        core.fmt.Debug.fmt := fmt;
+      }.
+    End Impl_core_fmt_Debug_for_result_checked_MathError.
     Global Hint Resolve I : core.
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
@@ -48,19 +52,23 @@ End MathError.
 Definition MathError `{State.Trait} : Set := MathError.t.
 
 Module Impl_core_fmt_Debug_for_result_checked_MathError.
-  Definition Self `{State.Trait} := result.checked.MathError.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_result_checked_MathError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := result.checked.MathError.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_result_checked_MathError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_result_checked_MathError.
 

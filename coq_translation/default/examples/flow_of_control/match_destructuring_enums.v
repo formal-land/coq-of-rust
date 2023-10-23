@@ -15,7 +15,7 @@ End Color.
 Definition Color `{State.Trait} : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* color :=
     let* α0 := M.alloc 122 in
     let* α1 := M.alloc 17 in

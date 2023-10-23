@@ -9,7 +9,7 @@ End Temperature.
 Definition Temperature `{State.Trait} : Set := Temperature.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* temperature :=
     let* α0 := M.alloc 35 in
     Pure (match_guards.Temperature.Celsius α0) in

@@ -12,71 +12,85 @@ End DoubleError.
 Definition DoubleError `{State.Trait} : Set := DoubleError.t.
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
 Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Display.Trait Self := {
-    core.fmt.Display.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Display.Trait Self := {
+      core.fmt.Display.fmt := fmt;
+    }.
+  End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
 Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Parameter source :
-      forall `{State.Trait},
-      (ref Self) -> M (core.option.Option (ref _ (* dyn *))).
-  
-  Global Instance Method_source `{State.Trait} : Notation.Dot "source" := {
-    Notation.dot := source;
-  }.
-  
-  Global Instance I `{State.Trait} : core.error.Error.Trait Self := {
-  }.
+  Section Impl_core_error_Error_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Parameter source : (ref Self) -> M (core.option.Option (ref _ (* dyn *))).
+    
+    Global Instance AssociatedFunction_source :
+      Notation.DoubleColon Self "source" := {
+      Notation.double_colon := source;
+    }.
+    
+    Global Instance I : core.error.Error.Trait Self := {
+    }.
+  End Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
 Module Impl_core_convert_From_for_wrapping_errors_DoubleError.
-  Definition Self `{State.Trait} := wrapping_errors.DoubleError.
-  
-  Parameter from :
-      forall `{State.Trait},
-      core.num.error.ParseIntError -> M wrapping_errors.DoubleError.
-  
-  Global Instance AssociatedFunction_from `{State.Trait} :
-    Notation.DoubleColon Self "from" := {
-    Notation.double_colon := from;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
-    core.convert.From.from := from;
-  }.
+  Section Impl_core_convert_From_for_wrapping_errors_DoubleError.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := wrapping_errors.DoubleError.
+    
+    Parameter from :
+        core.num.error.ParseIntError -> M wrapping_errors.DoubleError.
+    
+    Global Instance AssociatedFunction_from :
+      Notation.DoubleColon Self "from" := {
+      Notation.double_colon := from;
+    }.
+    
+    Global Instance I
+      : core.convert.From.Trait Self (T := core.num.error.ParseIntError) := {
+      core.convert.From.from := from;
+    }.
+  End Impl_core_convert_From_for_wrapping_errors_DoubleError.
   Global Hint Resolve I : core.
 End Impl_core_convert_From_for_wrapping_errors_DoubleError.
 

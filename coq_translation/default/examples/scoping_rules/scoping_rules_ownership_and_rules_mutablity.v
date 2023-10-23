@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* immutable_box :=
     let* α0 := M.alloc 5 in
     (alloc.boxed.Box _ alloc.alloc.Global)::["new"] α0 in

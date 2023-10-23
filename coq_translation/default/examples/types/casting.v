@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* decimal := M.alloc 65 (* 65.4321 *) in
   let* integer := cast decimal in
   let* character := cast integer in

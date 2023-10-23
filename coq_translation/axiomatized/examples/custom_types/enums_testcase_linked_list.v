@@ -14,37 +14,39 @@ End List.
 Definition List `{State.Trait} : Set := List.t.
 
 Module Impl_enums_testcase_linked_list_List.
-  Definition Self `{State.Trait} : Set := enums_testcase_linked_list.List.
-  
-  Parameter new : forall `{State.Trait}, M enums_testcase_linked_list.List.
-  
-  Global Instance AssociatedFunction_new `{State.Trait} :
-    Notation.DoubleColon Self "new" := {
-    Notation.double_colon := new;
-  }.
-  
-  Parameter prepend :
-      forall `{State.Trait},
-      Self -> u32 -> M enums_testcase_linked_list.List.
-  
-  Global Instance Method_prepend `{State.Trait} : Notation.Dot "prepend" := {
-    Notation.dot := prepend;
-  }.
-  
-  Parameter len : forall `{State.Trait}, (ref Self) -> M u32.
-  
-  Global Instance Method_len `{State.Trait} : Notation.Dot "len" := {
-    Notation.dot := len;
-  }.
-  
-  Parameter stringify :
-      forall `{State.Trait},
-      (ref Self) -> M alloc.string.String.
-  
-  Global Instance Method_stringify `{State.Trait} :
-    Notation.Dot "stringify" := {
-    Notation.dot := stringify;
-  }.
+  Section Impl_enums_testcase_linked_list_List.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := enums_testcase_linked_list.List.
+    
+    Parameter new : M enums_testcase_linked_list.List.
+    
+    Global Instance AssociatedFunction_new :
+      Notation.DoubleColon Self "new" := {
+      Notation.double_colon := new;
+    }.
+    
+    Parameter prepend : Self -> u32 -> M enums_testcase_linked_list.List.
+    
+    Global Instance AssociatedFunction_prepend :
+      Notation.DoubleColon Self "prepend" := {
+      Notation.double_colon := prepend;
+    }.
+    
+    Parameter len : (ref Self) -> M u32.
+    
+    Global Instance AssociatedFunction_len :
+      Notation.DoubleColon Self "len" := {
+      Notation.double_colon := len;
+    }.
+    
+    Parameter stringify : (ref Self) -> M alloc.string.String.
+    
+    Global Instance AssociatedFunction_stringify :
+      Notation.DoubleColon Self "stringify" := {
+      Notation.double_colon := stringify;
+    }.
+  End Impl_enums_testcase_linked_list_List.
 End Impl_enums_testcase_linked_list_List.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

@@ -2,14 +2,14 @@ use pretty::RcDoc;
 use rustc_ast::LitKind;
 use rustc_span::symbol::Symbol;
 
-use crate::coq;
+// use crate::coq;
 
 /// provides the instance of the Struct.Trait typeclass
 /// for definitions of functions and constants
 /// which types utilize the M monad constructor
-pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
-    coq::ArgDecl::monadic_typeclass_parameter().to_doc()
-}
+// pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
+//     coq::ArgDecl::monadic_typeclass_parameter().to_doc()
+// }
 
 /// encloses an expression in curly brackets
 pub(crate) fn curly_brackets(doc: RcDoc<()>) -> RcDoc<()> {

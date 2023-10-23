@@ -2,96 +2,126 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Unit.
-  Inductive t : Set := Build.
+  Section Unit.
+    Context `{State.Trait}.
+    
+    Inductive t : Set := Build.
+  End Unit.
 End Unit.
 Definition Unit := @Unit.t.
 
 Module Impl_core_fmt_Debug_for_clone_Unit.
-  Definition Self `{State.Trait} := clone.Unit.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_clone_Unit.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := clone.Unit.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_clone_Unit.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_clone_Unit.
 
 Module Impl_core_clone_Clone_for_clone_Unit.
-  Definition Self `{State.Trait} := clone.Unit.
-  
-  Parameter clone : forall `{State.Trait}, (ref Self) -> M clone.Unit.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
+  Section Impl_core_clone_Clone_for_clone_Unit.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := clone.Unit.
+    
+    Parameter clone : (ref Self) -> M clone.Unit.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+  End Impl_core_clone_Clone_for_clone_Unit.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_clone_Unit.
 
 Module Impl_core_marker_Copy_for_clone_Unit.
-  Definition Self `{State.Trait} := clone.Unit.
-  
-  Global Instance I `{State.Trait} : core.marker.Copy.Trait Self := {
-  }.
+  Section Impl_core_marker_Copy_for_clone_Unit.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := clone.Unit.
+    
+    Global Instance I : core.marker.Copy.Trait Self := {
+    }.
+  End Impl_core_marker_Copy_for_clone_Unit.
   Global Hint Resolve I : core.
 End Impl_core_marker_Copy_for_clone_Unit.
 
 Module Pair.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-    x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
-  Global Instance Get_1 `{State.Trait} : Notation.Dot "1" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
-  }.
+  Section Pair.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+      x1 : alloc.boxed.Box i32 alloc.boxed.Box.Default.A;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+    Global Instance Get_1 : Notation.Dot "1" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x1) : M _;
+    }.
+  End Pair.
 End Pair.
 Definition Pair `{State.Trait} : Set := M.val Pair.t.
 
 Module Impl_core_clone_Clone_for_clone_Pair.
-  Definition Self `{State.Trait} := clone.Pair.
-  
-  Parameter clone : forall `{State.Trait}, (ref Self) -> M clone.Pair.
-  
-  Global Instance Method_clone `{State.Trait} : Notation.Dot "clone" := {
-    Notation.dot := clone;
-  }.
-  
-  Global Instance I `{State.Trait} : core.clone.Clone.Trait Self := {
-    core.clone.Clone.clone := clone;
-  }.
+  Section Impl_core_clone_Clone_for_clone_Pair.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := clone.Pair.
+    
+    Parameter clone : (ref Self) -> M clone.Pair.
+    
+    Global Instance AssociatedFunction_clone :
+      Notation.DoubleColon Self "clone" := {
+      Notation.double_colon := clone;
+    }.
+    
+    Global Instance I : core.clone.Clone.Trait Self := {
+      core.clone.Clone.clone := clone;
+    }.
+  End Impl_core_clone_Clone_for_clone_Pair.
   Global Hint Resolve I : core.
 End Impl_core_clone_Clone_for_clone_Pair.
 
 Module Impl_core_fmt_Debug_for_clone_Pair.
-  Definition Self `{State.Trait} := clone.Pair.
-  
-  Parameter fmt :
-      forall `{State.Trait},
-      (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_clone_Pair.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := clone.Pair.
+    
+    Parameter fmt :
+        (ref Self) -> (mut_ref core.fmt.Formatter) -> M core.fmt.Result.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_clone_Pair.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_clone_Pair.
 

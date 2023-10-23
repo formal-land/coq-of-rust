@@ -18,7 +18,7 @@ End Color.
 Definition Color `{State.Trait} : Set := Color.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "zero is "; mk_str "

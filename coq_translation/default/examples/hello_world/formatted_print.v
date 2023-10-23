@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "31 days
@@ -330,14 +330,18 @@ Definition main `{State.Trait} : M unit :=
   Pure tt.
 
 Module Structure.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x0 : i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_0 `{State.Trait} : Notation.Dot "0" := {
-    Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
-  }.
+  Section Structure.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x0 : i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_0 : Notation.Dot "0" := {
+      Notation.dot x := let* x := M.read x in Pure x.(x0) : M _;
+    }.
+  End Structure.
 End Structure.
 Definition Structure `{State.Trait} : Set := M.val Structure.t.

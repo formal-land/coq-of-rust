@@ -5,7 +5,6 @@ Definition AliasedResult (T : Set) `{State.Trait} : Set :=
   core.result.Result T core.num.error.ParseIntError.
 
 Definition multiply
-    `{State.Trait}
     (first_number_str : ref str)
     (second_number_str : ref str)
     : M (aliases_for_result.AliasedResult i32) :=
@@ -19,10 +18,7 @@ Definition multiply
     let* α2 := str::["parse"] α1 in
     (core.result.Result _ _)::["map"] α2 mul first_number second_number.
 
-Definition print
-    `{State.Trait}
-    (result : aliases_for_result.AliasedResult i32)
-    : M unit :=
+Definition print (result : aliases_for_result.AliasedResult i32) : M unit :=
   match result with
   | core.result.Result n =>
     let* _ :=
@@ -63,7 +59,7 @@ Definition print
   end.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* _ :=
     let* α0 := deref (mk_str "10") str in
     let* α1 := borrow α0 str in

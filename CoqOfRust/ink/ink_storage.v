@@ -7,21 +7,23 @@ Module lazy.
   Module mapping.
     Module Mapping.
       Section Mapping.
+        Context `{State.Trait}.
+        
         Context {K V KeyType : Set}.
+        
         Context
-          `{ink_storage_traits.storage.Packed.Trait V}
-          `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
+          {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+          {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
         Unset Primitive Projections.
-        Record t `{State.Trait} : Set := {
+        Record t : Set := {
           _marker : core.marker.PhantomData ((K * V) * KeyType);
         }.
         Global Set Primitive Projections.
         
-        Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+        Global Instance Get__marker : Notation.Dot "_marker" := {
           Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
         }.
-        Global Instance Get_AF__marker `{State.Trait}
-          : Notation.DoubleColon t "_marker" := {
+        Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
           Notation.double_colon x
             :=
             let* x := M.read x in Pure x.(_marker) : M _;
@@ -34,27 +36,29 @@ Module lazy.
     Definition Mapping
         (K V KeyType : Set)
         `{State.Trait}
-        `{ink_storage_traits.storage.Packed.Trait V}
-        `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+        {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
         : Set :=
       M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
   End mapping.
   
   Module Lazy.
     Section Lazy.
+      Context `{State.Trait}.
+      
       Context {V KeyType : Set}.
-      Context `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
+      
+      Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         _marker : core.marker.PhantomData (V * KeyType);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+      Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Global Instance Get_AF__marker `{State.Trait}
-        : Notation.DoubleColon t "_marker" := {
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
     End Lazy.
@@ -65,7 +69,7 @@ Module lazy.
   Definition Lazy
       (V KeyType : Set)
       `{State.Trait}
-      `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+      {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
       : Set :=
     M.val (Lazy.t (V := V) (KeyType := KeyType)).
 End lazy.
@@ -73,21 +77,23 @@ End lazy.
 Module mapping.
   Module Mapping.
     Section Mapping.
+      Context `{State.Trait}.
+      
       Context {K V KeyType : Set}.
+      
       Context
-        `{ink_storage_traits.storage.Packed.Trait V}
-        `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
+        {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+        {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
       Unset Primitive Projections.
-      Record t `{State.Trait} : Set := {
+      Record t : Set := {
         _marker : core.marker.PhantomData ((K * V) * KeyType);
       }.
       Global Set Primitive Projections.
       
-      Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+      Global Instance Get__marker : Notation.Dot "_marker" := {
         Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
-      Global Instance Get_AF__marker `{State.Trait}
-        : Notation.DoubleColon t "_marker" := {
+      Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
         Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
       }.
     End Mapping.
@@ -98,29 +104,31 @@ Module mapping.
   Definition Mapping
       (K V KeyType : Set)
       `{State.Trait}
-      `{ink_storage_traits.storage.Packed.Trait V}
-      `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+      {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
       : Set :=
     M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
 End mapping.
 
 Module Mapping.
   Section Mapping.
+    Context `{State.Trait}.
+    
     Context {K V KeyType : Set}.
+    
     Context
-      `{ink_storage_traits.storage.Packed.Trait V}
-      `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
+      {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+      {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       _marker : core.marker.PhantomData ((K * V) * KeyType);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+    Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Global Instance Get_AF__marker `{State.Trait}
-      : Notation.DoubleColon t "_marker" := {
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
   End Mapping.
@@ -131,26 +139,28 @@ End Mapping.
 Definition Mapping
     (K V KeyType : Set)
     `{State.Trait}
-    `{ink_storage_traits.storage.Packed.Trait V}
-    `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_0 : ink_storage_traits.storage.Packed.Trait V}
+    {ℋ_1 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     : Set :=
   M.val (Mapping.t (K := K) (V := V) (KeyType := KeyType)).
 
 Module Lazy.
   Section Lazy.
+    Context `{State.Trait}.
+    
     Context {V KeyType : Set}.
-    Context `{ink_storage_traits.storage.StorageKey.Trait KeyType}.
+    
+    Context {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}.
     Unset Primitive Projections.
-    Record t `{State.Trait} : Set := {
+    Record t : Set := {
       _marker : core.marker.PhantomData (V * KeyType);
     }.
     Global Set Primitive Projections.
     
-    Global Instance Get__marker `{State.Trait} : Notation.Dot "_marker" := {
+    Global Instance Get__marker : Notation.Dot "_marker" := {
       Notation.dot x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
-    Global Instance Get_AF__marker `{State.Trait}
-      : Notation.DoubleColon t "_marker" := {
+    Global Instance Get_AF__marker : Notation.DoubleColon t "_marker" := {
       Notation.double_colon x := let* x := M.read x in Pure x.(_marker) : M _;
     }.
   End Lazy.
@@ -161,6 +171,6 @@ End Lazy.
 Definition Lazy
     (V KeyType : Set)
     `{State.Trait}
-    `{ink_storage_traits.storage.StorageKey.Trait KeyType}
+    {ℋ_0 : ink_storage_traits.storage.StorageKey.Trait KeyType}
     : Set :=
   M.val (Lazy.t (V := V) (KeyType := KeyType)).

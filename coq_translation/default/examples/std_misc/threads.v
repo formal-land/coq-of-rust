@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Definition NTHREADS `{State.Trait} : u32 := run (M.alloc 10).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* children := (alloc.vec.Vec _ alloc.alloc.Global)::["new"] in
   let* _ :=
     let* α0 := M.alloc 0 in

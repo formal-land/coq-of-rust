@@ -2,9 +2,9 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit := Pure tt.
+Definition main : M unit := Pure tt.
 
-Definition foo `{State.Trait} (arg : i32) : M i32 :=
+Definition foo (arg : i32) : M i32 :=
   let* _ :=
     let* _ :=
       let* α0 := borrow [ mk_str "arg = "; mk_str "
@@ -26,7 +26,7 @@ Definition foo `{State.Trait} (arg : i32) : M i32 :=
   let* α0 := M.alloc 2 in
   mul arg α0.
 
-Definition call_foo `{State.Trait} (arg : i32) : M i32 :=
+Definition call_foo (arg : i32) : M i32 :=
   let result := tt in
   let _ := InlineAssembly in
   Pure result.

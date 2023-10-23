@@ -2,85 +2,89 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Borrowed.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    x : ref i32;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_x `{State.Trait} : Notation.Dot "x" := {
-    Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
-  Global Instance Get_AF_x `{State.Trait} : Notation.DoubleColon t "x" := {
-    Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
-  }.
+  Section Borrowed.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      x : ref i32;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_x : Notation.Dot "x" := {
+      Notation.dot x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+    Global Instance Get_AF_x : Notation.DoubleColon t "x" := {
+      Notation.double_colon x' := let* x' := M.read x' in Pure x'.(x) : M _;
+    }.
+  End Borrowed.
 End Borrowed.
-Definition Borrowed `{State.Trait} : Set := M.val (Borrowed.t).
+Definition Borrowed `{State.Trait} : Set := M.val Borrowed.t.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
-  Definition Self `{State.Trait} := scoping_rules_lifetimes_traits.Borrowed.
-  
-  Parameter struct_parameter_for_fmt :
-      core.fmt.Formatter ->
-        string -> string -> StaticRef_i32 -> M core.fmt.Result.
-  
-  Global Instance Deb_struct_parameter_for_fmt : Notation.DoubleColon
-    core.fmt.Formatter "struct_parameter_for_fmt" := {
-    Notation.double_colon := struct_parameter_for_fmt; }.
-  
-  Definition fmt
-      `{State.Trait}
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter)
-      : M core.fmt.Result :=
-    let* α0 := deref f core.fmt.Formatter in
-    let* α1 := borrow_mut α0 core.fmt.Formatter in
-    let* α2 := deref (mk_str "Borrowed") str in
-    let* α3 := borrow α2 str in
-    let* α4 := deref (mk_str "x") str in
-    let* α5 := borrow α4 str in
-    let* α6 := deref self scoping_rules_lifetimes_traits.Borrowed in
-    let* α7 := α6.["x"] in
-    let* α8 := borrow α7 (ref i32) in
-    let* α9 := borrow α8 (ref (ref i32)) in
-    let* α10 := deref α9 (ref (ref i32)) in
-    let* α11 := borrow α10 (ref (ref i32)) in
-    let* α12 := pointer_coercion "Unsize" α11 in
-    core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
-  
-  Global Instance Method_fmt `{State.Trait} : Notation.Dot "fmt" := {
-    Notation.dot := fmt;
-  }.
-  
-  Global Instance I `{State.Trait} : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
+  Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
+    
+    Definition fmt
+        (self : ref Self)
+        (f : mut_ref core.fmt.Formatter)
+        : M core.fmt.Result :=
+      let* α0 := deref f core.fmt.Formatter in
+      let* α1 := borrow_mut α0 core.fmt.Formatter in
+      let* α2 := deref (mk_str "Borrowed") str in
+      let* α3 := borrow α2 str in
+      let* α4 := deref (mk_str "x") str in
+      let* α5 := borrow α4 str in
+      let* α6 := deref self scoping_rules_lifetimes_traits.Borrowed in
+      let* α7 := α6.["x"] in
+      let* α8 := borrow α7 (ref i32) in
+      let* α9 := borrow α8 (ref (ref i32)) in
+      let* α10 := deref α9 (ref (ref i32)) in
+      let* α11 := borrow α10 (ref (ref i32)) in
+      let* α12 := pointer_coercion "Unsize" α11 in
+      core.fmt.Formatter::["debug_struct_field1_finish"] α1 α3 α5 α12.
+    
+    Global Instance AssociatedFunction_fmt :
+      Notation.DoubleColon Self "fmt" := {
+      Notation.double_colon := fmt;
+    }.
+    
+    Global Instance I : core.fmt.Debug.Trait Self := {
+      core.fmt.Debug.fmt := fmt;
+    }.
+  End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
   Global Hint Resolve I : core.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
 
 Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
-  Definition Self `{State.Trait} := scoping_rules_lifetimes_traits.Borrowed.
-  
-  Definition default `{State.Trait} : M Self :=
-    let* α0 := M.alloc 10 in
-    let* α1 := borrow α0 i32 in
-    let* α2 := deref α1 i32 in
-    let* α3 := borrow α2 i32 in
-    M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α3; |}.
-  
-  Global Instance AssociatedFunction_default `{State.Trait} :
-    Notation.DoubleColon Self "default" := {
-    Notation.double_colon := default;
-  }.
-  
-  Global Instance I `{State.Trait} : core.default.Default.Trait Self := {
-    core.default.Default.default := default;
-  }.
+  Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.
+    
+    Definition default : M Self :=
+      let* α0 := M.alloc 10 in
+      let* α1 := borrow α0 i32 in
+      let* α2 := deref α1 i32 in
+      let* α3 := borrow α2 i32 in
+      M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α3; |}.
+    
+    Global Instance AssociatedFunction_default :
+      Notation.DoubleColon Self "default" := {
+      Notation.double_colon := default;
+    }.
+    
+    Global Instance I : core.default.Default.Trait Self := {
+      core.default.Default.default := default;
+    }.
+  End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
   Global Hint Resolve I : core.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main `{State.Trait} : M unit :=
+Definition main : M unit :=
   let* b := core.default.Default.default in
   let* _ :=
     let* _ :=

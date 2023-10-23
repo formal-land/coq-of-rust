@@ -2,142 +2,164 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module Account.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    username : ref str;
-    password : ref str;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_username `{State.Trait} : Notation.Dot "username" := {
-    Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
-  }.
-  Global Instance Get_AF_username `{State.Trait}
-    : Notation.DoubleColon t "username" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
-  }.
-  Global Instance Get_password `{State.Trait} : Notation.Dot "password" := {
-    Notation.dot x := let* x := M.read x in Pure x.(password) : M _;
-  }.
-  Global Instance Get_AF_password `{State.Trait}
-    : Notation.DoubleColon t "password" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(password) : M _;
-  }.
+  Section Account.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      username : ref str;
+      password : ref str;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_username : Notation.Dot "username" := {
+      Notation.dot x := let* x := M.read x in Pure x.(username) : M _;
+    }.
+    Global Instance Get_AF_username : Notation.DoubleColon t "username" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(username) : M _;
+    }.
+    Global Instance Get_password : Notation.Dot "password" := {
+      Notation.dot x := let* x := M.read x in Pure x.(password) : M _;
+    }.
+    Global Instance Get_AF_password : Notation.DoubleColon t "password" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(password) : M _;
+    }.
+  End Account.
 End Account.
-Definition Account `{State.Trait} : Set := M.val (Account.t).
+Definition Account `{State.Trait} : Set := M.val Account.t.
 
 Module
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self `{State.Trait} :=
-    hash_map_alternate_or_custom_key_types.Account.
-  
-  Global Instance I `{State.Trait}
-    : core.marker.StructuralPartialEq.Trait Self := {
-  }.
+  Section
+    Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
+    
+    Global Instance I : core.marker.StructuralPartialEq.Trait Self := {
+    }.
+  End
+    Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module
   Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self `{State.Trait} :=
-    hash_map_alternate_or_custom_key_types.Account.
-  
-  Parameter eq :
-      forall `{State.Trait},
-      (ref Self) ->
-        (ref hash_map_alternate_or_custom_key_types.Account) ->
-        M bool.
-  
-  Global Instance Method_eq `{State.Trait} : Notation.Dot "eq" := {
-    Notation.dot := eq;
-  }.
-  
-  Global Instance I `{State.Trait}
-    : core.cmp.PartialEq.Trait Self (Rhs := core.cmp.PartialEq.Default.Rhs Self)
-      := {
-    core.cmp.PartialEq.eq := eq;
-  }.
+  Section
+    Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
+    
+    Parameter eq :
+        (ref Self) ->
+          (ref hash_map_alternate_or_custom_key_types.Account) ->
+          M bool.
+    
+    Global Instance AssociatedFunction_eq : Notation.DoubleColon Self "eq" := {
+      Notation.double_colon := eq;
+    }.
+    
+    Global Instance I
+      : core.cmp.PartialEq.Trait Self
+          (Rhs := core.cmp.PartialEq.Default.Rhs Self)
+        := {
+      core.cmp.PartialEq.eq := eq;
+    }.
+  End
+    Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve I : core.
 End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self `{State.Trait} :=
-    hash_map_alternate_or_custom_key_types.Account.
-  
-  Global Instance I `{State.Trait} : core.marker.StructuralEq.Trait Self := {
-  }.
+  Section
+    Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
+    
+    Global Instance I : core.marker.StructuralEq.Trait Self := {
+    }.
+  End
+    Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve I : core.
 End
   Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self `{State.Trait} :=
-    hash_map_alternate_or_custom_key_types.Account.
-  
-  Parameter assert_receiver_is_total_eq :
-      forall `{State.Trait},
-      (ref Self) -> M unit.
-  
-  Global Instance Method_assert_receiver_is_total_eq `{State.Trait} :
-    Notation.Dot "assert_receiver_is_total_eq" := {
-    Notation.dot := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance I `{State.Trait} : core.cmp.Eq.Trait Self := {
-  }.
+  Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
+    
+    Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+    
+    Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+      Notation.DoubleColon Self "assert_receiver_is_total_eq" := {
+      Notation.double_colon := assert_receiver_is_total_eq;
+    }.
+    
+    Global Instance I : core.cmp.Eq.Trait Self := {
+    }.
+  End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve I : core.
 End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
-  Definition Self `{State.Trait} :=
-    hash_map_alternate_or_custom_key_types.Account.
-  
-  Parameter hash :
-      forall `{State.Trait} {__H : Set} `{core.hash.Hasher.Trait __H},
-      (ref Self) -> (mut_ref __H) -> M unit.
-  
-  Global Instance Method_hash
-      `{State.Trait}
-      {__H : Set}
-      `{core.hash.Hasher.Trait __H} :
-    Notation.Dot "hash" := {
-    Notation.dot := hash (__H := __H);
-  }.
-  
-  Global Instance I `{State.Trait} : core.hash.Hash.Trait Self := {
-    core.hash.Hash.hash {__H : Set} `{core.hash.Hasher.Trait __H}
-      :=
-      hash (__H := __H);
-  }.
+  Section
+    Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
+    Context `{State.Trait}.
+    
+    Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.
+    
+    Parameter hash :
+        forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
+        (ref Self) -> (mut_ref __H) -> M unit.
+    
+    Global Instance AssociatedFunction_hash
+        {__H : Set}
+        {ℋ_0 : core.hash.Hasher.Trait __H} :
+      Notation.DoubleColon Self "hash" := {
+      Notation.double_colon := hash (__H := __H);
+    }.
+    
+    Global Instance I : core.hash.Hash.Trait Self := {
+      core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H}
+        :=
+        hash (__H := __H);
+    }.
+  End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
   Global Hint Resolve I : core.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module AccountInfo.
-  Unset Primitive Projections.
-  Record t `{State.Trait} : Set := {
-    name : ref str;
-    email : ref str;
-  }.
-  Global Set Primitive Projections.
-  
-  Global Instance Get_name `{State.Trait} : Notation.Dot "name" := {
-    Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
-  }.
-  Global Instance Get_AF_name `{State.Trait}
-    : Notation.DoubleColon t "name" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
-  }.
-  Global Instance Get_email `{State.Trait} : Notation.Dot "email" := {
-    Notation.dot x := let* x := M.read x in Pure x.(email) : M _;
-  }.
-  Global Instance Get_AF_email `{State.Trait}
-    : Notation.DoubleColon t "email" := {
-    Notation.double_colon x := let* x := M.read x in Pure x.(email) : M _;
-  }.
+  Section AccountInfo.
+    Context `{State.Trait}.
+    
+    Unset Primitive Projections.
+    Record t : Set := {
+      name : ref str;
+      email : ref str;
+    }.
+    Global Set Primitive Projections.
+    
+    Global Instance Get_name : Notation.Dot "name" := {
+      Notation.dot x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+    Global Instance Get_AF_name : Notation.DoubleColon t "name" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(name) : M _;
+    }.
+    Global Instance Get_email : Notation.Dot "email" := {
+      Notation.dot x := let* x := M.read x in Pure x.(email) : M _;
+    }.
+    Global Instance Get_AF_email : Notation.DoubleColon t "email" := {
+      Notation.double_colon x := let* x := M.read x in Pure x.(email) : M _;
+    }.
+  End AccountInfo.
 End AccountInfo.
-Definition AccountInfo `{State.Trait} : Set := M.val (AccountInfo.t).
+Definition AccountInfo `{State.Trait} : Set := M.val AccountInfo.t.
 
 Definition Accounts `{State.Trait} : Set :=
   std.collections.hash.map.HashMap
