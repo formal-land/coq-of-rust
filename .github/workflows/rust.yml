@@ -18,32 +18,46 @@ jobs:
     - uses: actions/checkout@v3
     - name: Download Git submodules
       run: git submodule update --init --recursive
-    - name: Install Coq
-      run: sudo apt-get install coq
-    - name: Format check
-      run: cargo fmt --check
-    - name: Build
-      run: cargo build --verbose
-    - name: Install
-      run: cargo install --path lib/
-    - name: Lint
-      run: cargo clippy --all-targets --all-features -- -D warnings
-    - name: Translate Rust examples
-      run: |
-        python run_tests.py --output-path ./coq_translation/default/
-    - name: Translate Rust examples (axiomatized)
-      run: |
-        python run_tests.py --axiomatize --axiomatize-public --output-path ./coq_translation/axiomatized/
-    - name: Translate Ink! library
-      run: |
-        cd CoqOfRust
-        ./generate_ink_example.sh
-    - name: Check that the diff is empty
-      run: |
-        git -c color.ui=always diff --exit-code
-    - name: Compile Coq translations
-      run: |
-        cd CoqOfRust
-        ./configure.sh
-        python ./make_and_detect_warnings.py
-        cd ..
+    - uses: coq-community/docker-coq-action@v1
+      with:
+        custom_image: coqorg/coq:8.18-ocaml-4.14-flambda
+        custom_script: |
+          startGroup "Install Rust"
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+            source "$HOME/.cargo/env"
+            cargo --version
+            sudo ln -s `which python3` /usr/bin/python
+          endGroup
+          startGroup "Build"
+            sudo chown -R $(whoami) .
+            cargo build --verbose
+          endGroup
+          startGroup "Install"
+            cargo install --path lib/
+          endGroup
+          startGroup "Format check"
+            cargo fmt --check
+          endGroup
+          startGroup "Lint"
+            cargo clippy --all-targets --all-features -- -D warnings
+          endGroup
+          startGroup "Translate Rust examples"
+            python run_tests.py --output-path ./coq_translation/default/
+          endGroup
+          startGroup "Translate Rust examples (axiomatized)"
+            python run_tests.py --axiomatize --axiomatize-public --output-path ./coq_translation/axiomatized/
+          endGroup
+          startGroup "Translate Ink! library"
+            cd CoqOfRust
+            ./generate_ink_example.sh
+            cd ..
+          endGroup
+          startGroup "Check that the diff is empty"
+            git -c color.ui=always diff --exit-code
+          endGroup
+          startGroup "Compile Coq translations"
+            cd CoqOfRust
+            ./configure.sh
+            python ./make_and_detect_warnings.py
+            cd ..
+          endGroup

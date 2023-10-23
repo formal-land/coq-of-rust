@@ -698,18 +698,10 @@ fn compile_ty_params<T>(
         .iter()
         .filter_map(|param| match param.kind {
             // we ignore lifetimes
-            GenericParamKind::Lifetime { .. } => None,
             GenericParamKind::Type { default, .. } => {
                 Some(f(env, param.name.ident().to_string(), default))
             }
-            // @TODO: do we want to also support constant parameters?
-            GenericParamKind::Const { ty: _, default: _ } => {
-                let span = &param.span;
-                let warning_msg = "Constant parameters are not supported yet.";
-                let note_msg = "It should be supported in future versions.";
-                emit_warning_with_note(env, span, warning_msg, note_msg);
-                None
-            }
+            GenericParamKind::Lifetime { .. } | GenericParamKind::Const { .. } => None,
         })
         .collect()
 }
